@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from .analysis.audit import run_audit
+from .baseline_gap import run_baseline_gap
 from .datasets import census13
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13
@@ -70,6 +71,26 @@ def _parser() -> argparse.ArgumentParser:
     postgres.add_argument(
         "--output-directory", type=Path, default=Path("paper-baselines/arecel-census13")
     )
+    gap = commands.add_parser("baseline-gap")
+    gap.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
+    gap.add_argument("--stock-dsn", required=True)
+    gap.add_argument("--planner-dsn", required=True)
+    gap.add_argument("--canonical-run", type=Path, default=Path("runs/197e9b890ac58bc4fbcfb218"))
+    gap.add_argument(
+        "--paper-baseline-directory", type=Path, default=Path("paper-baselines/arecel-census13")
+    )
+    gap.add_argument(
+        "--output-directory", type=Path, default=Path("diagnostics/arecel-census13-baseline-gap")
+    )
+    gap.add_argument("--data-root", type=Path)
+    gap.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    gap.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
     return parser
 
 
@@ -107,6 +128,19 @@ def main(argv: list[str] | None = None) -> int:
             data_root=args.data_root,
             canonical_run=args.canonical_run,
             output_directory=args.output_directory,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "baseline-gap":
+        result = run_baseline_gap(
+            stock_dsn=args.stock_dsn,
+            planner_dsn=args.planner_dsn,
+            canonical_run=args.canonical_run,
+            paper_baseline_directory=args.paper_baseline_directory,
+            output_directory=args.output_directory,
+            data_root=args.data_root,
+            advisor_root=args.advisor_root,
+            patched_postgres_root=args.patched_postgres_root,
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
