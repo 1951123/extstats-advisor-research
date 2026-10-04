@@ -12,7 +12,7 @@ dependencies = ["psycopg[binary]>=3.2,<4"]
 [project.optional-dependencies]
 dev = ["pytest>=8.3,<9", "ruff>=0.8,<1"]
 advisor = [
-  "extstats-advisor @ git+https://github.com/1951123/extstats-advisor.git@524a17d4a9dea1a436bb4e30aadcc77e2bda4edd"
+  "extstats-advisor @ git+https://github.com/1951123/extstats-advisor.git@aa65af49fdbbf7443f8fa7295677724babfddfc5"
 ]
 
 [project.scripts]

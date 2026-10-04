@@ -10,7 +10,7 @@ paths are not semantic identities. The source CSV and canonical workload hashes
 are recorded in `dataset-manifest.json`.
 
 The SUT is the production advisor at
-`524a17d4a9dea1a436bb4e30aadcc77e2bda4edd`. The patched PostgreSQL source is
+`aa65af49fdbbf7443f8fa7295677724babfddfc5`. The patched PostgreSQL source is
 `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`. Both are checked before a
 canonical run.
 
