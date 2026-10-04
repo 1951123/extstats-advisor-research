@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .analysis.audit import run_audit
 from .datasets import census13
 from .runner import run_census13
 
@@ -44,6 +45,18 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--data-root", type=Path)
     run.add_argument("--reset-disposable", action="store_true")
     run.add_argument("--advisor-command", default="extstats-advisor")
+    audit = commands.add_parser("audit")
+    audit.add_argument("run_directory", type=Path)
+    audit.add_argument("--planner-dsn", required=True)
+    audit.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    audit.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    audit.add_argument("--output-directory", type=Path)
     return parser
 
 
@@ -64,6 +77,16 @@ def main(argv: list[str] | None = None) -> int:
                     indent=2,
                 )
             )
+        return 0
+    if args.command == "audit":
+        result = run_audit(
+            args.run_directory,
+            planner_dsn=args.planner_dsn,
+            advisor_root=args.advisor_root,
+            patched_postgres_root=args.patched_postgres_root,
+            output_directory=args.output_directory,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
         return 0
     result = run_census13(
         production_dsn=args.production_dsn,
