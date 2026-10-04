@@ -77,7 +77,7 @@ def extract_summary(layout: Any, *, benchmark_id: str, workload: dict[str, Any])
                 sum(
                     1
                     for item in state_source
-                    if item.get(state_key) in {"absent", "ABSENT", "ABSENT_NATIVE"}
+                    if item.get(state_key) in {"absent", "absent-native", "ABSENT", "ABSENT_NATIVE"}
                 ),
             ),
         },
