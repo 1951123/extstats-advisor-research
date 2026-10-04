@@ -25,6 +25,7 @@ def test_summary_extracts_production_artifact_fields(tmp_path) -> None:
     }
     for name, value in payloads.items():
         paths[name].write_text(json.dumps(value), encoding="utf-8")
+    paths["logs"].write_text('{"event":"start"}\n{"event":"complete"}\n', encoding="utf-8")
     paths["snapshot"].mkdir()
     (paths["snapshot"] / "manifest.json").write_text(
         json.dumps(
@@ -43,3 +44,4 @@ def test_summary_extracts_production_artifact_fields(tmp_path) -> None:
     assert summary["query_count"] == 1
     assert summary["recommendation"]["order"] == ["cand_a"]
     assert summary["candidate_states"]["PRESENT"] == 1
+    assert "logs" not in summary["artifact_digests"]

@@ -77,7 +77,9 @@ def extract_summary(layout: Any, *, benchmark_id: str, workload: dict[str, Any])
             "order": selected,
         },
         "artifact_digests": {
-            name: _artifact_digest(path) for name, path in paths.items() if name != "summary"
+            name: _artifact_digest(path)
+            for name, path in paths.items()
+            if name not in {"logs", "summary"}
         },
     }
     write_json(paths["summary"], summary)
