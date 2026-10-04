@@ -14,6 +14,10 @@ def _psycopg() -> Any:
     return psycopg
 
 
+def _text(value: Any) -> str:
+    return value.decode("utf-8") if isinstance(value, bytes) else str(value)
+
+
 def _sql_identifier(psycopg: Any, name: str) -> Any:
     return psycopg.sql.Identifier(name)
 
@@ -69,7 +73,7 @@ def load_census13(
     psycopg = _psycopg()
     with psycopg.connect(dsn, autocommit=True) as connection:
         _assert_or_reset(connection, reset_disposable=reset_disposable)
-        server_version = str(connection.execute("SHOW server_version").fetchone()[0])
+        server_version = _text(connection.execute("SHOW server_version").fetchone()[0])
         server_version_num = int(connection.execute("SHOW server_version_num").fetchone()[0])
         if not 16_000_000 <= server_version_num < 17_000_000:
             raise RuntimeError(
