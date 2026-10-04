@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .analysis.audit import run_audit
 from .datasets import census13
+from .paper_baseline import run_paper_baseline
 from .runner import run_census13
 
 
@@ -57,6 +58,18 @@ def _parser() -> argparse.ArgumentParser:
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
     audit.add_argument("--output-directory", type=Path)
+    paper_baseline = commands.add_parser("paper-baseline")
+    paper_commands = paper_baseline.add_subparsers(dest="paper_command", required=True)
+    postgres = paper_commands.add_parser("postgres")
+    postgres.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
+    postgres.add_argument("--dsn", required=True)
+    postgres.add_argument("--data-root", type=Path)
+    postgres.add_argument(
+        "--canonical-run", type=Path, default=Path("runs/197e9b890ac58bc4fbcfb218")
+    )
+    postgres.add_argument(
+        "--output-directory", type=Path, default=Path("paper-baselines/arecel-census13")
+    )
     return parser
 
 
@@ -84,6 +97,15 @@ def main(argv: list[str] | None = None) -> int:
             planner_dsn=args.planner_dsn,
             advisor_root=args.advisor_root,
             patched_postgres_root=args.patched_postgres_root,
+            output_directory=args.output_directory,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "paper-baseline":
+        result = run_paper_baseline(
+            args.dsn,
+            data_root=args.data_root,
+            canonical_run=args.canonical_run,
             output_directory=args.output_directory,
         )
         print(json.dumps(result, sort_keys=True, indent=2))
