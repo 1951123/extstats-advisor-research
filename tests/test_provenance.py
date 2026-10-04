@@ -47,8 +47,9 @@ def test_run_id_changes_when_research_revision_changes() -> None:
         "search_wall_clock_seconds": 30.0,
     }
     first = {**base, "research_commit_sha": "a" * 40}
+    equivalent = {**base, "research_commit_sha": "a" * 40}
     second = {**base, "research_commit_sha": "b" * 40}
-    assert run_id(first) == run_id(first)
+    assert run_id(first) == run_id(equivalent)
     assert run_id(first) != run_id(second)
 
 
