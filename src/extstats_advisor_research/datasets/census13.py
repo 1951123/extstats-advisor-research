@@ -9,6 +9,7 @@ from __future__ import annotations
 import gzip
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +62,14 @@ def csv_path(value: Path | None = None) -> Path:
 
 def canonical_workload_path(value: Path | None = None) -> Path:
     return audit_root(value) / "census13.canonical.jsonl.gz"
+
+
+def _advisor_workload_sql(sql: str) -> str:
+    """Adapt audited count SQL to the advisor's direct/star projection contract."""
+    match = re.match(r"(?is)^\s*SELECT\s+COUNT\s*\(\s*\*\s*\)\s+FROM\s+", sql)
+    if match is None:
+        return sql
+    return "SELECT * FROM " + sql[match.end() :]
 
 
 def _audit(value: Path | None = None) -> dict[str, Any]:
@@ -139,7 +148,13 @@ def extract_workload(
             if record["split"] == split:
                 source_index = int(record.get("index", len(queries)))
                 query_id = f"arecel_census13_{split}_{source_index:06d}"
-                queries.append({"query_id": query_id, "sql": record["sql"], "weight": 1.0})
+                queries.append(
+                    {
+                        "query_id": query_id,
+                        "sql": _advisor_workload_sql(record["sql"]),
+                        "weight": 1.0,
+                    }
+                )
                 query_id_mapping[query_id] = record["query_id"]
     result = {
         "workload_id": f"arecel_census13_{split}_v1",
@@ -150,6 +165,7 @@ def extract_workload(
             "canonical_source_sha256": sha256_file(source),
             "upstream_commit": UPSTREAM_COMMIT,
             "query_id_mapping": query_id_mapping,
+            "projection_adapter": "count-star-to-select-star-v1",
         },
         "queries": queries,
     }

@@ -33,12 +33,22 @@ def test_workload_extraction_preserves_audited_sql(tmp_path, monkeypatch) -> Non
         encoding="utf-8",
     )
     with gzip.open(audit / "census13.canonical.jsonl.gz", "wt", encoding="utf-8") as stream:
-        stream.write(json.dumps({"split": "test", "query_id": "q1", "sql": "SELECT 1"}) + "\n")
+        stream.write(
+            json.dumps(
+                {
+                    "split": "test",
+                    "query_id": "q1",
+                    "sql": 'SELECT COUNT(*) FROM public."census13";',
+                }
+            )
+            + "\n"
+        )
         stream.write(json.dumps({"split": "train", "query_id": "q2", "sql": "SELECT 2"}) + "\n")
     result = census13.extract_workload(tmp_path / "workload.json", split="test")
     assert result["query_count"] == 1
     workload = json.loads((tmp_path / "workload.json").read_text())
     assert workload["workload_id"] == "arecel_census13_test_v1"
     assert workload["queries"][0]["query_id"] == "arecel_census13_test_000000"
-    assert workload["queries"][0]["sql"] == "SELECT 1"
+    assert workload["queries"][0]["sql"] == 'SELECT * FROM public."census13";'
     assert workload["provenance"]["query_id_mapping"] == {"arecel_census13_test_000000": "q1"}
+    assert workload["provenance"]["projection_adapter"] == "count-star-to-select-star-v1"
