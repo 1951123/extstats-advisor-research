@@ -298,6 +298,7 @@ def run_paper_baseline(
                     "true_rows": paper["true_rows"],
                 }
             )
+    output_directory.mkdir(parents=True, exist_ok=True)
     per_query_path = output_directory / "postgres-per-query-v1.jsonl"
     with per_query_path.open("w", encoding="utf-8") as stream:
         for record in records:
