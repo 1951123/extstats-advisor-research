@@ -1,0 +1,49 @@
+{
+  "artifact_digests": {
+    "candidate_universe": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74",
+    "ground_truth": "b70410c12af2b7e52d3d3b9972ab086a4270c2743c4363f58ed400a3bdb9d491",
+    "native_repository": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+    "optimization_plan": "e7b44f8dfd0202787951ce88af9059cad66f30737b3c68ef838f6e9a89c0a134",
+    "recommendation": "63a1cd2eacc41e981db5ebd53202603dd5cccb7c681601a1be54d35094e57519",
+    "search_result": "3fcfb50b74e216d06380ce38457214f4bf07346dbbd3d2fe12fe02368de6e975",
+    "singleton_profile": "2665d5ff54331bc768bb4661554b3ed763cf0f445545ac2ed5e5169657c0aa78",
+    "snapshot": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d"
+  },
+  "baseline": 5.256435607220752,
+  "benchmark_id": "arecel-census13",
+  "best_singleton": {
+    "candidate_id": "cand_cb55f02882e2d0ef75203787",
+    "improvement": 1.417284859251085,
+    "objective": 3.8391507479696667
+  },
+  "candidate_count": 156,
+  "candidate_states": {
+    "ABSENT": 20,
+    "PRESENT": 136
+  },
+  "format": "research-metrics-summary-v1",
+  "optimization": {
+    "candidate_limit": 8,
+    "screened_count": 8
+  },
+  "population_row_count": 48842.0,
+  "query_count": 10000,
+  "recommendation": {
+    "decision": "propose-change",
+    "order": [
+      "cand_cb55f02882e2d0ef75203787"
+    ]
+  },
+  "sample_row_count": 10000,
+  "search": {
+    "absolute_improvement": 1.417284859251085,
+    "accepted_moves": 1,
+    "final_objective": 3.8391507479696667,
+    "relative_improvement": 0.2696285021173216,
+    "selected_candidate_ids": [
+      "cand_cb55f02882e2d0ef75203787"
+    ],
+    "termination": "budget-expired-incomplete-round"
+  },
+  "workload_id": "arecel_census13_test_v1"
+}

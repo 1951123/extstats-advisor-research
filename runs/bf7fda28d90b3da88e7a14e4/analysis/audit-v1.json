@@ -1,0 +1,816 @@
+{
+  "advisor_commit_sha": "aa65af49fdbbf7443f8fa7295677724babfddfc5",
+  "aggregate_reproduction": {
+    "baseline": {
+      "absolute_difference": 4.440892098500626e-15,
+      "expected": 5.256435607220752,
+      "matches": true,
+      "recomputed": 5.256435607220747
+    },
+    "final": {
+      "absolute_difference": 5.329070518200751e-15,
+      "expected": 3.8391507479696667,
+      "matches": true,
+      "recomputed": 3.8391507479696614
+    },
+    "tolerance": 1e-12
+  },
+  "artifact_digests": {
+    "candidate_universe": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74",
+    "ground_truth": "b70410c12af2b7e52d3d3b9972ab086a4270c2743c4363f58ed400a3bdb9d491",
+    "native_repository": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+    "optimization_plan": "e7b44f8dfd0202787951ce88af9059cad66f30737b3c68ef838f6e9a89c0a134",
+    "recommendation": "63a1cd2eacc41e981db5ebd53202603dd5cccb7c681601a1be54d35094e57519",
+    "search_result": "3fcfb50b74e216d06380ce38457214f4bf07346dbbd3d2fe12fe02368de6e975",
+    "singleton_profile": "2665d5ff54331bc768bb4661554b3ed763cf0f445545ac2ed5e5169657c0aa78",
+    "snapshot": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d"
+  },
+  "audit_implementation_research_sha": "9de794eaa62389c48ee6c5cebb192a467b9696cc",
+  "baseline_mean_contribution": {
+    "top_1": {
+      "baseline_objective_fraction": 0.03173252988600629,
+      "query_count": 1
+    },
+    "top_10": {
+      "baseline_objective_fraction": 0.09819391667063637,
+      "query_count": 10
+    },
+    "top_10_percent": {
+      "baseline_objective_fraction": 0.6187221846438298,
+      "query_count": 1000
+    },
+    "top_1_percent": {
+      "baseline_objective_fraction": 0.2538794143730391,
+      "query_count": 100
+    },
+    "top_5": {
+      "baseline_objective_fraction": 0.07689621450793611,
+      "query_count": 5
+    },
+    "top_5_percent": {
+      "baseline_objective_fraction": 0.4888134624307208,
+      "query_count": 500
+    }
+  },
+  "budget_diagnostics": {
+    "search_cached_singleton_evaluations": 8,
+    "search_elapsed_seconds": 30.000646143002086,
+    "search_live_configuration_evaluations": 7,
+    "search_planner_query_estimate_count": 67135,
+    "search_wall_clock_budget_seconds": 30.0,
+    "singleton_profiling_candidate_count": 156,
+    "singleton_profiling_planner_configuration_count": 136,
+    "singleton_profiling_planner_query_estimate_count": 1370000,
+    "termination_reason": "budget-expired-incomplete-round"
+  },
+  "classification": {
+    "comparison": "exact-float-comparison",
+    "counts": {
+      "improved": 1478,
+      "unchanged": 8404,
+      "worsened": 118
+    },
+    "fractions": {
+      "improved": 0.1478,
+      "unchanged": 0.8404,
+      "worsened": 0.0118
+    }
+  },
+  "distributions": {
+    "baseline": {
+      "arithmetic_mean": 5.256435607220747,
+      "max": 1668.0,
+      "median": 1.4139329805996472,
+      "min": 1.0,
+      "p50": 1.4139329805996472,
+      "p75": 3.6666666666666665,
+      "p90": 10.1201680672269,
+      "p95": 18.666666666666668,
+      "p99": 58.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.256435607220747
+    },
+    "final": {
+      "arithmetic_mean": 3.8391507479696614,
+      "max": 1668.0,
+      "median": 1.3265045082826588,
+      "min": 1.0,
+      "p50": 1.3265045082826588,
+      "p75": 3.0,
+      "p90": 7.0,
+      "p95": 12.0,
+      "p99": 35.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 3.8391507479696614
+    }
+  },
+  "format": "research-run-audit-v1",
+  "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "per_query_path": "per-query-v1.jsonl",
+  "per_query_sha256": "a889a52fc86ec6d35fe14252a89f448d741dfba1f3c54bedd3ad849ba50b47ef",
+  "planner_replay": {
+    "baseline_configuration": [],
+    "final_configuration": [
+      "cand_cb55f02882e2d0ef75203787"
+    ],
+    "physical_deployment_performed": false,
+    "replay_query_count": 10000,
+    "sandbox_prepare": {
+      "backend_contract": "postgresql-pgextadv-16.14-v1",
+      "candidate_universe_semantic_digest": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74",
+      "frozen_relation_name": {
+        "catalog": null,
+        "name": "frozen_sample_7843ccf2e1ae0b017fda3c5a",
+        "schema": "extstats_advisor_internal"
+      },
+      "internal_schema_created": true,
+      "managed_schema_created": false,
+      "native_stats_repository_semantic_digest": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+      "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "population_quality": "estimate",
+      "population_row_count": 48842.0,
+      "prepared_at": "2026-10-05 00:20:10.160764+08:00",
+      "relation_id": "rel_9e1df9f57090e5466b704598",
+      "relation_name": {
+        "catalog": "postgres",
+        "name": "census13",
+        "schema": "public"
+      },
+      "repository_absent_count": 20,
+      "repository_candidate_count": 156,
+      "repository_present_count": 136,
+      "sample_row_count": 10000,
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "server_version": "16.14",
+      "server_version_num": 160014,
+      "source_snapshot_semantic_digest": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d",
+      "statistics_target": 100
+    },
+    "sandbox_verify": {
+      "autovacuum_disabled": true,
+      "frozen_sample_row_count": 10000,
+      "metadata": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "candidate_universe_semantic_digest": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74",
+        "frozen_relation_name": {
+          "catalog": null,
+          "name": "frozen_sample_7843ccf2e1ae0b017fda3c5a",
+          "schema": "extstats_advisor_internal"
+        },
+        "internal_schema_created": true,
+        "managed_schema_created": false,
+        "native_stats_repository_semantic_digest": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+        "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+        "population_quality": "estimate",
+        "population_row_count": 48842.0,
+        "prepared_at": "2026-10-05 00:20:10.160764+08:00",
+        "relation_id": "rel_9e1df9f57090e5466b704598",
+        "relation_name": {
+          "catalog": "postgres",
+          "name": "census13",
+          "schema": "public"
+        },
+        "repository_absent_count": 20,
+        "repository_candidate_count": 156,
+        "repository_present_count": 136,
+        "sample_row_count": 10000,
+        "sandbox_contract": "postgresql-planner-sandbox-v1",
+        "server_version": "16.14",
+        "server_version_num": 160014,
+        "source_snapshot_semantic_digest": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d",
+        "statistics_target": 100
+      },
+      "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "physical_extstats_count": 0,
+      "reltuples": 48842.0,
+      "repository": {
+        "absent_count": 20,
+        "candidate_count": 156,
+        "present_count": 136,
+        "semantic_digest": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62"
+      },
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "target_relation_oid": 16588,
+      "target_sample_row_count": 10000
+    }
+  },
+  "predicate_diagnostics": {
+    "predicate_arity_distribution": {
+      "1": 797,
+      "10": 720,
+      "11": 729,
+      "12": 800,
+      "13": 785,
+      "2": 760,
+      "3": 793,
+      "4": 779,
+      "5": 764,
+      "6": 761,
+      "7": 758,
+      "8": 778,
+      "9": 776
+    },
+    "query_count": 10000,
+    "top_baseline_queries_selected_candidate_coverage": [
+      {
+        "baseline_estimated_rows": 1668,
+        "baseline_qerror": 1668.0,
+        "final_estimated_rows": 1668,
+        "final_qerror": 1668.0,
+        "query_id": "arecel_census13_test_004017",
+        "selected_candidate_ids_touching_query": [],
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_003176",
+        "selected_candidate_ids_touching_query": [],
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_005979",
+        "selected_candidate_ids_touching_query": [],
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 456.0,
+        "final_estimated_rows": 3,
+        "final_qerror": 152.0,
+        "query_id": "arecel_census13_test_002659",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 456
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 330.0,
+        "final_estimated_rows": 103,
+        "final_qerror": 3.203883495145631,
+        "query_id": "arecel_census13_test_009400",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 330
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 274.0,
+        "final_estimated_rows": 10,
+        "final_qerror": 27.4,
+        "query_id": "arecel_census13_test_004901",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 274
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 258.0,
+        "final_estimated_rows": 53,
+        "final_qerror": 4.867924528301887,
+        "query_id": "arecel_census13_test_009860",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 258
+      },
+      {
+        "baseline_estimated_rows": 2,
+        "baseline_qerror": 203.5,
+        "final_estimated_rows": 112,
+        "final_qerror": 3.6339285714285716,
+        "query_id": "arecel_census13_test_001146",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 407
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 194.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 194.0,
+        "query_id": "arecel_census13_test_009244",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 194
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 190.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 190.0,
+        "query_id": "arecel_census13_test_002313",
+        "selected_candidate_ids_touching_query": [
+          "cand_cb55f02882e2d0ef75203787"
+        ],
+        "true_rows": 190
+      }
+    ]
+  },
+  "qerror_contract": "qerror-cardinality-floor-1-v1",
+  "run_id": "bf7fda28d90b3da88e7a14e4",
+  "search_trace": {
+    "attempted_final_round": {
+      "candidate_ids_recorded_for_partial_evaluations": [],
+      "evaluations_completed_before_budget_expiry": 7,
+      "evaluations_not_completed": 0,
+      "remaining_candidates": [
+        "cand_ffc5c63805d1be782d2b4a02",
+        "cand_8a4f08da78a4aa33ad1a459b",
+        "cand_ae97bada52eb7042e5fc00b8",
+        "cand_d339256e88c14460f89f50b8",
+        "cand_7ac24ff8a73a964272444efd",
+        "cand_b4b362206ca3d3598467e4f1",
+        "cand_384c338346aee8994f53b6e6"
+      ],
+      "round": 2
+    },
+    "average_seconds_per_live_configuration": 4.285806591857441,
+    "baseline_objective": 5.256435607220752,
+    "cached_singleton_configuration_count": 8,
+    "completed_round_count": 0,
+    "elapsed_search_seconds": 30.000646143002086,
+    "live_configuration_evaluation_count": 7,
+    "planner_query_estimate_count": 67135,
+    "rounds": [
+      {
+        "candidate_configurations_evaluated": 8,
+        "chosen_candidate": "cand_cb55f02882e2d0ef75203787",
+        "improvement": 1.417284859251085,
+        "objective_after": 3.8391507479696667,
+        "objective_before": 5.256435607220752,
+        "round": 1,
+        "source": "singleton-profile-cache"
+      }
+    ],
+    "termination_reason": "budget-expired-incomplete-round",
+    "wall_clock_budget_seconds": 30.0
+  },
+  "selected_candidates": [
+    {
+      "candidate_id": "cand_cb55f02882e2d0ef75203787",
+      "column_names": [
+        "education",
+        "education_num"
+      ],
+      "column_ordinals": [
+        3,
+        4
+      ],
+      "frozen_precedence_rank": 1,
+      "kind": "postgresql.mcv",
+      "native_state": "present",
+      "recommendation_deployment_order_position": 1,
+      "recommendation_object_name": "extstats_adv_mcv_75f674b59377762a47b5d24590ef3b4d0255dd7a",
+      "relation": {
+        "catalog": "postgres",
+        "name": "census13",
+        "relation_id": "rel_9e1df9f57090e5466b704598",
+        "schema": "public"
+      },
+      "singleton_improvement": 1.417284859251085,
+      "singleton_objective": 3.8391507479696667,
+      "static_precedence_rank": 24,
+      "statistics_target": 100
+    }
+  ],
+  "semantic_digest": "64dabf2b33396a32cebbfdb42afa6d0b6929478281a2cc6bdfec5c109a445fd0",
+  "singleton_landscape": {
+    "improving_singleton_count": 82,
+    "neutral_singleton_count": 44,
+    "present_candidate_count": 136,
+    "top_screened_candidates": [
+      {
+        "candidate_id": "cand_cb55f02882e2d0ef75203787",
+        "columns": [
+          "education",
+          "education_num"
+        ],
+        "frozen_precedence_rank": 1,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 1.417284859251085,
+        "singleton_objective": 3.8391507479696667
+      },
+      {
+        "candidate_id": "cand_ffc5c63805d1be782d2b4a02",
+        "columns": [
+          "marital_status",
+          "relationship"
+        ],
+        "frozen_precedence_rank": 2,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 1.0898871484649684,
+        "singleton_objective": 4.166548458755783
+      },
+      {
+        "candidate_id": "cand_8a4f08da78a4aa33ad1a459b",
+        "columns": [
+          "workclass",
+          "occupation"
+        ],
+        "frozen_precedence_rank": 3,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 0.5635941349722975,
+        "singleton_objective": 4.692841472248454
+      },
+      {
+        "candidate_id": "cand_ae97bada52eb7042e5fc00b8",
+        "columns": [
+          "education",
+          "occupation"
+        ],
+        "frozen_precedence_rank": 4,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 0.38951232468270014,
+        "singleton_objective": 4.8669232825380515
+      },
+      {
+        "candidate_id": "cand_d339256e88c14460f89f50b8",
+        "columns": [
+          "relationship",
+          "sex"
+        ],
+        "frozen_precedence_rank": 5,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 0.3711359421480749,
+        "singleton_objective": 4.885299665072677
+      },
+      {
+        "candidate_id": "cand_7ac24ff8a73a964272444efd",
+        "columns": [
+          "age",
+          "marital_status"
+        ],
+        "frozen_precedence_rank": 6,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 0.3708823344462724,
+        "singleton_objective": 4.885553272774479
+      },
+      {
+        "candidate_id": "cand_b4b362206ca3d3598467e4f1",
+        "columns": [
+          "relationship",
+          "sex"
+        ],
+        "frozen_precedence_rank": 7,
+        "kind": "postgresql.dependencies",
+        "singleton_improvement": 0.3585089109801807,
+        "singleton_objective": 4.897926696240571
+      },
+      {
+        "candidate_id": "cand_384c338346aee8994f53b6e6",
+        "columns": [
+          "age",
+          "relationship"
+        ],
+        "frozen_precedence_rank": 8,
+        "kind": "postgresql.mcv",
+        "singleton_improvement": 0.3103423404334551,
+        "singleton_objective": 4.9460932667872965
+      }
+    ],
+    "worsening_singleton_count": 10
+  },
+  "source_run_research_commit_sha": "9de794eaa62389c48ee6c5cebb192a467b9696cc",
+  "tail_queries": {
+    "top_10_baseline_qerror": [
+      {
+        "baseline_estimated_rows": 1668,
+        "baseline_qerror": 1668.0,
+        "final_estimated_rows": 1668,
+        "final_qerror": 1668.0,
+        "query_id": "arecel_census13_test_004017",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_003176",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_005979",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 456.0,
+        "final_estimated_rows": 3,
+        "final_qerror": 152.0,
+        "query_id": "arecel_census13_test_002659",
+        "true_rows": 456
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 330.0,
+        "final_estimated_rows": 103,
+        "final_qerror": 3.203883495145631,
+        "query_id": "arecel_census13_test_009400",
+        "true_rows": 330
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 274.0,
+        "final_estimated_rows": 10,
+        "final_qerror": 27.4,
+        "query_id": "arecel_census13_test_004901",
+        "true_rows": 274
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 258.0,
+        "final_estimated_rows": 53,
+        "final_qerror": 4.867924528301887,
+        "query_id": "arecel_census13_test_009860",
+        "true_rows": 258
+      },
+      {
+        "baseline_estimated_rows": 2,
+        "baseline_qerror": 203.5,
+        "final_estimated_rows": 112,
+        "final_qerror": 3.6339285714285716,
+        "query_id": "arecel_census13_test_001146",
+        "true_rows": 407
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 194.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 194.0,
+        "query_id": "arecel_census13_test_009244",
+        "true_rows": 194
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 190.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 190.0,
+        "query_id": "arecel_census13_test_002313",
+        "true_rows": 190
+      }
+    ],
+    "top_10_final_qerror": [
+      {
+        "baseline_estimated_rows": 1668,
+        "baseline_qerror": 1668.0,
+        "final_estimated_rows": 1668,
+        "final_qerror": 1668.0,
+        "query_id": "arecel_census13_test_004017",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_003176",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 794,
+        "baseline_qerror": 794.0,
+        "final_estimated_rows": 794,
+        "final_qerror": 794.0,
+        "query_id": "arecel_census13_test_005979",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 194.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 194.0,
+        "query_id": "arecel_census13_test_009244",
+        "true_rows": 194
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 190.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 190.0,
+        "query_id": "arecel_census13_test_002313",
+        "true_rows": 190
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 177.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 177.0,
+        "query_id": "arecel_census13_test_001565",
+        "true_rows": 177
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 456.0,
+        "final_estimated_rows": 3,
+        "final_qerror": 152.0,
+        "query_id": "arecel_census13_test_002659",
+        "true_rows": 456
+      },
+      {
+        "baseline_estimated_rows": 138,
+        "baseline_qerror": 138.0,
+        "final_estimated_rows": 138,
+        "final_qerror": 138.0,
+        "query_id": "arecel_census13_test_004715",
+        "true_rows": 0
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 129.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 129.0,
+        "query_id": "arecel_census13_test_008906",
+        "true_rows": 129
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 128.0,
+        "final_estimated_rows": 1,
+        "final_qerror": 128.0,
+        "query_id": "arecel_census13_test_004420",
+        "true_rows": 128
+      }
+    ],
+    "top_10_largest_absolute_improvements": [
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 330.0,
+        "final_estimated_rows": 103,
+        "final_qerror": 3.203883495145631,
+        "query_id": "arecel_census13_test_009400",
+        "true_rows": 330
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 456.0,
+        "final_estimated_rows": 3,
+        "final_qerror": 152.0,
+        "query_id": "arecel_census13_test_002659",
+        "true_rows": 456
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 258.0,
+        "final_estimated_rows": 53,
+        "final_qerror": 4.867924528301887,
+        "query_id": "arecel_census13_test_009860",
+        "true_rows": 258
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 274.0,
+        "final_estimated_rows": 10,
+        "final_qerror": 27.4,
+        "query_id": "arecel_census13_test_004901",
+        "true_rows": 274
+      },
+      {
+        "baseline_estimated_rows": 2,
+        "baseline_qerror": 203.5,
+        "final_estimated_rows": 112,
+        "final_qerror": 3.6339285714285716,
+        "query_id": "arecel_census13_test_001146",
+        "true_rows": 407
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 176.0,
+        "final_estimated_rows": 7,
+        "final_qerror": 25.142857142857142,
+        "query_id": "arecel_census13_test_005573",
+        "true_rows": 176
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 186.0,
+        "final_estimated_rows": 4,
+        "final_qerror": 46.5,
+        "query_id": "arecel_census13_test_000528",
+        "true_rows": 186
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 183.0,
+        "final_estimated_rows": 4,
+        "final_qerror": 45.75,
+        "query_id": "arecel_census13_test_000417",
+        "true_rows": 183
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 138.0,
+        "final_estimated_rows": 31,
+        "final_qerror": 4.451612903225806,
+        "query_id": "arecel_census13_test_007427",
+        "true_rows": 138
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 127.0,
+        "final_estimated_rows": 77,
+        "final_qerror": 1.6493506493506493,
+        "query_id": "arecel_census13_test_005611",
+        "true_rows": 127
+      }
+    ],
+    "top_10_largest_regressions": [
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 1.0,
+        "final_estimated_rows": 13,
+        "final_qerror": 13.0,
+        "query_id": "arecel_census13_test_005841",
+        "true_rows": 1
+      },
+      {
+        "baseline_estimated_rows": 12,
+        "baseline_qerror": 12.0,
+        "final_estimated_rows": 21,
+        "final_qerror": 21.0,
+        "query_id": "arecel_census13_test_003070",
+        "true_rows": 1
+      },
+      {
+        "baseline_estimated_rows": 15,
+        "baseline_qerror": 1.0714285714285714,
+        "final_estimated_rows": 127,
+        "final_qerror": 9.071428571428571,
+        "query_id": "arecel_census13_test_006045",
+        "true_rows": 14
+      },
+      {
+        "baseline_estimated_rows": 1,
+        "baseline_qerror": 2.0,
+        "final_estimated_rows": 17,
+        "final_qerror": 8.5,
+        "query_id": "arecel_census13_test_007100",
+        "true_rows": 2
+      },
+      {
+        "baseline_estimated_rows": 6,
+        "baseline_qerror": 6.0,
+        "final_estimated_rows": 11,
+        "final_qerror": 11.0,
+        "query_id": "arecel_census13_test_009836",
+        "true_rows": 1
+      },
+      {
+        "baseline_estimated_rows": 556,
+        "baseline_qerror": 1.8229508196721311,
+        "final_estimated_rows": 1755,
+        "final_qerror": 5.754098360655738,
+        "query_id": "arecel_census13_test_006701",
+        "true_rows": 305
+      },
+      {
+        "baseline_estimated_rows": 27,
+        "baseline_qerror": 1.588235294117647,
+        "final_estimated_rows": 92,
+        "final_qerror": 5.411764705882353,
+        "query_id": "arecel_census13_test_008561",
+        "true_rows": 17
+      },
+      {
+        "baseline_estimated_rows": 6,
+        "baseline_qerror": 1.2,
+        "final_estimated_rows": 24,
+        "final_qerror": 4.8,
+        "query_id": "arecel_census13_test_003040",
+        "true_rows": 5
+      },
+      {
+        "baseline_estimated_rows": 25,
+        "baseline_qerror": 1.25,
+        "final_estimated_rows": 80,
+        "final_qerror": 4.0,
+        "query_id": "arecel_census13_test_009401",
+        "true_rows": 20
+      },
+      {
+        "baseline_estimated_rows": 4,
+        "baseline_qerror": 1.0,
+        "final_estimated_rows": 14,
+        "final_qerror": 3.5,
+        "query_id": "arecel_census13_test_000801",
+        "true_rows": 4
+      }
+    ]
+  }
+}

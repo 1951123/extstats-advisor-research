@@ -1,0 +1,165 @@
+{
+  "advisor_commit_sha": "aa65af49fdbbf7443f8fa7295677724babfddfc5",
+  "advisor_repository": "1951123/extstats-advisor",
+  "artifacts": {
+    "candidate_universe": {
+      "path": "candidate-universe.json",
+      "semantic_digest": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74"
+    },
+    "ground_truth": {
+      "path": "ground-truth-v1.json",
+      "semantic_digest": "b70410c12af2b7e52d3d3b9972ab086a4270c2743c4363f58ed400a3bdb9d491"
+    },
+    "native_repository": {
+      "path": "native-stats-repository",
+      "semantic_digest": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62"
+    },
+    "optimization_plan": {
+      "path": "optimization-plan.json",
+      "semantic_digest": "e7b44f8dfd0202787951ce88af9059cad66f30737b3c68ef838f6e9a89c0a134"
+    },
+    "recommendation": {
+      "path": "recommendation.json",
+      "semantic_digest": "63a1cd2eacc41e981db5ebd53202603dd5cccb7c681601a1be54d35094e57519"
+    },
+    "search_result": {
+      "path": "search-result.json",
+      "semantic_digest": "3fcfb50b74e216d06380ce38457214f4bf07346dbbd3d2fe12fe02368de6e975"
+    },
+    "singleton_profile": {
+      "path": "singleton-profile.json",
+      "semantic_digest": "2665d5ff54331bc768bb4661554b3ed763cf0f445545ac2ed5e5169657c0aa78"
+    },
+    "snapshot": {
+      "path": "advisor-snapshot",
+      "semantic_digest": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d"
+    }
+  },
+  "benchmark_id": "arecel-census13",
+  "candidate_limit": 8,
+  "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+  "dataset_manifest": "dataset-manifest.json",
+  "format": "research-run-manifest-v1",
+  "load": {
+    "benchmark_id": "arecel-census13",
+    "distinct_counts_observed": [
+      74,
+      9,
+      16,
+      16,
+      7,
+      15,
+      6,
+      5,
+      2,
+      123,
+      99,
+      96,
+      42
+    ],
+    "dsn_recorded": false,
+    "physical_extended_statistics_count": 0,
+    "physical_schema": [
+      {
+        "name": "age",
+        "not_null": true,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "workclass",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "education",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "education_num",
+        "not_null": true,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "marital_status",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "occupation",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "relationship",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "race",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "sex",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "capital_gain",
+        "not_null": true,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "capital_loss",
+        "not_null": true,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "hours_per_week",
+        "not_null": true,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "native_country",
+        "not_null": true,
+        "postgres_type": "VARCHAR(64)"
+      }
+    ],
+    "relation": "public.census13",
+    "rows": 48842,
+    "schema_contract_id": "arecel-census13-postgres-schema-v1",
+    "server_version": "16.14",
+    "server_version_num": 160014,
+    "source_csv_sha256": "f751fc7ecd5bd5e62acd9868a0bbe36413528b6eb2de9c2fc8fcf71d9ef2c13a",
+    "validated": true
+  },
+  "native_repository_semantic_digest": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+  "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "patched_postgres_repository": "1951123/postgresql-pgextadv",
+  "planner": {
+    "backend_contract": "postgresql-pgextadv-16.14-v1",
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "patched_postgres_repository": "1951123/postgresql-pgextadv",
+    "reference_source_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "server_version": "16.14",
+    "server_version_num": 160014
+  },
+  "research_commit_sha": "9de794eaa62389c48ee6c5cebb192a467b9696cc",
+  "research_repository": "1951123/extstats-advisor-research",
+  "run_id": "bf7fda28d90b3da88e7a14e4",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "search_wall_clock_seconds": 30.0,
+  "simulated_production": {
+    "relation": "public.census13",
+    "server_version": "16.14",
+    "server_version_num": 160014
+  },
+  "statistics_target": 100,
+  "status": "complete",
+  "summary": "metrics-summary.json",
+  "workload": "workload.json",
+  "workload_id": "arecel_census13_test_v1",
+  "workload_sha256": "6dbeaa88b5cb687c64d4e0b4c31ab17a3a1d7a6b0e0c6a74d10a69c009a50a93"
+}
