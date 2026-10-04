@@ -75,7 +75,7 @@ def load_census13(
         _assert_or_reset(connection, reset_disposable=reset_disposable)
         server_version = _text(connection.execute("SHOW server_version").fetchone()[0])
         server_version_num = int(connection.execute("SHOW server_version_num").fetchone()[0])
-        if not 16_000_000 <= server_version_num < 17_000_000:
+        if not 160_000 <= server_version_num < 170_000:
             raise RuntimeError(
                 f"simulated production must be stock PostgreSQL 16, got {server_version}"
             )
