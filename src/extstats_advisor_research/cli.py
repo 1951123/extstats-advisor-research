@@ -11,6 +11,7 @@ from .baseline_gap import run_baseline_gap
 from .datasets import census13
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13
+from .type_coercion import run_type_coercion
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -91,6 +92,23 @@ def _parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
+    diagnose = commands.add_parser("diagnose")
+    diagnose_commands = diagnose.add_subparsers(dest="diagnose_command", required=True)
+    coercion = diagnose_commands.add_parser("type-coercion")
+    coercion.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
+    coercion.add_argument("--dsn", required=True)
+    coercion.add_argument("--data-root", type=Path)
+    coercion.add_argument(
+        "--canonical-run", type=Path, default=Path("runs/197e9b890ac58bc4fbcfb218")
+    )
+    coercion.add_argument(
+        "--baseline-gap-artifact",
+        type=Path,
+        default=Path("diagnostics/arecel-census13-baseline-gap/baseline-gap-v1.json"),
+    )
+    coercion.add_argument(
+        "--output-directory", type=Path, default=Path("diagnostics/arecel-census13-type-coercion")
+    )
     return parser
 
 
@@ -141,6 +159,16 @@ def main(argv: list[str] | None = None) -> int:
             data_root=args.data_root,
             advisor_root=args.advisor_root,
             patched_postgres_root=args.patched_postgres_root,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "diagnose":
+        result = run_type_coercion(
+            dsn=args.dsn,
+            canonical_run=args.canonical_run,
+            baseline_gap_artifact=args.baseline_gap_artifact,
+            output_directory=args.output_directory,
+            data_root=args.data_root,
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
