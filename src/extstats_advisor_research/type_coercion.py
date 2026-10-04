@@ -306,7 +306,7 @@ def _relation_query_map(
 def _decision(
     h1: dict[str, Any], h2: dict[str, Any], baseline: dict[str, Any], implicit_casts: int
 ) -> str:
-    h1_close = abs(h1["mean"] - baseline["B"]["mean"]) / baseline["B"]["mean"] < 0.10
+    h1_close = abs(h1["mean"] - baseline["A"]["mean"]) / baseline["A"]["mean"] < 0.10
     h2_close = abs(h2["mean"] - baseline["C"]["mean"]) / baseline["C"]["mean"] < 0.10
     return (
         "numeric-literal-coercion-confirmed"
