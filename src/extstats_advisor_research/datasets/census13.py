@@ -22,21 +22,22 @@ UPSTREAM_COMMIT = "aa52da7768023270bad884232972e0b77ec6534a"
 ARCHIVE_SHA256 = "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79"
 CSV_SHA256 = "f751fc7ecd5bd5e62acd9868a0bbe36413528b6eb2de9c2fc8fcf71d9ef2c13a"
 EXPECTED_ROWS = 48_842
+SCHEMA_CONTRACT_ID = "arecel-census13-postgres-schema-v1"
 
 COLUMNS: tuple[tuple[str, str], ...] = (
-    ("age", "bigint"),
-    ("workclass", "text"),
-    ("education", "text"),
-    ("education_num", "bigint"),
-    ("marital_status", "text"),
-    ("occupation", "text"),
-    ("relationship", "text"),
-    ("race", "text"),
-    ("sex", "text"),
-    ("capital_gain", "bigint"),
-    ("capital_loss", "bigint"),
-    ("hours_per_week", "bigint"),
-    ("native_country", "text"),
+    ("age", "DOUBLE PRECISION"),
+    ("workclass", "VARCHAR(64)"),
+    ("education", "VARCHAR(64)"),
+    ("education_num", "DOUBLE PRECISION"),
+    ("marital_status", "VARCHAR(64)"),
+    ("occupation", "VARCHAR(64)"),
+    ("relationship", "VARCHAR(64)"),
+    ("race", "VARCHAR(64)"),
+    ("sex", "VARCHAR(64)"),
+    ("capital_gain", "DOUBLE PRECISION"),
+    ("capital_loss", "DOUBLE PRECISION"),
+    ("hours_per_week", "DOUBLE PRECISION"),
+    ("native_country", "VARCHAR(64)"),
 )
 
 
@@ -85,6 +86,35 @@ def _audit(value: Path | None = None) -> dict[str, Any]:
     return audit
 
 
+def schema_contract() -> dict[str, Any]:
+    return {
+        "id": SCHEMA_CONTRACT_ID,
+        "relation": RELATION,
+        "columns": [{"name": name, "postgres_type": type_} for name, type_ in COLUMNS],
+        "not_null": True,
+    }
+
+
+def compute_dataset_content_identity(
+    csv_sha256: str,
+    *,
+    schema_contract_id: str = SCHEMA_CONTRACT_ID,
+    columns: tuple[tuple[str, str], ...] = COLUMNS,
+) -> str:
+    """Hash source data, upstream identity, relation, and ordered SQL schema."""
+    return semantic_digest(
+        {
+            "benchmark_id": BENCHMARK_ID,
+            "relation": RELATION,
+            "csv_sha256": csv_sha256,
+            "archive_sha256": ARCHIVE_SHA256,
+            "upstream_commit": UPSTREAM_COMMIT,
+            "schema_contract_id": schema_contract_id,
+            "columns": [{"name": name, "postgres_type": type_} for name, type_ in columns],
+        }
+    )
+
+
 def inspect(value: Path | None = None) -> dict[str, Any]:
     audit_path = audit_root(value) / "audit.json"
     if not audit_path.is_file():
@@ -98,7 +128,9 @@ def inspect(value: Path | None = None) -> dict[str, Any]:
             "upstream_commit": UPSTREAM_COMMIT,
             "archive_sha256": ARCHIVE_SHA256,
             "expected_rows": EXPECTED_ROWS,
-            "columns": [{"name": n, "postgres_type": t} for n, t in COLUMNS],
+            "schema_contract": schema_contract(),
+            "columns": schema_contract()["columns"],
+            "dataset_content_identity": compute_dataset_content_identity(CSV_SHA256),
         }
     audit = _audit(value)
     csv = csv_path(value)
@@ -114,7 +146,8 @@ def inspect(value: Path | None = None) -> dict[str, Any]:
         "upstream_commit": UPSTREAM_COMMIT,
         "archive_sha256": ARCHIVE_SHA256,
         "expected_rows": EXPECTED_ROWS,
-        "columns": [{"name": n, "postgres_type": t} for n, t in COLUMNS],
+        "schema_contract": schema_contract(),
+        "columns": schema_contract()["columns"],
         "workload_splits": audit["datasets"]["census13"]["workload"]["splits"],
     }
     if present:
@@ -122,12 +155,8 @@ def inspect(value: Path | None = None) -> dict[str, Any]:
             raise ValueError("audited census13 CSV content hash mismatch")
         result["csv_sha256"] = sha256_file(csv)
         result["canonical_workload_sha256"] = sha256_file(workload)
-    result["dataset_content_identity"] = semantic_digest(
-        {
-            "csv_sha256": result.get("csv_sha256", CSV_SHA256),
-            "archive_sha256": ARCHIVE_SHA256,
-            "upstream_commit": UPSTREAM_COMMIT,
-        }
+    result["dataset_content_identity"] = compute_dataset_content_identity(
+        result.get("csv_sha256", CSV_SHA256)
     )
     return result
 
@@ -182,12 +211,9 @@ def write_dataset_manifest(output: Path, value: Path | None = None) -> dict[str,
     manifest.update(
         {
             "format": "research-dataset-manifest-v1",
-            "dataset_content_identity": semantic_digest(
-                {
-                    "csv_sha256": manifest.get("csv_sha256", CSV_SHA256),
-                    "archive_sha256": ARCHIVE_SHA256,
-                    "upstream_commit": UPSTREAM_COMMIT,
-                }
+            "schema_contract": schema_contract(),
+            "dataset_content_identity": compute_dataset_content_identity(
+                manifest.get("csv_sha256", CSV_SHA256)
             ),
             "source_files": [
                 "data/census13/original.csv",

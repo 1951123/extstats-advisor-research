@@ -36,6 +36,53 @@ def _relation_stats(connection: Any) -> list[tuple[str, str]]:
     return [(str(schema), str(name)) for schema, name in rows]
 
 
+def _physical_schema(connection: Any) -> list[dict[str, Any]]:
+    rows = connection.execute(
+        """
+        SELECT a.attnum, a.attname, format_type(a.atttypid, a.atttypmod), a.attnotnull
+        FROM pg_catalog.pg_attribute AS a
+        JOIN pg_catalog.pg_class AS c ON c.oid = a.attrelid
+        JOIN pg_catalog.pg_namespace AS n ON n.oid = c.relnamespace
+        WHERE n.nspname = 'public' AND c.relname = 'census13'
+          AND a.attnum > 0 AND NOT a.attisdropped
+        ORDER BY a.attnum
+        """
+    ).fetchall()
+    return [
+        {
+            "name": str(name),
+            "postgres_type": str(postgres_type),
+            "not_null": bool(not_null),
+        }
+        for _, name, postgres_type, not_null in rows
+    ]
+
+
+def _canonical_type(value: str) -> str:
+    aliases = {
+        "double precision": "DOUBLE PRECISION",
+        "character varying(64)": "VARCHAR(64)",
+    }
+    return aliases.get(value.lower(), value.upper())
+
+
+def _validate_physical_schema(connection: Any) -> list[dict[str, Any]]:
+    observed = _physical_schema(connection)
+    expected = [
+        {"name": name, "postgres_type": postgres_type, "not_null": True}
+        for name, postgres_type in census13.COLUMNS
+    ]
+    normalized = [
+        {**column, "postgres_type": _canonical_type(column["postgres_type"])} for column in observed
+    ]
+    if normalized != expected:
+        raise ValueError(
+            "public.census13 physical schema does not match "
+            f"{census13.SCHEMA_CONTRACT_ID}: observed={normalized!r}, expected={expected!r}"
+        )
+    return normalized
+
+
 def _assert_or_reset(connection: Any, *, reset_disposable: bool) -> None:
     exists = bool(
         connection.execute(
@@ -91,6 +138,7 @@ def load_census13(
         ):
             while block := stream.read(1024 * 1024):
                 copy.write(block)
+        physical_schema = _validate_physical_schema(connection)
         connection.execute("ANALYZE public.census13")
         count = int(connection.execute("SELECT count(*) FROM public.census13").fetchone()[0])
         if count != census13.EXPECTED_ROWS:
@@ -121,6 +169,12 @@ def load_census13(
                 f"loaded census13 distinct counts {observed_distinct} do not match audited "
                 f"counts {expected_distinct}"
             )
+        extended_statistics = _relation_stats(connection)
+        if extended_statistics:
+            raise ValueError(
+                "public.census13 has unexpected extended statistics after load: "
+                f"{extended_statistics!r}"
+            )
     return {
         "benchmark_id": census13.BENCHMARK_ID,
         "relation": census13.RELATION,
@@ -128,6 +182,9 @@ def load_census13(
         "source_csv_sha256": metadata["csv_sha256"],
         "validated": True,
         "dsn_recorded": False,
+        "schema_contract_id": census13.SCHEMA_CONTRACT_ID,
+        "physical_schema": physical_schema,
+        "physical_extended_statistics_count": len(extended_statistics),
         "server_version": server_version,
         "server_version_num": server_version_num,
         "distinct_counts_observed": observed_distinct,
