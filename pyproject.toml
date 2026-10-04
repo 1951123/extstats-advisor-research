@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "extstats-advisor-research"
+version = "0.1.0"
+description = "Reproducible research harness around the frozen extstats advisor"
+requires-python = ">=3.12"
+dependencies = ["psycopg[binary]>=3.2,<4"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<9", "ruff>=0.8,<1"]
+advisor = [
+  "extstats-advisor @ git+https://github.com/1951123/extstats-advisor.git@524a17d4a9dea1a436bb4e30aadcc77e2bda4edd"
+]
+
+[project.scripts]
+extstats-research = "extstats_advisor_research.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/extstats_advisor_research"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "integration: tests requiring a live stock PostgreSQL server",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

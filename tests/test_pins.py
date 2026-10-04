@@ -1,0 +1,6 @@
+from extstats_advisor_research import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
+
+
+def test_frozen_system_metadata() -> None:
+    assert FROZEN_ADVISOR_SHA == "524a17d4a9dea1a436bb4e30aadcc77e2bda4edd"
+    assert FROZEN_PATCHED_POSTGRES_SHA == "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"

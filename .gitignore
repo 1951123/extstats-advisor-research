@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+
+# Run products and local data are intentionally not versioned.
+runs/
+data/
+!fixtures/
+
+# Credentials must never enter manifests or the repository.
+.env
+*.secret
