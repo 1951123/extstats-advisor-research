@@ -11,6 +11,7 @@ from .baseline_gap import run_baseline_gap
 from .datasets import census13
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13
+from .search_budget import run_search_budget_calibration
 from .type_coercion import run_type_coercion
 
 
@@ -109,6 +110,26 @@ def _parser() -> argparse.ArgumentParser:
     coercion.add_argument(
         "--output-directory", type=Path, default=Path("diagnostics/arecel-census13-type-coercion")
     )
+    calibrate = commands.add_parser("calibrate")
+    calibrate_commands = calibrate.add_subparsers(dest="calibrate_command", required=True)
+    search_budget = calibrate_commands.add_parser("search-budget")
+    search_budget.add_argument("source_run", type=Path)
+    search_budget.add_argument("--planner-dsn", required=True)
+    search_budget.add_argument("--budgets", type=int, nargs="+", default=[60, 120, 180])
+    search_budget.add_argument(
+        "--output-directory",
+        type=Path,
+        default=Path("experiments/arecel-census13/search-budget-k8"),
+    )
+    search_budget.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    search_budget.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    search_budget.add_argument("--advisor-command", default="extstats-advisor")
     return parser
 
 
@@ -169,6 +190,18 @@ def main(argv: list[str] | None = None) -> int:
             baseline_gap_artifact=args.baseline_gap_artifact,
             output_directory=args.output_directory,
             data_root=args.data_root,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "calibrate":
+        result = run_search_budget_calibration(
+            source_run=args.source_run,
+            planner_dsn=args.planner_dsn,
+            output_directory=args.output_directory,
+            budgets=args.budgets,
+            advisor_root=args.advisor_root,
+            patched_postgres_root=args.patched_postgres_root,
+            advisor_command=args.advisor_command,
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0

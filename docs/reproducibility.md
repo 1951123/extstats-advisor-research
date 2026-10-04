@@ -41,6 +41,19 @@ whether external statistics remain, are removed, are replaced, or coexist.
 The run summary reports the production objective values and the complete
 artifact digest chain. It does not introduce a competing research objective.
 
+## Search-budget calibrations
+
+Full run bundles are bulk experimental artifacts. Large immutable source
+artifacts must be referenced by run ID and semantic digest rather than copied
+into derivative experiments. Calibration and analysis commits contain compact
+derived evidence only; `/runs/` remains ignored for ordinary future runs.
+
+Search-budget calibration reuses the immutable snapshot, GroundTruthSet,
+CandidateUniverse, NativeStatsRepository, and SingletonProfile from one
+canonical run. It creates a fresh OptimizationPlan for each tested budget and
+invokes the frozen advisor search API in an isolated patched planner backend.
+It does not recapture, resample, rematerialize, or deploy.
+
 ## ANALYZE disclosure
 
 For a non-empty deployment, the Recommendation still contains one final
