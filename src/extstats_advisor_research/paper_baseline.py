@@ -227,6 +227,8 @@ def run_paper_baseline(
     truth_path = canonical_run / "ground-truth-v1.json"
     truths = _load_truth(truth_path, {query["query_id"] for query in queries})
     repository = repository or Path(__file__).resolve().parents[2]
+    # Resolve provenance before this run creates its own untracked output files.
+    research_sha = _git_sha(repository)
 
     import psycopg
 
@@ -303,7 +305,6 @@ def run_paper_baseline(
     with per_query_path.open("w", encoding="utf-8") as stream:
         for record in records:
             stream.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
-    research_sha = _git_sha(repository)
     artifact = {
         "format_version": FORMAT_VERSION,
         "research_repository": FROZEN_RESEARCH_REPOSITORY,
