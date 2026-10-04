@@ -399,10 +399,13 @@ def run_baseline_gap(
             "SELECT version(), current_setting('server_version_num')"
         ).fetchone()
 
-    manifest = json.loads((canonical_run / "advisor-snapshot" / "manifest.json").read_text())
+    run_manifest = json.loads((canonical_run / "manifest.json").read_text())
+    snapshot_manifest = json.loads(
+        (canonical_run / "advisor-snapshot" / "manifest.json").read_text()
+    )
     systems = verify_frozen_systems(advisor_root, patched_postgres_root)
     for key in ("advisor_commit_sha", "patched_postgres_commit_sha"):
-        if manifest.get(key) != systems[key]:
+        if run_manifest.get(key) != systems[key]:
             raise ValueError(f"canonical run {key} does not match the frozen system")
     snapshot_path = canonical_run / "advisor-snapshot"
     candidate_path = canonical_run / "candidate-universe.json"
@@ -478,7 +481,7 @@ def run_baseline_gap(
         for record in records:
             stream.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
 
-    sampling = manifest["semantic_provenance"]["sampling"]
+    sampling = snapshot_manifest["semantic_provenance"]["sampling"]
     artifact = {
         "format_version": FORMAT_VERSION,
         "research_repository": FROZEN_RESEARCH_REPOSITORY,
@@ -506,7 +509,7 @@ def run_baseline_gap(
             "server_version_num": int(stock_version[1]),
         },
         "fixed_sample": {
-            "snapshot_semantic_digest": manifest["semantic_digest"],
+            "snapshot_semantic_digest": snapshot_manifest["semantic_digest"],
             "sample_relation": prepared.metadata.frozen_relation_name.to_dict(),
             "sample_rows": sample_rows,
             "population_rows": population_rows,
