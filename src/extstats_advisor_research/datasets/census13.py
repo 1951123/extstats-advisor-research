@@ -132,21 +132,24 @@ def extract_workload(
     if not source.is_file():
         raise FileNotFoundError(source)
     queries: list[dict[str, Any]] = []
+    query_id_mapping: dict[str, str] = {}
     with gzip.open(source, "rt", encoding="utf-8") as stream:
         for line in stream:
             record = json.loads(line)
             if record["split"] == split:
-                queries.append(
-                    {"query_id": record["query_id"], "sql": record["sql"], "weight": 1.0}
-                )
+                source_index = int(record.get("index", len(queries)))
+                query_id = f"arecel_census13_{split}_{source_index:06d}"
+                queries.append({"query_id": query_id, "sql": record["sql"], "weight": 1.0})
+                query_id_mapping[query_id] = record["query_id"]
     result = {
-        "workload_id": f"{BENCHMARK_ID}:{split}:v1",
+        "workload_id": f"arecel_census13_{split}_v1",
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
             "source_workload": "data/census13/workload/base.pkl",
             "source_split": split,
             "canonical_source_sha256": sha256_file(source),
             "upstream_commit": UPSTREAM_COMMIT,
+            "query_id_mapping": query_id_mapping,
         },
         "queries": queries,
     }
