@@ -36,6 +36,16 @@ def test_summary_extracts_production_artifact_fields(tmp_path) -> None:
         ),
         encoding="utf-8",
     )
+    paths["native_repository"].mkdir()
+    (paths["native_repository"] / "manifest.json").write_text(
+        json.dumps(
+            {
+                "candidates": [{"state": "present"}, {"state": "absent"}],
+                "materialization": {"population_row_count": 100},
+            }
+        ),
+        encoding="utf-8",
+    )
     summary = extract_summary(
         layout,
         benchmark_id="fixture",
