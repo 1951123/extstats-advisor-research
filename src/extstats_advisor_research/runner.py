@@ -7,11 +7,11 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from . import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
+from . import FROZEN_PATCHED_POSTGRES_SHA
 from .advisor_bridge import materialize_native_repository
 from .analysis.summary import extract_summary
 from .datasets import census13
-from .pins import verify_frozen_systems
+from .pins import verify_frozen_systems, verify_research_repository
 from .postgres.loader import load_census13
 from .provenance import read_json, reject_credentials, sha256_file
 from .runs.layout import RunLayout, create_layout, update_manifest
@@ -87,20 +87,22 @@ def run_census13(
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
+    research_root = Path(__file__).resolve().parents[2]
+    research_identity = verify_research_repository(research_root)
     pins = verify_frozen_systems(advisor_root, patched_postgres_root)
     dataset = census13.inspect(data_root)
     workload_path = Path(output_root) / "_workload.json"
     census13.extract_workload(workload_path, data_root, "test")
     workload = read_json(workload_path)
     identity = {
+        **research_identity,
+        **pins,
         "benchmark_id": census13.BENCHMARK_ID,
         "dataset_content_identity": dataset.get(
             "dataset_content_identity", dataset.get("csv_sha256")
         ),
         "workload_id": workload["workload_id"],
         "workload_sha256": sha256_file(workload_path),
-        "advisor_sha": FROZEN_ADVISOR_SHA,
-        "patched_postgres_sha": FROZEN_PATCHED_POSTGRES_SHA,
         "sample_rows": sample_rows,
         "sample_seed": sample_seed,
         "statistics_target": statistics_target,
@@ -123,7 +125,6 @@ def run_census13(
             "dataset_manifest": str(paths["dataset_manifest"].relative_to(layout.directory)),
             "workload": str(paths["workload"].relative_to(layout.directory)),
             "load": load_result,
-            "pins": pins,
         },
     )
     advisor = [advisor_command]
@@ -381,7 +382,7 @@ def run_census13(
                 "backend_contract": native_manifest["backend"]["contract"],
                 "reference_source_commit": native_manifest["backend"]["reference_source_commit"],
                 "patched_postgres_repository": "1951123/postgresql-pgextadv",
-                "patched_postgres_sha": FROZEN_PATCHED_POSTGRES_SHA,
+                "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
             },
             "summary": "metrics-summary.json",
             "status": "complete",

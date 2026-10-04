@@ -16,10 +16,21 @@ canonical run.
 
 ## Run identity and artifacts
 
-`research-run-manifest-v1` hashes benchmark content, workload, both frozen
-system identities, sample rows/seed, statistics target, candidate limit, and
-search budget. Timestamps are runtime metadata only. The manifest contains no
-DSN or password. Runtime commands are recorded in JSONL with DSNs redacted.
+`research-run-manifest-v1` hashes benchmark content, workload, the committed
+research harness revision, both frozen system identities, sample rows/seed,
+statistics target, candidate limit, and search budget. Its provenance fields
+are `research_repository`, `research_commit_sha`, `advisor_repository`,
+`advisor_commit_sha`, `patched_postgres_repository`, and
+`patched_postgres_commit_sha`. Timestamps are runtime metadata only. The
+manifest contains no DSN or password. Runtime commands are recorded in JSONL
+with DSNs redacted.
+
+The harness rejects a dirty research working tree or an unresolvable research
+HEAD before a canonical run starts. The research commit participates in the
+deterministic RunID, so identical experiment inputs under different harness
+revisions cannot silently collide. A completed research unit must be committed
+and pushed to `origin/main` before it is used as canonical experiment
+provenance.
 
 The optimizer evaluates the advisor workload against the production exact
 truth. If externally managed extended statistics exist in a real production

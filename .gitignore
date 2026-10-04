@@ -5,8 +5,8 @@ __pycache__/
 *.py[cod]
 
 # Run products and local data are intentionally not versioned.
-runs/
-data/
+/runs/
+/data/
 !fixtures/
 
 # Credentials must never enter manifests or the repository.

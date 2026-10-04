@@ -20,6 +20,11 @@ The two PostgreSQL roles are intentionally separate:
 - `ADVISOR_PATCHED_POSTGRES_DSN`: patched PostgreSQL 16.14, fixed advisor
   sample only, for native statistics and planner execution.
 
+Canonical provenance binds the dataset, workload, research harness commit,
+production advisor commit, patched PostgreSQL commit, and experiment
+parameters. The research working tree must be clean; completed research units
+must be committed and pushed to `origin/main` before canonical experiments run.
+
 Frozen identities are enforced for `extstats-advisor` SHA
 `524a17d4a9dea1a436bb4e30aadcc77e2bda4edd` and patched PostgreSQL SHA
 `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`. Canonical runs reject drift.

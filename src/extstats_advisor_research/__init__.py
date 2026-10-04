@@ -2,6 +2,7 @@
 
 __version__ = "0.1.0"
 
+FROZEN_RESEARCH_REPOSITORY = "1951123/extstats-advisor-research"
 FROZEN_ADVISOR_REPOSITORY = "1951123/extstats-advisor"
 FROZEN_ADVISOR_SHA = "524a17d4a9dea1a436bb4e30aadcc77e2bda4edd"
 FROZEN_PATCHED_POSTGRES_REPOSITORY = "1951123/postgresql-pgextadv"
