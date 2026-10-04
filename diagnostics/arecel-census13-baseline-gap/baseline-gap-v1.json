@@ -1,0 +1,1249 @@
+{
+  "advisor_commit_sha": "aa65af49fdbbf7443f8fa7295677724babfddfc5",
+  "advisor_repository": "1951123/extstats-advisor",
+  "canonical_run": "runs/197e9b890ac58bc4fbcfb218",
+  "comparison_ladder": {
+    "A": {
+      "max": 1635.0,
+      "mean": 5.246509912636798,
+      "p50": 1.4025182134938232,
+      "p90": 10.220652173913056,
+      "p95": 18.551515151515066,
+      "p99": 58.0,
+      "qerror_field": "paper_target10000_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 5.246509912636798
+    },
+    "B": {
+      "max": 1635.0,
+      "mean": 5.236469593199895,
+      "p50": 1.4,
+      "p90": 10.010000000000037,
+      "p95": 18.5,
+      "p99": 58.0,
+      "qerror_field": "paper_target100_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 5.236469593199895
+    },
+    "C": {
+      "max": 41660.0,
+      "mean": 232.88366257191888,
+      "p50": 8.0,
+      "p90": 407.0,
+      "p95": 868.1899999999972,
+      "p99": 4091.320000000007,
+      "qerror_field": "advisor_schema_full_target100_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 232.88366257191888
+    },
+    "D": {
+      "max": 41660.0,
+      "mean": 232.94272661269196,
+      "p50": 8.0,
+      "p90": 410.0,
+      "p95": 871.8599999999991,
+      "p99": 4091.320000000007,
+      "qerror_field": "advisor_schema_full_target10000_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 232.94272661269196
+    },
+    "E": {
+      "max": 22.0,
+      "mean": 1.4439918947199144,
+      "p50": 1.039571807949116,
+      "p90": 2.0474182056426846,
+      "p95": 4.0,
+      "p99": 6.0,
+      "qerror_field": "sample_oracle_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 1.4439918947199144
+    },
+    "F": {
+      "max": 41660.0,
+      "mean": 233.06571344385858,
+      "p50": 7.973720308177683,
+      "p90": 410.0,
+      "p95": 876.1999999999971,
+      "p99": 4091.320000000007,
+      "qerror_field": "advisor_sandbox_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 233.06571344385858
+    },
+    "G": {
+      "max": 41660.0,
+      "mean": 226.72458442491927,
+      "p50": 7.207662686313334,
+      "p90": 389.3000000000011,
+      "p95": 812.2499999999964,
+      "p99": 4051.270000000006,
+      "qerror_field": "advisor_final_qerror",
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "query_count": 10000,
+      "weighted_objective": 226.72458442491927
+    }
+  },
+  "dataset": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "audit_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/audit-v1",
+    "benchmark_id": "arecel-census13",
+    "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+    "columns": [
+      {
+        "name": "age",
+        "postgres_type": "bigint"
+      },
+      {
+        "name": "workclass",
+        "postgres_type": "text"
+      },
+      {
+        "name": "education",
+        "postgres_type": "text"
+      },
+      {
+        "name": "education_num",
+        "postgres_type": "bigint"
+      },
+      {
+        "name": "marital_status",
+        "postgres_type": "text"
+      },
+      {
+        "name": "occupation",
+        "postgres_type": "text"
+      },
+      {
+        "name": "relationship",
+        "postgres_type": "text"
+      },
+      {
+        "name": "race",
+        "postgres_type": "text"
+      },
+      {
+        "name": "sex",
+        "postgres_type": "text"
+      },
+      {
+        "name": "capital_gain",
+        "postgres_type": "bigint"
+      },
+      {
+        "name": "capital_loss",
+        "postgres_type": "bigint"
+      },
+      {
+        "name": "hours_per_week",
+        "postgres_type": "bigint"
+      },
+      {
+        "name": "native_country",
+        "postgres_type": "text"
+      }
+    ],
+    "csv_sha256": "f751fc7ecd5bd5e62acd9868a0bbe36413528b6eb2de9c2fc8fcf71d9ef2c13a",
+    "data_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/raw/data/census13",
+    "dataset_content_identity": "a106d969d31b8d204a9a38766bb404791279689f7e3235bd6909815b5148528c",
+    "expected_rows": 48842,
+    "relation": "public.census13",
+    "source_present": true,
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "upstream_url": "https://github.com/sfu-db/AreCELearnedYet",
+    "workload_splits": {
+      "test": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "age": 5380,
+          "capital_gain": 5364,
+          "capital_loss": 5392,
+          "education": 5401,
+          "education_num": 5326,
+          "hours_per_week": 5326,
+          "marital_status": 5363,
+          "native_country": 5347,
+          "occupation": 5372,
+          "race": 5334,
+          "relationship": 5308,
+          "sex": 5371,
+          "workclass": 5452
+        },
+        "duplicate_query_instances": 524,
+        "label_cardinality": {
+          "max": 48656,
+          "mean": 3919.1686,
+          "median": 86.0,
+          "min": 0,
+          "q25": 3.0,
+          "q75": 1527.75
+        },
+        "label_selectivity": {
+          "max": 0.9961918021375046,
+          "mean": 0.08024177142623153,
+          "median": 0.0017607796568527088,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 11858,
+          "=": 42948,
+          ">=": 1139,
+          "[]": 13791
+        },
+        "pair_occurrence_counts": {
+          "age__capital_gain": 3586,
+          "age__capital_loss": 3576,
+          "age__education": 3579,
+          "age__education_num": 3538,
+          "age__hours_per_week": 3560,
+          "age__marital_status": 3565,
+          "age__native_country": 3575,
+          "age__occupation": 3574,
+          "age__race": 3570,
+          "age__relationship": 3591,
+          "age__sex": 3593,
+          "age__workclass": 3632,
+          "capital_gain__capital_loss": 3614,
+          "capital_gain__education": 3588,
+          "capital_gain__education_num": 3576,
+          "capital_gain__hours_per_week": 3544,
+          "capital_gain__marital_status": 3603,
+          "capital_gain__native_country": 3579,
+          "capital_gain__occupation": 3602,
+          "capital_gain__race": 3579,
+          "capital_gain__relationship": 3574,
+          "capital_gain__sex": 3596,
+          "capital_gain__workclass": 3613,
+          "capital_loss__education": 3618,
+          "capital_loss__education_num": 3563,
+          "capital_loss__hours_per_week": 3553,
+          "capital_loss__marital_status": 3589,
+          "capital_loss__native_country": 3583,
+          "capital_loss__occupation": 3616,
+          "capital_loss__race": 3552,
+          "capital_loss__relationship": 3601,
+          "capital_loss__sex": 3621,
+          "capital_loss__workclass": 3649,
+          "education__education_num": 3566,
+          "education__hours_per_week": 3554,
+          "education__marital_status": 3587,
+          "education__native_country": 3562,
+          "education__occupation": 3598,
+          "education__race": 3563,
+          "education__relationship": 3575,
+          "education__sex": 3583,
+          "education__workclass": 3625,
+          "education_num__hours_per_week": 3559,
+          "education_num__marital_status": 3571,
+          "education_num__native_country": 3531,
+          "education_num__occupation": 3537,
+          "education_num__race": 3556,
+          "education_num__relationship": 3570,
+          "education_num__sex": 3542,
+          "education_num__workclass": 3594,
+          "hours_per_week__marital_status": 3539,
+          "hours_per_week__native_country": 3532,
+          "hours_per_week__occupation": 3557,
+          "hours_per_week__race": 3555,
+          "hours_per_week__relationship": 3541,
+          "hours_per_week__sex": 3567,
+          "hours_per_week__workclass": 3618,
+          "marital_status__native_country": 3525,
+          "marital_status__occupation": 3584,
+          "marital_status__race": 3540,
+          "marital_status__relationship": 3523,
+          "marital_status__sex": 3534,
+          "marital_status__workclass": 3606,
+          "native_country__occupation": 3593,
+          "native_country__race": 3549,
+          "native_country__relationship": 3563,
+          "native_country__sex": 3596,
+          "native_country__workclass": 3643,
+          "occupation__race": 3577,
+          "occupation__relationship": 3566,
+          "occupation__sex": 3555,
+          "occupation__workclass": 3591,
+          "race__relationship": 3569,
+          "race__sex": 3585,
+          "race__workclass": 3595,
+          "relationship__sex": 3570,
+          "relationship__workclass": 3617,
+          "sex__workclass": 3616
+        },
+        "predicate_count": {
+          "max": 13,
+          "mean": 6.9736,
+          "median": 7.0,
+          "min": 1,
+          "q25": 4.0,
+          "q75": 10.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 78,
+        "unique_query_count": 9476,
+        "zero_predicate_queries": 0
+      },
+      "train": {
+        "canonical_sql_count": 100000,
+        "column_predicate_counts": {
+          "age": 53904,
+          "capital_gain": 54001,
+          "capital_loss": 53576,
+          "education": 53912,
+          "education_num": 53852,
+          "hours_per_week": 53852,
+          "marital_status": 53868,
+          "native_country": 53851,
+          "occupation": 54003,
+          "race": 53896,
+          "relationship": 53798,
+          "sex": 54023,
+          "workclass": 53861
+        },
+        "duplicate_query_instances": 7286,
+        "label_cardinality": {
+          "max": 48839,
+          "mean": 3841.12089,
+          "median": 83.0,
+          "min": 0,
+          "q25": 3.0,
+          "q75": 1519.0
+        },
+        "label_selectivity": {
+          "max": 0.9999385774538307,
+          "mean": 0.07864380840260432,
+          "median": 0.0016993571106834282,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 119570,
+          "=": 431212,
+          ">=": 11597,
+          "[]": 138018
+        },
+        "pair_occurrence_counts": {
+          "age__capital_gain": 35970,
+          "age__capital_loss": 35730,
+          "age__education": 35911,
+          "age__education_num": 35912,
+          "age__hours_per_week": 35931,
+          "age__marital_status": 35876,
+          "age__native_country": 35998,
+          "age__occupation": 35994,
+          "age__race": 36030,
+          "age__relationship": 35950,
+          "age__sex": 36066,
+          "age__workclass": 35949,
+          "capital_gain__capital_loss": 35807,
+          "capital_gain__education": 35928,
+          "capital_gain__education_num": 35883,
+          "capital_gain__hours_per_week": 35876,
+          "capital_gain__marital_status": 35853,
+          "capital_gain__native_country": 35857,
+          "capital_gain__occupation": 35925,
+          "capital_gain__race": 36034,
+          "capital_gain__relationship": 35874,
+          "capital_gain__sex": 36095,
+          "capital_gain__workclass": 35955,
+          "capital_loss__education": 35751,
+          "capital_loss__education_num": 35782,
+          "capital_loss__hours_per_week": 35768,
+          "capital_loss__marital_status": 35782,
+          "capital_loss__native_country": 35768,
+          "capital_loss__occupation": 35777,
+          "capital_loss__race": 35781,
+          "capital_loss__relationship": 35729,
+          "capital_loss__sex": 35922,
+          "capital_loss__workclass": 35757,
+          "education__education_num": 36006,
+          "education__hours_per_week": 35912,
+          "education__marital_status": 35906,
+          "education__native_country": 36016,
+          "education__occupation": 36069,
+          "education__race": 35961,
+          "education__relationship": 35961,
+          "education__sex": 36051,
+          "education__workclass": 36001,
+          "education_num__hours_per_week": 35946,
+          "education_num__marital_status": 35863,
+          "education_num__native_country": 36004,
+          "education_num__occupation": 35966,
+          "education_num__race": 35960,
+          "education_num__relationship": 35950,
+          "education_num__sex": 36007,
+          "education_num__workclass": 35814,
+          "hours_per_week__marital_status": 35968,
+          "hours_per_week__native_country": 36057,
+          "hours_per_week__occupation": 36018,
+          "hours_per_week__race": 35918,
+          "hours_per_week__relationship": 35663,
+          "hours_per_week__sex": 36056,
+          "hours_per_week__workclass": 35835,
+          "marital_status__native_country": 35919,
+          "marital_status__occupation": 35921,
+          "marital_status__race": 35856,
+          "marital_status__relationship": 35832,
+          "marital_status__sex": 36149,
+          "marital_status__workclass": 35901,
+          "native_country__occupation": 35925,
+          "native_country__race": 35968,
+          "native_country__relationship": 35800,
+          "native_country__sex": 35933,
+          "native_country__workclass": 35923,
+          "occupation__race": 35894,
+          "occupation__relationship": 35903,
+          "occupation__sex": 36076,
+          "occupation__workclass": 35966,
+          "race__relationship": 35991,
+          "race__sex": 36120,
+          "race__workclass": 35920,
+          "relationship__sex": 35955,
+          "relationship__workclass": 35950,
+          "sex__workclass": 35862
+        },
+        "predicate_count": {
+          "max": 13,
+          "mean": 7.00397,
+          "median": 7.0,
+          "min": 1,
+          "q25": 4.0,
+          "q75": 10.0
+        },
+        "query_count": 100000,
+        "unique_column_pairs": 78,
+        "unique_query_count": 92714,
+        "zero_predicate_queries": 0
+      },
+      "valid": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "age": 5329,
+          "capital_gain": 5381,
+          "capital_loss": 5402,
+          "education": 5368,
+          "education_num": 5383,
+          "hours_per_week": 5323,
+          "marital_status": 5360,
+          "native_country": 5382,
+          "occupation": 5380,
+          "race": 5342,
+          "relationship": 5351,
+          "sex": 5373,
+          "workclass": 5423
+        },
+        "duplicate_query_instances": 528,
+        "label_cardinality": {
+          "max": 48598,
+          "mean": 3799.6579,
+          "median": 90.5,
+          "min": 0,
+          "q25": 4.0,
+          "q75": 1521.5
+        },
+        "label_selectivity": {
+          "max": 0.9950042995782319,
+          "mean": 0.07779488759674051,
+          "median": 0.0018529134761066297,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 12017,
+          "=": 42979,
+          ">=": 1175,
+          "[]": 13626
+        },
+        "pair_occurrence_counts": {
+          "age__capital_gain": 3545,
+          "age__capital_loss": 3570,
+          "age__education": 3547,
+          "age__education_num": 3535,
+          "age__hours_per_week": 3584,
+          "age__marital_status": 3517,
+          "age__native_country": 3568,
+          "age__occupation": 3568,
+          "age__race": 3606,
+          "age__relationship": 3551,
+          "age__sex": 3604,
+          "age__workclass": 3586,
+          "capital_gain__capital_loss": 3567,
+          "capital_gain__education": 3561,
+          "capital_gain__education_num": 3590,
+          "capital_gain__hours_per_week": 3541,
+          "capital_gain__marital_status": 3582,
+          "capital_gain__native_country": 3578,
+          "capital_gain__occupation": 3565,
+          "capital_gain__race": 3600,
+          "capital_gain__relationship": 3528,
+          "capital_gain__sex": 3571,
+          "capital_gain__workclass": 3591,
+          "capital_loss__education": 3592,
+          "capital_loss__education_num": 3614,
+          "capital_loss__hours_per_week": 3541,
+          "capital_loss__marital_status": 3570,
+          "capital_loss__native_country": 3589,
+          "capital_loss__occupation": 3562,
+          "capital_loss__race": 3583,
+          "capital_loss__relationship": 3565,
+          "capital_loss__sex": 3632,
+          "capital_loss__workclass": 3598,
+          "education__education_num": 3569,
+          "education__hours_per_week": 3575,
+          "education__marital_status": 3518,
+          "education__native_country": 3573,
+          "education__occupation": 3594,
+          "education__race": 3581,
+          "education__relationship": 3560,
+          "education__sex": 3585,
+          "education__workclass": 3603,
+          "education_num__hours_per_week": 3569,
+          "education_num__marital_status": 3562,
+          "education_num__native_country": 3583,
+          "education_num__occupation": 3597,
+          "education_num__race": 3550,
+          "education_num__relationship": 3527,
+          "education_num__sex": 3627,
+          "education_num__workclass": 3606,
+          "hours_per_week__marital_status": 3552,
+          "hours_per_week__native_country": 3586,
+          "hours_per_week__occupation": 3561,
+          "hours_per_week__race": 3556,
+          "hours_per_week__relationship": 3546,
+          "hours_per_week__sex": 3587,
+          "hours_per_week__workclass": 3579,
+          "marital_status__native_country": 3570,
+          "marital_status__occupation": 3546,
+          "marital_status__race": 3528,
+          "marital_status__relationship": 3506,
+          "marital_status__sex": 3582,
+          "marital_status__workclass": 3582,
+          "native_country__occupation": 3580,
+          "native_country__race": 3593,
+          "native_country__relationship": 3541,
+          "native_country__sex": 3614,
+          "native_country__workclass": 3617,
+          "occupation__race": 3580,
+          "occupation__relationship": 3580,
+          "occupation__sex": 3601,
+          "occupation__workclass": 3595,
+          "race__relationship": 3545,
+          "race__sex": 3613,
+          "race__workclass": 3623,
+          "relationship__sex": 3594,
+          "relationship__workclass": 3604,
+          "sex__workclass": 3608
+        },
+        "predicate_count": {
+          "max": 13,
+          "mean": 6.9797,
+          "median": 7.0,
+          "min": 1,
+          "q25": 4.0,
+          "q75": 10.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 78,
+        "unique_query_count": 9472,
+        "zero_predicate_queries": 0
+      }
+    }
+  },
+  "elapsed_seconds": 123.1157500743866,
+  "extended_statistics_recovery": {
+    "objective_absolute_reduction": 6.341129018939313,
+    "objective_relative_reduction": 0.027207472627529053,
+    "p95_absolute_reduction": 63.95000000000073
+  },
+  "fixed_sample": {
+    "exact_count_executed": true,
+    "implementation_shape": "TABLESAMPLE SYSTEM -> deterministic reservoir",
+    "physical_extended_statistics_count": 0,
+    "population_quality": "estimate",
+    "population_rows": 48842.0,
+    "sample_oracle_is_not_postgresql_estimator": true,
+    "sample_relation": {
+      "catalog": null,
+      "name": "frozen_sample_c59ef631e11f79524475f034",
+      "schema": "extstats_advisor_internal"
+    },
+    "sample_rows": 10000,
+    "sampling_provenance": {
+      "actual_rows": 10000,
+      "attempts": [
+        {
+          "candidate_rows": 20212,
+          "percentage": 40.94836411285369,
+          "retained_rows": 10000
+        }
+      ],
+      "candidate_row_limit": 200000,
+      "method": "postgresql-system-adaptive-v1",
+      "requested_rows": 10000,
+      "seed": 42,
+      "successful_percentage": 40.94836411285369
+    },
+    "snapshot_semantic_digest": "c59ef631e11f79524475f0345ea54dea35ae976e4b811842da208d63a9d80e26"
+  },
+  "format_version": "arecel-census13-baseline-gap-v1",
+  "full_table_configurations": {
+    "B": {
+      "analyze_count": 1,
+      "label": "B",
+      "observed_statistics_targets": [
+        {
+          "name": "age",
+          "target": 100
+        },
+        {
+          "name": "workclass",
+          "target": 100
+        },
+        {
+          "name": "education",
+          "target": 100
+        },
+        {
+          "name": "education_num",
+          "target": 100
+        },
+        {
+          "name": "marital_status",
+          "target": 100
+        },
+        {
+          "name": "occupation",
+          "target": 100
+        },
+        {
+          "name": "relationship",
+          "target": 100
+        },
+        {
+          "name": "race",
+          "target": 100
+        },
+        {
+          "name": "sex",
+          "target": 100
+        },
+        {
+          "name": "capital_gain",
+          "target": 100
+        },
+        {
+          "name": "capital_loss",
+          "target": 100
+        },
+        {
+          "name": "hours_per_week",
+          "target": 100
+        },
+        {
+          "name": "native_country",
+          "target": 100
+        }
+      ],
+      "physical_extended_statistics_count": 0,
+      "relation": "public.\"baseline_paper_t100\"",
+      "row_count": 48842,
+      "schema_contract": [
+        {
+          "name": "age",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "workclass",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "education",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "education_num",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "marital_status",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "occupation",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "relationship",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "race",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "sex",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "capital_gain",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "capital_loss",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "hours_per_week",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "native_country",
+          "postgres_type": "VARCHAR(64)"
+        }
+      ],
+      "setseed_expression": "1.0 / 123",
+      "statistics_target": 100
+    },
+    "C": {
+      "analyze_count": 1,
+      "label": "C",
+      "observed_statistics_targets": [
+        {
+          "name": "age",
+          "target": 100
+        },
+        {
+          "name": "workclass",
+          "target": 100
+        },
+        {
+          "name": "education",
+          "target": 100
+        },
+        {
+          "name": "education_num",
+          "target": 100
+        },
+        {
+          "name": "marital_status",
+          "target": 100
+        },
+        {
+          "name": "occupation",
+          "target": 100
+        },
+        {
+          "name": "relationship",
+          "target": 100
+        },
+        {
+          "name": "race",
+          "target": 100
+        },
+        {
+          "name": "sex",
+          "target": 100
+        },
+        {
+          "name": "capital_gain",
+          "target": 100
+        },
+        {
+          "name": "capital_loss",
+          "target": 100
+        },
+        {
+          "name": "hours_per_week",
+          "target": 100
+        },
+        {
+          "name": "native_country",
+          "target": 100
+        }
+      ],
+      "physical_extended_statistics_count": 0,
+      "relation": "public.\"baseline_advisor_t100\"",
+      "row_count": 48842,
+      "schema_contract": [
+        {
+          "name": "age",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "workclass",
+          "postgres_type": "text"
+        },
+        {
+          "name": "education",
+          "postgres_type": "text"
+        },
+        {
+          "name": "education_num",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "marital_status",
+          "postgres_type": "text"
+        },
+        {
+          "name": "occupation",
+          "postgres_type": "text"
+        },
+        {
+          "name": "relationship",
+          "postgres_type": "text"
+        },
+        {
+          "name": "race",
+          "postgres_type": "text"
+        },
+        {
+          "name": "sex",
+          "postgres_type": "text"
+        },
+        {
+          "name": "capital_gain",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "capital_loss",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "hours_per_week",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "native_country",
+          "postgres_type": "text"
+        }
+      ],
+      "setseed_expression": "1.0 / 123",
+      "statistics_target": 100
+    },
+    "D": {
+      "analyze_count": 1,
+      "label": "D",
+      "observed_statistics_targets": [
+        {
+          "name": "age",
+          "target": 10000
+        },
+        {
+          "name": "workclass",
+          "target": 10000
+        },
+        {
+          "name": "education",
+          "target": 10000
+        },
+        {
+          "name": "education_num",
+          "target": 10000
+        },
+        {
+          "name": "marital_status",
+          "target": 10000
+        },
+        {
+          "name": "occupation",
+          "target": 10000
+        },
+        {
+          "name": "relationship",
+          "target": 10000
+        },
+        {
+          "name": "race",
+          "target": 10000
+        },
+        {
+          "name": "sex",
+          "target": 10000
+        },
+        {
+          "name": "capital_gain",
+          "target": 10000
+        },
+        {
+          "name": "capital_loss",
+          "target": 10000
+        },
+        {
+          "name": "hours_per_week",
+          "target": 10000
+        },
+        {
+          "name": "native_country",
+          "target": 10000
+        }
+      ],
+      "physical_extended_statistics_count": 0,
+      "relation": "public.\"baseline_advisor_t10000\"",
+      "row_count": 48842,
+      "schema_contract": [
+        {
+          "name": "age",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "workclass",
+          "postgres_type": "text"
+        },
+        {
+          "name": "education",
+          "postgres_type": "text"
+        },
+        {
+          "name": "education_num",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "marital_status",
+          "postgres_type": "text"
+        },
+        {
+          "name": "occupation",
+          "postgres_type": "text"
+        },
+        {
+          "name": "relationship",
+          "postgres_type": "text"
+        },
+        {
+          "name": "race",
+          "postgres_type": "text"
+        },
+        {
+          "name": "sex",
+          "postgres_type": "text"
+        },
+        {
+          "name": "capital_gain",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "capital_loss",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "hours_per_week",
+          "postgres_type": "bigint"
+        },
+        {
+          "name": "native_country",
+          "postgres_type": "text"
+        }
+      ],
+      "setseed_expression": "1.0 / 123",
+      "statistics_target": 10000
+    }
+  },
+  "immutable_source_artifacts": {
+    "advisor_audit": "runs/197e9b890ac58bc4fbcfb218/analysis/audit-v1.json",
+    "advisor_per_query": "runs/197e9b890ac58bc4fbcfb218/analysis/per-query-v1.jsonl",
+    "paper_baseline": "paper-baselines/arecel-census13/postgres-v1.json",
+    "paper_per_query": "paper-baselines/arecel-census13/postgres-per-query-v1.jsonl"
+  },
+  "largest_measured_deterioration": {
+    "delta": 231.62172154913867,
+    "transition": "E_to_F_planner_over_sample"
+  },
+  "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "patched_postgres_repository": "1951123/postgresql-pgextadv",
+  "per_query_path": "per-query-v1.jsonl",
+  "per_query_sha256": "0c1dd15db56547ad848d1613c514c20a27f379a5619ffc4d5e34a0ba5b6a7c9d",
+  "planner_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+    "server_version_num": 160014
+  },
+  "qerror_provider": "extstats_advisor.utility.QErrorLoss",
+  "research_commit_sha": "d417e33817e6c0720e2f3556fba823bf7b94df7f",
+  "research_repository": "1951123/extstats-advisor-research",
+  "semantic_digest": "7a589232a3210f69b2cb24f2fe54047d241f58d7f90cf4c293e1338d4480be5d",
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+    "server_version_num": 160014
+  },
+  "tail_queries": [
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 41660.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 41660.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 41660.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 41660.0,
+      "paper_target10000_estimate": 41642,
+      "paper_target10000_qerror": 1.0004322558954901,
+      "paper_target100_estimate": 41668,
+      "paper_target100_qerror": 1.000192030724916,
+      "query_id": "arecel_census13_test_005803",
+      "sample_oracle_qerror": 1.0035706192990879,
+      "sample_true_rows": 8560,
+      "scaled_sample_rows": 41808.752,
+      "true_rows": 41660
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 29577.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 29577.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 29577.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 29577.0,
+      "paper_target10000_estimate": 29704,
+      "paper_target10000_qerror": 1.0042938769990195,
+      "paper_target100_estimate": 29739,
+      "paper_target100_qerror": 1.005477228927883,
+      "query_id": "arecel_census13_test_007775",
+      "sample_oracle_qerror": 1.00558764975579,
+      "sample_true_rows": 6022,
+      "scaled_sample_rows": 29412.6524,
+      "true_rows": 29577
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 27807.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 27807.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 27807.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 27807.0,
+      "paper_target10000_estimate": 27628,
+      "paper_target10000_qerror": 1.0064789344143623,
+      "paper_target100_estimate": 27613,
+      "paper_target100_qerror": 1.0070256763118821,
+      "query_id": "arecel_census13_test_008202",
+      "sample_oracle_qerror": 1.0039244938160135,
+      "sample_true_rows": 5671,
+      "scaled_sample_rows": 27698.2982,
+      "true_rows": 27807
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 26455.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 26455.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 26455.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 26455.0,
+      "paper_target10000_estimate": 24794,
+      "paper_target10000_qerror": 1.066992014196983,
+      "paper_target100_estimate": 24740,
+      "paper_target100_qerror": 1.0693209377526274,
+      "query_id": "arecel_census13_test_007718",
+      "sample_oracle_qerror": 1.008648950284492,
+      "sample_true_rows": 5370,
+      "scaled_sample_rows": 26228.154000000002,
+      "true_rows": 26455
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 24202.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 24202.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 24202.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 24202.0,
+      "paper_target10000_estimate": 23535,
+      "paper_target10000_qerror": 1.0283407690673465,
+      "paper_target100_estimate": 23648,
+      "paper_target100_qerror": 1.0234269282814614,
+      "query_id": "arecel_census13_test_007098",
+      "sample_oracle_qerror": 1.007556230438476,
+      "sample_true_rows": 4918,
+      "scaled_sample_rows": 24020.495600000002,
+      "true_rows": 24202
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 22772.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 22772.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 22772.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 22772.0,
+      "paper_target10000_estimate": 21419,
+      "paper_target10000_qerror": 1.0631682151360942,
+      "paper_target100_estimate": 21508,
+      "paper_target100_qerror": 1.0587688302027152,
+      "query_id": "arecel_census13_test_008766",
+      "sample_oracle_qerror": 1.0033098209359848,
+      "sample_true_rows": 4647,
+      "scaled_sample_rows": 22696.8774,
+      "true_rows": 22772
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 22271.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 22271.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 22271.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 22271.0,
+      "paper_target10000_estimate": 21791,
+      "paper_target10000_qerror": 1.022027442522142,
+      "paper_target100_estimate": 21764,
+      "paper_target100_qerror": 1.0232953501194633,
+      "query_id": "arecel_census13_test_005549",
+      "sample_oracle_qerror": 1.003699116395955,
+      "sample_true_rows": 4543,
+      "scaled_sample_rows": 22188.920599999998,
+      "true_rows": 22271
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 20956.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 20956.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 20956.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 20956.0,
+      "paper_target10000_estimate": 18488,
+      "paper_target10000_qerror": 1.1334919948074427,
+      "paper_target100_estimate": 18474,
+      "paper_target100_qerror": 1.1343509797553317,
+      "query_id": "arecel_census13_test_004272",
+      "sample_oracle_qerror": 1.0143190524219408,
+      "sample_true_rows": 4230,
+      "scaled_sample_rows": 20660.166,
+      "true_rows": 20956
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 20693.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 20693.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 20693.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 20693.0,
+      "paper_target10000_estimate": 20043,
+      "paper_target10000_qerror": 1.0324302749089458,
+      "paper_target100_estimate": 20151,
+      "paper_target100_qerror": 1.0268969281921492,
+      "query_id": "arecel_census13_test_002620",
+      "sample_oracle_qerror": 1.0032494655307618,
+      "sample_true_rows": 4223,
+      "scaled_sample_rows": 20625.9766,
+      "true_rows": 20693
+    },
+    {
+      "advisor_final_estimate": 1,
+      "advisor_final_qerror": 20056.0,
+      "advisor_sandbox_estimate": 1,
+      "advisor_sandbox_qerror": 20056.0,
+      "advisor_schema_full_target10000_estimate": 1,
+      "advisor_schema_full_target10000_qerror": 20056.0,
+      "advisor_schema_full_target100_estimate": 1,
+      "advisor_schema_full_target100_qerror": 20056.0,
+      "paper_target10000_estimate": 18321,
+      "paper_target10000_qerror": 1.0947000709568255,
+      "paper_target100_estimate": 18411,
+      "paper_target100_qerror": 1.0893487588941393,
+      "query_id": "arecel_census13_test_001940",
+      "sample_oracle_qerror": 1.0240154496850296,
+      "sample_true_rows": 4010,
+      "scaled_sample_rows": 19585.642,
+      "true_rows": 20056
+    }
+  ],
+  "terminology": {
+    "E": "fixed-sample oracle diagnostic, not a PostgreSQL estimator or optimization configuration",
+    "F": "advisor sandbox ordinary baseline over the frozen sample",
+    "G": "advisor final selected extended statistics over the frozen sample",
+    "causality": "no sampling-causality claim is made beyond these controlled measurements"
+  },
+  "transitions": {
+    "A_to_B_statistics_target": -0.010040319436902756,
+    "B_to_C_schema": 227.64719297871898,
+    "C_to_D_statistics_target": 0.05906404077308025,
+    "E_to_F_planner_over_sample": 231.62172154913867
+  },
+  "workload": {
+    "identity": "AreCELearnedYet base:test",
+    "query_count": 10000,
+    "sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388"
+  },
+  "zero_sample_matches": {
+    "baseline_objective_contribution": 0.0013950933805810803,
+    "count": 1515,
+    "fraction": 0.1515,
+    "largest_production_cardinalities": [
+      {
+        "advisor_sandbox_estimate": 12,
+        "advisor_sandbox_qerror": 1.8333333333333333,
+        "query_id": "arecel_census13_test_009842",
+        "true_rows": 22
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 18.0,
+        "query_id": "arecel_census13_test_003342",
+        "true_rows": 18
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 18.0,
+        "query_id": "arecel_census13_test_003841",
+        "true_rows": 18
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 18.0,
+        "query_id": "arecel_census13_test_005998",
+        "true_rows": 18
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 18.0,
+        "query_id": "arecel_census13_test_008275",
+        "true_rows": 18
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 17.0,
+        "query_id": "arecel_census13_test_000809",
+        "true_rows": 17
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 16.0,
+        "query_id": "arecel_census13_test_003678",
+        "true_rows": 16
+      },
+      {
+        "advisor_sandbox_estimate": 4,
+        "advisor_sandbox_qerror": 3.75,
+        "query_id": "arecel_census13_test_003168",
+        "true_rows": 15
+      },
+      {
+        "advisor_sandbox_estimate": 28,
+        "advisor_sandbox_qerror": 2.0,
+        "query_id": "arecel_census13_test_000694",
+        "true_rows": 14
+      },
+      {
+        "advisor_sandbox_estimate": 1,
+        "advisor_sandbox_qerror": 14.0,
+        "query_id": "arecel_census13_test_001070",
+        "true_rows": 14
+      }
+    ]
+  }
+}
