@@ -114,7 +114,12 @@ def _physical_schema(conn: Any) -> dict[str, Any]:
         {"name": name, "postgres_type": type_, "not_null": False}
         for name, type_ in forest10.COLUMNS
     ]
-    if columns != expected:
+    if len(columns) != len(expected) or any(
+        observed["name"] != required["name"]
+        or observed["postgres_type"].casefold() != required["postgres_type"].casefold()
+        or observed["not_null"] != required["not_null"]
+        for observed, required in zip(columns, expected, strict=True)
+    ):
         raise ValueError(f"Forest10 physical schema mismatch: {columns!r}")
     if row_count != forest10.EXPECTED_ROWS:
         raise ValueError(f"Forest10 row count mismatch: {row_count}")
