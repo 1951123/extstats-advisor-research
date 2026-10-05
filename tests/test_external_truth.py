@@ -126,7 +126,12 @@ def test_external_import_delegates_binding_and_preserves_utility_invariant(tmp_p
 
 def test_external_truth_validation_preserves_authority_and_null_postgres_identity(
     tmp_path: Path,
+    monkeypatch,
 ) -> None:
+    monkeypatch.setattr(
+        "extstats_advisor_research.forest_canonical.verify_git_sha",
+        lambda *_args: None,
+    )
     snapshot_path, snapshot = _sealed_snapshot(tmp_path)
     observations = write_authoritative_observations(
         snapshot.workload.workload_id,
@@ -149,7 +154,7 @@ def test_external_truth_validation_preserves_authority_and_null_postgres_identit
         ground_truth_path,
         observations,
         [{"query_id": "q1", "truth": 12}],
-        advisor_root=Path("/home/wqts/projects/extstats-advisor"),
+        advisor_root=tmp_path / "advisor",
         authority="audited-fixture-authority",
         dataset_identity="synthetic-dataset",
         source_revision="audit-revision-1",
