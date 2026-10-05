@@ -63,6 +63,25 @@ canonical run. It creates a fresh OptimizationPlan for each tested budget and
 invokes the frozen advisor search API in an isolated patched planner backend.
 It does not recapture, resample, rematerialize, or deploy.
 
+## K=12 screening sufficiency
+
+`diagnose screening-k12` is a single screening diagnostic. It reuses RunID
+`bf7fda28d90b3da88e7a14e4` and its immutable source artifacts, but creates a
+fresh OptimizationPlan with candidate limit 12 and a 600-second convergence
+cap. The frozen production advisor starts greedy ADD from `M = {}`; it is not
+initialized from the converged K=8 membership, and the K=12 membership is not
+required to be nested in K=8. No Recommendation is built or deployed.
+
+The diagnostic records source advisor `aa65af49fdbbf7443f8fa7295677724babfddfc5`
+separately from execution advisor
+`bb4d58d46e734981a4542de4bcf59441d3effb98`. The distinction uses the same
+narrow deployment-preflight bridge documented above; optimization planning,
+singleton precedence, planner sandbox, utility, greedy ADD, and SearchResult
+contracts are unchanged. Ranks 9--12 are reported with native state, singleton
+objective/improvement, live evaluation outcome, and the full accepted-move
+trace. A budget termination is classified as `k12-incomplete` and never causes
+the cap to be increased automatically.
+
 ## ANALYZE disclosure
 
 For a non-empty deployment, the Recommendation still contains one final
