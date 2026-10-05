@@ -5,6 +5,7 @@ import pytest
 from extstats_advisor_research.full_data_transfer import (
     ACCEPTED_MOVE_ORDER,
     EXPECTED_MEMBERSHIP,
+    _wrapped_count_sql,
     build_transfer_records,
     classify_change,
     precedence_check,
@@ -85,3 +86,9 @@ def test_source_binding_rejects_wrong_budget(tmp_path) -> None:
 def test_transfer_artifact_helpers_reject_credentials() -> None:
     with pytest.raises(ValueError, match="credentials"):
         reject_credentials({"production_dsn": "postgresql://u:p@h/db"})
+
+
+def test_representative_count_wrapper_removes_workload_terminator() -> None:
+    assert _wrapped_count_sql("SELECT * FROM public.census13;") == (
+        "SELECT count(*) FROM (SELECT * FROM public.census13) AS q"
+    )

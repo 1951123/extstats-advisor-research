@@ -261,6 +261,11 @@ def _explain_rows(connection: Any, workload: list[dict[str, Any]]) -> dict[str, 
     return result
 
 
+def _wrapped_count_sql(query_sql: str) -> str:
+    """Turn a workload SELECT into a representative-count subquery safely."""
+    return f"SELECT count(*) FROM ({query_sql.rstrip().rstrip(';').rstrip()}) AS q"
+
+
 def _stats(connection: Any) -> list[dict[str, Any]]:
     rows = connection.execute(
         """
@@ -403,9 +408,7 @@ def run_full_data_transfer(
             "arecel_census13_test_008202",
         }
         sanity = {
-            row["query_id"]: int(
-                connection.execute(f"SELECT count(*) FROM ({row['sql']}) AS q").fetchone()[0]
-            )
+            row["query_id"]: int(connection.execute(_wrapped_count_sql(row["sql"])).fetchone()[0])
             for row in workload
             if row["query_id"] in sanity_ids
         }
