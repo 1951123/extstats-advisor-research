@@ -248,7 +248,7 @@ def _correspondence_records(
 
 
 def _verify_sandbox(
-    verify_result: dict[str, Any], *, rows: int, population: int, candidates: int
+    verify_result: dict[str, Any], *, rows: int, population: float, candidates: int
 ) -> None:
     metadata = verify_result.get("metadata", {})
     # The frozen advisor CLI publishes the sandbox check fields at the top
@@ -582,6 +582,15 @@ def _run_canonical(
         expected_rows=sample_rows,
         expected_seed=sample_seed,
     )
+    import sys
+
+    sys.path.insert(0, str(advisor_root / "src"))
+    from extstats_advisor.snapshot.bundle import load_snapshot
+
+    sealed_snapshot = load_snapshot(paths["snapshot"])
+    if len(sealed_snapshot.populations) != 1:
+        raise ValueError("canonical snapshot must contain exactly one population")
+    expected_population = float(sealed_snapshot.populations[0].row_count)
 
     started = time.monotonic()
     candidate_result = _run(
@@ -616,7 +625,7 @@ def _run_canonical(
         raise ValueError("native repository sample row count mismatch")
     if not math.isclose(
         native_manifest["materialization"]["population_row_count"],
-        dataset.EXPECTED_ROWS,
+        expected_population,
         rel_tol=1e-6,
         abs_tol=1.0,
     ):
@@ -657,7 +666,7 @@ def _run_canonical(
         _verify_sandbox(
             verify_result,
             rows=sample_rows,
-            population=dataset.EXPECTED_ROWS,
+            population=expected_population,
             candidates=candidate_count,
         )
         timings["sandbox_prepare_verify"] = round(time.monotonic() - started, 6)
