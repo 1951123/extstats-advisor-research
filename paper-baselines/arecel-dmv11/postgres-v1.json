@@ -1,0 +1,973 @@
+{
+  "artifact_contract": "arecel-paper-postgres-baseline-v1",
+  "current_advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+  "dataset": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "audit_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/audit-v1",
+    "benchmark_id": "arecel-dmv11",
+    "column_count": 11,
+    "column_order": [
+      "Record_Type",
+      "Registration_Class",
+      "State",
+      "County",
+      "Body_Type",
+      "Fuel_Type",
+      "Reg_Valid_Date",
+      "Color",
+      "Scofflaw_Indicator",
+      "Suspension_Indicator",
+      "Revocation_Indicator"
+    ],
+    "columns": [
+      {
+        "name": "record_type",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "registration_class",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "state",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "county",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "body_type",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "fuel_type",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "reg_valid_date",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "color",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "scofflaw_indicator",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "suspension_indicator",
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "revocation_indicator",
+        "postgres_type": "VARCHAR(64)"
+      }
+    ],
+    "data_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/raw/data/dmv11",
+    "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    "expected_rows": 11591877,
+    "null_audit": {
+      "all_columns_null_free": true,
+      "source_csv_null_counts": {
+        "Body_Type": 0,
+        "Color": 0,
+        "County": 0,
+        "Fuel_Type": 0,
+        "Record_Type": 0,
+        "Reg_Valid_Date": 0,
+        "Registration_Class": 0,
+        "Revocation_Indicator": 0,
+        "Scofflaw_Indicator": 0,
+        "State": 0,
+        "Suspension_Indicator": 0
+      },
+      "upstream_not_null_constraint": false
+    },
+    "observed_rows": 11591877,
+    "relation": "public.dmv11",
+    "schema_contract": {
+      "collation_contract": "capture-native-postgresql-collation-for-varchar-columns",
+      "columns": [
+        {
+          "name": "record_type",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "registration_class",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "state",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "county",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "body_type",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "fuel_type",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "reg_valid_date",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "color",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "scofflaw_indicator",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "suspension_indicator",
+          "postgres_type": "VARCHAR(64)"
+        },
+        {
+          "name": "revocation_indicator",
+          "postgres_type": "VARCHAR(64)"
+        }
+      ],
+      "id": "arecel-dmv11-postgres-schema-v1",
+      "identifier_contract": "unquoted-upstream-ddl-folds-to-lowercase-catalog-names",
+      "not_null": false,
+      "relation": "public.dmv11"
+    },
+    "source_file_sha256": {
+      "canonical_workload": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "csv": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+      "label_pickle": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+      "workload_pickle": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+    },
+    "source_present": true,
+    "source_relation": "public.\"dmv11_original\"",
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "upstream_url": "https://github.com/sfu-db/AreCELearnedYet",
+    "workload_splits": {
+      "test": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Body_Type": 5413,
+          "Color": 5395,
+          "County": 5423,
+          "Fuel_Type": 5525,
+          "Record_Type": 5455,
+          "Reg_Valid_Date": 5473,
+          "Registration_Class": 5460,
+          "Revocation_Indicator": 5436,
+          "Scofflaw_Indicator": 5500,
+          "State": 5494,
+          "Suspension_Indicator": 5478
+        },
+        "duplicate_query_instances": 1518,
+        "label_cardinality": {
+          "max": 11589529,
+          "mean": 1996941.336,
+          "median": 102293.0,
+          "min": 0,
+          "q25": 5197.5,
+          "q75": 1551468.5
+        },
+        "label_selectivity": {
+          "max": 0.9997974443655674,
+          "mean": 0.17227074924966856,
+          "median": 0.008824541530245707,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 68,
+          "=": 54579,
+          ">=": 4077,
+          "[]": 1328
+        },
+        "pair_occurrence_counts": {
+          "Body_Type__Color": 3584,
+          "Body_Type__County": 3606,
+          "Body_Type__Fuel_Type": 3631,
+          "Body_Type__Record_Type": 3608,
+          "Body_Type__Reg_Valid_Date": 3568,
+          "Body_Type__Registration_Class": 3576,
+          "Body_Type__Revocation_Indicator": 3595,
+          "Body_Type__Scofflaw_Indicator": 3610,
+          "Body_Type__State": 3652,
+          "Body_Type__Suspension_Indicator": 3598,
+          "Color__County": 3588,
+          "Color__Fuel_Type": 3660,
+          "Color__Record_Type": 3575,
+          "Color__Reg_Valid_Date": 3574,
+          "Color__Registration_Class": 3644,
+          "Color__Revocation_Indicator": 3575,
+          "Color__Scofflaw_Indicator": 3631,
+          "Color__State": 3674,
+          "Color__Suspension_Indicator": 3612,
+          "County__Fuel_Type": 3637,
+          "County__Record_Type": 3590,
+          "County__Reg_Valid_Date": 3566,
+          "County__Registration_Class": 3636,
+          "County__Revocation_Indicator": 3626,
+          "County__Scofflaw_Indicator": 3678,
+          "County__State": 3621,
+          "County__Suspension_Indicator": 3613,
+          "Fuel_Type__Record_Type": 3673,
+          "Fuel_Type__Reg_Valid_Date": 3672,
+          "Fuel_Type__Registration_Class": 3683,
+          "Fuel_Type__Revocation_Indicator": 3654,
+          "Fuel_Type__Scofflaw_Indicator": 3658,
+          "Fuel_Type__State": 3672,
+          "Fuel_Type__Suspension_Indicator": 3661,
+          "Record_Type__Reg_Valid_Date": 3623,
+          "Record_Type__Registration_Class": 3619,
+          "Record_Type__Revocation_Indicator": 3601,
+          "Record_Type__Scofflaw_Indicator": 3633,
+          "Record_Type__State": 3627,
+          "Record_Type__Suspension_Indicator": 3648,
+          "Reg_Valid_Date__Registration_Class": 3648,
+          "Reg_Valid_Date__Revocation_Indicator": 3616,
+          "Reg_Valid_Date__Scofflaw_Indicator": 3615,
+          "Reg_Valid_Date__State": 3642,
+          "Reg_Valid_Date__Suspension_Indicator": 3644,
+          "Registration_Class__Revocation_Indicator": 3643,
+          "Registration_Class__Scofflaw_Indicator": 3667,
+          "Registration_Class__State": 3654,
+          "Registration_Class__Suspension_Indicator": 3640,
+          "Revocation_Indicator__Scofflaw_Indicator": 3609,
+          "Revocation_Indicator__State": 3610,
+          "Revocation_Indicator__Suspension_Indicator": 3625,
+          "Scofflaw_Indicator__State": 3682,
+          "Scofflaw_Indicator__Suspension_Indicator": 3663,
+          "State__Suspension_Indicator": 3643
+        },
+        "predicate_count": {
+          "max": 11,
+          "mean": 6.0052,
+          "median": 6.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 9.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 55,
+        "unique_query_count": 8482,
+        "zero_predicate_queries": 0
+      },
+      "train": {
+        "canonical_sql_count": 100000,
+        "column_predicate_counts": {
+          "Body_Type": 54533,
+          "Color": 54614,
+          "County": 54676,
+          "Fuel_Type": 54513,
+          "Record_Type": 54347,
+          "Reg_Valid_Date": 54564,
+          "Registration_Class": 54495,
+          "Revocation_Indicator": 54206,
+          "Scofflaw_Indicator": 54463,
+          "State": 54517,
+          "Suspension_Indicator": 54408
+        },
+        "duplicate_query_instances": 23537,
+        "label_cardinality": {
+          "max": 11589529,
+          "mean": 1923943.26108,
+          "median": 96835.0,
+          "min": 0,
+          "q25": 5200.0,
+          "q75": 1340506.0
+        },
+        "label_selectivity": {
+          "max": 0.9997974443655674,
+          "mean": 0.16597340198485544,
+          "median": 0.008353694574226418,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 664,
+          "=": 544772,
+          ">=": 40693,
+          "[]": 13207
+        },
+        "pair_occurrence_counts": {
+          "Body_Type__Color": 36282,
+          "Body_Type__County": 36559,
+          "Body_Type__Fuel_Type": 36264,
+          "Body_Type__Record_Type": 36202,
+          "Body_Type__Reg_Valid_Date": 36487,
+          "Body_Type__Registration_Class": 36379,
+          "Body_Type__Revocation_Indicator": 36276,
+          "Body_Type__Scofflaw_Indicator": 36354,
+          "Body_Type__State": 36313,
+          "Body_Type__Suspension_Indicator": 36304,
+          "Color__County": 36233,
+          "Color__Fuel_Type": 36278,
+          "Color__Record_Type": 36271,
+          "Color__Reg_Valid_Date": 36315,
+          "Color__Registration_Class": 36315,
+          "Color__Revocation_Indicator": 36207,
+          "Color__Scofflaw_Indicator": 36210,
+          "Color__State": 36256,
+          "Color__Suspension_Indicator": 36358,
+          "County__Fuel_Type": 36321,
+          "County__Record_Type": 36318,
+          "County__Reg_Valid_Date": 36373,
+          "County__Registration_Class": 36241,
+          "County__Revocation_Indicator": 36234,
+          "County__Scofflaw_Indicator": 36301,
+          "County__State": 36431,
+          "County__Suspension_Indicator": 36260,
+          "Fuel_Type__Record_Type": 36288,
+          "Fuel_Type__Reg_Valid_Date": 36322,
+          "Fuel_Type__Registration_Class": 36189,
+          "Fuel_Type__Revocation_Indicator": 36192,
+          "Fuel_Type__Scofflaw_Indicator": 36260,
+          "Fuel_Type__State": 36138,
+          "Fuel_Type__Suspension_Indicator": 36212,
+          "Record_Type__Reg_Valid_Date": 36133,
+          "Record_Type__Registration_Class": 36205,
+          "Record_Type__Revocation_Indicator": 36158,
+          "Record_Type__Scofflaw_Indicator": 36270,
+          "Record_Type__State": 36108,
+          "Record_Type__Suspension_Indicator": 36162,
+          "Reg_Valid_Date__Registration_Class": 36390,
+          "Reg_Valid_Date__Revocation_Indicator": 36222,
+          "Reg_Valid_Date__Scofflaw_Indicator": 36304,
+          "Reg_Valid_Date__State": 36291,
+          "Reg_Valid_Date__Suspension_Indicator": 36305,
+          "Registration_Class__Revocation_Indicator": 35997,
+          "Registration_Class__Scofflaw_Indicator": 36147,
+          "Registration_Class__State": 36338,
+          "Registration_Class__Suspension_Indicator": 36244,
+          "Revocation_Indicator__Scofflaw_Indicator": 36223,
+          "Revocation_Indicator__State": 35975,
+          "Revocation_Indicator__Suspension_Indicator": 36157,
+          "Scofflaw_Indicator__State": 36075,
+          "Scofflaw_Indicator__Suspension_Indicator": 36120,
+          "State__Suspension_Indicator": 36277
+        },
+        "predicate_count": {
+          "max": 11,
+          "mean": 5.99336,
+          "median": 6.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 9.0
+        },
+        "query_count": 100000,
+        "unique_column_pairs": 55,
+        "unique_query_count": 76463,
+        "zero_predicate_queries": 0
+      },
+      "valid": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Body_Type": 5427,
+          "Color": 5325,
+          "County": 5437,
+          "Fuel_Type": 5484,
+          "Record_Type": 5366,
+          "Reg_Valid_Date": 5430,
+          "Registration_Class": 5415,
+          "Revocation_Indicator": 5413,
+          "Scofflaw_Indicator": 5461,
+          "State": 5452,
+          "Suspension_Indicator": 5335
+        },
+        "duplicate_query_instances": 1510,
+        "label_cardinality": {
+          "max": 11589529,
+          "mean": 1975482.3749,
+          "median": 101810.0,
+          "min": 0,
+          "q25": 5770.0,
+          "q75": 1548528.0
+        },
+        "label_selectivity": {
+          "max": 0.9997974443655674,
+          "mean": 0.1704195424865188,
+          "median": 0.008782874421459096,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 67,
+          "=": 54115,
+          ">=": 4072,
+          "[]": 1291
+        },
+        "pair_occurrence_counts": {
+          "Body_Type__Color": 3533,
+          "Body_Type__County": 3622,
+          "Body_Type__Fuel_Type": 3642,
+          "Body_Type__Record_Type": 3566,
+          "Body_Type__Reg_Valid_Date": 3613,
+          "Body_Type__Registration_Class": 3600,
+          "Body_Type__Revocation_Indicator": 3592,
+          "Body_Type__Scofflaw_Indicator": 3632,
+          "Body_Type__State": 3625,
+          "Body_Type__Suspension_Indicator": 3604,
+          "Color__County": 3552,
+          "Color__Fuel_Type": 3537,
+          "Color__Record_Type": 3508,
+          "Color__Reg_Valid_Date": 3553,
+          "Color__Registration_Class": 3503,
+          "Color__Revocation_Indicator": 3522,
+          "Color__Scofflaw_Indicator": 3557,
+          "Color__State": 3534,
+          "Color__Suspension_Indicator": 3501,
+          "County__Fuel_Type": 3660,
+          "County__Record_Type": 3606,
+          "County__Reg_Valid_Date": 3566,
+          "County__Registration_Class": 3603,
+          "County__Revocation_Indicator": 3613,
+          "County__Scofflaw_Indicator": 3687,
+          "County__State": 3608,
+          "County__Suspension_Indicator": 3570,
+          "Fuel_Type__Record_Type": 3572,
+          "Fuel_Type__Reg_Valid_Date": 3605,
+          "Fuel_Type__Registration_Class": 3614,
+          "Fuel_Type__Revocation_Indicator": 3597,
+          "Fuel_Type__Scofflaw_Indicator": 3625,
+          "Fuel_Type__State": 3621,
+          "Fuel_Type__Suspension_Indicator": 3575,
+          "Record_Type__Reg_Valid_Date": 3560,
+          "Record_Type__Registration_Class": 3554,
+          "Record_Type__Revocation_Indicator": 3561,
+          "Record_Type__Scofflaw_Indicator": 3552,
+          "Record_Type__State": 3564,
+          "Record_Type__Suspension_Indicator": 3530,
+          "Reg_Valid_Date__Registration_Class": 3588,
+          "Reg_Valid_Date__Revocation_Indicator": 3568,
+          "Reg_Valid_Date__Scofflaw_Indicator": 3597,
+          "Reg_Valid_Date__State": 3598,
+          "Reg_Valid_Date__Suspension_Indicator": 3553,
+          "Registration_Class__Revocation_Indicator": 3577,
+          "Registration_Class__Scofflaw_Indicator": 3607,
+          "Registration_Class__State": 3569,
+          "Registration_Class__Suspension_Indicator": 3535,
+          "Revocation_Indicator__Scofflaw_Indicator": 3589,
+          "Revocation_Indicator__State": 3604,
+          "Revocation_Indicator__Suspension_Indicator": 3535,
+          "Scofflaw_Indicator__State": 3631,
+          "Scofflaw_Indicator__Suspension_Indicator": 3566,
+          "State__Suspension_Indicator": 3543
+        },
+        "predicate_count": {
+          "max": 11,
+          "mean": 5.9545,
+          "median": 6.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 9.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 55,
+        "unique_query_count": 8490,
+        "zero_predicate_queries": 0
+      }
+    }
+  },
+  "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+  "elapsed_seconds": 56.382799,
+  "format_version": "arecel-paper-postgres-baseline-v1",
+  "max_error_query": {
+    "estimate": 1,
+    "qerror": 112010.0,
+    "query_id": "arecel_dmv11_test_009189",
+    "truth": 112010
+  },
+  "null_audit": {
+    "all_columns_null_free": true,
+    "source_csv_null_counts": {
+      "Body_Type": 0,
+      "Color": 0,
+      "County": 0,
+      "Fuel_Type": 0,
+      "Record_Type": 0,
+      "Reg_Valid_Date": 0,
+      "Registration_Class": 0,
+      "Revocation_Indicator": 0,
+      "Scofflaw_Indicator": 0,
+      "State": 0,
+      "Suspension_Indicator": 0
+    },
+    "upstream_not_null_constraint": false
+  },
+  "paper_references": {
+    "naru": {
+      "max": 16.0,
+      "p50": 1.01,
+      "p95": 1.09,
+      "p99": 1.35
+    },
+    "postgresql": {
+      "max": 100000.0,
+      "p50": 1.19,
+      "p95": 78.0,
+      "p99": 3255.0
+    }
+  },
+  "per_query_path": "postgres-per-query-v1.jsonl",
+  "per_query_sha256": "030195069987dd938eeccc67413f6564e273700838f8fc76ba3256a162e34c23",
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.dmv11",
+  "research_commit_sha": "8993a57aff17762e09144c19d20d62aff9278fea",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 11591877,
+  "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+  "schema_verification": {
+    "column_count": 11,
+    "columns": [
+      {
+        "name": "record_type",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "registration_class",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "state",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "county",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "body_type",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "fuel_type",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "reg_valid_date",
+        "native_collation": null,
+        "not_null": false,
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "color",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "scofflaw_indicator",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "suspension_indicator",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      },
+      {
+        "name": "revocation_indicator",
+        "native_collation": "default",
+        "not_null": false,
+        "postgres_type": "VARCHAR(64)"
+      }
+    ],
+    "extended_statistics_count": 0,
+    "row_count": 11591877,
+    "varchar_collations": {
+      "body_type": "default",
+      "color": "default",
+      "county": "default",
+      "fuel_type": "default",
+      "record_type": "default",
+      "registration_class": "default",
+      "revocation_indicator": "default",
+      "scofflaw_indicator": "default",
+      "state": "default",
+      "suspension_indicator": "default"
+    },
+    "verified": true
+  },
+  "semantic_digest": "a7cab492899071a5c2508a0d270b0b7a854930a96c2d39687deae386431498dd",
+  "source_files": {
+    "canonical_workload": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    "csv": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+    "label_pickle": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+    "workload_pickle": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+  },
+  "statistics": {
+    "analyze_count": 1,
+    "analyze_statement": "ANALYZE public.dmv11",
+    "column_targets_verified": [
+      {
+        "name": "record_type",
+        "target": 10000
+      },
+      {
+        "name": "registration_class",
+        "target": 10000
+      },
+      {
+        "name": "state",
+        "target": 10000
+      },
+      {
+        "name": "county",
+        "target": 10000
+      },
+      {
+        "name": "body_type",
+        "target": 10000
+      },
+      {
+        "name": "fuel_type",
+        "target": 10000
+      },
+      {
+        "name": "reg_valid_date",
+        "target": 10000
+      },
+      {
+        "name": "color",
+        "target": 10000
+      },
+      {
+        "name": "scofflaw_indicator",
+        "target": 10000
+      },
+      {
+        "name": "suspension_indicator",
+        "target": 10000
+      },
+      {
+        "name": "revocation_indicator",
+        "target": 10000
+      }
+    ],
+    "extended_statistics_count": 0,
+    "seed": 123,
+    "seed_expression": "1.0 / 123",
+    "setseed_executed": true,
+    "target": 10000
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 112010.0,
+    "max_query_id": "arecel_dmv11_test_009189",
+    "mean": 259.3684912608487,
+    "p50": 1.1860159370661911,
+    "p75": 1.6486137319992173,
+    "p90": 11.531353510694405,
+    "p95": 78.0,
+    "p99": 3217.3800000000083,
+    "paper_reference_comparison": {
+      "max": {
+        "difference": 12010.0,
+        "paper_reference": 100000.0,
+        "ratio": 1.1201,
+        "reproduced": 112010.0
+      },
+      "p50": {
+        "difference": -0.0039840629338088185,
+        "paper_reference": 1.19,
+        "ratio": 0.9966520479547825,
+        "reproduced": 1.1860159370661911
+      },
+      "p95": {
+        "difference": 0.0,
+        "paper_reference": 78.0,
+        "ratio": 1.0,
+        "reproduced": 78.0
+      },
+      "p99": {
+        "difference": -37.619999999991705,
+        "paper_reference": 3255.0,
+        "ratio": 0.9884423963133666,
+        "reproduced": 3217.3800000000083
+      }
+    },
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 259.3684912608487
+  },
+  "tail_contribution": {
+    "top_1": {
+      "baseline_objective_fraction": 0.04318566201140861,
+      "query_count": 1
+    },
+    "top_10": {
+      "baseline_objective_fraction": 0.2921245353731101,
+      "query_count": 10
+    },
+    "top_10_percent": {
+      "baseline_objective_fraction": 0.9950990290704885,
+      "query_count": 1000
+    },
+    "top_1_percent": {
+      "baseline_objective_fraction": 0.8718606442902259,
+      "query_count": 100
+    },
+    "top_5": {
+      "baseline_objective_fraction": 0.1779044161289193,
+      "query_count": 5
+    },
+    "top_5_percent": {
+      "baseline_objective_fraction": 0.9880302305008275,
+      "query_count": 500
+    }
+  },
+  "truth": {
+    "authoritative_for_full_workload": true,
+    "binding": {
+      "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+      "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "csv_sha256": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "label_pickle_sha256": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+      "source_index_mapping": "canonical base:test source order 0..9999",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "workload_pickle_sha256": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+    },
+    "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    "full_table_count_scans_for_truth": false,
+    "label_sha256": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
+    "spot_checks": {
+      "all_match": true,
+      "checks": [
+        {
+          "observed": 63766,
+          "operators": [
+            "=",
+            "[]"
+          ],
+          "predicate_arity": 8,
+          "query_id": "arecel_dmv11_test_000000",
+          "source_index": 0,
+          "source_query_id": "arecel:dmv11:test:000000",
+          "truth": 63766
+        },
+        {
+          "observed": 11588750,
+          "operators": [
+            ">="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_dmv11_test_000001",
+          "source_index": 1,
+          "source_query_id": "arecel:dmv11:test:000001",
+          "truth": 11588750
+        },
+        {
+          "observed": 4772489,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 4,
+          "query_id": "arecel_dmv11_test_000002",
+          "source_index": 2,
+          "source_query_id": "arecel:dmv11:test:000002",
+          "truth": 4772489
+        },
+        {
+          "observed": 2629116,
+          "operators": [
+            "="
+          ],
+          "predicate_arity": 3,
+          "query_id": "arecel_dmv11_test_000003",
+          "source_index": 3,
+          "source_query_id": "arecel:dmv11:test:000003",
+          "truth": 2629116
+        },
+        {
+          "observed": 0,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 9,
+          "query_id": "arecel_dmv11_test_000004",
+          "source_index": 4,
+          "source_query_id": "arecel:dmv11:test:000004",
+          "truth": 0
+        },
+        {
+          "observed": 8835,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 11,
+          "query_id": "arecel_dmv11_test_000008",
+          "source_index": 8,
+          "source_query_id": "arecel:dmv11:test:000008",
+          "truth": 8835
+        },
+        {
+          "observed": 22365,
+          "operators": [
+            "=",
+            "[]"
+          ],
+          "predicate_arity": 10,
+          "query_id": "arecel_dmv11_test_000010",
+          "source_index": 10,
+          "source_query_id": "arecel:dmv11:test:000010",
+          "truth": 22365
+        },
+        {
+          "observed": 10431672,
+          "operators": [
+            "="
+          ],
+          "predicate_arity": 2,
+          "query_id": "arecel_dmv11_test_000011",
+          "source_index": 11,
+          "source_query_id": "arecel:dmv11:test:000011",
+          "truth": 10431672
+        },
+        {
+          "observed": 90490,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 5,
+          "query_id": "arecel_dmv11_test_000012",
+          "source_index": 12,
+          "source_query_id": "arecel:dmv11:test:000012",
+          "truth": 90490
+        },
+        {
+          "observed": 43404,
+          "operators": [
+            "="
+          ],
+          "predicate_arity": 6,
+          "query_id": "arecel_dmv11_test_000014",
+          "source_index": 14,
+          "source_query_id": "arecel:dmv11:test:000014",
+          "truth": 43404
+        },
+        {
+          "observed": 0,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 7,
+          "query_id": "arecel_dmv11_test_000021",
+          "source_index": 21,
+          "source_query_id": "arecel:dmv11:test:000021",
+          "truth": 0
+        },
+        {
+          "observed": 0,
+          "operators": [
+            "<=",
+            "="
+          ],
+          "predicate_arity": 10,
+          "query_id": "arecel_dmv11_test_000027",
+          "source_index": 27,
+          "source_query_id": "arecel:dmv11:test:000027",
+          "truth": 0
+        },
+        {
+          "observed": 11589529,
+          "operators": [
+            "="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_dmv11_test_000259",
+          "source_index": 259,
+          "source_query_id": "arecel:dmv11:test:000259",
+          "truth": 11589529
+        },
+        {
+          "observed": 379178,
+          "operators": [
+            "="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_dmv11_test_005000",
+          "source_index": 5000,
+          "source_query_id": "arecel:dmv11:test:005000",
+          "truth": 379178
+        },
+        {
+          "observed": 9,
+          "operators": [
+            "=",
+            ">="
+          ],
+          "predicate_arity": 10,
+          "query_id": "arecel_dmv11_test_009999",
+          "source_index": 9999,
+          "source_query_id": "arecel:dmv11:test:009999",
+          "truth": 9
+        }
+      ],
+      "count": 15,
+      "rule": "indices {0, floor(query_count/2), query_count-1}, first query per predicate arity/operator, plus min/max truth"
+    }
+  },
+  "upstream": {
+    "commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "repository": "https://github.com/sfu-db/AreCELearnedYet",
+    "shared_archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 259.3684912608487
+  },
+  "workload": {
+    "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    "identifier_substitution": "safe source identifiers to lowercase catalog names",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+    "label_source": "data/dmv11/workload/base-original-label.pkl",
+    "projection": "count-star-to-select-star-v1",
+    "query_count": 10000,
+    "query_id_mapping": "arecel:dmv11:test:<index> -> arecel_dmv11_test_<index>",
+    "relation_substitution": "safe exact source relation substitution",
+    "source": "data/dmv11/workload/base.pkl",
+    "workload_sha256": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+  }
+}
