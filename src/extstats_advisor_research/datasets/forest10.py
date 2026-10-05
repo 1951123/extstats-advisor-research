@@ -288,7 +288,17 @@ def extract_workload(
         raise ValueError("Forest10 adapter currently audits only the base:test reproduction split")
     records = load_test_records(value)
     hashes = _source_hashes(value)
-    workload = {
+    workload = _build_workload(records, hashes)
+    write_json(output, workload)
+    return {
+        "workload_id": workload["workload_id"],
+        "query_count": len(workload["queries"]),
+        "sha256": sha256_file(output),
+    }
+
+
+def _build_workload(records: list[dict[str, Any]], hashes: dict[str, str]) -> dict[str, Any]:
+    return {
         "workload_id": "arecel_forest10_test_v1",
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
@@ -312,12 +322,6 @@ def extract_workload(
             }
             for record in records
         ],
-    }
-    write_json(output, workload)
-    return {
-        "workload_id": workload["workload_id"],
-        "query_count": len(workload["queries"]),
-        "sha256": sha256_file(output),
     }
 
 

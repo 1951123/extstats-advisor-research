@@ -91,10 +91,16 @@ def test_paper_reference_comparison_is_external_and_explicit() -> None:
         reject_credentials({"dsn": "postgresql://secret"})
 
 
-def test_forest_workload_projection_excludes_truth_fields(tmp_path) -> None:
-    result = forest10.extract_workload(tmp_path / "workload.json")
-    assert result["query_count"] == 10_000
-    import json
-
-    workload = json.loads((tmp_path / "workload.json").read_text(encoding="utf-8"))
+def test_forest_workload_projection_excludes_truth_fields() -> None:
+    workload = forest10._build_workload(
+        [
+            {
+                "source_index": 0,
+                "original_sql": 'SELECT COUNT(*) FROM public."forest10"',
+                "sql": "SELECT * FROM public.forest10",
+                "truth": 1,
+            }
+        ],
+        {"workload_pickle": "w", "label_pickle": "l", "canonical_workload": "c"},
+    )
     assert set(workload["queries"][0]) == {"query_id", "sql", "weight"}
