@@ -148,12 +148,17 @@ def compact_summary(
             for item in profiles
         ),
     }
+    best_profile = min(
+        (item for item in profiles if item.get("native_state") == "present"),
+        key=lambda item: item.get("singleton_objective", float("inf")),
+        default={},
+    )
     best = {
-        "candidate_id": singleton_profile.get("best_singleton_candidate_id"),
+        "candidate_id": best_profile.get("candidate_id"),
         "kind": None,
         "columns": None,
-        "objective": singleton_profile.get("best_singleton_objective"),
-        "improvement": singleton_profile.get("best_singleton_improvement"),
+        "objective": best_profile.get("singleton_objective"),
+        "improvement": best_profile.get("improvement"),
     }
     candidate_by_id = {item["candidate_id"]: item for item in candidates}
     if best["candidate_id"] in candidate_by_id:
@@ -217,14 +222,19 @@ def compact_summary(
         },
         "singleton": {**singleton, "best": best},
         "optimization": {
-            "candidate_limit": optimization_plan.get("candidate_limit"),
+            "candidate_limit": optimization_plan.get("budget", {}).get("candidate_limit"),
             "screened_candidate_count": optimization_plan.get("screened_candidate_count"),
         },
         "search": {
             "baseline_objective": search_result.get("baseline_objective"),
             "final_objective": search_result.get("final_objective"),
             "absolute_improvement": search_result.get("improvement"),
-            "relative_improvement": search_result.get("relative_improvement"),
+            "relative_improvement": (
+                search_result.get("improvement") / search_result["baseline_objective"]
+                if search_result.get("improvement") is not None
+                and search_result.get("baseline_objective")
+                else None
+            ),
             "termination_reason": search_result.get("termination_reason"),
             "accepted_moves": search_result.get("accepted_moves", []),
             "selected_candidates": selected,
@@ -239,7 +249,7 @@ def compact_summary(
         "audit": {
             "semantic_digest": audit.get("semantic_digest"),
             "per_query_sha256": audit.get("per_query_sha256"),
-            "record_count": audit.get("record_count"),
+            "record_count": audit.get("predicate_diagnostics", {}).get("query_count"),
             "distributions": audit.get("distributions"),
             "classification": audit.get("classification"),
             "tail_queries": audit.get("tail_queries"),
