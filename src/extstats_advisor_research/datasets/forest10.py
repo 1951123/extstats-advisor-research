@@ -307,11 +307,7 @@ def extract_workload(
         "queries": [
             {
                 "query_id": f"arecel_forest10_test_{record['source_index']:06d}",
-                "source_index": record["source_index"],
-                "source_query_id": record["source_query_id"],
-                "original_sql": record["original_sql"],
                 "sql": record["sql"],
-                "truth": record["truth"],
                 "weight": 1.0,
             }
             for record in records

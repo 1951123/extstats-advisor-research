@@ -89,3 +89,12 @@ def test_paper_reference_comparison_is_external_and_explicit() -> None:
     assert QERROR_CONTRACT == "qerror-cardinality-floor-1-v1"
     with pytest.raises(ValueError, match="credentials"):
         reject_credentials({"dsn": "postgresql://secret"})
+
+
+def test_forest_workload_projection_excludes_truth_fields(tmp_path) -> None:
+    result = forest10.extract_workload(tmp_path / "workload.json")
+    assert result["query_count"] == 10_000
+    import json
+
+    workload = json.loads((tmp_path / "workload.json").read_text(encoding="utf-8"))
+    assert set(workload["queries"][0]) == {"query_id", "sql", "weight"}
