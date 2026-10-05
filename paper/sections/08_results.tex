@@ -1,0 +1,60 @@
+\section{Results Plan}
+
+This section is deliberately a results scaffold. The repository contains pilot
+artifacts, not a final set of paper numbers. Each subsection states the claim
+that a completed experiment may support and the artifact that must be attached
+before that claim is written.
+
+\subsection{RQ1: effectiveness}
+\textbf{Intended claim.} Workload-optimized native statistics can reduce
+cardinality-estimation error on some benchmark workloads relative to stock and
+simple baselines.
+
+\textbf{Required evidence.} A per-query result table bound to immutable
+manifests, plus a distribution plot of q-error and a table of mean, quantiles,
+maximum, and query outcome counts.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.86\columnwidth}{\centering RQ1 q-error distributions and baseline comparison\par\vspace{0.3em}\small TODO: render from confirmatory derived artifacts}}
+\caption{Planned RQ1 figure; no values are supplied in this framework.}
+\end{figure}
+% TODO(PAPER-RQ1): regenerate final RQ1 metrics from immutable artifacts.
+% TODO(PAPER-LITERATURE): document exact comparability limits for learned-CE context.
+
+\subsection{RQ2: sample-to-full-data transfer}
+\textbf{Intended claim.} A design selected on a fixed sample can retain benefit
+after native payloads are independently recomputed on full data, subject to
+measured transfer error.
+
+\textbf{Required evidence.} Paired P0/P1/P2 per-query results, ordinary-stat
+fingerprints, deployment verification, and the source Recommendation digest.
+% TODO(PAPER-RQ2): insert P0/P1/P2 transfer table and paired query analysis.
+
+\subsection{RQ3: fidelity}
+\textbf{Intended claim.} The isolated planner sandbox is a useful predictor
+only to the extent demonstrated by hypothetical-versus-physical plan and
+utility comparisons.
+% TODO(PAPER-RQ3): insert hypothetical-vs-physical fidelity experiment.
+% TODO(PAPER-RQ3): quantify the relationship between sample utility and full-data utility.
+
+\subsection{RQ4: ablation and advisor necessity}
+\textbf{Intended claim.} Planner-in-the-loop search contributes measurable
+value beyond low-cost selection rules on the tested candidate universes; the
+result need not imply global optimality.
+% TODO(PAPER-RQ4): insert heuristic, greedy, and tiny-universe exhaustive-search table.
+
+\subsection{RQ5: practicality}
+\textbf{Intended claim.} The operational cost of offline capture, native
+statistics construction, sandbox search, and deployment is measurable and
+should be considered alongside accuracy.
+% TODO(PAPER-RQ5): insert cost breakdown, storage, refresh, and planning-overhead figures.
+
+\subsection{Pilot evidence ledger}
+
+The current pilot ledger includes Census13, Forest10, Power7, and DMV11
+artifacts under \texttt{experiments/} and \texttt{paper-baselines/}. The DMV11 full-data
+transfer artifact is especially useful for validating the P0/P1/P2 schema, but
+it remains preliminary evidence until the paper's confirmatory protocol is
+completed.
+% TODO(PAPER-PILOT): link each figure/table to a compact derived artifact digest.

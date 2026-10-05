@@ -1,0 +1,36 @@
+\section{Discussion and Limitations}
+
+This study has several boundaries. First, the current benchmark lineage is
+primarily single-table. The architecture does not establish behavior for
+joins, partitioned inheritance, or all expression-statistics cases. Second,
+the what-if substrate is PostgreSQL-specific and currently supports only the
+native MCV and functional-dependency payload paths described in
+Section~5.
+
+Third, not every query improves. Benefits depend on workload predicates,
+statistics target, sample representativeness, and the planner's native
+combination rules. A sample-selected design can become stale under data or
+workload drift, and the current search provides no guarantee of a globally
+optimal configuration. Candidate limits and search budgets are therefore
+experimental variables, not universal defaults.
+
+Fourth, literature comparisons with learned cardinality estimators are not
+necessarily apples-to-apples: systems, workload generation, data snapshots,
+truth production, and metric definitions can differ. The Are We Ready results
+are useful context and benchmark lineage, not a substitute for matched
+experiments.
+
+Fifth, production-compatible deployment does not by itself establish
+production readiness. The add-only contract deliberately leaves arbitrary
+existing extended statistics outside advisor ownership. The DBA must decide
+whether such objects remain, are removed, are replaced, or coexist. The
+optimizer evaluated $M^*$, not necessarily
+$E_{\mathrm{existing}}\cup M^*$, so the SearchResult objective is not a
+guarantee for the combined state.
+
+Finally, the final \texttt{ANALYZE} needed by a non-empty recommendation can
+rebuild ordinary statistics and externally managed extended-statistics payloads
+on the same relation. That is an operational effect to measure and disclose,
+not evidence that the advisor owns those external objects. These limitations
+motivate the fidelity, practicality, drift, and reconciliation follow-up work
+listed in the experiment plan.

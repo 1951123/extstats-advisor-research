@@ -1,0 +1,44 @@
+\documentclass[sigconf,nonacm]{acmart}
+
+% Keep the official VLDB Proceedings layout supplied by VLDB-Template.
+\usepackage{pvldb}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xspace}
+
+\newcommand{\advisor}{\textsc{ExtStats Advisor}\xspace}
+\newcommand{\qerror}{q-error\xspace}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO:} #1}}
+
+\renewcommand\vldbdoi{XX.XX/XXX.XX}
+\renewcommand\vldbpages{XXX--XXX}
+\renewcommand\vldbavailabilityurl{https://github.com/1951123/extstats-advisor-research}
+
+\title{How Far Can Native Statistics Take Cardinality Estimation?}
+\author{Anonymous Authors}
+\affiliation{\institution{Under review}}
+
+\begin{abstract}
+Cardinality estimation errors remain a source of poor query plans, while replacing a database system's estimator introduces operational, maintenance, and trust costs.  This paper investigates a narrower question: how much estimation accuracy can be recovered by automatically designing the native multivariate statistics already consumed by PostgreSQL's planner?  \advisor uses a portable fixed sample and workload snapshot, evaluates catalogless hypothetical native statistics in an isolated patched PostgreSQL planner, and emits a DBA-reviewable recommendation that deploys through stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}.  We study the resulting accuracy, sample-to-full-data transfer, hypothetical-to-physical fidelity, search ablations, and operational cost on an audited single-table benchmark lineage.  The paper treats the current evidence as pilot evidence until each result is regenerated from immutable artifacts; it does not claim a new cardinality estimator or a globally optimal statistics configuration.
+\end{abstract}
+
+\maketitle
+\vldbtopmatter
+
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_problem_formulation}
+\input{sections/04_architecture}
+\input{sections/05_hypothetical_extstats}
+\input{sections/06_advisor_design}
+\input{sections/07_evaluation_methodology}
+\input{sections/08_results}
+\input{sections/09_discussion}
+\input{sections/10_related_work}
+\input{sections/11_conclusion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

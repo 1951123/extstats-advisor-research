@@ -1,0 +1,73 @@
+\section{Evaluation Methodology}
+
+\subsection{Benchmarks and provenance}
+
+The initial study follows the AreCELearnedYet single-table benchmark lineage
+and currently includes Census13, Forest10, Power7, and DMV11. Dataset adapters
+validate source archive and content hashes, construct typed PostgreSQL tables,
+and extract audited workloads. DMV11 uses authoritative external exact truth;
+ordinary capture does not manufacture truth. The benchmark data root is
+selected through \texttt{EXTSTATS\_RESEARCH\_DATA\_ROOT}, so an absolute local
+path is not part of semantic run identity.
+
+Every canonical RunManifest records the research repository and committed
+research SHA, advisor repository and SHA, patched PostgreSQL repository and
+SHA, stock PostgreSQL version or commit, dataset and workload identity, sample
+rows and seed, statistics target, candidate limit, search budget, and relevant
+experiment parameters. Canonical runs require a clean research working tree;
+uncommitted experiment provenance is invalid.
+
+\subsection{System roles and sample policy}
+
+Stock PostgreSQL is the baseline and deployment target. The patched tree is
+used only for design-time catalogless planner evaluation. A fixed typed sample
+is created once per canonical run; native payloads are independently rebuilt on
+the full database for transfer experiments. Ordinary statistics target,
+sampling parameters, and relation population are held fixed within each
+comparison.
+
+\subsection{Metrics and comparisons}
+
+RQ1 compares stock PostgreSQL 16, a high-statistics-target baseline, simple
+selection heuristics, and \advisor. It reports arithmetic mean \,q-error,
+p50, p95, p99, maximum, and improved/unchanged/worsened counts. Published
+learned-CE results from \cite{Wang2021AreWeReady} are a clearly labeled
+literature/contextual reference, not a head-to-head experiment under identical
+systems and workloads. A gap-closure metric is reported only if the metric and
+workload correspondence can be demonstrated.
+
+RQ2 uses the existing full-data transfer protocol. P0 is a fresh full-data
+baseline before deployment. P1 deploys the immutable Recommendation and runs
+the final \texttt{ANALYZE}. P2 preserves the same ordinary-statistics state,
+removes exactly the advisor-managed objects in a research-only transaction,
+measures without \texttt{ANALYZE}, and rolls back. P1/P2 ordinary-statistics
+fingerprints are expected to match; P0 can differ because deployment's final
+\texttt{ANALYZE} refreshes the relation.
+
+RQ3 compares hypothetical plans with physical deployment plans and relates
+sample-sandbox utility to full-data deployment utility. RQ4 compares random-k,
+workload-frequency top-k, dependency/correlation top-k, singleton-utility
+top-k, greedy ADD, and exhaustive search on tiny candidate universes. RQ5
+measures snapshot time and size, sample size, native construction, candidate
+profiling, search time and planner evaluations, deployment DDL/\texttt{ANALYZE},
+storage, planning-time change, and refresh cost. We do not claim zero online
+overhead; the narrower statement is that no separate learned-model inference
+path is added to production query processing.
+
+\subsection{Preliminary versus confirmatory evidence}
+
+Existing Census13, Forest10, Power7, and DMV11 runs are pilot/preliminary
+evidence that the end-to-end pipeline and full-data validation path work. The
+paper will only promote a result to a final claim when its immutable raw and
+derived artifacts, manifest, and source identities pass the repository audit.
+The current results section therefore defines schemas and TODOs rather than
+inventing values.
+
+\subsection{Reproducibility}
+
+The research harness stores compact derived evidence while referring to large
+immutable bundles by run ID and digest. Reproduction starts from a clean
+committed research SHA, verifies advisor and PostgreSQL identities, reconstructs
+the frozen input artifacts, and reruns the declared experiment command. The
+paper's companion experiment plan is the specification for the missing
+confirmatory runs.

@@ -1,0 +1,55 @@
+\section{System Architecture}
+
+Figure~\ref{fig:architecture} is a source-level view of the workflow. The
+research harness orchestrates the stages but does not reimplement advisor
+semantics; the production advisor is invoked through its public interfaces.
+
+\begin{figure}[t]
+  \centering
+  \fbox{\parbox{0.92\columnwidth}{\centering
+  production capture $\rightarrow$ portable snapshot $\rightarrow$ fixed
+  sample $\rightarrow$ native payloads $\rightarrow$ isolated patched
+  planner $\rightarrow$ search $\rightarrow$ recommendation $\rightarrow$
+  stock deployment}}
+  \caption{The design-time and deployment-time boundary. The final two
+  stages are not a second planner runtime in production.}
+  \label{fig:architecture}
+\end{figure}
+
+\subsection{Capture and snapshot}
+
+Production capture records an \texttt{AdvisorSnapshot}: schema identity,
+relation identity, ordinary-statistics state, a portable fixed sample, and the
+workload representation. The capture transaction is read-only and uses an
+explicit repeatable-read acquisition transaction. Truth objects are not
+introduced into ordinary capture. The research adapter separately validates
+the audited benchmark source and exact external ground truth.
+
+\subsection{Sample database and native materialization}
+
+The typed sample is loaded into a sample database with the same relevant schema
+and ordinary-statistics policy. Candidate native statistics are materialized
+using PostgreSQL's own \texttt{ANALYZE} machinery. Their serialized MCV or
+dependency payloads are then available to the planner sandbox. This avoids
+passing a dataframe or an external estimator into the optimizer.
+
+\subsection{Sandbox, search, and recommendation}
+
+The patched PostgreSQL backend maintains a backend-local repository of
+hypothetical definitions and payloads. The advisor activates one ordered
+configuration at a time, evaluates workload plans, and runs bounded greedy
+ADD search over the frozen candidate universe. The resulting Recommendation
+contains native deployment statements and the order derived from the frozen
+singleton precedence profile.
+
+\subsection{Stock deployment and ownership}
+
+Deployment uses stock PostgreSQL \texttt{CREATE STATISTICS} followed by one
+final \texttt{ANALYZE ``schema'' . ``relation'';} for a non-empty
+recommendation. This refreshes ordinary relation statistics, builds the new
+advisor-managed objects, and may also rebuild payloads for externally managed
+objects on the same relation. It does not transfer ownership of those
+objects. Existing production extstats are outside advisor ownership; the
+advisor neither models the complete set nor performs reconciliation or garbage
+collection. This is a production-oriented, DBA-controlled contract rather than
+a claim of production readiness.

@@ -1,0 +1,52 @@
+\section{Background}
+
+\subsection{Cardinality estimation and native statistics}
+
+The stock PostgreSQL planner combines relation-level information, per-column
+statistics, and multivariate statistics to estimate predicate selectivities.
+When predicates refer to correlated columns, multiplying independent
+selectivities can be a poor approximation. PostgreSQL's extended statistics
+objects provide a native representation for selected column groups; the
+catalog definition and the data produced by \texttt{ANALYZE} are separate
+pieces of state \cite{PostgreSQL16Docs,PostgreSQL18Catalog}. The system under
+study uses the MCV and functional-dependency kinds supported by the patched
+what-if path.
+
+Creating a statistics object is not the same as knowing that it is useful.
+The object has to cover workload predicates, be built at an adequate target,
+and interact with the planner's selection and combination rules. Enumerating
+all column groups is infeasible for realistic schemas, so the advisor freezes a
+candidate universe and treats selection as a bounded design problem.
+
+\subsection{What-if design and operational separation}
+
+Hypothetical indexes have long illustrated the value of asking a planner what
+it would do if a physical object existed, without paying the full build cost;
+HypoPG is a PostgreSQL example \cite{HypoPG}. The present system applies a
+related idea to native extended-statistics payloads. Its hypothetical objects
+are backend-local and are consumed by the same planner selectivity paths,
+while deployment remains ordinary PostgreSQL DDL.
+
+The separation is important for operational reasons. The optimizer explores
+on a controlled sample and workload snapshot; deployment operates on the
+production population and can be reviewed by a DBA. The deployment contract
+is add-only with respect to advisor ownership. In particular, an arbitrary
+existing production statistics object does not make preflight fail, but a
+deterministic-name collision with a current recommendation is fail-closed.
+
+\subsection{Research questions}
+
+We organize the study around five questions:
+
+\begin{description}
+  \item[RQ1 (effectiveness)] How much cardinality-estimation error can
+  workload-optimized native extended statistics eliminate?
+  \item[RQ2 (transfer)] Do designs optimized on a fixed sample retain their
+  benefits when native payloads are independently recomputed on full data?
+  \item[RQ3 (fidelity)] Can the isolated sandbox predict the behavior of the
+  deployable physical design?
+  \item[RQ4 (necessity)] What does planner-in-the-loop search contribute beyond
+  simple statistics-selection heuristics?
+  \item[RQ5 (practicality)] What operational cost is paid for the obtained
+  improvement?
+\end{description}

@@ -1,0 +1,38 @@
+\section{Advisor Design}
+
+The execution advisor is intentionally decomposed into frozen artifacts so
+that a run can be audited independently of later analysis.
+
+\subsection{Candidate generation and profiling}
+
+Candidate generation extracts relevant relation and attribute groups from the
+workload and schema, then applies the configured candidate-row bound. Each
+candidate is represented as a native statistics design rather than as a
+feature vector for a learned model. Profiling builds or loads its sample-side
+native payload and measures its planner effect in isolation. The
+\texttt{SingletonProfile} freezes the global precedence relation used later by
+recommendations.
+
+\subsection{Planner objective and search}
+
+For an active configuration, the sandbox runs the workload through PostgreSQL
+planning and extracts planner row estimates. The optimization plan records the
+workload, objective, candidate limit, and time/evaluation constraints. The
+current search starts with an empty membership and repeatedly accepts the best
+improving candidate under the configured budget. SearchResult records selected
+membership, objective values, and the accepted-move trace.
+
+The search algorithm is intentionally simple; algorithmic novelty is not the
+primary contribution. Its value in this study is that it provides a
+transparent planner-in-the-loop reference against which inexpensive
+heuristics and tiny-universe exhaustive search can be compared.
+
+\subsection{Recommendation}
+
+Recommendation generation maps $M^*$ to native SQL statements and orders them
+using $D=F|_{M^*}$, not the order in which greedy moves happened to be
+accepted. For non-empty deployment, the final statement is one quoted
+\texttt{ANALYZE} for the affected relation. Deterministic-name collisions
+with a current recommendation remain fail-closed; \texttt{IF NOT EXISTS} is
+not used to hide them. Existing unrelated extended statistics are not
+reconciled or removed.

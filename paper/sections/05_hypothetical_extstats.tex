@@ -1,0 +1,54 @@
+\section{Catalogless Hypothetical Extended Statistics}
+
+\subsection{Backend-local representation}
+
+The patched source implements a backend-local overlay in
+\texttt{src/backend/statistics/hypothetical.c}. Repository entries are keyed
+by a synthetic statistics OID and native kind. They retain the relation OID,
+serialized payload, optional attribute bitmap, candidate identifier, and flags
+for a virtual definition or an intentionally absent native payload. The
+repository and active design live in PostgreSQL memory contexts below
+\texttt{TopMemoryContext}; reset deletes this state. It is therefore local to
+the backend session and does not create a persistent catalog object.
+
+Catalogless definitions are registered with a candidate identifier, relation,
+kind, attribute keys, and a serialized native payload. The implementation
+derives a virtual OID from the relation, kind, and candidate identity, sets a
+backend-local marker bit, and performs collision hygiene against the real
+statistics catalog. Planner resolution of that virtual identity does not
+consult \texttt{pg\_statistic\_ext}. The payload is deserialized on
+registration, so malformed native bytes fail before planning.
+
+The supported hypothetical kinds in this revision are multivariate MCV
+(``m'') and functional dependencies (``f''). The source deliberately rejects
+other kinds. A candidate may also register an absent-native realization: it
+has definition metadata but no payload, allowing the baseline behavior for a
+candidate to be represented without creating an object.
+
+\subsection{Activation and planner precedence}
+
+The SQL activation function validates that every OID is registered, rejects
+duplicates, and atomically replaces the active hash table and ordered OID
+array. An empty active list is the ordinary baseline. The planner first
+filters and reorders relation statistics through the overlay. Active virtual
+definitions carry their keys directly and bypass a catalog lookup; ordinary
+catalog OIDs not registered in the overlay remain in the list. This preserves
+unrelated physical statistics while making the selected configuration visible.
+
+At payload load time, the MCV and dependency loaders first ask the overlay for
+an active backend-local payload. If one is present, it is deserialized using
+the native PostgreSQL format. If an active kind is explicitly absent, the
+loader returns no statistic. Otherwise the normal
+\texttt{pg\_statistic\_ext\_data} lookup runs. The subsequent MCV and
+functional-dependency selectivity routines are PostgreSQL's planner paths, not
+a second estimator.
+
+\subsection{What this primitive does and does not establish}
+
+The regression test in the patched source creates physical seed statistics
+only to obtain native payloads, drops the seed object, registers virtual
+definitions, switches active configurations, and verifies that an unrelated
+physical object survives reset. This establishes the what-if primitive and
+its backend-local isolation. It does not establish that every PostgreSQL
+statistics kind, inheritance mode, expression statistic, or workload shape is
+supported. Those are limitations and fidelity questions for evaluation.

@@ -1,0 +1,52 @@
+\section{Problem Formulation}
+
+We model one captured database relation and its workload. Let $\Sigma$ be the
+portable typed schema and $P$ the production population represented by that
+schema. A fixed sample $S$ is drawn and materialized independently of the
+optimizer; it is not a source of query truth. Let $W=\{q_i\}_{i=1}^{n}$ be the
+audited workload and let $y_i=|q_i(P)|$ be the exact cardinality supplied by
+the benchmark's ground-truth protocol when available.
+
+The candidate universe $C$ is a frozen finite set of native statistics
+designs derived from $\Sigma$ and predicate structure in $W$. Each candidate
+records the relation, ordered attribute keys, supported native kind, and a
+sample-built payload. A configuration $M\subseteq C$ is a set of selected
+candidates subject to a candidate-row bound and search budget. The planner
+evaluates $W$ under the active configuration and returns estimated
+cardinalities $\hat y_i(M)$.
+
+For a query with positive exact cardinality, the primary error is
+\[
+ q_i(M)=\max\left(\frac{\hat y_i(M)}{y_i},
+                         \frac{y_i}{\hat y_i(M)}\right),
+\]
+with the implementation's zero-handling policy recorded in the run manifest.
+The main aggregate objective is the arithmetic mean of query-level q-error;
+the report also includes p50, p95, p99, maximum, and improved, unchanged, and
+worsened query counts. When the ground truth is not available, the planner
+objective is still measurable, but it is not relabeled as cardinality
+accuracy.
+
+The search budget $B$ bounds candidate profiling, planner evaluations, and
+configuration size according to the execution advisor's frozen plan. The
+search returns a \texttt{SearchResult} with selected membership $M^*$. A
+separate frozen \texttt{SingletonProfile} supplies global precedence $F$, so
+the deployable recommendation order is
+\[
+ D = F\mathbin{|}_{M^*}.
+\]
+The accepted greedy move order is evidence about search, not deployment order.
+
+The distinction between membership and deployment order matters when physical
+objects are interleaved with externally managed statistics. If the advisor
+recommends $[A,B,C]$, a production catalog containing
+$[\text{existing\_X},A,\text{existing\_Y},B,C]$ is valid as long as the
+advisor-managed objects preserve $\operatorname{OID}(A)<
+\operatorname{OID}(B)<\operatorname{OID}(C)$. The advisor does not require
+the complete production extstats set to equal the recommendation.
+
+The objective is consequently scoped. The optimizer evaluated $M^*$, not
+necessarily $E_{\mathrm{existing}}\cup M^*$. When externally managed
+statistics coexist, the SearchResult objective must not be presented as a
+guaranteed objective for that combined production state. Reconciliation is a
+DBA decision and is outside the advisor model.

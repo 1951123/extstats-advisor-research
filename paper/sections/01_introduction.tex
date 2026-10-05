@@ -1,0 +1,69 @@
+\section{Introduction}
+
+Cardinality estimation is a small interface with system-wide consequences. A
+query optimizer uses estimated result sizes to compare access paths, join
+orders, and operator implementations; an estimate that is wrong by orders of
+magnitude can therefore induce a bad plan even when the execution engine is
+otherwise sound \cite{Leis2015HowGood}. PostgreSQL's ordinary statistics are
+deliberately compact and are usually maintained per column. They consequently
+cannot represent every cross-column correlation that appears in a workload.
+
+Learned cardinality estimators have shown that this accuracy gap can be
+substantial. The Are We Ready study also makes clear that accuracy is only one
+part of the deployment question: training or update cost, inference cost,
+staleness, interpretability, and behavior under changing data all matter
+\cite{Wang2021AreWeReady}. This paper does not argue that learned estimators
+are unsuitable for production. Instead, it asks whether a less disruptive
+intervention can recover useful accuracy before the estimator itself is
+replaced.
+
+\emph{How far can native statistics take cardinality estimation?} More
+precisely, instead of replacing PostgreSQL's cardinality estimator, we
+investigate how much accuracy can be recovered by automatically designing the
+native extended statistics that the deployed estimator already understands.
+PostgreSQL supports multivariate statistics for correlations and functional
+dependencies, but deciding which column groups to create, how to prioritize
+them, and how to validate their benefit remains a physical and statistical
+design problem \cite{PostgreSQL16Docs}.
+
+\advisor approaches this problem as an offline, planner-in-the-loop workflow.
+It freezes a portable schema, a fixed typed sample, and a workload snapshot;
+constructs native statistics on the sample; evaluates catalogless hypothetical
+native statistics in an isolated patched PostgreSQL planner; searches under a
+bounded budget; and emits a DBA-reviewable recommendation that can be deployed
+using stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. The
+patched server is a design-time what-if substrate, not a required production
+runtime. We use the phrase ``patched at design time, stock at deployment time''
+as a working description of this separation, not as a claim that the workflow
+is already production-ready.
+
+The research focus is not a new cardinality estimator, a first statistics
+advisor, or a novel greedy algorithm. The contribution is the combination of
+five testable system and empirical questions:
+
+\begin{itemize}
+  \item a catalogless what-if substrate for PostgreSQL native MCV and
+  functional-dependency payloads;
+  \item a production-oriented architecture that isolates exploration and
+  preserves a stock, DBA-controlled deployment path;
+  \item a sample-to-full-data transfer protocol that separates design on a
+  fixed sample from independent native-statistics recomputation on full data;
+  \item an empirical study on the AreCELearnedYet benchmark lineage that
+  revisits how much of the reported learned-CE gap native statistics can
+  address; and
+  \item an explicit evaluation of fidelity, ablations, and operational cost,
+  rather than accuracy alone.
+\end{itemize}
+
+The central claims are intentionally conditional. A recommendation optimizes
+the evaluated membership, not necessarily the union of that membership with
+arbitrary externally managed production statistics. Existing production
+extended statistics remain outside advisor ownership: the advisor does not
+silently drop, rename, replace, or reconcile them. A DBA decides whether such
+objects remain, are removed, are replaced, or coexist. Likewise, current
+Census13, Forest10, Power7, and DMV11 evidence is pilot or preliminary until
+the corresponding immutable artifacts are regenerated and audited.
+
+The rest of the paper defines the design problem, describes the architecture
+and PostgreSQL extension, gives an evaluation protocol for five research
+questions, and records the result schema without manufacturing final numbers.

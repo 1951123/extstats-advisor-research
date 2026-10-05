@@ -1,0 +1,51 @@
+# VLDB manuscript
+
+This directory contains the working manuscript for the `extstats-advisor-research`
+repository.  It is a source document, not a copy of benchmark data or a second
+experiment harness.  The sections refer to the versioned research artifacts in
+`experiments/`, `paper-baselines/`, `docs/`, and the production advisor and
+patched PostgreSQL revisions recorded in each RunManifest.
+
+## Template
+
+The manuscript uses the official `vldbproceedings/VLDB-Template` revision
+`39c95f5c6fcbe652a83be24e4eff8f2134cd3fbc` (`Update main.tex`, 2026-10-02).
+The copied files are `acmart.cls`, `pvldb.sty`, and
+`ACM-Reference-Format.bst`.  The template's formatting files should not be
+edited as part of ordinary paper writing.
+
+## Build
+
+From this directory, if `latexmk` is installed:
+
+```bash
+latexmk -pdf main.tex
+```
+
+The equivalent template-documented sequence is:
+
+```bash
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+```
+
+Build outputs are ignored by `paper/.gitignore`; do not commit PDFs, logs, or
+auxiliary files.  Replace the anonymous author and placeholder VLDB metadata
+before submission.
+
+## Evidence discipline
+
+The Census13, Forest10, Power7, and DMV11 materials currently provide pilot or
+preliminary evidence.  A paper result becomes confirmatory only when its raw
+artifact, derived artifact, manifest, and source commits can be traced without
+ambiguity.  The research harness requires a clean committed research tree for
+canonical runs and records the research, advisor, patched PostgreSQL, stock
+PostgreSQL, dataset/workload, and experiment-parameter identities.
+
+The production deployment contract is add-only: existing externally managed
+extended statistics are outside advisor ownership.  The advisor does not model,
+reconcile, drop, rename, or replace those objects.  A recommendation describes
+the selected membership and required relative ordering of advisor-managed
+objects; it is not a claim that a production catalog must equal that set.

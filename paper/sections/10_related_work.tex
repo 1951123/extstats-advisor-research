@@ -1,0 +1,28 @@
+\section{Related Work}
+
+Automatic statistics management predates learned cardinality estimation.
+Chaudhuri and Narasayya studied cost-driven automation of the statistics set
+needed by a query optimizer \cite{ChaudhuriNarasayya2001}. CORDS discovers
+correlations and soft functional dependencies through sampling and uses them
+to guide column-group statistics \cite{Ilyas2004CORDS}. Our goal is related,
+but the what-if evaluation is performed by PostgreSQL's native planner and the
+deployment artifact is explicitly a stock PostgreSQL recommendation.
+
+DB2 LEO closes a feedback loop around optimizer mistakes and learned
+information \cite{Stillger2001LEO}. Query-feedback dependency detection is a
+nearby line of work, but the exact primary citation and the comparison protocol
+must be pinned before submission \cite{QueryFeedbackDependency}. The present
+study instead freezes an offline workload snapshot and evaluates native
+statistics designs without adding an online feedback estimator.
+
+PostgreSQL's extended-statistics documentation describes the native catalog
+objects, MCV lists, and functional dependencies that motivate this work
+\cite{PostgreSQL16Docs,PostgreSQL18Catalog}. HypoPG demonstrates a practical
+PostgreSQL what-if mechanism for hypothetical indexes \cite{HypoPG}; our
+patched substrate targets statistics payloads and planner selectivity paths,
+not indexes. EDB Query Advisor provides a software precedent for PostgreSQL
+statistics recommendations and explicitly explores column combinations
+\cite{EDBQueryAdvisor}. These precedents reinforce why a statistics advisor
+alone is not the novelty claim here. The research question is whether a
+catalogless native-statistics substrate, a production-oriented boundary, and a
+sample-to-full-data protocol provide useful empirical leverage.
