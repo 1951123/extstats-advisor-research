@@ -1,0 +1,847 @@
+{
+  "dataset": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "audit_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/audit-v1",
+    "benchmark_id": "arecel-forest10",
+    "columns": [
+      {
+        "name": "elevation",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "aspect",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "slope",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "horizontal_distance_to_hydrology",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "vertical_distance_to_hydrology",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "horizontal_distance_to_roadways",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "hillshade_9am",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "hillshade_noon",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "hillshade_3pm",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "horizontal_distance_to_fire_points",
+        "postgres_type": "DOUBLE PRECISION"
+      }
+    ],
+    "data_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/raw/data/forest10",
+    "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "expected_rows": 581012,
+    "null_audit": {
+      "all_columns_null_free": true,
+      "source_csv_null_counts": {
+        "Aspect": 0,
+        "Elevation": 0,
+        "Hillshade_3pm": 0,
+        "Hillshade_9am": 0,
+        "Hillshade_Noon": 0,
+        "Horizontal_Distance_To_Fire_Points": 0,
+        "Horizontal_Distance_To_Hydrology": 0,
+        "Horizontal_Distance_To_Roadways": 0,
+        "Slope": 0,
+        "Vertical_Distance_To_Hydrology": 0
+      },
+      "upstream_not_null_constraint": false
+    },
+    "observed_rows": 581012,
+    "relation": "public.forest10",
+    "schema_contract": {
+      "columns": [
+        {
+          "name": "elevation",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "aspect",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "slope",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "horizontal_distance_to_hydrology",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "vertical_distance_to_hydrology",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "horizontal_distance_to_roadways",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "hillshade_9am",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "hillshade_noon",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "hillshade_3pm",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "horizontal_distance_to_fire_points",
+          "postgres_type": "DOUBLE PRECISION"
+        }
+      ],
+      "id": "arecel-forest10-postgres-schema-v1",
+      "identifier_contract": "unquoted-upstream-ddl-folds-to-lowercase-catalog-names",
+      "not_null": false,
+      "relation": "public.forest10"
+    },
+    "source_file_sha256": {
+      "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+      "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+      "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+    },
+    "source_present": true,
+    "source_relation": "\"forest10_original\"",
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "upstream_url": "https://github.com/sfu-db/AreCELearnedYet",
+    "workload_splits": {
+      "test": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Aspect": 5530,
+          "Elevation": 5572,
+          "Hillshade_3pm": 5611,
+          "Hillshade_9am": 5514,
+          "Hillshade_Noon": 5509,
+          "Horizontal_Distance_To_Fire_Points": 5529,
+          "Horizontal_Distance_To_Hydrology": 5476,
+          "Horizontal_Distance_To_Roadways": 5525,
+          "Slope": 5546,
+          "Vertical_Distance_To_Hydrology": 5537
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 580990,
+          "mean": 64954.2867,
+          "median": 2184.0,
+          "min": 0,
+          "q25": 11.0,
+          "q75": 50013.75
+        },
+        "label_selectivity": {
+          "max": 0.9999621350333556,
+          "mean": 0.11179508633212394,
+          "median": 0.003758958506881097,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 9127,
+          ">=": 7190,
+          "[]": 39032
+        },
+        "pair_occurrence_counts": {
+          "Aspect__Elevation": 3680,
+          "Aspect__Hillshade_3pm": 3723,
+          "Aspect__Hillshade_9am": 3684,
+          "Aspect__Hillshade_Noon": 3670,
+          "Aspect__Horizontal_Distance_To_Fire_Points": 3698,
+          "Aspect__Horizontal_Distance_To_Hydrology": 3699,
+          "Aspect__Horizontal_Distance_To_Roadways": 3680,
+          "Aspect__Slope": 3691,
+          "Aspect__Vertical_Distance_To_Hydrology": 3692,
+          "Elevation__Hillshade_3pm": 3777,
+          "Elevation__Hillshade_9am": 3719,
+          "Elevation__Hillshade_Noon": 3707,
+          "Elevation__Horizontal_Distance_To_Fire_Points": 3690,
+          "Elevation__Horizontal_Distance_To_Hydrology": 3724,
+          "Elevation__Horizontal_Distance_To_Roadways": 3734,
+          "Elevation__Slope": 3716,
+          "Elevation__Vertical_Distance_To_Hydrology": 3715,
+          "Hillshade_3pm__Hillshade_9am": 3718,
+          "Hillshade_3pm__Hillshade_Noon": 3743,
+          "Hillshade_3pm__Horizontal_Distance_To_Fire_Points": 3743,
+          "Hillshade_3pm__Horizontal_Distance_To_Hydrology": 3704,
+          "Hillshade_3pm__Horizontal_Distance_To_Roadways": 3711,
+          "Hillshade_3pm__Slope": 3748,
+          "Hillshade_3pm__Vertical_Distance_To_Hydrology": 3766,
+          "Hillshade_9am__Hillshade_Noon": 3682,
+          "Hillshade_9am__Horizontal_Distance_To_Fire_Points": 3672,
+          "Hillshade_9am__Horizontal_Distance_To_Hydrology": 3644,
+          "Hillshade_9am__Horizontal_Distance_To_Roadways": 3711,
+          "Hillshade_9am__Slope": 3689,
+          "Hillshade_9am__Vertical_Distance_To_Hydrology": 3656,
+          "Hillshade_Noon__Horizontal_Distance_To_Fire_Points": 3669,
+          "Hillshade_Noon__Horizontal_Distance_To_Hydrology": 3651,
+          "Hillshade_Noon__Horizontal_Distance_To_Roadways": 3679,
+          "Hillshade_Noon__Slope": 3659,
+          "Hillshade_Noon__Vertical_Distance_To_Hydrology": 3710,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Hydrology": 3698,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Roadways": 3687,
+          "Horizontal_Distance_To_Fire_Points__Slope": 3644,
+          "Horizontal_Distance_To_Fire_Points__Vertical_Distance_To_Hydrology": 3698,
+          "Horizontal_Distance_To_Hydrology__Horizontal_Distance_To_Roadways": 3651,
+          "Horizontal_Distance_To_Hydrology__Slope": 3720,
+          "Horizontal_Distance_To_Hydrology__Vertical_Distance_To_Hydrology": 3653,
+          "Horizontal_Distance_To_Roadways__Slope": 3669,
+          "Horizontal_Distance_To_Roadways__Vertical_Distance_To_Hydrology": 3705,
+          "Slope__Vertical_Distance_To_Hydrology": 3699
+        },
+        "predicate_count": {
+          "max": 10,
+          "mean": 5.5349,
+          "median": 6.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 8.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 45,
+        "unique_query_count": 10000,
+        "zero_predicate_queries": 0
+      },
+      "train": {
+        "canonical_sql_count": 100000,
+        "column_predicate_counts": {
+          "Aspect": 54728,
+          "Elevation": 54961,
+          "Hillshade_3pm": 54689,
+          "Hillshade_9am": 55059,
+          "Hillshade_Noon": 54951,
+          "Horizontal_Distance_To_Fire_Points": 54766,
+          "Horizontal_Distance_To_Hydrology": 54869,
+          "Horizontal_Distance_To_Roadways": 54859,
+          "Slope": 54802,
+          "Vertical_Distance_To_Hydrology": 54847
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 581007,
+          "mean": 67269.29431,
+          "median": 2670.0,
+          "min": 0,
+          "q25": 14.0,
+          "q75": 55341.75
+        },
+        "label_selectivity": {
+          "max": 0.9999913943257627,
+          "mean": 0.1157795266018602,
+          "median": 0.00459543004275299,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 92180,
+          ">=": 72065,
+          "[]": 384286
+        },
+        "pair_occurrence_counts": {
+          "Aspect__Elevation": 36403,
+          "Aspect__Hillshade_3pm": 36181,
+          "Aspect__Hillshade_9am": 36532,
+          "Aspect__Hillshade_Noon": 36361,
+          "Aspect__Horizontal_Distance_To_Fire_Points": 36355,
+          "Aspect__Horizontal_Distance_To_Hydrology": 36411,
+          "Aspect__Horizontal_Distance_To_Roadways": 36257,
+          "Aspect__Slope": 36335,
+          "Aspect__Vertical_Distance_To_Hydrology": 36404,
+          "Elevation__Hillshade_3pm": 36416,
+          "Elevation__Hillshade_9am": 36620,
+          "Elevation__Hillshade_Noon": 36631,
+          "Elevation__Horizontal_Distance_To_Fire_Points": 36494,
+          "Elevation__Horizontal_Distance_To_Hydrology": 36507,
+          "Elevation__Horizontal_Distance_To_Roadways": 36521,
+          "Elevation__Slope": 36555,
+          "Elevation__Vertical_Distance_To_Hydrology": 36524,
+          "Hillshade_3pm__Hillshade_9am": 36500,
+          "Hillshade_3pm__Hillshade_Noon": 36364,
+          "Hillshade_3pm__Horizontal_Distance_To_Fire_Points": 36190,
+          "Hillshade_3pm__Horizontal_Distance_To_Hydrology": 36475,
+          "Hillshade_3pm__Horizontal_Distance_To_Roadways": 36342,
+          "Hillshade_3pm__Slope": 36402,
+          "Hillshade_3pm__Vertical_Distance_To_Hydrology": 36447,
+          "Hillshade_9am__Hillshade_Noon": 36708,
+          "Hillshade_9am__Horizontal_Distance_To_Fire_Points": 36560,
+          "Hillshade_9am__Horizontal_Distance_To_Hydrology": 36583,
+          "Hillshade_9am__Horizontal_Distance_To_Roadways": 36590,
+          "Hillshade_9am__Slope": 36698,
+          "Hillshade_9am__Vertical_Distance_To_Hydrology": 36626,
+          "Hillshade_Noon__Horizontal_Distance_To_Fire_Points": 36492,
+          "Hillshade_Noon__Horizontal_Distance_To_Hydrology": 36591,
+          "Hillshade_Noon__Horizontal_Distance_To_Roadways": 36586,
+          "Hillshade_Noon__Slope": 36663,
+          "Hillshade_Noon__Vertical_Distance_To_Hydrology": 36614,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Hydrology": 36434,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Roadways": 36344,
+          "Horizontal_Distance_To_Fire_Points__Slope": 36376,
+          "Horizontal_Distance_To_Fire_Points__Vertical_Distance_To_Hydrology": 36544,
+          "Horizontal_Distance_To_Hydrology__Horizontal_Distance_To_Roadways": 36583,
+          "Horizontal_Distance_To_Hydrology__Slope": 36580,
+          "Horizontal_Distance_To_Hydrology__Vertical_Distance_To_Hydrology": 36608,
+          "Horizontal_Distance_To_Roadways__Slope": 36494,
+          "Horizontal_Distance_To_Roadways__Vertical_Distance_To_Hydrology": 36449,
+          "Slope__Vertical_Distance_To_Hydrology": 36581
+        },
+        "predicate_count": {
+          "max": 10,
+          "mean": 5.48531,
+          "median": 5.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 8.0
+        },
+        "query_count": 100000,
+        "unique_column_pairs": 45,
+        "unique_query_count": 100000,
+        "zero_predicate_queries": 0
+      },
+      "valid": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Aspect": 5432,
+          "Elevation": 5516,
+          "Hillshade_3pm": 5498,
+          "Hillshade_9am": 5519,
+          "Hillshade_Noon": 5499,
+          "Horizontal_Distance_To_Fire_Points": 5425,
+          "Horizontal_Distance_To_Hydrology": 5417,
+          "Horizontal_Distance_To_Roadways": 5543,
+          "Slope": 5492,
+          "Vertical_Distance_To_Hydrology": 5483
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 581007,
+          "mean": 66175.6905,
+          "median": 2356.5,
+          "min": 0,
+          "q25": 13.0,
+          "q75": 50761.25
+        },
+        "label_selectivity": {
+          "max": 0.9999913943257627,
+          "mean": 0.11389728697513993,
+          "median": 0.004055854268070195,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 9148,
+          ">=": 7248,
+          "[]": 38428
+        },
+        "pair_occurrence_counts": {
+          "Aspect__Elevation": 3639,
+          "Aspect__Hillshade_3pm": 3638,
+          "Aspect__Hillshade_9am": 3623,
+          "Aspect__Hillshade_Noon": 3627,
+          "Aspect__Horizontal_Distance_To_Fire_Points": 3577,
+          "Aspect__Horizontal_Distance_To_Hydrology": 3600,
+          "Aspect__Horizontal_Distance_To_Roadways": 3695,
+          "Aspect__Slope": 3615,
+          "Aspect__Vertical_Distance_To_Hydrology": 3606,
+          "Elevation__Hillshade_3pm": 3681,
+          "Elevation__Hillshade_9am": 3672,
+          "Elevation__Hillshade_Noon": 3665,
+          "Elevation__Horizontal_Distance_To_Fire_Points": 3643,
+          "Elevation__Horizontal_Distance_To_Hydrology": 3648,
+          "Elevation__Horizontal_Distance_To_Roadways": 3709,
+          "Elevation__Slope": 3637,
+          "Elevation__Vertical_Distance_To_Hydrology": 3689,
+          "Hillshade_3pm__Hillshade_9am": 3645,
+          "Hillshade_3pm__Hillshade_Noon": 3660,
+          "Hillshade_3pm__Horizontal_Distance_To_Fire_Points": 3665,
+          "Hillshade_3pm__Horizontal_Distance_To_Hydrology": 3633,
+          "Hillshade_3pm__Horizontal_Distance_To_Roadways": 3696,
+          "Hillshade_3pm__Slope": 3639,
+          "Hillshade_3pm__Vertical_Distance_To_Hydrology": 3695,
+          "Hillshade_9am__Hillshade_Noon": 3662,
+          "Hillshade_9am__Horizontal_Distance_To_Fire_Points": 3607,
+          "Hillshade_9am__Horizontal_Distance_To_Hydrology": 3633,
+          "Hillshade_9am__Horizontal_Distance_To_Roadways": 3674,
+          "Hillshade_9am__Slope": 3636,
+          "Hillshade_9am__Vertical_Distance_To_Hydrology": 3682,
+          "Hillshade_Noon__Horizontal_Distance_To_Fire_Points": 3649,
+          "Hillshade_Noon__Horizontal_Distance_To_Hydrology": 3623,
+          "Hillshade_Noon__Horizontal_Distance_To_Roadways": 3672,
+          "Hillshade_Noon__Slope": 3662,
+          "Hillshade_Noon__Vertical_Distance_To_Hydrology": 3610,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Hydrology": 3571,
+          "Horizontal_Distance_To_Fire_Points__Horizontal_Distance_To_Roadways": 3634,
+          "Horizontal_Distance_To_Fire_Points__Slope": 3593,
+          "Horizontal_Distance_To_Fire_Points__Vertical_Distance_To_Hydrology": 3576,
+          "Horizontal_Distance_To_Hydrology__Horizontal_Distance_To_Roadways": 3667,
+          "Horizontal_Distance_To_Hydrology__Slope": 3636,
+          "Horizontal_Distance_To_Hydrology__Vertical_Distance_To_Hydrology": 3618,
+          "Horizontal_Distance_To_Roadways__Slope": 3695,
+          "Horizontal_Distance_To_Roadways__Vertical_Distance_To_Hydrology": 3723,
+          "Slope__Vertical_Distance_To_Hydrology": 3668
+        },
+        "predicate_count": {
+          "max": 10,
+          "mean": 5.4824,
+          "median": 5.0,
+          "min": 1,
+          "q25": 3.0,
+          "q75": 8.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 45,
+        "unique_query_count": 10000,
+        "zero_predicate_queries": 0
+      }
+    }
+  },
+  "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+  "elapsed_seconds": 5.122406959533691,
+  "format_version": "arecel-paper-postgres-baseline-v1",
+  "null_audit": {
+    "all_columns_null_free": true,
+    "source_csv_null_counts": {
+      "Aspect": 0,
+      "Elevation": 0,
+      "Hillshade_3pm": 0,
+      "Hillshade_9am": 0,
+      "Hillshade_Noon": 0,
+      "Horizontal_Distance_To_Fire_Points": 0,
+      "Horizontal_Distance_To_Hydrology": 0,
+      "Horizontal_Distance_To_Roadways": 0,
+      "Slope": 0,
+      "Vertical_Distance_To_Hydrology": 0
+    },
+    "upstream_not_null_constraint": false
+  },
+  "paper_references": {
+    "deepdb": {
+      "max": 1293.0,
+      "p50": 1.06,
+      "p95": 5.0,
+      "p99": 14.0
+    },
+    "lw_nn": {
+      "max": 1370.0,
+      "p50": 1.13,
+      "p95": 3.1,
+      "p99": 7.0
+    },
+    "lw_xgb": {
+      "max": 220.0,
+      "p50": 1.1,
+      "p95": 3.0,
+      "p99": 7.0
+    },
+    "mscn": {
+      "max": 377.0,
+      "p50": 1.14,
+      "p95": 7.62,
+      "p99": 20.6
+    },
+    "naru": {
+      "max": 153.0,
+      "p50": 1.06,
+      "p95": 3.3,
+      "p99": 9.0
+    },
+    "postgresql": {
+      "max": 9374.0,
+      "p50": 1.21,
+      "p95": 17.0,
+      "p99": 71.0
+    }
+  },
+  "per_query_path": "postgres-per-query-v1.jsonl",
+  "per_query_sha256": "ea9f2e337affb10d2be3e238add750b11fc4d4f493fe7800d4b35d9c67a71513",
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.forest10",
+  "research_commit_sha": "7ccaa6a99902018ee4e9a700166da561f3387f56",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 581012,
+  "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+  "schema_verification": {
+    "column_count": 10,
+    "columns": [
+      {
+        "name": "elevation",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "aspect",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "slope",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "horizontal_distance_to_hydrology",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "vertical_distance_to_hydrology",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "horizontal_distance_to_roadways",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "hillshade_9am",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "hillshade_noon",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "hillshade_3pm",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "horizontal_distance_to_fire_points",
+        "not_null": false,
+        "postgres_type": "double precision"
+      }
+    ],
+    "extended_statistics_count": 0,
+    "row_count": 581012,
+    "verified": true
+  },
+  "semantic_digest": "23b9f0cd4323340271ff34c7c9c15f4ab5035c9b63c3903edf53b37af6f115d1",
+  "source_files": {
+    "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  },
+  "statistics": {
+    "analyze_count": 1,
+    "analyze_statement": "ANALYZE public.forest10",
+    "column_targets_verified": [
+      {
+        "name": "elevation",
+        "target": 10000
+      },
+      {
+        "name": "aspect",
+        "target": 10000
+      },
+      {
+        "name": "slope",
+        "target": 10000
+      },
+      {
+        "name": "horizontal_distance_to_hydrology",
+        "target": 10000
+      },
+      {
+        "name": "vertical_distance_to_hydrology",
+        "target": 10000
+      },
+      {
+        "name": "horizontal_distance_to_roadways",
+        "target": 10000
+      },
+      {
+        "name": "hillshade_9am",
+        "target": 10000
+      },
+      {
+        "name": "hillshade_noon",
+        "target": 10000
+      },
+      {
+        "name": "hillshade_3pm",
+        "target": 10000
+      },
+      {
+        "name": "horizontal_distance_to_fire_points",
+        "target": 10000
+      }
+    ],
+    "seed": 123,
+    "seed_expression": "1.0 / 123",
+    "setseed_executed": true,
+    "target": 10000
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 9374.0,
+    "max_query_id": "arecel_forest10_test_003110",
+    "mean": 7.149641349595915,
+    "p50": 1.208396574971899,
+    "p75": 2.831030701754386,
+    "p90": 8.708749145591254,
+    "p95": 17.0,
+    "p99": 71.0,
+    "paper_reference_comparison": {
+      "max": {
+        "difference": 0.0,
+        "paper_reference": 9374.0,
+        "ratio": 1.0,
+        "reproduced": 9374.0
+      },
+      "p50": {
+        "difference": -0.0016034250281009577,
+        "paper_reference": 1.21,
+        "ratio": 0.998674855348677,
+        "reproduced": 1.208396574971899
+      },
+      "p95": {
+        "difference": 0.0,
+        "paper_reference": 17.0,
+        "ratio": 1.0,
+        "reproduced": 17.0
+      },
+      "p99": {
+        "difference": 0.0,
+        "paper_reference": 71.0,
+        "ratio": 1.0,
+        "reproduced": 71.0
+      }
+    },
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 7.149641349595915
+  },
+  "truth": {
+    "authoritative_for_full_workload": true,
+    "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "full_table_count_scans_for_truth": false,
+    "label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
+    "spot_checks": {
+      "all_match": true,
+      "checks": [
+        {
+          "observed": 5740,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_forest10_test_000000",
+          "source_index": 0,
+          "source_query_id": "arecel:forest10:test:000000",
+          "truth": 5740
+        },
+        {
+          "observed": 4,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 9,
+          "query_id": "arecel_forest10_test_000001",
+          "source_index": 1,
+          "source_query_id": "arecel:forest10:test:000001",
+          "truth": 4
+        },
+        {
+          "observed": 91842,
+          "operators": [
+            "<=",
+            ">="
+          ],
+          "predicate_arity": 2,
+          "query_id": "arecel_forest10_test_000002",
+          "source_index": 2,
+          "source_query_id": "arecel:forest10:test:000002",
+          "truth": 91842
+        },
+        {
+          "observed": 1346,
+          "operators": [
+            "<=",
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 7,
+          "query_id": "arecel_forest10_test_000003",
+          "source_index": 3,
+          "source_query_id": "arecel:forest10:test:000003",
+          "truth": 1346
+        },
+        {
+          "observed": 315925,
+          "operators": [
+            "<=",
+            "[]"
+          ],
+          "predicate_arity": 3,
+          "query_id": "arecel_forest10_test_000004",
+          "source_index": 4,
+          "source_query_id": "arecel:forest10:test:000004",
+          "truth": 315925
+        },
+        {
+          "observed": 66,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 4,
+          "query_id": "arecel_forest10_test_000008",
+          "source_index": 8,
+          "source_query_id": "arecel:forest10:test:000008",
+          "truth": 66
+        },
+        {
+          "observed": 11,
+          "operators": [
+            "<=",
+            "[]"
+          ],
+          "predicate_arity": 5,
+          "query_id": "arecel_forest10_test_000010",
+          "source_index": 10,
+          "source_query_id": "arecel:forest10:test:000010",
+          "truth": 11
+        },
+        {
+          "observed": 4,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 6,
+          "query_id": "arecel_forest10_test_000014",
+          "source_index": 14,
+          "source_query_id": "arecel:forest10:test:000014",
+          "truth": 4
+        },
+        {
+          "observed": 4899,
+          "operators": [
+            "<=",
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 10,
+          "query_id": "arecel_forest10_test_000017",
+          "source_index": 17,
+          "source_query_id": "arecel:forest10:test:000017",
+          "truth": 4899
+        },
+        {
+          "observed": 149392,
+          "operators": [
+            "<=",
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 8,
+          "query_id": "arecel_forest10_test_000022",
+          "source_index": 22,
+          "source_query_id": "arecel:forest10:test:000022",
+          "truth": 149392
+        },
+        {
+          "observed": 0,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 8,
+          "query_id": "arecel_forest10_test_000023",
+          "source_index": 23,
+          "source_query_id": "arecel:forest10:test:000023",
+          "truth": 0
+        },
+        {
+          "observed": 1,
+          "operators": [
+            "[]"
+          ],
+          "predicate_arity": 8,
+          "query_id": "arecel_forest10_test_005000",
+          "source_index": 5000,
+          "source_query_id": "arecel:forest10:test:005000",
+          "truth": 1
+        },
+        {
+          "observed": 580990,
+          "operators": [
+            ">="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_forest10_test_008597",
+          "source_index": 8597,
+          "source_query_id": "arecel:forest10:test:008597",
+          "truth": 580990
+        },
+        {
+          "observed": 207726,
+          "operators": [
+            "<="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_forest10_test_009999",
+          "source_index": 9999,
+          "source_query_id": "arecel:forest10:test:009999",
+          "truth": 207726
+        }
+      ],
+      "count": 14,
+      "rule": "indices {0, floor(query_count/2), query_count-1}, first query per predicate arity/operator, plus min/max truth"
+    }
+  },
+  "upstream": {
+    "commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "repository": "https://github.com/sfu-db/AreCELearnedYet",
+    "shared_archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 7.149641349595915
+  },
+  "workload": {
+    "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "label_source": "data/forest10/workload/base-original-label.pkl",
+    "projection": "count-star-to-select-star-v1",
+    "query_count": 10000,
+    "query_id_mapping": "arecel:forest10:test:<index> -> arecel_forest10_test_<index>",
+    "relation_substitution": "safe exact source relation substitution",
+    "source": "data/forest10/workload/base.pkl",
+    "workload_sha256": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  }
+}
