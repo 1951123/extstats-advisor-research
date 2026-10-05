@@ -25,18 +25,22 @@ maximum, and query outcome counts.
 \subsection{RQ2: sample-to-full-data transfer}
 \textbf{Intended claim.} A design selected on a fixed sample can retain benefit
 after native payloads are independently recomputed on full data, subject to
-measured transfer error.
+measured transfer error (RQ2a). Separately, the sample-sandbox utility may or
+may not predict full-data utility (RQ2b); this is a transfer relationship, not
+a mechanism-fidelity claim.
 
 \textbf{Required evidence.} Paired P0/P1/P2 per-query results, ordinary-stat
 fingerprints, deployment verification, and the source Recommendation digest.
 % TODO(PAPER-RQ2): insert P0/P1/P2 transfer table and paired query analysis.
+% TODO(PAPER-RQ2B): insert sample-utility/full-data-utility relationship figure.
 
 \subsection{RQ3: fidelity}
-\textbf{Intended claim.} The isolated planner sandbox is a useful predictor
-only to the extent demonstrated by hypothetical-versus-physical plan and
-utility comparisons.
+\textbf{Intended claim.} Catalogless hypothetical evaluation reproduces
+physical PostgreSQL statistics behavior to the extent demonstrated when data,
+equivalent native payload semantics, ordinary statistics, planner build, and
+workload are controlled.
 % TODO(PAPER-RQ3): insert hypothetical-vs-physical fidelity experiment.
-% TODO(PAPER-RQ3): quantify the relationship between sample utility and full-data utility.
+% The sample-to-full-data utility relationship is reported under RQ2.
 
 \subsection{RQ4: ablation and advisor necessity}
 \textbf{Intended claim.} Planner-in-the-loop search contributes measurable

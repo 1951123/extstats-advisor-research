@@ -44,6 +44,16 @@ ambiguity.  The research harness requires a clean committed research tree for
 canonical runs and records the research, advisor, patched PostgreSQL, stock
 PostgreSQL, dataset/workload, and experiment-parameter identities.
 
+`AdvisorSnapshot` remains the portable `(Sigma, S, P, W)` artifact. Exact or
+authoritative cardinality truth is a separately validated `GroundTruthSet`
+bound to the sealed snapshot and workload; it is used by the
+`GroundTruthProvider` to evaluate planner estimates and define utility, not to
+construct native statistics or change PostgreSQL's estimator. The current
+truth sources are `production-exact-execution` and
+`authoritative-external-exact`. The former is restricted to the supported
+simple-selection counting contract and may be expensive; the latter records
+external provenance without claiming advisor execution.
+
 The production deployment contract is add-only: existing externally managed
 extended statistics are outside advisor ownership.  The advisor does not model,
 reconcile, drop, rename, or replace those objects.  A recommendation describes

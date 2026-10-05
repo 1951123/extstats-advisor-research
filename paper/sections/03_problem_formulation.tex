@@ -1,11 +1,20 @@
 \section{Problem Formulation}
 
-We model one captured database relation and its workload. Let $\Sigma$ be the
-portable typed schema and $P$ the production population represented by that
-schema. A fixed sample $S$ is drawn and materialized independently of the
-optimizer; it is not a source of query truth. Let $W=\{q_i\}_{i=1}^{n}$ be the
-audited workload and let $y_i=|q_i(P)|$ be the exact cardinality supplied by
-the benchmark's ground-truth protocol when available.
+We model one captured database relation and its workload. The
+\texttt{AdvisorSnapshot} is exactly $(\Sigma,S,P,W)$: portable typed schema,
+fixed typed sample, population metadata, and workload. Exact or authoritative
+cardinality truth is not a field of this tuple. Instead, an independently
+validated \texttt{GroundTruthSet} $G$ binds to the snapshot semantic digest and
+workload ID and is consumed by a replaceable \texttt{GroundTruthProvider}.
+Thus the system has two inputs to utility evaluation,
+\[
+  \texttt{AdvisorSnapshot} + \texttt{GroundTruthSet}
+  \longrightarrow \text{planner estimates} \longrightarrow \text{utility}.
+\]
+The fixed sample $S$ is materialized independently of $G$ and is not a source
+of query truth. For a query $q$ with a truth record, write its non-negative
+cardinality as $y_q$ and its planner estimate under configuration $M$ as
+$\hat y_q(M)$.
 
 The candidate universe $C$ is a frozen finite set of native statistics
 designs derived from $\Sigma$ and predicate structure in $W$. Each candidate
@@ -15,17 +24,37 @@ candidates subject to a candidate-row bound and search budget. The planner
 evaluates $W$ under the active configuration and returns estimated
 cardinalities $\hat y_i(M)$.
 
-For a query with positive exact cardinality, the primary error is
+The v1 loss contract is \texttt{qerror-cardinality-floor-1-v1}:
 \[
- q_i(M)=\max\left(\frac{\hat y_i(M)}{y_i},
-                         \frac{y_i}{\hat y_i(M)}\right),
+ Q(\hat y_q(M),y_q)=
+ \max\left(
+   \frac{\max(\hat y_q(M),1)}{\max(y_q,1)},
+   \frac{\max(y_q,1)}{\max(\hat y_q(M),1)}
+ \right).
 \]
-with the implementation's zero-handling policy recorded in the run manifest.
-The main aggregate objective is the arithmetic mean of query-level q-error;
-the report also includes p50, p95, p99, maximum, and improved, unchanged, and
-worsened query counts. When the ground truth is not available, the planner
-objective is still measurable, but it is not relabeled as cardinality
-accuracy.
+Both zero values therefore have formal semantics, including $Q(0,0)=1$.
+Lower is better. Let $W^+$ be the positive-weight workload queries and
+$w_q$ their workload weights. The optimization objective is the weighted
+workload mean
+\[
+ J(M)=\frac{\sum_{q\in W^+} w_q Q(\hat y_q(M),y_q)}
+              {\sum_{q\in W^+} w_q}.
+\]
+This weighted objective is distinct from the reporting summaries: the paper
+also reports unweighted arithmetic mean, p50, p95, p99, maximum, and
+improved/unchanged/worsened query counts. If a confirmatory workload has
+uniform weight one, its arithmetic mean equals $J(M)$ numerically, but the
+contracts remain conceptually distinct. A planner-only measurement without
+$G$ is not relabeled as cardinality accuracy.
+
+The current source supports two truth provenance kinds. In
+\texttt{production-exact-execution}, safe eligible workload queries are counted
+in a read-only repeatable-read source view and the artifact records the DBMS,
+server version, and source-view token. In
+\texttt{authoritative-external-exact}, immutable labels are imported with
+authority, dataset identity, source revision, and source-artifact SHA-256; the
+advisor does not pretend that it executed those labels. Both kinds use the
+same utility interface after binding validation.
 
 The search budget $B$ bounds candidate profiling, planner evaluations, and
 configuration size according to the execution advisor's frozen plan. The

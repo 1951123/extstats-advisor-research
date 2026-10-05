@@ -7,20 +7,35 @@ protocol, provenance audit, and derived-artifact checks are complete.
 
 ## Shared protocol
 
-- **Advisor:** `1951123/extstats-advisor`, revision pinned in each manifest.
-- **Patched planner:** `1951123/postgresql-pgextadv`, revision pinned in each
-  manifest; design-time only.
-- **Stock planner:** PostgreSQL 16.14 or an explicitly recorded stock commit;
-  deployment and baseline target.
+- **Advisor:** `1951123/extstats-advisor`, exact SHA required in each manifest.
+- **Patched planner:** `1951123/postgresql-pgextadv`, exact SHA required in
+  each manifest; design-time only.
+- **Stock planner:** exact source/version/build identity required in each
+  manifest, including server version and build provenance; do not use the
+  phrase "PostgreSQL 16.14 or an explicitly recorded commit" in a final paper
+  result.
+- **Research harness:** exact committed SHA required in each manifest.
+- **Freeze gate:** `TODO(PAPER-FREEZE)`: select final confirmatory research,
+  advisor, patched PostgreSQL, and stock PostgreSQL source/version/build SHAs.
+  Do not silently substitute the current manuscript commit.
 - **Research harness:** this repository, with a clean committed tree required
   before a canonical run.
 - **Datasets:** AreCELearnedYet lineage currently represented by Census13,
   Forest10, Power7, and DMV11. Dataset adapter hashes, workload identity, and
   exact-truth provenance are part of the RunManifest.
-- **Primary metrics:** arithmetic mean q-error, p50, p95, p99, maximum, and
-  improved/unchanged/worsened query counts. Cost metrics are reported in
+- **Utility contract:** `qerror-cardinality-floor-1-v1` with
+  `Q(e,t)=max(max(e,1)/max(t,1),max(t,1)/max(e,1))`; lower is better. The
+  optimization objective is the `weighted-workload-mean-v1` weighted mean over
+  positive-weight queries. Reporting additionally includes unweighted
+  arithmetic mean, p50, p95, p99, maximum, and improved/unchanged/worsened
+  query counts. With all weights one these means coincide numerically, but the
+  contracts remain distinct. Cost metrics are reported in
   seconds, bytes, rows, planner evaluations, and native catalog/storage units
   as appropriate.
+- **Truth input:** `AdvisorSnapshot` and `GroundTruthSet` are separate inputs.
+  Ground truth never constructs the sample/native payloads or changes the
+  PostgreSQL estimator. Current source kinds are
+  `production-exact-execution` and `authoritative-external-exact`.
 - **Artifact rule:** raw artifacts remain referenced by RunID and digest;
   derived artifacts must retain source manifest and commit identities.
 
@@ -36,7 +51,11 @@ simple selection baselines, but does not improve every query.
 **Systems/configurations:**
 
 1. stock PostgreSQL 16 baseline;
-2. stock PostgreSQL with a high statistics target;
+2. strong conventional stock PostgreSQL baseline: no extended-statistics
+   objects, `setseed(1/123)`, one `ANALYZE`, and target 10000 on every dataset
+   column where the paper-baseline contract defines that setting. The current
+   four manifests record target 10000; Census13 records it at baseline level,
+   while the newer manifests also expose more column-level verification;
 3. workload-frequency top-k;
 4. dependency/correlation top-k;
 5. singleton-utility top-k;
@@ -50,9 +69,17 @@ ground truth and an explicit dataset inclusion table.
 **Independent variables:** system/configuration, dataset, candidate limit,
 statistics target, and (where planned) recommendation size.
 
-**Controlled variables:** stock PostgreSQL version, relation contents,
-workload query texts/order, ordinary statistics policy, truth definition,
-hardware/environment, and timeout policy.
+**Controlled variables:** exact frozen stock PostgreSQL source/version/build,
+relation contents, workload query texts/order, ordinary statistics policy,
+truth definition, hardware/environment, and timeout policy. Dataset-specific
+paper-baseline differences must be recorded rather than normalized away.
+
+**Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
+of `public.dmv11`, all column targets 10000, `setseed(1/123)` with seed 123,
+one `ANALYZE public.dmv11`, zero physical extended-statistics objects, stock
+PostgreSQL, the AreCELearnedYet base:test workload with 10,000 test queries,
+and `authoritative-external-exact` labels bound to the audited workload and
+dataset identity.
 
 **Metrics:** per-query q-error and the shared aggregate metrics; optional gap
 closure only when the learned-CE comparison is demonstrably comparable.
@@ -71,7 +98,8 @@ confirmatory comparison.
 ## RQ2 — Sample-to-full-data transfer
 
 **Question:** Do designs optimized on a fixed sample retain their benefits when
-native statistics are independently recomputed on full data?
+native statistics are independently recomputed on full data, and how well does
+the sample-sandbox utility predict that full-data utility?
 
 **Hypothesis:** The selected membership transfers with measurable but
 non-zero uncertainty; P1 improves over P0 on at least part of the workload,
@@ -94,7 +122,9 @@ identity.
 
 **Metrics:** paired per-query q-error, P0-to-P1 and P2-to-P1 deltas, ordinary
 statistics fingerprints, extstats payload verification, deployment/rollback
-cost, and query outcome counts.
+cost, query outcome counts, and the relationship between sample utility and
+full-data utility. Report two labels separately: **RQ2a** deployment benefit
+retention and **RQ2b** sandbox-utility/full-data-utility relationship.
 
 **Raw artifact:** deployment result, per-query transfer JSONL, object/catalog
 verification, ordinary-stat fingerprints, and source digests.
@@ -102,19 +132,21 @@ verification, ordinary-stat fingerprints, and source digests.
 **Derived artifact:** P0/P1/P2 summary table, paired scatter/violin plots, and
 transfer validity report.
 
-**Intended paper output:** RQ2 transfer table and figure.
+**Intended paper output:** RQ2a transfer table and RQ2b utility-transfer figure.
 
 **Status:** `pilot`/`preliminary` for current DMV11 and related artifacts;
 `planned` for final cross-dataset reporting.
 
 ## RQ3 — Fidelity
 
-**Question:** Can the isolated sandbox faithfully predict deployable physical
-statistics designs?
+**Question:** How faithfully does catalogless hypothetical evaluation reproduce
+physical PostgreSQL statistics behavior when data, payload semantics, ordinary
+statistics state, planner build, and design are controlled?
 
-**Hypothesis:** Hypothetical and physical planner behavior is sufficiently
-aligned for the tested supported kinds and workload, but mismatches reveal
-where sample transfer, ordinary-stat drift, or unsupported semantics matter.
+**Hypothesis:** For equivalent native realizations under controlled state,
+hypothetical and physical planner estimates agree closely for supported kinds;
+remaining mismatches identify mechanism or integration limitations. Sample to
+full-data utility transfer is excluded from this RQ and reported in RQ2b.
 
 **Systems/configurations:** active catalogless design in patched PostgreSQL,
 physical native objects in stock PostgreSQL, and stock baseline without the
@@ -123,11 +155,16 @@ recommendation.
 **Datasets:** all datasets with an immutable SearchResult and a valid P1
 transfer.
 
-**Independent variables:** hypothetical/physical state, sample/full-data
-payload source, candidate kind, and recommendation membership.
+**Independent variables:** hypothetical/physical state, candidate kind, and
+equivalent design membership.
 
-**Controlled variables:** query text, relation contents, ordinary stats,
-statistics target, planner version, and active ordering.
+**Controlled variables:** identical relation contents, workload query text and
+order, equivalent native payload semantics (and payload bytes when the
+representation is directly comparable), ordinary-statistics fingerprint,
+statistics target, session settings, active ordering, and relation/schema
+identity. Planner version/build identities are recorded explicitly; the
+patched-versus-stock implementation difference is the mechanism under test,
+not an uncontrolled environment change.
 
 **Metrics:** plan-row estimate agreement, per-query q-error correlation and
 rank correlation, membership-level objective difference, and explicit mismatch
@@ -137,7 +174,7 @@ categories.
 catalog/payload verification, and transaction logs.
 
 **Derived artifact:** fidelity table, plan-difference classification, and
-sample-utility/full-utility scatter plot.
+hypothetical-versus-physical estimate/error agreement plots.
 
 **Intended paper output:** RQ3 fidelity figure and limitations table.
 
@@ -156,14 +193,47 @@ gap to exhaustive search on tiny universes quantifies search suboptimality.
 correlation/dependency top-k, singleton-utility top-k, greedy ADD, and
 exhaustive search on small candidate universes.
 
+**Fairness contract:** every method receives the identical frozen candidate
+universe, relation, candidate kinds, attribute keys, and sample-built
+`NativeStatsRepository`. No method may add candidates or change native
+statistics targets. Random-k uses pre-registered seeds and samples only from
+that universe. Workload-frequency uses workload predicate frequency but no
+ground truth. Correlation/dependency top-k uses the declared sample-side
+candidate/profile signal but no ground truth. Singleton-utility top-k,
+greedy ADD, and exhaustive search use the same bound `GroundTruthSet` and the
+same weighted utility/loss contracts. All methods are evaluated against the
+same truth after selection.
+
+**Comparison modes:** report two distinct comparisons. (A) In fixed-k quality
+comparison, pre-register k values independently of the final advisor
+recommendation; a result using the advisor's selected k is labeled explicitly
+as fixed-k and is not presented as an unbiased unknown-k comparison. (B) In
+fixed-evaluation-budget comparison, pre-register a common planner-evaluation
+and wall-clock budget; selection methods may stop early, but unused budget is
+not silently converted into extra information. Every method reports its actual
+planner evaluations and wall time.
+
+**Planner evaluation budget:** fixed-k runs must publish a declared maximum
+evaluation budget and actual evaluation count for every method, even when the
+primary comparison does not equalize those counts. Fixed-evaluation-budget
+runs must use the same pre-registered planner-evaluation and wall-clock caps
+for every method, including random and exhaustive variants where feasible;
+infeasible variants are reported as censored rather than silently granted a
+larger budget.
+
+**Determinism:** random seeds are recorded per replicate; all non-random ties
+are broken by candidate ID after the declared score and static precedence keys.
+The same ordered configuration convention is used for planner evaluation.
+
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.
 
 **Independent variables:** search method, candidate-universe size, k/budget,
 and workload.
 
-**Controlled variables:** sample, payloads, planner build, objective,
-statistics target, and evaluation budget where comparable.
+**Controlled variables:** candidate universe, sample/payloads, planner build,
+truth/loss contract, statistics target, workload, and either fixed k or the
+pre-registered evaluation budget according to the comparison mode.
 
 **Metrics:** objective value, q-error distribution, selected membership overlap,
 planner evaluations, wall-clock time, and exhaustive optimality gap.
@@ -184,10 +254,11 @@ diagnostics, not a completed ablation.
 **Question:** What operational cost is paid for the obtained accuracy
 improvement?
 
-**Hypothesis:** Most cost is offline capture, native construction, profiling,
-and planner search; deployment adds native DDL/`ANALYZE` and storage/refresh
-cost. No separate learned-model inference path is added to production query
-processing, but this is not a zero-overhead claim.
+**Hypothesis:** Most cost is offline capture, truth acquisition, native
+construction, profiling, and planner search; deployment adds native DDL,
+`ANALYZE`, and storage/refresh cost. No separate learned-model
+training/inference path is added to production query processing, but this is
+not a zero-overhead claim.
 
 **Systems/configurations:** stock baseline, advisor design-time stages, and
 stock deployment/refresh.
@@ -203,7 +274,10 @@ policy, concurrency, and measurement protocol.
 
 **Metrics:** snapshot time/size, sample rows, native build time, profiling and
 search time, planner evaluation count, DDL and `ANALYZE` time, catalog/storage
-size, post-deployment planning time, and refresh cost.
+size, post-deployment planning time, refresh cost, and truth acquisition cost.
+Report authoritative external truth import/validation separately from
+production exact truth collection/counting; do not use the former's low import
+cost as a proxy for the latter's database work.
 
 **Raw artifact:** stage timings, sizes, planner counters, deployment logs,
 catalog measurements, and manifest.
@@ -223,3 +297,15 @@ identities, the working tree was clean before the canonical run, and the
 derived output can be regenerated from the declared command. A result that is
 superseded remains referenced with status `superseded`; it is not silently
 rewritten.
+
+## Claim-to-evidence matrix
+
+| Paper claim | RQ | Required evidence | Status |
+| --- | --- | --- | --- |
+| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/heuristic/advisor per-query results and immutable manifests | planned; existing artifacts are pilot |
+| A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
+| Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
+| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-data, same-design, same-payload-semantics, same-ordinary-stats hypothetical/physical comparison | planned |
+| Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | Fair fixed-k and/or fixed-evaluation-budget ablations with declared seeds and tie-breaking | planned |
+| Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
+| Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |

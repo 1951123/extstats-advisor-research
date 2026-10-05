@@ -16,11 +16,17 @@ recommendations.
 \subsection{Planner objective and search}
 
 For an active configuration, the sandbox runs the workload through PostgreSQL
-planning and extracts planner row estimates. The optimization plan records the
-workload, objective, candidate limit, and time/evaluation constraints. The
-current search starts with an empty membership and repeatedly accepts the best
-improving candidate under the configured budget. SearchResult records selected
-membership, objective values, and the accepted-move trace.
+planning and extracts planner row estimates. A GroundTruthProvider supplies the
+independently bound truth records; it does not alter PostgreSQL's estimator or
+the native payloads. The utility provider applies
+\texttt{qerror-cardinality-floor-1-v1} and the workload's positive-query
+weights, returning the weighted workload mean
+\(J(M)=\sum_{q\in W^+} w_qQ_q(M)/\sum_{q\in W^+}w_q\). The OptimizationPlan records the
+workload/truth binding, utility and loss contracts, candidate limit, and
+time/evaluation constraints. The current search starts with an empty
+membership and repeatedly accepts the best strictly improving candidate under
+the configured budget. SearchResult records selected membership, objective
+values, and the accepted-move trace.
 
 The search algorithm is intentionally simple; algorithmic novelty is not the
 primary contribution. Its value in this study is that it provides a

@@ -17,10 +17,12 @@
 
 \title{How Far Can Native Statistics Take Cardinality Estimation?}
 \author{Anonymous Authors}
-\affiliation{\institution{Under review}}
+\affiliation{\institution{Under review}\city{Anonymous}\country{Anonymous}}
+
+\begin{document}
 
 \begin{abstract}
-Cardinality estimation errors remain a source of poor query plans, while replacing a database system's estimator introduces operational, maintenance, and trust costs.  This paper investigates a narrower question: how much estimation accuracy can be recovered by automatically designing the native multivariate statistics already consumed by PostgreSQL's planner?  \advisor uses a portable fixed sample and workload snapshot, evaluates catalogless hypothetical native statistics in an isolated patched PostgreSQL planner, and emits a DBA-reviewable recommendation that deploys through stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}.  We study the resulting accuracy, sample-to-full-data transfer, hypothetical-to-physical fidelity, search ablations, and operational cost on an audited single-table benchmark lineage.  The paper treats the current evidence as pilot evidence until each result is regenerated from immutable artifacts; it does not claim a new cardinality estimator or a globally optimal statistics configuration.
+Cardinality estimation errors remain a source of poor query plans, while replacing a database system's estimator introduces operational, maintenance, and trust costs. This paper investigates a narrower question: how much estimation accuracy can be recovered by automatically designing the native multivariate statistics already consumed by PostgreSQL's planner? \advisor keeps the portable \texttt{AdvisorSnapshot} $(\Sigma,S,P,W)$ separate from an independently validated \texttt{GroundTruthSet}; the latter supplies exact or authoritative labels to planner-based utility evaluation, not to snapshot construction or native statistics construction. The system evaluates catalogless hypothetical native statistics in an isolated patched PostgreSQL planner and emits a DBA-reviewable recommendation that deploys through stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. We study the resulting accuracy, sample-to-full-data transfer, mechanism fidelity, search ablations, and operational cost on an audited single-table benchmark lineage. The paper treats the current evidence as pilot evidence until each result is regenerated from immutable artifacts; it does not claim a new cardinality estimator or a globally optimal statistics configuration.
 \end{abstract}
 
 \maketitle

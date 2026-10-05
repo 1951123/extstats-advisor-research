@@ -5,10 +5,12 @@
 The initial study follows the AreCELearnedYet single-table benchmark lineage
 and currently includes Census13, Forest10, Power7, and DMV11. Dataset adapters
 validate source archive and content hashes, construct typed PostgreSQL tables,
-and extract audited workloads. DMV11 uses authoritative external exact truth;
-ordinary capture does not manufacture truth. The benchmark data root is
-selected through \texttt{EXTSTATS\_RESEARCH\_DATA\_ROOT}, so an absolute local
-path is not part of semantic run identity.
+and extract audited workloads. Each run keeps the \texttt{AdvisorSnapshot}
+separate from its bound \texttt{GroundTruthSet}. The latter is an independent
+utility input, not a snapshot field and not an input to native statistics
+construction. The benchmark data root is selected through
+\texttt{EXTSTATS\_RESEARCH\_DATA\_ROOT}, so an absolute local path is not part
+of semantic run identity.
 
 Every canonical RunManifest records the research repository and committed
 research SHA, advisor repository and SHA, patched PostgreSQL repository and
@@ -24,12 +26,41 @@ used only for design-time catalogless planner evaluation. A fixed typed sample
 is created once per canonical run; native payloads are independently rebuilt on
 the full database for transfer experiments. Ordinary statistics target,
 sampling parameters, and relation population are held fixed within each
-comparison.
+comparison. Ground truth is not used to build the sample or native payloads.
+
+\subsection{Truth acquisition and binding}
+
+The current \texttt{GroundTruthSet} contract has two source kinds. For
+\texttt{production-exact-execution}, capture and eligible truth acquisition
+run in a read-only repeatable-read source view. The v1 wrapper counts only
+sealed \texttt{postgresql-simple-selection-v2} queries: one base relation,
+supported AND predicates, and row-preserving direct-column/star projection.
+Distinct, grouping, aggregates, windows, LIMIT/OFFSET, ORDER BY, locking,
+arbitrary projection expressions, and unresolved parameters fail closed before
+count execution. Exact count collection can be expensive on large relations;
+read-only is not zero cost. For \texttt{authoritative-external-exact}, immutable
+labels are imported and validated against the sealed snapshot semantic digest,
+workload ID, positive-weight query coverage, and source artifact SHA-256. The
+advisor does not claim to have executed those labels. DMV11 currently uses
+this external source kind and binds the AreCELearnedYet base:test workload and
+label identity.
 
 \subsection{Metrics and comparisons}
 
-RQ1 compares stock PostgreSQL 16, a high-statistics-target baseline, simple
-selection heuristics, and \advisor. It reports arithmetic mean \,q-error,
+RQ1 compares stock PostgreSQL 16, a strong conventional statistics baseline,
+simple selection heuristics, and \advisor. The baseline protocol is explicit
+but remains dataset-specific: use stock PostgreSQL, no extended statistics,
+\texttt{setseed(1/123)}, one \texttt{ANALYZE}, and target 10000 on every benchmark
+column where the AreCELearnedYet paper-baseline artifact defines that setting.
+The current Census13, Forest10, Power7, and DMV11 baseline manifests all
+record one \texttt{ANALYZE}, \texttt{setseed(1/123)}, and target 10000; the
+legacy Census13 artifact stores the target at the baseline level, whereas the
+newer artifacts also expose more column-level verification.
+For DMV11, this means all eleven columns at target 10000, one analyze, no
+extended-statistics objects, seed 123, the external exact label source, and
+10,000 base:test queries. If a dataset's audited baseline artifact uses a
+different documented configuration, preserve that configuration and record it
+instead of silently forcing uniformity. RQ1 reports arithmetic mean q-error,
 p50, p95, p99, maximum, and improved/unchanged/worsened counts. Published
 learned-CE results from \cite{Wang2021AreWeReady} are a clearly labeled
 literature/contextual reference, not a head-to-head experiment under identical
@@ -44,15 +75,24 @@ measures without \texttt{ANALYZE}, and rolls back. P1/P2 ordinary-statistics
 fingerprints are expected to match; P0 can differ because deployment's final
 \texttt{ANALYZE} refreshes the relation.
 
-RQ3 compares hypothetical plans with physical deployment plans and relates
-sample-sandbox utility to full-data deployment utility. RQ4 compares random-k,
-workload-frequency top-k, dependency/correlation top-k, singleton-utility
-top-k, greedy ADD, and exhaustive search on tiny candidate universes. RQ5
-measures snapshot time and size, sample size, native construction, candidate
-profiling, search time and planner evaluations, deployment DDL/\texttt{ANALYZE},
-storage, planning-time change, and refresh cost. We do not claim zero online
-overhead; the narrower statement is that no separate learned-model inference
-path is added to production query processing.
+RQ3 tests mechanism fidelity only: with the same data, equivalent native
+statistics design/payload semantics, ordinary-statistics state, planner build,
+and workload controlled, compare catalogless hypothetical and physical
+PostgreSQL planner estimates. Sample-to-full-data utility belongs to RQ2, not
+this mechanism-fidelity question. RQ4 compares random-k, workload-frequency
+top-k, dependency/correlation top-k, singleton-utility top-k, greedy ADD, and
+exhaustive search on tiny candidate universes. RQ5 measures snapshot and truth
+acquisition, sample size, native construction, candidate profiling, search time
+and planner evaluations, deployment DDL/\texttt{ANALYZE}, storage,
+planning-time change, and refresh cost. We do not claim zero online overhead;
+the narrower statement is that no separate learned-model inference path is
+added to production query processing.
+
+Truth acquisition is reported separately from other design-time costs:
+authoritative external truth contributes import and validation cost, whereas
+production exact truth contributes the cost of exact-count collection. The
+overall accounting therefore includes sample capture, truth acquisition,
+native statistics construction, planner search, and deployment \texttt{ANALYZE}.
 
 \subsection{Preliminary versus confirmatory evidence}
 

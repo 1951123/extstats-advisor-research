@@ -27,19 +27,23 @@ them, and how to validate their benefit remains a physical and statistical
 design problem \cite{PostgreSQL16Docs}.
 
 \advisor approaches this problem as an offline, planner-in-the-loop workflow.
-It freezes a portable schema, a fixed typed sample, and a workload snapshot;
-constructs native statistics on the sample; evaluates catalogless hypothetical
-native statistics in an isolated patched PostgreSQL planner; searches under a
-bounded budget; and emits a DBA-reviewable recommendation that can be deployed
-using stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. The
-patched server is a design-time what-if substrate, not a required production
-runtime. We use the phrase ``patched at design time, stock at deployment time''
-as a working description of this separation, not as a claim that the workflow
-is already production-ready.
+It freezes an \texttt{AdvisorSnapshot} containing the portable schema, fixed
+typed sample, population metadata, and workload, and keeps a separately
+validated \texttt{GroundTruthSet} bound to that snapshot and workload. Native
+statistics are constructed from the snapshot/sample, never from truth labels.
+Planner estimates are compared with the independent truth provider to define
+utility; that utility then drives singleton profiling and bounded configuration
+search. The patched server is a design-time what-if substrate, not a required
+production runtime. The resulting recommendation can be deployed using stock
+PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. We use the phrase
+``patched at design time, stock at deployment time'' as a working description
+of this separation, not as a claim that the workflow is already
+production-ready.
 
 The research focus is not a new cardinality estimator, a first statistics
-advisor, or a novel greedy algorithm. The contribution is the combination of
-five testable system and empirical questions:
+advisor, or a novel greedy algorithm. The contributions are four themes, while
+the five research questions below provide the empirical structure for testing
+them:
 
 \begin{itemize}
   \item a catalogless what-if substrate for PostgreSQL native MCV and
@@ -50,10 +54,18 @@ five testable system and empirical questions:
   fixed sample from independent native-statistics recomputation on full data;
   \item an empirical study on the AreCELearnedYet benchmark lineage that
   revisits how much of the reported learned-CE gap native statistics can
-  address; and
-  \item an explicit evaluation of fidelity, ablations, and operational cost,
-  rather than accuracy alone.
+  address, together with controlled studies of mechanism fidelity, search
+  ablations, and operational cost rather than accuracy alone.
 \end{itemize}
+
+The five research questions are: RQ1, effectiveness; RQ2, sample-to-full-data
+transfer; RQ3, hypothetical-mechanism fidelity under controlled equivalent
+physical realizations; RQ4, advisor necessity through search ablations; and
+RQ5, practicality. Exact truth is a separate evaluation input. Current source
+contracts admit either \texttt{production-exact-execution}, collected through a
+restricted read-only repeatable-read source view, or
+\texttt{authoritative-external-exact}, imported with provenance and binding
+validation. The DMV11 artifacts use the latter source kind.
 
 The central claims are intentionally conditional. A recommendation optimizes
 the evaluated membership, not necessarily the union of that membership with

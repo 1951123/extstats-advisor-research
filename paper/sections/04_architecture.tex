@@ -7,9 +7,10 @@ semantics; the production advisor is invoked through its public interfaces.
 \begin{figure}[t]
   \centering
   \fbox{\parbox{0.92\columnwidth}{\centering
-  production capture $\rightarrow$ portable snapshot $\rightarrow$ fixed
-  sample $\rightarrow$ native payloads $\rightarrow$ isolated patched
-  planner $\rightarrow$ search $\rightarrow$ recommendation $\rightarrow$
+  production capture $\rightarrow$ \texttt{AdvisorSnapshot} $\rightarrow$
+  fixed sample $\rightarrow$ native payloads $\rightarrow$ isolated patched
+  planner $\rightarrow$ estimates $+$ \texttt{GroundTruthSet}
+  $\rightarrow$ utility/search $\rightarrow$ recommendation $\rightarrow$
   stock deployment}}
   \caption{The design-time and deployment-time boundary. The final two
   stages are not a second planner runtime in production.}
@@ -20,25 +21,35 @@ semantics; the production advisor is invoked through its public interfaces.
 
 Production capture records an \texttt{AdvisorSnapshot}: schema identity,
 relation identity, ordinary-statistics state, a portable fixed sample, and the
-workload representation. The capture transaction is read-only and uses an
-explicit repeatable-read acquisition transaction. Truth objects are not
-introduced into ordinary capture. The research adapter separately validates
-the audited benchmark source and exact external ground truth.
+workload representation. In the current contract this is exactly $(\Sigma,S,P,W)$;
+truth is not added to the snapshot. An optional companion
+\texttt{GroundTruthSet} is bound to the sealed snapshot digest and workload ID.
+The capture transaction is read-only and uses an explicit repeatable-read
+acquisition transaction. A production-exact companion may count only the
+supported self-contained simple-selection workload queries in that source
+view; the counts can still be expensive. An authoritative external companion
+is validated against the snapshot/workload binding and records external
+provenance without claiming advisor execution.
 
 \subsection{Sample database and native materialization}
 
 The typed sample is loaded into a sample database with the same relevant schema
 and ordinary-statistics policy. Candidate native statistics are materialized
-using PostgreSQL's own \texttt{ANALYZE} machinery. Their serialized MCV or
-dependency payloads are then available to the planner sandbox. This avoids
-passing a dataframe or an external estimator into the optimizer.
+using PostgreSQL's own \texttt{ANALYZE} machinery from the sample. Their
+serialized MCV or dependency payloads are then available to the planner
+sandbox. The GroundTruthSet does not enter this construction path: it is used
+only after planner estimates are produced, to evaluate utility. This avoids
+passing labels, a dataframe, or an external estimator into native statistics
+construction.
 
 \subsection{Sandbox, search, and recommendation}
 
 The patched PostgreSQL backend maintains a backend-local repository of
 hypothetical definitions and payloads. The advisor activates one ordered
-configuration at a time, evaluates workload plans, and runs bounded greedy
-ADD search over the frozen candidate universe. The resulting Recommendation
+configuration at a time, obtains planner estimates, and passes those estimates
+together with the independent GroundTruthProvider to utility evaluation. The
+same weighted objective is used for singleton profiling and bounded greedy ADD
+search over the frozen candidate universe. The resulting Recommendation
 contains native deployment statements and the order derived from the frozen
 singleton precedence profile.
 

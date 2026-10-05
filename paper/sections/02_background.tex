@@ -43,8 +43,9 @@ We organize the study around five questions:
   workload-optimized native extended statistics eliminate?
   \item[RQ2 (transfer)] Do designs optimized on a fixed sample retain their
   benefits when native payloads are independently recomputed on full data?
-  \item[RQ3 (fidelity)] Can the isolated sandbox predict the behavior of the
-  deployable physical design?
+  \item[RQ3 (fidelity)] How faithfully does catalogless hypothetical evaluation
+  reproduce physical PostgreSQL statistics behavior when data, payload
+  semantics, ordinary statistics state, and design are controlled?
   \item[RQ4 (necessity)] What does planner-in-the-loop search contribute beyond
   simple statistics-selection heuristics?
   \item[RQ5 (practicality)] What operational cost is paid for the obtained
