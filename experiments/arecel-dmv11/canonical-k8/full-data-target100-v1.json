@@ -1,0 +1,145 @@
+{
+  "dataset": "arecel-dmv11",
+  "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+  "format_version": "arecel-dmv11-full-data-target100-v1",
+  "per_query_count": 10000,
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.dmv11",
+  "research_commit_sha": "dd613f7357d436c69412a9bd7461a4afdc46eca3",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 11591877,
+  "runtime_metadata": {
+    "elapsed_seconds": 1.870301
+  },
+  "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+  "semantic_digest": "19fefaff941d257593efbac16b0f08c7e3851c00fd087688f0f62c0b9785019d",
+  "source_files": {
+    "canonical_workload": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    "csv": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+    "label_pickle": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+    "workload_pickle": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+  },
+  "state": "dmv11_full_target100_ordinary",
+  "statistics": {
+    "column_targets_verified": [
+      {
+        "name": "record_type",
+        "target": 100
+      },
+      {
+        "name": "registration_class",
+        "target": 100
+      },
+      {
+        "name": "state",
+        "target": 100
+      },
+      {
+        "name": "county",
+        "target": 100
+      },
+      {
+        "name": "body_type",
+        "target": 100
+      },
+      {
+        "name": "fuel_type",
+        "target": 100
+      },
+      {
+        "name": "reg_valid_date",
+        "target": 100
+      },
+      {
+        "name": "color",
+        "target": 100
+      },
+      {
+        "name": "scofflaw_indicator",
+        "target": 100
+      },
+      {
+        "name": "suspension_indicator",
+        "target": 100
+      },
+      {
+        "name": "revocation_indicator",
+        "target": 100
+      }
+    ],
+    "extended_statistics_count": 0,
+    "initial_analyze_count": 1,
+    "preflight_analyze_count": 0,
+    "target": 100
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 79775.0,
+    "max_query_id": "arecel_dmv11_test_008580",
+    "mean": 241.40742045577005,
+    "p50": 1.2064528154271636,
+    "p75": 1.703144898331828,
+    "p90": 14.0,
+    "p95": 89.1213636363632,
+    "p99": 3191.2600000000057,
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 241.40742045577005
+  },
+  "tail_contribution": {
+    "top_1": {
+      "baseline_objective_fraction": 0.0330457944703552,
+      "query_count": 1
+    },
+    "top_10": {
+      "baseline_objective_fraction": 0.26785527088570676,
+      "query_count": 10
+    },
+    "top_10_percent": {
+      "baseline_objective_fraction": 0.9944543352094615,
+      "query_count": 1000
+    },
+    "top_1_percent": {
+      "baseline_objective_fraction": 0.8619362607967667,
+      "query_count": 100
+    },
+    "top_5": {
+      "baseline_objective_fraction": 0.15278196473980193,
+      "query_count": 5
+    },
+    "top_5_percent": {
+      "baseline_objective_fraction": 0.9859413548902712,
+      "query_count": 500
+    }
+  },
+  "truth": {
+    "authoritative_for_preflight": true,
+    "ground_truth_set": false,
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 241.40742045577005
+  },
+  "workload": {
+    "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+    "query_count": 10000,
+    "workload_sha256": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+  }
+}
