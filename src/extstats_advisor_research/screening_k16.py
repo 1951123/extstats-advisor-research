@@ -275,6 +275,29 @@ def _run(command: list[str]) -> None:
         )
 
 
+def _all_definitions(
+    candidate_universe: dict[str, Any],
+    singleton_profile: dict[str, Any],
+    native_repository: dict[str, Any],
+) -> list[dict[str, Any]]:
+    candidates = {item["candidate_id"]: item for item in candidate_universe["candidates"]}
+    profiles = {item["candidate_id"]: item for item in singleton_profile["candidate_profiles"]}
+    native = {item["candidate_id"]: item for item in native_repository["candidates"]}
+    return [
+        {
+            "candidate_id": candidate_id,
+            "frozen_singleton_rank": profile.get("frozen_precedence_rank"),
+            "kind": candidates[candidate_id]["kind"],
+            "column_names": candidates[candidate_id]["column_names"],
+            "native_state": native[candidate_id]["state"],
+            "singleton_objective": profile["singleton_objective"],
+            "singleton_improvement": profile["improvement"],
+        }
+        for candidate_id, profile in profiles.items()
+        if candidate_id in candidates
+    ]
+
+
 def _build_trace(search: dict[str, Any], definitions: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_id = {item["candidate_id"]: item for item in definitions}
     trace = []
@@ -294,6 +317,125 @@ def _build_trace(search: dict[str, Any], definitions: list[dict[str, Any]]) -> l
             }
         )
     return trace
+
+
+def _finalize_screening_k16(
+    *,
+    repository_root: Path,
+    source: dict[str, Any],
+    k8: dict[str, Any],
+    k12: dict[str, Any],
+    research_identity: dict[str, str],
+    output: Path,
+    paths: dict[str, Path],
+    plan: dict[str, Any],
+    search: dict[str, Any],
+) -> dict[str, Any]:
+    termination = search["termination_reason"]
+    candidate_universe = read_json(paths["candidate_universe"])
+    singleton_profile = read_json(paths["singleton_profile"])
+    native_repository_manifest = read_json(paths["native_repository"] / "manifest.json")
+    definitions = rank_definitions(
+        candidate_universe, singleton_profile, native_repository_manifest
+    )
+    all_definitions = _all_definitions(
+        candidate_universe, singleton_profile, native_repository_manifest
+    )
+    outcomes = rank_outcomes(definitions, search)
+    trace = _build_trace(search, all_definitions)
+    comparison = classify_screening(
+        K12_OBJECTIVE,
+        search["final_objective"],
+        K12_SELECTED,
+        search["final_ordered_candidate_ids"],
+        termination_reason=termination,
+    )
+    runtime = search["runtime_metadata"]
+    k16_objective = float(search["final_objective"])
+    artifact = {
+        "format_version": FORMAT_VERSION,
+        "source": {
+            "run_id": source["run_id"],
+            "research_commit_sha": source["source_research_sha"],
+            "advisor_commit_sha": source["source_advisor_sha"],
+            "patched_postgres_commit_sha": source["patched_postgres_sha"],
+            "artifact_digests": source["source_artifact_digests"],
+        },
+        "execution_system": {
+            "research_repository": FROZEN_RESEARCH_REPOSITORY,
+            "research_commit_sha": research_identity["research_commit_sha"],
+            "advisor_repository": FROZEN_ADVISOR_REPOSITORY,
+            "advisor_commit_sha": FROZEN_ADVISOR_SHA,
+            "patched_postgres_repository": FROZEN_PATCHED_POSTGRES_REPOSITORY,
+            "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
+        },
+        "screening": {
+            "candidate_limit": K16_CANDIDATE_LIMIT,
+            "wall_clock_cap_seconds": K16_WALL_CLOCK_SECONDS,
+            "baseline_objective": BASELINE_OBJECTIVE,
+            "k8_reference": k8,
+            "k12_reference": k12,
+            "k16_plan_digest": plan["semantic_digest"],
+            "k16_search_digest": search["semantic_digest"],
+            "k16_objective": k16_objective,
+            "k16_selected_candidate_ids": search["final_ordered_candidate_ids"],
+            "termination_reason": termination,
+            **comparison,
+            "baseline_relative_improvement": {
+                "k8": (BASELINE_OBJECTIVE - K8_OBJECTIVE) / BASELINE_OBJECTIVE,
+                "k12": (BASELINE_OBJECTIVE - K12_OBJECTIVE) / BASELINE_OBJECTIVE,
+                "k16": (BASELINE_OBJECTIVE - k16_objective) / BASELINE_OBJECTIVE,
+            },
+            "membership_comparison": membership_comparison(
+                K8_SELECTED, K12_SELECTED, search["final_ordered_candidate_ids"]
+            ),
+            "parsimony": parsimony_metrics(
+                BASELINE_OBJECTIVE,
+                K8_OBJECTIVE,
+                K12_OBJECTIVE,
+                k16_objective,
+                len(K8_SELECTED),
+                len(K12_SELECTED),
+                len(search["final_ordered_candidate_ids"]),
+            ),
+        },
+        "singleton_ranks_13_16": outcomes,
+        "accepted_move_trace": trace,
+        "accepted_move_curve": accepted_move_curve(search),
+        "runtime_metadata": {
+            "elapsed_search_seconds": runtime["elapsed_search_seconds"],
+            "cached_singleton_configuration_count": runtime["cached_singleton_configuration_count"],
+            "live_configuration_evaluation_count": runtime["live_configuration_evaluation_count"],
+            "planner_query_estimate_count": runtime["planner_query_estimate_count"],
+            "completed_round_count": runtime["completed_round_count"],
+            "partial_final_round_evaluation_count": runtime["partial_final_round_evaluation_count"],
+            "seconds_per_live_configuration": runtime["elapsed_search_seconds"]
+            / runtime["live_configuration_evaluation_count"],
+        },
+        "planner_sandbox": {
+            "contract": "postgresql-planner-sandbox-v1",
+            "sample_row_count": 10_000,
+            "population_metadata_preserved": True,
+            "physical_extstats_count_before_search": 0,
+        },
+        "recommendation_or_deployment": {
+            "recommendation_built": False,
+            "deployment_performed": False,
+        },
+        "credentials_recorded": False,
+    }
+    validate_artifact_source_binding(artifact)
+    reject_credentials(artifact)
+    artifact["semantic_digest"] = semantic_digest(artifact)
+    write_json(output / "screening-k16-v1.json", artifact)
+    return {
+        "output_directory": str(output),
+        "plan_digest": plan["semantic_digest"],
+        "search_digest": search["semantic_digest"],
+        "decision": comparison["decision"],
+        "termination_reason": termination,
+        "query_estimates": runtime["planner_query_estimate_count"],
+    }
 
 
 def run_screening_k16(
@@ -436,109 +578,17 @@ def run_screening_k16(
         if prepared:
             destroy_postgres_planner_sandbox(planner_dsn)
 
-    search = read_json(search_path)
-    termination = search["termination_reason"]
-    candidate_universe = read_json(paths["candidate_universe"])
-    singleton_profile = read_json(singleton_path)
-    native_repository_manifest = read_json(paths["native_repository"] / "manifest.json")
-    definitions = rank_definitions(
-        candidate_universe, singleton_profile, native_repository_manifest
+    return _finalize_screening_k16(
+        repository_root=repository_root,
+        source=source,
+        k8=k8,
+        k12=k12,
+        research_identity=research_identity,
+        output=output,
+        paths=paths,
+        plan=plan,
+        search=read_json(search_path),
     )
-    outcomes = rank_outcomes(definitions, search)
-    trace = _build_trace(search, definitions)
-    comparison = classify_screening(
-        K12_OBJECTIVE,
-        search["final_objective"],
-        K12_SELECTED,
-        search["final_ordered_candidate_ids"],
-        termination_reason=termination,
-    )
-    runtime = search["runtime_metadata"]
-    k16_objective = float(search["final_objective"])
-    artifact = {
-        "format_version": FORMAT_VERSION,
-        "source": {
-            "run_id": source["run_id"],
-            "research_commit_sha": source["source_research_sha"],
-            "advisor_commit_sha": source["source_advisor_sha"],
-            "patched_postgres_commit_sha": source["patched_postgres_sha"],
-            "artifact_digests": source["source_artifact_digests"],
-        },
-        "execution_system": {
-            "research_repository": FROZEN_RESEARCH_REPOSITORY,
-            "research_commit_sha": research_identity["research_commit_sha"],
-            "advisor_repository": FROZEN_ADVISOR_REPOSITORY,
-            "advisor_commit_sha": FROZEN_ADVISOR_SHA,
-            "patched_postgres_repository": FROZEN_PATCHED_POSTGRES_REPOSITORY,
-            "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
-        },
-        "screening": {
-            "candidate_limit": K16_CANDIDATE_LIMIT,
-            "wall_clock_cap_seconds": K16_WALL_CLOCK_SECONDS,
-            "baseline_objective": BASELINE_OBJECTIVE,
-            "k8_reference": k8,
-            "k12_reference": k12,
-            "k16_plan_digest": plan["semantic_digest"],
-            "k16_search_digest": search["semantic_digest"],
-            "k16_objective": k16_objective,
-            "k16_selected_candidate_ids": search["final_ordered_candidate_ids"],
-            "termination_reason": termination,
-            **comparison,
-            "baseline_relative_improvement": {
-                "k8": (BASELINE_OBJECTIVE - K8_OBJECTIVE) / BASELINE_OBJECTIVE,
-                "k12": (BASELINE_OBJECTIVE - K12_OBJECTIVE) / BASELINE_OBJECTIVE,
-                "k16": (BASELINE_OBJECTIVE - k16_objective) / BASELINE_OBJECTIVE,
-            },
-            "membership_comparison": membership_comparison(
-                K8_SELECTED, K12_SELECTED, search["final_ordered_candidate_ids"]
-            ),
-            "parsimony": parsimony_metrics(
-                BASELINE_OBJECTIVE,
-                K8_OBJECTIVE,
-                K12_OBJECTIVE,
-                k16_objective,
-                len(K8_SELECTED),
-                len(K12_SELECTED),
-                len(search["final_ordered_candidate_ids"]),
-            ),
-        },
-        "singleton_ranks_13_16": outcomes,
-        "accepted_move_trace": trace,
-        "accepted_move_curve": accepted_move_curve(search),
-        "runtime_metadata": {
-            "elapsed_search_seconds": runtime["elapsed_search_seconds"],
-            "cached_singleton_configuration_count": runtime["cached_singleton_configuration_count"],
-            "live_configuration_evaluation_count": runtime["live_configuration_evaluation_count"],
-            "planner_query_estimate_count": runtime["planner_query_estimate_count"],
-            "completed_round_count": runtime["completed_round_count"],
-            "partial_final_round_evaluation_count": runtime["partial_final_round_evaluation_count"],
-            "seconds_per_live_configuration": runtime["elapsed_search_seconds"]
-            / runtime["live_configuration_evaluation_count"],
-        },
-        "planner_sandbox": {
-            "contract": "postgresql-planner-sandbox-v1",
-            "sample_row_count": 10_000,
-            "population_metadata_preserved": True,
-            "physical_extstats_count_before_search": 0,
-        },
-        "recommendation_or_deployment": {
-            "recommendation_built": False,
-            "deployment_performed": False,
-        },
-        "credentials_recorded": False,
-    }
-    validate_artifact_source_binding(artifact)
-    reject_credentials(artifact)
-    artifact["semantic_digest"] = semantic_digest(artifact)
-    write_json(output / "screening-k16-v1.json", artifact)
-    return {
-        "output_directory": str(output),
-        "plan_digest": plan["semantic_digest"],
-        "search_digest": search["semantic_digest"],
-        "decision": comparison["decision"],
-        "termination_reason": termination,
-        "query_estimates": runtime["planner_query_estimate_count"],
-    }
 
 
 def validate_artifact_source_binding(artifact: dict[str, Any]) -> bool:

@@ -11,6 +11,7 @@ from extstats_advisor_research.screening_k16 import (
     SOURCE_RESEARCH_SHA,
     SOURCE_RUN_ID,
     TRANSFER_SOURCE_ADVISOR_SHA,
+    _build_trace,
     accepted_move_curve,
     classify_screening,
     membership_comparison,
@@ -92,6 +93,47 @@ def test_rank_outcomes_report_rejection_round_and_acceptance() -> None:
     assert outcomes[0]["accepted"] is True
     assert outcomes[1]["rejection_completed_round"] == 3
     assert outcomes[2]["outcome"] == "never-reached-because-search-terminated-earlier"
+
+
+def test_trace_resolves_all_accepted_candidates_not_only_ranks_13_to_16() -> None:
+    trace = _build_trace(
+        {
+            "accepted_moves": [
+                {
+                    "added_candidate_id": "rank1",
+                    "round_index": 1,
+                    "objective_before": 5.0,
+                    "objective_after": 4.0,
+                    "improvement": 1.0,
+                },
+                {
+                    "added_candidate_id": "rank13",
+                    "round_index": 2,
+                    "objective_before": 4.0,
+                    "objective_after": 3.5,
+                    "improvement": 0.5,
+                },
+            ]
+        },
+        [
+            {
+                "candidate_id": "rank1",
+                "frozen_singleton_rank": 1,
+                "kind": "postgresql.mcv",
+                "column_names": ["a", "b"],
+                "singleton_improvement": 1.2,
+            },
+            {
+                "candidate_id": "rank13",
+                "frozen_singleton_rank": 13,
+                "kind": "postgresql.mcv",
+                "column_names": ["c", "d"],
+                "singleton_improvement": 0.7,
+            },
+        ],
+    )
+    assert [item["candidate_id"] for item in trace] == ["rank1", "rank13"]
+    assert trace[0]["marginal_improvement"] != trace[0]["singleton_improvement"]
 
 
 def test_parsimony_and_fraction_metrics() -> None:
