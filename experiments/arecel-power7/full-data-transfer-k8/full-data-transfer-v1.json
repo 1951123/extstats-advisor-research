@@ -1,0 +1,1277 @@
+{
+  "credentials_recorded": false,
+  "dataset": {
+    "benchmark_id": "arecel-power7",
+    "content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+    "rows": 2075259,
+    "schema_contract_id": "arecel-power7-postgres-schema-v1",
+    "source_csv_sha256": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+    "source_hashes": {
+      "canonical_workload": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "csv": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+      "label_pickle": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+      "workload_pickle": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+    }
+  },
+  "deployment_policy": "postgresql-add-only-deployment-v1",
+  "deployment_result": {
+    "commit_status": "committed",
+    "object_count": 7,
+    "path": "deployment-result-v1.json",
+    "post_commit_verified": true,
+    "semantic_digest": "b6775615e4a7b452d65c077e52f97f058cfde3852991e8e2eec5f4e677cbb8e1"
+  },
+  "execution_system": {
+    "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+    "advisor_repository": "1951123/extstats-advisor",
+    "research_commit_sha": "02d48b5069f7e53c5491e0a5f4d5022aa5e0ae42",
+    "research_repository": "1951123/extstats-advisor-research",
+    "stock_postgres_version": "16.14",
+    "stock_postgres_version_num": 160014
+  },
+  "format_version": "arecel-power7-full-data-transfer-k8-v1",
+  "live_experiment_elapsed_seconds": 13.089184,
+  "managed_statistics": [
+    {
+      "columns": "2 3",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_5adc15a48081e6c3178ef3505953c23e23e58582",
+      "oid": 16388,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 2",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_a9b4ab456c1b5265b7617eba4d14500fec6ce157",
+      "oid": 16389,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 3",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_5745b629c175b2f94b56298fa5740d66e2295e7e",
+      "oid": 16390,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "3 7",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_022f35fc6e58f9bee1e5fb84630afd529dfc9c50",
+      "oid": 16391,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 4",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_3e3909adaf05b0ab364aca8e482472d4c9d8e96b",
+      "oid": 16392,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "3 4",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_4b9be3630b240b064c1493efb3216c6c3096b225",
+      "oid": 16393,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 7",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_637d4023571f026a4e73311cd03b63084662e277",
+      "oid": 16394,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    }
+  ],
+  "ordinary_stats_fingerprint_p0": "7fa57a5fdd3ce5d38615d3ec42f5a5ad6c32e27cb54bb2602e6f98c948929143",
+  "ordinary_stats_fingerprint_p1": "429c474ad0e38a341aca30453864a79e4957844b403030bb80c86c266e3c2bb9",
+  "ordinary_stats_fingerprint_p2": "429c474ad0e38a341aca30453864a79e4957844b403030bb80c86c266e3c2bb9",
+  "ordinary_stats_p1_p2_equal": true,
+  "p2_control": {
+    "analyze_performed": false,
+    "dropped_object_count": 7,
+    "restoration_verified": true,
+    "rollback_performed": true
+  },
+  "patched_postgres_started": false,
+  "pre_deployment_extended_statistics": [],
+  "qerror_contract": "qerror-cardinality-floor-1-v1",
+  "recommendation": {
+    "accepted_move_order": [
+      "cand_118e05e5fce1cc567c922f80",
+      "cand_5fdb71ebba54bfa84fab9ea1",
+      "cand_2015e764087bec455e8ae806",
+      "cand_3bf3dfda2e9adf9eaa8fc28d",
+      "cand_6ca1b76d1f3f368ff4604b39",
+      "cand_36cd43aecd98a9766ae7c4bc",
+      "cand_5f9cbe132b4bd75b51704d91"
+    ],
+    "deployment_order": [
+      "cand_118e05e5fce1cc567c922f80",
+      "cand_5fdb71ebba54bfa84fab9ea1",
+      "cand_2015e764087bec455e8ae806",
+      "cand_36cd43aecd98a9766ae7c4bc",
+      "cand_3bf3dfda2e9adf9eaa8fc28d",
+      "cand_6ca1b76d1f3f368ff4604b39",
+      "cand_5f9cbe132b4bd75b51704d91"
+    ],
+    "object_count": 7,
+    "selected_candidate_ids": [
+      "cand_118e05e5fce1cc567c922f80",
+      "cand_5fdb71ebba54bfa84fab9ea1",
+      "cand_2015e764087bec455e8ae806",
+      "cand_36cd43aecd98a9766ae7c4bc",
+      "cand_3bf3dfda2e9adf9eaa8fc28d",
+      "cand_6ca1b76d1f3f368ff4604b39",
+      "cand_5f9cbe132b4bd75b51704d91"
+    ],
+    "semantic_digest": "9521461ec7775acff1ead96bbc985da6f2c6f40ac301723737b32fa47f634b11"
+  },
+  "restored_statistics": [
+    {
+      "columns": "2 3",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_5adc15a48081e6c3178ef3505953c23e23e58582",
+      "oid": 16388,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 2",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_a9b4ab456c1b5265b7617eba4d14500fec6ce157",
+      "oid": 16389,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 3",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_5745b629c175b2f94b56298fa5740d66e2295e7e",
+      "oid": 16390,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "3 7",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_022f35fc6e58f9bee1e5fb84630afd529dfc9c50",
+      "oid": 16391,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 4",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_3e3909adaf05b0ab364aca8e482472d4c9d8e96b",
+      "oid": 16392,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "3 4",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_4b9be3630b240b064c1493efb3216c6c3096b225",
+      "oid": 16393,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 7",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_637d4023571f026a4e73311cd03b63084662e277",
+      "oid": 16394,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    }
+  ],
+  "search_performed": false,
+  "semantic_digest": "2a7136fb4cd4866171719bad9fc1bd22864f538e62abb849c3855eb73039d0cb",
+  "source_provenance": {
+    "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+    "artifacts": {
+      "audit": "70970e9a14cef5a076273e6d94efa9ce699faff9f62d660cfba96c473638c141",
+      "candidate_universe": "1d06d4ca8ac6fd843fd174eb180b7cc4872c13294052fe9e52eac85310245c23",
+      "full_data_target100": "14c180633e5fabdfeb7803d218963d32ed304f7615e01df9d250d0b23953f507",
+      "ground_truth": "f76aac10840580ba8b4864c30961eb165b7f5008838af1c9236f0f9d9ed0020c",
+      "native_repository": "5d8272a4bf4701256d1bb13231642934ef7f8548d934a983a3e6d8e9c1da24fe",
+      "optimization_plan": "8e035728668ef862e2e570e8a0ad46b84a758db770e0cfb1eb573eef552569ec",
+      "recommendation": "9521461ec7775acff1ead96bbc985da6f2c6f40ac301723737b32fa47f634b11",
+      "search_result": "e4f25a3b9ca20645dd1490b1528fee58722f1d11eb7c111ea4a24aa7da4422de",
+      "singleton_profile": "0be5c93e355299172cfb75efee330e60ddf00fac4a32a4c427c8e52223b4489d",
+      "snapshot": "5690d69b5b7359bf3e7ca41044cc73d3fe8cbe096898424bce4d91fcd724cac8"
+    },
+    "compact_digest": "01fc5e780118e9831547aa8be8d7e068996028f5fe0f78781e97500436877abf",
+    "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+    "precedence": {
+      "accepted_move_order": [
+        "cand_118e05e5fce1cc567c922f80",
+        "cand_5fdb71ebba54bfa84fab9ea1",
+        "cand_2015e764087bec455e8ae806",
+        "cand_3bf3dfda2e9adf9eaa8fc28d",
+        "cand_6ca1b76d1f3f368ff4604b39",
+        "cand_36cd43aecd98a9766ae7c4bc",
+        "cand_5f9cbe132b4bd75b51704d91"
+      ],
+      "accepted_move_order_differs": true,
+      "membership": [
+        "cand_118e05e5fce1cc567c922f80",
+        "cand_5fdb71ebba54bfa84fab9ea1",
+        "cand_2015e764087bec455e8ae806",
+        "cand_36cd43aecd98a9766ae7c4bc",
+        "cand_3bf3dfda2e9adf9eaa8fc28d",
+        "cand_6ca1b76d1f3f368ff4604b39",
+        "cand_5f9cbe132b4bd75b51704d91"
+      ],
+      "policy": "D=F|M*; accepted move order is not deployment order",
+      "precedence_order": [
+        "cand_118e05e5fce1cc567c922f80",
+        "cand_5fdb71ebba54bfa84fab9ea1",
+        "cand_2015e764087bec455e8ae806",
+        "cand_36cd43aecd98a9766ae7c4bc",
+        "cand_3bf3dfda2e9adf9eaa8fc28d",
+        "cand_6ca1b76d1f3f368ff4604b39",
+        "cand_5f9cbe132b4bd75b51704d91"
+      ]
+    },
+    "research_commit_sha": "6aaeb0ff2819ae705063305c6bd19be4639a6ce7",
+    "run_id": "35d6bb57749bf15c84e92300",
+    "truth_binding": {
+      "ground_truth_semantic_digest": "f76aac10840580ba8b4864c30961eb165b7f5008838af1c9236f0f9d9ed0020c",
+      "matched": 10000,
+      "mismatched": 0,
+      "query_count": 10000,
+      "snapshot_semantic_digest": "5690d69b5b7359bf3e7ca41044cc73d3fe8cbe096898424bce4d91fcd724cac8",
+      "source_view_token_not_reused": true
+    },
+    "workload_id": "arecel_power7_test_v1",
+    "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+  },
+  "source_run_id": "35d6bb57749bf15c84e92300",
+  "source_system": {
+    "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+    "advisor_repository": "1951123/extstats-advisor",
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "patched_postgres_repository": "1951123/postgresql-pgextadv",
+    "research_commit_sha": "6aaeb0ff2819ae705063305c6bd19be4639a6ce7",
+    "research_repository": "1951123/extstats-advisor-research"
+  },
+  "summary": {
+    "controlled_production_relative_improvement": 0.3510450803956665,
+    "decision": "power-k8-transfer-success",
+    "first_five_sandbox_improvement_fraction": 0.998385387916317,
+    "mean_direction_conflict": false,
+    "operational_production_relative_improvement": 0.35441341738900517,
+    "p0": {
+      "arithmetic_mean": 124.49626609845559,
+      "max": 156430.0,
+      "median": 1.072263763813028,
+      "min": 1.0,
+      "p50": 1.072263763813028,
+      "p75": 1.9916087932225042,
+      "p90": 4.989178894438905,
+      "p95": 14.992045454545448,
+      "p99": 234.35650000000012,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 124.49626609845559
+    },
+    "p0_to_p1_classification": {
+      "improved": 6103,
+      "unchanged": 604,
+      "worsened": 3293
+    },
+    "p0_to_p1_mean_direction": "improved",
+    "p1": {
+      "arithmetic_mean": 80.373118978331,
+      "max": 152931.0,
+      "median": 1.066138732843088,
+      "min": 1.0,
+      "p50": 1.066138732843088,
+      "p75": 1.955487399565037,
+      "p90": 4.792544360187927,
+      "p95": 13.663330629875329,
+      "p99": 162.52500000000055,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 80.373118978331
+    },
+    "p2": {
+      "arithmetic_mean": 123.85008041442127,
+      "max": 152931.0,
+      "median": 1.0686019326901675,
+      "min": 1.0,
+      "p50": 1.0686019326901675,
+      "p75": 1.9992423899037122,
+      "p90": 5.0,
+      "p95": 15.0,
+      "p99": 234.35650000000012,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 123.85008041442127
+    },
+    "p2_to_p1_classification": {
+      "improved": 815,
+      "unchanged": 8782,
+      "worsened": 403
+    },
+    "p2_to_p1_mean_direction": "improved",
+    "query_count": 10000,
+    "sandbox_baseline": {
+      "arithmetic_mean": 167.64553643195146,
+      "max": 155638.0,
+      "median": 1.1237157205862853,
+      "min": 1.0,
+      "p50": 1.1237157205862853,
+      "p75": 2.0009375641112426,
+      "p90": 4.951876067936614,
+      "p95": 13.242682489557588,
+      "p99": 416.0400000000009,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 167.64553643195146
+    },
+    "sandbox_final": {
+      "arithmetic_mean": 99.8095133469058,
+      "max": 155638.0,
+      "median": 1.1222440529032607,
+      "min": 1.0,
+      "p50": 1.1222440529032607,
+      "p75": 1.995111401797722,
+      "p90": 4.734702160070611,
+      "p95": 11.912779719723094,
+      "p99": 230.99695652174,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 99.8095133469058
+    },
+    "sandbox_production_correspondence": {
+      "opposite_direction": 246,
+      "same_direction": 9485,
+      "sandbox_improved_production_improved": 514,
+      "sandbox_improved_production_unchanged": 2,
+      "sandbox_improved_production_worsened": 149,
+      "sandbox_unchanged_production_improved": 204,
+      "sandbox_unchanged_production_unchanged": 8778,
+      "sandbox_unchanged_production_worsened": 61,
+      "sandbox_worsened_production_improved": 97,
+      "sandbox_worsened_production_unchanged": 2,
+      "sandbox_worsened_production_worsened": 193,
+      "unchanged_involved": 269
+    },
+    "sandbox_relative_improvement": 0.4046396016787526,
+    "source_top_10_baseline_qerror_queries": [
+      {
+        "estimate": 155638,
+        "qerror": 155638.0,
+        "query_id": "arecel_power7_test_005495",
+        "true_rows": 0
+      },
+      {
+        "estimate": 150044,
+        "qerror": 150044.0,
+        "query_id": "arecel_power7_test_001932",
+        "true_rows": 0
+      },
+      {
+        "estimate": 46019,
+        "qerror": 46019.0,
+        "query_id": "arecel_power7_test_001642",
+        "true_rows": 0
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000331",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000342",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000661",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000925",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_001279",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_002121",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_002578",
+        "true_rows": 25979
+      }
+    ],
+    "tail_contributions": {
+      "p0": {
+        "top_1": {
+          "baseline_objective_fraction": 0.12565035474741884,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.42499909160453425,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9895381288288315,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.9673338910757228,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.3206626290978797,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9861814933879735,
+          "query_count": 500
+        }
+      },
+      "p1": {
+        "top_1": {
+          "baseline_objective_fraction": 0.19027630374930576,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.653192269596431,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9840331252374336,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.9563726841563259,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.491577289798247,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9792198233753565,
+          "query_count": 500
+        }
+      },
+      "p2": {
+        "top_1": {
+          "baseline_objective_fraction": 0.12348074340224045,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.4219343243471578,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9894994618097863,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.9667200038996159,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.3170534881253713,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9861184942348009,
+          "query_count": 500
+        }
+      },
+      "sandbox_baseline": {
+        "top_1": {
+          "baseline_objective_fraction": 0.09283754480583777,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.3182631708280366,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.992015334711982,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.971015618222168,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.24078123914969138,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9897405127785439,
+          "query_count": 500
+        }
+      },
+      "sandbox_final": {
+        "top_1": {
+          "baseline_objective_fraction": 0.15593503542999182,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.5362635104127507,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9867184975117343,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.9629912034286454,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.40612060554903623,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9831555172958422,
+          "query_count": 500
+        }
+      }
+    },
+    "tail_query_records": [
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 5,
+        "p1_qerror": 5195.8,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_000331",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 54,
+        "p1_qerror": 481.0925925925926,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_000342",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 9,
+        "sandbox_final_qerror": 2886.5555555555557,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "unchanged",
+        "p1_estimated_rows": 1,
+        "p1_qerror": 25979.0,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_power7_test_000661",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "unchanged",
+        "p1_estimated_rows": 1,
+        "p1_qerror": 25979.0,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_power7_test_000925",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 346,
+        "p1_qerror": 75.08381502890174,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_001279",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 70,
+        "sandbox_final_qerror": 371.12857142857143,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 35604,
+        "p0_qerror": 35604.0,
+        "p0_to_p1_classification": "worsened",
+        "p1_estimated_rows": 40048,
+        "p1_qerror": 40048.0,
+        "p2_estimated_rows": 37623,
+        "p2_qerror": 37623.0,
+        "p2_to_p1_classification": "worsened",
+        "query_id": "arecel_power7_test_001642",
+        "sandbox_baseline_estimate": 46019,
+        "sandbox_baseline_qerror": 46019.0,
+        "sandbox_classification": "worsened",
+        "sandbox_final_estimate": 47707,
+        "sandbox_final_qerror": 47707.0,
+        "true_rows": 0,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 155221,
+        "p0_qerror": 155221.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 152931,
+        "p1_qerror": 152931.0,
+        "p2_estimated_rows": 152931,
+        "p2_qerror": 152931.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_power7_test_001932",
+        "sandbox_baseline_estimate": 150044,
+        "sandbox_baseline_qerror": 150044.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 150044,
+        "sandbox_final_qerror": 150044.0,
+        "true_rows": 0,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 367,
+        "p1_qerror": 70.7874659400545,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_002121",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 75,
+        "sandbox_final_qerror": 346.38666666666666,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 3,
+        "p1_qerror": 8659.666666666666,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_002578",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "unchanged",
+        "p1_estimated_rows": 1,
+        "p1_qerror": 25979.0,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_power7_test_002723",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 1,
+        "p0_qerror": 25979.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 8,
+        "p1_qerror": 3247.375,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 25979.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_002735",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 25979.0,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 356,
+        "p1_qerror": 72.9747191011236,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_003655",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 72,
+        "sandbox_final_qerror": 360.81944444444446,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 377,
+        "p1_qerror": 68.90981432360742,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_004723",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 143,
+        "sandbox_final_qerror": 181.67132867132867,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 156430,
+        "p0_qerror": 156430.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 150159,
+        "p1_qerror": 150159.0,
+        "p2_estimated_rows": 150159,
+        "p2_qerror": 150159.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_power7_test_005495",
+        "sandbox_baseline_estimate": 155638,
+        "sandbox_baseline_qerror": 155638.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 155638,
+        "sandbox_final_qerror": 155638.0,
+        "true_rows": 0,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 367,
+        "p1_qerror": 70.7874659400545,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_005534",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 75,
+        "sandbox_final_qerror": 346.38666666666666,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 4,
+        "p0_qerror": 6494.75,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 317,
+        "p1_qerror": 81.95268138801262,
+        "p2_estimated_rows": 4,
+        "p2_qerror": 6494.75,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_005806",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 64,
+        "sandbox_final_qerror": 405.921875,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 4,
+        "p0_qerror": 6494.75,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 318,
+        "p1_qerror": 81.69496855345912,
+        "p2_estimated_rows": 4,
+        "p2_qerror": 6494.75,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_007207",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 64,
+        "sandbox_final_qerror": 405.921875,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 5,
+        "p0_qerror": 5195.8,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 367,
+        "p1_qerror": 70.7874659400545,
+        "p2_estimated_rows": 5,
+        "p2_qerror": 5195.8,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_007370",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 75,
+        "sandbox_final_qerror": 346.38666666666666,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 3,
+        "p0_qerror": 8659.666666666666,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 212,
+        "p1_qerror": 122.54245283018868,
+        "p2_estimated_rows": 3,
+        "p2_qerror": 8659.666666666666,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_009109",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 58,
+        "sandbox_final_qerror": 447.91379310344826,
+        "true_rows": 25979,
+        "weight": 1.0
+      },
+      {
+        "p0_estimated_rows": 9,
+        "p0_qerror": 2886.5555555555557,
+        "p0_to_p1_classification": "improved",
+        "p1_estimated_rows": 678,
+        "p1_qerror": 38.317109144542776,
+        "p2_estimated_rows": 9,
+        "p2_qerror": 2886.5555555555557,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_power7_test_009427",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 25979.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 236,
+        "sandbox_final_qerror": 110.08050847457628,
+        "true_rows": 25979,
+        "weight": 1.0
+      }
+    ],
+    "tail_union_query_ids": [
+      "arecel_power7_test_000331",
+      "arecel_power7_test_000342",
+      "arecel_power7_test_000661",
+      "arecel_power7_test_000925",
+      "arecel_power7_test_001279",
+      "arecel_power7_test_001642",
+      "arecel_power7_test_001932",
+      "arecel_power7_test_002121",
+      "arecel_power7_test_002578",
+      "arecel_power7_test_002723",
+      "arecel_power7_test_002735",
+      "arecel_power7_test_003655",
+      "arecel_power7_test_004723",
+      "arecel_power7_test_005495",
+      "arecel_power7_test_005534",
+      "arecel_power7_test_005806",
+      "arecel_power7_test_007207",
+      "arecel_power7_test_007370",
+      "arecel_power7_test_009109",
+      "arecel_power7_test_009427"
+    ],
+    "top_10_p0_to_p1_improvements": [
+      {
+        "after_qerror": 365.90140845070425,
+        "before_qerror": 25979.0,
+        "delta": 25613.098591549297,
+        "query_id": "arecel_power7_test_008904"
+      },
+      {
+        "after_qerror": 472.3454545454546,
+        "before_qerror": 25979.0,
+        "delta": 25506.654545454545,
+        "query_id": "arecel_power7_test_009495"
+      },
+      {
+        "after_qerror": 481.0925925925926,
+        "before_qerror": 25979.0,
+        "delta": 25497.90740740741,
+        "query_id": "arecel_power7_test_000342"
+      },
+      {
+        "after_qerror": 3247.375,
+        "before_qerror": 25979.0,
+        "delta": 22731.625,
+        "query_id": "arecel_power7_test_002735"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_000331"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_002762"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_003323"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_006392"
+      },
+      {
+        "after_qerror": 8659.666666666666,
+        "before_qerror": 25979.0,
+        "delta": 17319.333333333336,
+        "query_id": "arecel_power7_test_002578"
+      },
+      {
+        "after_qerror": 12989.5,
+        "before_qerror": 25979.0,
+        "delta": 12989.5,
+        "query_id": "arecel_power7_test_004988"
+      }
+    ],
+    "top_10_p0_to_p1_regressions": [
+      {
+        "after_qerror": 40048.0,
+        "before_qerror": 35604.0,
+        "delta": -4444.0,
+        "query_id": "arecel_power7_test_001642"
+      },
+      {
+        "after_qerror": 4692.0,
+        "before_qerror": 3825.0,
+        "delta": -867.0,
+        "query_id": "arecel_power7_test_002643"
+      },
+      {
+        "after_qerror": 3580.0,
+        "before_qerror": 3058.0,
+        "delta": -522.0,
+        "query_id": "arecel_power7_test_000914"
+      },
+      {
+        "after_qerror": 1514.5,
+        "before_qerror": 1009.6666666666666,
+        "delta": -504.83333333333337,
+        "query_id": "arecel_power7_test_008688"
+      },
+      {
+        "after_qerror": 4460.0,
+        "before_qerror": 4204.0,
+        "delta": -256.0,
+        "query_id": "arecel_power7_test_002371"
+      },
+      {
+        "after_qerror": 348.6666666666667,
+        "before_qerror": 209.2,
+        "delta": -139.4666666666667,
+        "query_id": "arecel_power7_test_008621"
+      },
+      {
+        "after_qerror": 1312.0,
+        "before_qerror": 1177.0,
+        "delta": -135.0,
+        "query_id": "arecel_power7_test_000110"
+      },
+      {
+        "after_qerror": 157.0,
+        "before_qerror": 78.5,
+        "delta": -78.5,
+        "query_id": "arecel_power7_test_007226"
+      },
+      {
+        "after_qerror": 131.0,
+        "before_qerror": 65.5,
+        "delta": -65.5,
+        "query_id": "arecel_power7_test_009220"
+      },
+      {
+        "after_qerror": 167.07692307692307,
+        "before_qerror": 108.6,
+        "delta": -58.47692307692307,
+        "query_id": "arecel_power7_test_006528"
+      }
+    ],
+    "top_10_p2_to_p1_improvements": [
+      {
+        "after_qerror": 365.90140845070425,
+        "before_qerror": 25979.0,
+        "delta": 25613.098591549297,
+        "query_id": "arecel_power7_test_008904"
+      },
+      {
+        "after_qerror": 472.3454545454546,
+        "before_qerror": 25979.0,
+        "delta": 25506.654545454545,
+        "query_id": "arecel_power7_test_009495"
+      },
+      {
+        "after_qerror": 481.0925925925926,
+        "before_qerror": 25979.0,
+        "delta": 25497.90740740741,
+        "query_id": "arecel_power7_test_000342"
+      },
+      {
+        "after_qerror": 3247.375,
+        "before_qerror": 25979.0,
+        "delta": 22731.625,
+        "query_id": "arecel_power7_test_002735"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_000331"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_002762"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_003323"
+      },
+      {
+        "after_qerror": 5195.8,
+        "before_qerror": 25979.0,
+        "delta": 20783.2,
+        "query_id": "arecel_power7_test_006392"
+      },
+      {
+        "after_qerror": 8659.666666666666,
+        "before_qerror": 25979.0,
+        "delta": 17319.333333333336,
+        "query_id": "arecel_power7_test_002578"
+      },
+      {
+        "after_qerror": 12989.5,
+        "before_qerror": 25979.0,
+        "delta": 12989.5,
+        "query_id": "arecel_power7_test_004988"
+      }
+    ],
+    "top_10_p2_to_p1_regressions": [
+      {
+        "after_qerror": 40048.0,
+        "before_qerror": 37623.0,
+        "delta": -2425.0,
+        "query_id": "arecel_power7_test_001642"
+      },
+      {
+        "after_qerror": 4692.0,
+        "before_qerror": 4464.0,
+        "delta": -228.0,
+        "query_id": "arecel_power7_test_002643"
+      },
+      {
+        "after_qerror": 2255.0,
+        "before_qerror": 2151.0,
+        "delta": -104.0,
+        "query_id": "arecel_power7_test_008287"
+      },
+      {
+        "after_qerror": 2.1110897263174104,
+        "before_qerror": 1.062781477347088,
+        "delta": -1.0483082489703224,
+        "query_id": "arecel_power7_test_003593"
+      },
+      {
+        "after_qerror": 1.9961122445051773,
+        "before_qerror": 1.0026559913776512,
+        "delta": -0.9934562531275262,
+        "query_id": "arecel_power7_test_001456"
+      },
+      {
+        "after_qerror": 5.966569518258186,
+        "before_qerror": 5.3996228355906055,
+        "delta": -0.5669466826675809,
+        "query_id": "arecel_power7_test_007918"
+      },
+      {
+        "after_qerror": 3.625123383032885,
+        "before_qerror": 3.1504808343491804,
+        "delta": -0.4746425486837045,
+        "query_id": "arecel_power7_test_006228"
+      },
+      {
+        "after_qerror": 4.730769230769231,
+        "before_qerror": 4.3076923076923075,
+        "delta": -0.42307692307692335,
+        "query_id": "arecel_power7_test_002900"
+      },
+      {
+        "after_qerror": 1.3785714285714286,
+        "before_qerror": 1.0376344086021505,
+        "delta": -0.34093701996927805,
+        "query_id": "arecel_power7_test_005553"
+      },
+      {
+        "after_qerror": 1.347651691948658,
+        "before_qerror": 1.010368047452353,
+        "delta": -0.337283644496305,
+        "query_id": "arecel_power7_test_007652"
+      }
+    ],
+    "top_10_sandbox_baseline": [
+      {
+        "estimate": 155638,
+        "qerror": 155638.0,
+        "query_id": "arecel_power7_test_005495",
+        "true_rows": 0
+      },
+      {
+        "estimate": 150044,
+        "qerror": 150044.0,
+        "query_id": "arecel_power7_test_001932",
+        "true_rows": 0
+      },
+      {
+        "estimate": 46019,
+        "qerror": 46019.0,
+        "query_id": "arecel_power7_test_001642",
+        "true_rows": 0
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000331",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000342",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000661",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_000925",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_001279",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_002121",
+        "true_rows": 25979
+      },
+      {
+        "estimate": 1,
+        "qerror": 25979.0,
+        "query_id": "arecel_power7_test_002578",
+        "true_rows": 25979
+      }
+    ],
+    "transfer_retention_ratio": 0.8675499850713195
+  },
+  "timings_seconds": {
+    "deployment_including_final_analyze": 6.02784,
+    "fresh_load_initial_analyze": 1.740666,
+    "p0_explain": 1.455172,
+    "p1_explain": 1.370193,
+    "p2_transaction_evaluation_rollback": 1.381633,
+    "restoration_verification": 0.005827
+  },
+  "transfer_implementation_research_sha": "02d48b5069f7e53c5491e0a5f4d5022aa5e0ae42"
+}
