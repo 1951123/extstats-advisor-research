@@ -1,0 +1,1372 @@
+{
+  "credentials_recorded": false,
+  "dataset": {
+    "benchmark_id": "arecel-dmv11",
+    "content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    "rows": 11591877,
+    "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+    "source_csv_sha256": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+    "source_hashes": {
+      "canonical_workload": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "csv": "ae310972b7ac08629d135a1da7c580e3fe603bfc2e665e1969005bd481d4605a",
+      "label_pickle": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+      "workload_pickle": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+    }
+  },
+  "deployment_policy": "postgresql-add-only-deployment-v1",
+  "deployment_result": {
+    "commit_status": "committed",
+    "object_count": 5,
+    "path": "deployment-result-v1.json",
+    "post_commit_verified": true,
+    "semantic_digest": "bc3ccf89e8193b8d5271a38d664f81309d59c1667918d894cc4ff400df92a4f7"
+  },
+  "execution_system": {
+    "advisor_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "advisor_repository": "1951123/extstats-advisor",
+    "research_commit_sha": "d4fb4843bf40295719ad91455215f9105e0bf3e6",
+    "research_repository": "1951123/extstats-advisor-research",
+    "stock_postgres_version": "16.14",
+    "stock_postgres_version_num": 160014
+  },
+  "format_version": "arecel-dmv11-full-data-transfer-k8-v1",
+  "live_experiment_elapsed_seconds": 37.044456,
+  "managed_statistics": [
+    {
+      "columns": "2 5",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_397e46cb838213ab69f6e1622849ca2eeca12269",
+      "oid": 16403,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 5",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_8b292ea628e13abe3574819dc0012c61e518b5bb",
+      "oid": 16404,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 2",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_907c5c6749e240838421b9f93aa942d1d150622c",
+      "oid": 16405,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "5 6",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_4dca877609e70f9cf3718df71c37e23be5cc7a89",
+      "oid": 16406,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 6",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_b762410222392fc11729a4977563c328a911257e",
+      "oid": 16407,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    }
+  ],
+  "ordinary_stats_fingerprint_p0": "0dbcf8f714671f47db620ace551b0b901518e152aeb4bea879ee922e9cd94b3b",
+  "ordinary_stats_fingerprint_p1": "86b1cad03b3cff0f2774e4dd2d22afd6d3ee44afea81a76f101108c1915e3730",
+  "ordinary_stats_fingerprint_p2": "86b1cad03b3cff0f2774e4dd2d22afd6d3ee44afea81a76f101108c1915e3730",
+  "ordinary_stats_p0_p2_equal": false,
+  "ordinary_stats_p1_p2_equal": true,
+  "p2_control": {
+    "analyze_performed": false,
+    "dropped_object_count": 5,
+    "external_statistics_touched": false,
+    "restoration_verified": true,
+    "rollback_performed": true
+  },
+  "patched_postgres_started": false,
+  "pre_deployment_extended_statistics": [],
+  "qerror_contract": "qerror-cardinality-floor-1-v1",
+  "recommendation": {
+    "accepted_move_order": [
+      "cand_57f08ef654098d51d97f0400",
+      "cand_7f3ef384db817c3691b4ca88",
+      "cand_df363eb816815cdff7fdd419",
+      "cand_67e6aa143586118096224da8",
+      "cand_3c437e0f5567c912c876e9ea"
+    ],
+    "deployment_order": [
+      "cand_57f08ef654098d51d97f0400",
+      "cand_7f3ef384db817c3691b4ca88",
+      "cand_df363eb816815cdff7fdd419",
+      "cand_3c437e0f5567c912c876e9ea",
+      "cand_67e6aa143586118096224da8"
+    ],
+    "object_count": 5,
+    "selected_candidate_ids": [
+      "cand_57f08ef654098d51d97f0400",
+      "cand_7f3ef384db817c3691b4ca88",
+      "cand_df363eb816815cdff7fdd419",
+      "cand_3c437e0f5567c912c876e9ea",
+      "cand_67e6aa143586118096224da8"
+    ],
+    "semantic_digest": "6bd0eb2a3c89bdc4fb0bca7319c1e40fc86cb323028eb1ff6e7a13e18372c8e2"
+  },
+  "restored_statistics": [
+    {
+      "columns": "2 5",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_397e46cb838213ab69f6e1622849ca2eeca12269",
+      "oid": 16403,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 5",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_8b292ea628e13abe3574819dc0012c61e518b5bb",
+      "oid": 16404,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "1 2",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_907c5c6749e240838421b9f93aa942d1d150622c",
+      "oid": 16405,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "5 6",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_4dca877609e70f9cf3718df71c37e23be5cc7a89",
+      "oid": 16406,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    },
+    {
+      "columns": "2 6",
+      "kind": "postgresql.mcv",
+      "name": "extstats_adv_mcv_b762410222392fc11729a4977563c328a911257e",
+      "oid": 16407,
+      "payload": true,
+      "schema": "public",
+      "target": 100
+    }
+  ],
+  "search_performed": false,
+  "semantic_digest": "3427e1a997647fde44210177b631fc7100b86b1e38776cfa52307c1cbf6ed7d2",
+  "source_provenance": {
+    "advisor_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "artifacts": {
+      "audit": "1fc7dbd2d574584d1479641a77d05830911721c854931c6e5c478ada4482b5f6",
+      "candidate_universe": "deba616def6389e1086f7180ebbe0af8532016ace543daba0454f611eacec2d4",
+      "full_data_target100": "19fefaff941d257593efbac16b0f08c7e3851c00fd087688f0f62c0b9785019d",
+      "ground_truth": "6096a1e8435a7a0a471a214955ded71629555be87652e0d26d67c443971eea44",
+      "native_repository": "4c90d36d58bfdc2b24476a64d8be0db43b2be0d35d6f806a3b89d31f6cb65ad0",
+      "optimization_plan": "dcac1413c834bb9c4a243ed20e376eac07f6f587c8e847343b14f84bff076253",
+      "recommendation": "6bd0eb2a3c89bdc4fb0bca7319c1e40fc86cb323028eb1ff6e7a13e18372c8e2",
+      "search_result": "fe604d0e7103158dfe1a0308545ac811634e22bec48521729e14a81600521eab",
+      "singleton_profile": "f7e949a25e3ae2d8281d3021388a9ba3a236d5be62694661211401396c74a3e3",
+      "snapshot": "9687d42c311226678eeddb653a80fb769604656f82820a76e2d844eb2310247d"
+    },
+    "compact_digest": "3b49b2b4262a438ce32b1835c57a0117fe3b39caed6d07532d8bb68acdfcadda",
+    "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    "exact_truth_recapture": false,
+    "precedence": {
+      "accepted_move_order": [
+        "cand_57f08ef654098d51d97f0400",
+        "cand_7f3ef384db817c3691b4ca88",
+        "cand_df363eb816815cdff7fdd419",
+        "cand_67e6aa143586118096224da8",
+        "cand_3c437e0f5567c912c876e9ea"
+      ],
+      "accepted_move_order_differs": true,
+      "membership": [
+        "cand_57f08ef654098d51d97f0400",
+        "cand_7f3ef384db817c3691b4ca88",
+        "cand_df363eb816815cdff7fdd419",
+        "cand_3c437e0f5567c912c876e9ea",
+        "cand_67e6aa143586118096224da8"
+      ],
+      "policy": "D=F|M*; accepted move order is not deployment order",
+      "precedence_order": [
+        "cand_57f08ef654098d51d97f0400",
+        "cand_7f3ef384db817c3691b4ca88",
+        "cand_df363eb816815cdff7fdd419",
+        "cand_3c437e0f5567c912c876e9ea",
+        "cand_67e6aa143586118096224da8"
+      ]
+    },
+    "research_commit_sha": "dd613f7357d436c69412a9bd7461a4afdc46eca3",
+    "run_id": "82f277385bf5381a43b0c268",
+    "truth_binding": {
+      "ground_truth_semantic_digest": "6096a1e8435a7a0a471a214955ded71629555be87652e0d26d67c443971eea44",
+      "matched": 10000,
+      "mismatched": 0,
+      "query_count": 10000,
+      "snapshot_semantic_digest": "9687d42c311226678eeddb653a80fb769604656f82820a76e2d844eb2310247d",
+      "source_view_token_not_reused": true
+    },
+    "truth_kind": "authoritative-external-exact",
+    "truth_provenance": {
+      "authority": "sfu-db/AreCELearnedYet",
+      "dataset_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "kind": "authoritative-external-exact",
+      "source_artifact_sha256": "aaedaf54313926fb03efb1051ba58c86b17729cad372a69e9c6faf5b192eb37a",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a"
+    },
+    "workload_id": "arecel_dmv11_test_v1",
+    "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+  },
+  "source_run_id": "82f277385bf5381a43b0c268",
+  "source_system": {
+    "advisor_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "advisor_repository": "1951123/extstats-advisor",
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "patched_postgres_repository": "1951123/postgresql-pgextadv",
+    "research_commit_sha": "dd613f7357d436c69412a9bd7461a4afdc46eca3",
+    "research_repository": "1951123/extstats-advisor-research"
+  },
+  "summary": {
+    "analysis_elapsed_seconds": 0.044764,
+    "analyze_drift_relative_change": 0.16103922424776898,
+    "controlled_production_relative_improvement": 0.8349726881554558,
+    "decision": "dmv-k8-transfer-success",
+    "explicit_tail_query": {
+      "p0_estimate": 1,
+      "p0_estimated_rows": 1,
+      "p0_qerror": 112010.0,
+      "p0_to_p1_classification": "improved",
+      "p1_estimate": 110,
+      "p1_estimated_rows": 110,
+      "p1_qerror": 1018.2727272727273,
+      "p2_estimate": 2,
+      "p2_estimated_rows": 2,
+      "p2_qerror": 56005.0,
+      "p2_to_p1_classification": "improved",
+      "query_id": "arecel_dmv11_test_009189",
+      "sandbox_baseline_estimate": 1,
+      "sandbox_baseline_qerror": 112010.0,
+      "sandbox_classification": "improved",
+      "sandbox_final_estimate": 42,
+      "sandbox_final_qerror": 2666.904761904762,
+      "true_rows": 112010,
+      "weight": 1.0
+    },
+    "first_selected_object_share": 0.9516972054505028,
+    "first_three_selected_objects_share": 0.9985413358958195,
+    "operational_production_relative_improvement": 0.8615485584345958,
+    "p0": {
+      "arithmetic_mean": 294.5398453551814,
+      "max": 112010.0,
+      "median": 1.1930995495272039,
+      "min": 1.0,
+      "p50": 1.1930995495272039,
+      "p75": 1.6725205936688505,
+      "p90": 12.955828220858914,
+      "p95": 86.76817894574592,
+      "p99": 3634.87500000003,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 294.5398453551814
+    },
+    "p0_to_p1_classification": {
+      "improved": 6133,
+      "unchanged": 995,
+      "worsened": 2872
+    },
+    "p1": {
+      "arithmetic_mean": 40.77946618787608,
+      "max": 28337.666666666668,
+      "median": 1.1176801138543866,
+      "min": 1.0,
+      "p50": 1.1176801138543866,
+      "p75": 1.4118035140756042,
+      "p90": 3.0,
+      "p95": 27.084795285359743,
+      "p99": 950.1147058823556,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 40.77946618787608
+    },
+    "p2": {
+      "arithmetic_mean": 247.10737714912514,
+      "max": 79775.0,
+      "median": 1.2104150999353889,
+      "min": 1.0,
+      "p50": 1.2104150999353889,
+      "p75": 1.7217291277570466,
+      "p90": 13.0,
+      "p95": 83.82785714285714,
+      "p99": 3191.2600000000057,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 247.10737714912514
+    },
+    "p2_to_p1_classification": {
+      "improved": 4785,
+      "unchanged": 4667,
+      "worsened": 548
+    },
+    "query_count": 10000,
+    "sandbox_baseline": {
+      "arithmetic_mean": 345.7140074401672,
+      "max": 112010.0,
+      "median": 1.1978554864326414,
+      "min": 1.0,
+      "p50": 1.1978554864326414,
+      "p75": 1.6831554511940294,
+      "p90": 14.387062937062947,
+      "p95": 114.02968749999957,
+      "p99": 3973.090000000031,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 345.7140074401672
+    },
+    "sandbox_final": {
+      "arithmetic_mean": 72.62026072281677,
+      "max": 40003.0,
+      "median": 1.1174765980203667,
+      "min": 1.0,
+      "p50": 1.1174765980203667,
+      "p75": 1.4175753898557935,
+      "p90": 3.546648583473502,
+      "p95": 39.61413182771355,
+      "p99": 1411.201646090535,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 72.62026072281677
+    },
+    "sandbox_production_correspondence": {
+      "opposite_direction": 264,
+      "same_direction": 9586,
+      "sandbox_improved_production_improved": 4483,
+      "sandbox_improved_production_unchanged": 9,
+      "sandbox_improved_production_worsened": 83,
+      "sandbox_unchanged_production_improved": 121,
+      "sandbox_unchanged_production_unchanged": 4657,
+      "sandbox_unchanged_production_worsened": 19,
+      "sandbox_worsened_production_improved": 181,
+      "sandbox_worsened_production_unchanged": 1,
+      "sandbox_worsened_production_worsened": 446,
+      "unchanged_involved": 150
+    },
+    "sandbox_relative_improvement": 0.7899412255218349,
+    "source_top_10_baseline_qerror_queries": [
+      {
+        "estimate": 1,
+        "qerror": 112010.0,
+        "query_id": "arecel_dmv11_test_009189",
+        "true_rows": 112010
+      },
+      {
+        "estimate": 1,
+        "qerror": 111160.0,
+        "query_id": "arecel_dmv11_test_005026",
+        "true_rows": 111160
+      },
+      {
+        "estimate": 1,
+        "qerror": 111159.0,
+        "query_id": "arecel_dmv11_test_003014",
+        "true_rows": 111159
+      },
+      {
+        "estimate": 1,
+        "qerror": 111159.0,
+        "query_id": "arecel_dmv11_test_007566",
+        "true_rows": 111159
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_001510",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_007457",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_009535",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_009673",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 79775.0,
+        "query_id": "arecel_dmv11_test_008580",
+        "true_rows": 79775
+      },
+      {
+        "estimate": 1,
+        "qerror": 79770.0,
+        "query_id": "arecel_dmv11_test_000192",
+        "true_rows": 79770
+      }
+    ],
+    "tail_contributions": {
+      "p0": {
+        "top_1": {
+          "baseline_objective_fraction": 0.03802881062320405,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.35494179021494116,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9955046629503677,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.878616916972914,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.18863016626155307,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9887429801969212,
+          "query_count": 500
+        }
+      },
+      "p1": {
+        "top_1": {
+          "baseline_objective_fraction": 0.06949003828571838,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.3686598620906417,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9732675565742827,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.7632880665573898,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.2604835704185612,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9614723493972621,
+          "query_count": 500
+        }
+      },
+      "p2": {
+        "top_1": {
+          "baseline_objective_fraction": 0.03228353638016122,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.2616767283357041,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.994584125008605,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.8640271148028159,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.14925778592899683,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9868066781188384,
+          "query_count": 500
+        }
+      },
+      "sandbox_baseline": {
+        "top_1": {
+          "baseline_objective_fraction": 0.03239961285612229,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.302401689691713,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9960758529000661,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.8718287864227329,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.16070826985399378,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9891970633350379,
+          "query_count": 500
+        }
+      },
+      "sandbox_final": {
+        "top_1": {
+          "baseline_objective_fraction": 0.055085178160798505,
+          "query_count": 1
+        },
+        "top_10": {
+          "baseline_objective_fraction": 0.41979042345164347,
+          "query_count": 10
+        },
+        "top_10_percent": {
+          "baseline_objective_fraction": 0.9847979893989228,
+          "query_count": 1000
+        },
+        "top_1_percent": {
+          "baseline_objective_fraction": 0.7896284991716835,
+          "query_count": 100
+        },
+        "top_5": {
+          "baseline_objective_fraction": 0.2749418661027571,
+          "query_count": 5
+        },
+        "top_5_percent": {
+          "baseline_objective_fraction": 0.9752960022219019,
+          "query_count": 500
+        }
+      }
+    },
+    "tail_query_records": [
+      {
+        "full_data_target100": {
+          "estimate": 1,
+          "qerror": 64464.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 64464.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 47,
+        "p1_estimated_rows": 47,
+        "p1_qerror": 1371.5744680851064,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 64464.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_000145",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 64464.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 17,
+        "sandbox_final_qerror": 3792.0,
+        "true_rows": 64464,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 1,
+          "qerror": 79770.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 79770.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 7,
+        "p1_estimated_rows": 7,
+        "p1_qerror": 11395.714285714286,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 79770.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_000192",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 79770.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 2,
+        "sandbox_final_qerror": 39885.0,
+        "true_rows": 79770,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 1,
+          "qerror": 65048.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 65048.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 48,
+        "p1_estimated_rows": 48,
+        "p1_qerror": 1355.1666666666667,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 65048.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_001076",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 65048.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 18,
+        "sandbox_final_qerror": 3613.777777777778,
+        "true_rows": 65048,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 180,
+        "p0_estimated_rows": 180,
+        "p0_qerror": 222.23888888888888,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 45621,
+        "p1_estimated_rows": 45621,
+        "p1_qerror": 1.140439467039972,
+        "p2_estimate": 196,
+        "p2_estimated_rows": 196,
+        "p2_qerror": 204.0969387755102,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_001265",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 40003.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 40003.0,
+        "true_rows": 40003,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 2,
+          "qerror": 55051.5
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 110103.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 83,
+        "p1_estimated_rows": 83,
+        "p1_qerror": 1326.5421686746988,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55051.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_001510",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 110103.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 53,
+        "sandbox_final_qerror": 2077.4150943396226,
+        "true_rows": 110103,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 2,
+          "qerror": 55579.5
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 111159.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 83,
+        "p1_estimated_rows": 83,
+        "p1_qerror": 1339.2650602409637,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55579.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_003014",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 111159.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 53,
+        "sandbox_final_qerror": 2097.3396226415093,
+        "true_rows": 111159,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 7,
+        "p0_estimated_rows": 7,
+        "p0_qerror": 5714.714285714285,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 1958,
+        "p1_estimated_rows": 1958,
+        "p1_qerror": 20.430541368743615,
+        "p2_estimate": 8,
+        "p2_estimated_rows": 8,
+        "p2_qerror": 5000.375,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_003426",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 40003.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 40003.0,
+        "true_rows": 40003,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 27547.0,
+        "p0_to_p1_classification": "unchanged",
+        "p1_estimate": 1,
+        "p1_estimated_rows": 1,
+        "p1_qerror": 27547.0,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 27547.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_dmv11_test_003861",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 27547.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 27547.0,
+        "true_rows": 27547,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 1,
+          "qerror": 79770.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 79770.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 7,
+        "p1_estimated_rows": 7,
+        "p1_qerror": 11395.714285714286,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 79770.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_004516",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 79770.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 2,
+        "sandbox_final_qerror": 39885.0,
+        "true_rows": 79770,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 2,
+          "qerror": 55580.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 111160.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 84,
+        "p1_estimated_rows": 84,
+        "p1_qerror": 1323.3333333333333,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55580.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_005026",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 111160.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 54,
+        "sandbox_final_qerror": 2058.5185185185187,
+        "true_rows": 111160,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 390046,
+        "p0_estimated_rows": 390046,
+        "p0_qerror": 26003.066666666666,
+        "p0_to_p1_classification": "worsened",
+        "p1_estimate": 425065,
+        "p1_estimated_rows": 425065,
+        "p1_qerror": 28337.666666666668,
+        "p2_estimate": 425065,
+        "p2_estimated_rows": 425065,
+        "p2_qerror": 28337.666666666668,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_dmv11_test_005445",
+        "sandbox_baseline_estimate": 369831,
+        "sandbox_baseline_qerror": 24655.4,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 369831,
+        "sandbox_final_qerror": 24655.4,
+        "true_rows": 15,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 110103.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 81,
+        "p1_estimated_rows": 81,
+        "p1_qerror": 1359.2962962962963,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55051.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_007457",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 110103.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 52,
+        "sandbox_final_qerror": 2117.3653846153848,
+        "true_rows": 110103,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 2,
+          "qerror": 55579.5
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 111159.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 83,
+        "p1_estimated_rows": 83,
+        "p1_qerror": 1339.2650602409637,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55579.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_007566",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 111159.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 54,
+        "sandbox_final_qerror": 2058.5,
+        "true_rows": 111159,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 1,
+          "qerror": 79775.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 79775.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 7,
+        "p1_estimated_rows": 7,
+        "p1_qerror": 11396.42857142857,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 79775.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_008580",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 79775.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 2,
+        "sandbox_final_qerror": 39887.5,
+        "true_rows": 79775,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 11481.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 20,
+        "p1_estimated_rows": 20,
+        "p1_qerror": 574.05,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 11481.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_008662",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 11481.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 11481.0,
+        "true_rows": 11481,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 13959.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 18,
+        "p1_estimated_rows": 18,
+        "p1_qerror": 775.5,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 13959.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_008777",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 13959.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 13959.0,
+        "true_rows": 13959,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 27547.0,
+        "p0_to_p1_classification": "unchanged",
+        "p1_estimate": 1,
+        "p1_estimated_rows": 1,
+        "p1_qerror": 27547.0,
+        "p2_estimate": 1,
+        "p2_estimated_rows": 1,
+        "p2_qerror": 27547.0,
+        "p2_to_p1_classification": "unchanged",
+        "query_id": "arecel_dmv11_test_009116",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 27547.0,
+        "sandbox_classification": "unchanged",
+        "sandbox_final_estimate": 1,
+        "sandbox_final_qerror": 27547.0,
+        "true_rows": 27547,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": {
+          "estimate": 2,
+          "qerror": 56005.0
+        },
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 112010.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 110,
+        "p1_estimated_rows": 110,
+        "p1_qerror": 1018.2727272727273,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 56005.0,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_009189",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 112010.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 42,
+        "sandbox_final_qerror": 2666.904761904762,
+        "true_rows": 112010,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 110103.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 82,
+        "p1_estimated_rows": 82,
+        "p1_qerror": 1342.719512195122,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55051.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_009535",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 110103.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 53,
+        "sandbox_final_qerror": 2077.4150943396226,
+        "true_rows": 110103,
+        "weight": 1.0
+      },
+      {
+        "full_data_target100": null,
+        "p0_estimate": 1,
+        "p0_estimated_rows": 1,
+        "p0_qerror": 110103.0,
+        "p0_to_p1_classification": "improved",
+        "p1_estimate": 81,
+        "p1_estimated_rows": 81,
+        "p1_qerror": 1359.2962962962963,
+        "p2_estimate": 2,
+        "p2_estimated_rows": 2,
+        "p2_qerror": 55051.5,
+        "p2_to_p1_classification": "improved",
+        "query_id": "arecel_dmv11_test_009673",
+        "sandbox_baseline_estimate": 1,
+        "sandbox_baseline_qerror": 110103.0,
+        "sandbox_classification": "improved",
+        "sandbox_final_estimate": 52,
+        "sandbox_final_qerror": 2117.3653846153848,
+        "true_rows": 110103,
+        "weight": 1.0
+      }
+    ],
+    "tail_union_query_ids": [
+      "arecel_dmv11_test_000145",
+      "arecel_dmv11_test_000192",
+      "arecel_dmv11_test_001076",
+      "arecel_dmv11_test_001265",
+      "arecel_dmv11_test_001510",
+      "arecel_dmv11_test_003014",
+      "arecel_dmv11_test_003426",
+      "arecel_dmv11_test_003861",
+      "arecel_dmv11_test_004516",
+      "arecel_dmv11_test_005026",
+      "arecel_dmv11_test_005445",
+      "arecel_dmv11_test_007457",
+      "arecel_dmv11_test_007566",
+      "arecel_dmv11_test_008580",
+      "arecel_dmv11_test_008662",
+      "arecel_dmv11_test_008777",
+      "arecel_dmv11_test_009116",
+      "arecel_dmv11_test_009189",
+      "arecel_dmv11_test_009535",
+      "arecel_dmv11_test_009673"
+    ],
+    "top_10_p0_to_p1_improvements": [
+      {
+        "after_qerror": 1018.2727272727273,
+        "before_qerror": 112010.0,
+        "delta": 110991.72727272728,
+        "query_id": "arecel_dmv11_test_009189"
+      },
+      {
+        "after_qerror": 1323.3333333333333,
+        "before_qerror": 111160.0,
+        "delta": 109836.66666666667,
+        "query_id": "arecel_dmv11_test_005026"
+      },
+      {
+        "after_qerror": 1339.2650602409637,
+        "before_qerror": 111159.0,
+        "delta": 109819.73493975903,
+        "query_id": "arecel_dmv11_test_003014"
+      },
+      {
+        "after_qerror": 1339.2650602409637,
+        "before_qerror": 111159.0,
+        "delta": 109819.73493975903,
+        "query_id": "arecel_dmv11_test_007566"
+      },
+      {
+        "after_qerror": 1326.5421686746988,
+        "before_qerror": 110103.0,
+        "delta": 108776.4578313253,
+        "query_id": "arecel_dmv11_test_001510"
+      },
+      {
+        "after_qerror": 1342.719512195122,
+        "before_qerror": 110103.0,
+        "delta": 108760.28048780488,
+        "query_id": "arecel_dmv11_test_009535"
+      },
+      {
+        "after_qerror": 1359.2962962962963,
+        "before_qerror": 110103.0,
+        "delta": 108743.70370370371,
+        "query_id": "arecel_dmv11_test_007457"
+      },
+      {
+        "after_qerror": 1359.2962962962963,
+        "before_qerror": 110103.0,
+        "delta": 108743.70370370371,
+        "query_id": "arecel_dmv11_test_009673"
+      },
+      {
+        "after_qerror": 11396.42857142857,
+        "before_qerror": 79775.0,
+        "delta": 68378.57142857143,
+        "query_id": "arecel_dmv11_test_008580"
+      },
+      {
+        "after_qerror": 11395.714285714286,
+        "before_qerror": 79770.0,
+        "delta": 68374.28571428571,
+        "query_id": "arecel_dmv11_test_000192"
+      }
+    ],
+    "top_10_p0_to_p1_regressions": [
+      {
+        "after_qerror": 28337.666666666668,
+        "before_qerror": 26003.066666666666,
+        "delta": -2334.600000000002,
+        "query_id": "arecel_dmv11_test_005445"
+      },
+      {
+        "after_qerror": 319.5,
+        "before_qerror": 75.17647058823529,
+        "delta": -244.3235294117647,
+        "query_id": "arecel_dmv11_test_006521"
+      },
+      {
+        "after_qerror": 2168.0,
+        "before_qerror": 1937.0,
+        "delta": -231.0,
+        "query_id": "arecel_dmv11_test_008407"
+      },
+      {
+        "after_qerror": 295.125,
+        "before_qerror": 69.44117647058823,
+        "delta": -225.68382352941177,
+        "query_id": "arecel_dmv11_test_007034"
+      },
+      {
+        "after_qerror": 799.0,
+        "before_qerror": 599.0,
+        "delta": -200.0,
+        "query_id": "arecel_dmv11_test_004678"
+      },
+      {
+        "after_qerror": 176.8,
+        "before_qerror": 63.142857142857146,
+        "delta": -113.65714285714287,
+        "query_id": "arecel_dmv11_test_007873"
+      },
+      {
+        "after_qerror": 1090.142857142857,
+        "before_qerror": 1017.4666666666667,
+        "delta": -72.67619047619041,
+        "query_id": "arecel_dmv11_test_002548"
+      },
+      {
+        "after_qerror": 549.0,
+        "before_qerror": 482.0,
+        "delta": -67.0,
+        "query_id": "arecel_dmv11_test_002180"
+      },
+      {
+        "after_qerror": 100.0,
+        "before_qerror": 33.333333333333336,
+        "delta": -66.66666666666666,
+        "query_id": "arecel_dmv11_test_000232"
+      },
+      {
+        "after_qerror": 149.0,
+        "before_qerror": 82.77777777777777,
+        "delta": -66.22222222222223,
+        "query_id": "arecel_dmv11_test_009106"
+      }
+    ],
+    "top_10_p2_to_p1_improvements": [
+      {
+        "after_qerror": 11396.42857142857,
+        "before_qerror": 79775.0,
+        "delta": 68378.57142857143,
+        "query_id": "arecel_dmv11_test_008580"
+      },
+      {
+        "after_qerror": 11395.714285714286,
+        "before_qerror": 79770.0,
+        "delta": 68374.28571428571,
+        "query_id": "arecel_dmv11_test_000192"
+      },
+      {
+        "after_qerror": 11395.714285714286,
+        "before_qerror": 79770.0,
+        "delta": 68374.28571428571,
+        "query_id": "arecel_dmv11_test_004516"
+      },
+      {
+        "after_qerror": 1355.1666666666667,
+        "before_qerror": 65048.0,
+        "delta": 63692.833333333336,
+        "query_id": "arecel_dmv11_test_001076"
+      },
+      {
+        "after_qerror": 1371.5744680851064,
+        "before_qerror": 64464.0,
+        "delta": 63092.425531914894,
+        "query_id": "arecel_dmv11_test_000145"
+      },
+      {
+        "after_qerror": 1018.2727272727273,
+        "before_qerror": 56005.0,
+        "delta": 54986.72727272727,
+        "query_id": "arecel_dmv11_test_009189"
+      },
+      {
+        "after_qerror": 1323.3333333333333,
+        "before_qerror": 55580.0,
+        "delta": 54256.666666666664,
+        "query_id": "arecel_dmv11_test_005026"
+      },
+      {
+        "after_qerror": 1339.2650602409637,
+        "before_qerror": 55579.5,
+        "delta": 54240.23493975904,
+        "query_id": "arecel_dmv11_test_003014"
+      },
+      {
+        "after_qerror": 1339.2650602409637,
+        "before_qerror": 55579.5,
+        "delta": 54240.23493975904,
+        "query_id": "arecel_dmv11_test_007566"
+      },
+      {
+        "after_qerror": 1326.5421686746988,
+        "before_qerror": 55051.5,
+        "delta": 53724.9578313253,
+        "query_id": "arecel_dmv11_test_001510"
+      }
+    ],
+    "top_10_p2_to_p1_regressions": [
+      {
+        "after_qerror": 176.8,
+        "before_qerror": 55.25,
+        "delta": -121.55000000000001,
+        "query_id": "arecel_dmv11_test_007873"
+      },
+      {
+        "after_qerror": 100.0,
+        "before_qerror": 22.22222222222222,
+        "delta": -77.77777777777777,
+        "query_id": "arecel_dmv11_test_000232"
+      },
+      {
+        "after_qerror": 149.0,
+        "before_qerror": 74.5,
+        "delta": -74.5,
+        "query_id": "arecel_dmv11_test_009106"
+      },
+      {
+        "after_qerror": 61.6242774566474,
+        "before_qerror": 13.033007334963326,
+        "delta": -48.591270121684076,
+        "query_id": "arecel_dmv11_test_006351"
+      },
+      {
+        "after_qerror": 42.642857142857146,
+        "before_qerror": 1.3928571428571428,
+        "delta": -41.25,
+        "query_id": "arecel_dmv11_test_002945"
+      },
+      {
+        "after_qerror": 14.76,
+        "before_qerror": 3.5142857142857142,
+        "delta": -11.245714285714286,
+        "query_id": "arecel_dmv11_test_000863"
+      },
+      {
+        "after_qerror": 12.407407407407407,
+        "before_qerror": 1.8620689655172413,
+        "delta": -10.545338441890165,
+        "query_id": "arecel_dmv11_test_007676"
+      },
+      {
+        "after_qerror": 10.777777777777779,
+        "before_qerror": 1.2222222222222223,
+        "delta": -9.555555555555557,
+        "query_id": "arecel_dmv11_test_001686"
+      },
+      {
+        "after_qerror": 7.8283464566929135,
+        "before_qerror": 1.7541436464088398,
+        "delta": -6.074202810284074,
+        "query_id": "arecel_dmv11_test_002928"
+      },
+      {
+        "after_qerror": 6.9125,
+        "before_qerror": 1.1642105263157896,
+        "delta": -5.74828947368421,
+        "query_id": "arecel_dmv11_test_002673"
+      }
+    ],
+    "top_10_sandbox_baseline": [
+      {
+        "estimate": 1,
+        "qerror": 112010.0,
+        "query_id": "arecel_dmv11_test_009189",
+        "true_rows": 112010
+      },
+      {
+        "estimate": 1,
+        "qerror": 111160.0,
+        "query_id": "arecel_dmv11_test_005026",
+        "true_rows": 111160
+      },
+      {
+        "estimate": 1,
+        "qerror": 111159.0,
+        "query_id": "arecel_dmv11_test_003014",
+        "true_rows": 111159
+      },
+      {
+        "estimate": 1,
+        "qerror": 111159.0,
+        "query_id": "arecel_dmv11_test_007566",
+        "true_rows": 111159
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_001510",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_007457",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_009535",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 110103.0,
+        "query_id": "arecel_dmv11_test_009673",
+        "true_rows": 110103
+      },
+      {
+        "estimate": 1,
+        "qerror": 79775.0,
+        "query_id": "arecel_dmv11_test_008580",
+        "true_rows": 79775
+      },
+      {
+        "estimate": 1,
+        "qerror": 79770.0,
+        "query_id": "arecel_dmv11_test_000192",
+        "true_rows": 79770
+      }
+    ],
+    "transfer_retention_ratio": 1.057006092578436
+  },
+  "timings_seconds": {
+    "deployment_including_final_analyze": 13.022475,
+    "fresh_dmv_load_initial_analyze": 19.595761,
+    "p0_explain": 1.468786,
+    "p1_explain": 1.446874,
+    "p2_transaction_evaluation_rollback": 1.431579,
+    "restoration_verification": 0.005427,
+    "transfer_analysis_artifact_write": 0.044764
+  },
+  "transfer_implementation_research_sha": "d4fb4843bf40295719ad91455215f9105e0bf3e6"
+}
