@@ -268,18 +268,25 @@ def _tail_union(records: list[dict[str, Any]], source: dict[str, Any]) -> list[s
             row["query_id"]
             for row in sorted(records, key=lambda item: item[field], reverse=True)[:10]
         )
-    full_qerrors = source["full_data_target100"]["qerror"]
-    ids.update(sorted(full_qerrors, key=full_qerrors.get, reverse=True)[:10])
+    source_full = _source_full_tail_map(source)
+    ids.update(source_full)
     ids.add("arecel_dmv11_test_009189")
     return sorted(ids)
 
 
-def _source_tail_values(source: dict[str, Any], query_id: str) -> dict[str, Any] | None:
-    full = source["full_data_target100"]
+def _source_full_tail_map(source: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    rows = source["compact"]["baseline_correspondence"]["top_10_full_data_target100_queries"]
     return {
-        "estimate": int(full["planner_estimates"][query_id]),
-        "qerror": float(full["qerror"][query_id]),
+        row["query_id"]: {
+            "estimate": int(row["full_data_target100"]["estimate"]),
+            "qerror": float(row["full_data_target100"]["qerror"]),
+        }
+        for row in rows
     }
+
+
+def _source_tail_values(source: dict[str, Any], query_id: str) -> dict[str, Any] | None:
+    return _source_full_tail_map(source).get(query_id)
 
 
 def run_dmv_data_transfer(
