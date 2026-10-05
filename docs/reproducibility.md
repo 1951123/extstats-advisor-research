@@ -9,10 +9,19 @@ The audited local root is selected by `EXTSTATS_RESEARCH_DATA_ROOT`; absolute
 paths are not semantic identities. The source CSV and canonical workload hashes
 are recorded in `dataset-manifest.json`.
 
-The SUT is the production advisor at
-`aa65af49fdbbf7443f8fa7295677724babfddfc5`. The patched PostgreSQL source is
+The current execution SUT is the production advisor at
+`bb4d58d46e734981a4542de4bcf59441d3effb98`. The patched PostgreSQL source is
 `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`. Both are checked before a
 canonical run.
+
+The full-data transfer is a one-time bridge from the immutable source run,
+which used advisor `aa65af49fdbbf7443f8fa7295677724babfddfc5`, to that current
+execution advisor. The bridge is valid only because the intervening production
+change is limited to deployment preflight rendering of typmods with
+`format_type(atttypid, atttypmod)` and selected-column collation verification.
+Snapshot/acquisition, candidates, native statistics, sandbox, singleton and
+precedence, optimization, search, Recommendation, and artifact contracts are
+unchanged. This is not a generic source-artifact compatibility mechanism.
 
 ## Run identity and artifacts
 
@@ -84,4 +93,9 @@ summary, and per-query transfer JSONL. It records source digests, calibration,
 dataset identity, system revisions, physical object verification,
 ordinary-stat fingerprints, and no credentials. The DBA remains responsible
 for deciding whether externally managed statistics remain, are removed,
-replaced, or coexist.
+replaced, or coexist. The artifact records source and execution system roles
+separately, including both research revisions, advisor revisions, the patched
+PostgreSQL revision, stock PostgreSQL version, source digests, and calibration.
+The optimizer evaluated `M*`, not necessarily `E_existing ∪ M*`; therefore the
+SearchResult objective is not a guarantee for the combined production state
+when external statistics coexist.

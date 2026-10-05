@@ -13,11 +13,16 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
+from . import (
+    FROZEN_ADVISOR_SHA,
+    FROZEN_RESEARCH_REPOSITORY,
+    TRANSFER_SOURCE_ADVISOR_SHA,
+)
 from .analysis.audit import distribution
 from .datasets import census13
 from .pins import verify_frozen_systems, verify_research_repository
 from .postgres.loader import load_census13
-from .provenance import read_json, reject_credentials, write_json
+from .provenance import read_json, reject_credentials, semantic_digest, write_json
 
 FORMAT_VERSION = "arecel-full-data-transfer-v1"
 DEPLOYMENT_POLICY = "postgresql-add-only-deployment-v1"
@@ -87,6 +92,8 @@ def validate_frozen_sources(source_run: Path, budget_directory: Path) -> dict[st
         raise ValueError("source run directory does not match its RunManifest")
     if manifest.get("research_commit_sha") != "9de794eaa62389c48ee6c5cebb192a467b9696cc":
         raise ValueError("source run was not produced by the frozen canonical research revision")
+    if manifest.get("advisor_commit_sha") != TRANSFER_SOURCE_ADVISOR_SHA:
+        raise ValueError("source run was not produced by the frozen transfer source advisor")
     if manifest.get("dataset_content_identity") != census13.inspect().get(
         "dataset_content_identity"
     ):
@@ -105,6 +112,7 @@ def validate_frozen_sources(source_run: Path, budget_directory: Path) -> dict[st
         "dataset_content_identity": manifest["dataset_content_identity"],
         "workload_sha256": manifest["workload_sha256"],
         "calibration_digest": calibration_digest,
+        "source_research_commit_sha": manifest["research_commit_sha"],
         "advisor_repository": manifest["advisor_repository"],
         "advisor_commit_sha": manifest["advisor_commit_sha"],
         "patched_postgres_repository": manifest["patched_postgres_repository"],
@@ -118,12 +126,16 @@ def precedence_check(
     """Prove D=F restricted to M*, independently of accepted move order."""
     profiles = {item["candidate_id"]: item for item in singleton["candidate_profiles"]}
     membership = tuple(search["final_ordered_candidate_ids"])
+    if membership != EXPECTED_MEMBERSHIP:
+        raise ValueError("SearchResult membership differs from the frozen transfer membership")
     expected = tuple(sorted(membership, key=lambda item: profiles[item]["frozen_precedence_rank"]))
     actual = tuple(recommendation["deployment_ordered_candidate_ids"])
     if set(actual) != set(membership):
         raise ValueError("Recommendation membership differs from the frozen SearchResult")
     if actual != expected:
         raise ValueError(f"Recommendation order {actual!r} is not precedence order {expected!r}")
+    if len(actual) != 7:
+        raise ValueError("Recommendation must contain exactly seven selected candidates")
     moves = tuple(item["added_candidate_id"] for item in search["accepted_moves"])
     return {
         "membership": list(membership),
@@ -148,16 +160,14 @@ def build_transfer_records(
     estimates: dict[str, dict[str, int]],
 ) -> list[dict[str, Any]]:
     records = []
+    from extstats_advisor.utility import QErrorLoss
+
+    qerror_loss = QErrorLoss()
     for item in sorted(truth, key=lambda value: value["query_id"]):
         query_id = item["query_id"]
         truth_rows = int(item["cardinality"])
         phases = estimates[query_id]
-        qerrors = {
-            phase: max(float(rows), 1.0) / max(float(truth_rows), 1.0)
-            if rows >= truth_rows
-            else max(float(truth_rows), 1.0) / max(float(rows), 1.0)
-            for phase, rows in phases.items()
-        }
+        qerrors = {phase: qerror_loss.loss(rows, truth_rows) for phase, rows in phases.items()}
         records.append(
             {
                 "query_id": query_id,
@@ -304,14 +314,6 @@ def _drop_managed(connection: Any, names: list[str]) -> None:
         )
 
 
-def _qerror(rows: int, truth: int) -> float:
-    return (
-        max(float(rows), 1.0) / max(float(truth), 1.0)
-        if rows >= truth
-        else max(float(truth), 1.0) / max(float(rows), 1.0)
-    )
-
-
 def run_full_data_transfer(
     source_run: Path,
     budget_directory: Path,
@@ -331,6 +333,8 @@ def run_full_data_transfer(
         Path("/home/wqts/projects/extstats-advisor"),
         Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
+    if system_identity["advisor_commit_sha"] != FROZEN_ADVISOR_SHA:
+        raise ValueError("execution advisor is not the current frozen production advisor")
     paths = _source_paths(source_run, budget_directory)
     source = validate_frozen_sources(source_run, budget_directory)
     output = output_directory or budget_directory.parent.parent / "full-data-transfer-k8"
@@ -497,33 +501,56 @@ def run_full_data_transfer(
     records = build_transfer_records(truth, sandbox, estimates)
     for row in records:
         row["weight"] = 1.0
-    write_json(
-        output / "full-data-transfer-v1.json",
-        {
-            "format_version": FORMAT_VERSION,
-            "source": source,
-            "system_identity": {**research_identity, **system_identity},
-            "recommendation_semantic_digest": recommendation["semantic_digest"],
-            "deployment_result_semantic_digest": deployment["semantic_digest"],
-            "dataset": {
-                "content_identity": source["dataset_content_identity"],
-                "csv_sha256": load["source_csv_sha256"],
-                "rows": load["rows"],
-                "schema_contract_id": load["schema_contract_id"],
-                "server_version": load["server_version"],
-            },
-            "pre_deployment_extended_statistics": pre_stats,
-            "managed_statistics": managed_stats,
-            "restored_statistics": restored_stats,
-            "precedence": precedence,
-            "ordinary_stats_fingerprint_p0": ordinary_before,
-            "ordinary_stats_fingerprint_p2": ordinary_p2,
-            "ordinary_stats_fingerprint_p1": ordinary_after_deploy,
-            "ordinary_stats_p0_p2_equal": ordinary_before == ordinary_p2,
-            "summary": summarize_transfer(records),
-            "credentials_recorded": False,
+    artifact = {
+        "format_version": FORMAT_VERSION,
+        "source": source,
+        "source_system": {
+            "research_repository": FROZEN_RESEARCH_REPOSITORY,
+            "research_commit_sha": source["source_research_commit_sha"],
+            "advisor_repository": source["advisor_repository"],
+            "advisor_commit_sha": source["advisor_commit_sha"],
+            "patched_postgres_repository": source["patched_postgres_repository"],
+            "patched_postgres_commit_sha": source["patched_postgres_commit_sha"],
         },
-    )
+        "execution_system": {
+            **research_identity,
+            **system_identity,
+            "stock_postgres_version": load["server_version"],
+        },
+        "provenance_bridge": {
+            "source_advisor_commit_sha": TRANSFER_SOURCE_ADVISOR_SHA,
+            "execution_advisor_commit_sha": FROZEN_ADVISOR_SHA,
+            "scope": "one-time deployment preflight compatibility bridge",
+            "validity_basis": [
+                "snapshot and acquisition are unchanged",
+                "candidate, native-statistics, sandbox, singleton, optimization, search, recommendation, and artifact contracts are unchanged",
+                "deployment preflight renders typmods with format_type and verifies selected-column collation",
+            ],
+        },
+        "recommendation_semantic_digest": recommendation["semantic_digest"],
+        "deployment_result_semantic_digest": deployment["semantic_digest"],
+        "dataset": {
+            "content_identity": source["dataset_content_identity"],
+            "csv_sha256": load["source_csv_sha256"],
+            "rows": load["rows"],
+            "schema_contract_id": load["schema_contract_id"],
+            "server_version": load["server_version"],
+        },
+        "pre_deployment_extended_statistics": pre_stats,
+        "managed_statistics": managed_stats,
+        "restored_statistics": restored_stats,
+        "precedence": precedence,
+        "ordinary_stats_fingerprint_p0": ordinary_before,
+        "ordinary_stats_fingerprint_p2": ordinary_p2,
+        "ordinary_stats_fingerprint_p1": ordinary_after_deploy,
+        "ordinary_stats_p0_p2_equal": ordinary_before == ordinary_p2,
+        "summary": summarize_transfer(records),
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "credentials_recorded": False,
+    }
+    artifact["semantic_digest"] = semantic_digest(artifact)
+    reject_credentials(artifact)
+    write_json(output / "full-data-transfer-v1.json", artifact)
     with (output / "per-query-transfer-v1.jsonl").open("w", encoding="utf-8") as stream:
         for record in records:
             stream.write(json.dumps(record, sort_keys=True) + "\n")

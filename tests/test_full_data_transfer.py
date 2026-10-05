@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
+from extstats_advisor_research import FROZEN_ADVISOR_SHA, TRANSFER_SOURCE_ADVISOR_SHA
 from extstats_advisor_research.full_data_transfer import (
     ACCEPTED_MOVE_ORDER,
     EXPECTED_MEMBERSHIP,
@@ -72,6 +76,68 @@ def test_classification_and_three_phase_transfer_records() -> None:
     summary = summarize_transfer(records)
     assert summary["p2_to_p1_classification"] == {"improved": 1, "unchanged": 0, "worsened": 1}
     assert summary["sandbox_production_correspondence"]["same_direction"] == 2
+
+
+def test_transfer_qerror_uses_production_floor_one_contract() -> None:
+    truth = [
+        {"query_id": "zero", "cardinality": 0},
+        {"query_id": "nonzero", "cardinality": 10},
+    ]
+    sandbox = {
+        "zero": {
+            "baseline_estimate": 0,
+            "final_estimate": 0,
+            "baseline_qerror": 1.0,
+            "final_qerror": 1.0,
+        },
+        "nonzero": {
+            "baseline_estimate": 0,
+            "final_estimate": 20,
+            "baseline_qerror": 10.0,
+            "final_qerror": 2.0,
+        },
+    }
+    records = build_transfer_records(
+        truth,
+        sandbox,
+        {"zero": {"p0": 0, "p1": 1, "p2": 0}, "nonzero": {"p0": 0, "p1": 20, "p2": 0}},
+    )
+    by_id = {record["query_id"]: record for record in records}
+    assert by_id["zero"]["p0_qerror"] == 1.0
+    assert by_id["nonzero"]["p0_qerror"] == 10.0
+    assert by_id["nonzero"]["p1_qerror"] == 2.0
+
+
+def test_transfer_bridge_pins_are_explicit() -> None:
+    assert TRANSFER_SOURCE_ADVISOR_SHA == "aa65af49fdbbf7443f8fa7295677724babfddfc5"
+    assert FROZEN_ADVISOR_SHA == "bb4d58d46e734981a4542de4bcf59441d3effb98"
+
+
+def test_frozen_selected_varchar_columns_preserve_typmod() -> None:
+    root = Path(__file__).parents[1]
+    schema = json.loads(
+        (root / "runs/bf7fda28d90b3da88e7a14e4/advisor-snapshot/schema.json").read_text()
+    )
+    candidate_universe = json.loads(
+        (root / "runs/bf7fda28d90b3da88e7a14e4/candidate-universe.json").read_text()
+    )
+    selected = {
+        name
+        for candidate in candidate_universe["candidates"]
+        if candidate["candidate_id"] in EXPECTED_MEMBERSHIP
+        for name in candidate["column_names"]
+    }
+    columns = {
+        column["name"]: column
+        for column in schema["relations"][0]["columns"]
+        if column["name"] in selected
+    }
+    varchar_columns = {name for name, column in columns.items() if column["arrow_type"] == "string"}
+    assert varchar_columns
+    assert {columns[name]["native_type"] for name in varchar_columns} == {"character varying(64)"}
+    assert {columns[name]["native_collation"] for name in varchar_columns} == {
+        'pg_catalog."default"'
+    }
 
 
 def test_source_binding_rejects_wrong_budget(tmp_path) -> None:
