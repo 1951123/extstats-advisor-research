@@ -1,0 +1,114 @@
+{
+  "dataset": "arecel-forest10",
+  "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+  "format_version": "arecel-forest-full-data-target100-v1",
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.forest10",
+  "research_commit_sha": "88bfe76fefc7b3b1a39957a6191bab5a4da4fc1a",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 581012,
+  "runtime_metadata": {
+    "elapsed_seconds": 1.611424
+  },
+  "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+  "semantic_digest": "6eece76693d568c579f6027e94c0737717b0e586f82c2b20d6fc91fca28bb62b",
+  "source_files": {
+    "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  },
+  "state": "forest_full_target100_ordinary",
+  "statistics": {
+    "column_targets_verified": [
+      {
+        "name": "elevation",
+        "target": 100
+      },
+      {
+        "name": "aspect",
+        "target": 100
+      },
+      {
+        "name": "slope",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_hydrology",
+        "target": 100
+      },
+      {
+        "name": "vertical_distance_to_hydrology",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_roadways",
+        "target": 100
+      },
+      {
+        "name": "hillshade_9am",
+        "target": 100
+      },
+      {
+        "name": "hillshade_noon",
+        "target": 100
+      },
+      {
+        "name": "hillshade_3pm",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_fire_points",
+        "target": 100
+      }
+    ],
+    "extended_statistics_count": 0,
+    "initial_analyze_count": 1,
+    "preflight_analyze_count": 0,
+    "target": 100
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 9310.0,
+    "max_query_id": "arecel_forest10_test_003110",
+    "mean": 7.144488498650148,
+    "p50": 1.2162649145577533,
+    "p75": 2.7671705416434453,
+    "p90": 8.333333333333334,
+    "p95": 17.0,
+    "p99": 71.0,
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 7.144488498650148
+  },
+  "truth": {
+    "authoritative_for_preflight": true,
+    "ground_truth_set": false,
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 7.144488498650148
+  },
+  "workload": {
+    "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "query_count": 10000,
+    "workload_sha256": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  }
+}
