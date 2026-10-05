@@ -1,0 +1,532 @@
+{
+  "accepted_move_curve": [
+    {
+      "cumulative_improvement_from_baseline": 0.0,
+      "marginal_improvement_of_latest_accepted_object": null,
+      "objective": 5.256435607220752,
+      "selected_object_count": 0
+    },
+    {
+      "cumulative_improvement_from_baseline": 1.417284859251085,
+      "marginal_improvement_of_latest_accepted_object": 1.417284859251085,
+      "objective": 3.8391507479696667,
+      "selected_object_count": 1
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.242421363204001,
+      "marginal_improvement_of_latest_accepted_object": 0.8251365039529159,
+      "objective": 3.0140142440167508,
+      "selected_object_count": 2
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.7012503422714453,
+      "marginal_improvement_of_latest_accepted_object": 0.45882897906744446,
+      "objective": 2.5551852649493063,
+      "selected_object_count": 3
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.7730434853668506,
+      "marginal_improvement_of_latest_accepted_object": 0.0717931430954053,
+      "objective": 2.483392121853901,
+      "selected_object_count": 4
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.823335685329134,
+      "marginal_improvement_of_latest_accepted_object": 0.0502921999622834,
+      "objective": 2.4330999218916176,
+      "selected_object_count": 5
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.852388744848652,
+      "marginal_improvement_of_latest_accepted_object": 0.029053059519517976,
+      "objective": 2.4040468623720996,
+      "selected_object_count": 6
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.874801866178043,
+      "marginal_improvement_of_latest_accepted_object": 0.022413121329390773,
+      "objective": 2.381633741042709,
+      "selected_object_count": 7
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.895887980826196,
+      "marginal_improvement_of_latest_accepted_object": 0.02108611464815313,
+      "objective": 2.3605476263945557,
+      "selected_object_count": 8
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.9095921960449154,
+      "marginal_improvement_of_latest_accepted_object": 0.013704215218719451,
+      "objective": 2.3468434111758363,
+      "selected_object_count": 9
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.919987726833743,
+      "marginal_improvement_of_latest_accepted_object": 0.01039553078882749,
+      "objective": 2.336447880387009,
+      "selected_object_count": 10
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.929598579233158,
+      "marginal_improvement_of_latest_accepted_object": 0.009610852399414949,
+      "objective": 2.326837027987594,
+      "selected_object_count": 11
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.93177752991178,
+      "marginal_improvement_of_latest_accepted_object": 0.0021789506786222823,
+      "objective": 2.3246580773089716,
+      "selected_object_count": 12
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.9336792202873787,
+      "marginal_improvement_of_latest_accepted_object": 0.0019016903755986192,
+      "objective": 2.322756386933373,
+      "selected_object_count": 13
+    },
+    {
+      "cumulative_improvement_from_baseline": 2.9354534746814918,
+      "marginal_improvement_of_latest_accepted_object": 0.0017742543941130506,
+      "objective": 2.32098213253926,
+      "selected_object_count": 14
+    }
+  ],
+  "accepted_move_trace": [
+    {
+      "candidate_id": "cand_cb55f02882e2d0ef75203787",
+      "column_names": [
+        "education",
+        "education_num"
+      ],
+      "frozen_singleton_rank": 1,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 1.417284859251085,
+      "objective_after": 3.8391507479696667,
+      "objective_before": 5.256435607220752,
+      "round": 1,
+      "singleton_improvement": 1.417284859251085
+    },
+    {
+      "candidate_id": "cand_ffc5c63805d1be782d2b4a02",
+      "column_names": [
+        "marital_status",
+        "relationship"
+      ],
+      "frozen_singleton_rank": 2,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.8251365039529159,
+      "objective_after": 3.0140142440167508,
+      "objective_before": 3.8391507479696667,
+      "round": 2,
+      "singleton_improvement": 1.0898871484649684
+    },
+    {
+      "candidate_id": "cand_8a4f08da78a4aa33ad1a459b",
+      "column_names": [
+        "workclass",
+        "occupation"
+      ],
+      "frozen_singleton_rank": 3,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.45882897906744446,
+      "objective_after": 2.5551852649493063,
+      "objective_before": 3.0140142440167508,
+      "round": 3,
+      "singleton_improvement": 0.5635941349722975
+    },
+    {
+      "candidate_id": "cand_7ac24ff8a73a964272444efd",
+      "column_names": [
+        "age",
+        "marital_status"
+      ],
+      "frozen_singleton_rank": 6,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.0717931430954053,
+      "objective_after": 2.483392121853901,
+      "objective_before": 2.5551852649493063,
+      "round": 4,
+      "singleton_improvement": 0.3708823344462724
+    },
+    {
+      "candidate_id": "cand_d339256e88c14460f89f50b8",
+      "column_names": [
+        "relationship",
+        "sex"
+      ],
+      "frozen_singleton_rank": 5,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.0502921999622834,
+      "objective_after": 2.4330999218916176,
+      "objective_before": 2.483392121853901,
+      "round": 5,
+      "singleton_improvement": 0.3711359421480749
+    },
+    {
+      "candidate_id": "cand_ae97bada52eb7042e5fc00b8",
+      "column_names": [
+        "education",
+        "occupation"
+      ],
+      "frozen_singleton_rank": 4,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.029053059519517976,
+      "objective_after": 2.4040468623720996,
+      "objective_before": 2.4330999218916176,
+      "round": 6,
+      "singleton_improvement": 0.38951232468270014
+    },
+    {
+      "candidate_id": "cand_2c9419ea6e50d1a0b1b5b706",
+      "column_names": [
+        "occupation",
+        "sex"
+      ],
+      "frozen_singleton_rank": 11,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.022413121329390773,
+      "objective_after": 2.381633741042709,
+      "objective_before": 2.4040468623720996,
+      "round": 7,
+      "singleton_improvement": 0.18013906166347748
+    },
+    {
+      "candidate_id": "cand_384c338346aee8994f53b6e6",
+      "column_names": [
+        "age",
+        "relationship"
+      ],
+      "frozen_singleton_rank": 8,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.02108611464815313,
+      "objective_after": 2.3605476263945557,
+      "objective_before": 2.381633741042709,
+      "round": 8,
+      "singleton_improvement": 0.3103423404334551
+    },
+    {
+      "candidate_id": "cand_b0fe4254ce045db097653211",
+      "column_names": [
+        "age",
+        "education"
+      ],
+      "frozen_singleton_rank": 16,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.013704215218719451,
+      "objective_after": 2.3468434111758363,
+      "objective_before": 2.3605476263945557,
+      "round": 9,
+      "singleton_improvement": 0.1297707951058218
+    },
+    {
+      "candidate_id": "cand_717ebd42aa8529fba3e29300",
+      "column_names": [
+        "marital_status",
+        "sex"
+      ],
+      "frozen_singleton_rank": 13,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.01039553078882749,
+      "objective_after": 2.336447880387009,
+      "objective_before": 2.3468434111758363,
+      "round": 10,
+      "singleton_improvement": 0.1505781665934247
+    },
+    {
+      "candidate_id": "cand_d68ee3835dfcaee105f14cf6",
+      "column_names": [
+        "education_num",
+        "occupation"
+      ],
+      "frozen_singleton_rank": 9,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.009610852399414949,
+      "objective_after": 2.326837027987594,
+      "objective_before": 2.336447880387009,
+      "round": 11,
+      "singleton_improvement": 0.30984138090045743
+    },
+    {
+      "candidate_id": "cand_5cde2c11fd62dfc73c1a441c",
+      "column_names": [
+        "age",
+        "occupation"
+      ],
+      "frozen_singleton_rank": 14,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.0021789506786222823,
+      "objective_after": 2.3246580773089716,
+      "objective_before": 2.326837027987594,
+      "round": 12,
+      "singleton_improvement": 0.14114061032744818
+    },
+    {
+      "candidate_id": "cand_7211142c6035d2eac65ef212",
+      "column_names": [
+        "occupation",
+        "relationship"
+      ],
+      "frozen_singleton_rank": 10,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.0019016903755986192,
+      "objective_after": 2.322756386933373,
+      "objective_before": 2.3246580773089716,
+      "round": 13,
+      "singleton_improvement": 0.2097242550045859
+    },
+    {
+      "candidate_id": "cand_bc190b26b6118a6810691e6b",
+      "column_names": [
+        "marital_status",
+        "occupation"
+      ],
+      "frozen_singleton_rank": 15,
+      "kind": "postgresql.mcv",
+      "marginal_improvement": 0.0017742543941130506,
+      "objective_after": 2.32098213253926,
+      "objective_before": 2.322756386933373,
+      "round": 14,
+      "singleton_improvement": 0.13490425011607954
+    }
+  ],
+  "credentials_recorded": false,
+  "execution_system": {
+    "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+    "advisor_repository": "1951123/extstats-advisor",
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "patched_postgres_repository": "1951123/postgresql-pgextadv",
+    "research_commit_sha": "8ae81f4db6856762b425543824383809239b983d",
+    "research_repository": "1951123/extstats-advisor-research"
+  },
+  "format_version": "arecel-screening-k16-v1",
+  "planner_sandbox": {
+    "contract": "postgresql-planner-sandbox-v1",
+    "physical_extstats_count_before_search": 0,
+    "population_metadata_preserved": true,
+    "sample_row_count": 10000
+  },
+  "recommendation_or_deployment": {
+    "deployment_performed": false,
+    "recommendation_built": false
+  },
+  "runtime_metadata": {
+    "cached_singleton_configuration_count": 16,
+    "completed_round_count": 14,
+    "elapsed_search_seconds": 479.09499000899996,
+    "live_configuration_evaluation_count": 119,
+    "partial_final_round_evaluation_count": 0,
+    "planner_query_estimate_count": 1190000,
+    "seconds_per_live_configuration": 4.026008319403361
+  },
+  "screening": {
+    "absolute_improvement": 0.028330278022084432,
+    "baseline_objective": 5.256435607220752,
+    "baseline_relative_improvement": {
+      "k12": 0.5530597944861914,
+      "k16": 0.5584494311409555,
+      "k8": 0.546658434386511
+    },
+    "candidate_limit": 16,
+    "decision": "k12-screen-limited",
+    "k12_objective": 2.3493124105613443,
+    "k12_only_selected_ids": [],
+    "k12_reference": {
+      "artifact_digest": "48081899ecf127e836144ae41ee293dd19e6ab94ed1690682ec1ac5633a48302",
+      "objective": 2.3493124105613443,
+      "plan_digest": "a99c10e7209ee1e6c9b0c369cd3ebbf16e2bb30b0e2b9b980a9acb633b850ba7",
+      "search_digest": "c6ec3de5520b5bc2e17df1f8e8f3db09c5d83570285a4b1cdbe2b532737f25d5",
+      "selected_candidate_ids": [
+        "cand_cb55f02882e2d0ef75203787",
+        "cand_ffc5c63805d1be782d2b4a02",
+        "cand_8a4f08da78a4aa33ad1a459b",
+        "cand_ae97bada52eb7042e5fc00b8",
+        "cand_d339256e88c14460f89f50b8",
+        "cand_7ac24ff8a73a964272444efd",
+        "cand_384c338346aee8994f53b6e6",
+        "cand_d68ee3835dfcaee105f14cf6",
+        "cand_7211142c6035d2eac65ef212",
+        "cand_2c9419ea6e50d1a0b1b5b706"
+      ],
+      "selected_count": 10,
+      "termination_reason": "local-optimum"
+    },
+    "k16_objective": 2.32098213253926,
+    "k16_only_selected_ids": [
+      "cand_5cde2c11fd62dfc73c1a441c",
+      "cand_717ebd42aa8529fba3e29300",
+      "cand_b0fe4254ce045db097653211",
+      "cand_bc190b26b6118a6810691e6b"
+    ],
+    "k16_plan_digest": "bf190cf8a9bb73185fb19463432339a5849ee567c51ae301259d7b1b670686cb",
+    "k16_search_digest": "7eb178b4b4e67025380337cbbd56b0d499eaa1f80f4c514f34ac456cdb6d30a9",
+    "k16_selected_candidate_ids": [
+      "cand_cb55f02882e2d0ef75203787",
+      "cand_ffc5c63805d1be782d2b4a02",
+      "cand_8a4f08da78a4aa33ad1a459b",
+      "cand_ae97bada52eb7042e5fc00b8",
+      "cand_d339256e88c14460f89f50b8",
+      "cand_7ac24ff8a73a964272444efd",
+      "cand_384c338346aee8994f53b6e6",
+      "cand_d68ee3835dfcaee105f14cf6",
+      "cand_7211142c6035d2eac65ef212",
+      "cand_2c9419ea6e50d1a0b1b5b706",
+      "cand_717ebd42aa8529fba3e29300",
+      "cand_5cde2c11fd62dfc73c1a441c",
+      "cand_bc190b26b6118a6810691e6b",
+      "cand_b0fe4254ce045db097653211"
+    ],
+    "k8_reference": {
+      "objective": 2.3829607477239465,
+      "plan_digest": "dc0ffdcab66942888be063dea9540ce3a87a9e431c8f0830da3e6ff1f4a15963",
+      "search_digest": "ad77fafbd3b9f1c1ffae62dfa20d987c02a4636dda7ae6865d35921d4172bd6b",
+      "selected_candidate_ids": [
+        "cand_cb55f02882e2d0ef75203787",
+        "cand_ffc5c63805d1be782d2b4a02",
+        "cand_8a4f08da78a4aa33ad1a459b",
+        "cand_ae97bada52eb7042e5fc00b8",
+        "cand_d339256e88c14460f89f50b8",
+        "cand_7ac24ff8a73a964272444efd",
+        "cand_384c338346aee8994f53b6e6"
+      ],
+      "selected_count": 7,
+      "termination_reason": "local-optimum"
+    },
+    "membership_comparison": {
+      "k12_intersection_k16": [
+        "cand_2c9419ea6e50d1a0b1b5b706",
+        "cand_384c338346aee8994f53b6e6",
+        "cand_7211142c6035d2eac65ef212",
+        "cand_7ac24ff8a73a964272444efd",
+        "cand_8a4f08da78a4aa33ad1a459b",
+        "cand_ae97bada52eb7042e5fc00b8",
+        "cand_cb55f02882e2d0ef75203787",
+        "cand_d339256e88c14460f89f50b8",
+        "cand_d68ee3835dfcaee105f14cf6",
+        "cand_ffc5c63805d1be782d2b4a02"
+      ],
+      "k12_only_vs_k8": [
+        "cand_2c9419ea6e50d1a0b1b5b706",
+        "cand_7211142c6035d2eac65ef212",
+        "cand_d68ee3835dfcaee105f14cf6"
+      ],
+      "k12_selected_not_k16": [],
+      "k16_only_vs_k12": [
+        "cand_5cde2c11fd62dfc73c1a441c",
+        "cand_717ebd42aa8529fba3e29300",
+        "cand_b0fe4254ce045db097653211",
+        "cand_bc190b26b6118a6810691e6b"
+      ],
+      "k8_intersection_k12": [
+        "cand_384c338346aee8994f53b6e6",
+        "cand_7ac24ff8a73a964272444efd",
+        "cand_8a4f08da78a4aa33ad1a459b",
+        "cand_ae97bada52eb7042e5fc00b8",
+        "cand_cb55f02882e2d0ef75203787",
+        "cand_d339256e88c14460f89f50b8",
+        "cand_ffc5c63805d1be782d2b4a02"
+      ],
+      "k8_only": [],
+      "k8_selected_not_k16": []
+    },
+    "objective_equal_within_tolerance": false,
+    "objective_tolerance": 1e-12,
+    "parsimony": {
+      "additional_objects_k12_to_k16": 4,
+      "additional_objects_k8_to_k12": 3,
+      "objective_gain_k12_to_k16": 0.028330278022084432,
+      "objective_gain_k8_to_k12": 0.03364833716260218,
+      "objective_gain_per_added_object_k12_to_k16": 0.007082569505521108,
+      "objective_gain_per_added_object_k8_to_k12": 0.01121611238753406,
+      "r12_fraction_of_k16_total_improvement": 0.9903489262335665,
+      "r8_fraction_of_k16_total_improvement": 0.9788861871873437
+    },
+    "relative_improvement": 0.012058965804090398,
+    "same_membership": false,
+    "termination_reason": "local-optimum",
+    "wall_clock_cap_seconds": 900
+  },
+  "semantic_digest": "eabde3dca75cf26716161eb0d22135320b9d08f9643caa4758fbc9dc1fb14439",
+  "singleton_ranks_13_16": [
+    {
+      "accepted": true,
+      "candidate_id": "cand_717ebd42aa8529fba3e29300",
+      "column_names": [
+        "marital_status",
+        "sex"
+      ],
+      "evaluated_live": true,
+      "frozen_singleton_rank": 13,
+      "kind": "postgresql.mcv",
+      "live_evaluated": true,
+      "native_state": "present",
+      "outcome": "accepted",
+      "rejection_completed_round": null,
+      "singleton_improvement": 0.1505781665934247,
+      "singleton_objective": 5.105857440627327
+    },
+    {
+      "accepted": true,
+      "candidate_id": "cand_5cde2c11fd62dfc73c1a441c",
+      "column_names": [
+        "age",
+        "occupation"
+      ],
+      "evaluated_live": true,
+      "frozen_singleton_rank": 14,
+      "kind": "postgresql.mcv",
+      "live_evaluated": true,
+      "native_state": "present",
+      "outcome": "accepted",
+      "rejection_completed_round": null,
+      "singleton_improvement": 0.14114061032744818,
+      "singleton_objective": 5.1152949968933035
+    },
+    {
+      "accepted": true,
+      "candidate_id": "cand_bc190b26b6118a6810691e6b",
+      "column_names": [
+        "marital_status",
+        "occupation"
+      ],
+      "evaluated_live": true,
+      "frozen_singleton_rank": 15,
+      "kind": "postgresql.mcv",
+      "live_evaluated": true,
+      "native_state": "present",
+      "outcome": "accepted",
+      "rejection_completed_round": null,
+      "singleton_improvement": 0.13490425011607954,
+      "singleton_objective": 5.121531357104672
+    },
+    {
+      "accepted": true,
+      "candidate_id": "cand_b0fe4254ce045db097653211",
+      "column_names": [
+        "age",
+        "education"
+      ],
+      "evaluated_live": true,
+      "frozen_singleton_rank": 16,
+      "kind": "postgresql.mcv",
+      "live_evaluated": true,
+      "native_state": "present",
+      "outcome": "accepted",
+      "rejection_completed_round": null,
+      "singleton_improvement": 0.1297707951058218,
+      "singleton_objective": 5.12666481211493
+    }
+  ],
+  "source": {
+    "advisor_commit_sha": "aa65af49fdbbf7443f8fa7295677724babfddfc5",
+    "artifact_digests": {
+      "candidate_universe": "8912122ddc7cff7b4047b470de13edf89ecc8dc5237107c25aec7c5d8ac86b74",
+      "ground_truth": "b70410c12af2b7e52d3d3b9972ab086a4270c2743c4363f58ed400a3bdb9d491",
+      "native_repository": "787483dabec6816123566574b1a4ab8d68d930cc2f1c4e4cd543241fb764ed62",
+      "singleton_profile": "2665d5ff54331bc768bb4661554b3ed763cf0f445545ac2ed5e5169657c0aa78",
+      "snapshot": "7843ccf2e1ae0b017fda3c5a8e97797118b8534bdd97d854ed1ef1ca9631568d"
+    },
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "research_commit_sha": "9de794eaa62389c48ee6c5cebb192a467b9696cc",
+    "run_id": "bf7fda28d90b3da88e7a14e4"
+  }
+}
