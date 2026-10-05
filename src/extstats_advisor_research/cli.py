@@ -9,6 +9,7 @@ from pathlib import Path
 from .analysis.audit import run_audit
 from .baseline_gap import run_baseline_gap
 from .datasets import census13, dmv11, forest10, get_dataset, power7
+from .dmv_transfer import resolve_dmv_source_run, run_dmv_data_transfer
 from .forest_baseline import run_dmv11_baseline, run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
@@ -344,16 +345,37 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "validate":
         if args.validate_command != "full-data-transfer":
             raise ValueError(f"unsupported validation command: {args.validate_command}")
-        manifest_path = args.source_run / "manifest.json"
+        resolved_source_run = args.source_run
+        if not (resolved_source_run / "manifest.json").is_file():
+            try:
+                resolved_source_run = resolve_dmv_source_run(resolved_source_run)
+            except FileNotFoundError:
+                pass
+        manifest_path = resolved_source_run / "manifest.json"
         if manifest_path.is_file():
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         else:
             manifest = {}
+        if manifest.get("benchmark_id") == dmv11.BENCHMARK_ID:
+            if args.budget_directory is not None:
+                raise ValueError("DMV11 full-data transfer does not take a budget directory")
+            if args.planner_dsn is not None:
+                raise ValueError("DMV11 full-data transfer does not take a planner DSN")
+            result = run_dmv_data_transfer(
+                resolved_source_run,
+                args.production_dsn,
+                output_directory=args.output_directory,
+                advisor_command=args.advisor_command,
+                advisor_root=args.advisor_root,
+                data_root=args.data_root,
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if manifest.get("benchmark_id") == forest10.BENCHMARK_ID:
             if args.budget_directory is not None:
                 raise ValueError("Forest10 full-data transfer does not take a budget directory")
             result = run_forest_data_transfer(
-                args.source_run,
+                resolved_source_run,
                 args.production_dsn,
                 output_directory=args.output_directory,
                 advisor_command=args.advisor_command,
@@ -367,7 +389,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.planner_dsn is not None:
                 raise ValueError("Power7 full-data transfer does not take a planner DSN")
             result = run_power_data_transfer(
-                args.source_run,
+                resolved_source_run,
                 args.production_dsn,
                 output_directory=args.output_directory,
                 advisor_command=args.advisor_command,
@@ -379,7 +401,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.budget_directory is None:
             raise ValueError("Census13 full-data transfer requires a budget directory")
         result = run_full_data_transfer(
-            args.source_run,
+            resolved_source_run,
             args.budget_directory,
             args.production_dsn,
             planner_dsn=args.planner_dsn,

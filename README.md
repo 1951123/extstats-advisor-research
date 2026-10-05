@@ -101,3 +101,19 @@ extstats-research validate full-data-transfer \
 It measures fresh full-data P0, the committed add-only deployment P1, and a
 transactional DROP/ROLLBACK counterfactual P2. The P2 operation is research-only
 and never changes deployment policy or external statistics ownership.
+
+The DMV11 K=8 transfer uses the same shared P0/P1/P2 engine:
+
+```sh
+extstats-research validate full-data-transfer \
+  runs/82f277385bf5381a43b0c268 \
+  --production-dsn "$DISPOSABLE_STOCK_POSTGRES_DSN"
+```
+
+Its immutable `GroundTruthSet` is `authoritative-external-exact` truth from
+`sfu-db/AreCELearnedYet`. Validation binds all 10,000 cardinalities to the
+audited labels in memory and performs no exact-truth recapture. The transfer
+deploys only the frozen five-object Recommendation, then measures P0 (fresh
+ordinary statistics), P1 (committed Recommendation), and P2 (the same
+post-deployment ordinary statistics after transactional DROP and ROLLBACK).
+The patched PostgreSQL planner is not started for this validation.
