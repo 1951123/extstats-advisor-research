@@ -798,6 +798,13 @@ def run_forest10(
     )
 
     started = time.monotonic()
+    _run(
+        advisor + ["sandbox", "destroy", "postgres", "--dsn", planner_dsn],
+        paths["logs"],
+    )
+    timings["sandbox_destroy_before_audit"] = round(time.monotonic() - started, 6)
+
+    started = time.monotonic()
     audit_result = run_audit(
         layout.directory,
         planner_dsn=planner_dsn,
