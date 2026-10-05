@@ -134,7 +134,9 @@ def _physical_schema(conn: Any) -> dict[str, Any]:
     }
 
 
-def _statistics_target(conn: Any) -> list[dict[str, Any]]:
+def _statistics_target(
+    conn: Any, *, expected_target: int = STATISTICS_TARGET
+) -> list[dict[str, Any]]:
     with conn.cursor() as cursor:
         cursor.execute(
             """
@@ -146,7 +148,7 @@ def _statistics_target(conn: Any) -> list[dict[str, Any]]:
             """
         )
         result = [{"name": name, "target": target} for name, target in cursor.fetchall()]
-    if any(item["target"] != STATISTICS_TARGET for item in result):
+    if any(item["target"] != expected_target for item in result):
         raise ValueError(f"Forest10 statistics target mismatch: {result!r}")
     return result
 
@@ -220,6 +222,135 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         "max": max(values),
         "max_query_id": max(records, key=lambda record: record["qerror"])["query_id"],
         "quantile_method": "linear-interpolation-n-minus-1",
+    }
+
+
+def _measure_explains(conn: Any, records: list[dict[str, Any]], loss: Any) -> list[dict[str, Any]]:
+    measured: list[dict[str, Any]] = []
+    with conn.cursor() as cursor:
+        for record in records:
+            cursor.execute("EXPLAIN (FORMAT JSON) " + record["sql"])
+            explain = cursor.fetchone()[0]
+            if isinstance(explain, str):
+                explain = json.loads(explain)
+            estimate = int(explain[0]["Plan"]["Plan Rows"])
+            qerror = float(loss.loss(estimate, record["truth"]))
+            measured.append(
+                {
+                    "query_id": f"arecel_forest10_test_{record['source_index']:06d}",
+                    "source_index": record["source_index"],
+                    "source_query_id": record["source_query_id"],
+                    "source_query_sha256": record["source_query_sha256"],
+                    "original_sql": record["original_sql"],
+                    "sql": record["sql"],
+                    "true_rows": record["truth"],
+                    "estimated_rows": estimate,
+                    "qerror": qerror,
+                    "weight": 1.0,
+                }
+            )
+    return measured
+
+
+def run_forest_full_data_target100(
+    dsn: str,
+    *,
+    data_root: Path | None = None,
+    output_path: Path = Path("full-data-target100-v1.json"),
+    repository: Path | None = None,
+    statistics_target: int = 100,
+) -> dict[str, Any]:
+    """Measure ordinary target-100 estimates on the already-loaded full relation."""
+    if not dsn.strip():
+        raise ValueError("stock PostgreSQL DSN is required")
+    if isinstance(statistics_target, bool) or statistics_target < 1:
+        raise ValueError("statistics_target must be positive")
+    output_path = output_path.expanduser().resolve()
+    if output_path.exists():
+        raise FileExistsError(f"Forest full-data baseline output already exists: {output_path}")
+    repository = repository or Path(__file__).resolve().parents[2]
+    research_sha = _git_sha(repository)
+    dataset = forest10.inspect(data_root)
+    records = forest10.load_test_records(data_root)
+    from extstats_advisor.utility import QErrorLoss
+
+    loss = QErrorLoss()
+    started = time.monotonic()
+    import psycopg
+
+    with psycopg.connect(dsn, autocommit=True) as conn:
+        server = _server_metadata(conn)
+        physical = _physical_schema(conn)
+        targets = _statistics_target(conn, expected_target=statistics_target)
+        if physical["row_count"] != forest10.EXPECTED_ROWS:
+            raise ValueError(
+                "full-data target-100 baseline requires the complete Forest10 relation"
+            )
+        if physical["extended_statistics_count"] != 0:
+            raise ValueError("full-data target-100 baseline requires no extended statistics")
+        if any(item["target"] != statistics_target for item in targets):
+            raise ValueError(f"full-data target-100 statistics target mismatch: {targets!r}")
+        measured = _measure_explains(conn, records, loss)
+
+    summary = _summary(measured)
+    artifact = {
+        "format_version": "arecel-forest-full-data-target100-v1",
+        "state": "forest_full_target100_ordinary",
+        "research_repository": FROZEN_RESEARCH_REPOSITORY,
+        "research_commit_sha": research_sha,
+        "dataset": forest10.BENCHMARK_ID,
+        "dataset_content_identity": dataset["dataset_content_identity"],
+        "source_files": dataset["source_file_sha256"],
+        "relation": forest10.RELATION,
+        "row_count": forest10.EXPECTED_ROWS,
+        "schema_contract_id": forest10.SCHEMA_CONTRACT_ID,
+        "stock_postgresql": server,
+        "statistics": {
+            "target": statistics_target,
+            "initial_analyze_count": 1,
+            "preflight_analyze_count": 0,
+            "column_targets_verified": targets,
+            "extended_statistics_count": physical["extended_statistics_count"],
+        },
+        "workload": {
+            "identity": "AreCELearnedYet base:test",
+            "query_count": len(records),
+            "workload_sha256": dataset["source_file_sha256"]["workload_pickle"],
+            "label_sha256": dataset["source_file_sha256"]["label_pickle"],
+            "canonical_workload_sha256": dataset["source_file_sha256"]["canonical_workload"],
+        },
+        "truth": {
+            "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
+            "authoritative_for_preflight": True,
+            "ground_truth_set": False,
+        },
+        "planner_estimates": {
+            "explain": "EXPLAIN (FORMAT JSON)",
+            "analyze": False,
+            "root_field": "Plan Rows",
+            "query_count": len(measured),
+        },
+        "qerror": {
+            "provider": "extstats_advisor.utility.QErrorLoss",
+            "contract": QERROR_CONTRACT,
+        },
+        "weights": {
+            "scheme": "uniform-per-query",
+            "per_query": 1.0,
+            "total_weight": float(len(measured)),
+            "weighted_objective": summary["weighted_objective"],
+        },
+        "summary": summary,
+    }
+    reject_credentials(artifact)
+    artifact["semantic_digest"] = semantic_digest(artifact)
+    artifact["runtime_metadata"] = {"elapsed_seconds": round(time.monotonic() - started, 6)}
+    write_json(output_path, artifact)
+    return {
+        "path": str(output_path),
+        "semantic_digest": artifact["semantic_digest"],
+        "summary": summary,
+        "elapsed_seconds": artifact["runtime_metadata"]["elapsed_seconds"],
     }
 
 

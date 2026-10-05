@@ -12,7 +12,7 @@ from .datasets import census13, forest10, get_dataset
 from .forest_baseline import run_forest_baseline
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
-from .runner import run_census13
+from .runner import run_census13, run_forest10
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
@@ -28,12 +28,12 @@ def _parser() -> argparse.ArgumentParser:
     inspect.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
     inspect.add_argument("--data-root", type=Path)
     load = dataset_commands.add_parser("load")
-    load.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
+    load.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
     load.add_argument("--dsn", required=True)
     load.add_argument("--data-root", type=Path)
     load.add_argument("--reset-disposable", action="store_true")
     run = commands.add_parser("run")
-    run.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
+    run.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
     run.add_argument("--production-dsn", required=True)
     run.add_argument("--planner-dsn", required=True)
     run.add_argument(
@@ -188,11 +188,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.dataset_command == "inspect":
             print(json.dumps(dataset.inspect(args.data_root), sort_keys=True, indent=2))
         else:
-            from .postgres.loader import load_census13
+            from .postgres.loader import load_census13, load_forest10
+
+            loader = load_forest10 if args.dataset_id == forest10.BENCHMARK_ID else load_census13
 
             print(
                 json.dumps(
-                    load_census13(
+                    loader(
                         args.dsn, data_root=args.data_root, reset_disposable=args.reset_disposable
                     ),
                     sort_keys=True,
@@ -298,7 +300,8 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
-    result = run_census13(
+    runner = run_forest10 if args.dataset_id == forest10.BENCHMARK_ID else run_census13
+    result = runner(
         production_dsn=args.production_dsn,
         planner_dsn=args.planner_dsn,
         advisor_root=args.advisor_root,
