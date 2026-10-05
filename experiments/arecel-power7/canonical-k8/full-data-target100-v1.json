@@ -1,0 +1,129 @@
+{
+  "dataset": "arecel-power7",
+  "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+  "format_version": "arecel-power7-full-data-target100-v1",
+  "per_query_count": 10000,
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.power7",
+  "research_commit_sha": "6aaeb0ff2819ae705063305c6bd19be4639a6ce7",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 2075259,
+  "runtime_metadata": {
+    "elapsed_seconds": 1.389207
+  },
+  "schema_contract_id": "arecel-power7-postgres-schema-v1",
+  "semantic_digest": "14c180633e5fabdfeb7803d218963d32ed304f7615e01df9d250d0b23953f507",
+  "source_files": {
+    "canonical_workload": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+    "csv": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+    "label_pickle": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+    "workload_pickle": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+  },
+  "state": "power7_full_target100_ordinary",
+  "statistics": {
+    "column_targets_verified": [
+      {
+        "name": "global_active_power",
+        "target": 100
+      },
+      {
+        "name": "global_reactive_power",
+        "target": 100
+      },
+      {
+        "name": "voltage",
+        "target": 100
+      },
+      {
+        "name": "global_intensity",
+        "target": 100
+      },
+      {
+        "name": "sub_metering_1",
+        "target": 100
+      },
+      {
+        "name": "sub_metering_2",
+        "target": 100
+      },
+      {
+        "name": "sub_metering_3",
+        "target": 100
+      }
+    ],
+    "extended_statistics_count": 0,
+    "initial_analyze_count": 1,
+    "preflight_analyze_count": 0,
+    "target": 100
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 156527.0,
+    "max_query_id": "arecel_power7_test_001932",
+    "mean": 135.55314233242987,
+    "p50": 1.071049112135384,
+    "p75": 1.9886166434929886,
+    "p90": 5.0,
+    "p95": 15.092834195966429,
+    "p99": 246.83336842105587,
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 135.55314233242987
+  },
+  "tail_contribution": {
+    "top_1": {
+      "baseline_objective_fraction": 0.11547279340535976,
+      "query_count": 1
+    },
+    "top_10": {
+      "baseline_objective_fraction": 0.3930775715204689,
+      "query_count": 10
+    },
+    "top_10_percent": {
+      "baseline_objective_fraction": 0.990416072524822,
+      "query_count": 1000
+    },
+    "top_1_percent": {
+      "baseline_objective_fraction": 0.9688037328319151,
+      "query_count": 100
+    },
+    "top_5": {
+      "baseline_objective_fraction": 0.29725168525554846,
+      "query_count": 5
+    },
+    "top_5_percent": {
+      "baseline_objective_fraction": 0.9873054111230576,
+      "query_count": 500
+    }
+  },
+  "truth": {
+    "authoritative_for_preflight": true,
+    "ground_truth_set": false,
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 135.55314233242987
+  },
+  "workload": {
+    "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+    "query_count": 10000,
+    "workload_sha256": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+  }
+}
