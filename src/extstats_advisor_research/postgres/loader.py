@@ -107,6 +107,7 @@ def load_census13(
     *,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    statistics_target: int = 100,
 ) -> dict[str, Any]:
     """Create public.census13 and validate row/content metadata.
 
@@ -116,6 +117,8 @@ def load_census13(
     if not dsn or not dsn.strip():
         raise ValueError("a DSN is required and is never written to an artifact")
     source = census13.csv_path(data_root)
+    if isinstance(statistics_target, bool) or statistics_target < 1:
+        raise ValueError("statistics_target must be positive")
     metadata = census13.inspect(data_root)
     psycopg = _psycopg()
     with psycopg.connect(dsn, autocommit=True) as connection:
@@ -139,6 +142,10 @@ def load_census13(
             while block := stream.read(1024 * 1024):
                 copy.write(block)
         physical_schema = _validate_physical_schema(connection)
+        for name, _ in census13.COLUMNS:
+            connection.execute(
+                f'ALTER TABLE public.census13 ALTER COLUMN "{name}" SET STATISTICS {statistics_target}'
+            )
         connection.execute("ANALYZE public.census13")
         count = int(connection.execute("SELECT count(*) FROM public.census13").fetchone()[0])
         if count != census13.EXPECTED_ROWS:
@@ -187,5 +194,6 @@ def load_census13(
         "physical_extended_statistics_count": len(extended_statistics),
         "server_version": server_version,
         "server_version_num": server_version_num,
+        "statistics_target": statistics_target,
         "distinct_counts_observed": observed_distinct,
     }

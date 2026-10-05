@@ -9,6 +9,7 @@ from pathlib import Path
 from .analysis.audit import run_audit
 from .baseline_gap import run_baseline_gap
 from .datasets import census13
+from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13
 from .search_budget import run_search_budget_calibration
@@ -130,6 +131,16 @@ def _parser() -> argparse.ArgumentParser:
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
     search_budget.add_argument("--advisor-command", default="extstats-advisor")
+    validate = commands.add_parser("validate")
+    validate_commands = validate.add_subparsers(dest="validate_command", required=True)
+    transfer = validate_commands.add_parser("full-data-transfer")
+    transfer.add_argument("source_run", type=Path)
+    transfer.add_argument("budget_directory", type=Path)
+    transfer.add_argument("--production-dsn", required=True)
+    transfer.add_argument("--planner-dsn")
+    transfer.add_argument("--output-directory", type=Path)
+    transfer.add_argument("--data-root", type=Path)
+    transfer.add_argument("--advisor-command", default="extstats-advisor")
     return parser
 
 
@@ -202,6 +213,20 @@ def main(argv: list[str] | None = None) -> int:
             advisor_root=args.advisor_root,
             patched_postgres_root=args.patched_postgres_root,
             advisor_command=args.advisor_command,
+        )
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "validate":
+        if args.validate_command != "full-data-transfer":
+            raise ValueError(f"unsupported validation command: {args.validate_command}")
+        result = run_full_data_transfer(
+            args.source_run,
+            args.budget_directory,
+            args.production_dsn,
+            planner_dsn=args.planner_dsn,
+            output_directory=args.output_directory,
+            advisor_command=args.advisor_command,
+            data_root=args.data_root,
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0

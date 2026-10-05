@@ -62,3 +62,26 @@ builds the newly recommended extended statistics, and may rebuild data for
 externally managed extended statistics on the same relation. This does not
 transfer ownership of those external objects to the advisor. This harness does
 not apply deployment.
+
+## Full-data transfer validation
+
+`validate full-data-transfer` is one physical-transfer experiment for the
+converged Census13 K=8 SearchResult. It builds the Recommendation through the
+frozen advisor CLI from immutable source artifacts and explicitly checks
+`D = F|M*`: accepted greedy move order is evidence about search, while
+deployment order comes from frozen SingletonProfile precedence.
+
+The experiment measures all 10,000 frozen workload queries on stock PostgreSQL
+16.14 before deployment (P0), after the real add-only deployment and final
+`ANALYZE` (P1), and in a paired research-only transaction that drops only the
+seven advisor-managed objects, measures without `ANALYZE`, and rolls back (P2).
+P2 is not production reconciliation. Existing production statistics are outside
+advisor ownership, and the SearchResult objective describes `M*`, not a
+guarantee for the combined state `E_existing ∪ M*`.
+
+The compact derivative contains only the new Recommendation, DeploymentResult,
+summary, and per-query transfer JSONL. It records source digests, calibration,
+dataset identity, system revisions, physical object verification,
+ordinary-stat fingerprints, and no credentials. The DBA remains responsible
+for deciding whether externally managed statistics remain, are removed,
+replaced, or coexist.
