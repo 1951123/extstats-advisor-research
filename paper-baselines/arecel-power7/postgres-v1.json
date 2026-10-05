@@ -1,0 +1,676 @@
+{
+  "dataset": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "audit_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/audit-v1",
+    "benchmark_id": "arecel-power7",
+    "columns": [
+      {
+        "name": "global_active_power",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "global_reactive_power",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "voltage",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "global_intensity",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "sub_metering_1",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "sub_metering_2",
+        "postgres_type": "DOUBLE PRECISION"
+      },
+      {
+        "name": "sub_metering_3",
+        "postgres_type": "DOUBLE PRECISION"
+      }
+    ],
+    "data_root_logical": "EXTSTATS_RESEARCH_DATA_ROOT/arecel/raw/data/power7",
+    "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+    "expected_rows": 2075259,
+    "null_audit": {
+      "all_columns_null_free": true,
+      "source_csv_null_counts": {
+        "Global_active_power": 0,
+        "Global_intensity": 0,
+        "Global_reactive_power": 0,
+        "Sub_metering_1": 0,
+        "Sub_metering_2": 0,
+        "Sub_metering_3": 0,
+        "Voltage": 0
+      },
+      "upstream_not_null_constraint": false
+    },
+    "observed_rows": 2075259,
+    "relation": "public.power7",
+    "schema_contract": {
+      "columns": [
+        {
+          "name": "global_active_power",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "global_reactive_power",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "voltage",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "global_intensity",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "sub_metering_1",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "sub_metering_2",
+          "postgres_type": "DOUBLE PRECISION"
+        },
+        {
+          "name": "sub_metering_3",
+          "postgres_type": "DOUBLE PRECISION"
+        }
+      ],
+      "id": "arecel-power7-postgres-schema-v1",
+      "identifier_contract": "unquoted-upstream-ddl-folds-to-lowercase-catalog-names",
+      "not_null": false,
+      "relation": "public.power7"
+    },
+    "source_file_sha256": {
+      "canonical_workload": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "csv": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+      "label_pickle": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+      "workload_pickle": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+    },
+    "source_present": true,
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "upstream_url": "https://github.com/sfu-db/AreCELearnedYet",
+    "workload_splits": {
+      "test": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Global_active_power": 5718,
+          "Global_intensity": 5742,
+          "Global_reactive_power": 5709,
+          "Sub_metering_1": 5672,
+          "Sub_metering_2": 5674,
+          "Sub_metering_3": 5572,
+          "Voltage": 5765
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 2075257,
+          "mean": 770771.0056,
+          "median": 566325.5,
+          "min": 0,
+          "q25": 54573.0,
+          "q75": 1328571.5
+        },
+        "label_selectivity": {
+          "max": 0.9999990362648711,
+          "mean": 0.3714095472420551,
+          "median": 0.27289388938922804,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 16370,
+          ">=": 4278,
+          "[]": 19204
+        },
+        "pair_occurrence_counts": {
+          "Global_active_power__Global_intensity": 3784,
+          "Global_active_power__Global_reactive_power": 3820,
+          "Global_active_power__Sub_metering_1": 3800,
+          "Global_active_power__Sub_metering_2": 3772,
+          "Global_active_power__Sub_metering_3": 3753,
+          "Global_active_power__Voltage": 3794,
+          "Global_intensity__Global_reactive_power": 3804,
+          "Global_intensity__Sub_metering_1": 3817,
+          "Global_intensity__Sub_metering_2": 3765,
+          "Global_intensity__Sub_metering_3": 3766,
+          "Global_intensity__Voltage": 3807,
+          "Global_reactive_power__Sub_metering_1": 3813,
+          "Global_reactive_power__Sub_metering_2": 3825,
+          "Global_reactive_power__Sub_metering_3": 3725,
+          "Global_reactive_power__Voltage": 3835,
+          "Sub_metering_1__Sub_metering_2": 3808,
+          "Sub_metering_1__Sub_metering_3": 3720,
+          "Sub_metering_1__Voltage": 3819,
+          "Sub_metering_2__Sub_metering_3": 3711,
+          "Sub_metering_2__Voltage": 3816,
+          "Sub_metering_3__Voltage": 3767
+        },
+        "predicate_count": {
+          "max": 7,
+          "mean": 3.9852,
+          "median": 4.0,
+          "min": 1,
+          "q25": 2.0,
+          "q75": 6.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 21,
+        "unique_query_count": 10000,
+        "zero_predicate_queries": 0
+      },
+      "train": {
+        "canonical_sql_count": 100000,
+        "column_predicate_counts": {
+          "Global_active_power": 57388,
+          "Global_intensity": 57367,
+          "Global_reactive_power": 57371,
+          "Sub_metering_1": 57317,
+          "Sub_metering_2": 56995,
+          "Sub_metering_3": 57212,
+          "Voltage": 57143
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 2075258,
+          "mean": 748831.03771,
+          "median": 542488.0,
+          "min": 0,
+          "q25": 46854.25,
+          "q75": 1314525.5
+        },
+        "label_selectivity": {
+          "max": 0.9999995181324355,
+          "mean": 0.36083738835008067,
+          "median": 0.26140737132088093,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 163149,
+          ">=": 42465,
+          "[]": 195179
+        },
+        "pair_occurrence_counts": {
+          "Global_active_power__Global_intensity": 38255,
+          "Global_active_power__Global_reactive_power": 38270,
+          "Global_active_power__Sub_metering_1": 38375,
+          "Global_active_power__Sub_metering_2": 38282,
+          "Global_active_power__Sub_metering_3": 38394,
+          "Global_active_power__Voltage": 38266,
+          "Global_intensity__Global_reactive_power": 38374,
+          "Global_intensity__Sub_metering_1": 38273,
+          "Global_intensity__Sub_metering_2": 38131,
+          "Global_intensity__Sub_metering_3": 38260,
+          "Global_intensity__Voltage": 38059,
+          "Global_reactive_power__Sub_metering_1": 38342,
+          "Global_reactive_power__Sub_metering_2": 38050,
+          "Global_reactive_power__Sub_metering_3": 38190,
+          "Global_reactive_power__Voltage": 38189,
+          "Sub_metering_1__Sub_metering_2": 38109,
+          "Sub_metering_1__Sub_metering_3": 38289,
+          "Sub_metering_1__Voltage": 38231,
+          "Sub_metering_2__Sub_metering_3": 38066,
+          "Sub_metering_2__Voltage": 38021,
+          "Sub_metering_3__Voltage": 38109
+        },
+        "predicate_count": {
+          "max": 7,
+          "mean": 4.00793,
+          "median": 4.0,
+          "min": 1,
+          "q25": 2.0,
+          "q75": 6.0
+        },
+        "query_count": 100000,
+        "unique_column_pairs": 21,
+        "unique_query_count": 100000,
+        "zero_predicate_queries": 0
+      },
+      "valid": {
+        "canonical_sql_count": 10000,
+        "column_predicate_counts": {
+          "Global_active_power": 5700,
+          "Global_intensity": 5661,
+          "Global_reactive_power": 5705,
+          "Sub_metering_1": 5751,
+          "Sub_metering_2": 5690,
+          "Sub_metering_3": 5685,
+          "Voltage": 5752
+        },
+        "duplicate_query_instances": 0,
+        "label_cardinality": {
+          "max": 2075257,
+          "mean": 748767.6936,
+          "median": 547821.5,
+          "min": 0,
+          "q25": 46306.5,
+          "q75": 1313575.25
+        },
+        "label_selectivity": {
+          "max": 0.9999990362648711,
+          "mean": 0.3608068648780707,
+          "median": 0.2639774119760473,
+          "min": 0.0
+        },
+        "label_selectivity_vs_cardinality_mismatches": 0,
+        "operator_counts": {
+          "<=": 16439,
+          ">=": 4262,
+          "[]": 19243
+        },
+        "pair_occurrence_counts": {
+          "Global_active_power__Global_intensity": 3770,
+          "Global_active_power__Global_reactive_power": 3760,
+          "Global_active_power__Sub_metering_1": 3793,
+          "Global_active_power__Sub_metering_2": 3782,
+          "Global_active_power__Sub_metering_3": 3792,
+          "Global_active_power__Voltage": 3834,
+          "Global_intensity__Global_reactive_power": 3734,
+          "Global_intensity__Sub_metering_1": 3783,
+          "Global_intensity__Sub_metering_2": 3742,
+          "Global_intensity__Sub_metering_3": 3772,
+          "Global_intensity__Voltage": 3809,
+          "Global_reactive_power__Sub_metering_1": 3829,
+          "Global_reactive_power__Sub_metering_2": 3760,
+          "Global_reactive_power__Sub_metering_3": 3758,
+          "Global_reactive_power__Voltage": 3765,
+          "Sub_metering_1__Sub_metering_2": 3810,
+          "Sub_metering_1__Sub_metering_3": 3823,
+          "Sub_metering_1__Voltage": 3917,
+          "Sub_metering_2__Sub_metering_3": 3798,
+          "Sub_metering_2__Voltage": 3829,
+          "Sub_metering_3__Voltage": 3813
+        },
+        "predicate_count": {
+          "max": 7,
+          "mean": 3.9944,
+          "median": 4.0,
+          "min": 1,
+          "q25": 2.0,
+          "q75": 6.0
+        },
+        "query_count": 10000,
+        "unique_column_pairs": 21,
+        "unique_query_count": 10000,
+        "zero_predicate_queries": 0
+      }
+    }
+  },
+  "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+  "elapsed_seconds": 7.265046,
+  "format_version": "arecel-paper-postgres-baseline-v1",
+  "null_audit": {
+    "all_columns_null_free": true,
+    "source_csv_null_counts": {
+      "Global_active_power": 0,
+      "Global_intensity": 0,
+      "Global_reactive_power": 0,
+      "Sub_metering_1": 0,
+      "Sub_metering_2": 0,
+      "Sub_metering_3": 0,
+      "Voltage": 0
+    },
+    "upstream_not_null_constraint": false
+  },
+  "paper_references": {
+    "deepdb": {
+      "max": 1568.0,
+      "p50": 1.0,
+      "p95": 1.3,
+      "p99": 2.4
+    },
+    "lw_nn": {
+      "max": 40000.0,
+      "p50": 1.06,
+      "p95": 1.88,
+      "p99": 4.89
+    },
+    "lw_xgb": {
+      "max": 5850.0,
+      "p50": 1.02,
+      "p95": 1.72,
+      "p99": 5.04
+    },
+    "mscn": {
+      "max": 199.0,
+      "p50": 1.01,
+      "p95": 2.0,
+      "p99": 9.91
+    },
+    "naru": {
+      "max": 161.0,
+      "p50": 1.01,
+      "p95": 1.14,
+      "p99": 1.96
+    },
+    "postgresql": {
+      "max": 200000.0,
+      "p50": 1.06,
+      "p95": 15.0,
+      "p99": 235.0
+    }
+  },
+  "per_query_path": "postgres-per-query-v1.jsonl",
+  "per_query_sha256": "3020f139d4ecbbda203857aedadc0f561d985f2ab33d5ac41d18e1e7025b0bad",
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.power7",
+  "research_commit_sha": "619416f7121cb61fff2db7716a92bf7e0958713c",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 2075259,
+  "schema_contract_id": "arecel-power7-postgres-schema-v1",
+  "schema_verification": {
+    "column_count": 7,
+    "columns": [
+      {
+        "name": "global_active_power",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "global_reactive_power",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "voltage",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "global_intensity",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "sub_metering_1",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "sub_metering_2",
+        "not_null": false,
+        "postgres_type": "double precision"
+      },
+      {
+        "name": "sub_metering_3",
+        "not_null": false,
+        "postgres_type": "double precision"
+      }
+    ],
+    "extended_statistics_count": 0,
+    "row_count": 2075259,
+    "verified": true
+  },
+  "semantic_digest": "29fd4bf2c9fe8172cd9f2a3f826898a14d5fe837814555167f7cb11bec34c45d",
+  "source_files": {
+    "canonical_workload": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+    "csv": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+    "label_pickle": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+    "workload_pickle": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+  },
+  "statistics": {
+    "analyze_count": 1,
+    "analyze_statement": "ANALYZE public.power7",
+    "column_targets_verified": [
+      {
+        "name": "global_active_power",
+        "target": 10000
+      },
+      {
+        "name": "global_reactive_power",
+        "target": 10000
+      },
+      {
+        "name": "voltage",
+        "target": 10000
+      },
+      {
+        "name": "global_intensity",
+        "target": 10000
+      },
+      {
+        "name": "sub_metering_1",
+        "target": 10000
+      },
+      {
+        "name": "sub_metering_2",
+        "target": 10000
+      },
+      {
+        "name": "sub_metering_3",
+        "target": 10000
+      }
+    ],
+    "extended_statistics_count": 0,
+    "seed": 123,
+    "seed_expression": "1.0 / 123",
+    "setseed_executed": true,
+    "target": 10000
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 157746.0,
+    "max_query_id": "arecel_power7_test_005495",
+    "mean": 130.81492860777504,
+    "p50": 1.0645269314046064,
+    "p75": 1.976220390208892,
+    "p90": 5.0,
+    "p95": 14.950404979325155,
+    "p99": 235.06454545454687,
+    "paper_reference_comparison": {
+      "max": {
+        "difference": -42254.0,
+        "paper_reference": 200000.0,
+        "ratio": 0.78873,
+        "reproduced": 157746.0
+      },
+      "p50": {
+        "difference": 0.00452693140460636,
+        "paper_reference": 1.06,
+        "ratio": 1.0042706900043457,
+        "reproduced": 1.0645269314046064
+      },
+      "p95": {
+        "difference": -0.049595020674845,
+        "paper_reference": 15.0,
+        "ratio": 0.9966936652883437,
+        "reproduced": 14.950404979325155
+      },
+      "p99": {
+        "difference": 0.06454545454687377,
+        "paper_reference": 235.0,
+        "ratio": 1.0002746615087101,
+        "reproduced": 235.06454545454687
+      }
+    },
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 130.81492860777504
+  },
+  "truth": {
+    "authoritative_for_full_workload": true,
+    "binding": {
+      "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+      "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "csv_sha256": "a58a43b0e9f26e92744c2130053dd343fb6b3bb9f73b05fd39f6a44d355ddba9",
+      "label_pickle_sha256": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+      "source_index_mapping": "canonical base:test source order 0..9999",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "workload_pickle_sha256": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+    },
+    "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+    "full_table_count_scans_for_truth": false,
+    "label_sha256": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
+    "spot_checks": {
+      "all_match": true,
+      "checks": [
+        {
+          "observed": 642755,
+          "operators": [
+            "<=",
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 5,
+          "query_id": "arecel_power7_test_000000",
+          "source_index": 0,
+          "source_query_id": "arecel:power7:test:000000",
+          "truth": 642755
+        },
+        {
+          "observed": 215198,
+          "operators": [
+            "<=",
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 4,
+          "query_id": "arecel_power7_test_000002",
+          "source_index": 2,
+          "source_query_id": "arecel:power7:test:000002",
+          "truth": 215198
+        },
+        {
+          "observed": 2048279,
+          "operators": [
+            "<=",
+            ">="
+          ],
+          "predicate_arity": 2,
+          "query_id": "arecel_power7_test_000003",
+          "source_index": 3,
+          "source_query_id": "arecel:power7:test:000003",
+          "truth": 2048279
+        },
+        {
+          "observed": 1375736,
+          "operators": [
+            "<=",
+            ">="
+          ],
+          "predicate_arity": 3,
+          "query_id": "arecel_power7_test_000004",
+          "source_index": 4,
+          "source_query_id": "arecel:power7:test:000004",
+          "truth": 1375736
+        },
+        {
+          "observed": 406045,
+          "operators": [
+            "<=",
+            "[]"
+          ],
+          "predicate_arity": 7,
+          "query_id": "arecel_power7_test_000005",
+          "source_index": 5,
+          "source_query_id": "arecel:power7:test:000005",
+          "truth": 406045
+        },
+        {
+          "observed": 2049280,
+          "operators": [
+            ">="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_power7_test_000007",
+          "source_index": 7,
+          "source_query_id": "arecel:power7:test:000007",
+          "truth": 2049280
+        },
+        {
+          "observed": 0,
+          "operators": [
+            ">=",
+            "[]"
+          ],
+          "predicate_arity": 6,
+          "query_id": "arecel_power7_test_000008",
+          "source_index": 8,
+          "source_query_id": "arecel:power7:test:000008",
+          "truth": 0
+        },
+        {
+          "observed": 2075257,
+          "operators": [
+            "<="
+          ],
+          "predicate_arity": 1,
+          "query_id": "arecel_power7_test_002861",
+          "source_index": 2861,
+          "source_query_id": "arecel:power7:test:002861",
+          "truth": 2075257
+        },
+        {
+          "observed": 1175,
+          "operators": [
+            "<=",
+            "[]"
+          ],
+          "predicate_arity": 5,
+          "query_id": "arecel_power7_test_005000",
+          "source_index": 5000,
+          "source_query_id": "arecel:power7:test:005000",
+          "truth": 1175
+        },
+        {
+          "observed": 155779,
+          "operators": [
+            "<=",
+            "[]"
+          ],
+          "predicate_arity": 2,
+          "query_id": "arecel_power7_test_009999",
+          "source_index": 9999,
+          "source_query_id": "arecel:power7:test:009999",
+          "truth": 155779
+        }
+      ],
+      "count": 10,
+      "rule": "indices {0, floor(query_count/2), query_count-1}, first query per predicate arity/operator, plus min/max truth"
+    }
+  },
+  "upstream": {
+    "commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "repository": "https://github.com/sfu-db/AreCELearnedYet",
+    "shared_archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 130.81492860777504
+  },
+  "workload": {
+    "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+    "identifier_substitution": "quoted upstream identifiers folded to lowercase catalog names",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+    "label_source": "data/power7/workload/base-original-label.pkl",
+    "projection": "count-star-to-select-star-v1",
+    "query_count": 10000,
+    "query_id_mapping": "arecel:power7:test:<index> -> arecel_power7_test_<index>",
+    "relation_substitution": "safe exact source relation substitution",
+    "source": "data/power7/workload/base.pkl",
+    "workload_sha256": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+  }
+}
