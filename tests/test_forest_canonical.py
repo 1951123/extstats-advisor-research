@@ -40,6 +40,15 @@ def test_full_truth_comparison_is_fail_closed() -> None:
         compare_label_maps({"q1": 1, "q2": 2}, {"q1": 1})
 
 
+def test_truth_comparison_uses_adapter_query_ids() -> None:
+    assert (
+        compare_label_maps({"arecel_power7_test_000001": 7}, {"arecel_power7_test_000001": 7})[
+            "matched"
+        ]
+        == 1
+    )
+
+
 def test_forest_run_identity_binds_all_experiment_settings() -> None:
     base = {
         "research_commit_sha": "a" * 40,
@@ -122,3 +131,30 @@ def test_compact_summary_keeps_candidate_and_search_evidence() -> None:
     assert result["search"]["termination_reason"] == "local-optimum"
     assert result["deployment"]["performed"] is False
     assert result["source_artifacts"]["audit"]["semantic_digest"] == "audit"
+
+    power = compact_summary(
+        run_id="power-run",
+        run_directory="runs/power-run",
+        manifest=manifest,
+        full_data={"semantic_digest": "full", "summary": {"p50": 2}},
+        paper_baseline={"summary": {"p50": 1}},
+        candidate_universe={"candidates": [], "incidence": []},
+        native_repository={"candidates": []},
+        singleton_profile={"candidate_profiles": []},
+        optimization_plan={"candidate_limit": 8},
+        search_result={"final_ordered_candidate_ids": [], "termination_reason": "local-optimum"},
+        recommendation={"selected_candidates": []},
+        truth_validation={"matched": 10_000, "mismatched": 0, "missing": 0, "extra": 0},
+        sampling={"method": "postgresql-system-adaptive-v1"},
+        stage_timings={},
+        audit={},
+        benchmark_id="arecel-power7",
+        schema_contract_id="arecel-power7-postgres-schema-v1",
+        row_count=2_075_259,
+        format_version="arecel-power7-canonical-k8-summary-v1",
+        expected_candidate_count=42,
+    )
+    assert power["dataset"]["benchmark_id"] == "arecel-power7"
+    assert power["dataset"]["schema_contract_id"] == "arecel-power7-postgres-schema-v1"
+    assert power["dataset"]["row_count"] == 2_075_259
+    assert power["candidates"]["expected_candidate_count"] == 42

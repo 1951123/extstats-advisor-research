@@ -126,11 +126,13 @@ def _tail(records: list[dict[str, Any]], key: str, reverse: bool) -> list[dict[s
     ]
 
 
-def contribution_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
-    denominator = sum(record["weight"] * record["baseline_qerror"] for record in records)
+def contribution_summary(
+    records: list[dict[str, Any]], qerror_key: str = "baseline_qerror"
+) -> dict[str, Any]:
+    denominator = sum(record["weight"] * record[qerror_key] for record in records)
     ranked = sorted(
         records,
-        key=lambda record: record["weight"] * record["baseline_qerror"],
+        key=lambda record: record["weight"] * record[qerror_key],
         reverse=True,
     )
     result: dict[str, Any] = {}
@@ -144,7 +146,7 @@ def contribution_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
     for label, count in counts.items():
         selected = ranked[:count]
-        contribution = sum(item["weight"] * item["baseline_qerror"] for item in selected)
+        contribution = sum(item["weight"] * item[qerror_key] for item in selected)
         result[label] = {
             "query_count": len(selected),
             "baseline_objective_fraction": contribution / denominator,
@@ -493,6 +495,7 @@ def run_audit(
             "top_10_largest_regressions": top_regressions,
         },
         "baseline_mean_contribution": contribution_summary(records),
+        "final_mean_contribution": contribution_summary(records, "final_qerror"),
         "predicate_diagnostics": {
             "query_count": len(records),
             "predicate_arity_distribution": dict(sorted(arity_distribution.items())),

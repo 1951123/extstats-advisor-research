@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from . import FROZEN_RESEARCH_REPOSITORY
+from .analysis.audit import contribution_summary
 from .datasets import forest10, power7
 from .paper_baseline import percentile
 from .provenance import reject_credentials, semantic_digest, sha256_file, write_json
@@ -135,7 +136,7 @@ def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
         or observed["not_null"] != required["not_null"]
         for observed, required in zip(columns, expected, strict=True)
     ):
-        raise ValueError(f"Forest10 physical schema mismatch: {columns!r}")
+        raise ValueError(f"{dataset.BENCHMARK_ID} physical schema mismatch: {columns!r}")
     if row_count != dataset.EXPECTED_ROWS:
         raise ValueError(f"{dataset.BENCHMARK_ID} row count mismatch: {row_count}")
     if extended_statistics_count != 0:
@@ -165,7 +166,7 @@ def _statistics_target(
         )
         result = [{"name": name, "target": target} for name, target in cursor.fetchall()]
     if any(item["target"] != expected_target for item in result):
-        raise ValueError(f"Forest10 statistics target mismatch: {result!r}")
+        raise ValueError(f"{dataset.BENCHMARK_ID} statistics target mismatch: {result!r}")
     return result
 
 
@@ -201,13 +202,13 @@ def _spot_check(
             observed = int(cursor.fetchone()[0])
             if observed != record["truth"]:
                 raise ValueError(
-                    f"Forest10 truth mismatch at {record['source_index']}: "
+                    f"{dataset.BENCHMARK_ID} truth mismatch at {record['source_index']}: "
                     f"observed={observed}, source={record['truth']}"
                 )
             checks.append(
                 {
                     "source_index": index,
-                    "query_id": record.get("query_id", f"arecel_forest10_test_{index:06d}"),
+                    "query_id": record["query_id"],
                     "source_query_id": record["source_query_id"],
                     "truth": record["truth"],
                     "observed": observed,
@@ -255,7 +256,7 @@ def _measure_explains(conn: Any, records: list[dict[str, Any]], loss: Any) -> li
             qerror = float(loss.loss(estimate, record["truth"]))
             measured.append(
                 {
-                    "query_id": f"arecel_forest10_test_{record['source_index']:06d}",
+                    "query_id": record["query_id"],
                     "source_index": record["source_index"],
                     "source_query_id": record["source_query_id"],
                     "source_query_sha256": record["source_query_sha256"],
@@ -270,26 +271,28 @@ def _measure_explains(conn: Any, records: list[dict[str, Any]], loss: Any) -> li
     return measured
 
 
-def run_forest_full_data_target100(
+def _run_full_data_target100(
     dsn: str,
     *,
     data_root: Path | None = None,
     output_path: Path = Path("full-data-target100-v1.json"),
     repository: Path | None = None,
     statistics_target: int = 100,
+    dataset: Any = forest10,
+    format_version: str = "arecel-forest-full-data-target100-v1",
 ) -> dict[str, Any]:
-    """Measure ordinary target-100 estimates on the already-loaded full relation."""
+    """Measure ordinary target-100 estimates on an already-loaded full relation."""
     if not dsn.strip():
         raise ValueError("stock PostgreSQL DSN is required")
     if isinstance(statistics_target, bool) or statistics_target < 1:
         raise ValueError("statistics_target must be positive")
     output_path = output_path.expanduser().resolve()
     if output_path.exists():
-        raise FileExistsError(f"Forest full-data baseline output already exists: {output_path}")
+        raise FileExistsError(f"full-data baseline output already exists: {output_path}")
     repository = repository or Path(__file__).resolve().parents[2]
     research_sha = _git_sha(repository)
-    dataset = forest10.inspect(data_root)
-    records = forest10.load_test_records(data_root)
+    dataset_metadata = dataset.inspect(data_root)
+    records = dataset.load_test_records(data_root)
     from extstats_advisor.utility import QErrorLoss
 
     loss = QErrorLoss()
@@ -298,11 +301,12 @@ def run_forest_full_data_target100(
 
     with psycopg.connect(dsn, autocommit=True) as conn:
         server = _server_metadata(conn)
-        physical = _physical_schema(conn)
-        targets = _statistics_target(conn, expected_target=statistics_target)
-        if physical["row_count"] != forest10.EXPECTED_ROWS:
+        physical = _physical_schema(conn, dataset)
+        targets = _statistics_target(conn, expected_target=statistics_target, dataset=dataset)
+        if physical["row_count"] != dataset.EXPECTED_ROWS:
             raise ValueError(
-                "full-data target-100 baseline requires the complete Forest10 relation"
+                "full-data target-100 baseline requires the complete "
+                f"{dataset.BENCHMARK_ID} relation"
             )
         if physical["extended_statistics_count"] != 0:
             raise ValueError("full-data target-100 baseline requires no extended statistics")
@@ -311,17 +315,20 @@ def run_forest_full_data_target100(
         measured = _measure_explains(conn, records, loss)
 
     summary = _summary(measured)
+    tail_contribution = contribution_summary(
+        [{"weight": item["weight"], "baseline_qerror": item["qerror"]} for item in measured]
+    )
     artifact = {
-        "format_version": "arecel-forest-full-data-target100-v1",
-        "state": "forest_full_target100_ordinary",
+        "format_version": format_version,
+        "state": f"{dataset.BENCHMARK_ID.removeprefix('arecel-')}_full_target100_ordinary",
         "research_repository": FROZEN_RESEARCH_REPOSITORY,
         "research_commit_sha": research_sha,
-        "dataset": forest10.BENCHMARK_ID,
-        "dataset_content_identity": dataset["dataset_content_identity"],
-        "source_files": dataset["source_file_sha256"],
-        "relation": forest10.RELATION,
-        "row_count": forest10.EXPECTED_ROWS,
-        "schema_contract_id": forest10.SCHEMA_CONTRACT_ID,
+        "dataset": dataset.BENCHMARK_ID,
+        "dataset_content_identity": dataset_metadata["dataset_content_identity"],
+        "source_files": dataset_metadata["source_file_sha256"],
+        "relation": dataset.RELATION,
+        "row_count": dataset.EXPECTED_ROWS,
+        "schema_contract_id": dataset.SCHEMA_CONTRACT_ID,
         "stock_postgresql": server,
         "statistics": {
             "target": statistics_target,
@@ -333,9 +340,11 @@ def run_forest_full_data_target100(
         "workload": {
             "identity": "AreCELearnedYet base:test",
             "query_count": len(records),
-            "workload_sha256": dataset["source_file_sha256"]["workload_pickle"],
-            "label_sha256": dataset["source_file_sha256"]["label_pickle"],
-            "canonical_workload_sha256": dataset["source_file_sha256"]["canonical_workload"],
+            "workload_sha256": dataset_metadata["source_file_sha256"]["workload_pickle"],
+            "label_sha256": dataset_metadata["source_file_sha256"]["label_pickle"],
+            "canonical_workload_sha256": dataset_metadata["source_file_sha256"][
+                "canonical_workload"
+            ],
         },
         "truth": {
             "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
@@ -359,6 +368,8 @@ def run_forest_full_data_target100(
             "weighted_objective": summary["weighted_objective"],
         },
         "summary": summary,
+        "tail_contribution": tail_contribution,
+        "per_query_count": len(measured),
     }
     reject_credentials(artifact)
     artifact["semantic_digest"] = semantic_digest(artifact)
@@ -368,8 +379,48 @@ def run_forest_full_data_target100(
         "path": str(output_path),
         "semantic_digest": artifact["semantic_digest"],
         "summary": summary,
+        "tail_contribution": tail_contribution,
+        "measured": measured,
         "elapsed_seconds": artifact["runtime_metadata"]["elapsed_seconds"],
     }
+
+
+def run_forest_full_data_target100(
+    dsn: str,
+    *,
+    data_root: Path | None = None,
+    output_path: Path = Path("full-data-target100-v1.json"),
+    repository: Path | None = None,
+    statistics_target: int = 100,
+) -> dict[str, Any]:
+    return _run_full_data_target100(
+        dsn,
+        data_root=data_root,
+        output_path=output_path,
+        repository=repository,
+        statistics_target=statistics_target,
+        dataset=forest10,
+        format_version="arecel-forest-full-data-target100-v1",
+    )
+
+
+def run_power7_full_data_target100(
+    dsn: str,
+    *,
+    data_root: Path | None = None,
+    output_path: Path = Path("full-data-target100-v1.json"),
+    repository: Path | None = None,
+    statistics_target: int = 100,
+) -> dict[str, Any]:
+    return _run_full_data_target100(
+        dsn,
+        data_root=data_root,
+        output_path=output_path,
+        repository=repository,
+        statistics_target=statistics_target,
+        dataset=power7,
+        format_version="arecel-power7-full-data-target100-v1",
+    )
 
 
 def run_forest_baseline(

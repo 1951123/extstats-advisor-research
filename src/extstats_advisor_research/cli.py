@@ -13,7 +13,7 @@ from .forest_baseline import run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
-from .runner import run_census13, run_forest10
+from .runner import run_census13, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
@@ -38,7 +38,9 @@ def _parser() -> argparse.ArgumentParser:
     load.add_argument("--data-root", type=Path)
     load.add_argument("--reset-disposable", action="store_true")
     run = commands.add_parser("run")
-    run.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
+    run.add_argument(
+        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+    )
     run.add_argument("--production-dsn", required=True)
     run.add_argument("--planner-dsn", required=True)
     run.add_argument(
@@ -53,7 +55,7 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--sample-seed", type=int, default=42)
     run.add_argument("--statistics-target", type=int, default=100)
     run.add_argument("--candidate-limit", type=int, default=8)
-    run.add_argument("--search-wall-clock-seconds", type=float, default=30.0)
+    run.add_argument("--search-wall-clock-seconds", type=float)
     run.add_argument("--output-root", type=Path, default=Path("runs"))
     run.add_argument("--data-root", type=Path)
     run.add_argument("--reset-disposable", action="store_true")
@@ -335,7 +337,21 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
-    runner = run_forest10 if args.dataset_id == forest10.BENCHMARK_ID else run_census13
+    if args.dataset_id == power7.BENCHMARK_ID:
+        runner = run_power7
+        search_wall_clock_seconds = (
+            300.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
+        )
+    elif args.dataset_id == forest10.BENCHMARK_ID:
+        runner = run_forest10
+        search_wall_clock_seconds = (
+            30.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
+        )
+    else:
+        runner = run_census13
+        search_wall_clock_seconds = (
+            30.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
+        )
     result = runner(
         production_dsn=args.production_dsn,
         planner_dsn=args.planner_dsn,
@@ -346,7 +362,7 @@ def main(argv: list[str] | None = None) -> int:
         sample_seed=args.sample_seed,
         statistics_target=args.statistics_target,
         candidate_limit=args.candidate_limit,
-        search_wall_clock_seconds=args.search_wall_clock_seconds,
+        search_wall_clock_seconds=search_wall_clock_seconds,
         data_root=args.data_root,
         reset_disposable=args.reset_disposable,
         advisor_command=args.advisor_command,

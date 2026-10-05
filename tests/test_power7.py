@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import gzip
 import json
+from pathlib import Path
 
 import pytest
 
+from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.datasets import power7
 from extstats_advisor_research.forest_baseline import power7_paper_references
+from extstats_advisor_research.postgres.loader import validate_power7_physical_schema
+from extstats_advisor_research.runner import run_power7
 
 
 def test_power7_schema_is_exact_lowercase_nullable_double_precision() -> None:
@@ -22,6 +26,29 @@ def test_power7_schema_is_exact_lowercase_nullable_double_precision() -> None:
     ]
     assert all(type_ == "DOUBLE PRECISION" for _, type_ in power7.COLUMNS)
     assert power7.schema_contract()["not_null"] is False
+
+
+def test_power7_loader_contract_rejects_not_null_or_extra_statistics() -> None:
+    observed = [
+        {"name": name, "postgres_type": "double precision", "not_null": False}
+        for name, _ in power7.COLUMNS
+    ]
+    result = validate_power7_physical_schema(
+        observed, row_count=power7.EXPECTED_ROWS, extended_statistics_count=0
+    )
+    assert result["verified"] is True
+    with pytest.raises(ValueError, match="physical schema"):
+        validate_power7_physical_schema(
+            [{**item, "not_null": True} for item in observed],
+            row_count=power7.EXPECTED_ROWS,
+            extended_statistics_count=0,
+        )
+    with pytest.raises(ValueError, match="extended statistics"):
+        validate_power7_physical_schema(
+            observed,
+            row_count=power7.EXPECTED_ROWS,
+            extended_statistics_count=1,
+        )
 
 
 def test_power7_identity_is_schema_aware() -> None:
@@ -62,7 +89,7 @@ def test_power7_hash_contract_is_frozen() -> None:
     assert power7.EXPECTED_TEST_QUERIES == 10_000
 
 
-def test_power7_workload_extraction_preserves_source_metadata(tmp_path, monkeypatch) -> None:
+def test_power7_workload_extraction_projects_production_fields(tmp_path, monkeypatch) -> None:
     canonical = tmp_path / "power7.canonical.jsonl.gz"
     with gzip.open(canonical, "wt", encoding="utf-8") as stream:
         for index in range(10_000):
@@ -99,9 +126,32 @@ def test_power7_workload_extraction_preserves_source_metadata(tmp_path, monkeypa
     assert result["query_count"] == 10_000
     assert value["workload_id"] == "arecel_power7_test_v1"
     assert value["queries"][0]["query_id"] == "arecel_power7_test_000000"
-    assert value["queries"][9999]["source_index"] == 9999
-    assert value["queries"][0]["source_label"]["cardinality"] == 0
+    assert set(value["queries"][0]) == {"query_id", "sql", "weight"}
     assert value["queries"][0]["sql"].endswith('"voltage" >= 1.25;')
+
+
+def test_power7_cli_dispatch_and_fixed_settings() -> None:
+    args = _parser().parse_args(
+        [
+            "run",
+            power7.BENCHMARK_ID,
+            "--production-dsn",
+            "stock",
+            "--planner-dsn",
+            "planner",
+        ]
+    )
+    assert args.dataset_id == power7.BENCHMARK_ID
+    assert args.search_wall_clock_seconds is None
+    with pytest.raises(ValueError, match="canonical settings"):
+        run_power7(
+            production_dsn="stock",
+            planner_dsn="planner",
+            advisor_root=Path("/tmp/advisor"),
+            patched_postgres_root=Path("/tmp/postgres"),
+            output_root=Path("/tmp/power7-test-run"),
+            sample_seed=41,
+        )
 
 
 def test_power7_paper_references_match_table_4() -> None:

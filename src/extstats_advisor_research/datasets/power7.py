@@ -290,18 +290,7 @@ def extract_workload(
         },
         "queries": [
             {
-                **{
-                    key: record[key]
-                    for key in (
-                        "query_id",
-                        "source_index",
-                        "source_query_id",
-                        "original_sql",
-                        "source_query",
-                        "source_label",
-                        "source_query_sha256",
-                    )
-                },
+                "query_id": record["query_id"],
                 "sql": record["sql"],
                 "weight": 1.0,
             }

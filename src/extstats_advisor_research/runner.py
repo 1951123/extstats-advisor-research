@@ -12,6 +12,8 @@ from . import FROZEN_PATCHED_POSTGRES_SHA
 from .advisor_bridge import materialize_native_repository
 from .analysis.audit import run_audit
 from .analysis.summary import extract_summary
+from .canonical_runner import run_forest10 as _shared_run_forest10
+from .canonical_runner import run_power7 as _shared_run_power7
 from .datasets import census13, forest10
 from .forest_baseline import run_forest_full_data_target100
 from .forest_canonical import (
@@ -401,7 +403,7 @@ def run_census13(
     return {"run_id": layout.run_id, "run_directory": str(layout.directory), "summary": summary}
 
 
-def run_forest10(
+def _legacy_run_forest10(
     *,
     production_dsn: str,
     planner_dsn: str,
@@ -861,3 +863,71 @@ def run_forest10(
             "semantic_digest": compact["semantic_digest"],
         },
     }
+
+
+def run_forest10(
+    *,
+    production_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    output_root: Path,
+    sample_rows: int = 10_000,
+    sample_seed: int = 42,
+    statistics_target: int = 100,
+    candidate_limit: int = 8,
+    search_wall_clock_seconds: float = 300.0,
+    data_root: Path | None = None,
+    reset_disposable: bool = False,
+    advisor_command: str = "extstats-advisor",
+) -> dict[str, Any]:
+    """Run the shared canonical engine with the historical Forest10 settings."""
+    return _shared_run_forest10(
+        production_dsn=production_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        output_root=output_root,
+        sample_rows=sample_rows,
+        sample_seed=sample_seed,
+        statistics_target=statistics_target,
+        candidate_limit=candidate_limit,
+        search_wall_clock_seconds=search_wall_clock_seconds,
+        data_root=data_root,
+        reset_disposable=reset_disposable,
+        advisor_command=advisor_command,
+    )
+
+
+def run_power7(
+    *,
+    production_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    output_root: Path,
+    sample_rows: int = 10_000,
+    sample_seed: int = 42,
+    statistics_target: int = 100,
+    candidate_limit: int = 8,
+    search_wall_clock_seconds: float = 300.0,
+    data_root: Path | None = None,
+    reset_disposable: bool = False,
+    advisor_command: str = "extstats-advisor",
+) -> dict[str, Any]:
+    """Run exactly one audited Power7 canonical advisor experiment."""
+    return _shared_run_power7(
+        production_dsn=production_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        output_root=output_root,
+        sample_rows=sample_rows,
+        sample_seed=sample_seed,
+        statistics_target=statistics_target,
+        candidate_limit=candidate_limit,
+        search_wall_clock_seconds=search_wall_clock_seconds,
+        data_root=data_root,
+        reset_disposable=reset_disposable,
+        advisor_command=advisor_command,
+    )

@@ -471,16 +471,11 @@ def load_power7(
             {"name": name, "postgres_type": postgres_type, "not_null": bool(not_null)}
             for name, postgres_type, not_null in observed_schema
         ]
-        expected_schema = [
-            {"name": name, "postgres_type": type_, "not_null": False}
-            for name, type_ in power7.COLUMNS
-        ]
-        normalized = [
-            {**column, "postgres_type": _canonical_type(column["postgres_type"])}
-            for column in physical_schema
-        ]
-        if normalized != expected_schema:
-            raise ValueError(f"public.power7 physical schema mismatch: {normalized!r}")
+        physical = validate_power7_physical_schema(
+            physical_schema,
+            row_count=row_count,
+            extended_statistics_count=0,
+        )
         for name, _ in power7.COLUMNS:
             connection.execute(
                 f'ALTER TABLE {power7.RELATION} ALTER COLUMN "{name}" '
@@ -507,6 +502,11 @@ def load_power7(
         )
         if extended_statistics_count:
             raise ValueError("public.power7 has unexpected extended statistics after ANALYZE")
+        physical = validate_power7_physical_schema(
+            physical_schema,
+            row_count=row_count,
+            extended_statistics_count=extended_statistics_count,
+        )
     return {
         "benchmark_id": power7.BENCHMARK_ID,
         "relation": power7.RELATION,
@@ -515,7 +515,7 @@ def load_power7(
         "validated": True,
         "dsn_recorded": False,
         "schema_contract_id": power7.SCHEMA_CONTRACT_ID,
-        "physical_schema": {"row_count": row_count, "columns": normalized, "verified": True},
+        "physical_schema": physical,
         "null_counts": dict(zip(power7.SOURCE_COLUMNS, observed_null_counts, strict=True)),
         "physical_extended_statistics_count": extended_statistics_count,
         "server_version": server_version,
@@ -524,4 +524,32 @@ def load_power7(
         "analyze_count": 1,
         "statistics_targets": statistics_targets,
         "elapsed_seconds": round(time.monotonic() - started, 6),
+    }
+
+
+def validate_power7_physical_schema(
+    observed: list[dict[str, Any]], *, row_count: int, extended_statistics_count: int
+) -> dict[str, Any]:
+    """Validate the nullable lowercase DOUBLE PRECISION Power7 contract."""
+    expected = [
+        {"name": name, "postgres_type": type_, "not_null": False} for name, type_ in power7.COLUMNS
+    ]
+    normalized = [
+        {**column, "postgres_type": _canonical_type(column["postgres_type"])} for column in observed
+    ]
+    if normalized != expected:
+        raise ValueError(
+            "public.power7 physical schema does not match "
+            f"{power7.SCHEMA_CONTRACT_ID}: observed={normalized!r}, expected={expected!r}"
+        )
+    if row_count != power7.EXPECTED_ROWS:
+        raise ValueError(f"loaded power7 row count {row_count}, expected {power7.EXPECTED_ROWS}")
+    if extended_statistics_count != 0:
+        raise ValueError("public.power7 has unexpected extended statistics")
+    return {
+        "row_count": row_count,
+        "column_count": len(normalized),
+        "columns": normalized,
+        "extended_statistics_count": extended_statistics_count,
+        "verified": True,
     }

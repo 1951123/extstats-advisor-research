@@ -45,6 +45,16 @@ def test_query_audit_uses_floor_one_and_reproduces_weighted_mean() -> None:
     assert contribution_summary(records)["top_1"]["baseline_objective_fraction"] == 1.0
 
 
+def test_contribution_summary_supports_final_qerror_field() -> None:
+    records = [
+        {"weight": 1.0, "baseline_qerror": 10.0, "final_qerror": 2.0},
+        {"weight": 1.0, "baseline_qerror": 1.0, "final_qerror": 8.0},
+    ]
+    assert (
+        contribution_summary(records, "final_qerror")["top_1"]["baseline_objective_fraction"] == 0.8
+    )
+
+
 def test_distribution_and_classification_helpers() -> None:
     baseline = SimpleNamespace(
         loss_contract=QERROR_CONTRACT_VERSION,

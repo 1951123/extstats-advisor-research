@@ -1,4 +1,4 @@
-"""Forest10 canonical-run validation and compact evidence helpers."""
+"""Shared canonical-run validation and compact evidence helpers."""
 
 from __future__ import annotations
 
@@ -11,7 +11,9 @@ from .pins import verify_git_sha
 from .provenance import semantic_digest
 
 
-def compare_label_maps(expected: dict[str, int], observed: dict[str, int]) -> dict[str, Any]:
+def compare_label_maps(
+    expected: dict[str, int], observed: dict[str, int], *, dataset_label: str = "production"
+) -> dict[str, Any]:
     """Compare two complete query-id/cardinality maps and fail closed."""
     expected_ids = set(expected)
     observed_ids = set(observed)
@@ -28,7 +30,7 @@ def compare_label_maps(expected: dict[str, int], observed: dict[str, int]) -> di
     ]
     if missing or extra or mismatches:
         raise ValueError(
-            "Forest production truth does not match audited labels: "
+            f"{dataset_label} production truth does not match audited labels: "
             f"matched={len(expected_ids & observed_ids) - len(mismatches)}, "
             f"mismatched={len(mismatches)}, missing={len(missing)}, extra={len(extra)}, "
             f"first_mismatch={mismatches[0] if mismatches else None!r}"
@@ -48,6 +50,7 @@ def compare_production_truth_to_labels(
     audited_records: list[dict[str, Any]],
     *,
     advisor_root: Path,
+    expected_query_count: int = 10_000,
 ) -> dict[str, Any]:
     """Load production artifacts through public APIs and compare every audited label."""
     verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
@@ -57,16 +60,13 @@ def compare_production_truth_to_labels(
 
     snapshot = load_snapshot(snapshot_path)
     ground_truth = load_ground_truth_set(ground_truth_path, snapshot)
-    labels = {
-        f"arecel_forest10_test_{record['source_index']:06d}": int(record["truth"])
-        for record in audited_records
-    }
+    labels = {record["query_id"]: int(record["truth"]) for record in audited_records}
     observed = {truth.query_id: int(truth.cardinality) for truth in ground_truth.truths}
-    comparison = compare_label_maps(labels, observed)
+    comparison = compare_label_maps(labels, observed, dataset_label=snapshot.workload.workload_id)
     expected_ids = set(labels)
-    if len(expected_ids) != 10_000:
+    if len(expected_ids) != expected_query_count:
         raise ValueError(
-            f"Forest canonical truth comparison expected 10000 labels, got {len(expected_ids)}"
+            f"canonical truth comparison expected {expected_query_count} labels, got {len(expected_ids)}"
         )
     source = ground_truth.source
     if source.kind != "production-exact-execution":
@@ -80,7 +80,13 @@ def compare_production_truth_to_labels(
     }
 
 
-def sampling_provenance(snapshot_path: Path, *, advisor_root: Path) -> dict[str, Any]:
+def sampling_provenance(
+    snapshot_path: Path,
+    *,
+    advisor_root: Path,
+    expected_rows: int = 10_000,
+    expected_seed: int = 42,
+) -> dict[str, Any]:
     verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.snapshot.bundle import load_snapshot
@@ -99,7 +105,17 @@ def sampling_provenance(snapshot_path: Path, *, advisor_root: Path) -> dict[str,
     missing = sorted(required - set(sampling))
     if missing:
         raise ValueError(f"Forest snapshot is missing sampling provenance: {missing}")
-    return {key: sampling[key] for key in sorted(required)}
+    result = {key: sampling[key] for key in sorted(required)}
+    if result["method"] != "postgresql-system-adaptive-v1":
+        raise ValueError(f"unexpected snapshot sampling method: {result['method']}")
+    if result["seed"] != expected_seed:
+        raise ValueError(f"snapshot sampling seed mismatch: {result['seed']}")
+    if result["requested_rows"] != expected_rows or result["actual_rows"] != expected_rows:
+        raise ValueError(
+            "snapshot sampling row count mismatch: "
+            f"requested={result['requested_rows']}, actual={result['actual_rows']}"
+        )
+    return result
 
 
 def compact_summary(
@@ -119,6 +135,14 @@ def compact_summary(
     sampling: dict[str, Any],
     stage_timings: dict[str, float],
     audit: dict[str, Any],
+    benchmark_id: str = "arecel-forest10",
+    schema_contract_id: str = "arecel-forest10-postgres-schema-v1",
+    row_count: int = 581_012,
+    format_version: str = "arecel-forest-canonical-k8-summary-v1",
+    paper_tail_contribution: dict[str, Any] | None = None,
+    baseline_correspondence: dict[str, Any] | None = None,
+    expected_candidate_count: int | None = None,
+    tail_focus_query: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     candidates = candidate_universe.get("candidates", [])
     incidence = candidate_universe.get("incidence", [])
@@ -180,7 +204,7 @@ def compact_summary(
             "semantic_digest": audit.get("semantic_digest"),
         }
     result = {
-        "format_version": "arecel-forest-canonical-k8-summary-v1",
+        "format_version": format_version,
         "run_id": run_id,
         "run_directory": run_directory,
         "research_repository": manifest["research_repository"],
@@ -190,13 +214,14 @@ def compact_summary(
         "patched_postgres_repository": manifest["patched_postgres_repository"],
         "patched_postgres_commit_sha": manifest["patched_postgres_commit_sha"],
         "dataset": {
-            "benchmark_id": "arecel-forest10",
+            "benchmark_id": benchmark_id,
             "content_identity": manifest["dataset_content_identity"],
-            "schema_contract_id": "arecel-forest10-postgres-schema-v1",
-            "row_count": 581012,
+            "schema_contract_id": schema_contract_id,
+            "row_count": row_count,
             "workload_id": manifest["workload_id"],
             "workload_sha256": manifest["workload_sha256"],
             "label_sha256": manifest["label_sha256"],
+            "source_hashes": manifest.get("source_hashes", {}),
         },
         "settings": {
             "sample_rows": manifest["sample_rows"],
@@ -211,6 +236,10 @@ def compact_summary(
         "truth_validation": truth_validation,
         "candidates": {
             "candidate_count": len(candidates),
+            "expected_candidate_count": expected_candidate_count,
+            "count_matches_expectation": (
+                expected_candidate_count is None or len(candidates) == expected_candidate_count
+            ),
             "incidence_count": len(incidence),
             "relevant_pair_count": len(pairs),
             "relevant_group_count": len(pairs),
@@ -253,6 +282,25 @@ def compact_summary(
             "distributions": audit.get("distributions"),
             "classification": audit.get("classification"),
             "tail_queries": audit.get("tail_queries"),
+        },
+        "tail_contributions": {
+            "paper_target10000": paper_tail_contribution,
+            "full_data_target100": full_data.get("tail_contribution"),
+            "sandbox_baseline": audit.get("baseline_mean_contribution"),
+            "sandbox_final": audit.get("final_mean_contribution"),
+        },
+        "baseline_correspondence": baseline_correspondence,
+        "tail_focus_query": tail_focus_query,
+        "truth_capture": {
+            "elapsed_seconds": stage_timings.get("snapshot_capture_exact_truth"),
+            "rows_query_count_product": row_count
+            * full_data.get("summary", {}).get("query_count", 0),
+            "queries_per_second": (
+                full_data.get("summary", {}).get("query_count", 0)
+                / stage_timings["snapshot_capture_exact_truth"]
+                if stage_timings.get("snapshot_capture_exact_truth")
+                else None
+            ),
         },
         "source_artifacts": source_artifacts,
         "deployment": {"performed": False},
