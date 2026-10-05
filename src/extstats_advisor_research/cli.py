@@ -13,6 +13,7 @@ from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13
 from .screening_k12 import run_screening_k12
+from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
 from .type_coercion import run_type_coercion
 
@@ -129,6 +130,23 @@ def _parser() -> argparse.ArgumentParser:
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
     screening.add_argument("--advisor-command", default="extstats-advisor")
+    screening16 = diagnose_commands.add_parser("screening-k16")
+    screening16.add_argument("source_run", type=Path)
+    screening16.add_argument("--planner-dsn", required=True)
+    screening16.add_argument(
+        "--output-directory",
+        type=Path,
+        default=Path("experiments/arecel-census13/screening-k16"),
+    )
+    screening16.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    screening16.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    screening16.add_argument("--advisor-command", default="extstats-advisor")
     calibrate = commands.add_parser("calibrate")
     calibrate_commands = calibrate.add_subparsers(dest="calibrate_command", required=True)
     search_budget = calibrate_commands.add_parser("search-budget")
@@ -215,6 +233,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "diagnose":
         if args.diagnose_command == "screening-k12":
             result = run_screening_k12(
+                args.source_run,
+                args.planner_dsn,
+                output_directory=args.output_directory,
+                advisor_root=args.advisor_root,
+                patched_postgres_root=args.patched_postgres_root,
+                advisor_command=args.advisor_command,
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.diagnose_command == "screening-k16":
+            result = run_screening_k16(
                 args.source_run,
                 args.planner_dsn,
                 output_directory=args.output_directory,
