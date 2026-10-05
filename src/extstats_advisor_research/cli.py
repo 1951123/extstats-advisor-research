@@ -8,8 +8,8 @@ from pathlib import Path
 
 from .analysis.audit import run_audit
 from .baseline_gap import run_baseline_gap
-from .datasets import census13, forest10, get_dataset, power7
-from .forest_baseline import run_forest_baseline, run_power7_baseline
+from .datasets import census13, dmv11, forest10, get_dataset, power7
+from .forest_baseline import run_dmv11_baseline, run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
@@ -28,12 +28,24 @@ def _parser() -> argparse.ArgumentParser:
     dataset_commands = dataset.add_subparsers(dest="dataset_command", required=True)
     inspect = dataset_commands.add_parser("inspect")
     inspect.add_argument(
-        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+        "dataset_id",
+        choices=[
+            census13.BENCHMARK_ID,
+            dmv11.BENCHMARK_ID,
+            forest10.BENCHMARK_ID,
+            power7.BENCHMARK_ID,
+        ],
     )
     inspect.add_argument("--data-root", type=Path)
     load = dataset_commands.add_parser("load")
     load.add_argument(
-        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+        "dataset_id",
+        choices=[
+            census13.BENCHMARK_ID,
+            dmv11.BENCHMARK_ID,
+            forest10.BENCHMARK_ID,
+            power7.BENCHMARK_ID,
+        ],
     )
     load.add_argument("--dsn", required=True)
     load.add_argument("--data-root", type=Path)
@@ -77,7 +89,13 @@ def _parser() -> argparse.ArgumentParser:
     paper_commands = paper_baseline.add_subparsers(dest="paper_command", required=True)
     postgres = paper_commands.add_parser("postgres")
     postgres.add_argument(
-        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+        "dataset_id",
+        choices=[
+            census13.BENCHMARK_ID,
+            dmv11.BENCHMARK_ID,
+            forest10.BENCHMARK_ID,
+            power7.BENCHMARK_ID,
+        ],
     )
     postgres.add_argument("--dsn", required=True)
     postgres.add_argument("--data-root", type=Path)
@@ -199,9 +217,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.dataset_command == "inspect":
             print(json.dumps(dataset.inspect(args.data_root), sort_keys=True, indent=2))
         else:
-            from .postgres.loader import load_census13, load_forest10, load_power7
+            from .postgres.loader import load_census13, load_dmv11, load_forest10, load_power7
 
             loader = {
+                dmv11.BENCHMARK_ID: load_dmv11,
                 forest10.BENCHMARK_ID: load_forest10,
                 power7.BENCHMARK_ID: load_power7,
             }.get(args.dataset_id, load_census13)
@@ -227,6 +246,14 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
     if args.command == "paper-baseline":
+        if args.dataset_id == dmv11.BENCHMARK_ID:
+            result = run_dmv11_baseline(
+                args.dsn,
+                data_root=args.data_root,
+                output_directory=args.output_directory or Path("paper-baselines/arecel-dmv11"),
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if args.dataset_id == forest10.BENCHMARK_ID:
             result = run_forest_baseline(
                 args.dsn,

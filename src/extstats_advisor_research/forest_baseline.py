@@ -8,9 +8,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import FROZEN_RESEARCH_REPOSITORY
+from . import FROZEN_ADVISOR_SHA, FROZEN_RESEARCH_REPOSITORY
 from .analysis.audit import contribution_summary
-from .datasets import forest10, power7
+from .datasets import dmv11, forest10, power7
 from .paper_baseline import percentile
 from .provenance import reject_credentials, semantic_digest, sha256_file, write_json
 
@@ -34,6 +34,10 @@ POWER7_PAPER_REFERENCES = {
     "naru": {"p50": 1.01, "p95": 1.14, "p99": 1.96, "max": 161.0},
     "deepdb": {"p50": 1.00, "p95": 1.30, "p99": 2.40, "max": 1568.0},
 }
+DMV11_PAPER_REFERENCES = {
+    "postgresql": {"p50": 1.19, "p95": 78.0, "p99": 3255.0, "max": 100000.0},
+    "naru": {"p50": 1.01, "p95": 1.09, "p99": 1.35, "max": 16.0},
+}
 
 
 def paper_references() -> dict[str, dict[str, float]]:
@@ -42,6 +46,10 @@ def paper_references() -> dict[str, dict[str, float]]:
 
 def power7_paper_references() -> dict[str, dict[str, float]]:
     return {name: dict(values) for name, values in POWER7_PAPER_REFERENCES.items()}
+
+
+def dmv11_paper_references() -> dict[str, dict[str, float]]:
+    return {name: dict(values) for name, values in DMV11_PAPER_REFERENCES.items()}
 
 
 def compare_paper_postgres(
@@ -78,8 +86,12 @@ def _git_sha(repository: Path) -> str:
 
 def _load_csv(conn: Any, csv_file: Path, dataset: Any = forest10) -> None:
     relation = dataset.RELATION
-    columns = ", ".join(f'"{name}"' for name, _ in dataset.COLUMNS)
-    definitions = ", ".join(f'"{name}" {type_}' for name, type_ in dataset.COLUMNS)
+    if dataset is dmv11:
+        columns = ", ".join(name for name, _ in dataset.COLUMNS)
+        definitions = ", ".join(f"{name} {type_}" for name, type_ in dataset.COLUMNS)
+    else:
+        columns = ", ".join(f'"{name}"' for name, _ in dataset.COLUMNS)
+        definitions = ", ".join(f'"{name}" {type_}' for name, type_ in dataset.COLUMNS)
     with conn.cursor() as cursor:
         cursor.execute(f"DROP TABLE IF EXISTS {relation}")
         cursor.execute(f"CREATE TABLE {relation} ({definitions})")
@@ -101,21 +113,31 @@ def _server_metadata(conn: Any) -> dict[str, Any]:
 
 
 def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
+    collation_select = (
+        ", CASE WHEN a.atttypid = 'character varying'::regtype THEN coll.collname END"
+        if dataset is dmv11
+        else ""
+    )
     with conn.cursor() as cursor:
         cursor.execute(
-            """
+            f"""
             SELECT a.attname, pg_catalog.format_type(a.atttypid, a.atttypmod), a.attnotnull
+                   {collation_select}
             FROM pg_catalog.pg_attribute AS a
+            LEFT JOIN pg_catalog.pg_collation AS coll ON coll.oid = a.attcollation
             WHERE a.attrelid = %s::pg_catalog.regclass
               AND a.attnum > 0 AND NOT a.attisdropped
             ORDER BY a.attnum
             """,
             (dataset.RELATION,),
         )
-        columns = [
-            {"name": name, "postgres_type": postgres_type, "not_null": not_null}
-            for name, postgres_type, not_null in cursor.fetchall()
-        ]
+        columns = []
+        for row in cursor.fetchall():
+            name, postgres_type, not_null, *extra = row
+            column = {"name": name, "postgres_type": postgres_type, "not_null": not_null}
+            if extra:
+                column["native_collation"] = extra[0]
+            columns.append(column)
         cursor.execute(f"SELECT count(*) FROM {dataset.RELATION}")
         row_count = int(cursor.fetchone()[0])
         cursor.execute(
@@ -127,6 +149,12 @@ def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
             (dataset.RELATION,),
         )
         extended_statistics_count = int(cursor.fetchone()[0])
+    if dataset is dmv11:
+        from .postgres.loader import validate_dmv11_physical_schema
+
+        return validate_dmv11_physical_schema(
+            columns, row_count=row_count, extended_statistics_count=extended_statistics_count
+        )
     expected = [
         {"name": name, "postgres_type": type_, "not_null": False} for name, type_ in dataset.COLUMNS
     ]
@@ -729,3 +757,204 @@ def run_power7_baseline(
         "semantic_digest": artifact["semantic_digest"],
         "summary": summary,
     }
+
+
+def run_arecel_baseline(
+    dsn: str,
+    *,
+    dataset: Any,
+    paper_references: dict[str, dict[str, float]],
+    data_root: Path | None = None,
+    output_directory: Path,
+    repository: Path | None = None,
+) -> dict[str, Any]:
+    """Run the shared stock-PostgreSQL baseline protocol for an AreCEL dataset."""
+    if not dsn.strip():
+        raise ValueError("stock PostgreSQL DSN is required")
+    output_directory = output_directory.expanduser().resolve()
+    if output_directory.exists() and any(output_directory.iterdir()):
+        raise FileExistsError(f"baseline output already exists: {output_directory}")
+    repository = repository or Path(__file__).resolve().parents[2]
+    research_sha = _git_sha(repository)
+    metadata = dataset.inspect(data_root)
+    records = dataset.load_test_records(data_root)
+    from extstats_advisor.utility import QErrorLoss
+
+    loss = QErrorLoss()
+    started = time.monotonic()
+    import psycopg
+
+    with psycopg.connect(dsn, autocommit=True) as conn:
+        server = _server_metadata(conn)
+        if server["server_version_num"] != 1_600_014:
+            raise ValueError(
+                "DMV11 paper reproduction requires stock PostgreSQL 16.14, got "
+                f"{server['server_version']}"
+            )
+        _load_csv(conn, dataset.csv_path(data_root), dataset)
+        physical = _physical_schema(conn, dataset)
+        spot_checks = _spot_check(conn, records, dataset)
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT setseed(%s)", (1.0 / SEED,))
+            for name, _ in dataset.COLUMNS:
+                cursor.execute(
+                    f"ALTER TABLE {dataset.RELATION} ALTER COLUMN {name} SET STATISTICS "
+                    f"{STATISTICS_TARGET}"
+                )
+            cursor.execute(f"ANALYZE {dataset.RELATION}")
+        statistics_targets = _statistics_target(conn, dataset=dataset)
+
+        measured: list[dict[str, Any]] = []
+        with conn.cursor() as cursor:
+            for record in records:
+                cursor.execute("EXPLAIN (FORMAT JSON) " + record["sql"])
+                explain = cursor.fetchone()[0]
+                if isinstance(explain, str):
+                    explain = json.loads(explain)
+                estimate = int(explain[0]["Plan"]["Plan Rows"])
+                measured.append(
+                    {
+                        "query_id": record["query_id"],
+                        "source_index": record["source_index"],
+                        "source_query_id": record["source_query_id"],
+                        "source_query_sha256": record["source_query_sha256"],
+                        "original_sql": record["original_sql"],
+                        "sql": record["sql"],
+                        "true_rows": record["truth"],
+                        "estimated_rows": estimate,
+                        "qerror": float(loss.loss(estimate, record["truth"])),
+                        "weight": 1.0,
+                    }
+                )
+
+    summary = _summary(measured)
+    summary["paper_reference_comparison"] = compare_paper_postgres(summary, paper_references)
+    max_record = max(measured, key=lambda record: record["qerror"])
+    tail_contribution = contribution_summary(
+        [{"weight": item["weight"], "baseline_qerror": item["qerror"]} for item in measured]
+    )
+    output_directory.mkdir(parents=True, exist_ok=True)
+    per_query_path = output_directory / "postgres-per-query-v1.jsonl"
+    with per_query_path.open("w", encoding="utf-8") as stream:
+        for record in measured:
+            stream.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+    hashes = metadata["source_file_sha256"]
+    artifact = {
+        "format_version": FORMAT_VERSION,
+        "artifact_contract": "arecel-paper-postgres-baseline-v1",
+        "research_repository": FROZEN_RESEARCH_REPOSITORY,
+        "research_commit_sha": research_sha,
+        "current_advisor_sha": FROZEN_ADVISOR_SHA,
+        "upstream": {
+            "repository": dataset.UPSTREAM_URL,
+            "commit": dataset.UPSTREAM_COMMIT,
+            "shared_archive_sha256": dataset.ARCHIVE_SHA256,
+        },
+        "dataset": metadata,
+        "source_files": hashes,
+        "dataset_content_identity": metadata["dataset_content_identity"],
+        "workload": {
+            "identity": "AreCELearnedYet base:test",
+            "source": "data/dmv11/workload/base.pkl",
+            "label_source": "data/dmv11/workload/base-original-label.pkl",
+            "workload_sha256": hashes["workload_pickle"],
+            "label_sha256": hashes["label_pickle"],
+            "canonical_workload_sha256": hashes["canonical_workload"],
+            "query_count": len(records),
+            "query_id_mapping": "arecel:dmv11:test:<index> -> arecel_dmv11_test_<index>",
+            "projection": "count-star-to-select-star-v1",
+            "relation_substitution": "safe exact source relation substitution",
+            "identifier_substitution": "safe source identifiers to lowercase catalog names",
+        },
+        "stock_postgresql": server,
+        "relation": dataset.RELATION,
+        "row_count": dataset.EXPECTED_ROWS,
+        "schema_contract_id": dataset.SCHEMA_CONTRACT_ID,
+        "schema_verification": physical,
+        "null_audit": metadata["null_audit"],
+        "statistics": {
+            "target": STATISTICS_TARGET,
+            "seed": SEED,
+            "seed_expression": "1.0 / 123",
+            "setseed_executed": True,
+            "analyze_count": 1,
+            "analyze_statement": f"ANALYZE {dataset.RELATION}",
+            "column_targets_verified": statistics_targets,
+            "extended_statistics_count": physical["extended_statistics_count"],
+        },
+        "truth": {
+            "source": "frozen audited AreCEL base-original-label.pkl via canonical workload",
+            "label_sha256": hashes["label_pickle"],
+            "canonical_workload_sha256": hashes["canonical_workload"],
+            "binding": {
+                "archive_sha256": dataset.ARCHIVE_SHA256,
+                "csv_sha256": hashes["csv"],
+                "workload_pickle_sha256": hashes["workload_pickle"],
+                "label_pickle_sha256": hashes["label_pickle"],
+                "canonical_workload_sha256": hashes["canonical_workload"],
+                "upstream_commit": dataset.UPSTREAM_COMMIT,
+                "dataset_content_identity": metadata["dataset_content_identity"],
+                "source_index_mapping": "canonical base:test source order 0..9999",
+            },
+            "authoritative_for_full_workload": True,
+            "full_table_count_scans_for_truth": False,
+            "spot_checks": spot_checks,
+        },
+        "planner_estimates": {
+            "explain": "EXPLAIN (FORMAT JSON)",
+            "analyze": False,
+            "query_count": len(measured),
+            "root_field": "Plan Rows",
+        },
+        "qerror": {
+            "provider": "extstats_advisor.utility.QErrorLoss",
+            "contract": QERROR_CONTRACT,
+        },
+        "weights": {
+            "scheme": "uniform-per-query",
+            "per_query": 1.0,
+            "total_weight": float(len(measured)),
+            "weighted_objective": summary["weighted_objective"],
+        },
+        "summary": summary,
+        "paper_references": paper_references,
+        "tail_contribution": tail_contribution,
+        "max_error_query": {
+            "query_id": max_record["query_id"],
+            "truth": max_record["true_rows"],
+            "estimate": max_record["estimated_rows"],
+            "qerror": max_record["qerror"],
+        },
+        "per_query_path": per_query_path.name,
+        "per_query_sha256": sha256_file(per_query_path),
+        "elapsed_seconds": round(time.monotonic() - started, 6),
+    }
+    reject_credentials(artifact)
+    artifact["semantic_digest"] = semantic_digest(artifact)
+    write_json(output_directory / "postgres-v1.json", artifact)
+    return {
+        "artifact": str(output_directory / "postgres-v1.json"),
+        "per_query": str(per_query_path),
+        "semantic_digest": artifact["semantic_digest"],
+        "summary": summary,
+        "tail_contribution": tail_contribution,
+        "max_error_query": artifact["max_error_query"],
+    }
+
+
+def run_dmv11_baseline(
+    dsn: str,
+    *,
+    data_root: Path | None = None,
+    output_directory: Path = Path("paper-baselines/arecel-dmv11"),
+    repository: Path | None = None,
+) -> dict[str, Any]:
+    """Reproduce the independent stock PostgreSQL DMV11 paper baseline."""
+    return run_arecel_baseline(
+        dsn,
+        dataset=dmv11,
+        paper_references=dmv11_paper_references(),
+        data_root=data_root,
+        output_directory=output_directory,
+        repository=repository,
+    )

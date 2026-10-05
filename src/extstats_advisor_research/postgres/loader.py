@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from ..datasets import census13, forest10, power7
+from ..datasets import census13, dmv11, forest10, power7
 
 
 def _psycopg() -> Any:
@@ -552,4 +552,200 @@ def validate_power7_physical_schema(
         "columns": normalized,
         "extended_statistics_count": extended_statistics_count,
         "verified": True,
+    }
+
+
+def _dmv_relation_stats(connection: Any) -> list[tuple[str, str]]:
+    rows = connection.execute(
+        """
+        SELECT n.nspname, s.stxname
+        FROM pg_catalog.pg_statistic_ext AS s
+        JOIN pg_catalog.pg_namespace AS n ON n.oid = s.stxnamespace
+        JOIN pg_catalog.pg_class AS c ON c.oid = s.stxrelid
+        WHERE n.nspname = 'public' AND c.relname = 'dmv11'
+        ORDER BY s.stxname
+        """
+    ).fetchall()
+    return [(str(schema), str(name)) for schema, name in rows]
+
+
+def _dmv_physical_schema(connection: Any) -> list[dict[str, Any]]:
+    rows = connection.execute(
+        """
+        SELECT
+            a.attname,
+            pg_catalog.format_type(a.atttypid, a.atttypmod),
+            a.attnotnull,
+            CASE WHEN a.atttypid = 'character varying'::pg_catalog.regtype
+                 THEN coll.collname END
+        FROM pg_catalog.pg_attribute AS a
+        JOIN pg_catalog.pg_class AS c ON c.oid = a.attrelid
+        JOIN pg_catalog.pg_namespace AS n ON n.oid = c.relnamespace
+        LEFT JOIN pg_catalog.pg_collation AS coll ON coll.oid = a.attcollation
+        WHERE n.nspname = 'public' AND c.relname = 'dmv11'
+          AND a.attnum > 0 AND NOT a.attisdropped
+        ORDER BY a.attnum
+        """
+    ).fetchall()
+    return [
+        {
+            "name": str(name),
+            "postgres_type": str(postgres_type),
+            "not_null": bool(not_null),
+            "native_collation": str(collation) if collation is not None else None,
+        }
+        for name, postgres_type, not_null, collation in rows
+    ]
+
+
+def validate_dmv11_physical_schema(
+    observed: list[dict[str, Any]], *, row_count: int, extended_statistics_count: int
+) -> dict[str, Any]:
+    """Validate DMV11 names, typmods, nullability, and catalog collations."""
+    expected = [
+        {"name": name, "postgres_type": type_, "not_null": False} for name, type_ in dmv11.COLUMNS
+    ]
+    normalized = [
+        {**column, "postgres_type": _canonical_type(column["postgres_type"])} for column in observed
+    ]
+    structural = [
+        {key: column[key] for key in ("name", "postgres_type", "not_null")} for column in normalized
+    ]
+    if structural != expected:
+        raise ValueError(
+            "public.dmv11 physical schema does not match "
+            f"{dmv11.SCHEMA_CONTRACT_ID}: observed={normalized!r}, expected={expected!r}"
+        )
+    varchar_names = {name for name, type_ in dmv11.COLUMNS if type_ == "VARCHAR(64)"}
+    for column in normalized:
+        if column["name"] in varchar_names and not column.get("native_collation"):
+            raise ValueError(f"public.dmv11 missing native collation for {column['name']}")
+        if column["name"] not in varchar_names and column.get("native_collation") is not None:
+            raise ValueError(f"public.dmv11 unexpected native collation for {column['name']}")
+    if row_count != dmv11.EXPECTED_ROWS:
+        raise ValueError(f"loaded dmv11 row count {row_count}, expected {dmv11.EXPECTED_ROWS}")
+    if extended_statistics_count != 0:
+        raise ValueError("public.dmv11 has unexpected extended statistics")
+    return {
+        "row_count": row_count,
+        "column_count": len(normalized),
+        "columns": normalized,
+        "varchar_collations": {
+            column["name"]: column["native_collation"]
+            for column in normalized
+            if column["name"] in varchar_names
+        },
+        "extended_statistics_count": extended_statistics_count,
+        "verified": True,
+    }
+
+
+def load_dmv11(
+    dsn: str,
+    *,
+    data_root: Path | None = None,
+    reset_disposable: bool = False,
+    statistics_target: int = 100,
+) -> dict[str, Any]:
+    """Load the audited nullable DMV11 relation into stock PostgreSQL."""
+    if not dsn or not dsn.strip():
+        raise ValueError("a DSN is required and is never written to an artifact")
+    if isinstance(statistics_target, bool) or statistics_target < 1:
+        raise ValueError("statistics_target must be positive")
+    source = dmv11.csv_path(data_root)
+    metadata = dmv11.inspect(data_root)
+    started = time.monotonic()
+    psycopg = _psycopg()
+    with psycopg.connect(dsn, autocommit=True) as connection:
+        exists = bool(
+            connection.execute(
+                """
+                SELECT EXISTS (
+                    SELECT 1 FROM pg_catalog.pg_class AS c
+                    JOIN pg_catalog.pg_namespace AS n ON n.oid = c.relnamespace
+                    WHERE n.nspname = 'public' AND c.relname = 'dmv11' AND c.relkind = 'r'
+                )
+                """
+            ).fetchone()[0]
+        )
+        if exists:
+            if not reset_disposable:
+                raise RuntimeError(
+                    "public.dmv11 already exists; use a disposable database or explicit "
+                    "--reset-disposable"
+                )
+            connection.execute("DROP TABLE public.dmv11 CASCADE")
+        server_version = _text(connection.execute("SHOW server_version").fetchone()[0])
+        server_version_num = int(connection.execute("SHOW server_version_num").fetchone()[0])
+        if not 160_000 <= server_version_num < 170_000:
+            raise RuntimeError(f"stock PostgreSQL 16 is required, got {server_version}")
+        definitions = ", ".join(f"{name} {kind}" for name, kind in dmv11.COLUMNS)
+        connection.execute(f"CREATE TABLE {dmv11.RELATION} ({definitions})")
+        columns = ", ".join(name for name, _ in dmv11.COLUMNS)
+        copy_sql = f"COPY {dmv11.RELATION} ({columns}) FROM STDIN WITH (FORMAT csv, HEADER true)"
+        with (
+            source.open("rb") as stream,
+            connection.cursor() as cursor,
+            cursor.copy(copy_sql) as copy,
+        ):
+            while block := stream.read(1024 * 1024):
+                copy.write(block)
+        row_count = int(connection.execute(f"SELECT count(*) FROM {dmv11.RELATION}").fetchone()[0])
+        null_counts = connection.execute(
+            "SELECT "
+            + ", ".join(f"count(*) FILTER (WHERE {name} IS NULL)" for name, _ in dmv11.COLUMNS)
+            + f" FROM {dmv11.RELATION}"
+        ).fetchone()
+        observed_null_counts = [int(value) for value in null_counts]
+        expected_null_counts = [
+            int(metadata["null_audit"]["source_csv_null_counts"][source_name])
+            for source_name in dmv11.SOURCE_COLUMNS
+        ]
+        if observed_null_counts != expected_null_counts:
+            raise ValueError(
+                f"loaded DMV11 NULL counts {observed_null_counts} do not match audited "
+                f"counts {expected_null_counts}"
+            )
+        physical = validate_dmv11_physical_schema(
+            _dmv_physical_schema(connection),
+            row_count=row_count,
+            extended_statistics_count=len(_dmv_relation_stats(connection)),
+        )
+        for name, _ in dmv11.COLUMNS:
+            connection.execute(
+                f"ALTER TABLE {dmv11.RELATION} ALTER COLUMN {name} SET STATISTICS {statistics_target}"
+            )
+        connection.execute(f"ANALYZE {dmv11.RELATION}")
+        targets = connection.execute(
+            """
+            SELECT a.attname, a.attstattarget
+            FROM pg_catalog.pg_attribute AS a
+            WHERE a.attrelid = 'public.dmv11'::pg_catalog.regclass
+              AND a.attnum > 0 AND NOT a.attisdropped
+            ORDER BY a.attnum
+            """
+        ).fetchall()
+        statistics_targets = [{"name": name, "target": target} for name, target in targets]
+        if any(item["target"] != statistics_target for item in statistics_targets):
+            raise ValueError(f"DMV11 statistics target mismatch: {statistics_targets!r}")
+        extended_statistics_count = len(_dmv_relation_stats(connection))
+        if extended_statistics_count:
+            raise ValueError("public.dmv11 has unexpected extended statistics after ANALYZE")
+    return {
+        "benchmark_id": dmv11.BENCHMARK_ID,
+        "relation": dmv11.RELATION,
+        "rows": row_count,
+        "source_csv_sha256": metadata["source_file_sha256"]["csv"],
+        "validated": True,
+        "dsn_recorded": False,
+        "schema_contract_id": dmv11.SCHEMA_CONTRACT_ID,
+        "physical_schema": physical,
+        "null_counts": dict(zip(dmv11.SOURCE_COLUMNS, observed_null_counts, strict=True)),
+        "physical_extended_statistics_count": extended_statistics_count,
+        "server_version": server_version,
+        "server_version_num": server_version_num,
+        "statistics_target": statistics_target,
+        "analyze_count": 1,
+        "statistics_targets": statistics_targets,
+        "elapsed_seconds": round(time.monotonic() - started, 6),
     }

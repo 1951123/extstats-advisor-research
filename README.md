@@ -38,6 +38,31 @@ provenance only. Optimization, search, Recommendation, and deployment
 semantics are unchanged. Existing Census13, Forest10, and Power7 evidence is
 immutable and is not regenerated.
 
+## DMV11 stock PostgreSQL baseline
+
+AreCELearnedYet DMV11 is onboarded as `arecel-dmv11` from the audited shared
+data root. The adapter preserves the upstream eleven-column order, ten
+`VARCHAR(64)` typmods, nullable columns, `DOUBLE PRECISION` `reg_valid_date`,
+and catalog-observed collations. It safely renders only the audited relation,
+projection, and source identifiers; string and numeric literals are not
+rewritten.
+
+The paper PostgreSQL reproduction must precede DMV11 advisor experimentation:
+
+```sh
+extstats-research dataset inspect arecel-dmv11
+extstats-research paper-baseline postgres arecel-dmv11 \
+  --dsn "$DISPOSABLE_STOCK_POSTGRES_DSN"
+```
+
+The baseline uses the audited AreCEL label file as truth, checks a deterministic
+representative subset exactly, sets seed `1.0 / 123`, sets all eleven targets
+to `10000`, runs exactly one `ANALYZE`, and evaluates all 10,000 queries with
+`EXPLAIN (FORMAT JSON)`. It does not create an advisor snapshot, an external
+`GroundTruthSet`, candidates, extended statistics, or a patched PostgreSQL
+server. The later canonical DMV11 advisor run is expected to use
+`authoritative-external-exact` rather than recapturing all exact cardinalities.
+
 Install and inspect:
 
 ```sh
