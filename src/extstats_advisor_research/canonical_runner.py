@@ -14,9 +14,11 @@ from . import FROZEN_PATCHED_POSTGRES_SHA
 from .advisor_bridge import materialize_native_repository
 from .analysis.audit import contribution_summary, run_audit
 from .analysis.summary import extract_summary
-from .forest_baseline import _run_full_data_target100
+from .external_truth import import_audited_authoritative_truth, write_authoritative_observations
+from .forest_baseline import _run_full_data_target100, representative_indices
 from .forest_canonical import (
     compact_summary,
+    compare_authoritative_truth_to_labels,
     compare_production_truth_to_labels,
     sampling_provenance,
 )
@@ -275,6 +277,107 @@ def _verify_sandbox(
         raise ValueError("sandbox contains unrelated physical extended statistics")
 
 
+def _run_external_truth_sanity_check(
+    dsn: str, records: list[dict[str, Any]], *, expected_count: int
+) -> dict[str, Any]:
+    """Recheck a deterministic small subset without making it the truth source."""
+    import psycopg
+
+    indices = representative_indices(records)
+    if len(indices) != expected_count:
+        raise ValueError(
+            f"authoritative truth sanity subset expected {expected_count} checks, got {len(indices)}"
+        )
+    by_index = {record["source_index"]: record for record in records}
+    checks = []
+    with psycopg.connect(dsn, autocommit=True) as connection, connection.cursor() as cursor:
+        for index in indices:
+            record = by_index[index]
+            cursor.execute(
+                "SELECT count(*) FROM ("
+                + record["sql"].rstrip("; ")
+                + ") AS authoritative_truth_sanity"
+            )
+            observed = int(cursor.fetchone()[0])
+            if observed != record["truth"]:
+                raise ValueError(
+                    f"authoritative truth sanity mismatch for {record['query_id']}: "
+                    f"observed={observed}, audited={record['truth']}"
+                )
+            checks.append(
+                {
+                    "source_index": index,
+                    "query_id": record["query_id"],
+                    "audited_truth": record["truth"],
+                    "observed": observed,
+                    "predicate_arity": len(record["source_query"]["predicates"]),
+                    "operators": sorted(
+                        {item["operator"] for item in record["source_query"]["predicates"]}
+                    ),
+                }
+            )
+    return {
+        "method": "fresh-stock-live-exact-subset-v1",
+        "source_for_ground_truth_set": False,
+        "count": len(checks),
+        "all_match": True,
+        "checks": checks,
+    }
+
+
+def _snapshot_capture_command(
+    advisor_command: str,
+    *,
+    dsn: str,
+    relation: str,
+    sample_rows: int,
+    sample_seed: int,
+    workload: Path,
+    output: Path,
+    ground_truth_output: Path | None = None,
+) -> list[str]:
+    command = [
+        advisor_command,
+        "snapshot",
+        "capture",
+        "postgres",
+        "--dsn",
+        dsn,
+        "--relation",
+        relation,
+        "--sample-rows",
+        str(sample_rows),
+        "--sample-seed",
+        str(sample_seed),
+        "--workload",
+        str(workload),
+        "--output",
+        str(output),
+    ]
+    if ground_truth_output is not None:
+        command.extend(["--ground-truth-output", str(ground_truth_output)])
+    return command
+
+
+def _validate_candidate_universe_contract(
+    candidate_universe: dict[str, Any], *, expected_count: int | None = None
+) -> int:
+    candidates = candidate_universe.get("candidates", [])
+    count = len(candidates)
+    if expected_count is not None and count != expected_count:
+        raise ValueError(f"expected {expected_count} candidates, got {count}")
+    if expected_count == 110:
+        pair_kinds: dict[tuple[str, ...], set[str]] = {}
+        for candidate in candidates:
+            pair = tuple(candidate.get("column_names", []))
+            pair_kinds.setdefault(pair, set()).add(candidate.get("kind"))
+        if len(pair_kinds) != 55 or any(
+            kinds != {"postgresql.mcv", "postgresql.dependencies"} for kinds in pair_kinds.values()
+        ):
+            raise ValueError("DMV11 candidates are not exactly 55 pairs times two statistic kinds")
+    return count
+
+
 def _run_canonical(
     *,
     dataset: Any,
@@ -294,6 +397,8 @@ def _run_canonical(
     data_root: Path | None,
     reset_disposable: bool,
     advisor_command: str,
+    expected_candidate_count: int | None = None,
+    authoritative_truth: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
@@ -332,6 +437,14 @@ def _run_canonical(
         "candidate_limit": candidate_limit,
         "search_wall_clock_seconds": search_wall_clock_seconds,
     }
+    if authoritative_truth is not None:
+        identity["truth_source"] = {
+            "kind": "authoritative-external-exact",
+            "collection_contract": "authoritative-external-exact-cardinality-v1",
+            "authority": authoritative_truth["authority"],
+            "dataset_identity": authoritative_truth["dataset_identity"],
+            "source_revision": authoritative_truth["source_revision"],
+        }
     reject_credentials(identity)
     layout = create_layout(output_root, identity)
     paths = layout.artifacts()
@@ -381,36 +494,88 @@ def _run_canonical(
     )
     advisor = [advisor_command]
     started = time.monotonic()
-    _run(
-        advisor
-        + [
-            "snapshot",
-            "capture",
-            "postgres",
-            "--dsn",
+    snapshot_command = _snapshot_capture_command(
+        advisor_command,
+        dsn=production_dsn,
+        relation=dataset.RELATION,
+        sample_rows=sample_rows,
+        sample_seed=sample_seed,
+        workload=paths["workload"],
+        output=paths["snapshot"],
+        ground_truth_output=paths["ground_truth"] if authoritative_truth is None else None,
+    )
+    _run(snapshot_command, paths["logs"])
+    records = dataset.load_test_records(data_root)
+    if authoritative_truth is None:
+        truth_validation = compare_production_truth_to_labels(
+            paths["snapshot"],
+            paths["ground_truth"],
+            records,
+            advisor_root=advisor_root,
+        )
+        timings["snapshot_capture_exact_truth"] = round(time.monotonic() - started, 6)
+        truth_capture = {
+            "mode": "production-exact-execution",
+            "elapsed_seconds": timings["snapshot_capture_exact_truth"],
+            "rows_query_count_product": dataset.EXPECTED_ROWS * len(records),
+            "queries_per_second": len(records) / timings["snapshot_capture_exact_truth"],
+        }
+    else:
+        timings["snapshot_capture"] = round(time.monotonic() - started, 6)
+        sanity_started = time.monotonic()
+        sanity = _run_external_truth_sanity_check(
             production_dsn,
-            "--relation",
-            dataset.RELATION,
-            "--sample-rows",
-            str(sample_rows),
-            "--sample-seed",
-            str(sample_seed),
-            "--workload",
-            str(paths["workload"]),
-            "--output",
-            str(paths["snapshot"]),
-            "--ground-truth-output",
-            str(paths["ground_truth"]),
-        ],
-        paths["logs"],
-    )
-    truth_validation = compare_production_truth_to_labels(
-        paths["snapshot"],
-        paths["ground_truth"],
-        dataset.load_test_records(data_root),
-        advisor_root=advisor_root,
-    )
-    timings["snapshot_capture_exact_truth"] = round(time.monotonic() - started, 6)
+            records,
+            expected_count=int(authoritative_truth["sanity_check_count"]),
+        )
+        timings["truth_sanity_check"] = round(time.monotonic() - sanity_started, 6)
+        observations_started = time.monotonic()
+        observations_path = layout.path("authoritative-observations-v1.json")
+        write_authoritative_observations(
+            workload["workload_id"],
+            {record["query_id"]: int(record["truth"]) for record in records},
+            observations_path,
+        )
+        external = import_audited_authoritative_truth(
+            paths["snapshot"],
+            observations_path,
+            authority=str(authoritative_truth["authority"]),
+            dataset_identity=str(authoritative_truth["dataset_identity"]),
+            source_revision=str(authoritative_truth["source_revision"]),
+        )
+        import sys
+
+        sys.path.insert(0, str(advisor_root / "src"))
+        from extstats_advisor.ground_truth.artifact import write_ground_truth_set
+
+        write_ground_truth_set(external, paths["ground_truth"])
+        timings["authoritative_observations_and_import"] = round(
+            time.monotonic() - observations_started, 6
+        )
+        truth_validation = compare_authoritative_truth_to_labels(
+            paths["snapshot"],
+            paths["ground_truth"],
+            observations_path,
+            records,
+            advisor_root=advisor_root,
+            authority=str(authoritative_truth["authority"]),
+            dataset_identity=str(authoritative_truth["dataset_identity"]),
+            source_revision=str(authoritative_truth["source_revision"]),
+        )
+        truth_validation["sanity_check"] = sanity
+        truth_capture = {
+            "mode": "authoritative-external-exact",
+            "observations_format_version": "authoritative-cardinality-observations-v1",
+            "observations_path": str(observations_path.relative_to(layout.directory)),
+            "observations_sha256": truth_validation["source_artifact_sha256"],
+            "observations_query_count": len(records),
+            "snapshot_capture_elapsed_seconds": timings["snapshot_capture"],
+            "sanity_check_elapsed_seconds": timings["truth_sanity_check"],
+            "observations_and_import_elapsed_seconds": timings[
+                "authoritative_observations_and_import"
+            ],
+            "sanity_check": sanity,
+        }
     sampling = sampling_provenance(
         paths["snapshot"],
         advisor_root=advisor_root,
@@ -431,6 +596,10 @@ def _run_canonical(
         paths["logs"],
     )
     timings["candidate_derivation"] = round(time.monotonic() - started, 6)
+    candidate_universe = read_json(paths["candidate_universe"])
+    candidate_count = _validate_candidate_universe_contract(
+        candidate_universe, expected_count=expected_candidate_count
+    )
 
     started = time.monotonic()
     native_digest = materialize_native_repository(
@@ -484,9 +653,6 @@ def _run_canonical(
                 planner_dsn,
             ],
             paths["logs"],
-        )
-        candidate_count = int(
-            candidate_result.get("candidate_count", len(native_manifest["candidates"]))
         )
         _verify_sandbox(
             verify_result,
@@ -636,6 +802,7 @@ def _run_canonical(
                     "stage_timings": timings,
                     "snapshot_sampling": sampling,
                     "truth_validation": truth_validation,
+                    "truth_capture": truth_capture,
                     "status": "budget-incomplete",
                     "termination_reason": search.get("termination_reason"),
                 },
@@ -722,6 +889,7 @@ def _run_canonical(
             "native_repository_semantic_digest": native_digest,
             "snapshot_sampling": sampling,
             "truth_validation": truth_validation,
+            "truth_capture": truth_capture,
             "stage_timings": timings,
             "simulated_production": {
                 "server_version": load_result["server_version"],
@@ -764,6 +932,20 @@ def _run_canonical(
     )
     focus_id = paper_baseline["summary"]["max_query_id"]
     tail_focus_query = next(item for item in correspondence_records if item["query_id"] == focus_id)
+    paper_focus = None
+    with (paper_directory / paper_baseline["per_query_path"]).open(encoding="utf-8") as stream:
+        for line in stream:
+            value = json.loads(line)
+            if value["query_id"] == focus_id:
+                paper_focus = value
+                break
+    if paper_focus is None:
+        raise ValueError(f"paper baseline is missing focus query: {focus_id}")
+    tail_focus_query["paper_target10000"] = {
+        "estimate": paper_focus["estimated_rows"],
+        "qerror": paper_focus["qerror"],
+        "truth": paper_focus["true_rows"],
+    }
     evidence_directory = research_root / f"experiments/{dataset.BENCHMARK_ID}/canonical-k8"
     if evidence_directory.exists() and any(evidence_directory.iterdir()):
         raise FileExistsError(f"compact evidence already exists: {evidence_directory}")
@@ -793,8 +975,13 @@ def _run_canonical(
         format_version=compact_format_version,
         paper_tail_contribution=paper_tail,
         baseline_correspondence=correspondence,
-        expected_candidate_count=42 if dataset.BENCHMARK_ID == "arecel-power7" else None,
+        expected_candidate_count=expected_candidate_count
+        if expected_candidate_count is not None
+        else 42
+        if dataset.BENCHMARK_ID == "arecel-power7"
+        else None,
         tail_focus_query=tail_focus_query,
+        truth_capture=truth_capture,
     )
     write_json(evidence_directory / "canonical-k8-summary-v1.json", compact)
     update_manifest(
@@ -842,5 +1029,25 @@ def run_power7(**kwargs: Any) -> dict[str, Any]:
         loader=load_power7,
         full_format_version="arecel-power7-full-data-target100-v1",
         compact_format_version="arecel-power7-canonical-k8-summary-v1",
+        **kwargs,
+    )
+
+
+def run_dmv11(**kwargs: Any) -> dict[str, Any]:
+    from .datasets import dmv11
+    from .postgres.loader import load_dmv11
+
+    return _run_canonical(
+        dataset=dmv11,
+        loader=load_dmv11,
+        full_format_version="arecel-dmv11-full-data-target100-v1",
+        compact_format_version="arecel-dmv11-canonical-k8-summary-v1",
+        expected_candidate_count=110,
+        authoritative_truth={
+            "authority": dmv11.AUTHORITATIVE_TRUTH_AUTHORITY,
+            "dataset_identity": dmv11.AUTHORITATIVE_TRUTH_DATASET_IDENTITY,
+            "source_revision": dmv11.AUTHORITATIVE_TRUTH_SOURCE_REVISION,
+            "sanity_check_count": dmv11.AUTHORITATIVE_TRUTH_SANITY_CHECK_COUNT,
+        },
         **kwargs,
     )

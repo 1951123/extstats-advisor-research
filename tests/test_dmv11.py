@@ -2,9 +2,15 @@ from __future__ import annotations
 
 import gzip
 import json
+from pathlib import Path
 
 import pytest
 
+from extstats_advisor_research.canonical_runner import (
+    _snapshot_capture_command,
+    _validate_candidate_universe_contract,
+)
+from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.datasets import dmv11
 from extstats_advisor_research.forest_baseline import dmv11_paper_references, representative_indices
 from extstats_advisor_research.postgres.loader import validate_dmv11_physical_schema
@@ -96,6 +102,49 @@ def test_dmv11_source_hashes_and_row_count_are_frozen() -> None:
         int(value, 16)
     assert dmv11.EXPECTED_ROWS == 11_591_877
     assert dmv11.EXPECTED_TEST_QUERIES == 10_000
+    assert dmv11.AUTHORITATIVE_TRUTH_AUTHORITY == "sfu-db/AreCELearnedYet"
+    assert dmv11.AUTHORITATIVE_TRUTH_DATASET_IDENTITY == (
+        "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8"
+    )
+    assert dmv11.AUTHORITATIVE_TRUTH_SOURCE_REVISION == "aa52da7768023270bad884232972e0b77ec6534a"
+    assert dmv11.AUTHORITATIVE_TRUTH_SANITY_CHECK_COUNT == 15
+
+
+def test_dmv11_canonical_cli_and_snapshot_omit_full_exact_truth_capture() -> None:
+    parsed = _parser().parse_args(
+        [
+            "run",
+            dmv11.BENCHMARK_ID,
+            "--production-dsn",
+            "dbname=stock",
+            "--planner-dsn",
+            "dbname=planner",
+        ]
+    )
+    assert parsed.dataset_id == dmv11.BENCHMARK_ID
+    command = _snapshot_capture_command(
+        "extstats-advisor",
+        dsn="dbname=stock",
+        relation=dmv11.RELATION,
+        sample_rows=10_000,
+        sample_seed=42,
+        workload=Path("workload.json"),
+        output=Path("snapshot"),
+    )
+    assert "--ground-truth-output" not in command
+
+
+def test_dmv11_candidate_contract_is_exactly_55_pairs_and_two_kinds() -> None:
+    candidates = []
+    for index in range(55):
+        pair = [f"column_{index}", f"column_{index + 1}"]
+        for kind in ("postgresql.mcv", "postgresql.dependencies"):
+            candidates.append({"column_names": pair, "kind": kind})
+    assert (
+        _validate_candidate_universe_contract({"candidates": candidates}, expected_count=110) == 110
+    )
+    with pytest.raises(ValueError, match="expected 110 candidates"):
+        _validate_candidate_universe_contract({"candidates": candidates[:-1]}, expected_count=110)
 
 
 def test_dmv11_sql_adaptation_preserves_literals_and_adapts_only_identifiers() -> None:

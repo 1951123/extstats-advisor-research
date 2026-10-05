@@ -30,6 +30,7 @@ from extstats_advisor_research.external_truth import (
     import_audited_authoritative_truth,
     write_authoritative_observations,
 )
+from extstats_advisor_research.forest_canonical import compare_authoritative_truth_to_labels
 
 
 def _sealed_snapshot(tmp_path: Path) -> tuple[Path, AdvisorSnapshot]:
@@ -121,3 +122,43 @@ def test_external_import_delegates_binding_and_preserves_utility_invariant(tmp_p
     ).evaluate(estimates)
     assert production_utility.objective == external_utility.objective == 2
     assert production.computed_semantic_digest != external.computed_semantic_digest
+
+
+def test_external_truth_validation_preserves_authority_and_null_postgres_identity(
+    tmp_path: Path,
+) -> None:
+    snapshot_path, snapshot = _sealed_snapshot(tmp_path)
+    observations = write_authoritative_observations(
+        snapshot.workload.workload_id,
+        {"q1": 12},
+        tmp_path / "observations.json",
+    )
+    external = import_audited_authoritative_truth(
+        snapshot_path,
+        observations,
+        authority="audited-fixture-authority",
+        dataset_identity="synthetic-dataset",
+        source_revision="audit-revision-1",
+    )
+    from extstats_advisor.ground_truth.artifact import write_ground_truth_set
+
+    ground_truth_path = tmp_path / "ground-truth.json"
+    write_ground_truth_set(external, ground_truth_path)
+    result = compare_authoritative_truth_to_labels(
+        snapshot_path,
+        ground_truth_path,
+        observations,
+        [{"query_id": "q1", "truth": 12}],
+        advisor_root=Path("/home/wqts/projects/extstats-advisor"),
+        authority="audited-fixture-authority",
+        dataset_identity="synthetic-dataset",
+        source_revision="audit-revision-1",
+        expected_query_count=1,
+    )
+    assert result["matched"] == 1
+    assert result["mismatched"] == result["missing"] == result["extra"] == 0
+    assert result["source_kind"] == AUTHORITATIVE_EXTERNAL_SOURCE
+    assert result["collection_contract"] == AUTHORITATIVE_EXTERNAL_COLLECTION_CONTRACT
+    assert result["server_version"] is None
+    assert result["server_version_num"] is None
+    assert result["source_view_token"] is None

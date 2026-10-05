@@ -8,7 +8,7 @@ from typing import Any
 
 from . import FROZEN_ADVISOR_SHA
 from .pins import verify_git_sha
-from .provenance import semantic_digest
+from .provenance import semantic_digest, sha256_file
 
 
 def compare_label_maps(
@@ -80,6 +80,72 @@ def compare_production_truth_to_labels(
     }
 
 
+def compare_authoritative_truth_to_labels(
+    snapshot_path: Path,
+    ground_truth_path: Path,
+    observations_path: Path,
+    audited_records: list[dict[str, Any]],
+    *,
+    advisor_root: Path,
+    authority: str,
+    dataset_identity: str,
+    source_revision: str,
+    expected_query_count: int = 10_000,
+) -> dict[str, Any]:
+    """Validate an external exact GroundTruthSet and compare all labels in memory."""
+    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    sys.path.insert(0, str(advisor_root / "src"))
+    from extstats_advisor.ground_truth.artifact import load_ground_truth_set
+    from extstats_advisor.snapshot.bundle import load_snapshot
+
+    snapshot = load_snapshot(snapshot_path)
+    ground_truth = load_ground_truth_set(ground_truth_path, snapshot)
+    labels = {record["query_id"]: int(record["truth"]) for record in audited_records}
+    observed = {truth.query_id: int(truth.cardinality) for truth in ground_truth.truths}
+    comparison = compare_label_maps(labels, observed, dataset_label=snapshot.workload.workload_id)
+    if len(labels) != expected_query_count or len(ground_truth.truths) != expected_query_count:
+        raise ValueError(
+            f"canonical external truth comparison expected {expected_query_count} labels"
+        )
+    source = ground_truth.source
+    if source.kind != "authoritative-external-exact":
+        raise ValueError(f"truth source is not authoritative-external-exact: {source.kind}")
+    if ground_truth.collection_contract != "authoritative-external-exact-cardinality-v1":
+        raise ValueError("authoritative external collection contract mismatch")
+    expected_artifact_sha256 = sha256_file(observations_path)
+    if (
+        source.authority != authority
+        or source.dataset_identity != dataset_identity
+        or source.source_revision != source_revision
+        or source.source_artifact_sha256 != expected_artifact_sha256
+    ):
+        raise ValueError("authoritative external truth provenance mismatch")
+    if any(
+        value is not None
+        for value in (
+            source.dbms,
+            source.server_version,
+            source.server_version_num,
+            source.source_view_token,
+        )
+    ):
+        raise ValueError("authoritative external truth contains PostgreSQL provenance")
+    return {
+        **comparison,
+        "snapshot_digest": snapshot.semantic_digest,
+        "ground_truth_digest": ground_truth.semantic_digest,
+        "source_kind": source.kind,
+        "collection_contract": ground_truth.collection_contract,
+        "authority": source.authority,
+        "dataset_identity": source.dataset_identity,
+        "source_revision": source.source_revision,
+        "source_artifact_sha256": source.source_artifact_sha256,
+        "server_version": None,
+        "server_version_num": None,
+        "source_view_token": None,
+    }
+
+
 def sampling_provenance(
     snapshot_path: Path,
     *,
@@ -143,6 +209,7 @@ def compact_summary(
     baseline_correspondence: dict[str, Any] | None = None,
     expected_candidate_count: int | None = None,
     tail_focus_query: dict[str, Any] | None = None,
+    truth_capture: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     candidates = candidate_universe.get("candidates", [])
     incidence = candidate_universe.get("incidence", [])
@@ -291,7 +358,9 @@ def compact_summary(
         },
         "baseline_correspondence": baseline_correspondence,
         "tail_focus_query": tail_focus_query,
-        "truth_capture": {
+        "truth_capture": truth_capture
+        or {
+            "mode": "production-exact-execution",
             "elapsed_seconds": stage_timings.get("snapshot_capture_exact_truth"),
             "rows_query_count_product": row_count
             * full_data.get("summary", {}).get("query_count", 0),

@@ -14,7 +14,7 @@ from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
 from .power_transfer import run_power_data_transfer
-from .runner import run_census13, run_forest10, run_power7
+from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
@@ -52,7 +52,13 @@ def _parser() -> argparse.ArgumentParser:
     load.add_argument("--reset-disposable", action="store_true")
     run = commands.add_parser("run")
     run.add_argument(
-        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+        "dataset_id",
+        choices=[
+            census13.BENCHMARK_ID,
+            dmv11.BENCHMARK_ID,
+            forest10.BENCHMARK_ID,
+            power7.BENCHMARK_ID,
+        ],
     )
     run.add_argument("--production-dsn", required=True)
     run.add_argument("--planner-dsn", required=True)
@@ -383,7 +389,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
-    if args.dataset_id == power7.BENCHMARK_ID:
+    if args.dataset_id == dmv11.BENCHMARK_ID:
+        runner = run_dmv11
+        search_wall_clock_seconds = (
+            300.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
+        )
+    elif args.dataset_id == power7.BENCHMARK_ID:
         runner = run_power7
         search_wall_clock_seconds = (
             300.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
