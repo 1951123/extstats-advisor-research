@@ -9,7 +9,6 @@ CLI.
 from __future__ import annotations
 
 import json
-import subprocess
 import time
 from pathlib import Path
 from typing import Any
@@ -22,10 +21,6 @@ from . import (
 from .datasets import forest10
 from .full_data_transfer import (
     DEPLOYMENT_POLICY,
-    _drop_managed,
-    _explain_rows,
-    _ordinary_fingerprint,
-    _stats,
     build_transfer_records,
     precedence_check,
     summarize_transfer,
@@ -33,6 +28,7 @@ from .full_data_transfer import (
 from .pins import verify_frozen_systems, verify_research_repository
 from .postgres.loader import load_forest10
 from .provenance import read_json, reject_credentials, semantic_digest, write_json
+from .transfer_engine import run_transfer_phases
 
 FORMAT_VERSION = "arecel-forest10-full-data-transfer-k8-v1"
 SOURCE_RUN_ID = "3a8737b6c3184ae2037100df"
@@ -191,69 +187,6 @@ def validate_audited_truth_binding(
     return {"query_count": len(truth_rows), "matched": len(truth_rows), "mismatched": 0}
 
 
-def _deployment_command(
-    advisor_command: str,
-    paths: dict[str, Path],
-    production_dsn: str,
-    deployment_path: Path,
-) -> list[str]:
-    return [
-        advisor_command,
-        "deployment",
-        "apply",
-        "postgres",
-        *(
-            str(paths[key])
-            for key in (
-                "snapshot",
-                "candidate_universe",
-                "native_repository",
-                "ground_truth",
-                "singleton_profile",
-                "optimization_plan",
-                "search_result",
-                "recommendation",
-            )
-        ),
-        "--dsn",
-        production_dsn,
-        "--output",
-        str(deployment_path),
-    ]
-
-
-def _validate_deployment_command(
-    advisor_command: str, paths: dict[str, Path], result: Path
-) -> list[str]:
-    return [
-        advisor_command,
-        "deployment",
-        "validate",
-        str(result),
-        str(paths["recommendation"]),
-        "--snapshot",
-        str(paths["snapshot"]),
-        "--candidate-universe",
-        str(paths["candidate_universe"]),
-        "--native-repository",
-        str(paths["native_repository"]),
-        "--ground-truth",
-        str(paths["ground_truth"]),
-        "--singleton-profile",
-        str(paths["singleton_profile"]),
-        "--optimization-plan",
-        str(paths["optimization_plan"]),
-        "--search-result",
-        str(paths["search_result"]),
-    ]
-
-
-def _run(command: list[str]) -> None:
-    completed = subprocess.run(command, capture_output=True, text=True, check=False)
-    if completed.returncode:
-        raise RuntimeError(f"command failed: {command[0]} ({completed.stderr[-2000:]})")
-
-
 def _decision(summary: dict[str, Any]) -> str:
     p0 = summary["p0"]["weighted_objective"]
     p1 = summary["p1"]["weighted_objective"]
@@ -330,83 +263,27 @@ def run_forest_data_transfer(
     if load["rows"] != forest10.EXPECTED_ROWS or load["statistics_target"] != 100:
         raise ValueError("fresh Forest10 load contract failed")
 
-    import psycopg
-
-    started = time.monotonic()
-    with psycopg.connect(production_dsn, autocommit=True) as connection:
-        pre_stats = _stats(connection, "forest10")
-        if pre_stats:
-            raise ValueError(f"fresh Forest10 relation has extended statistics: {pre_stats}")
-        ordinary_p0 = _ordinary_fingerprint(connection, "forest10")
-        p0 = _explain_rows(connection, workload)
-    timings["p0_explain"] = round(time.monotonic() - started, 6)
-
-    deployment_path = output / "deployment-result-v1.json"
-    started = time.monotonic()
-    _run(_deployment_command(advisor_command, paths, production_dsn, deployment_path))
-    _run(_validate_deployment_command(advisor_command, paths, deployment_path))
-    timings["deployment"] = round(time.monotonic() - started, 6)
-    deployment = read_json(deployment_path)
+    phases = run_transfer_phases(
+        production_dsn=production_dsn,
+        source_paths=paths,
+        workload=workload,
+        relation="forest10",
+        load=load,
+        expected_order=EXPECTED_MEMBERSHIP,
+        output_directory=output,
+        advisor_command=advisor_command,
+    )
+    timings.update(phases["timings"])
+    deployment = phases["deployment"]
     reject_credentials(deployment)
-    if deployment.get("deployment_policy") != DEPLOYMENT_POLICY:
-        raise ValueError("DeploymentResult does not prove the add-only policy")
-    if deployment.get("commit_status") != "committed" or not deployment.get("post_commit_verified"):
-        raise ValueError("DeploymentResult is not committed and post-commit verified")
-    deployed_objects = deployment.get("deployed_objects", [])
-    if len(deployed_objects) != len(EXPECTED_MEMBERSHIP):
-        raise ValueError("Forest10 deployment did not commit exactly eight objects")
-    if deployment.get("deployment_ordered_candidate_ids") != list(EXPECTED_MEMBERSHIP):
-        raise ValueError("DeploymentResult order differs from canonical Recommendation")
-
-    started = time.monotonic()
-    with psycopg.connect(production_dsn, autocommit=True) as connection:
-        managed_stats = _stats(connection, "forest10")
-        if len(managed_stats) != 8:
-            raise ValueError("Forest10 deployment did not leave exactly eight statistics")
-        names = [item["name"] for item in deployed_objects]
-        if [item["name"] for item in managed_stats] != names:
-            raise ValueError("physical Forest10 OID order differs from Recommendation order")
-        if any(
-            item["kind"] != "postgresql.mcv"
-            or item["target"] != 100
-            or not item["payload"]
-            or item["schema"] != "public"
-            for item in managed_stats
-        ):
-            raise ValueError("Forest10 deployed statistics kind, target, or payload is invalid")
-        deployed_by_name = {item["name"]: item for item in deployed_objects}
-        for physical in managed_stats:
-            deployed = deployed_by_name[physical["name"]]
-            if physical["kind"] != deployed["kind"] or physical["columns"] != " ".join(
-                str(value) for value in deployed["column_ordinals"]
-            ):
-                raise ValueError("physical Forest10 statistics definition differs from result")
-        p1 = _explain_rows(connection, workload)
-        ordinary_p1 = _ordinary_fingerprint(connection, "forest10")
-    timings["p1_explain"] = round(time.monotonic() - started, 6)
-
-    started = time.monotonic()
-    with psycopg.connect(production_dsn, autocommit=True) as connection:
-        connection.execute("BEGIN")
-        try:
-            _drop_managed(connection, names)
-            if _stats(connection, "forest10"):
-                raise ValueError("P2 did not drop exactly the eight advisor-managed objects")
-            ordinary_p2 = _ordinary_fingerprint(connection, "forest10")
-            p2 = _explain_rows(connection, workload)
-        finally:
-            connection.execute("ROLLBACK")
-    timings["p2_control_and_rollback"] = round(time.monotonic() - started, 6)
-
-    started = time.monotonic()
-    with psycopg.connect(production_dsn, autocommit=True) as connection:
-        restored_stats = _stats(connection, "forest10")
-        restored_fingerprint = _ordinary_fingerprint(connection, "forest10")
-    if restored_stats != managed_stats:
-        raise ValueError("P2 rollback did not restore exact managed statistics metadata")
-    if restored_fingerprint != ordinary_p1 or ordinary_p2 != ordinary_p1:
-        raise ValueError("P2 ordinary statistics fingerprint was not identical to P1")
-    timings["rollback_restoration_verification"] = round(time.monotonic() - started, 6)
+    deployed_objects = deployment["deployed_objects"]
+    pre_stats = phases["pre_stats"]
+    managed_stats = phases["managed_stats"]
+    restored_stats = phases["restored_stats"]
+    ordinary_p0 = phases["ordinary_stats_fingerprint_p0"]
+    ordinary_p1 = phases["ordinary_stats_fingerprint_p1"]
+    ordinary_p2 = phases["ordinary_stats_fingerprint_p2"]
+    p0, p1, p2 = phases["p0"], phases["p1"], phases["p2"]
 
     sandbox = _audit_sandbox_records(paths)
     estimates = {

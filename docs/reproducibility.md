@@ -94,8 +94,17 @@ not apply deployment.
 ## Full-data transfer validation
 
 `validate full-data-transfer` is one physical-transfer experiment for the
-converged Census13 K=8 SearchResult. It builds the Recommendation through the
-frozen advisor CLI from immutable source artifacts and explicitly checks
+converged SearchResult. For Power7, invoke it as
+`validate full-data-transfer runs/35d6bb57749bf15c84e92300 --production-dsn
+...`; the source manifest dispatches to the frozen seven-object Power7
+Recommendation and does not require a budget directory or planner DSN. It does
+not rerun search or build a new treatment. Census13 retains its existing
+budget-directory and planner-sandbox behavior. Both paths use one shared
+transfer engine for stock PostgreSQL P0/P1/P2 measurement, deployment,
+transactional rollback, restoration verification, and query-level analysis.
+
+The transfer engine builds no Recommendation for Power7: it consumes the
+immutable source Recommendation and explicitly checks
 `D = F|M*`: accepted greedy move order is evidence about search, while
 deployment order comes from frozen SingletonProfile precedence.
 

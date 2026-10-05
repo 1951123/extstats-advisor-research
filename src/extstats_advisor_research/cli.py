@@ -13,6 +13,7 @@ from .forest_baseline import run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
+from .power_transfer import run_power_data_transfer
 from .runner import run_census13, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -184,6 +185,9 @@ def _parser() -> argparse.ArgumentParser:
     transfer.add_argument("--planner-dsn")
     transfer.add_argument("--output-directory", type=Path)
     transfer.add_argument("--data-root", type=Path)
+    transfer.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
     transfer.add_argument("--advisor-command", default="extstats-advisor")
     return parser
 
@@ -320,6 +324,21 @@ def main(argv: list[str] | None = None) -> int:
                 args.production_dsn,
                 output_directory=args.output_directory,
                 advisor_command=args.advisor_command,
+                data_root=args.data_root,
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if manifest.get("benchmark_id") == "arecel-power7":
+            if args.budget_directory is not None:
+                raise ValueError("Power7 full-data transfer does not take a budget directory")
+            if args.planner_dsn is not None:
+                raise ValueError("Power7 full-data transfer does not take a planner DSN")
+            result = run_power_data_transfer(
+                args.source_run,
+                args.production_dsn,
+                output_directory=args.output_directory,
+                advisor_command=args.advisor_command,
+                advisor_root=args.advisor_root,
                 data_root=args.data_root,
             )
             print(json.dumps(result, sort_keys=True, indent=2))

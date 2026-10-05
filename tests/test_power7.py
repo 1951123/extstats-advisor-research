@@ -11,7 +11,15 @@ from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.datasets import power7
 from extstats_advisor_research.forest_baseline import power7_paper_references
 from extstats_advisor_research.postgres.loader import validate_power7_physical_schema
+from extstats_advisor_research.power_transfer import (
+    ACCEPTED_MOVE_ORDER,
+    EXPECTED_MEMBERSHIP,
+    _decision,
+    _tail_contributions,
+    _tail_queries,
+)
 from extstats_advisor_research.runner import run_power7
+from extstats_advisor_research.transfer_engine import validate_audited_truth_binding
 
 
 def test_power7_schema_is_exact_lowercase_nullable_double_precision() -> None:
@@ -153,6 +161,91 @@ def test_power7_cli_dispatch_and_fixed_settings() -> None:
             output_root=Path("/tmp/power7-test-run"),
             sample_seed=41,
         )
+
+
+def test_power7_transfer_cli_has_no_budget_or_planner_requirement() -> None:
+    args = _parser().parse_args(
+        [
+            "validate",
+            "full-data-transfer",
+            "runs/35d6bb57749bf15c84e92300",
+            "--production-dsn",
+            "stock",
+        ]
+    )
+    assert args.budget_directory is None
+    assert args.planner_dsn is None
+
+
+def test_power7_transfer_pins_membership_and_move_order() -> None:
+    assert len(EXPECTED_MEMBERSHIP) == 7
+    assert set(EXPECTED_MEMBERSHIP) == set(ACCEPTED_MOVE_ORDER)
+    assert EXPECTED_MEMBERSHIP != ACCEPTED_MOVE_ORDER
+
+
+def test_power7_transfer_decision_and_truth_binding() -> None:
+    summary = {
+        "p0": {"weighted_objective": 10.0},
+        "p1": {"weighted_objective": 5.0},
+        "p2": {"weighted_objective": 8.0},
+    }
+    assert _decision(summary) == "power-k8-transfer-success"
+    truth = {"q1": 10, "q2": 20}
+    audit = {query_id: {"true_rows": rows} for query_id, rows in truth.items()}
+    assert validate_audited_truth_binding(truth, audit, expected_count=2) == {
+        "query_count": 2,
+        "matched": 2,
+        "mismatched": 0,
+    }
+    audit["q2"]["true_rows"] = 21
+    with pytest.raises(ValueError, match="labels differ"):
+        validate_audited_truth_binding(truth, audit, expected_count=2)
+
+
+def test_power7_transfer_tail_union_and_contributions() -> None:
+    records = [
+        {
+            "query_id": "arecel_power7_test_005495",
+            "true_rows": 0,
+            "weight": 1.0,
+            "sandbox_baseline_estimate": 100,
+            "sandbox_final_estimate": 50,
+            "sandbox_baseline_qerror": 100.0,
+            "sandbox_final_qerror": 50.0,
+            "p0_estimate": 80,
+            "p0_qerror": 80.0,
+            "p1_estimate": 40,
+            "p1_qerror": 40.0,
+            "p2_estimate": 70,
+            "p2_qerror": 70.0,
+        },
+        {
+            "query_id": "arecel_power7_test_001932",
+            "true_rows": 0,
+            "weight": 1.0,
+            "sandbox_baseline_estimate": 1,
+            "sandbox_final_estimate": 1,
+            "sandbox_baseline_qerror": 1.0,
+            "sandbox_final_qerror": 1.0,
+            "p0_estimate": 2,
+            "p0_qerror": 2.0,
+            "p1_estimate": 2,
+            "p1_qerror": 2.0,
+            "p2_estimate": 2,
+            "p2_qerror": 2.0,
+        },
+    ]
+    compact = {
+        "baseline_correspondence": {
+            "top_10_full_data_target100_queries": [{"query_id": "arecel_power7_test_001642"}]
+        }
+    }
+    assert _tail_queries(records, compact) == [
+        "arecel_power7_test_001642",
+        "arecel_power7_test_001932",
+        "arecel_power7_test_005495",
+    ]
+    assert _tail_contributions(records)["p1"]["top_1"]["baseline_objective_fraction"] == 40 / 42
 
 
 def test_sandbox_verification_accepts_frozen_advisor_flat_checks() -> None:
