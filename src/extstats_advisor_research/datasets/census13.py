@@ -13,7 +13,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from ..provenance import read_json, semantic_digest, sha256_file, write_json
+from ..provenance import read_json, sha256_file, write_json
+from .common import compute_dataset_content_identity as _compute_dataset_content_identity
 
 BENCHMARK_ID = "arecel-census13"
 RELATION = "public.census13"
@@ -102,16 +103,14 @@ def compute_dataset_content_identity(
     columns: tuple[tuple[str, str], ...] = COLUMNS,
 ) -> str:
     """Hash source data, upstream identity, relation, and ordered SQL schema."""
-    return semantic_digest(
-        {
-            "benchmark_id": BENCHMARK_ID,
-            "relation": RELATION,
-            "csv_sha256": csv_sha256,
-            "archive_sha256": ARCHIVE_SHA256,
-            "upstream_commit": UPSTREAM_COMMIT,
-            "schema_contract_id": schema_contract_id,
-            "columns": [{"name": name, "postgres_type": type_} for name, type_ in columns],
-        }
+    return _compute_dataset_content_identity(
+        benchmark_id=BENCHMARK_ID,
+        relation=RELATION,
+        csv_sha256=csv_sha256,
+        archive_sha256=ARCHIVE_SHA256,
+        upstream_commit=UPSTREAM_COMMIT,
+        schema_contract_id=schema_contract_id,
+        columns=columns,
     )
 
 
