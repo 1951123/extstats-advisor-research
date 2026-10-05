@@ -249,7 +249,9 @@ def _verify_sandbox(
     verify_result: dict[str, Any], *, rows: int, population: int, candidates: int
 ) -> None:
     metadata = verify_result.get("metadata", {})
-    checks = verify_result.get("checks", {})
+    # The frozen advisor CLI publishes the sandbox check fields at the top
+    # level; keep accepting a nested mapping for test doubles and older runs.
+    checks = verify_result.get("checks", verify_result)
     if metadata.get("sample_row_count") != rows:
         raise ValueError(f"sandbox sample row count mismatch: {metadata.get('sample_row_count')}")
     if not math.isclose(
@@ -258,7 +260,11 @@ def _verify_sandbox(
         raise ValueError(
             f"sandbox population row count mismatch: {metadata.get('population_row_count')}"
         )
-    if metadata.get("repository_candidate_count") != candidates:
+    repository = verify_result.get("repository", {})
+    repository_candidate_count = metadata.get(
+        "repository_candidate_count", repository.get("candidate_count")
+    )
+    if repository_candidate_count != candidates:
         raise ValueError("sandbox repository candidate count mismatch")
     if (
         checks.get("target_sample_row_count") != rows

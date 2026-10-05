@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from extstats_advisor_research.canonical_runner import _verify_sandbox
 from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.datasets import power7
 from extstats_advisor_research.forest_baseline import power7_paper_references
@@ -152,6 +153,21 @@ def test_power7_cli_dispatch_and_fixed_settings() -> None:
             output_root=Path("/tmp/power7-test-run"),
             sample_seed=41,
         )
+
+
+def test_sandbox_verification_accepts_frozen_advisor_flat_checks() -> None:
+    _verify_sandbox(
+        {
+            "metadata": {"sample_row_count": 10_000, "population_row_count": 2_075_259.0},
+            "repository": {"candidate_count": 42},
+            "target_sample_row_count": 10_000,
+            "frozen_sample_row_count": 10_000,
+            "physical_extstats_count": 0,
+        },
+        rows=10_000,
+        population=2_075_259,
+        candidates=42,
+    )
 
 
 def test_power7_paper_references_match_table_4() -> None:
