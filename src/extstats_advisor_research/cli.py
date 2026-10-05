@@ -10,6 +10,7 @@ from .analysis.audit import run_audit
 from .baseline_gap import run_baseline_gap
 from .datasets import census13, forest10, get_dataset
 from .forest_baseline import run_forest_baseline
+from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
 from .runner import run_census13, run_forest10
@@ -172,7 +173,7 @@ def _parser() -> argparse.ArgumentParser:
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
     transfer = validate_commands.add_parser("full-data-transfer")
     transfer.add_argument("source_run", type=Path)
-    transfer.add_argument("budget_directory", type=Path)
+    transfer.add_argument("budget_directory", type=Path, nargs="?")
     transfer.add_argument("--production-dsn", required=True)
     transfer.add_argument("--planner-dsn")
     transfer.add_argument("--output-directory", type=Path)
@@ -289,6 +290,25 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "validate":
         if args.validate_command != "full-data-transfer":
             raise ValueError(f"unsupported validation command: {args.validate_command}")
+        manifest_path = args.source_run / "manifest.json"
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        else:
+            manifest = {}
+        if manifest.get("benchmark_id") == forest10.BENCHMARK_ID:
+            if args.budget_directory is not None:
+                raise ValueError("Forest10 full-data transfer does not take a budget directory")
+            result = run_forest_data_transfer(
+                args.source_run,
+                args.production_dsn,
+                output_directory=args.output_directory,
+                advisor_command=args.advisor_command,
+                data_root=args.data_root,
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.budget_directory is None:
+            raise ValueError("Census13 full-data transfer requires a budget directory")
         result = run_full_data_transfer(
             args.source_run,
             args.budget_directory,

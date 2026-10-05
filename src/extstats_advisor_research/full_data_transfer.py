@@ -121,12 +121,17 @@ def validate_frozen_sources(source_run: Path, budget_directory: Path) -> dict[st
 
 
 def precedence_check(
-    search: dict[str, Any], singleton: dict[str, Any], recommendation: dict[str, Any]
+    search: dict[str, Any],
+    singleton: dict[str, Any],
+    recommendation: dict[str, Any],
+    *,
+    expected_membership: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
     """Prove D=F restricted to M*, independently of accepted move order."""
     profiles = {item["candidate_id"]: item for item in singleton["candidate_profiles"]}
     membership = tuple(search["final_ordered_candidate_ids"])
-    if membership != EXPECTED_MEMBERSHIP:
+    required_membership = expected_membership or EXPECTED_MEMBERSHIP
+    if membership != required_membership:
         raise ValueError("SearchResult membership differs from the frozen transfer membership")
     expected = tuple(sorted(membership, key=lambda item: profiles[item]["frozen_precedence_rank"]))
     actual = tuple(recommendation["deployment_ordered_candidate_ids"])
@@ -134,8 +139,8 @@ def precedence_check(
         raise ValueError("Recommendation membership differs from the frozen SearchResult")
     if actual != expected:
         raise ValueError(f"Recommendation order {actual!r} is not precedence order {expected!r}")
-    if len(actual) != 7:
-        raise ValueError("Recommendation must contain exactly seven selected candidates")
+    if len(actual) != len(membership):
+        raise ValueError("Recommendation object count differs from SearchResult membership")
     moves = tuple(item["added_candidate_id"] for item in search["accepted_moves"])
     return {
         "membership": list(membership),
@@ -196,6 +201,14 @@ def summarize_transfer(records: list[dict[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {"query_count": len(records)}
     for phase in ("p0", "p2", "p1"):
         result[phase] = distribution(records, f"{phase}_qerror", _mean(records, f"{phase}_qerror"))
+    result["sandbox_baseline"] = distribution(
+        records,
+        "sandbox_baseline_qerror",
+        _mean(records, "sandbox_baseline_qerror"),
+    )
+    result["sandbox_final"] = distribution(
+        records, "sandbox_final_qerror", _mean(records, "sandbox_final_qerror")
+    )
     for label in ("p2_to_p1_classification", "p0_to_p1_classification"):
         result[label] = {
             value: sum(row[label] == value for row in records)
@@ -203,6 +216,9 @@ def summarize_transfer(records: list[dict[str, Any]]) -> dict[str, Any]:
         }
     result["top_10_p2_to_p1_improvements"] = _ranked(records, "p2_qerror", "p1_qerror", False)
     result["top_10_p2_to_p1_regressions"] = _ranked(records, "p2_qerror", "p1_qerror", True)
+    result["top_10_p0_to_p1_improvements"] = _ranked(records, "p0_qerror", "p1_qerror", False)
+    result["top_10_p0_to_p1_regressions"] = _ranked(records, "p0_qerror", "p1_qerror", True)
+    result["top_10_sandbox_baseline"] = _top_by(records, "sandbox_baseline_qerror")
     result["sandbox_production_correspondence"] = _correspondence(records)
     return result
 
@@ -226,24 +242,41 @@ def _ranked(
     ]
 
 
+def _top_by(records: list[dict[str, Any]], field: str) -> list[dict[str, Any]]:
+    return [
+        {
+            "query_id": row["query_id"],
+            "true_rows": row["true_rows"],
+            "estimate": row[field.replace("_qerror", "_estimate")],
+            "qerror": row[field],
+        }
+        for row in sorted(records, key=lambda row: row[field], reverse=True)[:10]
+    ]
+
+
 def _correspondence(records: list[dict[str, Any]]) -> dict[str, int]:
     result = {
         "same_direction": 0,
         "opposite_direction": 0,
-        "sandbox_improved_production_improved": 0,
-        "sandbox_improved_production_worsened": 0,
+        "unchanged_involved": 0,
     }
+    for sandbox in ("improved", "unchanged", "worsened"):
+        for production in ("improved", "unchanged", "worsened"):
+            result[f"sandbox_{sandbox}_production_{production}"] = 0
     for row in records:
         sandbox = row["sandbox_classification"]
         production = row["p2_to_p1_classification"]
+        result[f"sandbox_{sandbox}_production_{production}"] += 1
         if sandbox == production:
             result["same_direction"] += 1
         elif {sandbox, production} == {"improved", "worsened"}:
             result["opposite_direction"] += 1
-        if sandbox == "improved" and production == "improved":
-            result["sandbox_improved_production_improved"] += 1
-        if sandbox == "improved" and production == "worsened":
-            result["sandbox_improved_production_worsened"] += 1
+        if "unchanged" in {sandbox, production} and sandbox != production:
+            result["unchanged_involved"] += 1
+    # Preserve the original two convenience fields for existing Census
+    # consumers while exposing the complete 3x3 matrix above.
+    result["sandbox_improved_production_improved"] = result["sandbox_improved_production_improved"]
+    result["sandbox_improved_production_worsened"] = result["sandbox_improved_production_worsened"]
     return result
 
 
@@ -276,7 +309,7 @@ def _wrapped_count_sql(query_sql: str) -> str:
     return f"SELECT count(*) FROM ({query_sql.rstrip().rstrip(';').rstrip()}) AS q"
 
 
-def _stats(connection: Any) -> list[dict[str, Any]]:
+def _stats(connection: Any, relation: str = "census13") -> list[dict[str, Any]]:
     rows = connection.execute(
         """
         SELECT s.oid, n.nspname, s.stxname, s.stxkind::text, s.stxkeys::text,
@@ -285,9 +318,10 @@ def _stats(connection: Any) -> list[dict[str, Any]]:
           JOIN pg_catalog.pg_namespace n ON n.oid=s.stxnamespace
           JOIN pg_catalog.pg_class c ON c.oid=s.stxrelid
           LEFT JOIN pg_catalog.pg_statistic_ext_data d ON d.stxoid=s.oid
-         WHERE n.nspname='public' AND c.relname='census13'
+         WHERE n.nspname='public' AND c.relname=%s
          ORDER BY s.oid
-        """
+        """,
+        (relation,),
     ).fetchall()
     return [
         {
@@ -562,10 +596,10 @@ def run_full_data_transfer(
     }
 
 
-def _ordinary_fingerprint(connection: Any) -> str:
+def _ordinary_fingerprint(connection: Any, relation: str = "census13") -> str:
     from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
 
-    oid = int(connection.execute("SELECT 'public.census13'::regclass::oid").fetchone()[0])
+    oid = int(connection.execute("SELECT %s::regclass::oid", (f"public.{relation}",)).fetchone()[0])
     return ordinary_stats_fingerprint(connection, oid)
 
 

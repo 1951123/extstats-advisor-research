@@ -54,3 +54,16 @@ overwritten. DSNs and passwords are never written to manifests or logs.
 The optimizer objective belongs to the frozen advisor. When externally managed
 production statistics coexist, the result describes the advisor membership
 `M*`, not a guaranteed objective for `E_existing ∪ M*`.
+
+The Forest10 K=8 deployment-transfer validation consumes the immutable
+canonical source run and does not rerun search or planner sandboxing:
+
+```sh
+extstats-research validate full-data-transfer \
+  runs/3a8737b6c3184ae2037100df \
+  --production-dsn "$DISPOSABLE_STOCK_POSTGRES_DSN"
+```
+
+It measures fresh full-data P0, the committed add-only deployment P1, and a
+transactional DROP/ROLLBACK counterfactual P2. The P2 operation is research-only
+and never changes deployment policy or external statistics ownership.
