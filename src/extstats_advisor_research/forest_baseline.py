@@ -786,7 +786,7 @@ def run_arecel_baseline(
 
     with psycopg.connect(dsn, autocommit=True) as conn:
         server = _server_metadata(conn)
-        if server["server_version_num"] != 1_600_014:
+        if server["server_version_num"] != 160_014:
             raise ValueError(
                 "DMV11 paper reproduction requires stock PostgreSQL 16.14, got "
                 f"{server['server_version']}"
