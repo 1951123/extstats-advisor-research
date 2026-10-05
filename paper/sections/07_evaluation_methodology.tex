@@ -50,15 +50,19 @@ label identity.
 RQ1 compares stock PostgreSQL 16, a strong conventional statistics baseline,
 simple selection heuristics, and \advisor. The baseline protocol is explicit
 but remains dataset-specific: use stock PostgreSQL, no extended statistics,
-\texttt{setseed(1/123)}, one \texttt{ANALYZE}, and target 10000 on every benchmark
+and execute \texttt{SELECT setseed(1.0 / 123)} before one \texttt{ANALYZE};
+the experiment seed identifier is 123 and the setseed argument is the floating-
+point expression \texttt{1.0 / 123}. Use target 10000 on every benchmark
 column where the AreCELearnedYet paper-baseline artifact defines that setting.
 The current Census13, Forest10, Power7, and DMV11 baseline manifests all
-record one \texttt{ANALYZE}, \texttt{setseed(1/123)}, and target 10000; the
+record one \texttt{ANALYZE}, the exact setseed statement above, and target
+10000; the
 legacy Census13 artifact stores the target at the baseline level, whereas the
 newer artifacts also expose more column-level verification.
 For DMV11, this means all eleven columns at target 10000, one analyze, no
-extended-statistics objects, seed 123, the external exact label source, and
-10,000 base:test queries. If a dataset's audited baseline artifact uses a
+extended-statistics objects, experiment seed identifier 123, the exact
+setseed statement above, the external exact label source, and 10,000 base:test
+queries. If a dataset's audited baseline artifact uses a
 different documented configuration, preserve that configuration and record it
 instead of silently forcing uniformity. RQ1 reports arithmetic mean q-error,
 p50, p95, p99, maximum, and improved/unchanged/worsened counts. Published
@@ -75,11 +79,23 @@ measures without \texttt{ANALYZE}, and rolls back. P1/P2 ordinary-statistics
 fingerprints are expected to match; P0 can differ because deployment's final
 \texttt{ANALYZE} refreshes the relation.
 
-RQ3 tests mechanism fidelity only: with the same data, equivalent native
-statistics design/payload semantics, ordinary-statistics state, planner build,
-and workload controlled, compare catalogless hypothetical and physical
-PostgreSQL planner estimates. Sample-to-full-data utility belongs to RQ2, not
-this mechanism-fidelity question. RQ4 compares random-k, workload-frequency
+RQ3's primary comparison removes the binary/build confound: compare physical
+statistics with catalogless hypothetical statistics using the same patched
+PostgreSQL binary. It controls relation contents, schema, workload, ordinary-
+statistics fingerprint, statistics target, equivalent design, equivalent
+payload semantics (and identical payload bytes where technically possible),
+and planner/session settings. The intended main factor is only physical
+catalog realization versus hypothetical overlay realization. The primary
+metrics are exact or preregistered near-exact root \texttt{Plan Rows}
+agreement, mismatch count, and mismatch classification; objective difference
+is derived, while q-error correlation is only a secondary diagnostic. A
+secondary sanity check compares patched PostgreSQL physical statistics with
+stock PostgreSQL physical statistics with the overlay inactive; this is not
+the primary hypothetical-fidelity comparison. If the current build setup
+cannot run both realizations on the same patched binary, the experiment is
+implementation-needed and the blocker is recorded rather than changing DBMS
+semantics. Sample-to-full-data utility belongs to RQ2, not this mechanism-
+fidelity question. RQ4 compares random-k, workload-frequency
 top-k, dependency/correlation top-k, singleton-utility top-k, greedy ADD, and
 exhaustive search on tiny candidate universes. RQ5 measures snapshot and truth
 acquisition, sample size, native construction, candidate profiling, search time

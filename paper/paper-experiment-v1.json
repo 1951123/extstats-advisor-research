@@ -1,0 +1,350 @@
+{
+  "format_version": "paper-experiment-v1",
+  "specification_identity": "paper-experiment-v1",
+  "specification_status": "protocol-only",
+  "description": "Confirmatory experiment protocol for the ExtStats Advisor paper. This file freezes required evidence and comparison semantics, but does not freeze final source revisions or build identities.",
+  "repository": {
+    "research_repository": "1951123/extstats-advisor-research",
+    "paper_directory": "paper",
+    "manifest_contract": "research-run-manifest-v1",
+    "clean_research_tree_required": true,
+    "canonical_runs_must_record_specification": "paper-experiment-v1"
+  },
+  "freeze_gate": {
+    "status": "unresolved",
+    "marker": "TODO(PAPER-FREEZE)",
+    "source_identities": {
+      "research_commit_sha": {
+        "status": "unresolved",
+        "value": null
+      },
+      "advisor_commit_sha": {
+        "status": "unresolved",
+        "value": null
+      },
+      "patched_postgresql_commit_sha": {
+        "status": "unresolved",
+        "value": null
+      },
+      "stock_postgresql_build_identity": {
+        "status": "unresolved",
+        "value": null,
+        "required_fields": [
+          "source_repository",
+          "source_commit_or_release",
+          "server_version",
+          "build_identity"
+        ]
+      }
+    },
+    "rule": "Do not silently substitute the current manuscript commit or a floating PostgreSQL version for any unresolved identity."
+  },
+  "seed_policy": {
+    "experiment_seed_identifier": 123,
+    "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+    "setseed_argument": "1.0 / 123",
+    "semantic_rule": "The seed identifier and the PostgreSQL floating-point setseed argument are distinct protocol fields. Integer-division spelling is forbidden."
+  },
+  "datasets": [
+    {
+      "dataset_id": "arecel-census13",
+      "workload_id": "arecel_census13_test_v1",
+      "workload_identity": "AreCELearnedYet base:test",
+      "query_count": 10000,
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "workload_id": "arecel_forest10_test_v1",
+      "workload_identity": "AreCELearnedYet base:test",
+      "query_count": 10000,
+      "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "workload_id": "arecel_power7_test_v1",
+      "workload_identity": "AreCELearnedYet base:test",
+      "query_count": 10000,
+      "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "workload_id": "arecel_dmv11_test_v1",
+      "workload_identity": "AreCELearnedYet base:test",
+      "query_count": 10000,
+      "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "truth_source": "authoritative-external-exact"
+    }
+  ],
+  "truth_contracts": {
+    "snapshot": {
+      "identity": "AdvisorSnapshot",
+      "tuple": "(Sigma, S, P, W)",
+      "ground_truth_is_not_a_snapshot_field": true
+    },
+    "ground_truth_input": {
+      "identity": "GroundTruthSet",
+      "provider": "GroundTruthProvider",
+      "role": "Evaluate planner estimates and define utility; never construct native statistics and never alter the PostgreSQL estimator.",
+      "binding_requirements": [
+        "source_snapshot_semantic_digest",
+        "workload_id",
+        "positive-weight query coverage",
+        "truth source provenance",
+        "source artifact digest where applicable"
+      ]
+    },
+    "source_kinds": [
+      {
+        "id": "production-exact-execution",
+        "collection": "Exact counts in a read-only repeatable-read source view.",
+        "constraints": "Only the supported sealed postgresql-simple-selection-v2 workload contract; exact collection can be expensive."
+      },
+      {
+        "id": "authoritative-external-exact",
+        "collection": "Import and validate externally produced exact labels with provenance and snapshot/workload binding.",
+        "constraints": "The advisor must not claim to have executed externally supplied labels."
+      }
+    ]
+  },
+  "metrics_and_objectives": {
+    "loss_contract": "qerror-cardinality-floor-1-v1",
+    "q_error_formula": "max(max(estimate, 1) / max(truth, 1), max(truth, 1) / max(estimate, 1))",
+    "direction": "lower-is-better",
+    "optimization_contract": "weighted-workload-mean-v1",
+    "optimization_objective": "sum(weight_q * Q_q) / sum(weight_q) over positive-weight workload queries",
+    "reporting_metrics": [
+      "unweighted arithmetic mean q-error",
+      "p50",
+      "p95",
+      "p99",
+      "maximum",
+      "improved query count",
+      "unchanged query count",
+      "worsened query count"
+    ],
+    "uniform_weight_rule": "If a confirmatory workload has weight one for every query, arithmetic mean and the optimization objective coincide numerically but remain distinct contracts."
+  },
+  "required_baseline_configurations": [
+    {
+      "configuration_id": "stock-postgresql-baseline",
+      "role": "RQ1 stock baseline and deployment target",
+      "extended_statistics_objects": 0,
+      "statistics_target": "manifested per dataset baseline contract",
+      "postgresql_build_identity": "freeze_gate.stock_postgresql_build_identity"
+    },
+    {
+      "configuration_id": "strong-conventional-postgresql-baseline",
+      "role": "RQ1 strong conventional baseline",
+      "extended_statistics_objects": 0,
+      "statistics_target": 10000,
+      "analyze_count": 1,
+      "experiment_seed_identifier": 123,
+      "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+      "dataset_variation_rule": "Preserve any audited dataset-specific baseline difference and record it in the manifest. Current four paper-baseline manifests record target 10000; Census13 records the target at baseline level."
+    }
+  ],
+  "search_comparison_modes": {
+    "fixed_k_quality": {
+      "k_policy": "Pre-register k independently of the final advisor recommendation.",
+      "ground_truth_policy": "Heuristic selection cannot use GroundTruthSet; utility-based methods use the same bound GroundTruthSet after selection as declared by RQ4.",
+      "budget_policy": "Declare and report a maximum planner-evaluation budget and actual evaluations for every method."
+    },
+    "fixed_evaluation_budget": {
+      "budget_policy": "Pre-register common planner-evaluation and wall-clock caps.",
+      "information_policy": "Do not convert unused budget into extra information for another method; infeasible variants are censored."
+    }
+  },
+  "experiments": [
+    {
+      "experiment_id": "rq1-confirmatory-matched-baselines",
+      "rq": "RQ1",
+      "status": "planned",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "configurations": [
+        "stock-postgresql-baseline",
+        "strong-conventional-postgresql-baseline",
+        "workload-frequency-top-k",
+        "dependency-correlation-top-k",
+        "singleton-utility-top-k",
+        "extstats-advisor-recommendation"
+      ],
+      "metrics": ["per-query q-error", "reporting aggregate metrics", "improved/unchanged/worsened counts"],
+      "truth_contract": "truth_contracts.ground_truth_input",
+      "random_seed_policy": "Use dataset adapter and baseline manifest seeds; record experiment seed identifier and exact PostgreSQL setseed SQL.",
+      "required_raw_artifacts": ["per-query estimate/truth rows", "RunManifest", "system logs", "source digests"],
+      "required_derived_artifacts": ["baseline comparison table", "q-error distribution data", "query outcome classification"],
+      "expected_paper_outputs": ["fig-rq1-qerror-distributions", "tab-rq1-baseline-summary"],
+      "completion_criteria": ["all source identities resolved", "matched per-dataset manifests validated", "raw and derived artifacts content-addressed"]
+    },
+    {
+      "experiment_id": "rq2a-confirmatory-transfer",
+      "rq": "RQ2a",
+      "status": "planned",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "protocol": ["P0 fresh full-data baseline", "P1 add-only Recommendation plus final ANALYZE", "P2 research-only advisor-object removal without ANALYZE followed by rollback"],
+      "metrics": ["paired q-error", "P0/P1/P2 deltas", "ordinary-statistics fingerprints", "payload/object verification", "deployment and rollback cost"],
+      "truth_contract": "truth_contracts.ground_truth_input",
+      "random_seed_policy": "Reuse the frozen dataset/sample protocol and record all seeds in the RunManifest.",
+      "required_raw_artifacts": ["P0/P1/P2 per-query results", "DeploymentResult", "catalog verification", "ordinary-statistics fingerprints", "source digests"],
+      "required_derived_artifacts": ["transfer summary", "paired delta data", "transfer validity report"],
+      "expected_paper_outputs": ["tab-rq2a-p0-p1-p2-transfer", "fig-rq2a-transfer"],
+      "completion_criteria": ["P1/P2 ordinary-statistics contract verified", "advisor-managed object identity verified", "rollback evidence present"]
+    },
+    {
+      "experiment_id": "rq2b-sample-full-utility",
+      "rq": "RQ2b",
+      "status": "planned",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "metrics": ["sample utility", "full-data utility", "paired utility delta", "correlation/agreement analysis"],
+      "truth_contract": "One bound GroundTruthSet contract for the paired sample/full comparison.",
+      "random_seed_policy": "Freeze sample seed, workload order, and all search seeds in the manifest.",
+      "required_raw_artifacts": ["sample SearchResult/utility", "full-data SearchResult/utility", "paired manifest bindings"],
+      "required_derived_artifacts": ["sample/full utility pairs", "agreement statistics", "outlier classification"],
+      "expected_paper_outputs": ["fig-rq2b-sample-full-utility", "tab-rq2b-transfer-agreement"],
+      "completion_criteria": ["both utilities use the declared loss/weight contracts", "no RQ3 mechanism claim is inferred from this relationship"]
+    },
+    {
+      "experiment_id": "rq3-primary-mechanism-fidelity",
+      "rq": "RQ3",
+      "status": "implementation-needed",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "comparison": "Physical native statistics versus catalogless hypothetical overlay on the same patched PostgreSQL binary.",
+      "main_factor": "physical catalog realization versus hypothetical overlay realization",
+      "controls": ["identical patched binary", "identical relation contents", "identical schema", "identical workload", "identical ordinary-statistics state/fingerprint", "identical statistics target", "equivalent statistics design", "equivalent payload semantics", "identical payload bytes where technically possible", "identical planner/session settings"],
+      "primary_metrics": ["exact root Plan Rows agreement", "pre-registered near-exact Plan Rows agreement where exact equality is not technically expected", "mismatch count", "mismatch classification"],
+      "derived_metrics": ["objective difference", "q-error correlation as secondary diagnostic only"],
+      "truth_contract": "GroundTruthSet is not required to establish mechanism fidelity; if utility is reported, bind it separately and do not make it the primary fidelity metric.",
+      "random_seed_policy": "Record all data/sample/statistics seeds; no unrecorded randomization in paired configurations.",
+      "required_raw_artifacts": ["paired EXPLAIN JSON", "binary/build identity", "ordinary-statistics fingerprints", "active design and payload records", "physical catalog verification", "session settings", "transaction logs"],
+      "required_derived_artifacts": ["Plan Rows agreement table", "mismatch taxonomy", "paired estimate deltas", "derived objective difference"],
+      "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
+      "implementation_blocker": "The current research repository has no paired RQ3 fidelity runner/artifact contract that executes both realizations on one patched binary. Existing stock/patched baseline-gap diagnostics are not this experiment.",
+      "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]
+    },
+    {
+      "experiment_id": "rq3-secondary-build-sanity",
+      "rq": "RQ3",
+      "status": "implementation-needed",
+      "comparison": "Patched PostgreSQL physical statistics versus stock PostgreSQL physical statistics with hypothetical overlay inactive.",
+      "role": "Secondary ordinary physical-statistics sanity check; never the primary hypothetical-fidelity result.",
+      "controls": ["identical relation contents", "identical schema", "identical workload", "ordinary-statistics state/fingerprint", "statistics target", "physical statistics design/payload semantics", "planner/session settings"],
+      "primary_metrics": ["direct Plan Rows agreement", "mismatch count", "mismatch classification"],
+      "required_raw_artifacts": ["paired EXPLAIN JSON", "stock and patched build identities", "catalog/statistics verification", "ordinary-statistics fingerprints"],
+      "required_derived_artifacts": ["build-sanity table", "mismatch report"],
+      "expected_paper_outputs": ["tab-rq3-build-sanity"],
+      "implementation_blocker": "No current paired sanity artifact proves patched physical semantics equal stock physical semantics with the overlay inactive.",
+      "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only"]
+    },
+    {
+      "experiment_id": "rq4-fixed-k-ablations",
+      "rq": "RQ4",
+      "status": "planned",
+      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
+      "comparison_mode": "fixed_k_quality",
+      "controls": ["identical candidate universe", "identical native kinds and keys", "identical sample-built NativeStatsRepository", "identical statistics target", "declared truth/loss contract", "declared workload"],
+      "ground_truth_policy": "Only utility-based methods use GroundTruthSet during selection; every selected result is evaluated against the same bound truth.",
+      "random_seed_policy": "Pre-register replicate seeds; record them and break non-random ties by candidate ID after declared score/static precedence.",
+      "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "manifest"],
+      "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes"],
+      "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
+      "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "planner evaluation counts are reported for all methods"]
+    },
+    {
+      "experiment_id": "rq4-fixed-evaluation-budget-ablations",
+      "rq": "RQ4",
+      "status": "planned",
+      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
+      "comparison_mode": "fixed_evaluation_budget",
+      "controls": ["identical candidate universe", "identical sample/payloads", "identical truth/loss contract", "common planner-evaluation cap", "common wall-clock cap"],
+      "random_seed_policy": "Pre-register replicate seeds and record actual planner evaluations and wall time.",
+      "required_raw_artifacts": ["selection/SearchResult", "planner evaluation log", "timing log", "censoring reason if infeasible", "manifest"],
+      "required_derived_artifacts": ["budget/objective curve", "method comparison", "censoring report"],
+      "expected_paper_outputs": ["fig-rq4-budget-objective", "tab-rq4-budget-comparison"],
+      "completion_criteria": ["no method receives a silently larger budget", "infeasible exhaustive variants are labeled censored"]
+    },
+    {
+      "experiment_id": "rq5-cost-accounting",
+      "rq": "RQ5",
+      "status": "planned",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "cost_stages": ["snapshot capture", "authoritative external truth import/validation", "production exact truth acquisition", "sample/native statistics construction", "candidate profiling", "planner search", "deployment DDL", "deployment ANALYZE", "catalog/storage", "post-deployment planning", "refresh"],
+      "metrics": ["time", "bytes", "rows", "planner evaluations", "catalog/storage units"],
+      "truth_cost_rule": "Report external import/validation separately from production exact count collection; neither is a proxy for the other.",
+      "random_seed_policy": "Use the corresponding frozen run seed policy and record environment/measurement repetitions.",
+      "required_raw_artifacts": ["stage timings", "sizes", "planner counters", "deployment logs", "catalog measurements", "RunManifest"],
+      "required_derived_artifacts": ["cost breakdown", "accuracy-cost table", "refresh trend"],
+      "expected_paper_outputs": ["tab-rq5-cost-breakdown", "fig-rq5-accuracy-cost"],
+      "completion_criteria": ["all measured stages have provenance", "no zero-online-overhead claim is substituted for measured costs"]
+    }
+  ],
+  "status_ledger": {
+    "allowed_statuses": ["pilot", "planned", "implementation-needed", "ready-to-run", "complete", "superseded"],
+    "entries": [
+      {
+        "experiment_id": "rq1-existing-baselines",
+        "status": "pilot",
+        "note": "Existing baseline artifacts are preliminary and require confirmatory provenance audit."
+      },
+      {
+        "experiment_id": "rq2a-existing-transfer",
+        "status": "pilot",
+        "note": "Existing transfer artifacts remain pilot/preliminary."
+      },
+      {
+        "experiment_id": "rq4-existing-calibration",
+        "status": "pilot",
+        "note": "Calibration artifacts are supporting diagnostics, not completed ablations."
+      },
+      {
+        "experiment_id": "rq3-primary-mechanism-fidelity",
+        "status": "implementation-needed",
+        "note": "Paired same-patched-binary harness and artifact contract are missing."
+      },
+      {
+        "experiment_id": "rq3-secondary-build-sanity",
+        "status": "implementation-needed",
+        "note": "Overlay-inactive patched-versus-stock physical sanity artifact is missing."
+      }
+    ]
+  },
+  "execution_priorities": [
+    {
+      "priority": 0,
+      "name": "protocol/source freeze and RQ3 mechanism-fidelity harness",
+      "experiment_ids": ["rq3-primary-mechanism-fidelity", "rq3-secondary-build-sanity"]
+    },
+    {
+      "priority": 1,
+      "name": "RQ1 matched baselines and RQ4 inexpensive heuristic baselines",
+      "experiment_ids": ["rq1-confirmatory-matched-baselines", "rq4-fixed-k-ablations", "rq4-fixed-evaluation-budget-ablations"]
+    },
+    {
+      "priority": 2,
+      "name": "RQ2 confirmatory transfer and sample/full utility analysis",
+      "experiment_ids": ["rq2a-confirmatory-transfer", "rq2b-sample-full-utility"]
+    },
+    {
+      "priority": 3,
+      "name": "RQ5 cost accounting and sensitivity analyses",
+      "experiment_ids": ["rq5-cost-accounting"]
+    },
+    {
+      "priority": "stretch",
+      "name": "drift/recommendation stability and additional workloads",
+      "experiment_ids": ["stretch-drift-stability", "stretch-additional-workloads"]
+    }
+  ],
+  "global_completion_criteria": [
+    "All required source identities are resolved in the paper-experiment manifest.",
+    "The research tree is clean before every canonical run.",
+    "Each raw artifact is versioned or content-addressed and bound to a RunManifest.",
+    "Each derived artifact records source artifact digests and system identities.",
+    "Expected paper figures/tables are reproducible from declared derived artifacts.",
+    "Pilot/preliminary evidence is never silently relabeled complete.",
+    "Superseded results remain referenced with status superseded rather than overwritten."
+  ]
+}

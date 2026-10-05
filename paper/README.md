@@ -44,6 +44,12 @@ ambiguity.  The research harness requires a clean committed research tree for
 canonical runs and records the research, advisor, patched PostgreSQL, stock
 PostgreSQL, dataset/workload, and experiment-parameter identities.
 
+The machine-readable `paper-experiment-v1.json` records the confirmatory
+protocol, source-identity freeze gates, experiment status ledger, required raw
+and derived artifacts, and expected paper outputs. It is a protocol
+specification, not a declaration that unresolved system SHAs or build
+identities have already been frozen.
+
 `AdvisorSnapshot` remains the portable `(Sigma, S, P, W)` artifact. Exact or
 authoritative cardinality truth is a separately validated `GroundTruthSet`
 bound to the sealed snapshot and workload; it is used by the

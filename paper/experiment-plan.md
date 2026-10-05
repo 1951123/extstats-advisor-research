@@ -14,12 +14,14 @@ protocol, provenance audit, and derived-artifact checks are complete.
   manifest, including server version and build provenance; do not use the
   phrase "PostgreSQL 16.14 or an explicitly recorded commit" in a final paper
   result.
-- **Research harness:** exact committed SHA required in each manifest.
+- **Research harness:** this repository; an exact committed SHA and clean
+  working tree are required in each canonical manifest/run.
 - **Freeze gate:** `TODO(PAPER-FREEZE)`: select final confirmatory research,
   advisor, patched PostgreSQL, and stock PostgreSQL source/version/build SHAs.
   Do not silently substitute the current manuscript commit.
-- **Research harness:** this repository, with a clean committed tree required
-  before a canonical run.
+- **Seed policy:** the experiment seed identifier is integer `123`; the exact
+  PostgreSQL statement is `SELECT setseed(1.0 / 123)`. The floating-point
+  expression is part of the protocol; integer-division spelling is forbidden.
 - **Datasets:** AreCELearnedYet lineage currently represented by Census13,
   Forest10, Power7, and DMV11. Dataset adapter hashes, workload identity, and
   exact-truth provenance are part of the RunManifest.
@@ -39,6 +41,44 @@ protocol, provenance audit, and derived-artifact checks are complete.
 - **Artifact rule:** raw artifacts remain referenced by RunID and digest;
   derived artifacts must retain source manifest and commit identities.
 
+## Research execution order (not paper section order)
+
+1. **Priority 0:** protocol/source freeze, then the RQ3 mechanism-fidelity
+   harness.
+2. **Priority 1:** RQ1 matched baselines, then RQ4 inexpensive heuristic
+   baselines.
+3. **Priority 2:** RQ2 confirmatory transfer and the sample/full utility
+   analysis.
+4. **Priority 3:** RQ5 cost accounting and sensitivity analyses.
+5. **Stretch:** drift/recommendation stability and additional workloads.
+
+This is the research execution order only; it does not reorder the manuscript
+sections. No item is confirmatory-complete merely because a pilot artifact
+already exists.
+
+## Experiment status ledger
+
+The controlled vocabulary is `pilot`, `planned`, `implementation-needed`,
+`ready-to-run`, `complete`, and `superseded`. Existing historical outputs stay
+`pilot`/`preliminary`; no current entry is promoted to `complete` in this
+specification.
+
+| Experiment ID | RQ | Status | Evidence or blocker |
+| --- | --- | --- | --- |
+| `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Awaiting source-identity freeze and matched comparison run. |
+| `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
+| `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
+| `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
+| `rq3-primary-mechanism-fidelity` | RQ3 | `implementation-needed` | No current paired runner/artifact contract for physical and hypothetical realizations on one patched binary. |
+| `rq3-secondary-build-sanity` | RQ3 | `implementation-needed` | No current paired sanity artifact proves patched physical equals stock physical with overlay inactive. |
+| `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
+| `rq4-fixed-k` | RQ4 | `planned` | Requires pre-registered k, seeds, tie-breaking, and common candidate universe. |
+| `rq4-fixed-evaluation-budget` | RQ4 | `planned` | Requires common planner-evaluation and wall-clock caps. |
+| `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
+| `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
+| `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
+
 ## RQ1 — Effectiveness
 
 **Question:** How much cardinality-estimation error can workload-optimized
@@ -52,7 +92,7 @@ simple selection baselines, but does not improve every query.
 
 1. stock PostgreSQL 16 baseline;
 2. strong conventional stock PostgreSQL baseline: no extended-statistics
-   objects, `setseed(1/123)`, one `ANALYZE`, and target 10000 on every dataset
+   objects, `SELECT setseed(1.0 / 123)`, one `ANALYZE`, and target 10000 on every dataset
    column where the paper-baseline contract defines that setting. The current
    four manifests record target 10000; Census13 records it at baseline level,
    while the newer manifests also expose more column-level verification;
@@ -75,7 +115,8 @@ truth definition, hardware/environment, and timeout policy. Dataset-specific
 paper-baseline differences must be recorded rather than normalized away.
 
 **Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
-of `public.dmv11`, all column targets 10000, `setseed(1/123)` with seed 123,
+of `public.dmv11`, all column targets 10000, experiment seed identifier 123,
+`SELECT setseed(1.0 / 123)`,
 one `ANALYZE public.dmv11`, zero physical extended-statistics objects, stock
 PostgreSQL, the AreCELearnedYet base:test workload with 10,000 test queries,
 and `authoritative-external-exact` labels bound to the audited workload and
@@ -141,44 +182,64 @@ transfer validity report.
 
 **Question:** How faithfully does catalogless hypothetical evaluation reproduce
 physical PostgreSQL statistics behavior when data, payload semantics, ordinary
-statistics state, planner build, and design are controlled?
+statistics state, and design are controlled without a PostgreSQL binary/build
+confound?
 
-**Hypothesis:** For equivalent native realizations under controlled state,
-hypothetical and physical planner estimates agree closely for supported kinds;
-remaining mismatches identify mechanism or integration limitations. Sample to
-full-data utility transfer is excluded from this RQ and reported in RQ2b.
+**Primary comparison:** physical native statistics versus catalogless
+hypothetical statistics on the same patched PostgreSQL binary. The only main
+factor is physical catalog realization versus hypothetical overlay realization.
 
-**Systems/configurations:** active catalogless design in patched PostgreSQL,
-physical native objects in stock PostgreSQL, and stock baseline without the
-recommendation.
+**Controls:** identical PostgreSQL binary, relation contents, schema, workload,
+ordinary-statistics state/fingerprint, statistics target, equivalent design,
+equivalent native payload semantics, identical payload bytes where technically
+possible, and planner/session settings.
 
-**Datasets:** all datasets with an immutable SearchResult and a valid P1
-transfer.
+**Primary metrics:** exact or preregistered near-exact root `Plan Rows`
+agreement, mismatch count, and mismatch classification. Objective difference
+is derived from the paired estimates; q-error correlation is a secondary
+diagnostic rather than the primary fidelity metric.
 
-**Independent variables:** hypothetical/physical state, candidate kind, and
+**Secondary sanity check:** patched PostgreSQL with physical statistics versus
+stock PostgreSQL with physical statistics and the overlay inactive. This
+checks ordinary physical-statistics semantics across builds but is not the
+primary hypothetical-fidelity comparison. If the current build setup cannot
+run both primary realizations on one patched binary, record the concrete
+implementation/build blocker and do not change DBMS semantics to fit the plan.
+Sample-to-full-data utility transfer is excluded from this RQ and reported in
+RQ2b.
+
+**Systems/configurations:** the same patched PostgreSQL binary in physical and
+catalogless overlay modes for the primary comparison; stock physical mode only
+for the secondary sanity check.
+
+**Datasets:** datasets with the required fixed data, native payload, and
+workload artifacts; a valid P1 transfer is not a prerequisite for the primary
+mechanism comparison.
+
+**Independent variables:** physical/overlay realization, candidate kind, and
 equivalent design membership.
 
-**Controlled variables:** identical relation contents, workload query text and
-order, equivalent native payload semantics (and payload bytes when the
-representation is directly comparable), ordinary-statistics fingerprint,
-statistics target, session settings, active ordering, and relation/schema
-identity. Planner version/build identities are recorded explicitly; the
-patched-versus-stock implementation difference is the mechanism under test,
-not an uncontrolled environment change.
+**Controlled variables:** all controls above, plus relation/schema identity and
+active ordering. The patched-versus-stock build identity is recorded only for
+the secondary sanity check, never substituted into the primary comparison.
 
-**Metrics:** plan-row estimate agreement, per-query q-error correlation and
-rank correlation, membership-level objective difference, and explicit mismatch
-categories.
+**Metrics:** exact/near-exact root `Plan Rows` agreement, mismatch count and
+classification, and derived objective difference. Per-query q-error/rank
+correlation is retained only as a secondary diagnostic.
 
 **Raw artifact:** paired EXPLAIN output, active design records, physical
-catalog/payload verification, and transaction logs.
+catalog/payload verification, ordinary-statistics fingerprints, binary/build
+identities, and transaction/session logs for both primary and secondary paths.
 
 **Derived artifact:** fidelity table, plan-difference classification, and
 hypothetical-versus-physical estimate/error agreement plots.
 
 **Intended paper output:** RQ3 fidelity figure and limitations table.
 
-**Status:** `planned`.
+**Status:** `implementation-needed` for both primary and secondary paths. The
+current research harness has no paired RQ3 fidelity runner/artifact contract
+that executes physical and hypothetical realizations on the same patched
+binary; the existing stock/patched baseline-gap diagnostic is not a substitute.
 
 ## RQ4 — Advisor necessity / ablation
 
@@ -305,7 +366,7 @@ rewritten.
 | Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/heuristic/advisor per-query results and immutable manifests | planned; existing artifacts are pilot |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
-| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-data, same-design, same-payload-semantics, same-ordinary-stats hypothetical/physical comparison | planned |
+| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | implementation-needed |
 | Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | Fair fixed-k and/or fixed-evaluation-budget ablations with declared seeds and tie-breaking | planned |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
 | Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |
