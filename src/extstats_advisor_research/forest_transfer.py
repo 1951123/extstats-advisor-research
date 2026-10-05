@@ -267,6 +267,32 @@ def _decision(summary: dict[str, Any]) -> str:
     return "forest-k8-transfer-neutral"
 
 
+def _source_tail_records(
+    records: list[dict[str, Any]], summary: dict[str, Any]
+) -> list[dict[str, Any]]:
+    by_id = {row["query_id"]: row for row in records}
+    return [
+        {
+            "query_id": item["query_id"],
+            "true_rows": row["true_rows"],
+            "sandbox_baseline_estimate": row["sandbox_baseline_estimate"],
+            "sandbox_final_estimate": row["sandbox_final_estimate"],
+            "sandbox_baseline_qerror": row["sandbox_baseline_qerror"],
+            "sandbox_final_qerror": row["sandbox_final_qerror"],
+            "p0_estimated_rows": row["p0_estimated_rows"],
+            "p0_qerror": row["p0_qerror"],
+            "p1_estimated_rows": row["p1_estimated_rows"],
+            "p1_qerror": row["p1_qerror"],
+            "p2_estimated_rows": row["p2_estimated_rows"],
+            "p2_qerror": row["p2_qerror"],
+            "p2_to_p1_classification": row["p2_to_p1_classification"],
+            "p0_to_p1_classification": row["p0_to_p1_classification"],
+        }
+        for item in summary["top_10_sandbox_baseline"]
+        for row in [by_id[item["query_id"]]]
+    ]
+
+
 def run_forest_data_transfer(
     source_run: Path,
     production_dsn: str,
@@ -406,6 +432,7 @@ def run_forest_data_transfer(
         else "unchanged"
     )
     summary["source_audit_tail_query"] = "arecel_forest10_test_003110"
+    summary["source_top_10_baseline_qerror_queries"] = _source_tail_records(records, summary)
     timings["artifact_analysis_write"] = 0.0
     artifact = {
         "format_version": FORMAT_VERSION,
