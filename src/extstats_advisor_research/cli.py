@@ -8,8 +8,8 @@ from pathlib import Path
 
 from .analysis.audit import run_audit
 from .baseline_gap import run_baseline_gap
-from .datasets import census13, forest10, get_dataset
-from .forest_baseline import run_forest_baseline
+from .datasets import census13, forest10, get_dataset, power7
+from .forest_baseline import run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
@@ -26,10 +26,14 @@ def _parser() -> argparse.ArgumentParser:
     dataset = commands.add_parser("dataset")
     dataset_commands = dataset.add_subparsers(dest="dataset_command", required=True)
     inspect = dataset_commands.add_parser("inspect")
-    inspect.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
+    inspect.add_argument(
+        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+    )
     inspect.add_argument("--data-root", type=Path)
     load = dataset_commands.add_parser("load")
-    load.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
+    load.add_argument(
+        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+    )
     load.add_argument("--dsn", required=True)
     load.add_argument("--data-root", type=Path)
     load.add_argument("--reset-disposable", action="store_true")
@@ -69,15 +73,15 @@ def _parser() -> argparse.ArgumentParser:
     paper_baseline = commands.add_parser("paper-baseline")
     paper_commands = paper_baseline.add_subparsers(dest="paper_command", required=True)
     postgres = paper_commands.add_parser("postgres")
-    postgres.add_argument("dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID])
+    postgres.add_argument(
+        "dataset_id", choices=[census13.BENCHMARK_ID, forest10.BENCHMARK_ID, power7.BENCHMARK_ID]
+    )
     postgres.add_argument("--dsn", required=True)
     postgres.add_argument("--data-root", type=Path)
     postgres.add_argument(
         "--canonical-run", type=Path, default=Path("runs/197e9b890ac58bc4fbcfb218")
     )
-    postgres.add_argument(
-        "--output-directory", type=Path, default=Path("paper-baselines/arecel-census13")
-    )
+    postgres.add_argument("--output-directory", type=Path)
     gap = commands.add_parser("baseline-gap")
     gap.add_argument("dataset_id", choices=[census13.BENCHMARK_ID])
     gap.add_argument("--stock-dsn", required=True)
@@ -189,9 +193,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.dataset_command == "inspect":
             print(json.dumps(dataset.inspect(args.data_root), sort_keys=True, indent=2))
         else:
-            from .postgres.loader import load_census13, load_forest10
+            from .postgres.loader import load_census13, load_forest10, load_power7
 
-            loader = load_forest10 if args.dataset_id == forest10.BENCHMARK_ID else load_census13
+            loader = {
+                forest10.BENCHMARK_ID: load_forest10,
+                power7.BENCHMARK_ID: load_power7,
+            }.get(args.dataset_id, load_census13)
 
             print(
                 json.dumps(
@@ -218,7 +225,15 @@ def main(argv: list[str] | None = None) -> int:
             result = run_forest_baseline(
                 args.dsn,
                 data_root=args.data_root,
-                output_directory=args.output_directory,
+                output_directory=args.output_directory or Path("paper-baselines/arecel-forest10"),
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.dataset_id == power7.BENCHMARK_ID:
+            result = run_power7_baseline(
+                args.dsn,
+                data_root=args.data_root,
+                output_directory=args.output_directory or Path("paper-baselines/arecel-power7"),
             )
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
@@ -226,7 +241,7 @@ def main(argv: list[str] | None = None) -> int:
             args.dsn,
             data_root=args.data_root,
             canonical_run=args.canonical_run,
-            output_directory=args.output_directory,
+            output_directory=args.output_directory or Path("paper-baselines/arecel-census13"),
         )
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
