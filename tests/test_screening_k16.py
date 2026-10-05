@@ -5,6 +5,7 @@ import pytest
 from extstats_advisor_research.screening_k16 import (
     COMPLETED_TERMINATIONS,
     EXPECTED_SOURCE_DIGESTS,
+    FROZEN_ADVISOR_SHA,
     FROZEN_PATCHED_POSTGRES_SHA,
     FROZEN_RESEARCH_REPOSITORY,
     K12_SELECTED,
@@ -178,7 +179,7 @@ def test_artifact_source_binding_and_credential_rejection() -> None:
         },
         "execution_system": {
             "research_repository": FROZEN_RESEARCH_REPOSITORY,
-            "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+            "advisor_commit_sha": FROZEN_ADVISOR_SHA,
             "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
         },
     }

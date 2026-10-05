@@ -9,15 +9,29 @@ The audited local root is selected by `EXTSTATS_RESEARCH_DATA_ROOT`; absolute
 paths are not semantic identities. The source CSV and canonical workload hashes
 are recorded in `dataset-manifest.json`.
 
-The current execution SUT is the production advisor at
-`bb4d58d46e734981a4542de4bcf59441d3effb98`. The patched PostgreSQL source is
+The previous execution advisor was
+`bb4d58d46e734981a4542de4bcf59441d3effb98`. The current execution SUT is the
+production advisor at
+`0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`. The patched PostgreSQL source is
 `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`. Both are checked before a
 canonical run.
 
-The full-data transfer is a one-time bridge from the immutable source run,
-which used advisor `aa65af49fdbbf7443f8fa7295677724babfddfc5`, to that current
-execution advisor. The bridge is valid only because the intervening production
-change is limited to deployment preflight rendering of typmods with
+The current advisor revision adds authoritative external exact-ground-truth
+provenance and its production importer. It does not change optimization
+semantics, search semantics, Recommendation semantics, or deployment
+semantics. Future canonical runs use the current execution advisor; historical
+Census13, Forest10, and Power7 evidence remains bound to its original source
+advisor SHA and is not regenerated.
+
+The Census13 full-data transfer is a one-time bridge from the immutable source
+run, which used advisor `aa65af49fdbbf7443f8fa7295677724babfddfc5`, to the
+previous execution advisor. Forest10 and Power7 source runs used
+`bb4d58d46e734981a4542de4bcf59441d3effb98`; their validators keep that
+historical identity explicit. These source artifacts are not reinterpreted as
+having been produced by the current advisor.
+
+The earlier Census bridge was valid only because the intervening production
+change was limited to deployment preflight rendering of typmods with
 `format_type(atttypid, atttypmod)` and selected-column collation verification.
 Snapshot/acquisition, candidates, native statistics, sandbox, singleton and
 precedence, optimization, search, Recommendation, and artifact contracts are
@@ -74,7 +88,7 @@ required to be nested in K=8. No Recommendation is built or deployed.
 
 The diagnostic records source advisor `aa65af49fdbbf7443f8fa7295677724babfddfc5`
 separately from execution advisor
-`bb4d58d46e734981a4542de4bcf59441d3effb98`. The distinction uses the same
+`0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`. The distinction uses the same
 narrow deployment-preflight bridge documented above; optimization planning,
 singleton precedence, planner sandbox, utility, greedy ADD, and SearchResult
 contracts are unchanged. Ranks 9--12 are reported with native state, singleton

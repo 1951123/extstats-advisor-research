@@ -5,6 +5,7 @@ import pytest
 from extstats_advisor_research.screening_k12 import (
     COMPLETED_TERMINATIONS,
     EXPECTED_SOURCE_DIGESTS,
+    FROZEN_ADVISOR_SHA,
     FROZEN_PATCHED_POSTGRES_SHA,
     FROZEN_RESEARCH_REPOSITORY,
     K8_SELECTED,
@@ -94,7 +95,7 @@ def test_artifact_source_binding_preserves_source_execution_bridge() -> None:
         },
         "execution_system": {
             "research_repository": FROZEN_RESEARCH_REPOSITORY,
-            "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+            "advisor_commit_sha": FROZEN_ADVISOR_SHA,
             "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
         },
     }
@@ -112,7 +113,7 @@ def test_artifact_source_binding_rejects_digest_drift() -> None:
         },
         "execution_system": {
             "research_repository": FROZEN_RESEARCH_REPOSITORY,
-            "advisor_commit_sha": "bb4d58d46e734981a4542de4bcf59441d3effb98",
+            "advisor_commit_sha": FROZEN_ADVISOR_SHA,
             "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
         },
     }

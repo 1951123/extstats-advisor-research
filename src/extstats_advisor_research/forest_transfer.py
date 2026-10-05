@@ -17,6 +17,7 @@ from . import (
     FROZEN_ADVISOR_SHA,
     FROZEN_PATCHED_POSTGRES_SHA,
     FROZEN_RESEARCH_REPOSITORY,
+    PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA,
 )
 from .datasets import forest10
 from .full_data_transfer import (
@@ -33,7 +34,7 @@ from .transfer_engine import run_transfer_phases
 FORMAT_VERSION = "arecel-forest10-full-data-transfer-k8-v1"
 SOURCE_RUN_ID = "3a8737b6c3184ae2037100df"
 SOURCE_RESEARCH_SHA = "88bfe76fefc7b3b1a39957a6191bab5a4da4fc1a"
-SOURCE_ADVISOR_SHA = FROZEN_ADVISOR_SHA
+SOURCE_ADVISOR_SHA = PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA
 EXPECTED_ARTIFACTS = {
     "snapshot": "45772e41d6b20c6e36d8704d550f824aa0623897bc0bb038678a5ca39e4dace4",
     "candidate_universe": "953be518707b25af35b80060b600d25bb513f58cb79b14cd4d8f7cb739587d3f",

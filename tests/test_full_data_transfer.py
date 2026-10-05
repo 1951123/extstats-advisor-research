@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from extstats_advisor_research import FROZEN_ADVISOR_SHA, TRANSFER_SOURCE_ADVISOR_SHA
+from extstats_advisor_research import (
+    FROZEN_ADVISOR_SHA,
+    PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA,
+    TRANSFER_SOURCE_ADVISOR_SHA,
+)
 from extstats_advisor_research.full_data_transfer import (
     ACCEPTED_MOVE_ORDER,
     EXPECTED_MEMBERSHIP,
@@ -110,7 +114,8 @@ def test_transfer_qerror_uses_production_floor_one_contract() -> None:
 
 def test_transfer_bridge_pins_are_explicit() -> None:
     assert TRANSFER_SOURCE_ADVISOR_SHA == "aa65af49fdbbf7443f8fa7295677724babfddfc5"
-    assert FROZEN_ADVISOR_SHA == "bb4d58d46e734981a4542de4bcf59441d3effb98"
+    assert FROZEN_ADVISOR_SHA == "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+    assert PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA == ("bb4d58d46e734981a4542de4bcf59441d3effb98")
 
 
 def test_frozen_selected_varchar_columns_preserve_typmod() -> None:

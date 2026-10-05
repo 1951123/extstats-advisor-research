@@ -7,7 +7,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import FROZEN_ADVISOR_REPOSITORY, FROZEN_ADVISOR_SHA, FROZEN_RESEARCH_REPOSITORY
+from . import (
+    FROZEN_ADVISOR_REPOSITORY,
+    FROZEN_ADVISOR_SHA,
+    FROZEN_RESEARCH_REPOSITORY,
+    PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA,
+)
 from .analysis.audit import contribution_summary
 from .datasets import power7
 from .full_data_transfer import (
@@ -28,7 +33,7 @@ from .transfer_engine import (
 FORMAT_VERSION = "arecel-power7-full-data-transfer-k8-v1"
 SOURCE_RUN_ID = "35d6bb57749bf15c84e92300"
 SOURCE_RESEARCH_SHA = "6aaeb0ff2819ae705063305c6bd19be4639a6ce7"
-SOURCE_ADVISOR_SHA = FROZEN_ADVISOR_SHA
+SOURCE_ADVISOR_SHA = PRE_EXTERNAL_GROUND_TRUTH_ADVISOR_SHA
 EXPECTED_ARTIFACTS = {
     "snapshot": "5690d69b5b7359bf3e7ca41044cc73d3fe8cbe096898424bce4d91fcd724cac8",
     "ground_truth": "f76aac10840580ba8b4864c30961eb165b7f5008838af1c9236f0f9d9ed0020c",

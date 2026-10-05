@@ -25,9 +25,18 @@ production advisor commit, patched PostgreSQL commit, and experiment
 parameters. The research working tree must be clean; completed research units
 must be committed and pushed to `origin/main` before canonical experiments run.
 
-Frozen identities are enforced for `extstats-advisor` SHA
-`aa65af49fdbbf7443f8fa7295677724babfddfc5` and patched PostgreSQL SHA
+The previous execution advisor was
+`bb4d58d46e734981a4542de4bcf59441d3effb98`; the current execution advisor is
+`0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`. Census13's historical transfer
+source remains `aa65af49fdbbf7443f8fa7295677724babfddfc5`, while historical
+Forest10 and Power7 source runs remain bound to `bb4d58d46e734981a4542de4bcf59441d3effb98`.
+The patched PostgreSQL SHA remains
 `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`. Canonical runs reject drift.
+
+The new advisor revision adds authoritative external exact-ground-truth
+provenance only. Optimization, search, Recommendation, and deployment
+semantics are unchanged. Existing Census13, Forest10, and Power7 evidence is
+immutable and is not regenerated.
 
 Install and inspect:
 
