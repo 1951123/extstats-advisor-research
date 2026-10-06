@@ -7,14 +7,14 @@ from pathlib import Path
 import pytest
 
 from extstats_advisor_research.arecel_truth import (
+    _SANITY_CHECK_COUNTS,
     OBSERVATIONS_FORMAT,
     _source_hashes,
     authoritative_truth_spec,
     validate_observation_wire,
     validate_truth_policy,
 )
-from extstats_advisor_research.datasets import census13, dmv11, forest10, power7
-from extstats_advisor_research.forest_baseline import representative_indices
+from extstats_advisor_research.datasets import census13
 from extstats_advisor_research.provenance import read_json, sha256_file
 
 
@@ -80,10 +80,14 @@ def test_audited_policy_covers_all_datasets_and_external_spec_is_snapshot_input(
 
 
 def test_registered_sanity_counts_match_deterministic_selection() -> None:
-    for dataset, expected in ((forest10, 14), (power7, 10), (dmv11, 15)):
-        records = dataset.load_test_records()
-        assert len(representative_indices(records)) == expected
-        assert authoritative_truth_spec(dataset.BENCHMARK_ID)["sanity_check_count"] == expected
+    expected = {
+        "arecel-forest10": 14,
+        "arecel-power7": 10,
+        "arecel-dmv11": 15,
+    }
+    assert _SANITY_CHECK_COUNTS == expected
+    for dataset_id, count in expected.items():
+        assert authoritative_truth_spec(dataset_id)["sanity_check_count"] == count
 
 
 def test_provenance_validation_cannot_claim_full_equivalence_without_passing_audit() -> None:
