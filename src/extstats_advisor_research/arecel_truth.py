@@ -33,6 +33,12 @@ _DATASETS = {
     dmv11.BENCHMARK_ID: dmv11,
 }
 
+_SANITY_CHECK_COUNTS = {
+    forest10.BENCHMARK_ID: 14,
+    power7.BENCHMARK_ID: 10,
+    dmv11.BENCHMARK_ID: 15,
+}
+
 
 def _research_sha(repository: Path) -> str:
     completed = subprocess.run(
@@ -286,7 +292,7 @@ def authoritative_truth_spec(dataset_id: str, research_root: Path | None = None)
         "observations_path": observations_path,
         "observations_sha256": observation_sha256,
         "query_count": observation_metadata["query_count"],
-        "sanity_check_count": 15,
+        "sanity_check_count": _SANITY_CHECK_COUNTS.get(dataset_id, 15),
         "policy_status": entry["status"],
     }
 
