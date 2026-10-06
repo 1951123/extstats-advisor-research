@@ -370,9 +370,7 @@ def run_rq1_matched(
             )
         reinit_role("patched")
         reinit_role("stock")
-        planner_dsn = patched_dsn
-        if dataset_id == "arecel-census13":
-            planner_dsn = _ensure_planner_catalog(patched_dsn, "extstats_rq1_census13")
+        planner_dsn = _ensure_planner_catalog(patched_dsn, role_spec("stock").database)
         advisor_result = config.advisor_runner(
             production_dsn=stock_dsn,
             planner_dsn=planner_dsn,
