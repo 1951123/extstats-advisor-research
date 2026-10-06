@@ -112,3 +112,22 @@ def test_start_command_uses_fixed_local_socket_and_port(tmp_path: Path, monkeypa
     assert "55433" in command[command.index("-o") + 1]
     assert str(root / "patched" / "socket") in command[command.index("-o") + 1]
     assert "listen_addresses=''" in command[command.index("-o") + 1]
+
+
+def test_reinit_component_removal_preserves_build_and_install_and_rejects_symlink(
+    tmp_path: Path,
+) -> None:
+    role_root = tmp_path / "stock"
+    for name in ("build", "install", "data", "socket", "logs"):
+        (role_root / name).mkdir(parents=True)
+    (role_root / "build" / "configure.stamp").write_text("keep", encoding="utf-8")
+    (role_root / "install" / "postgres").write_text("keep", encoding="utf-8")
+    lab._remove_runtime_component(role_root, "data")
+    assert (role_root / "build" / "configure.stamp").is_file()
+    assert (role_root / "install" / "postgres").is_file()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (role_root / "socket").rmdir()
+    (role_root / "socket").symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="unsafe"):
+        lab._remove_runtime_component(role_root, "socket")

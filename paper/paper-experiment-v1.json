@@ -41,6 +41,20 @@
           "server_version",
           "build_identity"
         ]
+        }
+    },
+    "candidate_identities": {
+      "advisor_commit_sha": {
+        "status": "candidate-for-paper-freeze",
+        "value": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+      },
+      "patched_postgresql_commit_sha": {
+        "status": "candidate-for-paper-freeze",
+        "value": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+      },
+      "stock_postgresql_source_sha": {
+        "status": "candidate-for-paper-freeze",
+        "value": "0d1c00c624fa7367d4a895f44381887757289682"
       }
     },
     "rule": "Do not silently substitute the current manuscript commit or a floating PostgreSQL version for any unresolved identity."
@@ -169,7 +183,12 @@
       "experiment_id": "rq1-confirmatory-matched-baselines",
       "rq": "RQ1",
       "status": "planned",
-      "datasets": ["rq3-synthetic-mcv-fd-v1"],
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
       "configurations": [
         "stock-postgresql-baseline",
         "strong-conventional-postgresql-baseline",
@@ -253,17 +272,44 @@
       "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]
     },
     {
-      "experiment_id": "rq3-secondary-build-sanity",
-      "rq": "RQ3",
-      "status": "implementation-needed",
+    "experiment_id": "rq3-secondary-build-sanity",
+    "rq": "RQ3",
+    "status": "implementation-needed",
+    "datasets": [
+      "arecel-census13",
+      "arecel-forest10",
+      "arecel-power7",
+      "arecel-dmv11"
+    ],
       "comparison": "Patched PostgreSQL physical statistics versus stock PostgreSQL physical statistics with hypothetical overlay inactive.",
       "role": "Secondary ordinary physical-statistics sanity check; never the primary hypothetical-fidelity result.",
       "controls": ["identical relation contents", "identical schema", "identical workload", "ordinary-statistics state/fingerprint", "statistics target", "physical statistics design/payload semantics", "planner/session settings"],
       "primary_metrics": ["direct Plan Rows agreement", "mismatch count", "mismatch classification"],
       "required_raw_artifacts": ["paired EXPLAIN JSON", "stock and patched build identities", "catalog/statistics verification", "ordinary-statistics fingerprints"],
       "required_derived_artifacts": ["build-sanity table", "mismatch report"],
-      "expected_paper_outputs": ["tab-rq3-build-sanity"],
-      "implementation_blocker": "No current paired sanity artifact proves patched physical semantics equal stock physical semantics with the overlay inactive.",
+    "expected_paper_outputs": ["tab-rq3-build-sanity"],
+    "artifact_contract": {
+      "format": "rq3-build-sanity-v1",
+      "gate_states": ["pass", "fail", "inconclusive"],
+      "pass_rule": "Only exact paired Plan Rows matches with equivalent state/payload/settings controls pass.",
+      "fail_rule": "A Plan Rows mismatch is fail only after every control is satisfied.",
+      "inconclusive_rule": "Any data, ordinary-statistics, payload, planner-setting, or overlay-state mismatch is inconclusive."
+    },
+    "implementation_gate": {
+      "status": "passed",
+      "artifact_format": "rq3-build-sanity-v1",
+      "semantic_digest": "5d40a8b5a369464a330db568e4c350081dac27993af07119db4a0cc8e8bf501b",
+      "configuration_ids": ["mcv-only", "fd-only", "mcv-plus-fd"],
+      "query_count": 9,
+      "exact_match_count": 9,
+      "mismatch_count": 0,
+      "payload_correspondence_verified": true,
+      "ordinary_stats_equal": true,
+      "patched_overlay_inactive": true,
+      "cleanup_verified": true,
+      "scope": "small synthetic readiness evidence; secondary sanity only, not a completed confirmatory result"
+    },
+    "implementation_status": "The independent patched-versus-stock physical sanity runner produced a passing small synthetic readiness artifact. This does not complete the confirmatory RQ3 experiment.",
       "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only"]
     },
     {
@@ -333,8 +379,8 @@
       },
       {
         "experiment_id": "rq3-secondary-build-sanity",
-        "status": "implementation-needed",
-        "note": "Overlay-inactive patched-versus-stock physical sanity artifact is missing."
+        "status": "ready-to-run",
+        "note": "Small synthetic artifact passed: three configurations, 9 exact Plan Rows pairs, payload and ordinary-statistics correspondence verified, overlay inactive, cleanup verified; readiness evidence only."
       }
     ]
   },

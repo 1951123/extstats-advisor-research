@@ -565,6 +565,41 @@ def recreate_role(role: str, jobs: int | None = None) -> dict[str, Any]:
     return {"role": role, "status": "recreated", "runtime": status_role(role)}
 
 
+def _remove_runtime_component(target: Path, name: str) -> None:
+    """Remove one validated runtime component, never a symlink or escape."""
+
+    component = target / name
+    if component.parent != target or component.is_symlink():
+        raise ValueError(f"refusing to remove unsafe {name} path")
+    resolved = component.resolve(strict=False)
+    if not _within(resolved, target.resolve(strict=False)):
+        raise ValueError(f"refusing to remove {name} outside the managed role")
+    if component.is_dir():
+        shutil.rmtree(component)
+    elif component.exists():
+        component.unlink()
+
+
+def reinit_role(role: str) -> dict[str, Any]:
+    """Reset one managed cluster while preserving its compiled install/build."""
+
+    spec = role_spec(role)
+    target = validate_destroy_target(role)
+    if not target.exists():
+        raise ValueError(f"{role} lab is absent; build it before reinit")
+    if _status_process(spec):
+        stop_role(role)
+    if _status_process(spec):
+        raise RuntimeError(f"refusing to reinit running {role} lab")
+    # The target and identity were validated above.  Only disposable runtime
+    # state is removed; build/ and install/ remain untouched.
+    for name in ("data", "socket", "logs"):
+        _remove_runtime_component(target, name)
+    init_role(role)
+    start_role(role)
+    return {"role": role, "status": "reinitialized", "runtime": status_role(role)}
+
+
 def env_exports(role: str = "all") -> str:
     selected = roles_for(role)
     lines: list[str] = []

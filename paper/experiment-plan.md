@@ -75,7 +75,7 @@ specification.
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
 | `rq3-primary-mechanism-fidelity` | RQ3 | `ready-to-run` | Live synthetic gate passed on the pinned patched build: three configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; this is readiness evidence, not a completed paper experiment. |
-| `rq3-secondary-build-sanity` | RQ3 | `implementation-needed` | No current paired sanity artifact proves patched physical equals stock physical with overlay inactive. |
+| `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-fixed-k` | RQ4 | `planned` | Requires pre-registered k, seeds, tie-breaking, and common candidate universe. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `planned` | Requires common planner-evaluation and wall-clock caps. |
@@ -254,7 +254,9 @@ Plan Rows mismatch and returns `status=artifact-created` with
 small live gate passed for all three configurations on the pinned patched
 build, so the primary protocol is now `ready-to-run`; it is not an official
 benchmark result and is not `complete`. The secondary patched-versus-stock
-build sanity path remains `implementation-needed`.
+build sanity path now has `ready-to-run` readiness evidence in the independent
+`rq3-build-sanity-v1` artifact. Its passing synthetic gate is not a completed
+confirmatory benchmark result.
 
 ## RQ4 — Advisor necessity / ablation
 
@@ -381,7 +383,7 @@ rewritten.
 | Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/heuristic/advisor per-query results and immutable manifests | planned; existing artifacts are pilot |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
-| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | implementation-needed |
+| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |
 | Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | Fair fixed-k and/or fixed-evaluation-budget ablations with declared seeds and tie-breaking | planned |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
 | Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |

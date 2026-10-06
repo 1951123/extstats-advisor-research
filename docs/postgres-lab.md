@@ -46,6 +46,19 @@ extstats-research postgres-lab stop --role all
 extstats-research postgres-lab destroy --role all
 ```
 
+For repeated experiments, `reinit` is the cheaper reset operation:
+
+```text
+extstats-research postgres-lab reinit --role all
+```
+
+It requires the same marker, identity, source, and managed-path checks as
+`destroy`, stops the role if necessary, removes only `data/`, `socket/`, and
+`logs/`, then runs `initdb` and starts the existing compiled installation.
+It preserves `build/` and `install/`; symlinked or otherwise escaping runtime
+components fail closed. `recreate` remains the explicit operation that also
+removes and rebuilds the role.
+
 `destroy` accepts only the fixed `stock` or `patched` role below the exact
 runtime root. It requires the lab marker, a valid `identity.json`, matching
 source identity, and matching managed paths; it refuses symlink escapes,

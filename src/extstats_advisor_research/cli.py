@@ -14,6 +14,7 @@ from .forest_baseline import run_dmv11_baseline, run_forest_baseline, run_power7
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
+from .paper_spec import DEFAULT_SPEC_PATH, load_paper_spec, validate_paper_spec
 from .postgres_lab import (
     build_role,
     destroy_role,
@@ -22,12 +23,18 @@ from .postgres_lab import (
     init_role,
     inspect,
     recreate_role,
+    reinit_role,
     roles_for,
     start_role,
     status_role,
     stop_role,
 )
 from .power_transfer import run_power_data_transfer
+from .rq3_build_sanity import (
+    inspect_build_sanity_artifact,
+    run_build_sanity,
+    validate_build_sanity_file,
+)
 from .rq3_fidelity import (
     inspect_fidelity_artifact,
     run_synthetic_fidelity,
@@ -232,6 +239,7 @@ def _parser() -> argparse.ArgumentParser:
         "status",
         "destroy",
         "recreate",
+        "reinit",
         "inspect",
     ):
         lab_parser = postgres_lab_commands.add_parser(lab_command)
@@ -280,6 +288,30 @@ def _parser() -> argparse.ArgumentParser:
         "inspect", help="print a compact summary of an existing fidelity artifact"
     )
     fidelity_inspect.add_argument("artifact", type=Path)
+    paper_spec = validate_commands.add_parser(
+        "paper-spec", help="validate paper-experiment-v1 semantic invariants"
+    )
+    paper_spec.add_argument("spec", type=Path, nargs="?", default=DEFAULT_SPEC_PATH)
+    build_sanity = validate_commands.add_parser(
+        "build-sanity", help="run or validate the patched-versus-stock RQ3 sanity artifact"
+    )
+    build_sanity_commands = build_sanity.add_subparsers(dest="build_sanity_command", required=True)
+    build_sanity_run = build_sanity_commands.add_parser("run", aliases=["create"])
+    build_sanity_run.add_argument("--stock-dsn", required=True)
+    build_sanity_run.add_argument("--patched-dsn", required=True)
+    build_sanity_run.add_argument("--output", type=Path, required=True)
+    build_sanity_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    build_sanity_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    build_sanity_validate = build_sanity_commands.add_parser("validate")
+    build_sanity_validate.add_argument("artifact", type=Path)
+    build_sanity_inspect = build_sanity_commands.add_parser("inspect")
+    build_sanity_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -308,6 +340,8 @@ def main(argv: list[str] | None = None) -> int:
             result = {role: destroy_role(role) for role in roles_for(args.role)}
         elif command == "recreate":
             result = {role: recreate_role(role, jobs=args.jobs) for role in roles_for(args.role)}
+        elif command == "reinit":
+            result = {role: reinit_role(role) for role in roles_for(args.role)}
         elif command == "inspect":
             result = inspect(args.role)
         else:
@@ -438,6 +472,25 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
     if args.command == "validate":
+        if args.validate_command == "paper-spec":
+            result = validate_paper_spec(load_paper_spec(args.spec))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "build-sanity":
+            if args.build_sanity_command in {"run", "create"}:
+                result = run_build_sanity(
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                )
+            elif args.build_sanity_command == "validate":
+                result = validate_build_sanity_file(args.artifact)
+            else:
+                result = inspect_build_sanity_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if args.validate_command == "hypothetical-fidelity":
             if args.fidelity_command in {"run", "create"}:
                 result = run_synthetic_fidelity(
