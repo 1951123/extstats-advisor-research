@@ -14,6 +14,10 @@ protocol, provenance audit, and derived-artifact checks are complete.
   manifest, including server version and build provenance; do not use the
   phrase "PostgreSQL 16.14 or an explicitly recorded commit" in a final paper
   result.
+- **Local build provenance:** when the reproducible local lab is used, record
+  the role's `.runtime/postgres-lab/{stock,patched}/identity.json` as the
+  build identity source. This is a provenance mechanism, not a resolution of
+  the `TODO(PAPER-FREEZE)` source-identity gate.
 - **Research harness:** this repository; an exact committed SHA and clean
   working tree are required in each canonical manifest/run.
 - **Freeze gate:** `TODO(PAPER-FREEZE)`: select final confirmatory research,

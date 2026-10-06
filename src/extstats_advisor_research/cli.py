@@ -14,6 +14,19 @@ from .forest_baseline import run_dmv11_baseline, run_forest_baseline, run_power7
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
+from .postgres_lab import (
+    build_role,
+    destroy_role,
+    doctor,
+    env_exports,
+    init_role,
+    inspect,
+    recreate_role,
+    roles_for,
+    start_role,
+    status_role,
+    stop_role,
+)
 from .power_transfer import run_power_data_transfer
 from .rq3_fidelity import (
     inspect_fidelity_artifact,
@@ -206,6 +219,29 @@ def _parser() -> argparse.ArgumentParser:
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
     search_budget.add_argument("--advisor-command", default="extstats-advisor")
+    postgres_lab = commands.add_parser(
+        "postgres-lab", help="manage disposable user-owned stock and patched PostgreSQL labs"
+    )
+    postgres_lab_commands = postgres_lab.add_subparsers(dest="postgres_lab_command", required=True)
+    for lab_command in (
+        "doctor",
+        "build",
+        "init",
+        "start",
+        "stop",
+        "status",
+        "destroy",
+        "recreate",
+        "inspect",
+    ):
+        lab_parser = postgres_lab_commands.add_parser(lab_command)
+        lab_parser.add_argument("--role", choices=["stock", "patched", "all"], default="all")
+        if lab_command in {"build", "recreate"}:
+            lab_parser.add_argument("--jobs", type=int)
+    lab_env = postgres_lab_commands.add_parser(
+        "env", help="print local socket environment exports without credentials"
+    )
+    lab_env.add_argument("--role", choices=["stock", "patched", "all"], default="all")
     validate = commands.add_parser("validate")
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
     transfer = validate_commands.add_parser("full-data-transfer")
@@ -249,6 +285,35 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "postgres-lab":
+        command = args.postgres_lab_command
+        if command == "env":
+            print(env_exports(args.role), end="")
+            return 0
+        if command == "doctor":
+            result = doctor(args.role)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0 if result["ok"] else 1
+        if command == "build":
+            result = {role: build_role(role, jobs=args.jobs) for role in roles_for(args.role)}
+        elif command == "init":
+            result = {role: init_role(role) for role in roles_for(args.role)}
+        elif command == "start":
+            result = {role: start_role(role) for role in roles_for(args.role)}
+        elif command == "stop":
+            result = {role: stop_role(role) for role in roles_for(args.role)}
+        elif command == "status":
+            result = {role: status_role(role) for role in roles_for(args.role)}
+        elif command == "destroy":
+            result = {role: destroy_role(role) for role in roles_for(args.role)}
+        elif command == "recreate":
+            result = {role: recreate_role(role, jobs=args.jobs) for role in roles_for(args.role)}
+        elif command == "inspect":
+            result = inspect(args.role)
+        else:
+            raise ValueError(f"unsupported postgres-lab command: {command}")
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
     if args.command == "dataset":
         dataset = get_dataset(args.dataset_id)
         if args.dataset_command == "inspect":

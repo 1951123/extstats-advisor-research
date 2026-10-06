@@ -4,6 +4,10 @@ __pycache__/
 .ruff_cache/
 *.py[cod]
 
+# Disposable out-of-tree PostgreSQL lab: builds, installs, PGDATA, sockets,
+# logs, and runtime identities stay local and are never versioned.
+/.runtime/
+
 # Run products and local data are intentionally not versioned.
 /runs/
 /data/

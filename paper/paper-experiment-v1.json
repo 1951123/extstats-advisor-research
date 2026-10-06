@@ -13,6 +13,12 @@
   "freeze_gate": {
     "status": "unresolved",
     "marker": "TODO(PAPER-FREEZE)",
+    "postgresql_identity_source": {
+      "kind": "postgres-lab-identity-v1",
+      "path_pattern": ".runtime/postgres-lab/{stock,patched}/identity.json",
+      "rule": "Use the built role identity as the source of exact PostgreSQL source/version/configuration/build provenance; do not infer final paper pins from a floating version string.",
+      "final_freeze_required": true
+    },
     "source_identities": {
       "research_commit_sha": {
         "status": "unresolved",
