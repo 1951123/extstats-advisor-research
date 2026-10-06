@@ -163,7 +163,7 @@
       "experiment_id": "rq1-confirmatory-matched-baselines",
       "rq": "RQ1",
       "status": "planned",
-      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "datasets": ["rq3-synthetic-mcv-fd-v1"],
       "configurations": [
         "stock-postgresql-baseline",
         "strong-conventional-postgresql-baseline",
@@ -224,11 +224,14 @@
       "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
       "artifact_contract": {
         "format": "rq3-fidelity-v1",
-        "required_fields": ["system", "fixture", "settings", "controls", "physical", "hypothetical", "paired_queries", "summary", "cleanup", "semantic_digest"],
+        "required_fields": ["system", "fixture", "configurations", "summary", "semantic_digest"],
+        "configuration_required_fields": ["configuration_id", "settings", "controls", "physical", "hypothetical", "paired_queries", "summary", "cleanup"],
+        "configuration_ids": ["mcv-only", "fd-only", "mcv-plus-fd"],
         "primary_metric": "direct exact root Plan Rows agreement",
-        "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "physical-object-selection-difference", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"]
+        "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"],
+        "status_semantics": "A runner result is artifact-created with fidelity_gate pass/fail. Paper status becomes ready-to-run only after a live exact gate; no artifact is complete by itself."
       },
-      "implementation_status": "The synthetic MCV+FD runner and rq3-fidelity-v1 artifact validator are implemented and unit-validated. A live run against the pinned patched PostgreSQL build is still required before promotion to ready-to-run; no benchmark result is complete.",
+      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. A live run against the pinned patched PostgreSQL build is still required before promotion to ready-to-run; no benchmark result is complete.",
       "validation_fixture": "rq3-synthetic-mcv-fd-v1",
       "canonical_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output <artifact.json>",
       "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]

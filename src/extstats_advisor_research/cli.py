@@ -222,7 +222,9 @@ def _parser() -> argparse.ArgumentParser:
     fidelity = validate_commands.add_parser("hypothetical-fidelity")
     fidelity_commands = fidelity.add_subparsers(dest="fidelity_command", required=True)
     fidelity_run = fidelity_commands.add_parser(
-        "run", aliases=["create"], help="run the small synthetic MCV+FD fidelity fixture"
+        "run",
+        aliases=["create"],
+        help="run the three-configuration synthetic mechanism-fidelity fixture",
     )
     fidelity_run.add_argument("--dsn", required=True)
     fidelity_run.add_argument("--output", type=Path, required=True)

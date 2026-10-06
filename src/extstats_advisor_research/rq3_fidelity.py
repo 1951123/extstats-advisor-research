@@ -31,7 +31,6 @@ MISMATCH_CATEGORIES = (
     "ordinary-stats-drift",
     "statistics-order-mismatch",
     "planner-setting-mismatch",
-    "physical-object-selection-difference",
     "overlay-resolution-difference",
     "plan-rows-mismatch-unexplained",
 )
@@ -75,9 +74,8 @@ def classify_plan_rows_mismatch(
     checks = (
         ("payload_correspondence", "payload-mismatch", True),
         ("ordinary_stats_equal", "ordinary-stats-drift", True),
-        ("statistics_order_equal", "statistics-order-mismatch", True),
+        ("physical_catalog_order_equal", "statistics-order-mismatch", True),
         ("planner_settings_equal", "planner-setting-mismatch", True),
-        ("physical_object_selection_equal", "physical-object-selection-difference", True),
         ("overlay_resolution_equal", "overlay-resolution-difference", True),
     )
     for field, category, expected in checks:
@@ -156,34 +154,55 @@ def build_fidelity_artifact(
     experiment_id: str,
     system: dict[str, Any],
     fixture: dict[str, Any],
-    settings: dict[str, Any],
-    physical: dict[str, Any],
-    hypothetical: dict[str, Any],
-    paired_queries: list[dict[str, Any]],
-    controls: dict[str, Any],
-    cleanup: dict[str, Any],
+    configurations: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    """Build and validate one immutable RQ3 evidence object."""
+    """Build and validate one immutable multi-configuration RQ3 artifact."""
 
     if not isinstance(experiment_id, str) or not experiment_id:
         raise ValueError("experiment_id must be a non-empty string")
-    records: list[dict[str, Any]] = []
-    for source in paired_queries:
-        record = dict(source)
-        physical_rows = record.get("physical_plan_rows")
-        hypothetical_rows = record.get("hypothetical_plan_rows")
-        record["exact_match"] = physical_rows == hypothetical_rows
-        record["absolute_delta"] = abs(hypothetical_rows - physical_rows)
-        record["relative_delta"] = relative_plan_rows_delta(physical_rows, hypothetical_rows)
-        evidence = record.pop("mismatch_evidence", None)
-        if not isinstance(evidence, dict):
-            raise TypeError("each paired query needs mismatch evidence")
-        record["mismatch_category"] = classify_plan_rows_mismatch(
-            physical_rows, hypothetical_rows, evidence
-        )
-        record["mismatch_evidence"] = evidence
-        records.append(record)
-    summary = paired_plan_rows_metrics(records)
+    if not configurations:
+        raise ValueError("at least one RQ3 configuration is required")
+    normalized: list[dict[str, Any]] = []
+    all_records: list[dict[str, Any]] = []
+    for source in configurations:
+        configuration = dict(source)
+        configuration_id = configuration.get("configuration_id")
+        if not isinstance(configuration_id, str) or not configuration_id:
+            raise ValueError("each RQ3 configuration needs a non-empty configuration_id")
+        source_records = configuration.pop("paired_queries", None)
+        if not isinstance(source_records, list) or not source_records:
+            raise ValueError(f"configuration {configuration_id!r} needs paired query records")
+        records: list[dict[str, Any]] = []
+        for source_record in source_records:
+            record = dict(source_record)
+            physical_rows = record.get("physical_plan_rows")
+            hypothetical_rows = record.get("hypothetical_plan_rows")
+            record["exact_match"] = physical_rows == hypothetical_rows
+            record["absolute_delta"] = abs(hypothetical_rows - physical_rows)
+            record["relative_delta"] = relative_plan_rows_delta(physical_rows, hypothetical_rows)
+            evidence = record.pop("mismatch_evidence", None)
+            if not isinstance(evidence, dict):
+                raise TypeError("each paired query needs mismatch evidence")
+            record["mismatch_category"] = classify_plan_rows_mismatch(
+                physical_rows, hypothetical_rows, evidence
+            )
+            record["mismatch_evidence"] = evidence
+            records.append(record)
+            all_records.append(
+                {
+                    "query_id": f"{configuration_id}:{record['query_id']}",
+                    "physical_plan_rows": physical_rows,
+                    "hypothetical_plan_rows": hypothetical_rows,
+                    "exact_match": record["exact_match"],
+                    "absolute_delta": record["absolute_delta"],
+                    "relative_delta": record["relative_delta"],
+                    "mismatch_category": record["mismatch_category"],
+                }
+            )
+        configuration["paired_queries"] = records
+        configuration["summary"] = paired_plan_rows_metrics(records)
+        normalized.append(configuration)
+    summary = paired_plan_rows_metrics(all_records)
     artifact: dict[str, Any] = {
         "format": FIDELITY_FORMAT,
         "experiment_id": experiment_id,
@@ -193,13 +212,8 @@ def build_fidelity_artifact(
         },
         "system": system,
         "fixture": fixture,
-        "settings": settings,
-        "controls": controls,
-        "physical": physical,
-        "hypothetical": hypothetical,
-        "paired_queries": records,
+        "configurations": normalized,
         "summary": summary,
-        "cleanup": cleanup,
     }
     artifact["semantic_digest"] = semantic_digest(artifact)
     validate_fidelity_artifact(artifact)
@@ -223,13 +237,8 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
         "paper_specification",
         "system",
         "fixture",
-        "settings",
-        "controls",
-        "physical",
-        "hypothetical",
-        "paired_queries",
+        "configurations",
         "summary",
-        "cleanup",
         "semantic_digest",
     }
     missing = sorted(required - set(artifact))
@@ -253,10 +262,65 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
     ):
         if not system.get(field):
             raise ValueError(f"RQ3 system identity is missing {field}")
-    _require_sha(system["research_commit_sha"], "research_commit_sha")
+    _require_sha(system["research_commit_sha"], "research_commit_sha", length=40)
     _require_sha(system["advisor_commit_sha"], "advisor_commit_sha", length=40)
     _require_sha(system["patched_postgres_commit_sha"], "patched_postgres_commit_sha", length=40)
-    controls = artifact["controls"]
+    configurations = artifact["configurations"]
+    if not isinstance(configurations, list) or not configurations:
+        raise ValueError("RQ3 artifact needs configurations")
+    configuration_ids: set[str] = set()
+    all_records: list[dict[str, Any]] = []
+    for configuration in configurations:
+        _validate_configuration(configuration)
+        configuration_id = configuration["configuration_id"]
+        if configuration_id in configuration_ids:
+            raise ValueError(f"duplicate RQ3 configuration ID: {configuration_id}")
+        configuration_ids.add(configuration_id)
+        records = configuration["paired_queries"]
+        config_summary = paired_plan_rows_metrics(records)
+        if configuration["summary"] != config_summary:
+            raise ValueError(
+                f"RQ3 summary does not match paired query records for {configuration_id}"
+            )
+        all_records.extend(
+            {
+                **record,
+                "query_id": f"{configuration_id}:{record['query_id']}",
+            }
+            for record in records
+        )
+    summary = paired_plan_rows_metrics(all_records)
+    if artifact["summary"] != summary:
+        raise ValueError("RQ3 summary does not match paired query records")
+    reject_credentials(artifact)
+    return summary
+
+
+def _validate_configuration(configuration: Any) -> None:
+    if not isinstance(configuration, dict):
+        raise TypeError("RQ3 configuration must be an object")
+    required = {
+        "configuration_id",
+        "settings",
+        "controls",
+        "physical",
+        "hypothetical",
+        "paired_queries",
+        "summary",
+        "cleanup",
+    }
+    missing = sorted(required - set(configuration))
+    if missing:
+        raise ValueError(f"RQ3 configuration is missing fields: {missing}")
+    configuration_id = configuration["configuration_id"]
+    if not isinstance(configuration_id, str) or not configuration_id:
+        raise ValueError("RQ3 configuration_id must be a non-empty string")
+    settings = configuration["settings"]
+    if not isinstance(settings, dict):
+        raise TypeError("RQ3 configuration settings must be an object")
+    if settings.get("physical") != settings.get("hypothetical"):
+        raise ValueError(f"RQ3 settings differ for {configuration_id}")
+    controls = configuration["controls"]
     if not isinstance(controls, dict):
         raise TypeError("RQ3 control evidence must be an object")
     required_controls = (
@@ -269,42 +333,160 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
         "equivalent_design",
         "payload_correspondence_verified",
         "identical_planner_settings",
-        "physical_object_selection_equal",
+        "physical_catalog_order_equal",
         "overlay_resolution_verified",
     )
     for field in required_controls:
         if controls.get(field) is not True:
             raise ValueError(f"RQ3 primary control is not verified: {field}")
-    physical = artifact["physical"]
-    hypothetical = artifact["hypothetical"]
+    physical = configuration["physical"]
+    hypothetical = configuration["hypothetical"]
+    if not isinstance(physical, dict) or not isinstance(hypothetical, dict):
+        raise TypeError("RQ3 physical and hypothetical realizations must be objects")
+    relation = physical.get("relation")
+    if (
+        not isinstance(relation, dict)
+        or not isinstance(relation.get("schema"), str)
+        or not isinstance(relation.get("name"), str)
+    ):
+        raise TypeError("RQ3 physical relation identity is missing")
+    if (
+        not isinstance(relation.get("oid"), int)
+        or isinstance(relation["oid"], bool)
+        or relation["oid"] <= 0
+    ):
+        raise ValueError("RQ3 physical relation OID is invalid")
+    candidate_ids = physical.get("candidate_ids")
+    if (
+        not isinstance(candidate_ids, list)
+        or not candidate_ids
+        or any(not isinstance(item, str) or not item for item in candidate_ids)
+        or len(set(candidate_ids)) != len(candidate_ids)
+    ):
+        raise ValueError(
+            f"RQ3 physical candidate IDs are not non-empty and unique: {configuration_id}"
+        )
+    if hypothetical.get("active_candidate_ids") != candidate_ids:
+        raise ValueError("physical and hypothetical candidate ordering differs")
+    catalog_order = physical.get("catalog_order_candidate_ids")
+    if catalog_order != candidate_ids:
+        raise ValueError("physical catalog order does not match the declared candidate order")
     for side, value in (("physical", physical), ("hypothetical", hypothetical)):
-        if not isinstance(value, dict):
-            raise TypeError(f"{side} realization must be an object")
-        if not value.get("ordinary_stats_fingerprint"):
-            raise ValueError(f"{side} ordinary statistics fingerprint is missing")
-        _require_sha(value["ordinary_stats_fingerprint"], f"{side} ordinary_stats_fingerprint")
+        fingerprint = value.get("ordinary_stats_fingerprint")
+        _require_sha(fingerprint, f"{configuration_id} {side} ordinary_stats_fingerprint")
     if physical["ordinary_stats_fingerprint"] != hypothetical["ordinary_stats_fingerprint"]:
         raise ValueError("physical and hypothetical ordinary statistics fingerprints differ")
     if physical.get("payload_correspondence") != "exact-bytes-from-physical-source":
         raise ValueError("physical payload correspondence is not verified by exact bytes")
     if hypothetical.get("payload_source") != "physical-extracted-payloads":
         raise ValueError("hypothetical payload source is not the physical extraction")
-    if hypothetical.get("active_candidate_ids") != physical.get("candidate_ids"):
-        raise ValueError("physical and hypothetical candidate ordering differs")
-    if artifact["cleanup"].get("verified") is not True:
-        raise ValueError("RQ3 cleanup was not verified")
-    if artifact["cleanup"].get("physical_extstats_count_after") != 0:
-        raise ValueError("physical extended-statistics state leaked after cleanup")
-    if artifact["cleanup"].get("overlay_active_after") is not None:
-        raise ValueError("hypothetical overlay state leaked after cleanup")
-    records = artifact["paired_queries"]
+    objects = physical.get("objects")
+    if (
+        not isinstance(objects, list)
+        or [item.get("candidate_id") for item in objects] != candidate_ids
+    ):
+        raise ValueError("physical object records do not match the exact candidate set/order")
+    payload_digests: dict[str, str] = {}
+    object_oids: list[int] = []
+    for item in objects:
+        if not isinstance(item, dict):
+            raise TypeError("physical statistics object record must be an object")
+        candidate_id = item.get("candidate_id")
+        if item.get("kind") not in {"mcv", "dependencies"}:
+            raise ValueError(f"unsupported physical statistics kind for {candidate_id}")
+        oid = item.get("oid")
+        if not isinstance(oid, int) or isinstance(oid, bool) or oid <= 0:
+            raise ValueError(f"invalid physical statistics OID for {candidate_id}")
+        object_oids.append(oid)
+        digest = _require_sha(item.get("payload_sha256"), f"{candidate_id} payload_sha256")
+        payload_size = item.get("payload_size")
+        if not isinstance(payload_size, int) or isinstance(payload_size, bool) or payload_size <= 0:
+            raise ValueError(f"invalid physical payload size for {candidate_id}")
+        payload_digests[candidate_id] = digest
+    if len(set(object_oids)) != len(object_oids):
+        raise ValueError("physical statistics OIDs are not unique")
+    if set(hypothetical.get("payload_sha256", {})) != set(candidate_ids):
+        raise ValueError("hypothetical payload digest keys do not match candidate IDs")
+    if hypothetical["payload_sha256"] != payload_digests:
+        raise ValueError("hypothetical payload digests differ from physical payload digests")
+    virtual_oids = hypothetical.get("virtual_oids")
+    if (
+        not isinstance(virtual_oids, list)
+        or len(virtual_oids) != len(candidate_ids)
+        or any(
+            not isinstance(oid, int) or isinstance(oid, bool) or oid <= 0 for oid in virtual_oids
+        )
+        or len(set(virtual_oids)) != len(virtual_oids)
+    ):
+        raise ValueError("hypothetical virtual OIDs are missing, invalid, or duplicated")
+    physical_explain = physical.get("explain")
+    hypothetical_explain = hypothetical.get("explain")
+    if not isinstance(physical_explain, list) or not isinstance(hypothetical_explain, list):
+        raise TypeError("physical and hypothetical EXPLAIN records must be lists")
+    if len(physical_explain) != len(hypothetical_explain) or not physical_explain:
+        raise ValueError("physical and hypothetical EXPLAIN record counts differ")
+    for physical_record, hypothetical_record in zip(
+        physical_explain, hypothetical_explain, strict=True
+    ):
+        for side, record in (("physical", physical_record), ("hypothetical", hypothetical_record)):
+            if not isinstance(record, dict):
+                raise TypeError(f"{side} EXPLAIN record must be an object")
+            if not isinstance(record.get("query_id"), str) or not isinstance(
+                record.get("sql"), str
+            ):
+                raise TypeError("EXPLAIN query identity is missing")
+            expected_digest = semantic_digest(record.get("explain"))
+            if record.get("explain_sha256") != expected_digest:
+                raise ValueError(f"{side} EXPLAIN semantic digest mismatch")
+    physical_query_identity = [(item["query_id"], item["sql"]) for item in physical_explain]
+    hypothetical_query_identity = [(item["query_id"], item["sql"]) for item in hypothetical_explain]
+    if physical_query_identity != hypothetical_query_identity:
+        raise ValueError("physical and hypothetical workload query order differs")
+    records = configuration["paired_queries"]
     if not isinstance(records, list) or not records:
-        raise ValueError("RQ3 artifact needs paired query records")
-    summary = paired_plan_rows_metrics(records)
-    if artifact["summary"] != summary:
-        raise ValueError("RQ3 summary does not match paired query records")
-    reject_credentials(artifact)
-    return summary
+        raise ValueError("RQ3 configuration needs paired query records")
+    if [(item.get("query_id"), item.get("sql")) for item in records] != physical_query_identity:
+        raise ValueError("paired query identity/order differs from EXPLAIN records")
+    for record, physical_explain_record, hypothetical_explain_record in zip(
+        records, physical_explain, hypothetical_explain, strict=True
+    ):
+        baseline_rows = record.get("no_extstats_baseline_plan_rows")
+        changed_from_baseline = record.get("physical_estimate_changed_from_no_extstats_baseline")
+        if (
+            not isinstance(baseline_rows, int)
+            or isinstance(baseline_rows, bool)
+            or not isinstance(changed_from_baseline, bool)
+            or changed_from_baseline != (record["physical_plan_rows"] != baseline_rows)
+        ):
+            raise ValueError("baseline-to-physical estimate evidence is missing or inconsistent")
+        if record.get("physical_explain") != physical_explain_record.get("explain"):
+            raise ValueError("paired physical EXPLAIN does not match stored physical EXPLAIN")
+        if record.get("hypothetical_explain") != hypothetical_explain_record.get("explain"):
+            raise ValueError(
+                "paired hypothetical EXPLAIN does not match stored hypothetical EXPLAIN"
+            )
+        if record.get("physical_explain_sha256") != physical_explain_record.get("explain_sha256"):
+            raise ValueError("paired physical EXPLAIN digest does not match stored digest")
+        if record.get("hypothetical_explain_sha256") != hypothetical_explain_record.get(
+            "explain_sha256"
+        ):
+            raise ValueError("paired hypothetical EXPLAIN digest does not match stored digest")
+    evidence = physical.get("mechanism_evidence")
+    if not isinstance(evidence, dict) or evidence.get("payloads_nonempty") is not True:
+        raise ValueError("RQ3 payload evidence is missing or empty")
+    if (
+        not isinstance(evidence.get("supported_clause_form"), str)
+        or not evidence["supported_clause_form"]
+    ):
+        raise ValueError("RQ3 supported clause-form evidence is missing")
+    cleanup = configuration["cleanup"]
+    if (
+        not isinstance(cleanup, dict)
+        or cleanup.get("verified") is not True
+        or cleanup.get("physical_extstats_count_after") != 0
+        or cleanup.get("overlay_active_after") is not None
+    ):
+        raise ValueError("RQ3 configuration cleanup was not verified")
 
 
 def write_fidelity_artifact(path: Path, artifact: dict[str, Any]) -> None:
@@ -322,8 +504,13 @@ def inspect_fidelity_artifact(path: Path) -> dict[str, Any]:
         "experiment_id": artifact["experiment_id"],
         "semantic_digest": artifact["semantic_digest"],
         "fixture_id": artifact["fixture"]["fixture_id"],
+        "configuration_ids": [
+            configuration["configuration_id"] for configuration in artifact["configurations"]
+        ],
         "summary": summary,
-        "cleanup_verified": artifact["cleanup"]["verified"],
+        "cleanup_verified": all(
+            configuration["cleanup"]["verified"] for configuration in artifact["configurations"]
+        ),
     }
 
 
@@ -447,6 +634,254 @@ def _active_oids(connection: Any) -> tuple[int, ...] | None:
     return None if value is None else tuple(int(item) for item in value)
 
 
+SYNTHETIC_CONFIGURATIONS = (
+    ("mcv-only", (("synthetic-mcv", "mcv"),)),
+    ("fd-only", (("synthetic-fd", "dependencies"),)),
+    ("mcv-plus-fd", (("synthetic-mcv", "mcv"), ("synthetic-fd", "dependencies"))),
+)
+
+
+def fidelity_gate(summary: dict[str, Any]) -> str:
+    """Return the live artifact gate without promoting paper status."""
+
+    if not isinstance(summary, dict) or not isinstance(summary.get("mismatch_count"), int):
+        raise TypeError("RQ3 summary must contain an integer mismatch_count")
+    return "pass" if summary["mismatch_count"] == 0 else "fail"
+
+
+def fidelity_run_result(
+    artifact: dict[str, Any], output: Path, elapsed_seconds: float = 0.0
+) -> dict[str, Any]:
+    """Return the non-promoting result contract for a written fidelity artifact."""
+
+    summary = validate_fidelity_artifact(artifact)
+    configurations = artifact["configurations"]
+    return {
+        "status": "artifact-created",
+        "fidelity_gate": fidelity_gate(summary),
+        "artifact": str(Path(output).resolve()),
+        "summary": summary,
+        "configuration_count": len(configurations),
+        "configuration_ids": [item["configuration_id"] for item in configurations],
+        "semantic_digest": artifact["semantic_digest"],
+        "elapsed_seconds": round(elapsed_seconds, 6),
+    }
+
+
+def _capture_queries(
+    connection: Any, table: str, schema: str, relation: str
+) -> list[dict[str, Any]]:
+    captured: list[dict[str, Any]] = []
+    for query_id, query in _fixture_queries(table):
+        rows, document = _plan_rows_and_document(connection, query, schema, relation)
+        captured.append(
+            {
+                "query_id": query_id,
+                "sql": query,
+                "plan_rows": rows,
+                "explain": document,
+                "explain_sha256": semantic_digest(document),
+            }
+        )
+    return captured
+
+
+def _run_synthetic_configuration(
+    connection: Any,
+    *,
+    configuration_id: str,
+    object_specs: tuple[tuple[str, str], ...],
+) -> dict[str, Any]:
+    from extstats_advisor.dbms.postgres.ordinary_stats import (
+        ordinary_stats_fingerprint as fingerprint,
+    )
+
+    suffix = configuration_id.replace("-", "_")
+    table = f"rq3_fidelity_{suffix}"
+    stats_names = tuple(
+        f"rq3_{suffix}_{candidate_id.rsplit('-', 1)[-1]}" for candidate_id, _ in object_specs
+    )
+    candidate_ids = tuple(candidate_id for candidate_id, _ in object_specs)
+    kind_chars = {"mcv": "m", "dependencies": "f"}
+    cleanup: dict[str, Any] = {
+        "physical_objects_dropped": False,
+        "overlay_reset_before": False,
+        "overlay_reset_after": False,
+        "physical_extstats_count_after": None,
+        "overlay_active_after": None,
+        "verified": False,
+    }
+    connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+    cleanup["overlay_reset_before"] = True
+    connection.execute(f"CREATE TEMP TABLE {table} (a integer, b integer, c integer)")
+    connection.execute(
+        f"INSERT INTO {table} SELECT i % 7, i % 7, i % 3 FROM generate_series(1, 1000) AS s(i)"
+    )
+    relation_oid = int(connection.execute(f"SELECT '{table}'::regclass::oid").fetchone()[0])
+    schema, relation = _relation_identity(connection, relation_oid)
+    connection.execute(f"ANALYZE {table}")
+    connection.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+    baseline_settings = _settings(connection)
+    baseline_queries = _capture_queries(connection, table, schema, relation)
+    connection.execute("ROLLBACK")
+    for stats_name, (_, kind) in zip(stats_names, object_specs, strict=True):
+        connection.execute(f"CREATE STATISTICS {stats_name} ({kind}) ON a, b FROM {table}")
+        connection.execute(f"ALTER STATISTICS {stats_name} SET STATISTICS 100")
+    connection.execute(f"ANALYZE {table}")
+    ordinary_physical = fingerprint(connection, relation_oid)
+    physical_objects: list[dict[str, Any]] = []
+    payload_bytes: dict[str, bytes] = {}
+    for (candidate_id, kind), stats_name in zip(object_specs, stats_names, strict=True):
+        payload = _physical_payload(connection, relation_oid, stats_name, kind)
+        payload["candidate_id"] = candidate_id
+        payload_bytes[candidate_id] = payload.pop("payload")
+        physical_objects.append(payload)
+    catalog_order = tuple(
+        str(row[0])
+        for row in connection.execute(
+            "SELECT e.stxname FROM pg_catalog.pg_statistic_ext AS e "
+            "WHERE e.stxrelid = %s ORDER BY e.oid",
+            (relation_oid,),
+        ).fetchall()
+    )
+    catalog_candidate_order = tuple(
+        object_record["candidate_id"]
+        for name in catalog_order
+        for object_record in physical_objects
+        if object_record["name"] == name
+    )
+    connection.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+    physical_settings = _settings(connection)
+    physical_queries = _capture_queries(connection, table, schema, relation)
+    connection.execute("ROLLBACK")
+    connection.execute(f"DROP STATISTICS {', '.join(stats_names)}")
+    cleanup["physical_objects_dropped"] = True
+    if _physical_count(connection, relation_oid) != 0:
+        raise RuntimeError(f"physical extended statistics leaked for {configuration_id}")
+    ordinary_after_drop = fingerprint(connection, relation_oid)
+    if ordinary_after_drop != ordinary_physical:
+        raise RuntimeError(
+            f"dropping physical statistics changed ordinary state for {configuration_id}"
+        )
+    if catalog_candidate_order != candidate_ids:
+        raise RuntimeError(f"physical catalog order differs for {configuration_id}")
+    connection.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+    connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+    hypothetical_oids: list[int] = []
+    for candidate_id, kind in object_specs:
+        row = connection.execute(
+            """
+            SELECT pg_catalog.pg_hypothetical_extstats_register_definition(
+                %s::text, %s::oid, %s::"char", %s::smallint[], %s::bytea
+            )
+            """,
+            (candidate_id, relation_oid, kind_chars[kind], [1, 2], payload_bytes[candidate_id]),
+        ).fetchone()
+        if row is None or row[0] is None:
+            raise RuntimeError(f"hypothetical registration returned no OID for {candidate_id}")
+        hypothetical_oids.append(int(row[0]))
+    connection.execute(
+        "SELECT pg_catalog.pg_hypothetical_extstats_activate(%s::oid[])",
+        (hypothetical_oids,),
+    )
+    observed_oids = _active_oids(connection)
+    if observed_oids != tuple(hypothetical_oids):
+        raise RuntimeError(f"hypothetical activation order changed for {configuration_id}")
+    if _physical_count(connection, relation_oid) != 0:
+        raise RuntimeError(f"hypothetical realization has physical state for {configuration_id}")
+    ordinary_hypothetical = fingerprint(connection, relation_oid)
+    if ordinary_hypothetical != ordinary_after_drop:
+        raise RuntimeError(
+            f"hypothetical realization changed ordinary state for {configuration_id}"
+        )
+    hypothetical_settings = _settings(connection)
+    hypothetical_queries = _capture_queries(connection, table, schema, relation)
+    connection.execute("ROLLBACK")
+    connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+    cleanup["overlay_reset_after"] = True
+    cleanup["overlay_active_after"] = _active_oids(connection)
+    cleanup["physical_extstats_count_after"] = _physical_count(connection, relation_oid)
+    connection.execute(f"DROP TABLE {table}")
+    if cleanup["overlay_active_after"] is not None or cleanup["physical_extstats_count_after"] != 0:
+        raise RuntimeError(f"cleanup leaked state for {configuration_id}")
+    cleanup["verified"] = True
+    hypothetical_by_id = {record["query_id"]: record for record in hypothetical_queries}
+    controls = {
+        "identical_binary": True,
+        "identical_relation_contents": True,
+        "identical_schema": True,
+        "identical_workload": True,
+        "ordinary_stats_equal": ordinary_physical == ordinary_after_drop == ordinary_hypothetical,
+        "identical_statistics_target": True,
+        "equivalent_design": True,
+        "payload_correspondence_verified": True,
+        "identical_planner_settings": physical_settings == hypothetical_settings,
+        "physical_catalog_order_equal": catalog_candidate_order == candidate_ids,
+        "overlay_resolution_verified": observed_oids == tuple(hypothetical_oids),
+    }
+    paired: list[dict[str, Any]] = []
+    for baseline_record, physical_record in zip(baseline_queries, physical_queries, strict=True):
+        hypothetical_record = hypothetical_by_id[physical_record["query_id"]]
+        paired.append(
+            {
+                "query_id": physical_record["query_id"],
+                "sql": physical_record["sql"],
+                "physical_plan_rows": physical_record["plan_rows"],
+                "hypothetical_plan_rows": hypothetical_record["plan_rows"],
+                "no_extstats_baseline_plan_rows": baseline_record["plan_rows"],
+                "physical_estimate_changed_from_no_extstats_baseline": (
+                    physical_record["plan_rows"] != baseline_record["plan_rows"]
+                ),
+                "physical_explain": physical_record["explain"],
+                "hypothetical_explain": hypothetical_record["explain"],
+                "physical_explain_sha256": physical_record["explain_sha256"],
+                "hypothetical_explain_sha256": hypothetical_record["explain_sha256"],
+                "mismatch_evidence": {
+                    "payload_correspondence": True,
+                    "ordinary_stats_equal": controls["ordinary_stats_equal"],
+                    "physical_catalog_order_equal": controls["physical_catalog_order_equal"],
+                    "planner_settings_equal": controls["identical_planner_settings"],
+                    "overlay_resolution_equal": controls["overlay_resolution_verified"],
+                },
+            }
+        )
+    return {
+        "configuration_id": configuration_id,
+        "settings": {
+            "physical": physical_settings,
+            "hypothetical": hypothetical_settings,
+            "statistics_target": 100,
+        },
+        "controls": controls,
+        "physical": {
+            "relation": {"schema": schema, "name": relation, "oid": relation_oid},
+            "candidate_ids": list(candidate_ids),
+            "catalog_order_candidate_ids": list(catalog_candidate_order),
+            "ordinary_stats_fingerprint": ordinary_after_drop,
+            "payload_correspondence": "exact-bytes-from-physical-source",
+            "objects": physical_objects,
+            "explain": physical_queries,
+            "mechanism_evidence": {
+                "payloads_nonempty": all(item["payload_size"] > 0 for item in physical_objects),
+                "supported_clause_form": "simple equality conjunction over (a, b)",
+                "baseline_settings": baseline_settings,
+            },
+        },
+        "hypothetical": {
+            "active_candidate_ids": list(candidate_ids),
+            "virtual_oids": hypothetical_oids,
+            "ordinary_stats_fingerprint": ordinary_after_drop,
+            "payload_source": "physical-extracted-payloads",
+            "payload_sha256": {
+                item["candidate_id"]: item["payload_sha256"] for item in physical_objects
+            },
+            "explain": hypothetical_queries,
+        },
+        "paired_queries": paired,
+        "cleanup": cleanup,
+    }
+
+
 def run_synthetic_fidelity(
     *,
     dsn: str,
@@ -455,7 +890,7 @@ def run_synthetic_fidelity(
     patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
     research_root: Path | None = None,
 ) -> dict[str, Any]:
-    """Run only the small MCV+FD same-patched-binary primary comparison."""
+    """Run the three small same-patched-binary RQ3 mechanism comparisons."""
 
     if not dsn or not isinstance(dsn, str):
         raise ValueError("a patched PostgreSQL DSN is required")
@@ -470,24 +905,10 @@ def run_synthetic_fidelity(
     }
     verify_frozen_systems(advisor_root, patched_postgres_root)
     import psycopg
-    from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
     from extstats_advisor.dbms.postgres.patch import probe_patched_postgres
 
     connection = None
-    relation_oid: int | None = None
-    mcv_name = "rq3_fidelity_mcv"
-    fd_name = "rq3_fidelity_fd"
-    physical_payloads: list[dict[str, Any]] = []
-    physical_payload_bytes: dict[str, bytes] = {}
-    paired: list[dict[str, Any]] = []
-    cleanup: dict[str, Any] = {
-        "physical_objects_dropped": False,
-        "overlay_reset_before": False,
-        "overlay_reset_after": False,
-        "physical_extstats_count_after": None,
-        "overlay_active_after": None,
-        "verified": False,
-    }
+    created_tables: list[str] = []
     cleanup_errors: list[str] = []
     started = time.monotonic()
     try:
@@ -499,178 +920,27 @@ def run_synthetic_fidelity(
             raise RuntimeError(
                 "connected patched PostgreSQL reference source does not match the pinned source"
             )
-        cleanup["overlay_reset_before"] = True
         connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
         if _active_oids(connection) is not None:
             raise RuntimeError("hypothetical overlay reset did not clear active state")
         connection.execute("SET timezone = 'UTC'")
         connection.execute("SET DateStyle = 'ISO, YMD'")
         connection.execute("SET default_statistics_target = 100")
-        connection.execute(
-            "CREATE TEMP TABLE rq3_fidelity_fixture (a integer, b integer, c integer)"
-        )
-        connection.execute(
-            """
-            INSERT INTO rq3_fidelity_fixture
-            SELECT i % 7, i % 7, i % 3
-              FROM generate_series(1, 1000) AS s(i)
-            """
-        )
-        relation_oid = int(
-            connection.execute("SELECT 'rq3_fidelity_fixture'::regclass::oid").fetchone()[0]
-        )
-        schema, relation = _relation_identity(connection, relation_oid)
-        connection.execute(
-            "CREATE STATISTICS rq3_fidelity_mcv (mcv) ON a, b FROM rq3_fidelity_fixture"
-        )
-        connection.execute(
-            "CREATE STATISTICS rq3_fidelity_fd (dependencies) ON a, b FROM rq3_fidelity_fixture"
-        )
-        connection.execute("ALTER STATISTICS rq3_fidelity_mcv SET STATISTICS 100")
-        connection.execute("ALTER STATISTICS rq3_fidelity_fd SET STATISTICS 100")
-        connection.execute("ANALYZE rq3_fidelity_fixture")
-        ordinary_before = ordinary_stats_fingerprint(connection, relation_oid)
-        extracted_payloads = [
-            _physical_payload(connection, relation_oid, mcv_name, "mcv"),
-            _physical_payload(connection, relation_oid, fd_name, "dependencies"),
-        ]
-        physical_candidate_ids = ("synthetic-mcv", "synthetic-fd")
-        for candidate_id, payload in zip(physical_candidate_ids, extracted_payloads, strict=True):
-            payload["candidate_id"] = candidate_id
-            physical_payload_bytes[candidate_id] = payload.pop("payload")
-        physical_payloads = extracted_payloads
-        catalog_order = tuple(
-            str(row[0])
-            for row in connection.execute(
-                """
-                SELECT e.stxname
-                  FROM pg_catalog.pg_statistic_ext AS e
-                 WHERE e.stxrelid = %s
-                 ORDER BY e.oid
-                """,
-                (relation_oid,),
-            ).fetchall()
-        )
-        catalog_candidate_order = tuple(
-            payload["candidate_id"]
-            for name in catalog_order
-            for payload in physical_payloads
-            if payload["name"] == name
-        )
-        physical_queries: list[dict[str, Any]] = []
-        connection.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
-        physical_transaction_settings = _settings(connection)
-        for query_id, query in _fixture_queries("rq3_fidelity_fixture"):
-            rows, document = _plan_rows_and_document(connection, query, schema, relation)
-            physical_queries.append(
-                {
-                    "query_id": query_id,
-                    "sql": query,
-                    "plan_rows": rows,
-                    "explain": document,
-                    "explain_sha256": semantic_digest(document),
-                }
-            )
-        connection.execute("ROLLBACK")
-        connection.execute("DROP STATISTICS rq3_fidelity_mcv, rq3_fidelity_fd")
-        cleanup["physical_objects_dropped"] = True
-        if _physical_count(connection, relation_oid) != 0:
-            raise RuntimeError("physical extended statistics remained after DROP STATISTICS")
-        ordinary_after_drop = ordinary_stats_fingerprint(connection, relation_oid)
-        if ordinary_after_drop != ordinary_before:
-            raise RuntimeError("dropping physical statistics changed ordinary statistics")
-        if catalog_candidate_order != physical_candidate_ids:
-            raise RuntimeError(
-                "physical statistics catalog order differs from fixture design order"
-            )
-
-        connection.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
-        connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
-        hypothetical_oids: list[int] = []
-        for candidate_id, kind in zip(physical_candidate_ids, ("m", "f"), strict=True):
-            row = connection.execute(
-                """
-                SELECT pg_catalog.pg_hypothetical_extstats_register_definition(
-                    %s::text, %s::oid, %s::"char", %s::smallint[], %s::bytea
+        configurations: list[dict[str, Any]] = []
+        for configuration_id, object_specs in SYNTHETIC_CONFIGURATIONS:
+            created_tables.append(f"rq3_fidelity_{configuration_id.replace('-', '_')}")
+            configurations.append(
+                _run_synthetic_configuration(
+                    connection,
+                    configuration_id=configuration_id,
+                    object_specs=object_specs,
                 )
-                """,
-                (candidate_id, relation_oid, kind, [1, 2], physical_payload_bytes[candidate_id]),
-            ).fetchone()
-            if row is None or row[0] is None:
-                raise RuntimeError(f"hypothetical registration returned no OID for {candidate_id}")
-            hypothetical_oids.append(int(row[0]))
-        connection.execute(
-            "SELECT pg_catalog.pg_hypothetical_extstats_activate(%s::oid[])",
-            (hypothetical_oids,),
-        )
-        observed_oids = _active_oids(connection)
-        if observed_oids != tuple(hypothetical_oids):
-            raise RuntimeError("patched PostgreSQL did not preserve synthetic activation order")
-        if _physical_count(connection, relation_oid) != 0:
-            raise RuntimeError("hypothetical realization has physical catalog state")
-        ordinary_hypothetical = ordinary_stats_fingerprint(connection, relation_oid)
-        if ordinary_hypothetical != ordinary_after_drop:
-            raise RuntimeError("hypothetical realization changed ordinary statistics")
-        hypothetical_transaction_settings = _settings(connection)
-        hypothetical_queries: list[dict[str, Any]] = []
-        for query_id, query in _fixture_queries("rq3_fidelity_fixture"):
-            rows, document = _plan_rows_and_document(connection, query, schema, relation)
-            hypothetical_queries.append(
-                {
-                    "query_id": query_id,
-                    "sql": query,
-                    "plan_rows": rows,
-                    "explain": document,
-                    "explain_sha256": semantic_digest(document),
-                }
             )
-        connection.execute("ROLLBACK")
-        connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
-        cleanup["overlay_reset_after"] = True
-        cleanup["overlay_active_after"] = _active_oids(connection)
-        cleanup["physical_extstats_count_after"] = _physical_count(connection, relation_oid)
-        connection.execute("DROP TABLE rq3_fidelity_fixture")
-        if cleanup["overlay_active_after"] is not None:
-            raise RuntimeError("hypothetical overlay remained active after cleanup")
-        if cleanup["physical_extstats_count_after"] != 0:
-            raise RuntimeError("physical statistics leaked after cleanup")
-        cleanup["verified"] = True
-        by_id = {record["query_id"]: record for record in hypothetical_queries}
-        controls = {
-            "identical_binary": True,
-            "identical_relation_contents": True,
-            "identical_schema": True,
-            "identical_workload": True,
-            "ordinary_stats_equal": ordinary_before == ordinary_after_drop == ordinary_hypothetical,
-            "identical_statistics_target": True,
-            "equivalent_design": True,
-            "payload_correspondence_verified": True,
-            "identical_planner_settings": physical_transaction_settings
-            == hypothetical_transaction_settings,
-            "physical_object_selection_equal": catalog_candidate_order == physical_candidate_ids,
-            "overlay_resolution_verified": observed_oids == tuple(hypothetical_oids),
-        }
-        for physical_record in physical_queries:
-            hypothetical_record = by_id[physical_record["query_id"]]
-            paired_queries = {
-                "query_id": physical_record["query_id"],
-                "sql": physical_record["sql"],
-                "physical_plan_rows": physical_record["plan_rows"],
-                "hypothetical_plan_rows": hypothetical_record["plan_rows"],
-                "physical_explain": physical_record["explain"],
-                "hypothetical_explain": hypothetical_record["explain"],
-                "physical_explain_sha256": physical_record["explain_sha256"],
-                "hypothetical_explain_sha256": hypothetical_record["explain_sha256"],
-                "mismatch_evidence": {
-                    "payload_correspondence": controls["payload_correspondence_verified"],
-                    "ordinary_stats_equal": controls["ordinary_stats_equal"],
-                    "statistics_order_equal": controls["physical_object_selection_equal"],
-                    "planner_settings_equal": controls["identical_planner_settings"],
-                    "physical_object_selection_equal": controls["physical_object_selection_equal"],
-                    "overlay_resolution_equal": controls["overlay_resolution_verified"],
-                },
-            }
-            paired.append(paired_queries)
+        first_table = "rq3_fidelity_mcv_only"
+        fixture_workload = [
+            {"query_id": query_id, "sql": query}
+            for query_id, query in _fixture_queries(first_table)
+        ]
         artifact = build_fidelity_artifact(
             experiment_id=SYNTHETIC_FIXTURE_ID,
             system={
@@ -682,67 +952,33 @@ def run_synthetic_fidelity(
             },
             fixture={
                 "fixture_id": SYNTHETIC_FIXTURE_ID,
-                "relation": {"schema": schema, "name": relation, "oid": relation_oid},
+                "relation_scope": "three independent temporary relations, one per configuration",
                 "row_count": 1000,
                 "data_generator": "generate_series(1,1000) -> (i % 7, i % 7, i % 3)",
                 "data_digest": semantic_digest({"generator": "i % 7, i % 7, i % 3", "rows": 1000}),
-                "workload": [
-                    {"query_id": query_id, "sql": query}
-                    for query_id, query in _fixture_queries("rq3_fidelity_fixture")
-                ],
-                "workload_digest": semantic_digest(
-                    [
-                        {"query_id": query_id, "sql": query}
-                        for query_id, query in _fixture_queries("rq3_fidelity_fixture")
-                    ]
-                ),
+                "workload": fixture_workload,
+                "workload_digest": semantic_digest(fixture_workload),
             },
-            settings={
-                "physical": physical_transaction_settings,
-                "hypothetical": hypothetical_transaction_settings,
-                "statistics_target": 100,
-            },
-            physical={
-                "candidate_ids": list(physical_candidate_ids),
-                "catalog_order_candidate_ids": list(catalog_candidate_order),
-                "ordinary_stats_fingerprint": ordinary_after_drop,
-                "payload_correspondence": "exact-bytes-from-physical-source",
-                "objects": physical_payloads,
-                "explain": physical_queries,
-            },
-            hypothetical={
-                "active_candidate_ids": list(physical_candidate_ids),
-                "virtual_oids": hypothetical_oids,
-                "ordinary_stats_fingerprint": ordinary_after_drop,
-                "payload_source": "physical-extracted-payloads",
-                "payload_sha256": {
-                    candidate_id: physical_payloads[index]["payload_sha256"]
-                    for index, candidate_id in enumerate(physical_candidate_ids)
-                },
-                "explain": hypothetical_queries,
-            },
-            paired_queries=paired,
-            controls=controls,
-            cleanup=cleanup,
+            configurations=configurations,
         )
         write_fidelity_artifact(output, artifact)
-        return {
-            "status": "ready-to-run",
-            "artifact": str(Path(output).resolve()),
-            "summary": artifact["summary"],
-            "semantic_digest": artifact["semantic_digest"],
-            "elapsed_seconds": round(time.monotonic() - started, 6),
-        }
-    except Exception:
+        return fidelity_run_result(artifact, output, time.monotonic() - started)
+    except Exception as experiment_error:
         if connection is not None:
             try:
                 connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
             except psycopg.Error as cleanup_error:
                 cleanup_errors.append(f"overlay reset: {cleanup_error}")
-            try:
-                connection.execute("DROP TABLE IF EXISTS rq3_fidelity_fixture")
-            except psycopg.Error as cleanup_error:
-                cleanup_errors.append(f"fixture drop: {cleanup_error}")
+            for table in created_tables:
+                try:
+                    connection.execute(f"DROP TABLE IF EXISTS {table}")
+                except psycopg.Error as cleanup_error:
+                    cleanup_errors.append(f"fixture drop {table}: {cleanup_error}")
+        if cleanup_errors:
+            diagnostic = "; ".join(cleanup_errors)
+            raise RuntimeError(
+                f"{experiment_error}; cleanup also failed: {diagnostic}"
+            ) from experiment_error
         raise
     finally:
         if connection is not None:

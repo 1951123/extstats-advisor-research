@@ -10,7 +10,8 @@ estimator, candidate generator, search implementation, or utility benchmark.
 The primary comparison keeps one patched PostgreSQL binary, one database, one
 relation, one schema, one deterministic workload, one ordinary-statistics
 state, one statistics target, one planner/session setting set, and one native
-statistics design. The only intended factor is:
+statistics design per configuration. The only intended factor within each
+configuration is:
 
 ```text
 physical pg_statistic_ext realization
@@ -18,15 +19,19 @@ physical pg_statistic_ext realization
 backend-local catalogless hypothetical realization
 ```
 
-The synthetic fixture contains one MCV object and one functional-dependency
-object over `(a, b)`. The physical arm creates and analyzes those objects. The
-harness extracts their native payload bytes, records catalog OIDs and
-definitions, then drops the physical objects without a second `ANALYZE`. The
-hypothetical arm registers those exact extracted bytes through
+The harness runs three independently rebuilt configurations over `(a, b)`:
+MCV only, functional dependencies only, and MCV plus functional dependencies.
+For each configuration, the physical arm creates and analyzes the selected
+objects. The harness extracts their native payload bytes, records catalog OIDs
+and definitions, then drops the physical objects without a second `ANALYZE`.
+The hypothetical arm registers those exact extracted bytes through
 `pg_hypothetical_extstats_register_definition`, activates the same candidate
 order, and runs the identical workload. Registration, activation, payload
 deserialization, planner lookup, and reset are PostgreSQL patched-backend
 contracts; the research code only orchestrates them and captures evidence.
+Each configuration records non-empty payload evidence, supported equality
+clause forms, and any observed physical-versus-no-extstats estimate change;
+the artifact does not claim planner object-consumption instrumentation.
 
 The physical and hypothetical arms both run inside
 `REPEATABLE READ READ ONLY` planner transactions. Ordinary statistics are
@@ -40,6 +45,8 @@ payload-correspondence failure, or cleanup failure.
 Each successful run writes one `rq3-fidelity-v1` JSON artifact. It binds:
 
 - `paper-experiment-v1` and the RQ3 primary experiment ID;
+- three configuration records (`mcv-only`, `fd-only`, and `mcv-plus-fd`), each
+  with its own physical/hypothetical state and cleanup proof;
 - research, advisor, patched PostgreSQL source, backend contract, and server
   identities;
 - deterministic fixture/data/workload identities and digests;
@@ -85,9 +92,13 @@ primary same-binary comparison.
 
 ## Limitations
 
-The fixture validates the MCV and dependency registration path and multi-object
-activation order on a single relation. It does not establish fidelity for all
+The fixture validates the MCV and dependency registration paths and
+multi-object activation order on independently rebuilt single-relation
+fixtures. It does not establish fidelity for all
 PostgreSQL expressions, statistics kinds, relation shapes, planner settings,
 or workload classes. It also does not establish sample-to-full-data utility;
-that remains RQ2b. A successful synthetic artifact moves the primary harness
-to `ready-to-run`, not `complete`.
+that remains RQ2b. A runner result is `artifact-created` with a
+`fidelity_gate` of `pass` or `fail`; mismatches are preserved in the artifact
+rather than hidden. Only a live exact gate across all three configurations
+moves the paper primary status to `ready-to-run`, and that status is still not
+`complete`.

@@ -90,6 +90,11 @@ metrics are exact root \texttt{Plan Rows} agreement, mismatch count, and
 mismatch classification; no near-exact threshold is pre-registered without
 empirical justification. Objective difference is derived, while q-error
 correlation is only a secondary diagnostic. A
+synthetic Priority-0 harness exercises this comparison independently for MCV
+only, dependencies only, and MCV-plus-dependencies configurations; it records
+payload non-emptiness, supported clause forms, and observed changes relative to
+the no-extended-statistics baseline without claiming planner-consumption
+instrumentation. A
 secondary sanity check compares patched PostgreSQL physical statistics with
 stock PostgreSQL physical statistics with the overlay inactive; this is not
 the primary hypothetical-fidelity comparison. If the current build setup

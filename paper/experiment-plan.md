@@ -209,24 +209,31 @@ implementation/build blocker and do not change DBMS semantics to fit the plan.
 Sample-to-full-data utility transfer is excluded from this RQ and reported in
 RQ2b.
 
-**Systems/configurations:** the same patched PostgreSQL binary in physical and
-catalogless overlay modes for the primary comparison; stock physical mode only
-for the secondary sanity check.
+**Systems/configurations:** the same patched PostgreSQL binary in three
+independent primary configurations—MCV only, dependencies only, and MCV plus
+dependencies. Each configuration runs physical catalog realization and
+catalogless overlay realization from the same extracted native payload. Stock
+physical mode is used only for the secondary sanity check.
 
-**Datasets:** datasets with the required fixed data, native payload, and
-workload artifacts; a valid P1 transfer is not a prerequisite for the primary
+**Dataset:** the Priority-0 validation fixture
+`rq3-synthetic-mcv-fd-v1`, rebuilt independently for each of the three
+configurations. A valid P1 transfer is not a prerequisite for the primary
 mechanism comparison.
 
-**Independent variables:** physical/overlay realization, candidate kind, and
-equivalent design membership.
+**Independent variables:** physical/overlay realization and the three
+independently rebuilt candidate designs (MCV only, dependencies only, and their
+combination).
 
 **Controlled variables:** all controls above, plus relation/schema identity and
 active ordering. The patched-versus-stock build identity is recorded only for
 the secondary sanity check, never substituted into the primary comparison.
 
 **Metrics:** exact root `Plan Rows` agreement, mismatch count and
-classification, and derived objective difference. Per-query q-error/rank
-correlation is retained only as a secondary diagnostic.
+classification, and derived objective difference. Payload non-emptiness and
+supported clause-form evidence are required for each candidate kind; observed
+physical-versus-no-extstats estimate changes are recorded but are not asserted
+as a universal `used=true` signal. Per-query q-error/rank correlation is
+retained only as a secondary diagnostic.
 
 **Raw artifact:** paired EXPLAIN output, active design records, physical
 catalog/payload verification, ordinary-statistics fingerprints, binary/build
@@ -237,11 +244,14 @@ hypothetical-versus-physical estimate/error agreement plots.
 
 **Intended paper output:** RQ3 fidelity figure and limitations table.
 
-**Status:** `implementation-needed` until the small synthetic MCV+FD fixture is
-executed successfully on the pinned patched build; the harness and artifact
-contract are unit-validated. The secondary patched-versus-stock build sanity
-path remains `implementation-needed`. Neither status implies that an official
-benchmark result is complete.
+**Artifact/status semantics:** the runner writes an artifact even when paired
+Plan Rows mismatch and returns `status=artifact-created` with
+`fidelity_gate=pass|fail`. `pass` means mismatch count is exactly zero. Paper
+status remains `implementation-needed` until all three configurations pass a
+live run on the pinned patched build; only then may it become `ready-to-run`.
+The secondary patched-versus-stock build sanity path remains
+`implementation-needed`. Neither status implies that an official benchmark
+result is complete.
 
 ## RQ4 — Advisor necessity / ablation
 
