@@ -145,7 +145,7 @@ def _truth_binding(research_root: Path) -> dict[str, Any]:
         "query_count": spec["query_count"],
         "authoritative_observations_sha256": spec["observations_sha256"],
         "authoritative_observations_semantic_digest": audit["observation_semantic_digest"],
-        "audit_semantic_digest": audit["semantic_digest"],
+        "audit_semantic_digest": audit["observation_semantic_digest"],
         "observations_logical_path": _relative(observations, research_root),
     }
 
