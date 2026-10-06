@@ -66,6 +66,18 @@ from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
+from .singleton_equivalence import (
+    inspect_artifact as inspect_singleton_equivalence,
+)
+from .singleton_equivalence import (
+    run_equivalence,
+)
+from .singleton_equivalence import (
+    validate_artifact as validate_singleton_equivalence,
+)
+from .singleton_equivalence import (
+    write_preflight as write_singleton_equivalence_preflight,
+)
 from .system_freeze import DEFAULT_SYSTEM_FREEZE_PATH, load_system_freeze, validate_system_freeze
 from .type_coercion import run_type_coercion
 
@@ -470,6 +482,33 @@ def _parser() -> argparse.ArgumentParser:
     rebind_run.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_PATH)
     rebind_validate = rebind_commands.add_parser("validate")
     rebind_validate.add_argument("artifact", type=Path)
+    singleton = validate_commands.add_parser(
+        "singleton-equivalence",
+        help="audit incidence-incremental singleton profiling against the old reference",
+    )
+    singleton_commands = singleton.add_subparsers(dest="singleton_command", required=True)
+    singleton_preflight = singleton_commands.add_parser("preflight")
+    singleton_preflight.add_argument("--output", type=Path, required=True)
+    singleton_preflight.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    singleton_run = singleton_commands.add_parser("run", aliases=["create"])
+    singleton_run.add_argument("--dataset", required=True)
+    singleton_run.add_argument("--source-run", type=Path, required=True)
+    singleton_run.add_argument("--patched-dsn", required=True)
+    singleton_run.add_argument("--output", type=Path, required=True)
+    singleton_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    singleton_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    singleton_validate = singleton_commands.add_parser("validate")
+    singleton_validate.add_argument("artifact", type=Path)
+    singleton_inspect = singleton_commands.add_parser("inspect")
+    singleton_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -756,6 +795,26 @@ def main(argv: list[str] | None = None) -> int:
                 )
             else:
                 result = validate_rebound_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "singleton-equivalence":
+            if args.singleton_command == "preflight":
+                result = write_singleton_equivalence_preflight(
+                    args.output, advisor_root=args.advisor_root
+                )
+            elif args.singleton_command in {"run", "create"}:
+                result = run_equivalence(
+                    args.dataset,
+                    args.source_run,
+                    patched_dsn=args.patched_dsn,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                    output=args.output,
+                )
+            elif args.singleton_command == "validate":
+                result = validate_singleton_equivalence(args.artifact)
+            else:
+                result = inspect_singleton_equivalence(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "build-sanity":
