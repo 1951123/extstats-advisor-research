@@ -645,6 +645,13 @@ def run_census13_canary(
             raise ValueError("advisor design-time exact truth differs from matched canary truth")
         _run([advisor_command, "sandbox", "destroy", "postgres", "--dsn", planner_catalog_dsn])
         reinit_role("stock")
+        deployment_load = load_census13(
+            stock_dsn,
+            data_root=data_root,
+            reset_disposable=True,
+            statistics_target=100,
+            seed_identifier=SEED_IDENTIFIER,
+        )
         deployment_output = runtime / "deployment-result-v1.json"
         source_paths = {
             key: advisor_run / filename
@@ -697,7 +704,7 @@ def run_census13_canary(
         )
         deployment = read_json(deployment_output)
         raw = runtime / "pg16-advisor-per-query.jsonl"
-        load = read_json(advisor_run / "manifest.json")["load"]
+        load = deployment_load
         records, settings, ordinary, stats = _evaluate_arm(
             stock_dsn, workload["queries"], truths, raw, arm_id="pg16-advisor"
         )
