@@ -546,7 +546,7 @@ def run_forest10_fixed_k(
     ):
         raise RQ4ValidationError("formal Forest10 RQ4a has a censored or infeasible method")
     rq4a_path = runtime_output / "rq4-design-evaluation-v1.json"
-    replay_path = runtime_output / "rq4-design-determinism-smoke-v1.json"
+    replay_path = runtime_output / "rq4-design-determinism-smoke-v1.json.gz"
     write_json(replay_path, replay)
     rq4a_child = {
         "format_version": DESIGN_FORMAT,
@@ -585,6 +585,8 @@ def run_forest10_fixed_k(
         "membership_overlap": _overlap(first["comparison"]),
         "deterministic_replay": {
             "artifact": _relative(replay_path, research_root),
+            "artifact_sha256": sha256_file(replay_path),
+            "compression": "gzip",
             "semantic_digest": replay["semantic_digest"],
             "replay_semantic_digests": replay["replay_semantic_digests"],
             "checks": replay["checks"],

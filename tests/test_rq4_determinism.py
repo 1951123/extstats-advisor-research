@@ -60,6 +60,10 @@ def test_design_replay_ignores_runtime_but_compares_planner_evidence(tmp_path: P
     assert validate_design_determinism_smoke(path)["status"] == "valid"
     assert artifact["replay_semantic_digests"][0] == artifact["replay_semantic_digests"][1]
 
+    compressed_path = tmp_path / "replay.json.gz"
+    write_json(compressed_path, artifact)
+    assert validate_design_determinism_smoke(compressed_path)["status"] == "valid"
+
 
 def test_design_replay_rejects_planner_estimate_drift() -> None:
     calls = 0

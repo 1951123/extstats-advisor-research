@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -23,10 +24,17 @@ def semantic_digest(value: Any) -> str:
 
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    payload = json.dumps(value, sort_keys=True, indent=2) + "\n"
+    if path.suffix == ".gz":
+        path.write_bytes(gzip.compress(payload.encode("utf-8"), mtime=0))
+    else:
+        path.write_text(payload, encoding="utf-8")
 
 
 def read_json(path: Path) -> Any:
+    if path.suffix == ".gz":
+        with gzip.open(path, "rt", encoding="utf-8") as stream:
+            return json.load(stream)
     return json.loads(path.read_text(encoding="utf-8"))
 
 

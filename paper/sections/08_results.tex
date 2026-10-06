@@ -84,9 +84,17 @@ requires a shared stock realization ID, one recorded union \texttt{ANALYZE},
 post-drop payload equality without another \texttt{ANALYZE}, and per-method
 physical EXPLAIN/q-error evidence. Neither sandbox objective nor one native
 realization is substituted for the other layer.
-% TODO(PAPER-RQ4): insert heuristic, greedy, and tiny-universe exhaustive-search table.
-% The replay/shared-realization smokes are readiness evidence only; they are
-% not formal AreCEL RQ4 results and do not populate this table.
+\textbf{Partial dataset-scoped evidence.} The Forest10 fixed-$k$ canary has
+passed the deterministic patched-sandbox replay and the shared stock physical
+realization gates for nine configurations (five pre-registered random seeds,
+workload-frequency, dependency/correlation, singleton-utility, and greedy
+ADD). The immutable parent artifact is
+\texttt{experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json} (digest
+\texttt{eaa23eeb...}); the global RQ4 status remains incomplete because
+Census13, Power7, and DMV11 are still planned. This result is protocol
+evidence, not a claim that greedy search is globally optimal or superior.
+% TODO(PAPER-RQ4): insert the complete cross-dataset heuristic and
+% tiny-universe exhaustive-search table after the remaining datasets run.
 
 \subsection{RQ5: practicality}
 \textbf{Intended claim.} The operational cost of offline capture, native

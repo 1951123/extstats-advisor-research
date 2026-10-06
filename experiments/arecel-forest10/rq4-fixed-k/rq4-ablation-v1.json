@@ -1,0 +1,1634 @@
+{
+  "candidate_universe": {
+    "eligibility_frozen_before_utility": true,
+    "eligible_candidate_count": 57,
+    "eligible_candidate_ids": [
+      "cand_1537a6ae8ef67c379c8d0fa0",
+      "cand_c2737dfb5bfbb3e415dfb793",
+      "cand_817be8bf7bbbc96c20bde230",
+      "cand_4de3778bb8674287b6dd5b29",
+      "cand_cbf4af3acd6feaa65760c6d1",
+      "cand_76679921292e8c769dbbd7bc",
+      "cand_0deae0d5de82a5a1fdc34111",
+      "cand_77c3e92fff291d4d9515dc69",
+      "cand_5ba9cc937a696a76876f820d",
+      "cand_bafa53ec095d804233d42826",
+      "cand_01933ab615fb49e2f81b5b92",
+      "cand_599a2efab190b6e2b7457ff1",
+      "cand_42d3a67034bf5f02658cb7bf",
+      "cand_6da3014a15c7b2b3c07e9d00",
+      "cand_c66e567561c42b80680d57a2",
+      "cand_6b7c22215c39c807cda3872e",
+      "cand_12b552d6e4274b3e7916918d",
+      "cand_5ef1e17a9fde8da19eda6ffc",
+      "cand_9be7db5012712e534c019f4c",
+      "cand_da7591327792c9bc98b427d7",
+      "cand_2d0c2bee852360475ed257b4",
+      "cand_c896441b03802e5c10cf4551",
+      "cand_04524e4170fda10f288de2ad",
+      "cand_14cd836002a9a76c97eb6c1e",
+      "cand_93882884648663deb326f015",
+      "cand_337495ed13b57f0375c7bcab",
+      "cand_6937f79d38c06930e7c9a9ac",
+      "cand_eacd76ebde5ba7e94ae853aa",
+      "cand_f2d14d17235b34bf39a631f5",
+      "cand_1b63c8f8f8149f09f2ecb7c4",
+      "cand_2bfd4df050e52e03bab680f1",
+      "cand_81dab29687d98fe8038c0eaa",
+      "cand_7bbe4e7fc76c5686e2511cd9",
+      "cand_ee4e6f9b6b050fa4d222c6a7",
+      "cand_4af628931e0d02eb50415f2b",
+      "cand_1c45580597c36333ce8f1444",
+      "cand_8b7a8e0422ed4ae2befb1bc8",
+      "cand_478f6c4acd54af28ee697d8d",
+      "cand_326fad30e7ded583291003e6",
+      "cand_4293ec8c30a7314cb8ef5dbf",
+      "cand_c9b6667734c10464fab19fca",
+      "cand_9e2c1625957106365a4e00c0",
+      "cand_25decdfdae3f06f5b53849b4",
+      "cand_b5554ee4928fcdbe8d6f046c",
+      "cand_a393d81ec58b047e1e129db0",
+      "cand_ea8b2557e86251bb3994535b",
+      "cand_eaa4ce0396b4cc5c68b2550e",
+      "cand_51488597ac9ebd3cb59d2ff1",
+      "cand_b431757a4868f78ad44fa186",
+      "cand_929dfbf8e7ddadf6f4b97e87",
+      "cand_d8596bbbd92afbad9d401cd6",
+      "cand_d94eec73746ef01a6811815f",
+      "cand_66f3d1c2b0b2b61a41f44994",
+      "cand_e15685675a396385fa8dc298",
+      "cand_c7595f3b6addcec1b9919cbe",
+      "cand_71249b442b7dc4205d74a4b9",
+      "cand_e1a89b9755e5e3f384afc69f"
+    ],
+    "eligible_universe_semantic_digest": "b92566ec3a35a3085a1bcd58363785819ac5a51d94a04d3181195c6170a98bda",
+    "excluded_candidate_count": 33,
+    "excluded_candidates": [
+      {
+        "candidate": {
+          "candidate_id": "cand_180f1aca13a8c5108bf8587b",
+          "column_names": [
+            "elevation",
+            "aspect"
+          ],
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 1
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_5145966b02cf91e171813fa4",
+          "column_names": [
+            "elevation",
+            "slope"
+          ],
+          "column_ordinals": [
+            1,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 2
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_167e4216d1a6a67793c9c262",
+          "column_names": [
+            "elevation",
+            "horizontal_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            1,
+            4
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 3
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_def4cd7d91e9c52626ac2095",
+          "column_names": [
+            "elevation",
+            "vertical_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 4
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_90af3e080977b58ab521164f",
+          "column_names": [
+            "elevation",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            1,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 5
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_90c167dd3f1b143a424fc31c",
+          "column_names": [
+            "elevation",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 6
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_b3378e4be98290dabf7818ad",
+          "column_names": [
+            "elevation",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            1,
+            8
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 7
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_b624b25594df9944197c2da6",
+          "column_names": [
+            "elevation",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            1,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 8
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_93e74d74d75db4881a5c78fe",
+          "column_names": [
+            "elevation",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            1,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 9
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_3e9a252c8497cf9485c1e2bf",
+          "column_names": [
+            "aspect",
+            "slope"
+          ],
+          "column_ordinals": [
+            2,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 10
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_e1c68095edc1e7d16ef35db1",
+          "column_names": [
+            "aspect",
+            "horizontal_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            2,
+            4
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 11
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_860dc60d738553013956ecd7",
+          "column_names": [
+            "aspect",
+            "vertical_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            2,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 12
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_cc9fe27cbc00932dfe831214",
+          "column_names": [
+            "aspect",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 13
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_4b9192190af0ce56474b488f",
+          "column_names": [
+            "aspect",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            2,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 17
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_c26372310589755270039530",
+          "column_names": [
+            "slope",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 20
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_7520a35d1af16ebee9bebec5",
+          "column_names": [
+            "slope",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            3,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 24
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_2789d68a9d5caedd3a78bca0",
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 26
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_e37763b51bcb372a2e936c51",
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            4,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 27
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_d195750c990c1f338276384f",
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            4,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 29
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_64ffa7d3317834ca2f368053",
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            4,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 30
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_495dd25b582456015ed78df0",
+          "column_names": [
+            "vertical_distance_to_hydrology",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            5,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 31
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_ae0d07b4c02c933acd13bc9c",
+          "column_names": [
+            "vertical_distance_to_hydrology",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            5,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 34
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_2563a1292cbbb94c1a5f9a4e",
+          "column_names": [
+            "vertical_distance_to_hydrology",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            5,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 35
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_d96959c30232d7bb838132b0",
+          "column_names": [
+            "horizontal_distance_to_roadways",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            6,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 36
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_138baba1d0738fdf0b01f205",
+          "column_names": [
+            "horizontal_distance_to_roadways",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            6,
+            8
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 37
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_9a4710a381bad8412253efb0",
+          "column_names": [
+            "horizontal_distance_to_roadways",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            6,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 38
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_a45cf8398a276fdf4645fca3",
+          "column_names": [
+            "horizontal_distance_to_roadways",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            6,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 39
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_9a4aa78cf1ad4f81599610ae",
+          "column_names": [
+            "hillshade_9am",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            7,
+            8
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 40
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_c39626cbc0bdda2e3e8d9533",
+          "column_names": [
+            "hillshade_9am",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 41
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_9d636c3c81aea8a611eb4609",
+          "column_names": [
+            "hillshade_9am",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            7,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 42
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_47897f42902c36e3d5cec68a",
+          "column_names": [
+            "hillshade_noon",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            8,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 43
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_37ac169ee8d4fadcc1d45665",
+          "column_names": [
+            "hillshade_noon",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            8,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 44
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_217401defbfd3bb5e4c49763",
+          "column_names": [
+            "hillshade_3pm",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            9,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 45
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      }
+    ],
+    "full_candidate_count": 90
+  },
+  "cleanup": {
+    "patched_cluster_stopped": true,
+    "pgdata_logs_sockets_credentials_serialized": false,
+    "stock_cluster_stopped": true
+  },
+  "dataset": {
+    "content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "dataset_id": "arecel-forest10",
+    "rows": 581012,
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1"
+  },
+  "experiment_id": "rq4-forest10-fixed-k-v1",
+  "formal_confirmatory_experiment": true,
+  "format_version": "rq4-forest10-fixed-k-v1",
+  "frozen_parameters": {
+    "candidate_kinds": [
+      "postgresql.mcv",
+      "postgresql.dependencies"
+    ],
+    "experiment_seed_identifier": 123,
+    "fixed_k": 4,
+    "parameter_selection_basis": "pre-registered Forest10 RQ4 fixed-k canary protocol",
+    "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "selection_budget": {
+      "max_configuration_evaluations": 2000,
+      "not_fixed_evaluation_budget_comparison": true,
+      "unit": "configuration-objective-evaluations",
+      "wall_clock_seconds": 3600.0
+    },
+    "statistics_target": 100
+  },
+  "progress": {
+    "census13_rq4_fixed_k": "planned",
+    "dmv11_rq4_fixed_k": "planned",
+    "forest10_rq4_fixed_k": "complete",
+    "power7_rq4_fixed_k": "planned",
+    "rq4_fixed_evaluation_budget": "implementation-needed",
+    "rq4_fixed_k_ablations": "ready-to-run",
+    "rq4_native_analyze_stability": "planned"
+  },
+  "research_commit_sha": "3cd2e58ac9201db0f036769e985820c49ca4e4e5",
+  "rq4a": {
+    "artifact": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+    "deterministic_replay_passed": true,
+    "evidence_role": "primary deterministic patched-sandbox design quality",
+    "membership_overlap": {
+      "greedy_vs_correlation": null,
+      "greedy_vs_frequency": null,
+      "greedy_vs_singleton": null,
+      "pairwise_jaccard": {
+        "dependency-correlation-top-k__greedy-ADD": 0.3333333333333333,
+        "dependency-correlation-top-k__singleton-utility-top-k": 0.6,
+        "random-k-seed-1__dependency-correlation-top-k": 0.0,
+        "random-k-seed-1__greedy-ADD": 0.14285714285714285,
+        "random-k-seed-1__random-k-seed-2": 0.14285714285714285,
+        "random-k-seed-1__random-k-seed-3": 0.14285714285714285,
+        "random-k-seed-1__random-k-seed-4": 0.0,
+        "random-k-seed-1__random-k-seed-5": 0.0,
+        "random-k-seed-1__singleton-utility-top-k": 0.14285714285714285,
+        "random-k-seed-1__workload-frequency-top-k": 0.0,
+        "random-k-seed-2__dependency-correlation-top-k": 0.3333333333333333,
+        "random-k-seed-2__greedy-ADD": 0.0,
+        "random-k-seed-2__random-k-seed-3": 0.0,
+        "random-k-seed-2__random-k-seed-4": 0.0,
+        "random-k-seed-2__random-k-seed-5": 0.0,
+        "random-k-seed-2__singleton-utility-top-k": 0.14285714285714285,
+        "random-k-seed-2__workload-frequency-top-k": 0.0,
+        "random-k-seed-3__dependency-correlation-top-k": 0.0,
+        "random-k-seed-3__greedy-ADD": 0.14285714285714285,
+        "random-k-seed-3__random-k-seed-4": 0.14285714285714285,
+        "random-k-seed-3__random-k-seed-5": 0.0,
+        "random-k-seed-3__singleton-utility-top-k": 0.14285714285714285,
+        "random-k-seed-3__workload-frequency-top-k": 0.14285714285714285,
+        "random-k-seed-4__dependency-correlation-top-k": 0.14285714285714285,
+        "random-k-seed-4__greedy-ADD": 0.14285714285714285,
+        "random-k-seed-4__random-k-seed-5": 0.0,
+        "random-k-seed-4__singleton-utility-top-k": 0.14285714285714285,
+        "random-k-seed-4__workload-frequency-top-k": 0.14285714285714285,
+        "random-k-seed-5__dependency-correlation-top-k": 0.0,
+        "random-k-seed-5__greedy-ADD": 0.0,
+        "random-k-seed-5__singleton-utility-top-k": 0.0,
+        "random-k-seed-5__workload-frequency-top-k": 0.0,
+        "singleton-utility-top-k__greedy-ADD": 0.6,
+        "workload-frequency-top-k__dependency-correlation-top-k": 0.14285714285714285,
+        "workload-frequency-top-k__greedy-ADD": 0.14285714285714285,
+        "workload-frequency-top-k__singleton-utility-top-k": 0.14285714285714285
+      }
+    },
+    "metrics": {
+      "dependency-correlation-top-k": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.0765246400551316,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 4.697900021710666e-05,
+        "sandbox_objective": 6.975084941241996,
+        "selected_membership": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.6197689059999902
+      },
+      "greedy-ADD": {
+        "configuration_objective_evaluations": 224,
+        "delta_vs_empty_configuration": 0.34317388783756986,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 2240000,
+        "preprocessing_wall_clock_seconds": 792.7166331030003,
+        "sandbox_objective": 6.708435693459558,
+        "selected_membership": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "selection_wall_clock_seconds": 792.7166179960004,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 796.2955033280004
+      },
+      "random-k-seed-1": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.11227195324196071,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 5.153999973117607e-05,
+        "sandbox_objective": 6.939337628055167,
+        "selected_membership": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_d94eec73746ef01a6811815f",
+          "cand_c7595f3b6addcec1b9919cbe"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.6182210449997
+      },
+      "random-k-seed-2": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.0519139766113943,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 4.117400021641515e-05,
+        "sandbox_objective": 6.9996956046857335,
+        "selected_membership": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_c7595f3b6addcec1b9919cbe",
+          "cand_71249b442b7dc4205d74a4b9"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.748170842000036
+      },
+      "random-k-seed-3": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.11227195324196071,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 3.0794000849709846e-05,
+        "sandbox_objective": 6.939337628055167,
+        "selected_membership": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_478f6c4acd54af28ee697d8d"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.6857596529998773
+      },
+      "random-k-seed-4": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.20683057439868424,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 3.0393000088224653e-05,
+        "sandbox_objective": 6.8447790068984435,
+        "selected_membership": [
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_eaa4ce0396b4cc5c68b2550e"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.6975135749999026
+      },
+      "random-k-seed-5": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.0,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 3.0082999728620052e-05,
+        "sandbox_objective": 7.051609581297128,
+        "selected_membership": [
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_51488597ac9ebd3cb59d2ff1"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.549883282999872
+      },
+      "singleton-utility-top-k": {
+        "configuration_objective_evaluations": 59,
+        "delta_vs_empty_configuration": 0.272234248034251,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 590000,
+        "preprocessing_wall_clock_seconds": 7.432699931086972e-05,
+        "sandbox_objective": 6.779375333262877,
+        "selected_membership": [
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "selection_wall_clock_seconds": 201.83345527799975,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 205.33835500999976
+      },
+      "workload-frequency-top-k": {
+        "configuration_objective_evaluations": 1,
+        "delta_vs_empty_configuration": 0.11842346003271498,
+        "object_count": 4,
+        "postgresql_planner_query_calls": 10000,
+        "preprocessing_wall_clock_seconds": 4.378199992061127e-05,
+        "sandbox_objective": 6.933186121264413,
+        "selected_membership": [
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_ea8b2557e86251bb3994535b"
+        ],
+        "selection_wall_clock_seconds": 0.0,
+        "termination_or_censoring_reason": null,
+        "termination_status": "complete",
+        "total_design_time_wall_clock_seconds": 3.516849718999765
+      }
+    },
+    "random_aggregate": {
+      "individual_objectives": [
+        6.939337628055167,
+        6.9996956046857335,
+        6.939337628055167,
+        6.8447790068984435,
+        7.051609581297128
+      ],
+      "max": 7.051609581297128,
+      "mean": 6.954951889798328,
+      "min": 6.8447790068984435,
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "std": 0.06923927182436584
+    },
+    "semantic_digest": "5d76bcc798711cd07b4cd927b590a4d16015ac818f5622d5595865c0132a5887"
+  },
+  "rq4b": {
+    "analyze_count": 1,
+    "child_semantic_digests": {
+      "dependency-correlation-top-k": "864132e4d568bda9258da4c8da4017acf30a7a82b4a9c37a2d88fd20d7e02958",
+      "greedy-ADD": "56270e34ba7bfc5ffe574e9624ac4dea78a433b9c45b27ed8b31d174b888bd06",
+      "random-k-seed-1": "c5df2801a8a5fabde29642ef8bde6226b65be4f507821d4248ddce03338750a6",
+      "random-k-seed-2": "ff8a625433b53632c1715bb61a3556135cc5e1abf1f2db44256f78eb06874c41",
+      "random-k-seed-3": "7a10a4a055fda3ed8212712f189269badaca2568254456d283e40d390ed0f680",
+      "random-k-seed-4": "df19e45c7876ee86e00640d7b30bbb9b0ee5525958eb29d4d9a7810ec4da8a13",
+      "random-k-seed-5": "bd7f66376cef35bc5e85878213fa95c613d9e39566500ed311ec94828fe918c8",
+      "singleton-utility-top-k": "165db3929d7f20eeb432cda286c4f7cb89eaa8dc96dcf149e9b1d52686fdb348",
+      "workload-frequency-top-k": "b30fe70dc04cf6ced0a7f6219979ac69705f265fcc3c71143d2aa77c33728933"
+    },
+    "children": {
+      "dependency-correlation-top-k": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/dependency-correlation-top-k.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.888565126713599,
+          "p50": 1.1899440818470561,
+          "p95": 15.652380952380813,
+          "p99": 68.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.888565126713599
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "semantic_digest": "864132e4d568bda9258da4c8da4017acf30a7a82b4a9c37a2d88fd20d7e02958",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "864132e4d568bda9258da4c8da4017acf30a7a82b4a9c37a2d88fd20d7e02958",
+          "status": "valid"
+        }
+      },
+      "greedy-ADD": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/greedy-ADD.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.642858135248904,
+          "p50": 1.1814656047254377,
+          "p95": 14.5,
+          "p99": 63.01000000000022,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.642858135248904
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "semantic_digest": "56270e34ba7bfc5ffe574e9624ac4dea78a433b9c45b27ed8b31d174b888bd06",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "56270e34ba7bfc5ffe574e9624ac4dea78a433b9c45b27ed8b31d174b888bd06",
+          "status": "valid"
+        }
+      },
+      "random-k-seed-1": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/random-k-seed-1.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.979208688657935,
+          "p50": 1.2000884914535885,
+          "p95": 16.5,
+          "p99": 69.01000000000022,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.979208688657935
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_d94eec73746ef01a6811815f",
+          "cand_c7595f3b6addcec1b9919cbe"
+        ],
+        "semantic_digest": "c5df2801a8a5fabde29642ef8bde6226b65be4f507821d4248ddce03338750a6",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "c5df2801a8a5fabde29642ef8bde6226b65be4f507821d4248ddce03338750a6",
+          "status": "valid"
+        }
+      },
+      "random-k-seed-2": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/random-k-seed-2.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 7.04818771590784,
+          "p50": 1.2057929289068936,
+          "p95": 16.33484848484846,
+          "p99": 70.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 7.04818771590784
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_c7595f3b6addcec1b9919cbe",
+          "cand_71249b442b7dc4205d74a4b9"
+        ],
+        "semantic_digest": "ff8a625433b53632c1715bb61a3556135cc5e1abf1f2db44256f78eb06874c41",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "ff8a625433b53632c1715bb61a3556135cc5e1abf1f2db44256f78eb06874c41",
+          "status": "valid"
+        }
+      },
+      "random-k-seed-3": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/random-k-seed-3.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.979208688657935,
+          "p50": 1.2000884914535885,
+          "p95": 16.5,
+          "p99": 69.01000000000022,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.979208688657935
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_478f6c4acd54af28ee697d8d"
+        ],
+        "semantic_digest": "7a10a4a055fda3ed8212712f189269badaca2568254456d283e40d390ed0f680",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "7a10a4a055fda3ed8212712f189269badaca2568254456d283e40d390ed0f680",
+          "status": "valid"
+        }
+      },
+      "random-k-seed-4": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/random-k-seed-4.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.907900259524348,
+          "p50": 1.1906417197565438,
+          "p95": 16.0,
+          "p99": 68.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.907900259524348
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_eaa4ce0396b4cc5c68b2550e"
+        ],
+        "semantic_digest": "df19e45c7876ee86e00640d7b30bbb9b0ee5525958eb29d4d9a7810ec4da8a13",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "df19e45c7876ee86e00640d7b30bbb9b0ee5525958eb29d4d9a7810ec4da8a13",
+          "status": "valid"
+        }
+      },
+      "random-k-seed-5": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/random-k-seed-5.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 7.131135810912019,
+          "p50": 1.2142857142857142,
+          "p95": 17.0,
+          "p99": 70.00361538461546,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 7.131135810912019
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_51488597ac9ebd3cb59d2ff1"
+        ],
+        "semantic_digest": "bd7f66376cef35bc5e85878213fa95c613d9e39566500ed311ec94828fe918c8",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "bd7f66376cef35bc5e85878213fa95c613d9e39566500ed311ec94828fe918c8",
+          "status": "valid"
+        }
+      },
+      "singleton-utility-top-k": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/singleton-utility-top-k.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.727696723275672,
+          "p50": 1.184661903254045,
+          "p95": 15.0,
+          "p99": 64.50500000000011,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.727696723275672
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "semantic_digest": "165db3929d7f20eeb432cda286c4f7cb89eaa8dc96dcf149e9b1d52686fdb348",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "165db3929d7f20eeb432cda286c4f7cb89eaa8dc96dcf149e9b1d52686fdb348",
+          "status": "valid"
+        }
+      },
+      "workload-frequency-top-k": {
+        "logical_path": "experiments/arecel-forest10/rq4-fixed-k/physical/workload-frequency-top-k.json",
+        "metrics": {
+          "lower_is_better": true,
+          "max": 9429.0,
+          "mean": 6.9240819004048175,
+          "p50": 1.1849682034536317,
+          "p95": 16.0,
+          "p99": 68.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 6.9240819004048175
+        },
+        "physical_object_count": 4,
+        "selected_membership": [
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_ea8b2557e86251bb3994535b"
+        ],
+        "semantic_digest": "b30fe70dc04cf6ced0a7f6219979ac69705f265fcc3c71143d2aa77c33728933",
+        "validation": {
+          "formal_confirmatory_experiment": true,
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "method_count": 1,
+          "semantic_digest": "b30fe70dc04cf6ced0a7f6219979ac69705f265fcc3c71143d2aa77c33728933",
+          "status": "valid"
+        }
+      }
+    },
+    "evidence_role": "secondary controlled stock full-data physical consequence",
+    "metrics": {
+      "dependency-correlation-top-k": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.888565126713599,
+        "p50": 1.1899440818470561,
+        "p95": 15.652380952380813,
+        "p99": 68.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.888565126713599
+      },
+      "greedy-ADD": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.642858135248904,
+        "p50": 1.1814656047254377,
+        "p95": 14.5,
+        "p99": 63.01000000000022,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.642858135248904
+      },
+      "random-k-seed-1": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.979208688657935,
+        "p50": 1.2000884914535885,
+        "p95": 16.5,
+        "p99": 69.01000000000022,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.979208688657935
+      },
+      "random-k-seed-2": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 7.04818771590784,
+        "p50": 1.2057929289068936,
+        "p95": 16.33484848484846,
+        "p99": 70.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 7.04818771590784
+      },
+      "random-k-seed-3": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.979208688657935,
+        "p50": 1.2000884914535885,
+        "p95": 16.5,
+        "p99": 69.01000000000022,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.979208688657935
+      },
+      "random-k-seed-4": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.907900259524348,
+        "p50": 1.1906417197565438,
+        "p95": 16.0,
+        "p99": 68.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.907900259524348
+      },
+      "random-k-seed-5": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 7.131135810912019,
+        "p50": 1.2142857142857142,
+        "p95": 17.0,
+        "p99": 70.00361538461546,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 7.131135810912019
+      },
+      "singleton-utility-top-k": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.727696723275672,
+        "p50": 1.184661903254045,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.727696723275672
+      },
+      "workload-frequency-top-k": {
+        "lower_is_better": true,
+        "max": 9429.0,
+        "mean": 6.9240819004048175,
+        "p50": 1.1849682034536317,
+        "p95": 16.0,
+        "p99": 68.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 6.9240819004048175
+      }
+    },
+    "parent_realization_digest": "b739802044c519913d71b9a17524f95c96fa1454272716e0a1d3fd41e7dd9974",
+    "shared_realization_format": "rq4-stock-shared-realization-v1",
+    "shared_realization_id": "a6c0f27d3046f37a9ed204fee26a601e70ffde26ccbec2bf4d0fc797c5d56c04",
+    "stock_load": {
+      "analyze_count": 1,
+      "benchmark_id": "arecel-forest10",
+      "dsn_recorded": false,
+      "elapsed_seconds": 0.963451,
+      "null_counts": {
+        "Aspect": 0,
+        "Elevation": 0,
+        "Hillshade_3pm": 0,
+        "Hillshade_9am": 0,
+        "Hillshade_Noon": 0,
+        "Horizontal_Distance_To_Fire_Points": 0,
+        "Horizontal_Distance_To_Hydrology": 0,
+        "Horizontal_Distance_To_Roadways": 0,
+        "Slope": 0,
+        "Vertical_Distance_To_Hydrology": 0
+      },
+      "physical_extended_statistics_count": 0,
+      "physical_schema": {
+        "column_count": 10,
+        "columns": [
+          {
+            "name": "elevation",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "aspect",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "slope",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "horizontal_distance_to_hydrology",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "vertical_distance_to_hydrology",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "horizontal_distance_to_roadways",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "hillshade_9am",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "hillshade_noon",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "hillshade_3pm",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          },
+          {
+            "name": "horizontal_distance_to_fire_points",
+            "not_null": false,
+            "postgres_type": "DOUBLE PRECISION"
+          }
+        ],
+        "extended_statistics_count": 0,
+        "row_count": 581012,
+        "verified": true
+      },
+      "relation": "public.forest10",
+      "rows": 581012,
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "seed_identifier": 123,
+      "seed_sql": "SELECT setseed(1.0 / 123)",
+      "server_version": "16.14",
+      "server_version_num": 160014,
+      "source_csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+      "statistics_target": 100,
+      "statistics_targets": [
+        {
+          "name": "elevation",
+          "target": 100
+        },
+        {
+          "name": "aspect",
+          "target": 100
+        },
+        {
+          "name": "slope",
+          "target": 100
+        },
+        {
+          "name": "horizontal_distance_to_hydrology",
+          "target": 100
+        },
+        {
+          "name": "vertical_distance_to_hydrology",
+          "target": 100
+        },
+        {
+          "name": "horizontal_distance_to_roadways",
+          "target": 100
+        },
+        {
+          "name": "hillshade_9am",
+          "target": 100
+        },
+        {
+          "name": "hillshade_noon",
+          "target": 100
+        },
+        {
+          "name": "hillshade_3pm",
+          "target": 100
+        },
+        {
+          "name": "horizontal_distance_to_fire_points",
+          "target": 100
+        }
+      ],
+      "validated": true
+    },
+    "union_candidate_ids": [
+      "cand_04524e4170fda10f288de2ad",
+      "cand_0deae0d5de82a5a1fdc34111",
+      "cand_12b552d6e4274b3e7916918d",
+      "cand_1537a6ae8ef67c379c8d0fa0",
+      "cand_4293ec8c30a7314cb8ef5dbf",
+      "cand_478f6c4acd54af28ee697d8d",
+      "cand_4af628931e0d02eb50415f2b",
+      "cand_4de3778bb8674287b6dd5b29",
+      "cand_51488597ac9ebd3cb59d2ff1",
+      "cand_5ba9cc937a696a76876f820d",
+      "cand_6b7c22215c39c807cda3872e",
+      "cand_71249b442b7dc4205d74a4b9",
+      "cand_76679921292e8c769dbbd7bc",
+      "cand_77c3e92fff291d4d9515dc69",
+      "cand_8b7a8e0422ed4ae2befb1bc8",
+      "cand_c7595f3b6addcec1b9919cbe",
+      "cand_d94eec73746ef01a6811815f",
+      "cand_da7591327792c9bc98b427d7",
+      "cand_ea8b2557e86251bb3994535b",
+      "cand_eaa4ce0396b4cc5c68b2550e"
+    ],
+    "union_size": 20
+  },
+  "semantic_digest": "eaa23eeb830cdd9e2636e36e920d18d5456df10135ed319a217cb0033c80109c",
+  "source_inputs": {
+    "artifacts": {
+      "candidate_universe": {
+        "logical_path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+        "semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b"
+      },
+      "ground_truth": {
+        "logical_path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/ground-truth-v1.json",
+        "semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be"
+      },
+      "native_repository": {
+        "logical_path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/native-stats-repository",
+        "semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc"
+      },
+      "snapshot": {
+        "logical_path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot",
+        "semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a"
+      }
+    },
+    "manifest_semantic_digest": "ea478d75acbe4983031b49854cc52901e1bb38f0f44dc059fc483354eb1129e0",
+    "run_directory": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c",
+    "run_id": "2d6213e57c49975ef7a70c9c",
+    "source_paths": {
+      "candidate_universe": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+      "ground_truth": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/ground-truth-v1.json",
+      "native_repository": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/native-stats-repository",
+      "snapshot": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot"
+    },
+    "source_sha256": {
+      "candidate_universe": "006b82f33ed08e0df7320caae74e7836394c2e027a0490bfab3ea90a1c9f6703",
+      "ground_truth": "fd141e9740f60b1645cdc54f7d93befc5f8575d6106a60b44ed6536bb1c404a8",
+      "native_repository_manifest": "0db9fde7b2d1c4da22a4c2be01f07b5a872dac59d561531ce140049512e818b6",
+      "snapshot_manifest": "7d05f86bde463e6b4c1090261306784ec8c7960b28baaccdddc27b56499f31ed"
+    },
+    "summary_path": "experiments/arecel-forest10/rq1-confirmatory/advisor-canonical-k8/canonical-k8-summary-v1.json",
+    "summary_semantic_digest": "3b5b02109749f029f7af329bdca95fe3c0d0909e0ee6b88b7f1027edb7acec72"
+  },
+  "status": "complete",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+      "repository": "1951123/extstats-advisor"
+    },
+    "change_policy": "A semantic change to the frozen advisor, patched PostgreSQL, or stock PostgreSQL requires system-freeze-v2 and re-evaluation of affected confirmatory experiments. system-freeze-v1 is never silently overwritten.",
+    "format_version": "system-freeze-v1",
+    "patched_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "scope": "Frozen system under test for confirmatory paper experiments; research harness revisions are recorded per artifact.",
+    "status": "frozen",
+    "stock_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    }
+  },
+  "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+  "truth_binding": {
+    "audit_semantic_digest": "4158c749c583d9c21137564361b6fb538ad9f6a7bcac11645384540d37476546",
+    "authoritative_observations_semantic_digest": "4158c749c583d9c21137564361b6fb538ad9f6a7bcac11645384540d37476546",
+    "authoritative_observations_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+    "authority": "sfu-db/AreCELearnedYet",
+    "bound_ground_truth_set_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
+    "cardinality_vector_digest": "78fd6d2cf3d35671395844b8eb30e59baf3d81466e1b1474d87c95478802f14d",
+    "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "observations_logical_path": "truth/arecel/forest10/authoritative-cardinality-observations-v1.json",
+    "policy_identity": "AreCEL benchmark primary truth policy v1",
+    "policy_semantic_digest": "7d5710fe6a7ee0a3312c0366c0c6cec30720fb03f6ec261ab12cc02ee7f86d58",
+    "policy_status": "validated-provenance",
+    "query_count": 10000,
+    "source_kind": "authoritative-external-exact",
+    "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+    "workload_id": "arecel_forest10_test_v1"
+  },
+  "workload": {
+    "query_count": 10000,
+    "workload_id": "arecel_forest10_test_v1"
+  }
+}

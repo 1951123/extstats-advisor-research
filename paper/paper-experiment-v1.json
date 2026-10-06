@@ -405,7 +405,7 @@
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
       "status": "ready-to-run",
-      "implementation_status": "rq4a-deterministic-and-rq4b-small-physical-smoke-ready-formal-unrun",
+      "implementation_status": "Forest10 dataset-scoped formal fixed-k canary complete; global four-dataset RQ4 remains incomplete",
       "evidence_hierarchy": {
         "rq4a": "primary deterministic patched-sandbox design quality",
         "rq4b": "secondary stochastic stock physical consequence",
@@ -429,7 +429,8 @@
       "deterministic_replay_contract": {
         "format_version": "rq4-design-determinism-smoke-v1",
         "runtime_fields_excluded_from_replay": ["wall_clock_seconds", "elapsed_wall_clock_seconds", "wall_time_seconds"],
-        "exact_fields": ["selected_membership", "evaluation_order", "planner_estimates", "sandbox_objective", "configuration_trace", "semantic_digest"]
+        "exact_fields": ["selected_membership", "evaluation_order", "planner_estimates", "sandbox_objective", "configuration_trace", "semantic_digest"],
+        "formal_raw_storage": "The Forest10 replay is lossless gzip-compressed JSON because the uncompressed raw evidence exceeds GitHub's single-file limit; artifact_sha256 and semantic_digest are both recorded."
       },
       "shared_physical_realization_contract": {
         "format_version": "rq4-stock-physical-evaluation-v1",
@@ -462,6 +463,34 @@
         "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
       },
       "formal_arecel_runs": false,
+      "formal_arecel_scope_note": "false denotes that the global four-dataset RQ4 campaign is not complete; Forest10 has a dataset-scoped formal result and Census13, Power7, and DMV11 remain planned.",
+      "formal_dataset_status": {
+        "arecel-forest10": {
+          "status": "complete",
+          "artifact": {
+            "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+            "format_version": "rq4-forest10-fixed-k-v1",
+            "semantic_digest": "eaa23eeb830cdd9e2636e36e920d18d5456df10135ed319a217cb0033c80109c",
+            "formal_confirmatory_experiment": true
+          },
+          "rq4a_replay": {
+            "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-determinism-smoke-v1.json.gz",
+            "format_version": "rq4-design-determinism-smoke-v1",
+            "semantic_digest": "ffc4dff19ec7e1441b79050dfd28d5586f07219337b582ea2ce915a6daca07b3",
+            "artifact_sha256": "5f8eeb00f9f7dc093e755265ea68ffa2b24bb302503d56c43ddec21d49956be6",
+            "compression": "gzip",
+            "replay_count": 2
+          },
+          "rq4b_child_count": 9,
+          "shared_union_size": 20,
+          "shared_analyze_count": 1,
+          "truth_policy_status": "validated-provenance",
+          "global_rq4_status": "ready-to-run"
+        },
+        "arecel-census13": "planned",
+        "arecel-power7": "planned",
+        "arecel-dmv11": "planned"
+      },
       "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
       "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "configuration-objective evaluations and PostgreSQL per-query planner calls are reported for all methods", "exhaustive is restricted to a separately declared tiny universe", "formal RQ4a replay and method evidence are complete", "formal RQ4b stock physical evidence records native realization identity and stochastic protocol"]
     },
@@ -575,7 +604,7 @@
       {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "ready-to-run",
-        "note": "Deterministic patched replay and small stock shared-union/drop physical gates passed. Readiness artifacts are not formal AreCEL results; no formal RQ4 result is complete."
+        "note": "Global status remains ready-to-run because only Forest10 is complete. Forest10 formal RQ4a/RQ4b evidence is recorded under experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json (digest eaa23eeb...). Census13, Power7, and DMV11 remain planned."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
