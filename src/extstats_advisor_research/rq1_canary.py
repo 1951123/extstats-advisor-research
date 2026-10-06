@@ -113,7 +113,12 @@ def summarize_per_query(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _pair_summary(reference: list[dict[str, Any]], advisor: list[dict[str, Any]]) -> dict[str, Any]:
+def _pair_summary(
+    reference: list[dict[str, Any]],
+    advisor: list[dict[str, Any]],
+    *,
+    include_per_query: bool = True,
+) -> dict[str, Any]:
     left = {row["query_id"]: row for row in reference}
     right = {row["query_id"]: row for row in advisor}
     if set(left) != set(right):
@@ -138,7 +143,10 @@ def _pair_summary(reference: list[dict[str, Any]], advisor: list[dict[str, Any]]
                 "classification": classification,
             }
         )
-    return {"classification_counts": counts, "query_count": len(paired), "per_query": paired}
+    result: dict[str, Any] = {"classification_counts": counts, "query_count": len(paired)}
+    if include_per_query:
+        result["per_query"] = paired
+    return result
 
 
 def _artifact_payload(artifact: dict[str, Any]) -> dict[str, Any]:
@@ -248,7 +256,9 @@ def validate_rq1_artifact(artifact: Any) -> dict[str, Any]:
         ("pg16-target10000", "target10000_vs_advisor"),
     ):
         expected = _pair_summary(
-            per_arm[reference_id]["per_query"], per_arm["pg16-advisor"]["per_query"]
+            per_arm[reference_id]["per_query"],
+            per_arm["pg16-advisor"]["per_query"],
+            include_per_query=False,
         )
         if paired.get(key) != expected:
             raise ValueError(f"RQ1 paired comparison {key} is not reproducible")
@@ -314,11 +324,14 @@ def build_rq1_artifact(
         "per_arm": normalized,
         "paired_comparison": {
             "default_vs_advisor": _pair_summary(
-                normalized["pg16-default"]["per_query"], normalized["pg16-advisor"]["per_query"]
+                normalized["pg16-default"]["per_query"],
+                normalized["pg16-advisor"]["per_query"],
+                include_per_query=False,
             ),
             "target10000_vs_advisor": _pair_summary(
                 normalized["pg16-target10000"]["per_query"],
                 normalized["pg16-advisor"]["per_query"],
+                include_per_query=False,
             ),
         },
         "dataset_progress": dataset_progress
