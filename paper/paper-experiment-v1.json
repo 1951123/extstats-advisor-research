@@ -30,7 +30,7 @@
       "is_system_under_test_pin": false,
       "clean_tree_required_before_run": true
     },
-    "rule": "Do not silently substitute the current manuscript commit or a floating PostgreSQL version for any unresolved identity."
+    "rule": "Use system-freeze-v1 for the frozen SUT and record the actual committed research harness SHA in every experiment artifact; do not substitute a floating PostgreSQL version or a global research SHA."
   },
   "seed_policy": {
     "experiment_seed_identifier": 123,
@@ -127,7 +127,7 @@
       "role": "RQ1 stock baseline and deployment target",
       "extended_statistics_objects": 0,
       "statistics_target": "manifested per dataset baseline contract",
-      "postgresql_build_identity": "freeze_gate.stock_postgresql_build_identity"
+      "postgresql_build_identity": "paper/system-freeze-v1.json:stock_postgresql.required_build_contract plus the per-run postgres-lab identity digest"
     },
     {
       "configuration_id": "strong-conventional-postgresql-baseline",
@@ -188,7 +188,7 @@
         "headline_evaluation": "stock PostgreSQL full-data deployment; never the patched sandbox objective"
       },
       "dataset_progress": {
-        "arecel-census13": "planned",
+        "arecel-census13": "complete",
         "arecel-forest10": "planned",
         "arecel-power7": "planned",
         "arecel-dmv11": "planned"

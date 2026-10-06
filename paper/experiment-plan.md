@@ -65,7 +65,7 @@ specification.
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 canary is the first dataset-level run; Forest10, Power7, and DMV11 remain planned. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 canary is complete as a dataset-level artifact; Forest10, Power7, and DMV11 remain planned, so the global campaign is incomplete. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |

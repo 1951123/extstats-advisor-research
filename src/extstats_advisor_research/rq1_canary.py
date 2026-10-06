@@ -347,7 +347,13 @@ def inspect_rq1_artifact(path: Path) -> dict[str, Any]:
         "research_commit_sha": artifact["research_commit_sha"],
         "dataset_progress": artifact["dataset_progress"],
         "summaries": {arm_id: artifact["per_arm"][arm_id]["summary"] for arm_id in ARM_IDS},
-        "paired_comparison": artifact["paired_comparison"],
+        "paired_comparison": {
+            key: {
+                "query_count": value["query_count"],
+                "classification_counts": value["classification_counts"],
+            }
+            for key, value in artifact["paired_comparison"].items()
+        },
     }
 
 
