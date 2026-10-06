@@ -10,6 +10,7 @@ from extstats_advisor_research import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRE
 from extstats_advisor_research.provenance import semantic_digest
 from extstats_advisor_research.rq3_fidelity import (
     MISMATCH_CATEGORIES,
+    _relation_identity,
     build_fidelity_artifact,
     classify_plan_rows_mismatch,
     fidelity_gate,
@@ -295,6 +296,18 @@ def test_categories_are_closed() -> None:
     assert "statistics-order-mismatch" in MISMATCH_CATEGORIES
     assert "physical-object-selection-difference" not in MISMATCH_CATEGORIES
     assert "plan-rows-mismatch-unexplained" in MISMATCH_CATEGORIES
+
+
+def test_temporary_catalog_namespace_matches_explain_namespace() -> None:
+    class Result:
+        def fetchone(self):
+            return ("pg_temp_7", "fixture")
+
+    class Connection:
+        def execute(self, query, parameters):
+            return Result()
+
+    assert _relation_identity(Connection(), 1001) == ("pg_temp", "fixture")
 
 
 @pytest.mark.integration

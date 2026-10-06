@@ -535,7 +535,13 @@ def _relation_identity(connection: Any, relation_oid: int) -> tuple[str, str]:
     ).fetchone()
     if row is None:
         raise RuntimeError("synthetic RQ3 relation disappeared")
-    return str(row[0]), str(row[1])
+    schema = str(row[0])
+    # PostgreSQL catalogs expose a session-local temporary namespace as
+    # pg_temp_N, while EXPLAIN VERBOSE renders the same relation as pg_temp.
+    # Normalize the catalog identity to the planner's displayed identity.
+    if schema.startswith("pg_temp_"):
+        schema = "pg_temp"
+    return schema, str(row[1])
 
 
 def _plan_rows_and_document(
@@ -965,6 +971,12 @@ def run_synthetic_fidelity(
         return fidelity_run_result(artifact, output, time.monotonic() - started)
     except Exception as experiment_error:
         if connection is not None:
+            try:
+                # An EXPLAIN capture intentionally runs in a read-only
+                # transaction. End it before attempting fixture cleanup.
+                connection.rollback()
+            except psycopg.Error as cleanup_error:
+                cleanup_errors.append(f"transaction rollback: {cleanup_error}")
             try:
                 connection.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
             except psycopg.Error as cleanup_error:
