@@ -95,6 +95,17 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
                 f"synthetic fixture must not replace a confirmatory dataset in {experiment_id}"
             )
 
+    datasets = spec.get("datasets")
+    if not isinstance(datasets, list) or {item.get("dataset_id") for item in datasets} != set(
+        ARECEL_DATASETS
+    ):
+        raise ValueError("paper specification must enumerate the four AreCEL datasets")
+    for dataset in datasets:
+        if dataset.get("truth_source") != "authoritative-external-exact from audited AreCEL labels":
+            raise ValueError("AreCEL confirmatory truth source is not the audited external policy")
+        if dataset.get("truth_policy") != "paper/benchmark-truth-policy-v1.json":
+            raise ValueError("AreCEL dataset is missing benchmark-truth-policy-v1")
+
     exact_arecel_ids = {
         "rq1-confirmatory-matched-baselines",
         "rq2a-confirmatory-transfer",

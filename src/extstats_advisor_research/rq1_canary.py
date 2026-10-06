@@ -657,6 +657,7 @@ def run_census13_canary(
             reset_disposable=True,
             seed_identifier=SEED_IDENTIFIER,
             advisor_command=advisor_command,
+            truth_source="production-exact",
         )
         advisor_run = Path(advisor_result["run_directory"])
         generated_truth = read_json(advisor_run / "ground-truth-v1.json")

@@ -38,6 +38,21 @@ protocol, provenance audit, and derived-artifact checks are complete.
   Ground truth never constructs the sample/native payloads or changes the
   PostgreSQL estimator. Current source kinds are
   `production-exact-execution` and `authoritative-external-exact`.
+- **AreCEL benchmark truth policy:** confirmatory RQ1/RQ2/RQ4/RQ5 runs use
+  `authoritative-external-exact from audited AreCEL labels`, gated per dataset
+  by `paper/benchmark-truth-policy-v1.json`. The DBMS-neutral observations are
+  imported afresh into a `GroundTruthSet` for every fresh snapshot; a
+  `GroundTruthSet` from another snapshot is never reused. The existing
+  Census13 production-exact canary remains one-time equivalence evidence, not
+  the default source for repeated benchmark runs. Production exact execution
+  remains an independent validation mechanism and a measured production
+  truth-acquisition cost path.
+- **Label provenance:** each dataset audit binds the AreCEL upstream commit,
+  source workload and `base-original-label.pkl` hashes, canonical workload
+  hash, exact source-index/source-query-ID/research-query-ID mapping, dataset
+  identity, split, and 10,000-query coverage. The observations wire file
+  contains only `format_version`, `workload_id`, and `truths`; provenance is
+  stored separately.
 - **Artifact rule:** raw artifacts remain referenced by RunID and digest;
   derived artifacts must retain source manifest and commit identities.
 
@@ -113,11 +128,13 @@ relation contents, workload query texts/order, ordinary statistics policy,
 truth definition, hardware/environment, and timeout policy. Dataset-specific
 paper-baseline differences must be recorded rather than normalized away.
 
-**Census13 canary (`rq1-matched-comparison-v1`):** This is the first
-confirmatory execution and does not complete the four-dataset RQ1 campaign.
-Every arm starts from a `postgres-lab reinit` state and uses the same full
-dataset, 10,000-query workload, and audited `production-exact-execution`
-GroundTruthSet. `PG16-default` uses stock PostgreSQL with no extended
+**Census13 canary (`rq1-matched-comparison-v1`):** This is a historical pilot
+and does not complete the four-dataset RQ1 campaign. Its existing artifact
+uses one audited `production-exact-execution` GroundTruthSet as the evidence
+for the label-equivalence gate; no new exact-count collection is part of this
+policy unit. Future confirmatory arms start from a `postgres-lab reinit` state
+and import the audited AreCEL observations into a fresh snapshot-bound
+`GroundTruthSet`. `PG16-default` uses stock PostgreSQL with no extended
 statistics, the default ordinary column-statistics policy, one controlled
 `ANALYZE`, and records the actual `pg_attribute.attstattarget` values.
 `PG16-target10000` uses no extended statistics, target 10000 on every Census13
@@ -143,8 +160,9 @@ of `public.dmv11`, all column targets 10000, experiment seed identifier 123,
 `SELECT setseed(1.0 / 123)`,
 one `ANALYZE public.dmv11`, zero physical extended-statistics objects, stock
 PostgreSQL, the AreCELearnedYet base:test workload with 10,000 test queries,
-and `authoritative-external-exact` labels bound to the audited workload and
-dataset identity.
+and `authoritative-external-exact` labels bound to the audited workload,
+dataset identity, source revision, and current snapshot. It is a protocol
+description, not a claim that a DMV11 RQ1 run was executed in this unit.
 
 **Metrics:** per-query q-error and the shared aggregate metrics; optional gap
 closure only when the learned-CE comparison is demonstrably comparable.
@@ -373,9 +391,13 @@ policy, concurrency, and measurement protocol.
 **Metrics:** snapshot time/size, sample rows, native build time, profiling and
 search time, planner evaluation count, DDL and `ANALYZE` time, catalog/storage
 size, post-deployment planning time, refresh cost, and truth acquisition cost.
-Report authoritative external truth import/validation separately from
-production exact truth collection/counting; do not use the former's low import
-cost as a proxy for the latter's database work.
+For benchmark evaluation, measure authoritative label import, provenance
+validation, and snapshot binding separately. For a real production truth path,
+measure exact-count collection separately; do not use cheap imported AreCEL
+labels as a proxy for production database work. The system adds no learned
+model training/inference path to production query processing, but it can still
+pay for sample capture, exact or authoritative truth acquisition, native
+construction, planner search, and deployment `ANALYZE`.
 
 **Raw artifact:** stage timings, sizes, planner counters, deployment logs,
 catalog measurements, and manifest.

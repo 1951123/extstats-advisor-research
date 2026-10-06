@@ -65,7 +65,11 @@ RQ5, practicality. Exact truth is a separate evaluation input. Current source
 contracts admit either \texttt{production-exact-execution}, collected through a
 restricted read-only repeatable-read source view, or
 \texttt{authoritative-external-exact}, imported with provenance and binding
-validation. The DMV11 artifacts use the latter source kind.
+validation. The confirmatory AreCEL policy selects the latter source kind for
+all four datasets; Census13 has a one-time 10,000-query equivalence audit
+against an existing production-exact canary, while future canonical runs do
+not repeat that expensive collection. Production exact execution remains an
+independent validation and cost path.
 
 The central claims are intentionally conditional. A recommendation optimizes
 the evaluated membership, not necessarily the union of that membership with

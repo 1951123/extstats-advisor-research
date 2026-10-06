@@ -22,7 +22,11 @@ UPSTREAM_URL = "https://github.com/sfu-db/AreCELearnedYet"
 UPSTREAM_COMMIT = "aa52da7768023270bad884232972e0b77ec6534a"
 ARCHIVE_SHA256 = "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79"
 CSV_SHA256 = "f751fc7ecd5bd5e62acd9868a0bbe36413528b6eb2de9c2fc8fcf71d9ef2c13a"
+WORKLOAD_PICKLE_SHA256 = "492faa529ecc6b212733602fd140a42182439a89d22bcf9c8e8b82db1a5154ba"
+LABEL_PICKLE_SHA256 = "5fd6d187830681b16b3c561f7d0a2a014a7fdbabfa1579db655de8131b0ba451"
+CANONICAL_WORKLOAD_SHA256 = "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388"
 EXPECTED_ROWS = 48_842
+EXPECTED_TEST_QUERIES = 10_000
 SCHEMA_CONTRACT_ID = "arecel-census13-postgres-schema-v1"
 
 COLUMNS: tuple[tuple[str, str], ...] = (
@@ -64,6 +68,14 @@ def csv_path(value: Path | None = None) -> Path:
 
 def canonical_workload_path(value: Path | None = None) -> Path:
     return audit_root(value) / "census13.canonical.jsonl.gz"
+
+
+def workload_pickle_path(value: Path | None = None) -> Path:
+    return source_root(value) / "workload" / "base.pkl"
+
+
+def label_pickle_path(value: Path | None = None) -> Path:
+    return source_root(value) / "workload" / "base-original-label.pkl"
 
 
 def _advisor_workload_sql(sql: str) -> str:
@@ -152,7 +164,19 @@ def inspect(value: Path | None = None) -> dict[str, Any]:
     if present:
         if sha256_file(csv) != CSV_SHA256:
             raise ValueError("audited census13 CSV content hash mismatch")
+        if sha256_file(workload_pickle_path(value)) != WORKLOAD_PICKLE_SHA256:
+            raise ValueError("audited census13 workload pickle content hash mismatch")
+        if sha256_file(label_pickle_path(value)) != LABEL_PICKLE_SHA256:
+            raise ValueError("audited census13 label pickle content hash mismatch")
+        if sha256_file(workload) != CANONICAL_WORKLOAD_SHA256:
+            raise ValueError("audited census13 canonical workload content hash mismatch")
         result["csv_sha256"] = sha256_file(csv)
+        result["source_file_sha256"] = {
+            "csv": result["csv_sha256"],
+            "workload_pickle": sha256_file(workload_pickle_path(value)),
+            "label_pickle": sha256_file(label_pickle_path(value)),
+            "canonical_workload": sha256_file(workload),
+        }
         result["canonical_workload_sha256"] = sha256_file(workload)
     result["dataset_content_identity"] = compute_dataset_content_identity(
         result.get("csv_sha256", CSV_SHA256)
@@ -189,7 +213,10 @@ def extract_workload(
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
             "source_workload": "data/census13/workload/base.pkl",
+            "source_labels": "data/census13/workload/base-original-label.pkl",
             "source_split": split,
+            "source_workload_sha256": WORKLOAD_PICKLE_SHA256,
+            "source_label_sha256": LABEL_PICKLE_SHA256,
             "canonical_source_sha256": sha256_file(source),
             "upstream_commit": UPSTREAM_COMMIT,
             "query_id_mapping": query_id_mapping,
@@ -211,6 +238,14 @@ def write_dataset_manifest(output: Path, value: Path | None = None) -> dict[str,
         {
             "format": "research-dataset-manifest-v1",
             "schema_contract": schema_contract(),
+            "source_file_sha256": {
+                "csv": manifest.get("csv_sha256", CSV_SHA256),
+                "workload_pickle": WORKLOAD_PICKLE_SHA256,
+                "label_pickle": LABEL_PICKLE_SHA256,
+                "canonical_workload": manifest.get(
+                    "canonical_workload_sha256", CANONICAL_WORKLOAD_SHA256
+                ),
+            },
             "dataset_content_identity": compute_dataset_content_identity(
                 manifest.get("csv_sha256", CSV_SHA256)
             ),

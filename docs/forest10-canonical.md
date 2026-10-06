@@ -23,10 +23,14 @@ records `forest_full_target100_ordinary` by explaining all 10000 audited test
 queries against the full relation. Its labels are used only as descriptive
 preflight truth; it is not a `GroundTruthSet`.
 
-Snapshot capture and exact truth use the production advisor public APIs. The
-runner loads both artifacts through those APIs and compares every production
-cardinality with the audited label set before deriving candidates. A mismatch,
-missing query, or extra query stops the run.
+Snapshot capture uses the production advisor public APIs, while canonical truth
+is imported from the audited AreCEL observation artifact through the frozen
+`authoritative-external-exact` contract. The runner validates the artifact's
+provenance, workload mapping, and snapshot binding before deriving candidates.
+A mismatch, missing query, or extra query stops the run. The canonical path
+performs only the configured representative sanity checks; it does not
+recapture all 10,000 exact cardinalities. The production exact path remains
+available as an explicit independent validation and cost experiment.
 
 The planner side receives only the sealed 10000-row snapshot through the
 patched PostgreSQL build. Candidate derivation, native materialization,

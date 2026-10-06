@@ -14,6 +14,7 @@ from . import FROZEN_PATCHED_POSTGRES_SHA
 from .advisor_bridge import materialize_native_repository
 from .analysis.audit import contribution_summary, run_audit
 from .analysis.summary import extract_summary
+from .arecel_truth import authoritative_truth_spec, validate_observation_wire
 from .external_truth import import_audited_authoritative_truth, write_authoritative_observations
 from .forest_baseline import _run_full_data_target100, representative_indices
 from .forest_canonical import (
@@ -531,11 +532,19 @@ def _run_canonical(
         timings["truth_sanity_check"] = round(time.monotonic() - sanity_started, 6)
         observations_started = time.monotonic()
         observations_path = layout.path("authoritative-observations-v1.json")
-        write_authoritative_observations(
-            workload["workload_id"],
-            {record["query_id"]: int(record["truth"]) for record in records},
-            observations_path,
-        )
+        source_observations = authoritative_truth.get("observations_path")
+        if source_observations is not None:
+            source_observations = Path(source_observations)
+            validate_observation_wire(
+                read_json(source_observations), workload_id=workload["workload_id"]
+            )
+            observations_path.write_bytes(source_observations.read_bytes())
+        else:
+            write_authoritative_observations(
+                workload["workload_id"],
+                {record["query_id"]: int(record["truth"]) for record in records},
+                observations_path,
+            )
         external = import_audited_authoritative_truth(
             paths["snapshot"],
             observations_path,
@@ -1025,6 +1034,7 @@ def run_forest10(**kwargs: Any) -> dict[str, Any]:
         loader=load_forest10,
         full_format_version="arecel-forest-full-data-target100-v1",
         compact_format_version="arecel-forest-canonical-k8-summary-v1",
+        authoritative_truth=authoritative_truth_spec("arecel-forest10"),
         **kwargs,
     )
 
@@ -1038,6 +1048,7 @@ def run_power7(**kwargs: Any) -> dict[str, Any]:
         loader=load_power7,
         full_format_version="arecel-power7-full-data-target100-v1",
         compact_format_version="arecel-power7-canonical-k8-summary-v1",
+        authoritative_truth=authoritative_truth_spec("arecel-power7"),
         **kwargs,
     )
 
@@ -1052,11 +1063,6 @@ def run_dmv11(**kwargs: Any) -> dict[str, Any]:
         full_format_version="arecel-dmv11-full-data-target100-v1",
         compact_format_version="arecel-dmv11-canonical-k8-summary-v1",
         expected_candidate_count=110,
-        authoritative_truth={
-            "authority": dmv11.AUTHORITATIVE_TRUTH_AUTHORITY,
-            "dataset_identity": dmv11.AUTHORITATIVE_TRUTH_DATASET_IDENTITY,
-            "source_revision": dmv11.AUTHORITATIVE_TRUTH_SOURCE_REVISION,
-            "sanity_check_count": dmv11.AUTHORITATIVE_TRUTH_SANITY_CHECK_COUNT,
-        },
+        authoritative_truth=authoritative_truth_spec("arecel-dmv11"),
         **kwargs,
     )

@@ -12,6 +12,7 @@ from . import FROZEN_PATCHED_POSTGRES_SHA
 from .advisor_bridge import materialize_native_repository
 from .analysis.audit import run_audit
 from .analysis.summary import extract_summary
+from .arecel_truth import authoritative_truth_spec, validate_observation_wire
 from .canonical_runner import run_dmv11 as _shared_run_dmv11
 from .canonical_runner import run_forest10 as _shared_run_forest10
 from .canonical_runner import run_power7 as _shared_run_power7
@@ -98,10 +99,23 @@ def run_census13(
     reset_disposable: bool = False,
     seed_identifier: int | None = None,
     advisor_command: str = "extstats-advisor",
+    truth_source: str = "authoritative-arecel",
+    authoritative_observations: Path | None = None,
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
     research_root = Path(__file__).resolve().parents[2]
+    if truth_source not in {"authoritative-arecel", "production-exact"}:
+        raise ValueError("truth_source must be authoritative-arecel or production-exact")
+    truth_spec = None
+    if truth_source == "authoritative-arecel":
+        truth_spec = authoritative_truth_spec(census13.BENCHMARK_ID, research_root)
+        if authoritative_observations is not None:
+            candidate = Path(authoritative_observations).expanduser().resolve()
+            if not candidate.is_file():
+                raise FileNotFoundError(candidate)
+            validate_observation_wire(read_json(candidate), workload_id="arecel_census13_test_v1")
+            truth_spec["observations_path"] = candidate
     research_identity = verify_research_repository(research_root)
     pins = verify_frozen_systems(advisor_root, patched_postgres_root)
     dataset = census13.inspect(data_root)
@@ -126,12 +140,18 @@ def run_census13(
         "postgresql_setseed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
         if seed_identifier is not None
         else None,
+        "truth_source": truth_source,
     }
     reject_credentials(identity)
     layout = create_layout(output_root, identity)
     paths = layout.artifacts()
     paths["workload"] = layout.path("workload.json")
     paths["dataset_manifest"] = layout.path("dataset-manifest.json")
+    if truth_spec is not None:
+        paths["authoritative_observations"] = layout.path("authoritative-observations-v1.json")
+        paths["authoritative_observations"].write_bytes(
+            Path(truth_spec["observations_path"]).read_bytes()
+        )
     paths["workload"].write_text(workload_path.read_text(encoding="utf-8"), encoding="utf-8")
     census13.write_dataset_manifest(paths["dataset_manifest"], data_root)
     load_result = load_census13(
@@ -150,29 +170,58 @@ def run_census13(
         },
     )
     advisor = [advisor_command]
-    _run(
-        advisor
-        + [
-            "snapshot",
-            "capture",
-            "postgres",
-            "--dsn",
-            production_dsn,
-            "--relation",
-            census13.RELATION,
-            "--sample-rows",
-            str(sample_rows),
-            "--sample-seed",
-            str(sample_seed),
-            "--workload",
-            str(paths["workload"]),
-            "--output",
-            str(paths["snapshot"]),
-            "--ground-truth-output",
-            str(paths["ground_truth"]),
-        ],
-        paths["logs"],
-    )
+    capture_command = advisor + [
+        "snapshot",
+        "capture",
+        "postgres",
+        "--dsn",
+        production_dsn,
+        "--relation",
+        census13.RELATION,
+        "--sample-rows",
+        str(sample_rows),
+        "--sample-seed",
+        str(sample_seed),
+        "--workload",
+        str(paths["workload"]),
+        "--output",
+        str(paths["snapshot"]),
+    ]
+    if truth_source == "production-exact":
+        capture_command.extend(["--ground-truth-output", str(paths["ground_truth"])])
+    _run(capture_command, paths["logs"])
+    if truth_spec is not None:
+        _run(
+            advisor
+            + [
+                "ground-truth",
+                "import",
+                "authoritative",
+                str(paths["snapshot"]),
+                str(paths["authoritative_observations"]),
+                "--authority",
+                str(truth_spec["authority"]),
+                "--dataset-identity",
+                str(truth_spec["dataset_identity"]),
+                "--source-revision",
+                str(truth_spec["source_revision"]),
+                "--output",
+                str(paths["ground_truth"]),
+            ],
+            paths["logs"],
+        )
+        update_manifest(
+            layout,
+            {
+                "authoritative_observations": {
+                    "path": str(paths["authoritative_observations"].relative_to(layout.directory)),
+                    "sha256": sha256_file(paths["authoritative_observations"]),
+                    "authority": truth_spec["authority"],
+                    "dataset_identity": truth_spec["dataset_identity"],
+                    "source_revision": truth_spec["source_revision"],
+                }
+            },
+        )
     _run(
         advisor
         + [

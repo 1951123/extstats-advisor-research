@@ -1,0 +1,27 @@
+{
+  "bound_external_ground_truth_semantic_digest": "575c4036422ee7c414ba4f354217415868576fdcfb496e681cf45023151a299c",
+  "bound_snapshot_semantic_digest": "c59ef631e11f79524475f0345ea54dea35ae976e4b811842da208d63a9d80e26",
+  "canary_artifact_sha256": "5800bbc3358cbb58e83d1f8e3ff746392dec024c572c5ebc4232b4d62647d21a",
+  "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+  "dataset_id": "arecel-census13",
+  "external_observations_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+  "extra": 0,
+  "format_version": "arecel-truth-equivalence-v1",
+  "matched": 10000,
+  "mismatched": 0,
+  "missing": 0,
+  "policy": "authoritative-external-exact validated against production exact execution",
+  "production_exact_ground_truth_logical_path": "runs/197e9b890ac58bc4fbcfb218/ground-truth-v1.json",
+  "production_exact_ground_truth_semantic_digest": "2cb7c9e89d020581c8a632c20a3a971cee3fd7e44a6a67e91bcea28d57038509",
+  "query_count": 10000,
+  "research_commit_sha": "c0557651ea6aabd5a2cd868be8f17b5028068c3a",
+  "semantic_digest": "8d69f7cc3cfb023e122cbcb12e79237402b6a0da45eed7cf63300b940e589fd4",
+  "status": "validated-full-equivalence",
+  "sut_identity": {
+    "advisor_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgresql_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "stock_postgresql_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+  "workload_id": "arecel_census13_test_v1"
+}

@@ -45,7 +45,9 @@
       "workload_identity": "AreCELearnedYet base:test",
       "query_count": 10000,
       "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
-      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+      "truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "truth_policy": "paper/benchmark-truth-policy-v1.json",
+      "production_exact_role": "independent Census13 equivalence validation and production truth-acquisition cost path"
     },
     {
       "dataset_id": "arecel-forest10",
@@ -53,7 +55,9 @@
       "workload_identity": "AreCELearnedYet base:test",
       "query_count": 10000,
       "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
-      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+      "truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "truth_policy": "paper/benchmark-truth-policy-v1.json",
+      "production_exact_role": "independent validation/cost path only; no repeated benchmark truth recollection"
     },
     {
       "dataset_id": "arecel-power7",
@@ -61,7 +65,9 @@
       "workload_identity": "AreCELearnedYet base:test",
       "query_count": 10000,
       "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
-      "truth_source": "manifest-bound; use authoritative-external-exact or production-exact-execution only when the selected contract validates it"
+      "truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "truth_policy": "paper/benchmark-truth-policy-v1.json",
+      "production_exact_role": "independent validation/cost path only; no repeated benchmark truth recollection"
     },
     {
       "dataset_id": "arecel-dmv11",
@@ -69,7 +75,9 @@
       "workload_identity": "AreCELearnedYet base:test",
       "query_count": 10000,
       "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
-      "truth_source": "authoritative-external-exact"
+      "truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "truth_policy": "paper/benchmark-truth-policy-v1.json",
+      "production_exact_role": "independent validation/cost path only; no repeated benchmark truth recollection"
     }
   ],
   "truth_contracts": {
@@ -101,7 +109,13 @@
         "collection": "Import and validate externally produced exact labels with provenance and snapshot/workload binding.",
         "constraints": "The advisor must not claim to have executed externally supplied labels."
       }
-    ]
+    ],
+    "confirmatory_arecel_policy": {
+      "primary_truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "policy_artifact": "paper/benchmark-truth-policy-v1.json",
+      "rule": "Every fresh AdvisorSnapshot imports the observations into a new GroundTruthSet; a GroundTruthSet from another snapshot is never reused.",
+      "production_exact_role": "Independent validation mechanism and measured production exact-count cost path, not the default repeated benchmark truth acquisition."
+    }
   },
   "metrics_and_objectives": {
     "loss_contract": "qerror-cardinality-floor-1-v1",
@@ -183,7 +197,10 @@
         "experiment_seed_identifier": 123,
         "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
         "workload_id": "arecel_census13_test_v1",
-        "truth_source_kind": "production-exact-execution",
+        "truth_source_kind": "authoritative-external-exact",
+        "truth_source_policy": "paper/benchmark-truth-policy-v1.json",
+        "historical_artifact_truth_source_kind": "production-exact-execution",
+        "historical_artifact_role": "The existing Census13 canary's production-exact GroundTruthSet is retained as one-time equivalence evidence; future confirmatory runs import audited AreCEL observations.",
         "budget_selection_basis": "Pre-existing experiments/arecel-census13/search-budget-k8/calibration-v1.json: 60 and 120 seconds expired incomplete rounds; 180 seconds was the first local-optimum completion. This value is frozen before the canary and is not outcome-tuned.",
         "headline_evaluation": "stock PostgreSQL full-data deployment; never the patched sandbox objective"
       },
@@ -194,7 +211,7 @@
         "arecel-dmv11": "planned"
       },
       "metrics": ["per-query q-error", "reporting aggregate metrics", "improved/unchanged/worsened counts"],
-      "truth_contract": "truth_contracts.ground_truth_input",
+      "truth_contract": "truth_contracts.ground_truth_input; confirmatory source is the dataset-gated audited AreCEL observations policy",
       "random_seed_policy": "Use dataset adapter and baseline manifest seeds; record experiment seed identifier and exact PostgreSQL setseed SQL.",
       "required_raw_artifacts": ["per-query estimate/truth rows", "RunManifest", "system logs", "source digests"],
       "required_derived_artifacts": ["baseline comparison table", "q-error distribution data", "query outcome classification"],
@@ -208,7 +225,7 @@
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "protocol": ["P0 fresh full-data baseline", "P1 add-only Recommendation plus final ANALYZE", "P2 research-only advisor-object removal without ANALYZE followed by rollback"],
       "metrics": ["paired q-error", "P0/P1/P2 deltas", "ordinary-statistics fingerprints", "payload/object verification", "deployment and rollback cost"],
-      "truth_contract": "truth_contracts.ground_truth_input",
+      "truth_contract": "truth_contracts.ground_truth_input; confirmatory source is the dataset-gated audited AreCEL observations policy",
       "random_seed_policy": "Reuse the frozen dataset/sample protocol and record all seeds in the RunManifest.",
       "required_raw_artifacts": ["P0/P1/P2 per-query results", "DeploymentResult", "catalog verification", "ordinary-statistics fingerprints", "source digests"],
       "required_derived_artifacts": ["transfer summary", "paired delta data", "transfer validity report"],
@@ -221,7 +238,7 @@
       "status": "planned",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "metrics": ["sample utility", "full-data utility", "paired utility delta", "correlation/agreement analysis"],
-      "truth_contract": "One bound GroundTruthSet contract for the paired sample/full comparison.",
+      "truth_contract": "One freshly bound GroundTruthSet per snapshot, imported from the dataset-gated audited AreCEL observations policy.",
       "random_seed_policy": "Freeze sample seed, workload order, and all search seeds in the manifest.",
       "required_raw_artifacts": ["sample SearchResult/utility", "full-data SearchResult/utility", "paired manifest bindings"],
       "required_derived_artifacts": ["sample/full utility pairs", "agreement statistics", "outlier classification"],
@@ -238,7 +255,7 @@
       "controls": ["identical patched binary", "identical relation contents", "identical schema", "identical workload", "identical ordinary-statistics state/fingerprint", "identical statistics target", "equivalent statistics design", "equivalent payload semantics", "identical payload bytes where technically possible", "identical planner/session settings"],
       "primary_metrics": ["exact root Plan Rows agreement", "mismatch count", "mismatch classification"],
       "derived_metrics": ["objective difference", "q-error correlation as secondary diagnostic only"],
-      "truth_contract": "GroundTruthSet is not required to establish mechanism fidelity; if utility is reported, bind it separately and do not make it the primary fidelity metric.",
+      "truth_contract": "GroundTruthSet is not required to establish mechanism fidelity; if utility is reported, bind audited observations separately to each snapshot and do not make it the primary fidelity metric.",
       "random_seed_policy": "Record all data/sample/statistics seeds; no unrecorded randomization in paired configurations.",
       "required_raw_artifacts": ["paired EXPLAIN JSON", "binary/build identity", "ordinary-statistics fingerprints", "active design and payload records", "physical catalog verification", "session settings", "transaction logs"],
       "required_derived_artifacts": ["Plan Rows agreement table", "mismatch taxonomy", "paired estimate deltas", "derived objective difference"],

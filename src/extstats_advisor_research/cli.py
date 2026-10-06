@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from .analysis.audit import run_audit
+from .arecel_truth import validate_truth_policy
 from .baseline_gap import run_baseline_gap
 from .datasets import census13, dmv11, forest10, get_dataset, power7
 from .dmv_transfer import resolve_dmv_source_run, run_dmv_data_transfer
@@ -111,6 +112,13 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--data-root", type=Path)
     run.add_argument("--reset-disposable", action="store_true")
     run.add_argument("--advisor-command", default="extstats-advisor")
+    run.add_argument(
+        "--truth-source",
+        choices=["authoritative-arecel", "production-exact"],
+        default="authoritative-arecel",
+        help="bind one explicit truth source; authoritative-arecel is the confirmatory default",
+    )
+    run.add_argument("--authoritative-observations", type=Path)
     audit = commands.add_parser("audit")
     audit.add_argument("run_directory", type=Path)
     audit.add_argument("--planner-dsn", required=True)
@@ -298,6 +306,13 @@ def _parser() -> argparse.ArgumentParser:
         "paper-spec", help="validate paper-experiment-v1 semantic invariants"
     )
     paper_spec.add_argument("spec", type=Path, nargs="?", default=DEFAULT_SPEC_PATH)
+    truth_policy = validate_commands.add_parser(
+        "benchmark-truth-policy",
+        help="validate the audited AreCEL truth policy and equivalence gates",
+    )
+    truth_policy.add_argument(
+        "path", type=Path, nargs="?", default=Path("paper/benchmark-truth-policy-v1.json")
+    )
     build_sanity = validate_commands.add_parser(
         "build-sanity", help="run or validate the patched-versus-stock RQ3 sanity artifact"
     )
@@ -509,6 +524,13 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_paper_spec(load_paper_spec(args.spec))
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
+        if args.validate_command == "benchmark-truth-policy":
+            result = validate_truth_policy(
+                json.loads(args.path.read_text(encoding="utf-8")),
+                research_root=Path(__file__).resolve().parents[2],
+            )
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if args.validate_command == "system-freeze":
             result = validate_system_freeze(load_system_freeze(args.path))
             print(json.dumps(result, sort_keys=True, indent=2))
@@ -654,20 +676,26 @@ def main(argv: list[str] | None = None) -> int:
         search_wall_clock_seconds = (
             30.0 if args.search_wall_clock_seconds is None else args.search_wall_clock_seconds
         )
-    result = runner(
-        production_dsn=args.production_dsn,
-        planner_dsn=args.planner_dsn,
-        advisor_root=args.advisor_root,
-        patched_postgres_root=args.patched_postgres_root,
-        output_root=args.output_root,
-        sample_rows=args.sample_rows,
-        sample_seed=args.sample_seed,
-        statistics_target=args.statistics_target,
-        candidate_limit=args.candidate_limit,
-        search_wall_clock_seconds=search_wall_clock_seconds,
-        data_root=args.data_root,
-        reset_disposable=args.reset_disposable,
-        advisor_command=args.advisor_command,
-    )
+    run_kwargs = {
+        "production_dsn": args.production_dsn,
+        "planner_dsn": args.planner_dsn,
+        "advisor_root": args.advisor_root,
+        "patched_postgres_root": args.patched_postgres_root,
+        "output_root": args.output_root,
+        "sample_rows": args.sample_rows,
+        "sample_seed": args.sample_seed,
+        "statistics_target": args.statistics_target,
+        "candidate_limit": args.candidate_limit,
+        "search_wall_clock_seconds": search_wall_clock_seconds,
+        "data_root": args.data_root,
+        "reset_disposable": args.reset_disposable,
+        "advisor_command": args.advisor_command,
+    }
+    if args.dataset_id == census13.BENCHMARK_ID:
+        run_kwargs.update(
+            truth_source=args.truth_source,
+            authoritative_observations=args.authoritative_observations,
+        )
+    result = runner(**run_kwargs)
     print(json.dumps(result, sort_keys=True, indent=2))
     return 0

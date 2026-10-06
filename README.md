@@ -11,12 +11,17 @@ The first benchmark is `arecel-census13`. Its audited source is read from
 `EXTSTATS_RESEARCH_DATA_ROOT` (default example:
 `/home/wqts/benchmark-data`) and is never downloaded or copied into Git.
 The dataset is loaded into a disposable stock PostgreSQL 16 relation
-`public.census13` before the frozen advisor sees it. Ground truth is acquired
-by the advisor's production exact-cardinality path against that relation.
+`public.census13` before the frozen advisor sees it. The canonical benchmark
+path imports audited AreCEL exact observations as an external, snapshot-bound
+truth artifact. The advisor's production exact-cardinality path remains an
+explicit independent validation and cost path; it is not repeated for every
+future canonical run.
 
 The two PostgreSQL roles are intentionally separate:
 
-- `SIMULATED_PRODUCTION_DSN`: stock PostgreSQL 16, full data and exact truth;
+- `SIMULATED_PRODUCTION_DSN`: stock PostgreSQL 16 and full data; canonical
+  benchmark truth is imported from the audited external label artifact;
+  production exact truth is used only when explicitly requested;
 - `ADVISOR_PATCHED_POSTGRES_DSN`: patched PostgreSQL 16.14, fixed advisor
   sample only, for native statistics and planner execution.
 

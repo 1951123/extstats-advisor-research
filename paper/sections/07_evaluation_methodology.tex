@@ -30,7 +30,9 @@ comparison. Ground truth is not used to build the sample or native payloads.
 
 \subsection{Truth acquisition and binding}
 
-The current \texttt{GroundTruthSet} contract has two source kinds. For
+The current \texttt{GroundTruthSet} contract has two source kinds. The
+confirmatory AreCEL policy uses \texttt{authoritative-external-exact} for
+Census13, Forest10, Power7, and DMV11. For
 \texttt{production-exact-execution}, capture and eligible truth acquisition
 run in a read-only repeatable-read source view. The v1 wrapper counts only
 sealed \texttt{postgresql-simple-selection-v2} queries: one base relation,
@@ -41,9 +43,14 @@ count execution. Exact count collection can be expensive on large relations;
 read-only is not zero cost. For \texttt{authoritative-external-exact}, immutable
 labels are imported and validated against the sealed snapshot semantic digest,
 workload ID, positive-weight query coverage, and source artifact SHA-256. The
-advisor does not claim to have executed those labels. DMV11 currently uses
-this external source kind and binds the AreCELearnedYet base:test workload and
-label identity.
+advisor does not claim to have executed those labels. All four AreCEL datasets
+use this external source kind and bind the AreCELearnedYet base:test workload
+and label identity. Census13 additionally has a one-time full equivalence audit
+against an existing production-exact canary; this audit creates no new
+10,000-query PostgreSQL collection. The remaining datasets are currently
+provenance-validated rather than claimed to have independently re-executed
+full equivalence. Production exact execution remains an explicit
+validation/cost path, not the repeated confirmatory default.
 
 \subsection{Metrics and comparisons}
 

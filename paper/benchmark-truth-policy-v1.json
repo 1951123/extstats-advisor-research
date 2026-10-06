@@ -1,0 +1,77 @@
+{
+  "datasets": [
+    {
+      "authority": "sfu-db/AreCELearnedYet",
+      "authority_url": "https://github.com/sfu-db/AreCELearnedYet",
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "dataset_id": "arecel-census13",
+      "dataset_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "equivalence_evidence": {
+        "artifact": "experiments/arecel-census13/arecel-truth-equivalence-v1.json",
+        "note": "Existing production-exact Census13 RQ1 canary compared query-by-query; no new COUNT queries executed.",
+        "status": "full-equivalence"
+      },
+      "primary_truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "query_count": 10000,
+      "source_label_sha256": "5fd6d187830681b16b3c561f7d0a2a014a7fdbabfa1579db655de8131b0ba451",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "status": "validated-full-equivalence",
+      "workload_id": "arecel_census13_test_v1"
+    },
+    {
+      "authority": "sfu-db/AreCELearnedYet",
+      "authority_url": "https://github.com/sfu-db/AreCELearnedYet",
+      "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "dataset_id": "arecel-forest10",
+      "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "equivalence_evidence": {
+        "note": "External label provenance, source hashes, canonical mapping, and 10,000-query coverage validated; PostgreSQL-exact equivalence was not independently re-executed.",
+        "status": "provenance-only"
+      },
+      "primary_truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "query_count": 10000,
+      "source_label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "status": "validated-provenance",
+      "workload_id": "arecel_forest10_test_v1"
+    },
+    {
+      "authority": "sfu-db/AreCELearnedYet",
+      "authority_url": "https://github.com/sfu-db/AreCELearnedYet",
+      "canonical_workload_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "dataset_id": "arecel-power7",
+      "dataset_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "equivalence_evidence": {
+        "note": "External label provenance, source hashes, canonical mapping, and 10,000-query coverage validated; PostgreSQL-exact equivalence was not independently re-executed.",
+        "status": "provenance-only"
+      },
+      "primary_truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "query_count": 10000,
+      "source_label_sha256": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "status": "validated-provenance",
+      "workload_id": "arecel_power7_test_v1"
+    },
+    {
+      "authority": "sfu-db/AreCELearnedYet",
+      "authority_url": "https://github.com/sfu-db/AreCELearnedYet",
+      "canonical_workload_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "dataset_id": "arecel-dmv11",
+      "dataset_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "equivalence_evidence": {
+        "note": "External label provenance, source hashes, canonical mapping, and 10,000-query coverage validated; PostgreSQL-exact equivalence was not independently re-executed.",
+        "status": "provenance-only"
+      },
+      "primary_truth_source": "authoritative-external-exact from audited AreCEL labels",
+      "query_count": 10000,
+      "source_label_sha256": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "status": "validated-provenance",
+      "workload_id": "arecel_dmv11_test_v1"
+    }
+  ],
+  "default_for_confirmatory_runs": "authoritative-external-exact from audited AreCEL labels",
+  "format_version": "benchmark-truth-policy-v1",
+  "policy_identity": "AreCEL benchmark primary truth policy v1",
+  "production_exact_role": "independent validation and production truth-acquisition cost path; not repeated default benchmark truth"
+}

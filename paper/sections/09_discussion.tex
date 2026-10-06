@@ -18,9 +18,10 @@ optimal configuration. Candidate limits and search budgets are therefore
 experimental variables, not universal defaults.
 
 Fourth, truth acquisition itself has operational cost. Authoritative external
-labels require import and binding validation, while production exact truth can
-require expensive exact-count queries even in a read-only repeatable-read
-source view. The absence of a learned-model training/inference path does not
+labels require import and binding validation, but they are not evidence that
+the advisor executed the labels itself. Production exact truth can require
+expensive exact-count queries even in a read-only repeatable-read source view.
+The absence of a learned-model training/inference path does not
 make sample capture, truth acquisition, native construction, planner search,
 or deployment \texttt{ANALYZE} free.
 

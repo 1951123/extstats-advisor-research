@@ -54,7 +54,10 @@ server version, and source-view token. In
 \texttt{authoritative-external-exact}, immutable labels are imported with
 authority, dataset identity, source revision, and source-artifact SHA-256; the
 advisor does not pretend that it executed those labels. Both kinds use the
-same utility interface after binding validation.
+same utility interface after binding validation. For the current AreCEL
+confirmatory protocol, the external audited observation kind is the default;
+production exact execution is selected only for an independent validation or
+cost measurement.
 
 The search budget $B$ bounds candidate profiling, planner evaluations, and
 configuration size according to the execution advisor's frozen plan. The
