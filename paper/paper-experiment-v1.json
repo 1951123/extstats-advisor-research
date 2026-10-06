@@ -215,14 +215,22 @@
       "comparison": "Physical native statistics versus catalogless hypothetical overlay on the same patched PostgreSQL binary.",
       "main_factor": "physical catalog realization versus hypothetical overlay realization",
       "controls": ["identical patched binary", "identical relation contents", "identical schema", "identical workload", "identical ordinary-statistics state/fingerprint", "identical statistics target", "equivalent statistics design", "equivalent payload semantics", "identical payload bytes where technically possible", "identical planner/session settings"],
-      "primary_metrics": ["exact root Plan Rows agreement", "pre-registered near-exact Plan Rows agreement where exact equality is not technically expected", "mismatch count", "mismatch classification"],
+      "primary_metrics": ["exact root Plan Rows agreement", "mismatch count", "mismatch classification"],
       "derived_metrics": ["objective difference", "q-error correlation as secondary diagnostic only"],
       "truth_contract": "GroundTruthSet is not required to establish mechanism fidelity; if utility is reported, bind it separately and do not make it the primary fidelity metric.",
       "random_seed_policy": "Record all data/sample/statistics seeds; no unrecorded randomization in paired configurations.",
       "required_raw_artifacts": ["paired EXPLAIN JSON", "binary/build identity", "ordinary-statistics fingerprints", "active design and payload records", "physical catalog verification", "session settings", "transaction logs"],
       "required_derived_artifacts": ["Plan Rows agreement table", "mismatch taxonomy", "paired estimate deltas", "derived objective difference"],
       "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
-      "implementation_blocker": "The current research repository has no paired RQ3 fidelity runner/artifact contract that executes both realizations on one patched binary. Existing stock/patched baseline-gap diagnostics are not this experiment.",
+      "artifact_contract": {
+        "format": "rq3-fidelity-v1",
+        "required_fields": ["system", "fixture", "settings", "controls", "physical", "hypothetical", "paired_queries", "summary", "cleanup", "semantic_digest"],
+        "primary_metric": "direct exact root Plan Rows agreement",
+        "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "physical-object-selection-difference", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"]
+      },
+      "implementation_status": "The synthetic MCV+FD runner and rq3-fidelity-v1 artifact validator are implemented and unit-validated. A live run against the pinned patched PostgreSQL build is still required before promotion to ready-to-run; no benchmark result is complete.",
+      "validation_fixture": "rq3-synthetic-mcv-fd-v1",
+      "canonical_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output <artifact.json>",
       "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]
     },
     {
@@ -302,7 +310,7 @@
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",
         "status": "implementation-needed",
-        "note": "Paired same-patched-binary harness and artifact contract are missing."
+        "note": "Harness and artifact contract are unit-validated; live synthetic validation on the pinned patched PostgreSQL build is still required before ready-to-run."
       },
       {
         "experiment_id": "rq3-secondary-build-sanity",

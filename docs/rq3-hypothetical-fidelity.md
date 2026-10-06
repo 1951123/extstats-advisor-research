@@ -1,0 +1,93 @@
+# RQ3 mechanism-fidelity harness
+
+This harness tests the mechanism claim in `paper-experiment-v1`: whether
+catalogless hypothetical native statistics reproduce the physical PostgreSQL
+statistics behavior they are intended to represent. It is not a cardinality
+estimator, candidate generator, search implementation, or utility benchmark.
+
+## Causal comparison
+
+The primary comparison keeps one patched PostgreSQL binary, one database, one
+relation, one schema, one deterministic workload, one ordinary-statistics
+state, one statistics target, one planner/session setting set, and one native
+statistics design. The only intended factor is:
+
+```text
+physical pg_statistic_ext realization
+    versus
+backend-local catalogless hypothetical realization
+```
+
+The synthetic fixture contains one MCV object and one functional-dependency
+object over `(a, b)`. The physical arm creates and analyzes those objects. The
+harness extracts their native payload bytes, records catalog OIDs and
+definitions, then drops the physical objects without a second `ANALYZE`. The
+hypothetical arm registers those exact extracted bytes through
+`pg_hypothetical_extstats_register_definition`, activates the same candidate
+order, and runs the identical workload. Registration, activation, payload
+deserialization, planner lookup, and reset are PostgreSQL patched-backend
+contracts; the research code only orchestrates them and captures evidence.
+
+The physical and hypothetical arms both run inside
+`REPEATABLE READ READ ONLY` planner transactions. Ordinary statistics are
+fingerprinted after the physical `ANALYZE`, after dropping the physical
+objects, and during the hypothetical arm. The harness fails closed on a
+fingerprint change, physical-state leakage, activation-order change,
+payload-correspondence failure, or cleanup failure.
+
+## Artifact contract
+
+Each successful run writes one `rq3-fidelity-v1` JSON artifact. It binds:
+
+- `paper-experiment-v1` and the RQ3 primary experiment ID;
+- research, advisor, patched PostgreSQL source, backend contract, and server
+  identities;
+- deterministic fixture/data/workload identities and digests;
+- physical definitions, physical OIDs, catalog order, payload sizes, and
+  SHA-256 payload digests;
+- hypothetical virtual OIDs, active candidate order, and the fact that the
+  payload source was the physical extraction;
+- both session-setting records and ordinary-statistics fingerprints;
+- complete paired EXPLAIN JSON and digests for every query;
+- direct `Plan Rows`, absolute/relative deltas, exact-match flags, and an
+  evidence-backed mismatch category;
+- cleanup and no-leak verification, plus a semantic digest of the artifact.
+
+The primary metric is direct exact root `Plan Rows` agreement. The artifact
+reports query count, exact count/fraction, mismatch count, maximum absolute
+delta, maximum relative delta, and the closed mismatch taxonomy. No near-exact
+threshold is used without an empirical protocol change. Objective or q-error
+comparisons, if later added, are derived diagnostics and not the primary
+mechanism-fidelity metric.
+
+## Commands
+
+The small validation fixture is intentionally separate from official AreCEL
+benchmark runs:
+
+```bash
+extstats-research validate hypothetical-fidelity run \
+  --dsn "$PATCHED_DSN" \
+  --output diagnostics/rq3-synthetic-fidelity.json
+
+extstats-research validate hypothetical-fidelity validate \
+  diagnostics/rq3-synthetic-fidelity.json
+
+extstats-research validate hypothetical-fidelity inspect \
+  diagnostics/rq3-synthetic-fidelity.json
+```
+
+The runner requires a clean committed research tree and the pinned advisor and
+patched-source revisions. It does not run Census13, Forest10, Power7, or DMV11.
+The stock-versus-patched physical sanity check is a separate secondary
+contract and is still `implementation-needed`; it is not substituted for the
+primary same-binary comparison.
+
+## Limitations
+
+The fixture validates the MCV and dependency registration path and multi-object
+activation order on a single relation. It does not establish fidelity for all
+PostgreSQL expressions, statistics kinds, relation shapes, planner settings,
+or workload classes. It also does not establish sample-to-full-data utility;
+that remains RQ2b. A successful synthetic artifact moves the primary harness
+to `ready-to-run`, not `complete`.

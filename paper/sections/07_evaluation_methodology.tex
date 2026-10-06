@@ -86,9 +86,10 @@ statistics fingerprint, statistics target, equivalent design, equivalent
 payload semantics (and identical payload bytes where technically possible),
 and planner/session settings. The intended main factor is only physical
 catalog realization versus hypothetical overlay realization. The primary
-metrics are exact or preregistered near-exact root \texttt{Plan Rows}
-agreement, mismatch count, and mismatch classification; objective difference
-is derived, while q-error correlation is only a secondary diagnostic. A
+metrics are exact root \texttt{Plan Rows} agreement, mismatch count, and
+mismatch classification; no near-exact threshold is pre-registered without
+empirical justification. Objective difference is derived, while q-error
+correlation is only a secondary diagnostic. A
 secondary sanity check compares patched PostgreSQL physical statistics with
 stock PostgreSQL physical statistics with the overlay inactive; this is not
 the primary hypothetical-fidelity comparison. If the current build setup

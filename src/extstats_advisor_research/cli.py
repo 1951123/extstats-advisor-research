@@ -15,6 +15,11 @@ from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
 from .paper_baseline import run_paper_baseline
 from .power_transfer import run_power_data_transfer
+from .rq3_fidelity import (
+    inspect_fidelity_artifact,
+    run_synthetic_fidelity,
+    validate_fidelity_artifact,
+)
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -214,6 +219,29 @@ def _parser() -> argparse.ArgumentParser:
         "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
     )
     transfer.add_argument("--advisor-command", default="extstats-advisor")
+    fidelity = validate_commands.add_parser("hypothetical-fidelity")
+    fidelity_commands = fidelity.add_subparsers(dest="fidelity_command", required=True)
+    fidelity_run = fidelity_commands.add_parser(
+        "run", aliases=["create"], help="run the small synthetic MCV+FD fidelity fixture"
+    )
+    fidelity_run.add_argument("--dsn", required=True)
+    fidelity_run.add_argument("--output", type=Path, required=True)
+    fidelity_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    fidelity_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    fidelity_validate = fidelity_commands.add_parser(
+        "validate", help="validate an existing rq3-fidelity-v1 artifact"
+    )
+    fidelity_validate.add_argument("artifact", type=Path)
+    fidelity_inspect = fidelity_commands.add_parser(
+        "inspect", help="print a compact summary of an existing fidelity artifact"
+    )
+    fidelity_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -343,6 +371,26 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, sort_keys=True, indent=2))
         return 0
     if args.command == "validate":
+        if args.validate_command == "hypothetical-fidelity":
+            if args.fidelity_command in {"run", "create"}:
+                result = run_synthetic_fidelity(
+                    dsn=args.dsn,
+                    output=args.output,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                )
+            elif args.fidelity_command == "validate":
+                artifact = json.loads(args.artifact.read_text(encoding="utf-8"))
+                result = {
+                    "status": "valid",
+                    "artifact": str(args.artifact.resolve()),
+                    "summary": validate_fidelity_artifact(artifact),
+                    "semantic_digest": artifact["semantic_digest"],
+                }
+            else:
+                result = inspect_fidelity_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if args.validate_command != "full-data-transfer":
             raise ValueError(f"unsupported validation command: {args.validate_command}")
         resolved_source_run = args.source_run

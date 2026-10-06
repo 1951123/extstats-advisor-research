@@ -70,7 +70,7 @@ specification.
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
-| `rq3-primary-mechanism-fidelity` | RQ3 | `implementation-needed` | No current paired runner/artifact contract for physical and hypothetical realizations on one patched binary. |
+| `rq3-primary-mechanism-fidelity` | RQ3 | `implementation-needed` | Harness and `rq3-fidelity-v1` validator are unit-validated; live synthetic validation on the pinned patched build is still required before `ready-to-run`. |
 | `rq3-secondary-build-sanity` | RQ3 | `implementation-needed` | No current paired sanity artifact proves patched physical equals stock physical with overlay inactive. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-fixed-k` | RQ4 | `planned` | Requires pre-registered k, seeds, tie-breaking, and common candidate universe. |
@@ -194,9 +194,10 @@ ordinary-statistics state/fingerprint, statistics target, equivalent design,
 equivalent native payload semantics, identical payload bytes where technically
 possible, and planner/session settings.
 
-**Primary metrics:** exact or preregistered near-exact root `Plan Rows`
-agreement, mismatch count, and mismatch classification. Objective difference
-is derived from the paired estimates; q-error correlation is a secondary
+**Primary metrics:** exact root `Plan Rows` agreement, mismatch count, and
+mismatch classification. No near-exact threshold is pre-registered until an
+empirical reason exists to tolerate non-equality. Objective difference is
+derived from the paired estimates; q-error correlation is a secondary
 diagnostic rather than the primary fidelity metric.
 
 **Secondary sanity check:** patched PostgreSQL with physical statistics versus
@@ -223,7 +224,7 @@ equivalent design membership.
 active ordering. The patched-versus-stock build identity is recorded only for
 the secondary sanity check, never substituted into the primary comparison.
 
-**Metrics:** exact/near-exact root `Plan Rows` agreement, mismatch count and
+**Metrics:** exact root `Plan Rows` agreement, mismatch count and
 classification, and derived objective difference. Per-query q-error/rank
 correlation is retained only as a secondary diagnostic.
 
@@ -236,10 +237,11 @@ hypothetical-versus-physical estimate/error agreement plots.
 
 **Intended paper output:** RQ3 fidelity figure and limitations table.
 
-**Status:** `implementation-needed` for both primary and secondary paths. The
-current research harness has no paired RQ3 fidelity runner/artifact contract
-that executes physical and hypothetical realizations on the same patched
-binary; the existing stock/patched baseline-gap diagnostic is not a substitute.
+**Status:** `implementation-needed` until the small synthetic MCV+FD fixture is
+executed successfully on the pinned patched build; the harness and artifact
+contract are unit-validated. The secondary patched-versus-stock build sanity
+path remains `implementation-needed`. Neither status implies that an official
+benchmark result is complete.
 
 ## RQ4 — Advisor necessity / ablation
 
