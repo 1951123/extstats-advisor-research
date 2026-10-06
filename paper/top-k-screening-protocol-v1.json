@@ -1,0 +1,105 @@
+{
+  "specification_identity": "top-k-screening-protocol-v1",
+  "status": "planned",
+  "formal_sweep_executed": false,
+  "scope": "Pre-pruning screening-width cost model for the existing advisor pipeline; this document does not change recommendation semantics.",
+  "symbols": {
+    "K_s": "singleton screening width (candidate_limit / top-K prefix)",
+    "k": "number of statistics selected by the downstream search",
+    "I(c)": "positive-weight supported workload query IDs incident on candidate c",
+    "W": "positive-weight supported workload query IDs"
+  },
+  "canonical_pipeline": {
+    "singleton_profiling": "profile every eligible candidate with incidence-incremental evaluation before screening",
+    "screening": "retain the first K_s candidates in the frozen singleton precedence order",
+    "search": "run the existing greedy ADD search over that prefix",
+    "canonical_K_s": 8,
+    "canonical_k": 8,
+    "screening_is_semantics_preserving": false,
+    "search_deadline_seconds": 300
+  },
+  "cost_model": {
+    "singleton_configuration_count": "1 + number of PRESENT candidates",
+    "singleton_planner_query_estimate_count": "|W| + sum(|I(c)| for PRESENT c)",
+    "reference_planner_query_estimate_count": "|W| * (1 + number of PRESENT candidates)",
+    "saved_planner_query_estimate_count": "reference count - incremental count",
+    "search_configuration_cost": "measured per-configuration planner calls and wall-clock time; independent final stock evaluation is excluded",
+    "screening_width_effect": "K_s changes the candidate prefix and therefore downstream search cost; it does not change the all-candidate singleton profiling cost",
+    "required_measurements": [
+      "incidence-count distribution",
+      "measured incremental singleton profiling wall-clock time",
+      "measured configuration-evaluation cost",
+      "candidate prefix membership and tie/order evidence",
+      "search termination and deadline accounting"
+    ]
+  },
+  "preflight_source_evidence": {
+    "advisor_revision": "9c93925ebbcda0dc3306e8e63d86ccd782ffc539",
+    "source_profiles_are_immutable": true,
+    "datasets": [
+      {
+        "dataset_id": "arecel-census13",
+        "source_singleton_profile_semantic_digest": "0e6330007b46ca57bc456183564c6cf236b5db5654883a3321bb9128f6f17ee9",
+        "positive_query_count": 10000,
+        "present_candidate_count": 136,
+        "reference_planner_query_estimate_count": 1370000,
+        "incremental_planner_query_estimate_count": 496651,
+        "incidence_summary": {"min": 3523, "mean": 3578.3161764705883, "median": 3576.0, "p95": 3625.0, "max": 3649},
+        "wall_clock_measurement": "unresolved-historical-reference-timing"
+      },
+      {
+        "dataset_id": "arecel-forest10",
+        "source_singleton_profile_semantic_digest": "80f515d9884e40caec8021dec8894cac2a866aa6901ae519eb5093471d5d9563",
+        "positive_query_count": 10000,
+        "present_candidate_count": 57,
+        "reference_planner_query_estimate_count": 580000,
+        "incremental_planner_query_estimate_count": 220640,
+        "incidence_summary": {"min": 3644, "mean": 3695.438596491228, "median": 3698.0, "p95": 3748.0, "max": 3777},
+        "wall_clock_measurement": "live-equivalence-gate-blocked-by-300-second-hard-timeout"
+      },
+      {
+        "dataset_id": "arecel-power7",
+        "source_singleton_profile_semantic_digest": "d30f46440ba46ca97af815362e029788cc4552a8da4f1ab7d8f54267f485b776",
+        "positive_query_count": 10000,
+        "present_candidate_count": 42,
+        "reference_planner_query_estimate_count": 430000,
+        "incremental_planner_query_estimate_count": 169042,
+        "incidence_summary": {"min": 3711, "mean": 3786.714285714286, "median": 3800.0, "p95": 3825.0, "max": 3835},
+        "wall_clock_measurement": "see advisor-singleton-incremental-equivalence-v1 artifact"
+      },
+      {
+        "dataset_id": "arecel-dmv11",
+        "source_singleton_profile_semantic_digest": "07e86d35e04d287814cca184a9bb18637e6346c95640265fbf5754f693d23c6e",
+        "positive_query_count": 10000,
+        "present_candidate_count": 105,
+        "reference_planner_query_estimate_count": 1060000,
+        "incremental_planner_query_estimate_count": 391171,
+        "incidence_summary": {"min": 3566, "mean": 3630.2, "median": 3631.0, "p95": 3678.0, "max": 3683},
+        "wall_clock_measurement": "not-run-over-300-second-preflight-gate"
+      }
+    ]
+  },
+  "proposed_screening_width_grid": [4, 8, 12, 16, 24, 32, "all"],
+  "sweep_policy": {
+    "status": "planned",
+    "do_not_run_until": [
+      "singleton incremental equivalence gate is complete for the selected dataset",
+      "measured configuration cost is recorded",
+      "source and system freeze identities are pinned"
+    ],
+    "no_stage_auto_exceeds_seconds": 300,
+    "report": [
+      "K_s",
+      "candidate prefix digest",
+      "selected k and termination state",
+      "configuration evaluations",
+      "planner query calls",
+      "selection wall-clock time",
+      "independent final stock evaluation separately"
+    ]
+  },
+  "required_artifacts": {
+    "raw": ["singleton profile", "candidate prefix/order", "search trace", "timing counters", "manifest"],
+    "derived": ["K_s cost curve", "quality/cost table", "screening sensitivity summary"]
+  }
+}

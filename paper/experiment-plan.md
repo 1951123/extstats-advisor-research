@@ -515,6 +515,31 @@ is integration-readiness evidence only. Existing k-budget calibration
 artifacts remain supporting diagnostics, and no formal AreCEL ablation is
 complete.
 
+### Singleton profiling and screening-width cost protocol
+
+The advisor now has an incidence-incremental singleton profiling path, with
+the previous full-workload implementation retained as a reference evaluator
+for audit. The invariant is fail-closed: a full-workload audit must show that
+nonincident query `Plan Rows` values are unchanged, and the incremental merged
+estimate map must produce the same utility result, candidate improvements,
+ties, frozen order, and semantic digest as the reference.
+
+The pre-pruning screening width is `K_s`; it is distinct from the downstream
+selected-object count `k`. All eligible candidates are profiled before the
+frozen singleton order is truncated to a `K_s` prefix. Thus `K_s` is a
+semantics-affecting search hyperparameter, while incidence-incremental
+profiling reduces the profiling cost independently of the prefix width. The
+machine-readable protocol and proposed, not-yet-run grid are in
+`paper/top-k-screening-protocol-v1.json`. No formal K sweep is complete.
+
+The initial immutable preflight predicts that Forest10 and Power7 are within
+the 300-second reference-plus-incremental validation gate; DMV11 is not, and
+Census13 lacks an immutable historical wall-clock measurement. The Forest10
+live attempt exceeded the hard gate and therefore has no complete equivalence
+artifact. Power7 completed the semantic and nonincident audit; its result is
+validation evidence for this implementation unit, not an RQ1/RQ4 paper
+result.
+
 ## RQ5 — Practicality
 
 **Question:** What operational cost is paid for the obtained accuracy
