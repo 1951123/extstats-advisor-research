@@ -462,7 +462,7 @@ rewritten.
 
 | Paper claim | RQ | Required evidence | Status |
 | --- | --- | --- | --- |
-| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for each completed dataset; heuristic arms and remaining datasets still required | partially evidenced by complete Census13/Forest10 artifacts; global claim planned |
+| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for each completed dataset; heuristic arms and DMV11 still required | partially evidenced by complete Census13/Forest10/Power7 artifacts; global four-dataset claim planned |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |

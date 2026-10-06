@@ -228,7 +228,7 @@
         "search_budget_seconds": 300,
         "experiment_seed_identifier": 123,
         "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
-        "parameter_selection_basis": "pre-existing Forest10 canonical K=8 protocol",
+        "parameter_selection_basis": "pre-existing Power7 canonical K=8 protocol",
         "truth_source_kind": "authoritative-external-exact",
         "truth_policy_status": "validated-provenance",
         "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
