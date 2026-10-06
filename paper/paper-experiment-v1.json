@@ -169,7 +169,7 @@
     {
       "experiment_id": "rq1-confirmatory-matched-baselines",
       "rq": "RQ1",
-      "status": "planned",
+      "status": "complete",
       "datasets": [
         "arecel-census13",
         "arecel-forest10",
@@ -232,8 +232,16 @@
         "truth_source_kind": "authoritative-external-exact",
         "truth_policy_status": "validated-provenance",
         "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
-        "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
+        "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124",
         "in_workload_scope": "The RQ1 workload is the workload used by the advisor objective; this result does not establish held-out query generalization."
+      },
+      "cross_dataset_summary": {
+        "artifact": "experiments/rq1-cross-dataset-summary-v1.json",
+        "format_version": "rq1-cross-dataset-summary-v1",
+        "semantic_digest": "54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4",
+        "scope": "four-dataset, three-arm, in-workload matched comparison",
+        "held_out_generalization_claim": false,
+        "rq4_heuristics_included": false
       },
       "dataset_artifacts": {
         "arecel-census13": {
@@ -252,17 +260,23 @@
         "arecel-power7": {
           "status": "complete",
           "artifact": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
-          "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
+          "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124",
           "planner_reexecuted": true,
           "truth_policy_status": "validated-provenance"
         },
-        "arecel-dmv11": {"status": "planned"}
+        "arecel-dmv11": {
+          "status": "complete",
+          "artifact": "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json",
+          "semantic_digest": "9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd",
+          "planner_reexecuted": true,
+          "truth_policy_status": "validated-provenance"
+        }
       },
       "dataset_progress": {
         "arecel-census13": "complete",
         "arecel-forest10": "complete",
         "arecel-power7": "complete",
-        "arecel-dmv11": "planned"
+        "arecel-dmv11": "complete"
       },
       "metrics": ["per-query q-error", "reporting aggregate metrics", "improved/unchanged/worsened counts"],
       "truth_contract": "truth_contracts.ground_truth_input; confirmatory source is the dataset-gated audited AreCEL observations policy",
@@ -426,8 +440,8 @@
     "entries": [
       {
         "experiment_id": "rq1-confirmatory-matched-baselines",
-        "status": "planned",
-        "note": "Census13, Forest10, and Power7 have validated dataset-level canonical artifacts; DMV11 remains planned, so the four-dataset RQ1 campaign remains incomplete. RQ4 heuristic ablations are separate and remain planned."
+        "status": "complete",
+        "note": "The four-dataset, three-arm, in-workload matched comparison is complete with the immutable cross-dataset summary. This does not complete RQ4 heuristic ablations or establish held-out query generalization."
       },
       {
         "experiment_id": "rq1-existing-baselines",

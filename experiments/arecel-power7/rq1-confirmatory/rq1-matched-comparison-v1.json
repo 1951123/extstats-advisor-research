@@ -210536,7 +210536,7 @@
     "authoritative_observations_semantic_digest": "794100dfe2c81c735fddb147bf5d41aaa0a2ea48f662d735be5fb557fbee5b1f",
     "authoritative_observations_sha256": "fcec220e378be356a9a5cbfa133843c3e0d9089bdcd70ea9b3f604d8360722e9",
     "bound_ground_truth_set_semantic_digest": "03d1cdbf0f29b325704e2494eaab3e71212fa5fecfaac3b3ffa9d5a1ab62499d",
-    "parameter_selection_basis": "pre-existing Forest10 canonical K=8 protocol",
+    "parameter_selection_basis": "pre-existing Power7 canonical K=8 protocol",
     "parameters": {
       "candidate_limit": 8,
       "experiment_seed_identifier": 123,
@@ -210552,7 +210552,7 @@
     "unrequested_dataset_runs": []
   },
   "research_commit_sha": "2f56936457e469e5f96930c231bf9187b8564060",
-  "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
+  "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124",
   "system_freeze": {
     "advisor": {
       "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",

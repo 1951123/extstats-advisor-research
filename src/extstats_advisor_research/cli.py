@@ -38,6 +38,11 @@ from .rq1_canary import (
 )
 from .rq1_matched import RQ1_DATASETS, run_rq1_matched
 from .rq1_rebind import canonicalize_census13, validate_rebound_artifact
+from .rq1_summary import (
+    build_cross_dataset_summary,
+    default_source_paths,
+    validate_cross_dataset_summary,
+)
 from .rq3_build_sanity import (
     inspect_build_sanity_artifact,
     run_build_sanity,
@@ -385,6 +390,14 @@ def _parser() -> argparse.ArgumentParser:
     matched_validate.add_argument("artifact", type=Path)
     matched_inspect = matched_commands.add_parser("inspect")
     matched_inspect.add_argument("artifact", type=Path)
+    summary = validate_commands.add_parser(
+        "rq1-summary", help="build or validate the four-dataset RQ1 summary"
+    )
+    summary_commands = summary.add_subparsers(dest="summary_command", required=True)
+    summary_create = summary_commands.add_parser("create", aliases=["run"])
+    summary_create.add_argument("--output", type=Path, required=True)
+    summary_validate = summary_commands.add_parser("validate")
+    summary_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -607,6 +620,14 @@ def main(argv: list[str] | None = None) -> int:
                 result = validate_rq1_file(args.artifact)
             else:
                 result = inspect_rq1_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-summary":
+            root = Path(__file__).resolve().parents[2]
+            if args.summary_command in {"create", "run"}:
+                result = build_cross_dataset_summary(default_source_paths(root), args.output)
+            else:
+                result = validate_cross_dataset_summary(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-rebind":

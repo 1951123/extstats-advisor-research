@@ -113,6 +113,19 @@ def test_power7_artifact_records_only_requested_dataset_run() -> None:
     assert "power7_and_dmv11_run" not in power["provenance"]
 
 
+def test_confirmatory_parameter_basis_is_dataset_specific() -> None:
+    power = _read(
+        ROOT / "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json"
+    )
+    dmv = _read(ROOT / "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json")
+    assert power["provenance"]["parameter_selection_basis"] == (
+        "pre-existing Power7 canonical K=8 protocol"
+    )
+    assert dmv["provenance"]["parameter_selection_basis"] == (
+        "pre-existing DMV11 canonical K=8 protocol"
+    )
+
+
 def test_external_truth_import_fails_closed_without_observations(
     tmp_path: Path, monkeypatch
 ) -> None:

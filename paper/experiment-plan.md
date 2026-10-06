@@ -3,9 +3,11 @@
 This document specifies the experiments behind the manuscript. It is a plan,
 not a claim that every row is complete. Historical Census13, Forest10, Power7,
 and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13,
-Forest10, and Power7 matched-comparison artifacts are dataset-level canonical
-results under the current confirmatory truth policy. The four-dataset RQ1
-campaign remains incomplete because DMV11 is still planned.
+Forest10, Power7, and DMV11 matched-comparison artifacts are dataset-level
+canonical results under the current confirmatory truth policy. The four-dataset
+RQ1 matched campaign is complete only within its declared three-arm,
+in-workload scope; RQ4 heuristic ablations, held-out generalization, RQ2, RQ3,
+and RQ5 remain separate incomplete work.
 
 ## Shared protocol
 
@@ -82,7 +84,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13, Forest10, and Power7 are complete as dataset-level canonical artifacts; DMV11 remains planned, so the global campaign is incomplete. The heuristic configurations remain RQ4 work. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v1.json`; RQ4 heuristic configurations remain separate planned work. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
@@ -172,12 +174,40 @@ whose results are not the GroundTruthSet source. The three arms used
 independent `postgres-lab reinit` states; the advisor recommendation was
 regenerated with the frozen advisor, and headline estimates came from the
 fresh stock full-data deployment. The artifact digest is
-`fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750`.
+`14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124`.
 Its sandbox objective decreased from 167.64553643195066 to
 99.8095133469062 and terminated at `local-optimum`; this sandbox value is
 reported separately from the stock deployment headline. The result is
 diagnostic evidence for this frozen protocol, not an acceptance target based
 on the historical Power7 pilot.
+
+**DMV11 canonical result:**
+`experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json`
+uses the same three-arm schema, frozen SUT, K=8 parameter policy, and
+authoritative external truth contract. The parameters are sample rows 10000,
+sample seed 42, statistics target 100, candidate limit 8, a 300-second search
+budget, experiment seed identifier 123 with `SELECT setseed(1.0 / 123)`, and
+the 10,000-query `arecel_dmv11_test_v1` workload. Its truth policy is
+`validated-provenance`; the existing 15-query exact check is sanity evidence
+only and is not the GroundTruthSet source. The three arms started from
+independent fresh stock states, the advisor recommendation was regenerated
+with the frozen advisor, and headline estimates came from fresh stock full-data
+deployment. The artifact digest is
+`9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd`.
+The sandbox objective decreased from 345.7140108148528 to 72.6202657788967
+and terminated at `local-optimum`; it is reported separately from the
+deployment headline. The five selected objects are MCV recommendations, and
+their membership is immutable in the artifact.
+
+**Unified RQ1 result:**
+`experiments/rq1-cross-dataset-summary-v1.json` is the generated,
+content-addressed four-dataset summary with semantic digest
+`54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4`.
+It contains per-arm metrics, paired classifications, recommendation and
+sandbox fields, source artifact digests, per-query regression summaries, tail
+error concentration, and mean/p50 trends. Its scope is exactly
+`four-dataset, three-arm, in-workload matched comparison`; it excludes RQ4
+heuristics and makes no held-out query generalization claim.
 
 For every new dataset, confirmatory arms start from `postgres-lab reinit` and
 import audited AreCEL observations into a fresh snapshot-bound
@@ -190,18 +220,10 @@ extended statistics, target 10000 on every dataset column, the exact
 The unified artifact records the three arm identities, actual targets and
 ANALYZE protocol, physical extended-statistics inventory, recommendation and
 sandbox objective where applicable, per-query estimates/truth/q-errors, both
-paired comparisons, cleanup, and semantic digests. Census13, Forest10, and
-Power7 are now `complete` at dataset level; DMV11 remains `planned`, so the
-global RQ1 status stays `planned` until all four artifacts are complete.
-
-**Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
-of `public.dmv11`, all column targets 10000, experiment seed identifier 123,
-`SELECT setseed(1.0 / 123)`,
-one `ANALYZE public.dmv11`, zero physical extended-statistics objects, stock
-PostgreSQL, the AreCELearnedYet base:test workload with 10,000 test queries,
-and `authoritative-external-exact` labels bound to the audited workload,
-dataset identity, source revision, and current snapshot. It is a protocol
-description, not a claim that a DMV11 RQ1 run was executed in this unit.
+paired comparisons, cleanup, and semantic digests. Census13, Forest10, Power7,
+and DMV11 are now `complete` at dataset level, and the generated four-dataset
+matched campaign is `complete` within its declared scope. This does not
+complete the RQ4 heuristic baselines.
 
 **Metrics:** per-query q-error and the shared aggregate metrics; optional gap
 closure only when the learned-CE comparison is demonstrably comparable.
@@ -214,9 +236,10 @@ and improved/unchanged/worsened classification.
 
 **Intended paper output:** RQ1 distribution figure and summary table.
 
-**Status:** historical benchmark runs remain `pilot`/`preliminary`; Census13,
-Forest10, and Power7 are `complete` dataset-level canonical artifacts, while
-DMV11 and the unified four-dataset comparison remain `planned`.
+**Status:** historical benchmark runs remain `pilot`/`preliminary`; all four
+dataset-level canonical artifacts and the unified three-arm comparison are
+`complete` within the in-workload scope. RQ4 heuristic baselines remain
+`planned`, and the global research program is not complete.
 
 ## RQ2 — Sample-to-full-data transfer
 
@@ -462,7 +485,7 @@ rewritten.
 
 | Paper claim | RQ | Required evidence | Status |
 | --- | --- | --- | --- |
-| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for each completed dataset; heuristic arms and DMV11 still required | partially evidenced by complete Census13/Forest10/Power7 artifacts; global four-dataset claim planned |
+| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for all four completed datasets; cross-dataset summary digest `54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4` | complete for the four-dataset, three-arm, in-workload claim; RQ4 heuristics and held-out generalization remain out of scope |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |

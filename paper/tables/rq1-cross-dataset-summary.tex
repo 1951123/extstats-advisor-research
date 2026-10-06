@@ -1,0 +1,21 @@
+% Generated from experiments/rq1-cross-dataset-summary-v1.json.
+% Summary semantic digest:
+% 54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{RQ1 three-arm matched comparison on the advisor's in-workload queries. Values are q-error; lower is better. The advisor arm is evaluated after stock PostgreSQL full-data deployment.}
+\label{tab:rq1-cross-dataset-summary}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset & Default & Target 10000 & Advisor & Adv. p95 & Adv. p99 & Adv. max \\
+\midrule
+Census13 & 5.232 & 5.247 & 2.232 & 6.000 & 15.505 & 107.000 \\
+Forest10 & 7.144 & 7.150 & 6.669 & 14.603 & 64.000 & 9754.000 \\
+Power7 & 127.503 & 130.815 & 85.208 & 13.681 & 161.000 & 157380.000 \\
+DMV11 & 276.868 & 282.164 & 41.401 & 28.729 & 996.956 & 27877.133 \\
+\bottomrule
+\end{tabular}
+}%
+\end{table}

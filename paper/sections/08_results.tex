@@ -1,9 +1,9 @@
 \section{Results Plan}
 
-This section is deliberately a results scaffold. The repository contains pilot
-artifacts, not a final set of paper numbers. Each subsection states the claim
-that a completed experiment may support and the artifact that must be attached
-before that claim is written.
+This section reports the completed four-dataset RQ1 matched comparison and
+retains protocol scaffolds for RQ2--RQ5. Claims are limited to the immutable
+artifacts attached to each subsection; no pilot result is silently promoted to
+confirmatory evidence.
 
 \subsection{RQ1: effectiveness}
 \textbf{Intended claim.} Workload-optimized native statistics can reduce
@@ -19,13 +19,21 @@ maximum, and query outcome counts.
 \fbox{\parbox{0.86\columnwidth}{\centering RQ1 q-error distributions and baseline comparison\par\vspace{0.3em}\small TODO: render from confirmatory derived artifacts}}
 \caption{Planned RQ1 figure; no values are supplied in this framework.}
 \end{figure}
-% TODO(PAPER-RQ1): regenerate the cross-dataset RQ1 figures from immutable
-% artifacts. Census13, Forest10, and Power7 now have canonical three-arm
-% artifacts, while DMV11 remains planned; do not present these three datasets
-% as a four-dataset conclusion or copy their numbers into the abstract. This
-% RQ1 comparison is in-workload (the workload used by the advisor objective),
-% not a held-out query generalization evaluation. RQ4 heuristic baselines are
-% separate and remain planned.
+% The generated cross-dataset table below is derived from
+% experiments/rq1-cross-dataset-summary-v1.json (digest
+% 54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4).
+% This RQ1 comparison is in-workload (the workload used by the advisor
+% objective), not a held-out query generalization evaluation. RQ4 heuristic
+% baselines are separate and remain planned.
+
+\input{tables/rq1-cross-dataset-summary.tex}
+
+The four-dataset summary is complete for the declared three-arm, in-workload
+comparison. It records paired classifications, tail-error concentration, and
+the largest per-query regressions in addition to the headline aggregates.
+These results do not claim that every query improves, do not complete the RQ4
+heuristic study, and do not replace the PostgreSQL estimator with a learned
+model.
 % TODO(PAPER-LITERATURE): document exact comparability limits for learned-CE context.
 
 \subsection{RQ2: sample-to-full-data transfer}
@@ -70,9 +78,9 @@ should be considered alongside accuracy.
 \subsection{Pilot evidence ledger}
 
 The repository contains historical pilot artifacts for all four datasets and
-validated RQ1 canonical artifacts for Census13, Forest10, and Power7 under
-\texttt{experiments/}. DMV11 remains planned for this campaign. The
-DMV11 full-data transfer artifact is especially useful for validating the
-P0/P1/P2 schema, but remains preliminary evidence until its own confirmatory
-protocol is completed.
+validated RQ1 canonical artifacts for Census13, Forest10, Power7, and DMV11
+under \texttt{experiments/}. The historical outputs remain preliminary; the
+new canonical artifacts are bound to the frozen SUT and the audited external
+truth policy. The DMV11 full-data transfer artifact remains separate RQ2
+evidence and is not part of the RQ1 completion claim.
 % TODO(PAPER-PILOT): link each figure/table to a compact derived artifact digest.

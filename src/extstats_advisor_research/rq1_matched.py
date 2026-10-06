@@ -40,6 +40,12 @@ SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
 RQ1_DATASETS = tuple(sorted(DATASETS))
 COMPLETED_CANONICAL_RQ1_DATASETS = frozenset({"arecel-census13", "arecel-forest10"})
+PARAMETER_SELECTION_BASIS = {
+    "arecel-census13": "pre-existing Census13 canonical K=8 protocol",
+    "arecel-forest10": "pre-existing Forest10 canonical K=8 protocol",
+    "arecel-power7": "pre-existing Power7 canonical K=8 protocol",
+    "arecel-dmv11": "pre-existing DMV11 canonical K=8 protocol",
+}
 
 
 @dataclass(frozen=True)
@@ -506,7 +512,7 @@ def run_rq1_matched(
             "advisor_run_directory": str(
                 Path(advisor_result["run_directory"]).relative_to(research_root)
             ),
-            "parameter_selection_basis": "pre-existing Forest10 canonical K=8 protocol",
+            "parameter_selection_basis": PARAMETER_SELECTION_BASIS[dataset_id],
             "parameters": {
                 "sample_rows": 10_000,
                 "sample_seed": 42,
