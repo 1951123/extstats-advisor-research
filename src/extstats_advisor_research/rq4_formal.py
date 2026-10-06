@@ -344,11 +344,15 @@ def _overlap(comparison: Mapping[str, Any]) -> dict[str, Any]:
                 comparison["methods"][left]["selected_membership"],
                 comparison["methods"][right]["selected_membership"],
             )
+
+    def lookup(left: str, right: str) -> float | None:
+        return pairwise.get(f"{left}__{right}", pairwise.get(f"{right}__{left}"))
+
     return {
         "pairwise_jaccard": pairwise,
-        "greedy_vs_singleton": pairwise.get("greedy-ADD__singleton-utility-top-k"),
-        "greedy_vs_frequency": pairwise.get("greedy-ADD__workload-frequency-top-k"),
-        "greedy_vs_correlation": pairwise.get("greedy-ADD__dependency-correlation-top-k"),
+        "greedy_vs_singleton": lookup("greedy-ADD", "singleton-utility-top-k"),
+        "greedy_vs_frequency": lookup("greedy-ADD", "workload-frequency-top-k"),
+        "greedy_vs_correlation": lookup("greedy-ADD", "dependency-correlation-top-k"),
     }
 
 

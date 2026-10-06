@@ -742,9 +742,9 @@
     "deterministic_replay_passed": true,
     "evidence_role": "primary deterministic patched-sandbox design quality",
     "membership_overlap": {
-      "greedy_vs_correlation": null,
-      "greedy_vs_frequency": null,
-      "greedy_vs_singleton": null,
+      "greedy_vs_correlation": 0.3333333333333333,
+      "greedy_vs_frequency": 0.14285714285714285,
+      "greedy_vs_singleton": 0.6,
       "pairwise_jaccard": {
         "dependency-correlation-top-k__greedy-ADD": 0.3333333333333333,
         "dependency-correlation-top-k__singleton-utility-top-k": 0.6,
@@ -968,7 +968,7 @@
       ],
       "std": 0.06923927182436584
     },
-    "semantic_digest": "5d76bcc798711cd07b4cd927b590a4d16015ac818f5622d5595865c0132a5887"
+    "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
   },
   "rq4b": {
     "analyze_count": 1,
@@ -1504,7 +1504,7 @@
     ],
     "union_size": 20
   },
-  "semantic_digest": "eaa23eeb830cdd9e2636e36e920d18d5456df10135ed319a217cb0033c80109c",
+  "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9",
   "source_inputs": {
     "artifacts": {
       "candidate_universe": {

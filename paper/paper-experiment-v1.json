@@ -470,7 +470,7 @@
           "artifact": {
             "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
             "format_version": "rq4-forest10-fixed-k-v1",
-            "semantic_digest": "eaa23eeb830cdd9e2636e36e920d18d5456df10135ed319a217cb0033c80109c",
+            "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9",
             "formal_confirmatory_experiment": true
           },
           "rq4a_replay": {
@@ -604,7 +604,7 @@
       {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "ready-to-run",
-        "note": "Global status remains ready-to-run because only Forest10 is complete. Forest10 formal RQ4a/RQ4b evidence is recorded under experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json (digest eaa23eeb...). Census13, Power7, and DMV11 remain planned."
+        "note": "Global status remains ready-to-run because only Forest10 is complete. Forest10 formal RQ4a/RQ4b evidence is recorded under experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json (digest 736ba74f...). Census13, Power7, and DMV11 remain planned."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",

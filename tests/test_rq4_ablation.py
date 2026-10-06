@@ -18,6 +18,7 @@ from extstats_advisor_research.rq4_ablation import (
     run_rq4_ablation,
     validate_rq4_artifact,
 )
+from extstats_advisor_research.rq4_formal import _overlap
 from extstats_advisor_research.system_freeze import load_system_freeze
 
 
@@ -114,6 +115,18 @@ def test_rq4_artifact_validator_rejects_policy_drift(tmp_path: Path) -> None:
     path.write_text(json.dumps(broken), encoding="utf-8")
     with pytest.raises(RQ4ValidationError, match="semantic digest"):
         validate_rq4_artifact(path)
+
+
+def test_formal_overlap_summary_is_symmetric_to_method_order() -> None:
+    comparison = {
+        "method_order": ["dependency-correlation-top-k", "greedy-ADD"],
+        "methods": {
+            "dependency-correlation-top-k": {"selected_membership": ["a", "b"]},
+            "greedy-ADD": {"selected_membership": ["b", "c"]},
+        },
+    }
+    summary = _overlap(comparison)
+    assert summary["greedy_vs_correlation"] == 1 / 3
 
 
 class _AccountingBackend:
