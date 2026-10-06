@@ -9,6 +9,7 @@ back to production exact truth.
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -332,7 +333,8 @@ def run_rq1_matched(
     workload_identity = _workload_identity(workload, workload_path)
     dataset_identity = _dataset_identity(config.dataset, metadata)
     output.parent.mkdir(parents=True, exist_ok=True)
-    raw_paths = {arm_id: output.parent / f"{arm_id}-per-query-v1.jsonl" for arm_id in ARM_IDS}
+    staging_directory = runtime / "matched-raw"
+    raw_paths = {arm_id: staging_directory / f"{arm_id}-per-query-v1.jsonl" for arm_id in ARM_IDS}
     arms: dict[str, dict[str, Any]] = {}
     advisor_result: dict[str, Any] | None = None
     try:
@@ -462,6 +464,13 @@ def run_rq1_matched(
                 pass
     if advisor_result is None:
         raise RuntimeError("advisor arm did not complete")
+    for arm_id in ARM_IDS:
+        final_path = output.parent / f"{arm_id}-per-query-v1.jsonl"
+        shutil.copyfile(raw_paths[arm_id], final_path)
+        arms[arm_id]["per_query_artifact"] = {
+            "logical_path": str(final_path.relative_to(research_root)),
+            "sha256": sha256_file(final_path),
+        }
     artifact = build_rq1_artifact(
         research_commit_sha=research_identity["research_commit_sha"],
         system_freeze=system_freeze,
