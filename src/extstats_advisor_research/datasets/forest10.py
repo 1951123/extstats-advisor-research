@@ -263,6 +263,7 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
             records.append(
                 {
                     "source_index": index,
+                    "query_id": f"arecel_forest10_test_{index:06d}",
                     "source_query_id": record["query_id"],
                     "original_sql": record["sql"],
                     "sql": adapt_query_sql(record["sql"]),

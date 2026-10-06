@@ -104,3 +104,10 @@ def test_forest_workload_projection_excludes_truth_fields() -> None:
         {"workload_pickle": "w", "label_pickle": "l", "canonical_workload": "c"},
     )
     assert set(workload["queries"][0]) == {"query_id", "sql", "weight"}
+
+
+def test_forest_source_records_expose_canonical_query_ids() -> None:
+    records = forest10.load_test_records()
+    assert len(records) == forest10.EXPECTED_TEST_QUERIES
+    assert records[0]["query_id"] == "arecel_forest10_test_000000"
+    assert records[-1]["query_id"] == "arecel_forest10_test_009999"
