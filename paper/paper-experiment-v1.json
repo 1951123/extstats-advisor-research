@@ -442,6 +442,12 @@
       "backend": "frozen Advisor PostgresPlannerSession, NativeStatsRepository, WeightedWorkloadUtility, and QErrorLoss",
       "physical_deployment_probe": "separate one-MCV stock deployment through the frozen Advisor deployment API",
       "formal_confirmatory_experiment": false,
+      "artifact": {
+        "path": "experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json",
+        "format_version": "rq4-real-backend-smoke-v1",
+        "semantic_digest": "f088ddce17968eeb79dde2eb57f3b3b9c3338c417cc19d27e3a60abe0b8b9d9f",
+        "execution_research_commit_sha": "bf18ae9559bec2f23f2d3ea0d59e796abe3f49e1"
+      },
       "required_raw_artifacts": ["eligible-universe allowlist evidence", "backend activation/evaluation trace", "selection accounting", "deployment inspection"],
       "expected_paper_outputs": ["tab-rq4-integration-readiness"],
       "completion_criteria": ["real candidate universe is built before utility signals", "catalogless activation succeeds", "q-error objective is returned by frozen utility", "physical deployment contract is verified", "no 10000-query formal ablation is implied"]
