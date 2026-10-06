@@ -55,6 +55,8 @@ FIXED_K = 4
 QUERY_COUNT = 10_000
 SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
+SELECTION_MAX_CONFIGURATION_EVALUATIONS = 2_000
+SELECTION_WALL_CLOCK_SECONDS = 3_600.0
 METHOD_ORDER = tuple(f"random-k-seed-{seed}" for seed in RANDOM_SEEDS) + tuple(
     method for method in METHOD_IDS if method != "random-k"
 )
@@ -207,7 +209,9 @@ def _run_selection_bundle(
             backend=backend,
             fixed_k=FIXED_K,
             mode="fixed_k_quality",
-            budget=EvaluationBudget(2000, 300.0),
+            budget=EvaluationBudget(
+                SELECTION_MAX_CONFIGURATION_EVALUATIONS, SELECTION_WALL_CLOCK_SECONDS
+            ),
             random_seed=RANDOM_SEEDS[0],
             singleton_profile_accounting=singleton_accounting,
             singleton_utility=singleton,
@@ -231,7 +235,9 @@ def _run_selection_bundle(
                     backend=backend,
                     fixed_k=FIXED_K,
                     mode="fixed_k_quality",
-                    budget=EvaluationBudget(2000, 300.0),
+                    budget=EvaluationBudget(
+                        SELECTION_MAX_CONFIGURATION_EVALUATIONS, SELECTION_WALL_CLOCK_SECONDS
+                    ),
                     random_seed=seed,
                     singleton_profile_accounting=None,
                     singleton_utility=singleton,
@@ -479,23 +485,51 @@ def run_forest10_fixed_k(
             paths=paths,
             include_singleton_profile=True,
         )
-        replay = build_design_determinism_smoke_artifact(
-            run_once=lambda: _run_selection_bundle(
-                advisor_root=advisor_root,
-                planner_dsn=planner_dsn,
-                paths=paths,
-                include_singleton_profile=True,
-            )["comparison"],
-            candidate_universe_digest=first["eligible_universe"]["semantic_digest"],
-            system_freeze=system_freeze,
-            research_commit_sha=research_identity["research_commit_sha"],
-            fixture={
+        try:
+            replay = build_design_determinism_smoke_artifact(
+                run_once=lambda: _run_selection_bundle(
+                    advisor_root=advisor_root,
+                    planner_dsn=planner_dsn,
+                    paths=paths,
+                    include_singleton_profile=True,
+                )["comparison"],
+                candidate_universe_digest=first["eligible_universe"]["semantic_digest"],
+                system_freeze=system_freeze,
+                research_commit_sha=research_identity["research_commit_sha"],
+                fixture={
+                    "dataset_id": forest10.BENCHMARK_ID,
+                    "workload_id": "arecel_forest10_test_v1",
+                    "query_count": QUERY_COUNT,
+                    "formal_scope": "Forest10 RQ4 fixed-k canary",
+                },
+            )
+        except RQ4ValidationError as exc:
+            diagnostic = {
+                "format_version": "rq4-forest10-replay-failure-v1",
+                "experiment_id": "rq4-forest10-fixed-k-replay-failure",
+                "status": "failed-closed",
+                "formal_confirmatory_experiment": False,
+                "failure": str(exc),
+                "research_commit_sha": research_identity["research_commit_sha"],
+                "system_freeze_semantic_digest": semantic_digest(system_freeze),
                 "dataset_id": forest10.BENCHMARK_ID,
                 "workload_id": "arecel_forest10_test_v1",
-                "query_count": QUERY_COUNT,
-                "formal_scope": "Forest10 RQ4 fixed-k canary",
-            },
-        )
+                "candidate_universe_semantic_digest": first["eligible_universe"]["semantic_digest"],
+                "selection_budget": {
+                    "unit": "configuration-objective-evaluations",
+                    "max_configuration_evaluations": SELECTION_MAX_CONFIGURATION_EVALUATIONS,
+                    "wall_clock_seconds": SELECTION_WALL_CLOCK_SECONDS,
+                },
+                "first_run_method_statuses": {
+                    method: result.get("status")
+                    for method, result in first["comparison"]["methods"].items()
+                },
+                "first_run_comparison_semantic_digest": semantic_digest(first["comparison"]),
+                "rq4b_started": False,
+            }
+            diagnostic["semantic_digest"] = semantic_digest(diagnostic)
+            write_json(runtime_output / "rq4-design-determinism-failure-v1.json", diagnostic)
+            raise
     finally:
         if sandbox_prepared:
             destroy_postgres_planner_sandbox(planner_dsn)
@@ -630,6 +664,12 @@ def run_forest10_fixed_k(
             "experiment_seed_identifier": SEED_IDENTIFIER,
             "postgresql_setseed_sql": SETSEED_SQL,
             "parameter_selection_basis": "pre-registered Forest10 RQ4 fixed-k canary protocol",
+            "selection_budget": {
+                "unit": "configuration-objective-evaluations",
+                "max_configuration_evaluations": SELECTION_MAX_CONFIGURATION_EVALUATIONS,
+                "wall_clock_seconds": SELECTION_WALL_CLOCK_SECONDS,
+                "not_fixed_evaluation_budget_comparison": True,
+            },
         },
         "source_inputs": _input_summary(paths, source, research_root),
         "candidate_universe": {
