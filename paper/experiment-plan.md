@@ -1,9 +1,11 @@
 # VLDB experiment plan
 
 This document specifies the experiments behind the manuscript. It is a plan,
-not a claim that every row is complete. Existing Census13, Forest10, Power7,
-and DMV11 artifacts are marked `pilot` or `preliminary` until the confirmatory
-protocol, provenance audit, and derived-artifact checks are complete.
+not a claim that every row is complete. Historical Census13, Forest10, Power7,
+and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13 and
+Forest10 matched-comparison artifacts are dataset-level canonical results under
+the current confirmatory truth policy. The four-dataset RQ1 campaign remains
+incomplete.
 
 ## Shared protocol
 
@@ -74,13 +76,13 @@ already exists.
 
 The controlled vocabulary is `pilot`, `planned`, `implementation-needed`,
 `ready-to-run`, `complete`, and `superseded`. Existing historical outputs stay
-`pilot`/`preliminary`; no current entry is promoted to `complete` in this
-specification.
+`pilot`/`preliminary`; dataset-level canonical artifacts may be `complete`, but
+the global RQ1 campaign is not complete while any dataset remains planned.
 
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 canary is complete as a dataset-level artifact; Forest10, Power7, and DMV11 remain planned, so the global campaign is incomplete. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 and Forest10 are complete as dataset-level canonical artifacts; Power7 and DMV11 remain planned, so the global campaign is incomplete. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
@@ -128,32 +130,45 @@ relation contents, workload query texts/order, ordinary statistics policy,
 truth definition, hardware/environment, and timeout policy. Dataset-specific
 paper-baseline differences must be recorded rather than normalized away.
 
-**Census13 canary (`rq1-matched-comparison-v1`):** This is a historical pilot
-and does not complete the four-dataset RQ1 campaign. Its existing artifact
-uses one audited `production-exact-execution` GroundTruthSet as the evidence
-for the label-equivalence gate; no new exact-count collection is part of this
-policy unit. Future confirmatory arms start from a `postgres-lab reinit` state
-and import the audited AreCEL observations into a fresh snapshot-bound
-`GroundTruthSet`. `PG16-default` uses stock PostgreSQL with no extended
-statistics, the default ordinary column-statistics policy, one controlled
-`ANALYZE`, and records the actual `pg_attribute.attstattarget` values.
-`PG16-target10000` uses no extended statistics, target 10000 on every Census13
-column, `SELECT setseed(1.0 / 123)`, and exactly one `ANALYZE`.
-`PG16-advisor` uses the frozen patched planner only for design-time snapshot,
-sample, native payload, search, and Recommendation construction. Its headline
-metrics are collected after native deployment to a fresh stock full-data
-cluster and a final `ANALYZE`; the patched sandbox objective is stored
-separately. The frozen advisor parameters are sample rows 10000, sample seed
-42, statistics target 100, candidate limit 8, and search wall-clock budget
-180 seconds. The budget is fixed by the pre-existing Census13 K=8 calibration:
-60 and 120 seconds ended with incomplete rounds, while 180 seconds first
-reached a local optimum. No parameter is selected from this canary's outcome.
+**Census13 canonical result (`rq1-matched-comparison-v1`):** The historical
+canary remains the immutable planner-execution source, not the final
+truth-policy result. Its 10,000 production-exact labels were proven fully
+equivalent to the audited AreCEL observations (10,000 matched, zero mismatch,
+missing, or extra). The derived artifact
+`experiments/arecel-census13/rq1-confirmatory/rq1-matched-comparison-v1.json`
+therefore rebinds truth/evaluation fields offline, recomputes q-error with the
+frozen utility helper, and reuses historical planner estimates; no PostgreSQL
+workload, `ANALYZE`, planner, or exact-count rerun was performed. Its semantic
+digest is `647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec`.
+
+**Forest10 canonical result:**
+`experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json`
+uses the same three-arm schema and audited external truth contract. Frozen
+parameters are sample rows 10000, sample seed 42, statistics target 100,
+candidate limit 8, and a 300-second search budget; the parameter basis is the
+pre-existing Forest10 canonical K=8 protocol. The result's semantic digest is
+`3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436`.
+`PG16-default` and `PG16-target10000` are independent fresh stock states with
+no physical extended statistics. `PG16-advisor` uses the frozen patched
+planner only at design time and reports headline estimates after fresh stock
+full-data deployment plus one native `ANALYZE`; its sandbox objective and
+termination are separate fields. The result direction is empirical and is not
+an acceptance target.
+
+For every new dataset, confirmatory arms start from `postgres-lab reinit` and
+import audited AreCEL observations into a fresh snapshot-bound
+`GroundTruthSet`; there is no fallback to `production-exact-execution`.
+`PG16-default` uses stock PostgreSQL with no extended statistics and the
+audited default ordinary-statistics policy. `PG16-target10000` uses no
+extended statistics, target 10000 on every dataset column, the exact
+`SELECT setseed(1.0 / 123)`, and exactly one `ANALYZE`.
 
 The unified artifact records the three arm identities, actual targets and
 ANALYZE protocol, physical extended-statistics inventory, recommendation and
 sandbox objective where applicable, per-query estimates/truth/q-errors, both
-paired comparisons, cleanup, and semantic digests. The global RQ1 status stays
-`planned` until all four dataset-level artifacts are complete.
+paired comparisons, cleanup, and semantic digests. Census13 and Forest10 are
+currently `complete` at dataset level; Power7 and DMV11 remain `planned`, so
+the global RQ1 status stays `planned` until all four artifacts are complete.
 
 **Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
 of `public.dmv11`, all column targets 10000, experiment seed identifier 123,
@@ -175,8 +190,9 @@ and improved/unchanged/worsened classification.
 
 **Intended paper output:** RQ1 distribution figure and summary table.
 
-**Status:** `pilot` for existing benchmark runs; `planned` for the unified
-confirmatory comparison.
+**Status:** historical benchmark runs remain `pilot`/`preliminary`; Census13
+and Forest10 are `complete` dataset-level canonical artifacts, while the
+unified four-dataset comparison remains `planned`.
 
 ## RQ2 — Sample-to-full-data transfer
 
@@ -422,7 +438,7 @@ rewritten.
 
 | Paper claim | RQ | Required evidence | Status |
 | --- | --- | --- | --- |
-| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/heuristic/advisor per-query results and immutable manifests | planned; existing artifacts are pilot |
+| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for each completed dataset; heuristic arms and remaining datasets still required | partially evidenced by complete Census13/Forest10 artifacts; global claim planned |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |

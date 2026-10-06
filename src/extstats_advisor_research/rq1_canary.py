@@ -288,6 +288,11 @@ def validate_rq1_artifact(artifact: Any) -> dict[str, Any]:
     progress = artifact.get("dataset_progress")
     if not isinstance(progress, dict) or set(progress) != set(DATASET_PROGRESS):
         raise ValueError("RQ1 dataset progress must list all four AreCEL datasets")
+    if (
+        artifact.get("experiment_status") == "dataset-complete"
+        and progress.get(dataset["dataset_id"]) != "complete"
+    ):
+        raise ValueError("dataset-complete artifact must mark its dataset progress complete")
     if artifact.get("experiment_status") == "complete" and any(
         progress[item] != "complete" for item in DATASET_PROGRESS
     ):

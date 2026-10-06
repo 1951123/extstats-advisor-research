@@ -200,13 +200,46 @@
         "truth_source_kind": "authoritative-external-exact",
         "truth_source_policy": "paper/benchmark-truth-policy-v1.json",
         "historical_artifact_truth_source_kind": "production-exact-execution",
-        "historical_artifact_role": "The existing Census13 canary's production-exact GroundTruthSet is retained as one-time equivalence evidence; future confirmatory runs import audited AreCEL observations.",
+        "historical_artifact_role": "The existing Census13 canary is retained as the immutable planner-execution source; its production-exact GroundTruthSet is one-time equivalence evidence, while the canonical derived result imports audited AreCEL observations.",
         "budget_selection_basis": "Pre-existing experiments/arecel-census13/search-budget-k8/calibration-v1.json: 60 and 120 seconds expired incomplete rounds; 180 seconds was the first local-optimum completion. This value is frozen before the canary and is not outcome-tuned.",
         "headline_evaluation": "stock PostgreSQL full-data deployment; never the patched sandbox objective"
       },
+      "forest10_confirmatory_protocol": {
+        "artifact": "experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "arms": ["pg16-default", "pg16-target10000", "pg16-advisor"],
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100,
+        "candidate_limit": 8,
+        "search_budget_seconds": 300,
+        "experiment_seed_identifier": 123,
+        "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+        "parameter_selection_basis": "pre-existing Forest10 canonical K=8 protocol",
+        "truth_source_kind": "authoritative-external-exact",
+        "truth_policy_status": "validated-provenance",
+        "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
+        "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436"
+      },
+      "dataset_artifacts": {
+        "arecel-census13": {
+          "status": "complete",
+          "artifact": "experiments/arecel-census13/rq1-confirmatory/rq1-matched-comparison-v1.json",
+          "transformation": "rq1-truth-rebind-v1",
+          "semantic_digest": "647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec",
+          "planner_reexecuted": false
+        },
+        "arecel-forest10": {
+          "status": "complete",
+          "artifact": "experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json",
+          "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436",
+          "planner_reexecuted": true
+        },
+        "arecel-power7": {"status": "planned"},
+        "arecel-dmv11": {"status": "planned"}
+      },
       "dataset_progress": {
         "arecel-census13": "complete",
-        "arecel-forest10": "planned",
+        "arecel-forest10": "complete",
         "arecel-power7": "planned",
         "arecel-dmv11": "planned"
       },
@@ -373,7 +406,7 @@
       {
         "experiment_id": "rq1-confirmatory-matched-baselines",
         "status": "planned",
-        "note": "Census13 is the first canary only; the four-dataset RQ1 campaign remains incomplete until all dataset-level artifacts are validated."
+        "note": "Census13 and Forest10 have validated dataset-level canonical artifacts; Power7 and DMV11 remain planned, so the four-dataset RQ1 campaign remains incomplete."
       },
       {
         "experiment_id": "rq1-existing-baselines",

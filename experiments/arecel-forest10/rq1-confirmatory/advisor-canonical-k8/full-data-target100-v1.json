@@ -1,0 +1,141 @@
+{
+  "dataset": "arecel-forest10",
+  "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+  "format_version": "arecel-forest-full-data-target100-v1",
+  "per_query_count": 10000,
+  "planner_estimates": {
+    "analyze": false,
+    "explain": "EXPLAIN (FORMAT JSON)",
+    "query_count": 10000,
+    "root_field": "Plan Rows"
+  },
+  "qerror": {
+    "contract": "qerror-cardinality-floor-1-v1",
+    "provider": "extstats_advisor.utility.QErrorLoss"
+  },
+  "relation": "public.forest10",
+  "research_commit_sha": "6a352a6ad2607baffcd218e047f384233759cf57",
+  "research_repository": "1951123/extstats-advisor-research",
+  "row_count": 581012,
+  "runtime_metadata": {
+    "elapsed_seconds": 2.009135
+  },
+  "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+  "semantic_digest": "c17f9dcc57ada5304fa07ea80d40ffcff5276b6440a2ce41649686244ea55cb0",
+  "source_files": {
+    "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  },
+  "state": "forest10_full_target100_ordinary",
+  "statistics": {
+    "column_targets_verified": [
+      {
+        "name": "elevation",
+        "target": 100
+      },
+      {
+        "name": "aspect",
+        "target": 100
+      },
+      {
+        "name": "slope",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_hydrology",
+        "target": 100
+      },
+      {
+        "name": "vertical_distance_to_hydrology",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_roadways",
+        "target": 100
+      },
+      {
+        "name": "hillshade_9am",
+        "target": 100
+      },
+      {
+        "name": "hillshade_noon",
+        "target": 100
+      },
+      {
+        "name": "hillshade_3pm",
+        "target": 100
+      },
+      {
+        "name": "horizontal_distance_to_fire_points",
+        "target": 100
+      }
+    ],
+    "extended_statistics_count": 0,
+    "initial_analyze_count": 1,
+    "preflight_analyze_count": 0,
+    "target": 100
+  },
+  "stock_postgresql": {
+    "server_version": "PostgreSQL 16.14 on x86_64-pc-linux-gnu",
+    "server_version_num": 160014
+  },
+  "summary": {
+    "max": 9436.0,
+    "max_query_id": "arecel_forest10_test_003110",
+    "mean": 7.1822652222712975,
+    "p50": 1.2158222331159703,
+    "p75": 2.7949593069046994,
+    "p90": 8.305941644562335,
+    "p95": 17.0,
+    "p99": 71.0,
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "query_count": 10000,
+    "weighted_objective": 7.1822652222712975
+  },
+  "tail_contribution": {
+    "top_1": {
+      "baseline_objective_fraction": 0.131379163926447,
+      "query_count": 1
+    },
+    "top_10": {
+      "baseline_objective_fraction": 0.3088510283805013,
+      "query_count": 10
+    },
+    "top_10_percent": {
+      "baseline_objective_fraction": 0.7682123691467244,
+      "query_count": 1000
+    },
+    "top_1_percent": {
+      "baseline_objective_fraction": 0.5047904045932476,
+      "query_count": 100
+    },
+    "top_5": {
+      "baseline_objective_fraction": 0.2539867219527603,
+      "query_count": 5
+    },
+    "top_5_percent": {
+      "baseline_objective_fraction": 0.6863431067793393,
+      "query_count": 500
+    }
+  },
+  "truth": {
+    "authoritative_for_preflight": true,
+    "ground_truth_set": false,
+    "source": "frozen audited AreCEL base-original-label.pkl via canonical workload"
+  },
+  "weights": {
+    "per_query": 1.0,
+    "scheme": "uniform-per-query",
+    "total_weight": 10000.0,
+    "weighted_objective": 7.1822652222712975
+  },
+  "workload": {
+    "canonical_workload_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    "identity": "AreCELearnedYet base:test",
+    "label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+    "query_count": 10000,
+    "workload_sha256": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+  }
+}

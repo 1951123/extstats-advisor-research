@@ -19,9 +19,11 @@ maximum, and query outcome counts.
 \fbox{\parbox{0.86\columnwidth}{\centering RQ1 q-error distributions and baseline comparison\par\vspace{0.3em}\small TODO: render from confirmatory derived artifacts}}
 \caption{Planned RQ1 figure; no values are supplied in this framework.}
 \end{figure}
-% TODO(PAPER-RQ1): regenerate final RQ1 metrics from immutable artifacts.
-% Census13 confirmatory canary is available as rq1-matched-comparison-v1; do not
-% promote it to a four-dataset RQ1 result or copy its numbers into the abstract.
+% TODO(PAPER-RQ1): regenerate the cross-dataset RQ1 figures from immutable
+% artifacts. Census13 now has a canonical external-truth derived result and
+% Forest10 has a canonical three-arm confirmatory result, but Power7 and DMV11
+% remain planned; do not present the two completed datasets as a four-dataset
+% conclusion or copy their numbers into the abstract.
 % TODO(PAPER-LITERATURE): document exact comparability limits for learned-CE context.
 
 \subsection{RQ2: sample-to-full-data transfer}
@@ -65,9 +67,10 @@ should be considered alongside accuracy.
 
 \subsection{Pilot evidence ledger}
 
-The current pilot ledger includes Census13, Forest10, Power7, and DMV11
-artifacts under \texttt{experiments/} and \texttt{paper-baselines/}. The DMV11 full-data
-transfer artifact is especially useful for validating the P0/P1/P2 schema, but
-it remains preliminary evidence until the paper's confirmatory protocol is
-completed.
+The repository contains historical pilot artifacts for all four datasets and
+validated RQ1 canonical artifacts for Census13 and Forest10 under
+\texttt{experiments/}. Power7 and DMV11 remain planned for this campaign. The
+DMV11 full-data transfer artifact is especially useful for validating the
+P0/P1/P2 schema, but remains preliminary evidence until its own confirmatory
+protocol is completed.
 % TODO(PAPER-PILOT): link each figure/table to a compact derived artifact digest.
