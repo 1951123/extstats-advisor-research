@@ -210618,8 +210618,8 @@
     "truth_policy": "paper/benchmark-truth-policy-v1.json",
     "truth_policy_status": "validated-full-equivalence"
   },
-  "research_commit_sha": "9878810a8171b002a7d983eed7e7e4449f76d3f9",
-  "semantic_digest": "47775e6a6767b65f9ab43332dce0d222cf0b463c8e25cd5d1a4f1654ad06ec64",
+  "research_commit_sha": "2d3d1776d704778696f41554881ee13d8bf80bda",
+  "semantic_digest": "647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec",
   "system_freeze": {
     "advisor": {
       "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
