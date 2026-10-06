@@ -108,17 +108,23 @@ the primary hypothetical-fidelity comparison. If the current build setup
 cannot run both realizations on the same patched binary, the experiment is
 implementation-needed and the blocker is recorded rather than changing DBMS
 semantics. Sample-to-full-data utility belongs to RQ2, not this mechanism-
-fidelity question. RQ4 compares random-k, workload-frequency
-top-k, dependency/correlation top-k, singleton-utility top-k, greedy ADD, and
-exhaustive search on tiny candidate universes. The RQ4 primary eligible
-universe is frozen using only native kind, schema validity, sample payload
-availability, and predeclared compatibility; utility/outcome screening is a
-separate conditional diagnostic. The primary fixed-k protocol uses $k=4$
-independently of the advisor recommendation, while the budget protocol uses
-common 2,000-evaluation and 300-second caps. Cheap methods cannot inspect
-GroundTruthSet during selection; singleton/greedy/exhaustive methods use the
-same bound truth and all methods receive the same later stock full-data
-evaluation. RQ5 measures snapshot and truth
+fidelity question. RQ4's primary methods are random-k, workload-frequency
+top-k, dependency/correlation top-k, singleton-utility top-k, and greedy ADD;
+exhaustive search is a separately reported tiny-universe diagnostic only. The
+RQ4 primary eligible universe is frozen using only native kind, schema validity,
+sample payload availability, and predeclared compatibility; utility/outcome
+screening is a separate conditional diagnostic. The primary fixed-k protocol
+uses $k=4$ independently of the advisor recommendation. Its statuses
+distinguish exactly-$k$ completion, at-most-$k$ local optimum, budget
+censoring, and genuine infeasibility. The fixed-budget protocol caps
+configuration-objective evaluations at 2,000 and elapsed selection time at
+300 seconds. A configuration evaluation may contain many PostgreSQL
+per-query planner calls, so both quantities are recorded separately;
+selection preprocessing, singleton profiling, and final evaluation are also
+reported. Independent stock full-data evaluation is outside this selection
+budget. Cheap methods cannot inspect GroundTruthSet during selection;
+singleton and greedy methods use the same bound truth, and all methods receive
+the same later stock full-data evaluation. RQ5 measures snapshot and truth
 acquisition, sample size, native construction, candidate profiling, search time
 and planner evaluations, deployment DDL/\texttt{ANALYZE}, storage,
 planning-time change, and refresh cost. We do not claim zero online overhead;

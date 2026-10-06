@@ -59,8 +59,10 @@ confirmatory protocol, the external audited observation kind is the default;
 production exact execution is selected only for an independent validation or
 cost measurement.
 
-The search budget $B$ bounds candidate profiling, planner evaluations, and
-configuration size according to the execution advisor's frozen plan. The
+The search budget $B$ bounds the declared configuration-objective evaluations
+and elapsed selection time according to the execution protocol; PostgreSQL
+per-query planner calls, candidate-signal preprocessing, singleton profiling,
+and independent final/full-data evaluation are recorded separately. The
 search returns a \texttt{SearchResult} with selected membership $M^*$. A
 separate frozen \texttt{SingletonProfile} supplies global precedence $F$, so
 the deployable recommendation order is

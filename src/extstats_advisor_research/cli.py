@@ -58,6 +58,7 @@ from .rq4_ablation import (
     validate_rq4_artifact,
     write_synthetic_rq4_artifact,
 )
+from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -412,6 +413,14 @@ def _parser() -> argparse.ArgumentParser:
     rq4_synthetic.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_PATH)
     rq4_validate = rq4_commands.add_parser("validate")
     rq4_validate.add_argument("artifact", type=Path)
+    rq4_smoke = validate_commands.add_parser(
+        "rq4-real-backend-smoke", help="validate or inspect a real PostgreSQL RQ4 smoke artifact"
+    )
+    rq4_smoke_commands = rq4_smoke.add_subparsers(dest="rq4_smoke_command", required=True)
+    rq4_smoke_validate = rq4_smoke_commands.add_parser("validate")
+    rq4_smoke_validate.add_argument("artifact", type=Path)
+    rq4_smoke_inspect = rq4_smoke_commands.add_parser("inspect")
+    rq4_smoke_inspect.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -661,6 +670,13 @@ def main(argv: list[str] | None = None) -> int:
                 }
             else:
                 result = validate_rq4_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-real-backend-smoke":
+            if args.rq4_smoke_command == "validate":
+                result = validate_real_backend_smoke(args.artifact)
+            else:
+                result = inspect_real_backend_smoke(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-rebind":

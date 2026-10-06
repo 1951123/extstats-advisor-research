@@ -158,11 +158,12 @@
     "fixed_k_quality": {
       "k_policy": "Pre-register k independently of the final advisor recommendation.",
       "ground_truth_policy": "Heuristic selection cannot use GroundTruthSet; utility-based methods use the same bound GroundTruthSet after selection as declared by RQ4.",
-      "budget_policy": "Declare and report a maximum planner-evaluation budget and actual evaluations for every method."
+      "budget_policy": "Declare and report a maximum configuration-objective-evaluation budget; report PostgreSQL per-query planner calls, preprocessing, final evaluation, and elapsed time separately."
     },
     "fixed_evaluation_budget": {
-      "budget_policy": "Pre-register common planner-evaluation and wall-clock caps.",
-      "information_policy": "Do not convert unused budget into extra information for another method; infeasible variants are censored."
+      "implementation_status": "implementation-needed",
+      "budget_policy": "Pre-register common configuration-objective-evaluation and wall-clock caps; independent stock full-data evaluation is outside the selection budget.",
+      "information_policy": "Do not convert unused budget into extra information for another method; distinguish at-most-k local optimum, budget-censored, and genuinely infeasible outcomes."
     }
   },
   "experiments": [
@@ -404,7 +405,8 @@
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
       "status": "ready-to-run",
-      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
+      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_k_quality",
       "fixed_k": 4,
       "primary_eligible_universe": {
@@ -416,32 +418,49 @@
       "ground_truth_policy": "Only utility-based methods use GroundTruthSet during selection; every selected result is evaluated against the same bound truth.",
       "random_seed_policy": "Pre-register replicate seeds; record them and break non-random ties by candidate ID after declared score/static precedence.",
       "deployment_policy": "Every method uses the same canonical evaluation/deployment ordering and records membership, evaluation order, deployment order, and physical identities.",
-      "independent_evaluation": "Stock PostgreSQL full-data physical estimates with the same authoritative truth; sandbox objective is separate.",
+      "independent_evaluation": "Stock PostgreSQL full-data physical estimates with the same authoritative truth; sandbox objective, configuration evaluations, per-query planner calls, preprocessing, and final evaluation costs are separate.",
       "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "manifest"],
       "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes"],
       "synthetic_validation_artifact": {
         "path": "experiments/rq4/synthetic/rq4-ablation-v1.json",
         "format_version": "rq4-ablation-v1",
-        "semantic_digest": "31bfc84423cd319e87de599297de7e4c3aefbe76a06f79161d35066abde08aa3",
+        "semantic_digest": "5fa898e5d4b6f363e2a28e663aa2c5f1a5cf46b75eaaadcaf887a6ffebeea4e4",
         "formal_confirmatory_experiment": false,
         "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
       },
       "formal_arecel_runs": false,
       "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
-      "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "planner evaluation counts are reported for all methods"]
+      "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "configuration-objective evaluations and PostgreSQL per-query planner calls are reported for all methods", "exhaustive is restricted to a separately declared tiny universe"]
+    },
+    {
+      "experiment_id": "rq4-real-backend-integration-smoke",
+      "rq": "RQ4",
+      "status": "complete",
+      "datasets": ["real-artifact-fixture"],
+      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "fixture": "three-query Census13 artifact-backed smoke; not a formal AreCEL comparison",
+      "backend": "frozen Advisor PostgresPlannerSession, NativeStatsRepository, WeightedWorkloadUtility, and QErrorLoss",
+      "physical_deployment_probe": "separate one-MCV stock deployment through the frozen Advisor deployment API",
+      "formal_confirmatory_experiment": false,
+      "required_raw_artifacts": ["eligible-universe allowlist evidence", "backend activation/evaluation trace", "selection accounting", "deployment inspection"],
+      "expected_paper_outputs": ["tab-rq4-integration-readiness"],
+      "completion_criteria": ["real candidate universe is built before utility signals", "catalogless activation succeeds", "q-error objective is returned by frozen utility", "physical deployment contract is verified", "no 10000-query formal ablation is implied"]
     },
     {
       "experiment_id": "rq4-fixed-evaluation-budget-ablations",
       "rq": "RQ4",
-      "status": "ready-to-run",
-      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
+      "status": "implementation-needed",
+      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_evaluation_budget",
       "fixed_k": 4,
       "budget": {
-        "max_planner_evaluations": 2000,
+        "unit": "configuration-objective-evaluations",
+        "max_configuration_evaluations": 2000,
         "wall_clock_seconds": 300,
-        "selection_evaluations_for_cheap_methods": 0,
-        "censoring_rule": "Record budget-expired/infeasible methods and preserve the incomplete trace; never grant a larger budget silently."
+        "independent_stock_full_data_evaluation_in_budget": false,
+        "selection_preprocessing_in_budget": false,
+        "censoring_rule": "Record budget-censored/genuinely-infeasible/at-most-k-local-optimum methods and preserve the incomplete trace; never grant a larger budget silently."
       },
       "primary_eligible_universe": "The same primary universe as rq4-fixed-k-ablations; eligibility cannot use utility or outcome signals.",
       "controls": ["identical candidate universe", "identical sample/payloads", "identical truth/loss contract", "common planner-evaluation cap", "common wall-clock cap"],
@@ -452,7 +471,7 @@
       "synthetic_validation_artifact": "experiments/rq4/synthetic/rq4-ablation-v1.json",
       "formal_arecel_runs": false,
       "expected_paper_outputs": ["fig-rq4-budget-objective", "tab-rq4-budget-comparison"],
-      "completion_criteria": ["no method receives a silently larger budget", "infeasible exhaustive variants are labeled censored"]
+      "completion_criteria": ["no method receives a silently larger budget", "per-query planner calls are reported separately from configuration evaluations", "preprocessing and final evaluation costs are explicit", "exhaustive is diagnostic-only"]
     },
     {
       "experiment_id": "rq5-cost-accounting",
@@ -460,7 +479,7 @@
       "status": "planned",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "cost_stages": ["snapshot capture", "authoritative external truth import/validation", "production exact truth acquisition", "sample/native statistics construction", "candidate profiling", "planner search", "deployment DDL", "deployment ANALYZE", "catalog/storage", "post-deployment planning", "refresh"],
-      "metrics": ["time", "bytes", "rows", "planner evaluations", "catalog/storage units"],
+      "metrics": ["time", "bytes", "rows", "configuration evaluations", "PostgreSQL planner query calls", "catalog/storage units"],
       "truth_cost_rule": "Report external import/validation separately from production exact count collection; neither is a proxy for the other.",
       "random_seed_policy": "Use the corresponding frozen run seed policy and record environment/measurement repetitions.",
       "required_raw_artifacts": ["stage timings", "sizes", "planner counters", "deployment logs", "catalog measurements", "RunManifest"],
@@ -493,14 +512,19 @@
         "note": "Calibration artifacts are supporting diagnostics, not completed ablations."
       },
       {
+        "experiment_id": "rq4-real-backend-integration-smoke",
+        "status": "complete",
+        "note": "Three-query Census13 smoke passed through the frozen patched planner/utility backend and a separate one-MCV frozen stock deployment-contract probe; this is integration readiness evidence only."
+      },
+      {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "ready-to-run",
-        "note": "The rq4-ablation-v1 synthetic gate passed with independent fixed k=4 policy and a six-candidate tiny-universe exhaustive validation. No formal AreCEL result is complete."
+        "note": "Synthetic and real-backend integration gates passed with independent fixed k=4 policy. No formal AreCEL result is complete."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
-        "status": "ready-to-run",
-        "note": "The harness records common 2,000-evaluation/300-second caps and censoring. No formal AreCEL result is complete."
+        "status": "implementation-needed",
+        "note": "The 2,000 configuration-evaluation/300-second contract is frozen, but the common budget-comparison allocator is not implemented; the harness fails closed rather than reusing fixed-k logic."
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",

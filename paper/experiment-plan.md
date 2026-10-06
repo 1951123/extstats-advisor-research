@@ -42,7 +42,8 @@ Census13 equivalence-bound external truth distinct provenance fields.
   arithmetic mean, p50, p95, p99, maximum, and improved/unchanged/worsened
   query counts. With all weights one these means coincide numerically, but the
   contracts remain distinct. Cost metrics are reported in
-  seconds, bytes, rows, planner evaluations, and native catalog/storage units
+  seconds, bytes, configuration evaluations, PostgreSQL planner query calls,
+  and native catalog/storage units
   as appropriate.
 - **Truth input:** `AdvisorSnapshot` and `GroundTruthSet` are separate inputs.
   Ground truth never constructs the sample/native payloads or changes the
@@ -97,8 +98,9 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq3-primary-mechanism-fidelity` | RQ3 | `ready-to-run` | Live synthetic gate passed on the pinned patched build: three configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; this is readiness evidence, not a completed paper experiment. |
 | `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
-| `rq4-fixed-k` | RQ4 | `ready-to-run` | Synthetic `rq4-ablation-v1` gate passed: primary fixed `k=4`, eligibility excludes utility/outcome signals, and tiny exhaustive validation enumerates all 20 subsets for six candidates. No formal AreCEL ablation has run. |
-| `rq4-fixed-evaluation-budget` | RQ4 | `ready-to-run` | Harness records common planner-evaluation/wall-clock caps and censoring; formal AreCEL execution remains outstanding. |
+| `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. This is integration-readiness evidence, not a formal ablation. |
+| `rq4-fixed-k` | RQ4 | `ready-to-run` | Synthetic `rq4-ablation-v1` gate and real-backend integration smoke passed; primary fixed `k=4` remains frozen, with formal AreCEL ablation outstanding. |
+| `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -394,9 +396,10 @@ beyond simple heuristics?
 that are not fully recovered by frequency or singleton-only rules, while the
 gap to exhaustive search on tiny universes quantifies search suboptimality.
 
-**Systems/configurations:** random-k, workload-frequency top-k,
-correlation/dependency top-k, singleton-utility top-k, greedy ADD, and
-exhaustive search on small candidate universes.
+**Systems/configurations:** the primary fixed-k methods are random-k,
+workload-frequency top-k, correlation/dependency top-k, singleton-utility
+top-k, and greedy ADD. Exhaustive search is a separately reported
+tiny-universe optimality diagnostic, never a default AreCEL method.
 
 **Fairness contract:** the primary eligible universe is frozen before any
 utility or outcome is observed. Eligibility uses only supported native
@@ -418,21 +421,31 @@ selection.
 
 **Comparison modes:** report two distinct comparisons. (A) The primary fixed-k
 quality comparison uses pre-registered `k=4`, independently of the final
-advisor recommendation; infeasible universes and at-most-k outcomes are
-reported explicitly. A result using the advisor's selected k is not an
-unbiased unknown-k comparison. (B) The fixed-evaluation-budget comparison
-uses a common pre-registered cap of 2,000 planner evaluations and 300 seconds;
-selection methods may stop early, but unused budget is not silently converted
-into extra information. Every method reports actual planner evaluations, wall
-time, and censoring reason.
+advisor recommendation; genuinely infeasible universes, at-most-k local
+optima, and budget-censored searches are reported explicitly. A result using
+the advisor's selected k is not an unbiased unknown-k comparison. (B) The
+fixed-evaluation-budget comparison uses a common pre-registered cap of 2,000
+configuration-objective evaluations and 300 seconds. A configuration
+evaluation may contain many PostgreSQL per-query planner calls. Selection
+preprocessing, sandbox configuration evaluations, independent final sandbox
+evaluation, and stock full-data deployment/evaluation are reported as separate
+cost stages; the independent stock full-data evaluation is never charged to
+the selection budget. Every method reports both configuration evaluations and
+actual planner query calls, wall time, and censoring reason.
 
-**Planner evaluation budget:** fixed-k runs must publish a declared maximum
-evaluation budget and actual evaluation count for every method, even when the
-primary comparison does not equalize those counts. Fixed-evaluation-budget
-runs must use the same pre-registered planner-evaluation and wall-clock caps
-for every method, including random and exhaustive variants where feasible;
-infeasible variants are reported as censored rather than silently granted a
-larger budget.
+The fixed-k quality harness is the currently executable RQ4 mode. The
+fixed-evaluation-budget mode remains `implementation-needed` until a common
+budget-comparison allocator is implemented; the harness fails closed for that
+mode rather than silently reusing fixed-k selection logic.
+
+**Evaluation accounting:** fixed-k runs must publish a declared maximum
+configuration-objective budget and actual counts for every method, even when
+the primary comparison does not equalize those counts. Each backend evaluation
+records its PostgreSQL per-query planner calls and measured backend time;
+singleton profiling records its own observed configuration/query counts and
+preprocessing time. Fixed-evaluation-budget runs use the same caps for every
+primary method. Tiny exhaustive diagnostics have their own declared universe
+and budget and are not silently substituted for a full-universe run.
 
 **Determinism:** random seeds are recorded per replicate; all non-random ties
 are broken by candidate ID after the declared score and static precedence keys.
@@ -462,11 +475,13 @@ objective curve.
 
 **Intended paper output:** RQ4 ablation table and search-budget figure.
 
-**Status:** `ready-to-run`; the implementation gate passed on a six-candidate
-synthetic universe (`6 choose 3 = 20` exhaustive subsets), with deterministic
-ordering, tie-breaking, replayable greedy trace, and zero greedy optimality
-gap for that fixture. Existing k-budget calibration artifacts remain
-supporting diagnostics, and no formal AreCEL ablation is complete.
+**Status:** `ready-to-run` for formal AreCEL execution; the synthetic
+implementation gate passed on a six-candidate universe (`6 choose 3 = 20`
+exhaustive subsets), and a three-query real Census13 integration smoke passed
+through the frozen patched PostgreSQL planner and utility backend. The smoke
+is integration-readiness evidence only. Existing k-budget calibration
+artifacts remain supporting diagnostics, and no formal AreCEL ablation is
+complete.
 
 ## RQ5 — Practicality
 

@@ -12,7 +12,7 @@ import random
 import subprocess
 import time
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -28,9 +28,18 @@ METHOD_IDS = (
     "dependency-correlation-top-k",
     "singleton-utility-top-k",
     "greedy-ADD",
-    "exhaustive-tiny-universe",
 )
+EXHAUSTIVE_METHOD_ID = "exhaustive-tiny-universe"
+ALL_METHOD_IDS = METHOD_IDS + (EXHAUSTIVE_METHOD_ID,)
 SUPPORTED_KINDS = ("postgresql.mcv", "postgresql.dependencies")
+ELIGIBILITY_METADATA_ALLOWLIST = (
+    "candidate_id",
+    "relation_id",
+    "kind",
+    "column_ordinals",
+    "column_names",
+    "static_precedence_rank",
+)
 INFORMATION_ACCESS_POLICY: dict[str, dict[str, Any]] = {
     "random-k": {
         "ground_truth_during_selection": False,
@@ -70,20 +79,44 @@ class RQ4ValidationError(ValueError):
 
 
 class ConfigurationEvaluationBackend(Protocol):
-    def evaluate(self, ordered_candidate_ids: tuple[str, ...], *, purpose: str) -> float:
-        """Return the backend's native/sample objective for one configuration."""
+    def evaluate(
+        self, ordered_candidate_ids: tuple[str, ...], *, purpose: str
+    ) -> float | ConfigurationEvaluation:
+        """Evaluate one configuration using the frozen planner/utility backend."""
+
+
+@dataclass(frozen=True)
+class ConfigurationEvaluation:
+    """One configuration result plus backend-observed planner-call accounting."""
+
+    objective: float
+    planner_query_calls: int = 0
+    wall_clock_seconds: float = 0.0
+    metadata: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.planner_query_calls < 0:
+            raise RQ4ValidationError("planner query calls must be non-negative")
+        if self.wall_clock_seconds < 0:
+            raise RQ4ValidationError("backend wall-clock time must be non-negative")
 
 
 @dataclass(frozen=True)
 class EvaluationBudget:
-    max_planner_evaluations: int
+    max_configuration_evaluations: int
     wall_clock_seconds: float
 
     def __post_init__(self) -> None:
-        if self.max_planner_evaluations < 0:
-            raise RQ4ValidationError("planner evaluation budget must be non-negative")
+        if self.max_configuration_evaluations < 0:
+            raise RQ4ValidationError("configuration evaluation budget must be non-negative")
         if self.wall_clock_seconds <= 0:
             raise RQ4ValidationError("wall-clock budget must be positive")
+
+    @property
+    def max_planner_evaluations(self) -> int:
+        """Compatibility alias; the budget unit is configuration evaluations."""
+
+        return self.max_configuration_evaluations
 
 
 class _BudgetExceeded(RuntimeError):
@@ -95,7 +128,9 @@ class _BudgetedEvaluator:
         self.backend = backend
         self.budget = budget
         self.started = time.perf_counter()
-        self.calls = 0
+        self.configuration_evaluations = 0
+        self.planner_query_calls = 0
+        self.backend_wall_clock_seconds = 0.0
         self.trace: list[dict[str, Any]] = []
 
     @property
@@ -103,20 +138,41 @@ class _BudgetedEvaluator:
         return time.perf_counter() - self.started
 
     def evaluate(self, ordered_candidate_ids: tuple[str, ...], *, purpose: str) -> float:
-        if self.calls >= self.budget.max_planner_evaluations:
-            raise _BudgetExceeded("planner-evaluation budget exhausted")
+        if self.configuration_evaluations >= self.budget.max_configuration_evaluations:
+            raise _BudgetExceeded("configuration-objective budget exhausted")
         if self.elapsed >= self.budget.wall_clock_seconds:
             raise _BudgetExceeded("wall-clock budget exhausted")
-        objective = float(self.backend.evaluate(ordered_candidate_ids, purpose=purpose))
-        self.calls += 1
+        started = time.perf_counter()
+        raw = self.backend.evaluate(ordered_candidate_ids, purpose=purpose)
+        measured = time.perf_counter() - started
+        if isinstance(raw, ConfigurationEvaluation):
+            evaluation = raw
+        else:
+            evaluation = ConfigurationEvaluation(float(raw))
+        self.configuration_evaluations += 1
+        self.planner_query_calls += evaluation.planner_query_calls
+        self.backend_wall_clock_seconds += evaluation.wall_clock_seconds or measured
         self.trace.append(
             {
+                "configuration_evaluation_index": self.configuration_evaluations,
                 "purpose": purpose,
                 "ordered_candidate_ids": list(ordered_candidate_ids),
-                "objective": objective,
+                "objective": float(evaluation.objective),
+                "postgresql_planner_query_calls": evaluation.planner_query_calls,
+                "backend_wall_clock_seconds": evaluation.wall_clock_seconds or measured,
+                "backend_metadata": dict(evaluation.metadata),
             }
         )
-        return objective
+        return float(evaluation.objective)
+
+    @property
+    def accounting(self) -> dict[str, Any]:
+        return {
+            "configuration_objective_evaluations": self.configuration_evaluations,
+            "postgresql_planner_query_calls": self.planner_query_calls,
+            "backend_wall_clock_seconds": self.backend_wall_clock_seconds,
+            "elapsed_wall_clock_seconds": self.elapsed,
+        }
 
 
 def _payload(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -146,6 +202,12 @@ def _payload_available(value: Any) -> bool:
     return value is not None and value is not False and value != b"" and value != ""
 
 
+def _eligibility_candidate_metadata(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Copy only static identity/schema/order fields into eligibility evidence."""
+
+    return {key: raw[key] for key in ELIGIBILITY_METADATA_ALLOWLIST if key in raw}
+
+
 def build_eligible_universe(
     candidate_universe: Mapping[str, Any],
     native_payload_availability: Mapping[str, Any],
@@ -158,7 +220,10 @@ def build_eligible_universe(
     eligible: list[dict[str, Any]] = []
     excluded: list[dict[str, Any]] = []
     for raw in candidate_universe.get("candidates", []):
-        candidate = dict(raw)
+        if not isinstance(raw, Mapping):
+            excluded.append({"candidate": {}, "reasons": ["invalid-candidate-metadata"]})
+            continue
+        candidate = _eligibility_candidate_metadata(raw)
         candidate_id = candidate.get("candidate_id")
         reasons: list[str] = []
         if not isinstance(candidate_id, str) or not candidate_id:
@@ -188,7 +253,7 @@ def build_eligible_universe(
             native_payload_availability.get(candidate_id)
         ):
             reasons.append("sample-built-native-payload-unavailable")
-        if compatibility.get(candidate_id, candidate.get("postgresql_compatible", True)) is False:
+        if compatibility.get(candidate_id, True) is False:
             reasons.append("predeclared-postgresql-incompatibility")
         if reasons:
             excluded.append({"candidate": candidate, "reasons": sorted(set(reasons))})
@@ -244,16 +309,27 @@ def _selection_result(
     status: str = "complete",
     reason: str | None = None,
     selection_evaluations: int = 0,
+    selection_accounting: Mapping[str, Any] | None = None,
     selection_trace: Sequence[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
     ordered = _ordered_ids(selected, candidates)
+    accounting = dict(
+        selection_accounting
+        or {
+            "configuration_objective_evaluations": selection_evaluations,
+            "postgresql_planner_query_calls": 0,
+            "backend_wall_clock_seconds": 0.0,
+            "elapsed_wall_clock_seconds": 0.0,
+        }
+    )
     result: dict[str, Any] = {
         "method": method,
         "status": status,
         "selected_membership": list(ordered),
         "evaluation_order": list(ordered),
         "deployment_order": list(ordered),
-        "selection_planner_evaluations": selection_evaluations,
+        "selection_accounting": accounting,
+        "selection_planner_evaluations": accounting["configuration_objective_evaluations"],
         "selection_evaluations_accounted_by_backend": False,
         "selection_trace": [dict(item) for item in selection_trace],
     }
@@ -274,7 +350,7 @@ def _top_k(
             method,
             (),
             candidates,
-            status="infeasible",
+            status="genuinely-infeasible",
             reason="eligible-universe-smaller-than-fixed-k",
         )
     ordered = sorted(
@@ -312,9 +388,9 @@ def _greedy_add(
                     "greedy-ADD",
                     selected,
                     candidates,
-                    status="infeasible",
+                    status="genuinely-infeasible",
                     reason="no-candidate-left-before-fixed-k",
-                    selection_evaluations=evaluator.calls,
+                    selection_accounting=evaluator.accounting,
                     selection_trace=trace,
                 ) | {"selection_evaluations_accounted_by_backend": True}
             next_objective, next_candidate = min(proposals, key=lambda item: (item[0], item[1]))
@@ -323,9 +399,9 @@ def _greedy_add(
                     "greedy-ADD",
                     selected,
                     candidates,
-                    status="infeasible",
+                    status="at-most-k-local-optimum",
                     reason="local-optimum-before-fixed-k",
-                    selection_evaluations=evaluator.calls,
+                    selection_accounting=evaluator.accounting,
                     selection_trace=trace,
                 ) | {"selection_evaluations_accounted_by_backend": True}
             selected.append(next_candidate)
@@ -338,16 +414,16 @@ def _greedy_add(
             "greedy-ADD",
             selected,
             candidates,
-            status="censored",
+            status="budget-censored",
             reason=str(exc),
-            selection_evaluations=evaluator.calls,
+            selection_accounting=evaluator.accounting,
             selection_trace=trace,
         ) | {"selection_evaluations_accounted_by_backend": True}
     return _selection_result(
         "greedy-ADD",
         selected,
         candidates,
-        selection_evaluations=evaluator.calls,
+        selection_accounting=evaluator.accounting,
         selection_trace=trace,
     ) | {"selection_evaluations_accounted_by_backend": True}
 
@@ -364,7 +440,7 @@ def _exhaustive(
             method,
             (),
             candidates,
-            status="infeasible",
+            status="genuinely-infeasible",
             reason="eligible-universe-smaller-than-fixed-k",
         )
     best: tuple[float, tuple[str, ...]] | None = None
@@ -383,9 +459,9 @@ def _exhaustive(
             method,
             selected,
             candidates,
-            status="censored",
+            status="budget-censored",
             reason=str(exc),
-            selection_evaluations=evaluator.calls,
+            selection_accounting=evaluator.accounting,
             selection_trace=trace,
         ) | {"selection_evaluations_accounted_by_backend": True}
     assert best is not None
@@ -393,41 +469,91 @@ def _exhaustive(
         method,
         best[1],
         candidates,
-        selection_evaluations=evaluator.calls,
+        selection_accounting=evaluator.accounting,
         selection_trace=trace,
     ) | {"selection_evaluations_accounted_by_backend": True}
 
 
 def _evaluate_selected(result: dict[str, Any], evaluator: _BudgetedEvaluator) -> dict[str, Any]:
-    selection_evaluations = result["selection_planner_evaluations"]
-    if result.get("selection_evaluations_accounted_by_backend"):
-        total_evaluations = evaluator.calls
-    else:
-        total_evaluations = selection_evaluations + evaluator.calls
-    if result["status"] != "complete" or len(result["selected_membership"]) == 0:
+    selection_accounting = dict(result.get("selection_accounting", {}))
+    final_accounting: dict[str, Any] = {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "backend_wall_clock_seconds": 0.0,
+        "elapsed_wall_clock_seconds": 0.0,
+    }
+    if (
+        result["status"] not in {"complete", "at-most-k-local-optimum"}
+        or not result["selected_membership"]
+    ):
         result["evaluation"] = {
             "status": "not-run",
-            "planner_evaluations": 0,
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0,
         }
-        result["planner_evaluations"] = total_evaluations
+        result["accounting"] = {
+            "selection": selection_accounting,
+            "final": final_accounting,
+            "total": dict(selection_accounting),
+        }
+        result["planner_evaluations"] = selection_accounting.get(
+            "configuration_objective_evaluations", 0
+        )
         result["wall_time_seconds"] = evaluator.elapsed
         return result
+    evaluator_configuration_before = evaluator.configuration_evaluations
+    evaluator_planner_calls_before = evaluator.planner_query_calls
+    evaluator_backend_seconds_before = evaluator.backend_wall_clock_seconds
+    evaluator_elapsed_before = evaluator.elapsed
     try:
         objective = evaluator.evaluate(
             tuple(result["evaluation_order"]), purpose="independent-final-evaluation"
         )
     except _BudgetExceeded as exc:
-        result["status"] = "censored"
+        result["status"] = "budget-censored"
         result["termination_or_censoring_reason"] = str(exc)
-        result["evaluation"] = {"status": "not-run", "planner_evaluations": 0}
+        result["evaluation"] = {
+            "status": "not-run",
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0,
+        }
     else:
+        final_accounting = {
+            "configuration_objective_evaluations": evaluator.configuration_evaluations
+            - evaluator_configuration_before,
+            "postgresql_planner_query_calls": evaluator.planner_query_calls
+            - evaluator_planner_calls_before,
+            "backend_wall_clock_seconds": evaluator.backend_wall_clock_seconds
+            - evaluator_backend_seconds_before,
+            "elapsed_wall_clock_seconds": evaluator.elapsed - evaluator_elapsed_before,
+        }
         result["evaluation"] = {
             "status": "complete",
             "sandbox_objective": objective,
-            "planner_evaluations": 1,
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": final_accounting["postgresql_planner_query_calls"],
         }
-    result["planner_evaluations"] = total_evaluations
-    result["wall_time_seconds"] = evaluator.elapsed
+    total = {
+        "configuration_objective_evaluations": selection_accounting.get(
+            "configuration_objective_evaluations", 0
+        )
+        + final_accounting["configuration_objective_evaluations"],
+        "postgresql_planner_query_calls": selection_accounting.get(
+            "postgresql_planner_query_calls", 0
+        )
+        + final_accounting["postgresql_planner_query_calls"],
+        "backend_wall_clock_seconds": selection_accounting.get("backend_wall_clock_seconds", 0.0)
+        + final_accounting["backend_wall_clock_seconds"],
+        "elapsed_wall_clock_seconds": selection_accounting.get("elapsed_wall_clock_seconds", 0.0)
+        + final_accounting["elapsed_wall_clock_seconds"],
+    }
+    result["accounting"] = {
+        "selection": selection_accounting,
+        "final": final_accounting,
+        "total": total,
+    }
+    result["planner_evaluations"] = total["configuration_objective_evaluations"]
+    result["wall_time_seconds"] = total["elapsed_wall_clock_seconds"]
     return result
 
 
@@ -442,7 +568,8 @@ def run_rq4_ablation(
     workload_frequency: Mapping[str, float],
     dependency_correlation: Mapping[str, float],
     singleton_utility: Mapping[str, float],
-    singleton_planner_evaluations: int | None = None,
+    singleton_profile_accounting: Mapping[str, Any] | None = None,
+    method_ids: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """Run all declared methods against one eligible universe.
 
@@ -452,6 +579,11 @@ def run_rq4_ablation(
 
     if mode not in {"fixed_k_quality", "fixed_evaluation_budget"}:
         raise RQ4ValidationError(f"unsupported RQ4 comparison mode: {mode}")
+    if mode == "fixed_evaluation_budget":
+        raise RQ4ValidationError(
+            "fixed_evaluation_budget is implementation-needed; use fixed_k_quality "
+            "until the registered budget-comparison allocator is implemented"
+        )
     if fixed_k <= 0:
         raise RQ4ValidationError("fixed_k must be positive")
     candidates = {item["candidate_id"]: item for item in eligible_universe["eligible_candidates"]}
@@ -465,16 +597,27 @@ def run_rq4_ablation(
         if set(scores) != set(candidate_ids):
             raise RQ4ValidationError(f"{method} score source does not cover eligible universe")
 
+    selected_methods = tuple(METHOD_IDS if method_ids is None else method_ids)
+    unknown_methods = set(selected_methods) - set(METHOD_IDS)
+    if unknown_methods:
+        raise RQ4ValidationError(
+            "exhaustive-tiny-universe is a separate diagnostic; unknown methods: "
+            + ", ".join(sorted(unknown_methods))
+        )
+    if "singleton-utility-top-k" in selected_methods and singleton_profile_accounting is None:
+        raise RQ4ValidationError("singleton utility selection requires backend-observed accounting")
+
     results: dict[str, dict[str, Any]] = {}
-    for method in METHOD_IDS:
+    for method in selected_methods:
         evaluator = _BudgetedEvaluator(backend, budget)
+        preprocessing_started = time.perf_counter()
         if method == "random-k":
             if len(candidate_ids) < fixed_k:
                 result = _selection_result(
                     method,
                     (),
                     candidates,
-                    status="infeasible",
+                    status="genuinely-infeasible",
                     reason="eligible-universe-smaller-than-fixed-k",
                 )
             else:
@@ -486,22 +629,36 @@ def run_rq4_ablation(
             result = _top_k(method, dependency_correlation, candidate_ids, candidates, fixed_k)
         elif method == "singleton-utility-top-k":
             result = _top_k(method, singleton_utility, candidate_ids, candidates, fixed_k)
-            result["selection_planner_evaluations"] = (
-                len(candidate_ids)
-                if singleton_planner_evaluations is None
-                else singleton_planner_evaluations
-            )
             result["selection_trace"] = [
                 {"candidate_id": item, "singleton_utility": singleton_utility[item]}
                 for item in sorted(candidate_ids)
             ]
-            if result["selection_planner_evaluations"] > budget.max_planner_evaluations:
-                result["status"] = "censored"
+            singleton_accounting = dict(singleton_profile_accounting or {})
+            required_accounting = {
+                "configuration_objective_evaluations",
+                "postgresql_planner_query_calls",
+                "backend_wall_clock_seconds",
+            }
+            if not required_accounting.issubset(singleton_accounting):
+                raise RQ4ValidationError(
+                    "singleton profile accounting must report configuration evaluations, "
+                    "planner query calls, and backend wall-clock time"
+                )
+            result["selection_accounting"] = singleton_accounting
+            result["selection_planner_evaluations"] = singleton_accounting[
+                "configuration_objective_evaluations"
+            ]
+            if result["selection_planner_evaluations"] > budget.max_configuration_evaluations:
+                result["status"] = "budget-censored"
                 result["termination_or_censoring_reason"] = "singleton-profile-budget-exhausted"
         elif method == "greedy-ADD":
             result = _greedy_add(evaluator, candidate_ids, candidates, fixed_k)
-        else:
-            result = _exhaustive(evaluator, candidate_ids, candidates, fixed_k)
+        preprocessing_elapsed = time.perf_counter() - preprocessing_started
+        result["selection_preprocessing"] = {
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": preprocessing_elapsed,
+            "includes_backend_evaluations": method in {"greedy-ADD"},
+        }
         result["information_access_policy"] = INFORMATION_ACCESS_POLICY[method]
         result["random_seed"] = random_seed
         result = _evaluate_selected(result, evaluator)
@@ -511,11 +668,13 @@ def run_rq4_ablation(
         "comparison_mode": mode,
         "fixed_k": fixed_k,
         "budget": {
-            "max_planner_evaluations": budget.max_planner_evaluations,
+            "unit": "configuration-objective-evaluations",
+            "max_configuration_evaluations": budget.max_configuration_evaluations,
             "wall_clock_seconds": budget.wall_clock_seconds,
         },
-        "method_order": list(METHOD_IDS),
+        "method_order": list(selected_methods),
         "methods": results,
+        "exhaustive_policy": "separate-tiny-universe-diagnostic-only",
     }
 
 
@@ -598,10 +757,17 @@ def build_synthetic_rq4_artifact(
         mode="fixed_k_quality",
         budget=EvaluationBudget(200, 30.0),
         random_seed=123,
+        singleton_profile_accounting={
+            "source": "synthetic-precomputed-signal-fixture-v1",
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0,
+            "backend_wall_clock_seconds": 0.0,
+        },
         **signals,
     )
+    tiny_evaluator = _BudgetedEvaluator(backend, EvaluationBudget(100, 30.0))
     tiny = _exhaustive(
-        _BudgetedEvaluator(backend, EvaluationBudget(100, 30.0)),
+        tiny_evaluator,
         ids,
         {item["candidate_id"]: item for item in eligible["eligible_candidates"]},
         TINY_EXHAUSTIVE_K,
@@ -672,6 +838,13 @@ def build_synthetic_rq4_artifact(
             "infeasible_policy": "infeasible-or-censored; never silently continue",
         },
         "comparison": run,
+        "exhaustive_tiny_universe": {
+            "scope": "diagnostic-only",
+            "candidate_ids": ids,
+            "fixed_k": TINY_EXHAUSTIVE_K,
+            "method": tiny,
+            "greedy_same_tiny_universe": tiny_greedy,
+        },
         "selection_information_policies": INFORMATION_ACCESS_POLICY,
         "stock_full_data_evaluation_metrics": None,
         "source_artifacts": {
@@ -696,6 +869,16 @@ def validate_rq4_artifact(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("eligible universe digest mismatch")
     eligible = universe.get("eligible_candidates", [])
     ids = [item.get("candidate_id") for item in eligible]
+    if any(
+        set(item) - set(ELIGIBILITY_METADATA_ALLOWLIST) - {"canonical_deployment_position"}
+        for item in eligible
+    ):
+        raise RQ4ValidationError("eligible universe contains non-allowlisted candidate metadata")
+    if any(
+        set(item.get("candidate", {})) - set(ELIGIBILITY_METADATA_ALLOWLIST)
+        for item in universe.get("excluded_candidates", [])
+    ):
+        raise RQ4ValidationError("excluded universe contains non-allowlisted candidate metadata")
     if len(ids) != len(set(ids)) or ids != [
         item["candidate_id"] for item in sorted(eligible, key=canonical_candidate_key)
     ]:
@@ -716,10 +899,21 @@ def validate_rq4_artifact(path: Path) -> dict[str, Any]:
             raise RQ4ValidationError(f"{method} selected an ineligible candidate")
         if result.get("status") == "complete" and len(selected) != comparison["fixed_k"]:
             raise RQ4ValidationError(f"{method} completed without exactly fixed k candidates")
+        if (
+            result.get("status") == "at-most-k-local-optimum"
+            and len(selected) >= comparison["fixed_k"]
+        ):
+            raise RQ4ValidationError(f"{method} local-optimum status is not below fixed k")
         if result.get("evaluation_order") != result.get("deployment_order"):
             raise RQ4ValidationError(
                 f"{method} deployment ordering differs from evaluation ordering"
             )
+    tiny = artifact.get("exhaustive_tiny_universe", {})
+    tiny_method = tiny.get("method", {})
+    if tiny.get("scope") != "diagnostic-only" or tiny_method.get("method") != EXHAUSTIVE_METHOD_ID:
+        raise RQ4ValidationError("missing separate exhaustive tiny-universe diagnostic")
+    if tiny_method.get("selection_planner_evaluations") != 20:
+        raise RQ4ValidationError("tiny exhaustive diagnostic did not enumerate 20 subsets")
     validation = artifact.get("validation_outcome", {})
     if validation.get("status") != "passed" or validation.get("exhaustive_evaluated_count") != 20:
         raise RQ4ValidationError("synthetic exhaustive validation gate did not pass")
@@ -753,9 +947,13 @@ def current_research_commit(root: Path) -> str:
 
 
 __all__ = [
+    "ALL_METHOD_IDS",
+    "ELIGIBILITY_METADATA_ALLOWLIST",
+    "EXHAUSTIVE_METHOD_ID",
     "FIXED_K",
     "METHOD_IDS",
     "RQ4_FORMAT",
+    "ConfigurationEvaluation",
     "EvaluationBudget",
     "build_eligible_universe",
     "build_synthetic_rq4_artifact",
