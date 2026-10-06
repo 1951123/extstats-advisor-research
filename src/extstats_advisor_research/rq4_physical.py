@@ -26,6 +26,7 @@ from .rq4_ablation import METHOD_IDS, RQ4ValidationError
 PHYSICAL_FORMAT = "rq4-stock-physical-evaluation-v1"
 SHARED_REALIZATION_FORMAT = "rq4-stock-shared-realization-v1"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_RANDOM_REPLICATE = re.compile(r"^random-k-seed-([1-5])$")
 
 
 def _sha256_bytes(value: bytes) -> str:
@@ -52,7 +53,11 @@ def union_selected_memberships(selected_by_method: Mapping[str, Sequence[str]]) 
 
     if not selected_by_method:
         raise RQ4ValidationError("shared stock realization needs at least one method")
-    unknown = set(selected_by_method) - set(METHOD_IDS)
+    unknown = {
+        method
+        for method in selected_by_method
+        if method not in METHOD_IDS and _RANDOM_REPLICATE.fullmatch(method) is None
+    }
     if unknown:
         raise RQ4ValidationError(f"unknown RQ4 method in shared realization: {sorted(unknown)}")
     return tuple(
@@ -333,6 +338,9 @@ def build_shared_stock_realization(
     research_commit_sha: str,
     statistics_target: int = 100,
     query_count: int = 3,
+    dataset_id: str = "real-artifact-fixture",
+    formal_confirmatory_experiment: bool = False,
+    experiment_id: str | None = None,
 ) -> dict[str, Any]:
     """Create one stock union realization and evaluate method clones.
 
@@ -462,9 +470,11 @@ def build_shared_stock_realization(
                     "parent_realization_digest": semantic_digest(parent_payloads),
                     "payloads_exactly_preserved_after_drop": payloads_equal and bytes_equal,
                     "payload_bytes_equal_after_drop": bytes_equal,
+                    "selected_deployed_membership_equal": set(selected_values) == set(remaining),
                     "ordinary_statistics_fingerprint": ordinary,
                     "ordinary_statistics_equal_to_parent": ordinary == parent_ordinary,
                     "analyze_after_drop": False,
+                    "post_drop_analyze_count": 0,
                     "plan_rows": metrics["per_query"],
                     "metrics": {key: value for key, value in metrics.items() if key != "per_query"},
                     "costs": {
@@ -487,9 +497,13 @@ def build_shared_stock_realization(
                 conn.close()
         artifact: dict[str, Any] = {
             "format_version": PHYSICAL_FORMAT,
-            "experiment_id": "rq4-stock-physical-evaluation-smoke-v1",
-            "formal_confirmatory_experiment": False,
-            "status": "shared-realization-smoke",
+            "experiment_id": experiment_id or "rq4-stock-physical-evaluation-smoke-v1",
+            "formal_confirmatory_experiment": formal_confirmatory_experiment,
+            "status": (
+                "formal-confirmatory"
+                if formal_confirmatory_experiment
+                else "shared-realization-smoke"
+            ),
             "research_commit_sha": research_commit_sha,
             "system_freeze": dict(system_freeze),
             "system_freeze_semantic_digest": semantic_digest(system_freeze),
@@ -497,7 +511,7 @@ def build_shared_stock_realization(
             "candidate_universe_semantic_digest": universe.semantic_digest,
             "ground_truth_semantic_digest": ground_truth.computed_semantic_digest,
             "dataset": {
-                "dataset_id": "real-artifact-fixture",
+                "dataset_id": dataset_id,
                 "relation": f"{relation_schema}.{schema.name}",
             },
             "workload": {
@@ -574,6 +588,19 @@ def validate_shared_stock_realization(path: Path) -> dict[str, Any]:
             raise RQ4ValidationError(f"{method} payload changed after no-ANALYZE drop")
         if result.get("analyze_after_drop") is not False:
             raise RQ4ValidationError(f"{method} ran ANALYZE after dropping unrelated statistics")
+        if (
+            artifact.get("formal_confirmatory_experiment")
+            and result.get("post_drop_analyze_count") != 0
+        ):
+            raise RQ4ValidationError(f"{method} has a non-zero post-DROP ANALYZE count")
+        if artifact.get("formal_confirmatory_experiment"):
+            physical_ids = {
+                item.get("candidate_id") for item in result.get("physical_statistics", [])
+            }
+            if physical_ids != set(result.get("selected_membership", [])):
+                raise RQ4ValidationError(f"{method} physical membership differs from selection")
+            if result.get("selected_deployed_membership_equal") is not True:
+                raise RQ4ValidationError(f"{method} does not record selected/deployed equality")
         if result.get("physical_evaluation_source") != "stock-postgresql-explain":
             raise RQ4ValidationError(f"{method} is missing stock physical evaluation evidence")
         if "sandbox_objective" in result.get("metrics", {}):
@@ -592,7 +619,9 @@ def validate_shared_stock_realization(path: Path) -> dict[str, Any]:
         "format_version": PHYSICAL_FORMAT,
         "semantic_digest": expected,
         "method_count": len(methods),
-        "formal_confirmatory_experiment": False,
+        "formal_confirmatory_experiment": bool(
+            artifact.get("formal_confirmatory_experiment", False)
+        ),
     }
 
 

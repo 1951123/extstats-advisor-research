@@ -663,6 +663,10 @@ def run_rq4_ablation(
         result["information_access_policy"] = INFORMATION_ACCESS_POLICY[method]
         result["random_seed"] = random_seed
         result = _evaluate_selected(result, evaluator)
+        profile_trace = []
+        if method == "singleton-utility-top-k" and singleton_profile_accounting:
+            profile_trace = list(singleton_profile_accounting.get("configuration_trace", []))
+        result["configuration_trace"] = profile_trace + list(evaluator.trace)
         results[method] = result
 
     return {

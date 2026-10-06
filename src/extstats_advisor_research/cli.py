@@ -59,6 +59,7 @@ from .rq4_ablation import (
     write_synthetic_rq4_artifact,
 )
 from .rq4_determinism import validate_design_determinism_smoke
+from .rq4_formal import run_forest10_fixed_k, validate_forest10_fixed_k_artifact
 from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
@@ -437,6 +438,25 @@ def _parser() -> argparse.ArgumentParser:
     rq4_physical_commands = rq4_physical.add_subparsers(dest="rq4_physical_command", required=True)
     rq4_physical_validate = rq4_physical_commands.add_parser("validate")
     rq4_physical_validate.add_argument("artifact", type=Path)
+    rq4_formal = validate_commands.add_parser(
+        "rq4-forest10-fixed-k", help="run or validate the Forest10 formal RQ4 fixed-k canary"
+    )
+    rq4_formal_commands = rq4_formal.add_subparsers(dest="rq4_formal_command", required=True)
+    rq4_formal_run = rq4_formal_commands.add_parser("run", aliases=["create"])
+    rq4_formal_run.add_argument("--stock-dsn", required=True)
+    rq4_formal_run.add_argument("--patched-dsn", required=True)
+    rq4_formal_run.add_argument("--output", type=Path, required=True)
+    rq4_formal_run.add_argument("--data-root", type=Path)
+    rq4_formal_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq4_formal_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    rq4_formal_validate = rq4_formal_commands.add_parser("validate")
+    rq4_formal_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -701,6 +721,27 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "rq4-stock-physical":
             result = validate_shared_stock_realization(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-forest10-fixed-k":
+            if args.rq4_formal_command in {"run", "create"}:
+                result = run_forest10_fixed_k(
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    data_root=args.data_root,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                )
+                result = {
+                    "status": result["status"],
+                    "format_version": result["format_version"],
+                    "experiment_id": result["experiment_id"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
+            else:
+                result = validate_forest10_fixed_k_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-rebind":

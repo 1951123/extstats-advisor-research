@@ -240,6 +240,18 @@ def profile_singleton_utility(
         if isinstance(baseline_raw, ConfigurationEvaluation)
         else 0.0
     )
+    trace: list[dict[str, Any]] = [
+        {
+            "purpose": "singleton-profile-baseline",
+            "ordered_candidate_ids": [],
+            "objective": float(baseline),
+            "postgresql_planner_query_calls": planner_query_calls,
+            "backend_wall_clock_seconds": backend_seconds,
+            "backend_metadata": dict(baseline_raw.metadata)
+            if isinstance(baseline_raw, ConfigurationEvaluation)
+            else {},
+        }
+    ]
     scores: dict[str, float] = {}
     for candidate_id in candidate_ids:
         raw = backend.evaluate((candidate_id,), purpose="singleton-profile")
@@ -249,12 +261,30 @@ def profile_singleton_utility(
         if isinstance(raw, ConfigurationEvaluation):
             planner_query_calls += raw.planner_query_calls
             backend_seconds += raw.wall_clock_seconds
+        trace.append(
+            {
+                "purpose": "singleton-profile",
+                "ordered_candidate_ids": [candidate_id],
+                "objective": float(objective),
+                "postgresql_planner_query_calls": (
+                    raw.planner_query_calls if isinstance(raw, ConfigurationEvaluation) else 0
+                ),
+                "backend_wall_clock_seconds": (
+                    raw.wall_clock_seconds if isinstance(raw, ConfigurationEvaluation) else 0.0
+                ),
+                "backend_metadata": dict(raw.metadata)
+                if isinstance(raw, ConfigurationEvaluation)
+                else {},
+            }
+        )
     return scores, {
         "source": "frozen-postgres-planner-and-bound-ground-truth-v1",
+        "baseline_objective": float(baseline),
         "configuration_objective_evaluations": configuration_evaluations,
         "postgresql_planner_query_calls": planner_query_calls,
         "backend_wall_clock_seconds": backend_seconds,
         "elapsed_wall_clock_seconds": time.perf_counter() - started,
+        "configuration_trace": trace,
     }
 
 
