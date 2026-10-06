@@ -216,7 +216,7 @@
     {
       "experiment_id": "rq3-primary-mechanism-fidelity",
       "rq": "RQ3",
-      "status": "implementation-needed",
+      "status": "ready-to-run",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "comparison": "Physical native statistics versus catalogless hypothetical overlay on the same patched PostgreSQL binary.",
       "main_factor": "physical catalog realization versus hypothetical overlay realization",
@@ -237,7 +237,17 @@
         "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"],
         "status_semantics": "A runner result is artifact-created with fidelity_gate pass/fail. Paper status becomes ready-to-run only after a live exact gate; no artifact is complete by itself."
       },
-      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. A live run against the pinned patched PostgreSQL build is still required before promotion to ready-to-run; no benchmark result is complete.",
+      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. The small live gate passed on the pinned patched PostgreSQL build; no benchmark result is complete.",
+      "implementation_gate": {
+        "status": "passed",
+        "artifact_format": "rq3-fidelity-v1",
+        "configuration_ids": ["mcv-only", "fd-only", "mcv-plus-fd"],
+        "query_count": 9,
+        "mismatch_count": 0,
+        "semantic_digest": "93c7608f79cb995d3bb50e45ed9f02bde23e3210396fce9ff762d4bcd878436f",
+        "cleanup_verified": true,
+        "scope": "small synthetic live gate; readiness evidence only, not a completed confirmatory result"
+      },
       "validation_fixture": "rq3-synthetic-mcv-fd-v1",
       "canonical_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output <artifact.json>",
       "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]
@@ -318,8 +328,8 @@
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",
-        "status": "implementation-needed",
-        "note": "Harness and artifact contract are unit-validated; live synthetic validation on the pinned patched PostgreSQL build is still required before ready-to-run."
+        "status": "ready-to-run",
+        "note": "Small live synthetic gate passed on the pinned patched build: 3 configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; confirmatory paper execution remains outstanding."
       },
       {
         "experiment_id": "rq3-secondary-build-sanity",

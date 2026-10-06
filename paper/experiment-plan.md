@@ -74,7 +74,7 @@ specification.
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
-| `rq3-primary-mechanism-fidelity` | RQ3 | `implementation-needed` | Harness and `rq3-fidelity-v1` validator are unit-validated; live synthetic validation on the pinned patched build is still required before `ready-to-run`. |
+| `rq3-primary-mechanism-fidelity` | RQ3 | `ready-to-run` | Live synthetic gate passed on the pinned patched build: three configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; this is readiness evidence, not a completed paper experiment. |
 | `rq3-secondary-build-sanity` | RQ3 | `implementation-needed` | No current paired sanity artifact proves patched physical equals stock physical with overlay inactive. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-fixed-k` | RQ4 | `planned` | Requires pre-registered k, seeds, tie-breaking, and common candidate universe. |
@@ -250,12 +250,11 @@ hypothetical-versus-physical estimate/error agreement plots.
 
 **Artifact/status semantics:** the runner writes an artifact even when paired
 Plan Rows mismatch and returns `status=artifact-created` with
-`fidelity_gate=pass|fail`. `pass` means mismatch count is exactly zero. Paper
-status remains `implementation-needed` until all three configurations pass a
-live run on the pinned patched build; only then may it become `ready-to-run`.
-The secondary patched-versus-stock build sanity path remains
-`implementation-needed`. Neither status implies that an official benchmark
-result is complete.
+`fidelity_gate=pass|fail`. `pass` means mismatch count is exactly zero. The
+small live gate passed for all three configurations on the pinned patched
+build, so the primary protocol is now `ready-to-run`; it is not an official
+benchmark result and is not `complete`. The secondary patched-versus-stock
+build sanity path remains `implementation-needed`.
 
 ## RQ4 — Advisor necessity / ablation
 
