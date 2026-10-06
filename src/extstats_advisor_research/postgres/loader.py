@@ -309,12 +309,19 @@ def load_forest10(
     data_root: Path | None = None,
     reset_disposable: bool = False,
     statistics_target: int = 100,
+    seed_identifier: int | None = None,
 ) -> dict[str, Any]:
     """Load the audited nullable Forest10 relation into a disposable stock database."""
     if not dsn or not dsn.strip():
         raise ValueError("a DSN is required and is never written to an artifact")
     if isinstance(statistics_target, bool) or statistics_target < 1:
         raise ValueError("statistics_target must be positive")
+    if seed_identifier is not None and (
+        isinstance(seed_identifier, bool)
+        or not isinstance(seed_identifier, int)
+        or seed_identifier <= 0
+    ):
+        raise ValueError("seed_identifier must be a positive integer")
     source = forest10.csv_path(data_root)
     metadata = forest10.inspect(data_root)
     started = time.monotonic()
@@ -385,6 +392,8 @@ def load_forest10(
                 f'ALTER TABLE {forest10.RELATION} ALTER COLUMN "{name}" '
                 f"SET STATISTICS {statistics_target}"
             )
+        if seed_identifier is not None:
+            connection.execute(f"SELECT setseed(1.0 / {seed_identifier})")
         connection.execute(f"ANALYZE {forest10.RELATION}")
         targets = connection.execute(
             """
@@ -418,6 +427,10 @@ def load_forest10(
         "server_version": server_version,
         "server_version_num": server_version_num,
         "statistics_target": statistics_target,
+        "seed_identifier": seed_identifier,
+        "seed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
+        if seed_identifier is not None
+        else None,
         "analyze_count": 1,
         "statistics_targets": statistics_targets,
         "elapsed_seconds": round(time.monotonic() - started, 6),
@@ -430,12 +443,19 @@ def load_power7(
     data_root: Path | None = None,
     reset_disposable: bool = False,
     statistics_target: int = 100,
+    seed_identifier: int | None = None,
 ) -> dict[str, Any]:
     """Load the audited nullable Power7 relation into stock PostgreSQL."""
     if not dsn or not dsn.strip():
         raise ValueError("a DSN is required and is never written to an artifact")
     if isinstance(statistics_target, bool) or statistics_target < 1:
         raise ValueError("statistics_target must be positive")
+    if seed_identifier is not None and (
+        isinstance(seed_identifier, bool)
+        or not isinstance(seed_identifier, int)
+        or seed_identifier <= 0
+    ):
+        raise ValueError("seed_identifier must be a positive integer")
     source = power7.csv_path(data_root)
     metadata = power7.inspect(data_root)
     started = time.monotonic()
@@ -515,6 +535,8 @@ def load_power7(
                 f'ALTER TABLE {power7.RELATION} ALTER COLUMN "{name}" '
                 f"SET STATISTICS {statistics_target}"
             )
+        if seed_identifier is not None:
+            connection.execute(f"SELECT setseed(1.0 / {seed_identifier})")
         connection.execute(f"ANALYZE {power7.RELATION}")
         targets = connection.execute(
             """
@@ -555,6 +577,10 @@ def load_power7(
         "server_version": server_version,
         "server_version_num": server_version_num,
         "statistics_target": statistics_target,
+        "seed_identifier": seed_identifier,
+        "seed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
+        if seed_identifier is not None
+        else None,
         "analyze_count": 1,
         "statistics_targets": statistics_targets,
         "elapsed_seconds": round(time.monotonic() - started, 6),
@@ -680,12 +706,19 @@ def load_dmv11(
     data_root: Path | None = None,
     reset_disposable: bool = False,
     statistics_target: int = 100,
+    seed_identifier: int | None = None,
 ) -> dict[str, Any]:
     """Load the audited nullable DMV11 relation into stock PostgreSQL."""
     if not dsn or not dsn.strip():
         raise ValueError("a DSN is required and is never written to an artifact")
     if isinstance(statistics_target, bool) or statistics_target < 1:
         raise ValueError("statistics_target must be positive")
+    if seed_identifier is not None and (
+        isinstance(seed_identifier, bool)
+        or not isinstance(seed_identifier, int)
+        or seed_identifier <= 0
+    ):
+        raise ValueError("seed_identifier must be a positive integer")
     source = dmv11.csv_path(data_root)
     metadata = dmv11.inspect(data_root)
     started = time.monotonic()
@@ -749,6 +782,8 @@ def load_dmv11(
             connection.execute(
                 f"ALTER TABLE {dmv11.RELATION} ALTER COLUMN {name} SET STATISTICS {statistics_target}"
             )
+        if seed_identifier is not None:
+            connection.execute(f"SELECT setseed(1.0 / {seed_identifier})")
         connection.execute(f"ANALYZE {dmv11.RELATION}")
         targets = connection.execute(
             """
@@ -779,6 +814,10 @@ def load_dmv11(
         "server_version": server_version,
         "server_version_num": server_version_num,
         "statistics_target": statistics_target,
+        "seed_identifier": seed_identifier,
+        "seed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
+        if seed_identifier is not None
+        else None,
         "analyze_count": 1,
         "statistics_targets": statistics_targets,
         "elapsed_seconds": round(time.monotonic() - started, 6),

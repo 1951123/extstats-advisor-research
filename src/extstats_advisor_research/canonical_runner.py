@@ -400,6 +400,8 @@ def _run_canonical(
     advisor_command: str,
     expected_candidate_count: int | None = None,
     authoritative_truth: dict[str, Any] | None = None,
+    seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
@@ -461,6 +463,7 @@ def _run_canonical(
         data_root=data_root,
         reset_disposable=reset_disposable,
         statistics_target=statistics_target,
+        seed_identifier=seed_identifier,
     )
     if (
         load_result["rows"] != dataset.EXPECTED_ROWS
@@ -964,7 +967,9 @@ def _run_canonical(
         "qerror": paper_focus["qerror"],
         "truth": paper_focus["true_rows"],
     }
-    evidence_directory = research_root / f"experiments/{dataset.BENCHMARK_ID}/canonical-k8"
+    evidence_directory = compact_evidence_directory or (
+        research_root / f"experiments/{dataset.BENCHMARK_ID}/canonical-k8"
+    )
     if evidence_directory.exists() and any(evidence_directory.iterdir()):
         raise FileExistsError(f"compact evidence already exists: {evidence_directory}")
     evidence_directory.mkdir(parents=True, exist_ok=True)
@@ -1035,6 +1040,8 @@ def run_forest10(**kwargs: Any) -> dict[str, Any]:
         full_format_version="arecel-forest-full-data-target100-v1",
         compact_format_version="arecel-forest-canonical-k8-summary-v1",
         authoritative_truth=authoritative_truth_spec("arecel-forest10"),
+        seed_identifier=kwargs.pop("seed_identifier", None),
+        compact_evidence_directory=kwargs.pop("compact_evidence_directory", None),
         **kwargs,
     )
 
@@ -1049,6 +1056,8 @@ def run_power7(**kwargs: Any) -> dict[str, Any]:
         full_format_version="arecel-power7-full-data-target100-v1",
         compact_format_version="arecel-power7-canonical-k8-summary-v1",
         authoritative_truth=authoritative_truth_spec("arecel-power7"),
+        seed_identifier=kwargs.pop("seed_identifier", None),
+        compact_evidence_directory=kwargs.pop("compact_evidence_directory", None),
         **kwargs,
     )
 
@@ -1064,5 +1073,7 @@ def run_dmv11(**kwargs: Any) -> dict[str, Any]:
         compact_format_version="arecel-dmv11-canonical-k8-summary-v1",
         expected_candidate_count=110,
         authoritative_truth=authoritative_truth_spec("arecel-dmv11"),
+        seed_identifier=kwargs.pop("seed_identifier", None),
+        compact_evidence_directory=kwargs.pop("compact_evidence_directory", None),
         **kwargs,
     )

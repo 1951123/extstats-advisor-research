@@ -36,6 +36,8 @@ from .rq1_canary import (
     run_census13_canary,
     validate_rq1_file,
 )
+from .rq1_matched import RQ1_DATASETS, run_rq1_matched
+from .rq1_rebind import canonicalize_census13, validate_rebound_artifact
 from .rq3_build_sanity import (
     inspect_build_sanity_artifact,
     run_build_sanity,
@@ -360,6 +362,42 @@ def _parser() -> argparse.ArgumentParser:
     rq1_validate.add_argument("artifact", type=Path)
     rq1_inspect = rq1_commands.add_parser("inspect")
     rq1_inspect.add_argument("artifact", type=Path)
+    matched = validate_commands.add_parser(
+        "rq1-matched", help="run or validate a dataset-generic RQ1 matched comparison"
+    )
+    matched_commands = matched.add_subparsers(dest="matched_command", required=True)
+    matched_run = matched_commands.add_parser("run", aliases=["create"])
+    matched_run.add_argument("--dataset", dest="dataset_id", choices=RQ1_DATASETS, required=True)
+    matched_run.add_argument("--stock-dsn", required=True)
+    matched_run.add_argument("--patched-dsn", required=True)
+    matched_run.add_argument("--output", type=Path, required=True)
+    matched_run.add_argument("--data-root", type=Path)
+    matched_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    matched_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    matched_run.add_argument("--advisor-command", default="extstats-advisor")
+    matched_validate = matched_commands.add_parser("validate")
+    matched_validate.add_argument("artifact", type=Path)
+    matched_inspect = matched_commands.add_parser("inspect")
+    matched_inspect.add_argument("artifact", type=Path)
+    rebind = validate_commands.add_parser(
+        "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
+    )
+    rebind_commands = rebind.add_subparsers(dest="rebind_command", required=True)
+    rebind_run = rebind_commands.add_parser("run", aliases=["create"])
+    rebind_run.add_argument("--historical-artifact", type=Path, required=True)
+    rebind_run.add_argument("--observations", type=Path, required=True)
+    rebind_run.add_argument("--equivalence-artifact", type=Path, required=True)
+    rebind_run.add_argument("--policy", type=Path, required=True)
+    rebind_run.add_argument("--output", type=Path, required=True)
+    rebind_run.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_PATH)
+    rebind_validate = rebind_commands.add_parser("validate")
+    rebind_validate.add_argument("artifact", type=Path)
     return parser
 
 
@@ -551,6 +589,38 @@ def main(argv: list[str] | None = None) -> int:
                 result = validate_rq1_file(args.artifact)
             else:
                 result = inspect_rq1_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-matched":
+            if args.matched_command in {"run", "create"}:
+                result = run_rq1_matched(
+                    dataset_id=args.dataset_id,
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    data_root=args.data_root,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                    advisor_command=args.advisor_command,
+                )
+            elif args.matched_command == "validate":
+                result = validate_rq1_file(args.artifact)
+            else:
+                result = inspect_rq1_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-rebind":
+            if args.rebind_command in {"run", "create"}:
+                result = canonicalize_census13(
+                    historical_artifact=args.historical_artifact,
+                    observations_path=args.observations,
+                    equivalence_artifact=args.equivalence_artifact,
+                    policy_path=args.policy,
+                    system_freeze_path=args.system_freeze,
+                    output=args.output,
+                )
+            else:
+                result = validate_rebound_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "build-sanity":

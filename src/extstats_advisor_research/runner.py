@@ -98,6 +98,7 @@ def run_census13(
     data_root: Path | None = None,
     reset_disposable: bool = False,
     seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
     advisor_command: str = "extstats-advisor",
     truth_source: str = "authoritative-arecel",
     authoritative_observations: Path | None = None,
@@ -476,6 +477,8 @@ def _legacy_run_forest10(
     search_wall_clock_seconds: float = 300.0,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
     advisor_command: str = "extstats-advisor",
 ) -> dict[str, Any]:
     """Run exactly one audited Forest10 canonical advisor experiment."""
@@ -938,6 +941,8 @@ def run_forest10(
     search_wall_clock_seconds: float = 300.0,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
     advisor_command: str = "extstats-advisor",
 ) -> dict[str, Any]:
     """Run the shared canonical engine with the historical Forest10 settings."""
@@ -954,6 +959,8 @@ def run_forest10(
         search_wall_clock_seconds=search_wall_clock_seconds,
         data_root=data_root,
         reset_disposable=reset_disposable,
+        seed_identifier=seed_identifier,
+        compact_evidence_directory=compact_evidence_directory,
         advisor_command=advisor_command,
     )
 
@@ -972,6 +979,8 @@ def run_power7(
     search_wall_clock_seconds: float = 300.0,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
     advisor_command: str = "extstats-advisor",
 ) -> dict[str, Any]:
     """Run exactly one audited Power7 canonical advisor experiment."""
@@ -988,6 +997,8 @@ def run_power7(
         search_wall_clock_seconds=search_wall_clock_seconds,
         data_root=data_root,
         reset_disposable=reset_disposable,
+        seed_identifier=seed_identifier,
+        compact_evidence_directory=compact_evidence_directory,
         advisor_command=advisor_command,
     )
 
@@ -1006,6 +1017,8 @@ def run_dmv11(
     search_wall_clock_seconds: float = 300.0,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    seed_identifier: int | None = None,
+    compact_evidence_directory: Path | None = None,
     advisor_command: str = "extstats-advisor",
 ) -> dict[str, Any]:
     """Run exactly one DMV11 K=8 canonical external-truth experiment."""
@@ -1022,5 +1035,7 @@ def run_dmv11(
         search_wall_clock_seconds=search_wall_clock_seconds,
         data_root=data_root,
         reset_disposable=reset_disposable,
+        seed_identifier=seed_identifier,
+        compact_evidence_directory=compact_evidence_directory,
         advisor_command=advisor_command,
     )

@@ -16,7 +16,9 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from .datasets import census13
+from extstats_advisor.utility import QErrorLoss
+
+from .datasets import DATASETS, census13
 from .full_data_transfer import _explain_rows, _ordinary_fingerprint, _stats
 from .pins import verify_frozen_systems, verify_research_repository
 from .postgres.loader import load_census13
@@ -46,18 +48,17 @@ DATASET_PROGRESS = ("arecel-census13", "arecel-forest10", "arecel-power7", "arec
 _SHA1 = re.compile(r"^[0-9a-f]{40}$")
 
 
-def qerror(estimate: int, truth: int) -> float:
-    """Return q-error under qerror-cardinality-floor-1-v1."""
+_QERROR_LOSS = QErrorLoss()
 
-    if isinstance(estimate, bool) or isinstance(truth, bool):
-        raise TypeError("estimate and truth must be integers")
-    if not isinstance(estimate, int) or not isinstance(truth, int):
-        raise TypeError("estimate and truth must be integers")
-    if estimate < 0 or truth < 0:
-        raise ValueError("estimate and truth must be non-negative")
-    estimated = max(estimate, 1)
-    actual = max(truth, 1)
-    return max(estimated / actual, actual / estimated)
+
+def qerror(estimate: int, truth: int) -> float:
+    """Delegate q-error evaluation to the frozen advisor utility contract."""
+
+    if isinstance(estimate, bool) or not isinstance(estimate, int):
+        raise TypeError("estimate must be an integer")
+    if isinstance(truth, bool) or not isinstance(truth, int):
+        raise TypeError("truth must be an integer")
+    return float(_QERROR_LOSS.loss(estimate, truth))
 
 
 def _percentile(values: list[float], percentile: float) -> float:
@@ -191,16 +192,33 @@ def validate_rq1_artifact(artifact: Any) -> dict[str, Any]:
     dataset = artifact.get("dataset")
     workload = artifact.get("workload")
     truth = artifact.get("truth")
-    if not isinstance(dataset, dict) or dataset.get("dataset_id") != CANARY_DATASET_ID:
-        raise ValueError("RQ1 artifact is not a Census13 canary")
-    if not isinstance(workload, dict) or workload.get("workload_id") != WORKLOAD_ID:
-        raise ValueError("RQ1 artifact has the wrong workload identity")
-    if not isinstance(truth, dict) or truth.get("source_kind") != "production-exact-execution":
-        raise ValueError("RQ1 artifact must use production-exact-execution truth")
+    if not isinstance(dataset, dict) or dataset.get("dataset_id") not in DATASETS:
+        raise ValueError("RQ1 artifact has an unsupported AreCEL dataset")
+    if not isinstance(workload, dict) or not isinstance(workload.get("workload_id"), str):
+        raise TypeError("RQ1 artifact has an invalid workload identity")
+    if not isinstance(truth, dict) or truth.get("source_kind") not in {
+        "production-exact-execution",
+        "authoritative-external-exact",
+    }:
+        raise ValueError("RQ1 artifact has an unsupported truth source")
     if truth.get("workload_id") != workload.get("workload_id"):
         raise ValueError("RQ1 truth and workload identities differ")
-    if truth.get("semantic_digest") != TRUTH_SEMANTIC_DIGEST:
-        raise ValueError("RQ1 artifact is not bound to the audited Census13 truth")
+    if truth.get("query_count") != workload.get("query_count"):
+        raise ValueError("RQ1 truth and workload query counts differ")
+    if truth["source_kind"] == "authoritative-external-exact":
+        for field in (
+            "authority",
+            "dataset_identity",
+            "source_revision",
+            "source_artifact_sha256",
+        ):
+            if not isinstance(truth.get(field), str) or not truth[field]:
+                raise ValueError(f"RQ1 external truth is missing {field}")
+    elif (
+        truth.get("semantic_digest") != TRUTH_SEMANTIC_DIGEST
+        and dataset.get("dataset_id") == CANARY_DATASET_ID
+    ):
+        raise ValueError("RQ1 Census13 historical truth is not the audited artifact")
     per_arm = artifact.get("per_arm")
     if not isinstance(per_arm, dict) or set(per_arm) != set(ARM_IDS):
         raise ValueError("RQ1 artifact per_arm keys do not match arms")
@@ -221,6 +239,11 @@ def validate_rq1_artifact(artifact: Any) -> dict[str, Any]:
                 raise ValueError(
                     "advisor arm must record sandbox_optimization_objective separately"
                 )
+            if (
+                artifact.get("experiment_status") == "dataset-complete"
+                and arm.get("deployment_result", {}).get("verified") is not True
+            ):
+                raise ValueError("dataset-complete advisor arm lacks verified stock deployment")
             if arm.get("full_data_evaluation_metrics") != arm.get("summary"):
                 raise ValueError("advisor full-data metrics must be the arm summary")
         else:
@@ -280,7 +303,7 @@ def validate_rq1_artifact(artifact: Any) -> dict[str, Any]:
         "status": "valid",
         "format_version": RQ1_FORMAT,
         "experiment_id": artifact["experiment_id"],
-        "dataset_id": CANARY_DATASET_ID,
+        "dataset_id": dataset["dataset_id"],
         "arms": list(ARM_IDS),
         "query_count": len(canonical_query_ids or ()),
         "semantic_digest": expected_digest,
