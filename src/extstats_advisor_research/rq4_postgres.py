@@ -172,6 +172,10 @@ class FrozenPostgresRQ4Backend(AbstractContextManager["FrozenPostgresRQ4Backend"
                 "query_count": len(self.query_ids),
                 "active_backend_oid_count": len(self._planner.active_backend_oids()),
                 "activation_order_verified": True,
+                # Replay compares these planner observations directly.  They
+                # are evidence emitted by the frozen planner, not a second
+                # estimator implemented in the research harness.
+                "planner_estimates": dict(estimates),
             },
         )
 

@@ -22,6 +22,7 @@ RQ4_FORMAT = "rq4-ablation-v1"
 ELIGIBLE_UNIVERSE_FORMAT = "rq4-eligible-universe-v1"
 FIXED_K = 4
 TINY_EXHAUSTIVE_K = 3
+RANDOM_SEEDS = (1, 2, 3, 4, 5)
 METHOD_IDS = (
     "random-k",
     "workload-frequency-top-k",
@@ -952,6 +953,7 @@ __all__ = [
     "EXHAUSTIVE_METHOD_ID",
     "FIXED_K",
     "METHOD_IDS",
+    "RANDOM_SEEDS",
     "RQ4_FORMAT",
     "ConfigurationEvaluation",
     "EvaluationBudget",

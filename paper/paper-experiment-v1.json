@@ -404,8 +404,14 @@
     {
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
-      "status": "implementation-needed",
-      "implementation_status": "stock-full-data-per-method-executor-needed",
+      "status": "ready-to-run",
+      "implementation_status": "rq4a-deterministic-and-rq4b-small-physical-smoke-ready-formal-unrun",
+      "evidence_hierarchy": {
+        "rq4a": "primary deterministic patched-sandbox design quality",
+        "rq4b": "secondary stochastic stock physical consequence",
+        "sandbox_objective_is_headline": false,
+        "native_analyze_variability_is_rq4a": false
+      },
       "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
       "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_k_quality",
@@ -417,11 +423,23 @@
       },
       "controls": ["identical candidate universe", "identical native kinds and keys", "identical sample-built NativeStatsRepository", "identical statistics target", "declared truth/loss contract", "declared workload"],
       "ground_truth_policy": "Only utility-based methods use GroundTruthSet during selection; every selected result is evaluated against the same bound truth.",
-      "random_seed_policy": "Pre-register replicate seeds; record them and break non-random ties by candidate ID after declared score/static precedence.",
+      "random_seed_policy": "Formal random-k replicates use pre-registered seeds [1, 2, 3, 4, 5]; report each plus mean/std/min/max. Break non-random ties by candidate ID after declared score/static precedence.",
       "deployment_policy": "Every method uses the same canonical evaluation/deployment ordering and records membership, evaluation order, deployment order, and physical identities.",
-      "independent_evaluation": "Stock PostgreSQL full-data physical estimates with the same authoritative truth; sandbox objective, configuration evaluations, per-query planner calls, preprocessing, and final evaluation costs are separate.",
-      "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "manifest"],
-      "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes"],
+      "independent_evaluation": "RQ4b stock PostgreSQL physical estimates with the same authoritative truth; sandbox objective, configuration evaluations, per-query planner calls, preprocessing, native realization, and final evaluation costs are separate.",
+      "deterministic_replay_contract": {
+        "format_version": "rq4-design-determinism-smoke-v1",
+        "runtime_fields_excluded_from_replay": ["wall_clock_seconds", "elapsed_wall_clock_seconds", "wall_time_seconds"],
+        "exact_fields": ["selected_membership", "evaluation_order", "planner_estimates", "sandbox_objective", "configuration_trace", "semantic_digest"]
+      },
+      "shared_physical_realization_contract": {
+        "format_version": "rq4-stock-physical-evaluation-v1",
+        "union_policy": "union of all selected method memberships",
+        "analyze_count": 1,
+        "clone_policy": "clone one analyzed parent, drop unrelated statistics without ANALYZE, verify remaining payload bytes",
+        "setseed_is_analyze_reproducibility_proof": false
+      },
+      "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "deterministic replay artifact", "shared stock realization and clone evidence", "manifest"],
+      "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes", "RQ4a/RQ4b evidence-separated summary"],
       "synthetic_validation_artifact": {
         "path": "experiments/rq4/synthetic/rq4-ablation-v1.json",
         "format_version": "rq4-ablation-v1",
@@ -431,7 +449,7 @@
       },
       "formal_arecel_runs": false,
       "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
-      "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "configuration-objective evaluations and PostgreSQL per-query planner calls are reported for all methods", "exhaustive is restricted to a separately declared tiny universe"]
+      "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "configuration-objective evaluations and PostgreSQL per-query planner calls are reported for all methods", "exhaustive is restricted to a separately declared tiny universe", "formal RQ4a replay and method evidence are complete", "formal RQ4b stock physical evidence records native realization identity and stochastic protocol"]
     },
     {
       "experiment_id": "rq4-real-backend-integration-smoke",
@@ -481,6 +499,23 @@
       "completion_criteria": ["no method receives a silently larger budget", "per-query planner calls are reported separately from configuration evaluations", "preprocessing and final evaluation costs are explicit", "exhaustive is diagnostic-only"]
     },
     {
+      "experiment_id": "rq4-native-analyze-stability",
+      "rq": "RQ4b",
+      "status": "planned",
+      "datasets": ["arecel-forest10", "arecel-census13", "arecel-dmv11"],
+      "protocol_identity": "native-analyze-stability-v1",
+      "realizations": 5,
+      "systems": ["stock PostgreSQL frozen build"],
+      "protocol": "Independent fresh physical realizations with the same relation, selected membership, ordinary-statistics policy, and workload; each uses native CREATE STATISTICS plus ANALYZE.",
+      "seed_policy": "Record experiment seed identifier and SELECT setseed(1.0 / 123) where the baseline protocol requires it, but do not treat setseed as control of ANALYZE sampling.",
+      "metrics": ["payload digest variability", "Plan Rows variability", "q-error variability", "native ANALYZE cost"],
+      "formal_arecel_runs": false,
+      "required_raw_artifacts": ["five realization manifests", "payload identities", "ordinary-statistics fingerprints", "per-query Plan Rows", "ANALYZE timing"],
+      "required_derived_artifacts": ["realization stability summary", "variability intervals"],
+      "expected_paper_outputs": ["fig-rq4b-native-analyze-stability"],
+      "completion_criteria": ["N=5 independent realizations are recorded", "no setseed reproducibility claim is made", "stability is kept separate from RQ4a deterministic design quality"]
+    },
+    {
       "experiment_id": "rq5-cost-accounting",
       "rq": "RQ5",
       "status": "planned",
@@ -525,13 +560,18 @@
       },
       {
         "experiment_id": "rq4-fixed-k-ablations",
-        "status": "implementation-needed",
-        "note": "Synthetic and patched-backend integration gates passed with independent fixed k=4 policy; stock full-data per-method deployment/evaluation orchestration is still needed. No formal AreCEL result is complete."
+        "status": "ready-to-run",
+        "note": "Deterministic patched replay and small stock shared-union/drop physical gates passed. Readiness artifacts are not formal AreCEL results; no formal RQ4 result is complete."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
         "status": "implementation-needed",
         "note": "The 2,000 configuration-evaluation/300-second contract is frozen, but the common budget-comparison allocator is not implemented; the harness fails closed rather than reusing fixed-k logic."
+      },
+      {
+        "experiment_id": "rq4-native-analyze-stability",
+        "status": "planned",
+        "note": "Five independent native ANALYZE realizations are pre-registered to quantify stock realization variability; no stability run has been executed."
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",

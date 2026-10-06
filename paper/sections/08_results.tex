@@ -48,6 +48,10 @@ a mechanism-fidelity claim.
 
 \textbf{Required evidence.} Paired P0/P1/P2 per-query results, ordinary-stat
 fingerprints, deployment verification, and the source Recommendation digest.
+The analysis will distinguish the fixed-sample objective $J_S(M)$ from the
+full-data objective $J_D(M;A)$ for a particular native \texttt{ANALYZE}
+realization $A$; native realization variability is not reported as RQ3
+mechanism fidelity.
 % TODO(PAPER-RQ2): insert P0/P1/P2 transfer table and paired query analysis.
 % TODO(PAPER-RQ2B): insert sample-utility/full-data-utility relationship figure.
 
@@ -69,10 +73,20 @@ dependencies-only, and combined MCV-plus-dependencies configurations.
 \subsection{RQ4: ablation and advisor necessity}
 \textbf{Intended claim.} Planner-in-the-loop search contributes measurable
 value beyond low-cost selection rules on the tested candidate universes; the
-result need not imply global optimality.
+result need not imply global optimality. RQ4a is the primary deterministic
+patched-sandbox design comparison. RQ4b is a secondary stock physical
+consequence study and is explicitly subject to native \texttt{ANALYZE}
+sampling variability.
+\textbf{Required evidence.} RQ4a requires exact deterministic replay of
+membership, planner estimates, objective, and configuration traces, plus the
+fixed-$k$ method comparison and tiny-universe exhaustive diagnostic. RQ4b
+requires a shared stock realization ID, one recorded union \texttt{ANALYZE},
+post-drop payload equality without another \texttt{ANALYZE}, and per-method
+physical EXPLAIN/q-error evidence. Neither sandbox objective nor one native
+realization is substituted for the other layer.
 % TODO(PAPER-RQ4): insert heuristic, greedy, and tiny-universe exhaustive-search table.
-% The real-backend integration smoke is readiness evidence only; it is not a
-% formal AreCEL RQ4 result and does not populate this table.
+% The replay/shared-realization smokes are readiness evidence only; they are
+% not formal AreCEL RQ4 results and do not populate this table.
 
 \subsection{RQ5: practicality}
 \textbf{Intended claim.} The operational cost of offline capture, native

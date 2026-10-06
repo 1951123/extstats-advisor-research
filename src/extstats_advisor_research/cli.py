@@ -58,6 +58,8 @@ from .rq4_ablation import (
     validate_rq4_artifact,
     write_synthetic_rq4_artifact,
 )
+from .rq4_determinism import validate_design_determinism_smoke
+from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
@@ -421,6 +423,20 @@ def _parser() -> argparse.ArgumentParser:
     rq4_smoke_validate.add_argument("artifact", type=Path)
     rq4_smoke_inspect = rq4_smoke_commands.add_parser("inspect")
     rq4_smoke_inspect.add_argument("artifact", type=Path)
+    rq4_determinism = validate_commands.add_parser(
+        "rq4-design-determinism", help="validate deterministic patched-planner replay evidence"
+    )
+    rq4_determinism_commands = rq4_determinism.add_subparsers(
+        dest="rq4_determinism_command", required=True
+    )
+    rq4_determinism_validate = rq4_determinism_commands.add_parser("validate")
+    rq4_determinism_validate.add_argument("artifact", type=Path)
+    rq4_physical = validate_commands.add_parser(
+        "rq4-stock-physical", help="validate controlled stock RQ4 realization evidence"
+    )
+    rq4_physical_commands = rq4_physical.add_subparsers(dest="rq4_physical_command", required=True)
+    rq4_physical_validate = rq4_physical_commands.add_parser("validate")
+    rq4_physical_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -677,6 +693,14 @@ def main(argv: list[str] | None = None) -> int:
                 result = validate_real_backend_smoke(args.artifact)
             else:
                 result = inspect_real_backend_smoke(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-design-determinism":
+            result = validate_design_determinism_smoke(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-stock-physical":
+            result = validate_shared_stock_realization(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-rebind":

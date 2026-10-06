@@ -27,6 +27,14 @@ is created once per canonical run; native payloads are independently rebuilt on
 the full database for transfer experiments. Ordinary statistics target,
 sampling parameters, and relation population are held fixed within each
 comparison. Ground truth is not used to build the sample or native payloads.
+The design-time protocol is deterministic once the sealed snapshot/sample,
+native repository, workload, candidate ordering, planner settings, and bound
+truth are fixed. By contrast, stock deployment uses native
+\texttt{CREATE STATISTICS} followed by \texttt{ANALYZE}; PostgreSQL's native
+sampling is a stochastic realization. The experiment seed statement is not a
+claim that a fresh \texttt{ANALYZE} is bit-identical across runs, and no
+\texttt{setseed} setting is treated as proof of native-statistics
+replayability.
 
 \subsection{Truth acquisition and binding}
 
@@ -84,7 +92,11 @@ the final \texttt{ANALYZE}. P2 preserves the same ordinary-statistics state,
 removes exactly the advisor-managed objects in a research-only transaction,
 measures without \texttt{ANALYZE}, and rolls back. P1/P2 ordinary-statistics
 fingerprints are expected to match; P0 can differ because deployment's final
-\texttt{ANALYZE} refreshes the relation.
+\texttt{ANALYZE} refreshes the relation. The fixed-sample objective is
+$J_S(M)$, while a full-data result is written $J_D(M;A)$ for one native
+\texttt{ANALYZE} realization $A$. The observed difference therefore combines
+sample-to-full-data transfer with native realization variability; it is not a
+mechanism-fidelity measurement.
 
 RQ3's primary comparison removes the binary/build confound: compare physical
 statistics with catalogless hypothetical statistics using the same patched
@@ -107,29 +119,57 @@ stock PostgreSQL physical statistics with the overlay inactive; this is not
 the primary hypothetical-fidelity comparison. If the current build setup
 cannot run both realizations on the same patched binary, the experiment is
 implementation-needed and the blocker is recorded rather than changing DBMS
-semantics. Sample-to-full-data utility belongs to RQ2, not this mechanism-
-fidelity question. RQ4's primary methods are random-k, workload-frequency
+	semantics. Sample-to-full-data utility belongs to RQ2, not this
+mechanism-fidelity question.
+
+RQ4 is split into two evidence layers. RQ4a is the primary deterministic
+design-time comparison on the patched planner: random-k, workload-frequency
 top-k, dependency/correlation top-k, singleton-utility top-k, and greedy ADD;
-exhaustive search is a separately reported tiny-universe diagnostic only. The
-RQ4 primary eligible universe is frozen using only native kind, schema validity,
-sample payload availability, and predeclared compatibility; utility/outcome
-screening is a separate conditional diagnostic. The primary fixed-k protocol
-uses $k=4$ independently of the advisor recommendation. Its statuses
+exhaustive search is a separately reported tiny-universe diagnostic only. All
+methods use the same sealed snapshot, sample native repository, eligible
+universe, planner/settings, workload, truth/loss contract, and canonical
+ordering. The fixed-k protocol uses $k=4$ independently of the advisor
+recommendation. Random-k has five pre-registered seeds $(1,2,3,4,5)$; each
+replicate uses the same universe and reports individual results plus
+mean/standard deviation/minimum/maximum. RQ4a reports objective, membership,
+object count, configuration evaluations, PostgreSQL planner calls,
+preprocessing, selection wall time, termination status, overlap, and tiny
+exhaustive optimality gap. Its deterministic replay smoke must reproduce
+membership, evaluation order, planner estimates, objectives, and traces
+exactly apart from runtime measurements.
+
+RQ4b is secondary: it measures the physical consequence after stock
+\texttt{CREATE STATISTICS} and native \texttt{ANALYZE}. It is explicitly a
+stochastic native-statistics realization and must not redefine or replace
+RQ4a. The controlled smoke builds the union of method selections once,
+performs one shared stock \texttt{ANALYZE}, and clones that analyzed parent;
+each clone drops statistics not selected by its method without another
+\texttt{ANALYZE}, verifies that kept payload bytes are unchanged, and runs
+full/small EXPLAIN evaluation. This controls a common native realization for
+method comparison. A separate planned
+\texttt{native-analyze-stability-v1} protocol uses five independent native
+realizations to quantify variability; it does not claim that the seed
+statement controls \texttt{ANALYZE}.
+
+The RQ4 primary eligible universe is frozen using only native kind, schema
+validity, sample payload availability, and predeclared compatibility;
+utility/outcome screening is a separate conditional diagnostic. Its statuses
 distinguish exactly-$k$ completion, at-most-$k$ local optimum, budget
-censoring, and genuine infeasibility. The fixed-budget protocol caps
+censoring, and genuine infeasibility. The fixed-evaluation-budget mode remains
+implementation-needed and, when implemented, will cap
 configuration-objective evaluations at 2,000 and elapsed selection time at
 300 seconds. A configuration evaluation may contain many PostgreSQL
 per-query planner calls, so both quantities are recorded separately;
-selection preprocessing, singleton profiling, and final evaluation are also
-reported. Independent stock full-data evaluation is outside this selection
-budget. Cheap methods cannot inspect GroundTruthSet during selection;
-singleton and greedy methods use the same bound truth, and all methods receive
-the same later stock full-data evaluation. RQ5 measures snapshot and truth
-acquisition, sample size, native construction, candidate profiling, search time
-and planner evaluations, deployment DDL/\texttt{ANALYZE}, storage,
-planning-time change, and refresh cost. We do not claim zero online overhead;
-the narrower statement is that no separate learned-model inference path is
-added to production query processing.
+selection preprocessing, singleton profiling, final evaluation, native
+realization, and physical evaluation are separate cost stages. Independent
+stock full-data evaluation is outside the selection budget. Cheap methods
+cannot inspect GroundTruthSet during selection; singleton and greedy methods
+use the same bound truth, and all methods receive the same later stock
+full-data evaluation. RQ5 measures snapshot and truth acquisition, sample
+size, native construction, planner search, deployment DDL/\texttt{ANALYZE},
+storage, planning-time change, and refresh cost. We do not claim zero online
+overhead; the narrower statement is that no separate learned-model inference
+path is added to production query processing.
 
 Truth acquisition is reported separately from other design-time costs:
 authoritative external truth contributes import and validation cost, whereas

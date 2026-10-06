@@ -66,13 +66,19 @@ Census13 equivalence-bound external truth distinct provenance fields.
   stored separately.
 - **Artifact rule:** raw artifacts remain referenced by RunID and digest;
   derived artifacts must retain source manifest and commit identities.
+- **Design versus realization:** RQ4a is deterministic after the sealed
+  snapshot/sample, native repository, workload, truth, planner settings, and
+  canonical ordering are fixed. RQ4b uses stock `CREATE STATISTICS` plus
+  native `ANALYZE`, whose sampling is a stochastic realization. The exact
+  seed statement does not control `ANALYZE` replayability or imply bit-identical
+  statistics across fresh runs.
 
 ## Research execution order (not paper section order)
 
-1. **Priority 0:** protocol/source freeze, then the RQ3 mechanism-fidelity
-   harness.
+1. **Priority 0:** protocol/source freeze, the RQ3 mechanism-fidelity harness,
+   and the RQ4 deterministic replay/shared-realization gates.
 2. **Priority 1:** RQ1 matched baselines, then RQ4 inexpensive heuristic
-   baselines.
+   baselines and their RQ4a deterministic evidence.
 3. **Priority 2:** RQ2 confirmatory transfer and sample/full utility analysis.
 4. **Priority 3:** RQ5 cost accounting and sensitivity analyses.
 5. **Stretch:** drift/recommendation stability and additional workloads.
@@ -99,7 +105,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
-| `rq4-fixed-k` | RQ4 | `implementation-needed` | Synthetic and patched-backend smoke gates passed, but the stock full-data per-method `CREATE STATISTICS` + `ANALYZE` + evaluation orchestrator is not yet wired. Formal AreCEL ablation remains blocked on that executor. |
+| `rq4-fixed-k` | RQ4 | `ready-to-run` | RQ4a deterministic replay and the small stock shared-union/drop physical executor gates pass. The tracked smoke artifacts are readiness evidence only; formal AreCEL execution remains unrun. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -300,6 +306,11 @@ cost, query outcome counts, and the relationship between sample utility and
 full-data utility. Report two labels separately: **RQ2a** deployment benefit
 retention and **RQ2b** sandbox-utility/full-data-utility relationship.
 
+The fixed-sample objective is $J_S(M)$. A full-data result is $J_D(M;A)$ for
+one native `ANALYZE` realization $A$; transfer analysis must not conflate the
+two with mechanism fidelity or treat native realization noise as a planner
+overlay error.
+
 **Raw artifact:** deployment result, per-query transfer JSONL, object/catalog
 verification, ordinary-stat fingerprints, and source digests.
 
@@ -433,10 +444,18 @@ cost stages; the independent stock full-data evaluation is never charged to
 the selection budget. Every method reports both configuration evaluations and
 actual planner query calls, wall time, and censoring reason.
 
-The fixed-k quality harness is the currently executable RQ4 mode. The
-fixed-evaluation-budget mode remains `implementation-needed` until a common
-budget-comparison allocator is implemented; the harness fails closed for that
-mode rather than silently reusing fixed-k selection logic.
+RQ4a is the primary deterministic patched-sandbox design comparison. RQ4b is
+the secondary stock physical consequence comparison. The fixed-k quality
+harness is executable for both evidence layers on a small fixture; the tracked
+smokes are readiness evidence, not formal AreCEL results. A shared physical
+realization builds the union of method memberships, performs one stock
+`ANALYZE`, and evaluates no-ANALYZE clones after dropping unrelated objects.
+This controlled comparison is distinct from the planned
+`native-analyze-stability-v1` protocol with five independent native
+realizations. The fixed-evaluation-budget mode remains
+`implementation-needed` until a common budget-comparison allocator is
+implemented; the harness fails closed for that mode rather than silently
+reusing fixed-k selection logic.
 
 **Evaluation accounting:** fixed-k runs must publish a declared maximum
 configuration-objective budget and actual counts for every method, even when
@@ -447,9 +466,18 @@ preprocessing time. Fixed-evaluation-budget runs use the same caps for every
 primary method. Tiny exhaustive diagnostics have their own declared universe
 and budget and are not silently substituted for a full-universe run.
 
-**Determinism:** random seeds are recorded per replicate; all non-random ties
-are broken by candidate ID after the declared score and static precedence keys.
-The same ordered configuration convention is used for planner evaluation.
+**Determinism:** random seeds are recorded per replicate; formal random-k
+replicates use pre-registered seeds `[1, 2, 3, 4, 5]`. All non-random ties are
+broken by candidate ID after the declared score and static precedence keys.
+The same ordered configuration convention is used for planner evaluation. A
+small replay smoke requires exact membership, evaluation order, planner
+estimates, objectives, and configuration trace outside runtime measurements.
+
+**Native realization stability:** `native-analyze-stability-v1` is planned,
+not run. It requires five independent stock `CREATE STATISTICS` plus
+`ANALYZE` realizations, preferably on Forest10 and Census13/DMV11, and reports
+payload and Plan Rows variability. `setseed` is recorded as an experiment
+statement but is not treated as control of native `ANALYZE` sampling.
 
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.
@@ -464,8 +492,12 @@ and workload.
 truth/loss contract, statistics target, workload, and either fixed k or the
 pre-registered evaluation budget according to the comparison mode.
 
-**Metrics:** objective value, q-error distribution, selected membership overlap,
-planner evaluations, wall-clock time, and exhaustive optimality gap.
+**Metrics:** RQ4a objective value, membership/object count, q-error only as a
+secondary sandbox diagnostic, selected membership overlap, configuration
+evaluations, PostgreSQL planner calls, preprocessing and selection wall-clock
+time, termination status, and exhaustive optimality gap. RQ4b separately
+reports stock physical Plan Rows/q-error and native realization/evaluation
+costs; neither metric layer substitutes for the other.
 
 **Raw artifact:** method-specific SearchResult or baseline selection, move
 trace, planner evaluation log, and manifest.
@@ -544,6 +576,6 @@ rewritten.
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |
-| Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | `rq4-ablation-v1` harness, synthetic exhaustive gate, then formal AreCEL fixed-k/fixed-budget stock full-data evaluations | ready-to-run; synthetic gate only |
+| Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4a/RQ4b | `rq4-ablation-v1`, deterministic replay artifact, shared stock union/drop artifact, then formal AreCEL fixed-k stock evaluations; RQ4b stability requires `native-analyze-stability-v1` | ready-to-run; readiness smokes only |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
 | Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |
