@@ -7,22 +7,18 @@ protocol, provenance audit, and derived-artifact checks are complete.
 
 ## Shared protocol
 
-- **Advisor:** `1951123/extstats-advisor`, exact SHA required in each manifest.
-- **Patched planner:** `1951123/postgresql-pgextadv`, exact SHA required in
-  each manifest; design-time only.
-- **Stock planner:** exact source/version/build identity required in each
-  manifest, including server version and build provenance; do not use the
-  phrase "PostgreSQL 16.14 or an explicitly recorded commit" in a final paper
-  result.
+- **Frozen SUT:** `paper/system-freeze-v1.json` freezes advisor
+  `0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`, patched PostgreSQL
+  `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`, and stock PostgreSQL
+  `0d1c00c624fa7367d4a895f44381887757289682` at PostgreSQL 16.14.
+  A semantic SUT change requires `system-freeze-v2`; v1 is not silently
+  overwritten.
 - **Local build provenance:** when the reproducible local lab is used, record
   the role's `.runtime/postgres-lab/{stock,patched}/identity.json` as the
-  build identity source. This is a provenance mechanism, not a resolution of
-  the `TODO(PAPER-FREEZE)` source-identity gate.
-- **Research harness:** this repository; an exact committed SHA and clean
-  working tree are required in each canonical manifest/run.
-- **Freeze gate:** `TODO(PAPER-FREEZE)`: select final confirmatory research,
-  advisor, patched PostgreSQL, and stock PostgreSQL source/version/build SHAs.
-  Do not silently substitute the current manuscript commit.
+  build identity source. Runtime paths are not semantic identity fields.
+- **Research harness:** this repository; an exact committed `research_commit_sha`
+  and clean working tree are required in each canonical manifest/run. This is
+  per-experiment provenance, not a permanent SUT pin.
 - **Seed policy:** the experiment seed identifier is integer `123`; the exact
   PostgreSQL statement is `SELECT setseed(1.0 / 123)`. The floating-point
   expression is part of the protocol; integer-division spelling is forbidden.
@@ -51,8 +47,7 @@ protocol, provenance audit, and derived-artifact checks are complete.
    harness.
 2. **Priority 1:** RQ1 matched baselines, then RQ4 inexpensive heuristic
    baselines.
-3. **Priority 2:** RQ2 confirmatory transfer and the sample/full utility
-   analysis.
+3. **Priority 2:** RQ2 confirmatory transfer and sample/full utility analysis.
 4. **Priority 3:** RQ5 cost accounting and sensitivity analyses.
 5. **Stretch:** drift/recommendation stability and additional workloads.
 
@@ -70,7 +65,7 @@ specification.
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Awaiting source-identity freeze and matched comparison run. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 canary is the first dataset-level run; Forest10, Power7, and DMV11 remain planned. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
@@ -117,6 +112,31 @@ statistics target, and (where planned) recommendation size.
 relation contents, workload query texts/order, ordinary statistics policy,
 truth definition, hardware/environment, and timeout policy. Dataset-specific
 paper-baseline differences must be recorded rather than normalized away.
+
+**Census13 canary (`rq1-matched-comparison-v1`):** This is the first
+confirmatory execution and does not complete the four-dataset RQ1 campaign.
+Every arm starts from a `postgres-lab reinit` state and uses the same full
+dataset, 10,000-query workload, and audited `production-exact-execution`
+GroundTruthSet. `PG16-default` uses stock PostgreSQL with no extended
+statistics, the default ordinary column-statistics policy, one controlled
+`ANALYZE`, and records the actual `pg_attribute.attstattarget` values.
+`PG16-target10000` uses no extended statistics, target 10000 on every Census13
+column, `SELECT setseed(1.0 / 123)`, and exactly one `ANALYZE`.
+`PG16-advisor` uses the frozen patched planner only for design-time snapshot,
+sample, native payload, search, and Recommendation construction. Its headline
+metrics are collected after native deployment to a fresh stock full-data
+cluster and a final `ANALYZE`; the patched sandbox objective is stored
+separately. The frozen advisor parameters are sample rows 10000, sample seed
+42, statistics target 100, candidate limit 8, and search wall-clock budget
+180 seconds. The budget is fixed by the pre-existing Census13 K=8 calibration:
+60 and 120 seconds ended with incomplete rounds, while 180 seconds first
+reached a local optimum. No parameter is selected from this canary's outcome.
+
+The unified artifact records the three arm identities, actual targets and
+ANALYZE protocol, physical extended-statistics inventory, recommendation and
+sandbox objective where applicable, per-query estimates/truth/q-errors, both
+paired comparisons, cleanup, and semantic digests. The global RQ1 status stays
+`planned` until all four dataset-level artifacts are complete.
 
 **Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
 of `public.dmv11`, all column targets 10000, experiment seed identifier 123,

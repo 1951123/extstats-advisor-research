@@ -59,6 +59,21 @@ def _physical_schema(connection: Any) -> list[dict[str, Any]]:
     ]
 
 
+def _statistics_targets(connection: Any) -> list[dict[str, Any]]:
+    rows = connection.execute(
+        """
+        SELECT a.attname, a.attstattarget
+          FROM pg_catalog.pg_attribute AS a
+          JOIN pg_catalog.pg_class AS c ON c.oid = a.attrelid
+          JOIN pg_catalog.pg_namespace AS n ON n.oid = c.relnamespace
+         WHERE n.nspname = 'public' AND c.relname = 'census13'
+           AND a.attnum > 0 AND NOT a.attisdropped
+         ORDER BY a.attnum
+        """
+    ).fetchall()
+    return [{"name": str(name), "target": int(target)} for name, target in rows]
+
+
 def _canonical_type(value: str) -> str:
     aliases = {
         "double precision": "DOUBLE PRECISION",
@@ -108,7 +123,8 @@ def load_census13(
     *,
     data_root: Path | None = None,
     reset_disposable: bool = False,
-    statistics_target: int = 100,
+    statistics_target: int | None = 100,
+    seed_identifier: int | None = None,
 ) -> dict[str, Any]:
     """Create public.census13 and validate row/content metadata.
 
@@ -118,8 +134,16 @@ def load_census13(
     if not dsn or not dsn.strip():
         raise ValueError("a DSN is required and is never written to an artifact")
     source = census13.csv_path(data_root)
-    if isinstance(statistics_target, bool) or statistics_target < 1:
+    if statistics_target is not None and (
+        isinstance(statistics_target, bool) or statistics_target < 1
+    ):
         raise ValueError("statistics_target must be positive")
+    if seed_identifier is not None and (
+        isinstance(seed_identifier, bool)
+        or not isinstance(seed_identifier, int)
+        or seed_identifier <= 0
+    ):
+        raise ValueError("seed_identifier must be a positive integer")
     metadata = census13.inspect(data_root)
     psycopg = _psycopg()
     with psycopg.connect(dsn, autocommit=True) as connection:
@@ -143,10 +167,13 @@ def load_census13(
             while block := stream.read(1024 * 1024):
                 copy.write(block)
         physical_schema = _validate_physical_schema(connection)
-        for name, _ in census13.COLUMNS:
-            connection.execute(
-                f'ALTER TABLE public.census13 ALTER COLUMN "{name}" SET STATISTICS {statistics_target}'
-            )
+        if statistics_target is not None:
+            for name, _ in census13.COLUMNS:
+                connection.execute(
+                    f'ALTER TABLE public.census13 ALTER COLUMN "{name}" SET STATISTICS {statistics_target}'
+                )
+        if seed_identifier is not None:
+            connection.execute(f"SELECT setseed(1.0 / {seed_identifier})")
         connection.execute("ANALYZE public.census13")
         count = int(connection.execute("SELECT count(*) FROM public.census13").fetchone()[0])
         if count != census13.EXPECTED_ROWS:
@@ -183,6 +210,7 @@ def load_census13(
                 "public.census13 has unexpected extended statistics after load: "
                 f"{extended_statistics!r}"
             )
+        statistics_targets = _statistics_targets(connection)
     return {
         "benchmark_id": census13.BENCHMARK_ID,
         "relation": census13.RELATION,
@@ -196,6 +224,12 @@ def load_census13(
         "server_version": server_version,
         "server_version_num": server_version_num,
         "statistics_target": statistics_target,
+        "statistics_targets": statistics_targets,
+        "analyze_count": 1,
+        "seed_identifier": seed_identifier,
+        "seed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
+        if seed_identifier is not None
+        else None,
         "distinct_counts_observed": observed_distinct,
     }
 

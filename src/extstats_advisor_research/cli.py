@@ -30,6 +30,11 @@ from .postgres_lab import (
     stop_role,
 )
 from .power_transfer import run_power_data_transfer
+from .rq1_canary import (
+    inspect_rq1_artifact,
+    run_census13_canary,
+    validate_rq1_file,
+)
 from .rq3_build_sanity import (
     inspect_build_sanity_artifact,
     run_build_sanity,
@@ -44,6 +49,7 @@ from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
 from .search_budget import run_search_budget_calibration
+from .system_freeze import DEFAULT_SYSTEM_FREEZE_PATH, load_system_freeze, validate_system_freeze
 from .type_coercion import run_type_coercion
 
 
@@ -312,6 +318,33 @@ def _parser() -> argparse.ArgumentParser:
     build_sanity_validate.add_argument("artifact", type=Path)
     build_sanity_inspect = build_sanity_commands.add_parser("inspect")
     build_sanity_inspect.add_argument("artifact", type=Path)
+    system_freeze = validate_commands.add_parser(
+        "system-freeze", help="validate the versioned frozen system-under-test contract"
+    )
+    system_freeze.add_argument("path", type=Path, nargs="?", default=DEFAULT_SYSTEM_FREEZE_PATH)
+    rq1 = validate_commands.add_parser(
+        "rq1-canary", help="run or validate the Census13 RQ1 matched-comparison artifact"
+    )
+    rq1_commands = rq1.add_subparsers(dest="rq1_command", required=True)
+    rq1_run = rq1_commands.add_parser("run", aliases=["create"])
+    rq1_run.add_argument("--stock-dsn", required=True)
+    rq1_run.add_argument("--patched-dsn", required=True)
+    rq1_run.add_argument("--output", type=Path, required=True)
+    rq1_run.add_argument("--data-root", type=Path)
+    rq1_run.add_argument("--truth-artifact", type=Path)
+    rq1_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq1_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    rq1_run.add_argument("--advisor-command", default="extstats-advisor")
+    rq1_validate = rq1_commands.add_parser("validate")
+    rq1_validate.add_argument("artifact", type=Path)
+    rq1_inspect = rq1_commands.add_parser("inspect")
+    rq1_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -474,6 +507,28 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "validate":
         if args.validate_command == "paper-spec":
             result = validate_paper_spec(load_paper_spec(args.spec))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "system-freeze":
+            result = validate_system_freeze(load_system_freeze(args.path))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-canary":
+            if args.rq1_command in {"run", "create"}:
+                result = run_census13_canary(
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    data_root=args.data_root,
+                    truth_artifact=args.truth_artifact,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                    advisor_command=args.advisor_command,
+                )
+            elif args.rq1_command == "validate":
+                result = validate_rq1_file(args.artifact)
+            else:
+                result = inspect_rq1_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "build-sanity":

@@ -96,6 +96,7 @@ def run_census13(
     search_wall_clock_seconds: float = 30.0,
     data_root: Path | None = None,
     reset_disposable: bool = False,
+    seed_identifier: int | None = None,
     advisor_command: str = "extstats-advisor",
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
@@ -121,6 +122,10 @@ def run_census13(
         "statistics_target": statistics_target,
         "candidate_limit": candidate_limit,
         "search_wall_clock_seconds": search_wall_clock_seconds,
+        "experiment_seed_identifier": seed_identifier,
+        "postgresql_setseed_sql": f"SELECT setseed(1.0 / {seed_identifier})"
+        if seed_identifier is not None
+        else None,
     }
     reject_credentials(identity)
     layout = create_layout(output_root, identity)
@@ -130,7 +135,11 @@ def run_census13(
     paths["workload"].write_text(workload_path.read_text(encoding="utf-8"), encoding="utf-8")
     census13.write_dataset_manifest(paths["dataset_manifest"], data_root)
     load_result = load_census13(
-        production_dsn, data_root=data_root, reset_disposable=reset_disposable
+        production_dsn,
+        data_root=data_root,
+        reset_disposable=reset_disposable,
+        statistics_target=statistics_target,
+        seed_identifier=seed_identifier,
     )
     update_manifest(
         layout,

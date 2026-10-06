@@ -132,6 +132,30 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
         ledger_ids.add(experiment_id)
         if entry.get("status") not in allowed:
             raise ValueError(f"status ledger has invalid status for {experiment_id}")
+        experiment = by_id.get(experiment_id)
+        if experiment is not None and experiment.get("status") != entry.get("status"):
+            raise ValueError(
+                f"experiment and status ledger status mismatch for {experiment_id}: "
+                f"{experiment.get('status')!r} != {entry.get('status')!r}"
+            )
+
+    freeze_gate = spec.get("freeze_gate")
+    if not isinstance(freeze_gate, dict):
+        raise TypeError("paper specification is missing freeze_gate")
+    system_under_test = freeze_gate.get("system_under_test")
+    if not isinstance(system_under_test, dict):
+        raise TypeError("paper specification is missing frozen system_under_test")
+    if system_under_test.get("format_version") != "system-freeze-v1":
+        raise ValueError("paper specification must reference system-freeze-v1")
+    if system_under_test.get("status") != "frozen":
+        raise ValueError("paper specification system_under_test must be frozen")
+    if system_under_test.get("path") != "paper/system-freeze-v1.json":
+        raise ValueError("paper specification has the wrong system-freeze-v1 path")
+    research_identity = freeze_gate.get("research_harness_identity")
+    if not isinstance(research_identity, dict):
+        raise TypeError("paper specification is missing research_harness_identity")
+    if research_identity.get("policy") != "per-experiment committed SHA":
+        raise ValueError("research harness identity must be per-experiment committed SHA")
 
     return {
         "status": "valid",

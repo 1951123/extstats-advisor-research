@@ -53,3 +53,16 @@ def test_duplicate_id_invalid_status_and_empty_output_are_rejected() -> None:
     empty_output["experiments"][0]["expected_paper_outputs"] = []
     with pytest.raises(ValueError, match="expected_paper_outputs"):
         validate_paper_spec(empty_output)
+
+
+def test_experiment_and_status_ledger_mismatch_is_rejected() -> None:
+    spec = load_paper_spec()
+    broken = copy.deepcopy(spec)
+    entry = next(
+        item
+        for item in broken["status_ledger"]["entries"]
+        if item["experiment_id"] == "rq3-secondary-build-sanity"
+    )
+    entry["status"] = "implementation-needed"
+    with pytest.raises(ValueError, match="status ledger status mismatch"):
+        validate_paper_spec(broken)

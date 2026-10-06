@@ -2,7 +2,7 @@
   "format_version": "paper-experiment-v1",
   "specification_identity": "paper-experiment-v1",
   "specification_status": "protocol-only",
-  "description": "Confirmatory experiment protocol for the ExtStats Advisor paper. This file freezes required evidence and comparison semantics, but does not freeze final source revisions or build identities.",
+  "description": "Confirmatory experiment protocol for the ExtStats Advisor paper. This file freezes required evidence and comparison semantics; the system-under-test is frozen by system-freeze-v1 while research-harness provenance is recorded per artifact.",
   "repository": {
     "research_repository": "1951123/extstats-advisor-research",
     "paper_directory": "paper",
@@ -11,51 +11,24 @@
     "canonical_runs_must_record_specification": "paper-experiment-v1"
   },
   "freeze_gate": {
-    "status": "unresolved",
-    "marker": "TODO(PAPER-FREEZE)",
+    "status": "sut-v1-frozen-research-per-experiment",
     "postgresql_identity_source": {
       "kind": "postgres-lab-identity-v1",
       "path_pattern": ".runtime/postgres-lab/{stock,patched}/identity.json",
       "rule": "Use the built role identity as the source of exact PostgreSQL source/version/configuration/build provenance; do not infer final paper pins from a floating version string.",
       "final_freeze_required": true
     },
-    "source_identities": {
-      "research_commit_sha": {
-        "status": "unresolved",
-        "value": null
-      },
-      "advisor_commit_sha": {
-        "status": "unresolved",
-        "value": null
-      },
-      "patched_postgresql_commit_sha": {
-        "status": "unresolved",
-        "value": null
-      },
-      "stock_postgresql_build_identity": {
-        "status": "unresolved",
-        "value": null,
-        "required_fields": [
-          "source_repository",
-          "source_commit_or_release",
-          "server_version",
-          "build_identity"
-        ]
-        }
+    "system_under_test": {
+      "format_version": "system-freeze-v1",
+      "path": "paper/system-freeze-v1.json",
+      "status": "frozen",
+      "scope": "advisor, patched PostgreSQL, stock PostgreSQL, and their build contracts"
     },
-    "candidate_identities": {
-      "advisor_commit_sha": {
-        "status": "candidate-for-paper-freeze",
-        "value": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
-      },
-      "patched_postgresql_commit_sha": {
-        "status": "candidate-for-paper-freeze",
-        "value": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
-      },
-      "stock_postgresql_source_sha": {
-        "status": "candidate-for-paper-freeze",
-        "value": "0d1c00c624fa7367d4a895f44381887757289682"
-      }
+    "research_harness_identity": {
+      "policy": "per-experiment committed SHA",
+      "artifact_field": "research_commit_sha",
+      "is_system_under_test_pin": false,
+      "clean_tree_required_before_run": true
     },
     "rule": "Do not silently substitute the current manuscript commit or a floating PostgreSQL version for any unresolved identity."
   },
@@ -197,6 +170,29 @@
         "singleton-utility-top-k",
         "extstats-advisor-recommendation"
       ],
+      "canary_protocol": {
+        "experiment_id": "rq1-matched-comparison-v1",
+        "dataset_scope": ["arecel-census13"],
+        "arms": ["pg16-default", "pg16-target10000", "pg16-advisor"],
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100,
+        "candidate_limit": 8,
+        "search_budget_seconds": 180,
+        "supported_statistics_kinds": ["postgresql.mcv", "postgresql.dependencies"],
+        "experiment_seed_identifier": 123,
+        "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+        "workload_id": "arecel_census13_test_v1",
+        "truth_source_kind": "production-exact-execution",
+        "budget_selection_basis": "Pre-existing experiments/arecel-census13/search-budget-k8/calibration-v1.json: 60 and 120 seconds expired incomplete rounds; 180 seconds was the first local-optimum completion. This value is frozen before the canary and is not outcome-tuned.",
+        "headline_evaluation": "stock PostgreSQL full-data deployment; never the patched sandbox objective"
+      },
+      "dataset_progress": {
+        "arecel-census13": "planned",
+        "arecel-forest10": "planned",
+        "arecel-power7": "planned",
+        "arecel-dmv11": "planned"
+      },
       "metrics": ["per-query q-error", "reporting aggregate metrics", "improved/unchanged/worsened counts"],
       "truth_contract": "truth_contracts.ground_truth_input",
       "random_seed_policy": "Use dataset adapter and baseline manifest seeds; record experiment seed identifier and exact PostgreSQL setseed SQL.",
@@ -274,7 +270,7 @@
     {
     "experiment_id": "rq3-secondary-build-sanity",
     "rq": "RQ3",
-    "status": "implementation-needed",
+      "status": "ready-to-run",
     "datasets": [
       "arecel-census13",
       "arecel-forest10",
@@ -357,6 +353,11 @@
   "status_ledger": {
     "allowed_statuses": ["pilot", "planned", "implementation-needed", "ready-to-run", "complete", "superseded"],
     "entries": [
+      {
+        "experiment_id": "rq1-confirmatory-matched-baselines",
+        "status": "planned",
+        "note": "Census13 is the first canary only; the four-dataset RQ1 campaign remains incomplete until all dataset-level artifacts are validated."
+      },
       {
         "experiment_id": "rq1-existing-baselines",
         "status": "pilot",

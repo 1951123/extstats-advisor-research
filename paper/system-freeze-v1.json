@@ -1,0 +1,42 @@
+{
+  "format_version": "system-freeze-v1",
+  "status": "frozen",
+  "advisor": {
+    "repository": "1951123/extstats-advisor",
+    "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+  },
+  "patched_postgresql": {
+    "repository": "1951123/postgresql-pgextadv",
+    "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "required_build_contract": {
+      "backend_contract": "postgresql-pgextadv-16.14-v1",
+      "configure_features": ["--with-icu", "--with-libxml", "--with-libxslt", "--with-ssl=openssl"],
+      "compiler_policy": {"CC": "cc", "CFLAGS": ""},
+      "locale": "C.utf8",
+      "encoding": "UTF8"
+    }
+  },
+  "stock_postgresql": {
+    "repository": "1951123/postgresql-src",
+    "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "postgres_version": "16.14",
+    "required_build_contract": {
+      "configure_features": ["--with-icu", "--with-libxml", "--with-libxslt", "--with-ssl=openssl"],
+      "compiler_policy": {"CC": "cc", "CFLAGS": ""},
+      "locale": "C.utf8",
+      "encoding": "UTF8"
+    }
+  },
+  "postgres_lab": {
+    "identity_format": "postgres-lab-instance-v1",
+    "locale": "C.utf8",
+    "encoding": "UTF8",
+    "configure_features": ["--with-icu", "--with-libxml", "--with-libxslt", "--with-ssl=openssl"],
+    "compiler_policy": {"CC": "cc", "CFLAGS": ""},
+    "build_identity_source": "postgres-lab identity.json",
+    "runtime_paths_are_not_semantic_identity": true
+  },
+  "scope": "Frozen system under test for confirmatory paper experiments; research harness revisions are recorded per artifact.",
+  "change_policy": "A semantic change to the frozen advisor, patched PostgreSQL, or stock PostgreSQL requires system-freeze-v2 and re-evaluation of affected confirmatory experiments. system-freeze-v1 is never silently overwritten."
+}
