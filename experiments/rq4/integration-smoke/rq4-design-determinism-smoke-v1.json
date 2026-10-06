@@ -1,0 +1,1312 @@
+{
+  "candidate_universe_digest": "9ecfce439569c7c5cbb5ab75c6b53c7a25291d460015c47b4bcfb15ef8d960eb",
+  "checks": {
+    "candidate_universe_digest_stable": true,
+    "configuration_trace_stable": true,
+    "evaluation_order_stable": true,
+    "planner_estimates_stable": true,
+    "sandbox_objective_stable": true,
+    "selected_membership_stable": true,
+    "semantic_projection_stable": true
+  },
+  "deterministic_projection": {
+    "budget": {
+      "max_configuration_evaluations": 2000,
+      "unit": "configuration-objective-evaluations"
+    },
+    "candidate_universe_digest": "9ecfce439569c7c5cbb5ab75c6b53c7a25291d460015c47b4bcfb15ef8d960eb",
+    "fixed_k": 4,
+    "method_order": [
+      "random-k",
+      "workload-frequency-top-k",
+      "dependency-correlation-top-k",
+      "singleton-utility-top-k",
+      "greedy-ADD"
+    ],
+    "methods": {
+      "dependency-correlation-top-k": {
+        "accounting": {
+          "final": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          },
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0
+          },
+          "total": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          }
+        },
+        "deployment_order": [
+          "cand_1071aef010da62986c2c084c",
+          "cand_cc37efa5531e2f63fddc8e2c",
+          "cand_ea651a2a6d94e50b038022ae",
+          "cand_985867a3ee52f08b87109e07"
+        ],
+        "evaluation": {
+          "configuration_objective_evaluations": 1,
+          "postgresql_planner_query_calls": 3,
+          "sandbox_objective": 261.5824175824176,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_1071aef010da62986c2c084c",
+          "cand_cc37efa5531e2f63fddc8e2c",
+          "cand_ea651a2a6d94e50b038022ae",
+          "cand_985867a3ee52f08b87109e07"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "predeclared sample-side signal"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "dependency-correlation-top-k",
+        "planner_evaluations": 1,
+        "random_seed": 1,
+        "selected_membership": [
+          "cand_1071aef010da62986c2c084c",
+          "cand_cc37efa5531e2f63fddc8e2c",
+          "cand_ea651a2a6d94e50b038022ae",
+          "cand_985867a3ee52f08b87109e07"
+        ],
+        "selection_accounting": {
+          "configuration_objective_evaluations": 0,
+          "postgresql_planner_query_calls": 0
+        },
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_preprocessing": {
+          "includes_backend_evaluations": false,
+          "source": "research-harness-signal-selection"
+        },
+        "selection_trace": [],
+        "status": "complete"
+      },
+      "greedy-ADD": {
+        "accounting": {
+          "final": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          },
+          "selection": {
+            "configuration_objective_evaluations": 539,
+            "postgresql_planner_query_calls": 1617
+          },
+          "total": {
+            "configuration_objective_evaluations": 540,
+            "postgresql_planner_query_calls": 1620
+          }
+        },
+        "deployment_order": [
+          "cand_a9ffda033d843a64f12d4902",
+          "cand_244526f19402fbc60f4291c2",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_0fd4ec387e0e1b7f0fe1f3b7"
+        ],
+        "evaluation": {
+          "configuration_objective_evaluations": 1,
+          "postgresql_planner_query_calls": 3,
+          "sandbox_objective": 108.19306184012066,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_a9ffda033d843a64f12d4902",
+          "cand_244526f19402fbc60f4291c2",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_0fd4ec387e0e1b7f0fe1f3b7"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample planner",
+            "GroundTruthSet"
+          ],
+          "forbidden_inputs": [],
+          "ground_truth_during_selection": true
+        },
+        "method": "greedy-ADD",
+        "planner_evaluations": 540,
+        "random_seed": 1,
+        "selected_membership": [
+          "cand_a9ffda033d843a64f12d4902",
+          "cand_244526f19402fbc60f4291c2",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_0fd4ec387e0e1b7f0fe1f3b7"
+        ],
+        "selection_accounting": {
+          "configuration_objective_evaluations": 539,
+          "postgresql_planner_query_calls": 1617
+        },
+        "selection_evaluations_accounted_by_backend": true,
+        "selection_planner_evaluations": 539,
+        "selection_preprocessing": {
+          "includes_backend_evaluations": true,
+          "source": "research-harness-signal-selection"
+        },
+        "selection_trace": [
+          {
+            "objective": 261.5824175824176,
+            "selected": []
+          },
+          {
+            "objective": 114.90384615384615,
+            "selected": [
+              "cand_244526f19402fbc60f4291c2"
+            ]
+          },
+          {
+            "objective": 114.759009009009,
+            "selected": [
+              "cand_244526f19402fbc60f4291c2",
+              "cand_1086b1f5d7cbed9b23056607"
+            ]
+          },
+          {
+            "objective": 114.75,
+            "selected": [
+              "cand_244526f19402fbc60f4291c2",
+              "cand_1086b1f5d7cbed9b23056607",
+              "cand_0fd4ec387e0e1b7f0fe1f3b7"
+            ]
+          },
+          {
+            "objective": 108.19306184012066,
+            "selected": [
+              "cand_a9ffda033d843a64f12d4902",
+              "cand_244526f19402fbc60f4291c2",
+              "cand_1086b1f5d7cbed9b23056607",
+              "cand_0fd4ec387e0e1b7f0fe1f3b7"
+            ]
+          }
+        ],
+        "status": "complete"
+      },
+      "random-k": {
+        "accounting": {
+          "final": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          },
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0
+          },
+          "total": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          }
+        },
+        "deployment_order": [
+          "cand_ca576307a2b069dd08456689",
+          "cand_9afbe4d627d4ce24351d8968",
+          "cand_eb91b2534145330166488f3b",
+          "cand_928d527fe5d2f0af7d061390"
+        ],
+        "evaluation": {
+          "configuration_objective_evaluations": 1,
+          "postgresql_planner_query_calls": 3,
+          "sandbox_objective": 261.72857142857146,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_ca576307a2b069dd08456689",
+          "cand_9afbe4d627d4ce24351d8968",
+          "cand_eb91b2534145330166488f3b",
+          "cand_928d527fe5d2f0af7d061390"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "pre-registered random seed"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "random-k",
+        "planner_evaluations": 1,
+        "random_seed": 1,
+        "selected_membership": [
+          "cand_ca576307a2b069dd08456689",
+          "cand_9afbe4d627d4ce24351d8968",
+          "cand_eb91b2534145330166488f3b",
+          "cand_928d527fe5d2f0af7d061390"
+        ],
+        "selection_accounting": {
+          "configuration_objective_evaluations": 0,
+          "postgresql_planner_query_calls": 0
+        },
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_preprocessing": {
+          "includes_backend_evaluations": false,
+          "source": "research-harness-signal-selection"
+        },
+        "selection_trace": [],
+        "status": "complete"
+      },
+      "singleton-utility-top-k": {
+        "accounting": {
+          "final": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          },
+          "selection": {
+            "configuration_objective_evaluations": 137,
+            "postgresql_planner_query_calls": 411,
+            "source": "frozen-postgres-planner-and-bound-ground-truth-v1"
+          },
+          "total": {
+            "configuration_objective_evaluations": 138,
+            "postgresql_planner_query_calls": 414
+          }
+        },
+        "deployment_order": [
+          "cand_244526f19402fbc60f4291c2",
+          "cand_d622467666974f6e3a9be2cd",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_6ec54298a74db61454edb2d5"
+        ],
+        "evaluation": {
+          "configuration_objective_evaluations": 1,
+          "postgresql_planner_query_calls": 3,
+          "sandbox_objective": 114.759009009009,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_244526f19402fbc60f4291c2",
+          "cand_d622467666974f6e3a9be2cd",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_6ec54298a74db61454edb2d5"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample planner",
+            "GroundTruthSet"
+          ],
+          "forbidden_inputs": [],
+          "ground_truth_during_selection": true
+        },
+        "method": "singleton-utility-top-k",
+        "planner_evaluations": 138,
+        "random_seed": 1,
+        "selected_membership": [
+          "cand_244526f19402fbc60f4291c2",
+          "cand_d622467666974f6e3a9be2cd",
+          "cand_1086b1f5d7cbed9b23056607",
+          "cand_6ec54298a74db61454edb2d5"
+        ],
+        "selection_accounting": {
+          "configuration_objective_evaluations": 137,
+          "postgresql_planner_query_calls": 411,
+          "source": "frozen-postgres-planner-and-bound-ground-truth-v1"
+        },
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 137,
+        "selection_preprocessing": {
+          "includes_backend_evaluations": false,
+          "source": "research-harness-signal-selection"
+        },
+        "selection_trace": [
+          {
+            "candidate_id": "cand_01898d02de465be2fb1979b4",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_01a51ee5625283138a23d65c",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_01d076c3672e558e6712d2c1",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_03a41b6c54e494c2e347985d",
+            "singleton_utility": -0.4871794871795032
+          },
+          {
+            "candidate_id": "cand_06c87c955e3e97e933520769",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0a58686e65a6924e53b2ef4f",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0a67be48e1b361c2a41ee8a8",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0b0523d79ae78d71225e9b11",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0d2d7fecab32e4137be7411a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0d3199530d4118a07e5d2a42",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0e170bfd35f8629feaf5cd6b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_0fd4ec387e0e1b7f0fe1f3b7",
+            "singleton_utility": 32.61328177994844
+          },
+          {
+            "candidate_id": "cand_103cb924e62ea8a0c0e516b5",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_1071aef010da62986c2c084c",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_1086b1f5d7cbed9b23056607",
+            "singleton_utility": 94.96734796734796
+          },
+          {
+            "candidate_id": "cand_130c80f5f41a5936d40a850e",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_134ceb743ed709e0ce101dc3",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_17b60a8710576de4afa03683",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_1951c85b4d916653aa9e1ea5",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_1dccff17874747d82a5ab263",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2337fc583f5e68b46cce7cea",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_23ccfc25d99a0817a6cc3d68",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_244526f19402fbc60f4291c2",
+            "singleton_utility": 146.67857142857144
+          },
+          {
+            "candidate_id": "cand_271a99b1f4d8945f6baaf244",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2741e5ea464a65835b64afde",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2883dbd145c3bf66938c2c7b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2aeb5e8daba801a5309eab83",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2ba90970f5ef1d093c8b4aff",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2c8231a5c8e59e490e5235a9",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2d3cfc515f588182d8fc1350",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2d4088075a2e09e1e249297b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2ea742c37e6f7670fffc17b9",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_2f1142f88d97aeffe65c15d1",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_34f6bd872bdb155a782264ee",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_37d6493b572807b1a84bb1d4",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_38bc1474eb1a5d4930d5c73f",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_3a439fa119792f941052faf6",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_3c01874aeb4ac81382f234e6",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_3c438624aebec388e119d19b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4044641bca57decf86027294",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_417c611b4f4c03ce47825fa3",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_42b0771fde457bf374952dff",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_437e99376a0c75dae1374bc9",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4542c1f52290c941cf53a41b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_45b84d0ac969dc45f01ed13e",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4b184584d1fcb6731b34fc6a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4b3a7eb5fb4fd98260cd5143",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4bad6e03553c43b70012041d",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4c659be29e81315120958d99",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4f2ca145887886e6b1b36945",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_4f311bc847b299a1704cfe48",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_51d69d64d7d15b25cc387dfa",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_540b484aefc0463bd9c7ceb7",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_5c23b87cd761a840ee08e036",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_5d1ef9b822047dda14f7a03a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_5df0100d896ed92bda9e54e0",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_5f79c857e754ab1ffe275457",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_6107423dc97c5a7887892896",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_628eaac7f317eb36da7167e8",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_62d5ac8580f1a855c09b90ae",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_663fecfb6e28d34cd4f5f91b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_6ec54298a74db61454edb2d5",
+            "singleton_utility": 58.013216802690465
+          },
+          {
+            "candidate_id": "cand_6fcccec9a91d0ceb909cf793",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_6fe7e70f84c31f0e5d2ff402",
+            "singleton_utility": 32.5952380952381
+          },
+          {
+            "candidate_id": "cand_70553e2a0d66680ff81c6ee8",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_751674893346c1025bebc74b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_77e7bed23ab1bf1ac43adc93",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_7adedc24d32b557d3c91d995",
+            "singleton_utility": 0.01804368471033513
+          },
+          {
+            "candidate_id": "cand_7b0110c30179ff3970df0b21",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_7d017e8fd7ab370e9ed2fdab",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_802f5402e58cd13f964fde41",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_825881788648c4f283b6580d",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_82a410f921361e02da2e8c75",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_84bc808f2f84c3a5ae7e4578",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_85591acec730f6d6afc33958",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_8ca5a26ebf7aaacd111aae01",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_8e0ddbb7332a1a279170fd32",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_8e6de77aa68f4d21eb38a7d6",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_90ab19eca2323d43744397cd",
+            "singleton_utility": 32.5952380952381
+          },
+          {
+            "candidate_id": "cand_90e51c1a08ab3c3e474b3045",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_920e24fcc663148ca5cd2204",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_928d527fe5d2f0af7d061390",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_985867a3ee52f08b87109e07",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_9a7f23b7298035c4e257d47b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_9afbe4d627d4ce24351d8968",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_9d8863db8720fdf3b56c4467",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_9d933023ff5d4f1553771d8f",
+            "singleton_utility": -0.019487179487214235
+          },
+          {
+            "candidate_id": "cand_9e2eac0eacb05024bf60a41f",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_a15313d7b7ab03e984738edf",
+            "singleton_utility": -0.04059829059832509
+          },
+          {
+            "candidate_id": "cand_a172b2e4d8014cfc25d7ca97",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_a344018a456fff21ad4f462e",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_a3735527e84fc43ea4137ca6",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_a69af8caa30e080e3b5f8b48",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_a9ffda033d843a64f12d4902",
+            "singleton_utility": 32.575750915750916
+          },
+          {
+            "candidate_id": "cand_aaf4dbd294e93a987166f265",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ae577e97a29a2bee02fe35c4",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_b14c896d48e039f49fd08ff3",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_b2c98d6d835c38eef4d0810a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_b4ac520a20f5eb14c92f5c74",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_b4af67783426c85221a06d16",
+            "singleton_utility": 0.01804368471033513
+          },
+          {
+            "candidate_id": "cand_b4c23fd539e6869ad1b8be9a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_b5f82b558626809c8903b2c7",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ba7245d758d3b389291bff08",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_c1bbbb2157dd8dda117c7264",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_c3501abc0ee90498d6b8628d",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_c407849da4d21d42f471f716",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_c7b12be493f4c9b010719955",
+            "singleton_utility": 0.05039787798409634
+          },
+          {
+            "candidate_id": "cand_c903a62f215629ded9137025",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ca576307a2b069dd08456689",
+            "singleton_utility": -0.14615384615387939
+          },
+          {
+            "candidate_id": "cand_cc37efa5531e2f63fddc8e2c",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_cd58118f66ac32305274cd3d",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_cf5282af011213fb4c812c9c",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d116662bc24b9945c12f6dd5",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d2edabb93edcff7e8dae430e",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d5511250cd783e304c17c592",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d5bed9a72f459c01601856f2",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d622467666974f6e3a9be2cd",
+            "singleton_utility": 78.22857142857143
+          },
+          {
+            "candidate_id": "cand_d6a006b801d2f3e4645b2ece",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d8762ba96536c81092771e9a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_d8aa63e41e4f1dfae177288a",
+            "singleton_utility": 32.575750915750916
+          },
+          {
+            "candidate_id": "cand_d9ee2c0c5690c43132e634c1",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_df0488fdff4c6d315298f4e8",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_e2fade375378fb4c7091dd43",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_e39c37bee2184061b9c5af50",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_e7d102e5faff1fa1dfa7ba1a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ea651a2a6d94e50b038022ae",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_eb91b2534145330166488f3b",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ecfd30d75c3124e6dbdce705",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_ee2b5901bad6f6762962ee31",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_f2afb75eda2464ae317b0a88",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_f6710c6c2529500d91f4d135",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_f9af3e4f3aa2947c914f538a",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_fc438967bdeeb11640ed8419",
+            "singleton_utility": 32.61328177994844
+          },
+          {
+            "candidate_id": "cand_fc605458f0ffdffbdcddd5a9",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_fe9f1b5fd35b4e4a9e08c99d",
+            "singleton_utility": 0.0
+          },
+          {
+            "candidate_id": "cand_fea10b7e5cab78cbaf431da2",
+            "singleton_utility": 0.0
+          }
+        ],
+        "status": "complete"
+      },
+      "workload-frequency-top-k": {
+        "accounting": {
+          "final": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          },
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "postgresql_planner_query_calls": 0
+          },
+          "total": {
+            "configuration_objective_evaluations": 1,
+            "postgresql_planner_query_calls": 3
+          }
+        },
+        "deployment_order": [
+          "cand_4bad6e03553c43b70012041d",
+          "cand_7adedc24d32b557d3c91d995",
+          "cand_920e24fcc663148ca5cd2204",
+          "cand_01a51ee5625283138a23d65c"
+        ],
+        "evaluation": {
+          "configuration_objective_evaluations": 1,
+          "postgresql_planner_query_calls": 3,
+          "sandbox_objective": 261.56437389770724,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_4bad6e03553c43b70012041d",
+          "cand_7adedc24d32b557d3c91d995",
+          "cand_920e24fcc663148ca5cd2204",
+          "cand_01a51ee5625283138a23d65c"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "workload predicate incidence"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "workload-frequency-top-k",
+        "planner_evaluations": 1,
+        "random_seed": 1,
+        "selected_membership": [
+          "cand_4bad6e03553c43b70012041d",
+          "cand_7adedc24d32b557d3c91d995",
+          "cand_920e24fcc663148ca5cd2204",
+          "cand_01a51ee5625283138a23d65c"
+        ],
+        "selection_accounting": {
+          "configuration_objective_evaluations": 0,
+          "postgresql_planner_query_calls": 0
+        },
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_preprocessing": {
+          "includes_backend_evaluations": false,
+          "source": "research-harness-signal-selection"
+        },
+        "selection_trace": [],
+        "status": "complete"
+      }
+    }
+  },
+  "evidence_hierarchy": "RQ4a deterministic patched sandbox; no stock deployment claim",
+  "experiment_id": "rq4-design-determinism-smoke-v1",
+  "fixture": {
+    "dataset_id": "real-artifact-fixture",
+    "formal_rq4_comparison": false,
+    "patched_dsn_recorded": false,
+    "query_count": 3,
+    "query_ids": [
+      "arecel_census13_test_000000",
+      "arecel_census13_test_000001",
+      "arecel_census13_test_000002"
+    ]
+  },
+  "formal_confirmatory_experiment": false,
+  "format_version": "rq4-design-determinism-smoke-v1",
+  "replay_count": 2,
+  "replay_semantic_digests": [
+    "0d296ed5d0f7de5414c2ea1db969e65b8fa654d4cd9bbaefafc812d1435d9586",
+    "0d296ed5d0f7de5414c2ea1db969e65b8fa654d4cd9bbaefafc812d1435d9586"
+  ],
+  "research_commit_sha": "987220eba39f91ab0684db3469a45b33745a24a4",
+  "runtime_observations": [
+    {
+      "accounting": {
+        "dependency-correlation-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.000922008000088681,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0009810870001274452,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.000922008000088681,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0009810870001274452,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 6.12900000760419e-05
+          }
+        },
+        "greedy-ADD": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0012213649999921472,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0013291939999362512,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.5669674649980152,
+              "configuration_objective_evaluations": 539,
+              "elapsed_wall_clock_seconds": 0.6088229979998232,
+              "postgresql_planner_query_calls": 1617
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.5681888299980073,
+              "configuration_objective_evaluations": 540,
+              "elapsed_wall_clock_seconds": 0.6101521919997595,
+              "postgresql_planner_query_calls": 1620
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": true,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 0.6088301049999245
+          }
+        },
+        "random-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0010255250001591776,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.001094020000209639,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.0010255250001591776,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.001094020000209639,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 3.88920000204962e-05
+          }
+        },
+        "singleton-utility-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0010733490000802703,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011509070000101929,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.13721918900046148,
+              "configuration_objective_evaluations": 137,
+              "elapsed_wall_clock_seconds": 0.14648958999987371,
+              "postgresql_planner_query_calls": 411,
+              "source": "frozen-postgres-planner-and-bound-ground-truth-v1"
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.13829253800054175,
+              "configuration_objective_evaluations": 138,
+              "elapsed_wall_clock_seconds": 0.1476404969998839,
+              "postgresql_planner_query_calls": 414
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 0.00015090000010786753
+          }
+        },
+        "workload-frequency-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0009776069998679304,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0010393830000339221,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.0009776069998679304,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0010393830000339221,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 6.670900006611191e-05
+          }
+        }
+      }
+    },
+    {
+      "accounting": {
+        "dependency-correlation-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.000967219000131081,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0010263949998261523,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.000967219000131081,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0010263949998261523,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 8.810199983599887e-05
+          }
+        },
+        "greedy-ADD": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0010721449998527532,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011381289998553257,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.5534900989994185,
+              "configuration_objective_evaluations": 539,
+              "elapsed_wall_clock_seconds": 0.5928511120000621,
+              "postgresql_planner_query_calls": 1617
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.5545622439992712,
+              "configuration_objective_evaluations": 540,
+              "elapsed_wall_clock_seconds": 0.5939892409999175,
+              "postgresql_planner_query_calls": 1620
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": true,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 0.592864924999958
+          }
+        },
+        "random-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0010512720000406262,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011165650000748428,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.0010512720000406262,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011165650000748428,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 2.7967000050921342e-05
+          }
+        },
+        "singleton-utility-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0010904929999924207,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011542910001480777,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.14137927099841363,
+              "configuration_objective_evaluations": 137,
+              "elapsed_wall_clock_seconds": 0.15104543899997225,
+              "postgresql_planner_query_calls": 411,
+              "source": "frozen-postgres-planner-and-bound-ground-truth-v1"
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.14246976399840605,
+              "configuration_objective_evaluations": 138,
+              "elapsed_wall_clock_seconds": 0.15219973000012033,
+              "postgresql_planner_query_calls": 414
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 0.00015820700014046452
+          }
+        },
+        "workload-frequency-top-k": {
+          "accounting": {
+            "final": {
+              "backend_wall_clock_seconds": 0.0011097580002115137,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011781279999922845,
+              "postgresql_planner_query_calls": 3
+            },
+            "selection": {
+              "backend_wall_clock_seconds": 0.0,
+              "configuration_objective_evaluations": 0,
+              "elapsed_wall_clock_seconds": 0.0,
+              "postgresql_planner_query_calls": 0
+            },
+            "total": {
+              "backend_wall_clock_seconds": 0.0011097580002115137,
+              "configuration_objective_evaluations": 1,
+              "elapsed_wall_clock_seconds": 0.0011781279999922845,
+              "postgresql_planner_query_calls": 3
+            }
+          },
+          "selection_preprocessing": {
+            "includes_backend_evaluations": false,
+            "source": "research-harness-signal-selection",
+            "wall_clock_seconds": 0.00010131299995919107
+          }
+        }
+      }
+    }
+  ],
+  "semantic_digest": "940103514aa462cef93c0d11f823f3d170ceb5a4b6da0bc489db240a519de6a7",
+  "status": "deterministic-replay-smoke",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+      "repository": "1951123/extstats-advisor"
+    },
+    "change_policy": "A semantic change to the frozen advisor, patched PostgreSQL, or stock PostgreSQL requires system-freeze-v2 and re-evaluation of affected confirmatory experiments. system-freeze-v1 is never silently overwritten.",
+    "format_version": "system-freeze-v1",
+    "patched_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "scope": "Frozen system under test for confirmatory paper experiments; research harness revisions are recorded per artifact.",
+    "status": "frozen",
+    "stock_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    }
+  },
+  "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7"
+}

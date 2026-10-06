@@ -438,6 +438,20 @@
         "clone_policy": "clone one analyzed parent, drop unrelated statistics without ANALYZE, verify remaining payload bytes",
         "setseed_is_analyze_reproducibility_proof": false
       },
+      "readiness_artifacts": [
+        {
+          "path": "experiments/rq4/integration-smoke/rq4-design-determinism-smoke-v1.json",
+          "format_version": "rq4-design-determinism-smoke-v1",
+          "semantic_digest": "940103514aa462cef93c0d11f823f3d170ceb5a4b6da0bc489db240a519de6a7",
+          "formal_confirmatory_experiment": false
+        },
+        {
+          "path": "experiments/rq4/integration-smoke/rq4-stock-physical-evaluation-smoke-v1.json",
+          "format_version": "rq4-stock-physical-evaluation-v1",
+          "semantic_digest": "0832484dd3b1ea3473f33cbfde446ff316f2e267ef732195dbfc9882ba3afe42",
+          "formal_confirmatory_experiment": false
+        }
+      ],
       "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "deterministic replay artifact", "shared stock realization and clone evidence", "manifest"],
       "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes", "RQ4a/RQ4b evidence-separated summary"],
       "synthetic_validation_artifact": {

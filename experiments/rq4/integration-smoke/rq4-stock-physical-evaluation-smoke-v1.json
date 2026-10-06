@@ -1,0 +1,339 @@
+{
+  "candidate_universe_semantic_digest": "e19c5ef85d9c557ec8fc6f9807281bc0454d2d6a4e5c82d592ea224e4716c70d",
+  "cost_accounting_rule": "design/search, native realization, and physical evaluation are separate",
+  "dataset": {
+    "dataset_id": "real-artifact-fixture",
+    "relation": "public.census13"
+  },
+  "experiment_id": "rq4-stock-physical-evaluation-smoke-v1",
+  "formal_confirmatory_experiment": false,
+  "format_version": "rq4-stock-physical-evaluation-v1",
+  "ground_truth_semantic_digest": "2cb7c9e89d020581c8a632c20a3a971cee3fd7e44a6a67e91bcea28d57038509",
+  "methods": {
+    "greedy-ADD": {
+      "analyze_after_drop": false,
+      "costs": {
+        "design_search": "not measured by stock physical executor",
+        "evaluation": {
+          "explain_wall_clock_seconds": 0.0014401890000499407,
+          "postgresql_planner_query_calls": 3
+        },
+        "native_realization": {
+          "analyze_count": 1,
+          "analyze_sampling_stochastic": true,
+          "setseed_controls_analyze": false,
+          "shared_analyze_seconds": 0.21681737800008705,
+          "shared_union_create_and_alter_seconds": 5.447347761999936
+        }
+      },
+      "deployment_order": [
+        "cand_3c438624aebec388e119d19b",
+        "cand_1071aef010da62986c2c084c"
+      ],
+      "metrics": {
+        "lower_is_better": true,
+        "max": 5.161168708765316,
+        "mean": 2.7379334292375614,
+        "p50": 2.0526315789473686,
+        "p95": 4.8503149957835205,
+        "p99": 5.098997966168957,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 3,
+        "weighted_objective": 2.7379334292375614
+      },
+      "ordinary_statistics_equal_to_parent": true,
+      "ordinary_statistics_fingerprint": "5365d7ceb98defa7ce0ccea4aaa3366c5cf6b512131df977075ec33c60f6c58e",
+      "parent_realization_digest": "bf97ad3824696e9eecd6aa2f788fd47fab3bcd353f42b942a96c53e8ace0b08b",
+      "payload_bytes_equal_after_drop": true,
+      "payloads_exactly_preserved_after_drop": true,
+      "physical_evaluation_source": "stock-postgresql-explain",
+      "physical_statistics": [
+        {
+          "candidate_id": "cand_3c438624aebec388e119d19b",
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.mcv",
+          "name": "extstats_adv_mcv_a545473fd51485e5915383d8f6597513afa72573",
+          "oid": 16438,
+          "payload_bytes": 2727,
+          "payload_present": true,
+          "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+          "payload_sha256": "2fdae425ffb3d8a49622552e519c09267b55278dd0d5acc3ce7356344afb43ec",
+          "schema": "public",
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_1071aef010da62986c2c084c",
+          "column_ordinals": [
+            1,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "name": "extstats_adv_mcv_8cb6ac7b9ef9aa3c52ca74bbcb5330cba1c83fd4",
+          "oid": 16437,
+          "payload_bytes": 2654,
+          "payload_present": true,
+          "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+          "payload_sha256": "e355a7ec79d5cd12cbf772fcafdcb15f7e062c1b331ae9bd68716fa20472320e",
+          "schema": "public",
+          "statistics_target": 100
+        }
+      ],
+      "plan_rows": [
+        {
+          "plan_rows": 1061,
+          "qerror": 5.161168708765316,
+          "query_id": "arecel_census13_test_000000",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"education\" = 'HS-grad' AND \"education_num\" BETWEEN 5.943130142992535 AND 12.056869857007465 AND \"marital_status\" = 'Married-civ-spouse' AND \"relationship\" = 'Husband' AND \"race\" = 'White' AND \"sex\" = 'Male' AND \"native_country\" = 'United-States';",
+          "truth": 5476,
+          "weight": 1.0
+        },
+        {
+          "plan_rows": 1,
+          "qerror": 1.0,
+          "query_id": "arecel_census13_test_000001",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"age\" <= 79.76037268060357 AND \"workclass\" = '?' AND \"education\" = 'Bachelors' AND \"education_num\" BETWEEN 12.845525838674982 AND 13.154474161325018 AND \"marital_status\" = 'Never-married' AND \"occupation\" = 'Priv-house-serv' AND \"relationship\" = 'Own-child' AND \"race\" = 'Asian-Pac-Islander' AND \"sex\" = 'Female' AND \"capital_gain\" <= 23072.22843913656 AND \"capital_loss\" BETWEEN 1611.2390883535536 AND 3092.7609116464464 AND \"hours_per_week\" BETWEEN 50.75912494399929 AND 71.24087505600072 AND \"native_country\" = 'Scotland';",
+          "truth": 0,
+          "weight": 1.0
+        },
+        {
+          "plan_rows": 78,
+          "qerror": 2.0526315789473686,
+          "query_id": "arecel_census13_test_000002",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"workclass\" = 'Self-emp-not-inc' AND \"education\" = 'HS-grad' AND \"relationship\" = 'Not-in-family' AND \"race\" = 'White' AND \"sex\" = 'Female' AND \"capital_loss\" <= 121.53592106458943 AND \"native_country\" = 'United-States';",
+          "truth": 38,
+          "weight": 1.0
+        }
+      ],
+      "selected_membership": [
+        "cand_3c438624aebec388e119d19b",
+        "cand_1071aef010da62986c2c084c"
+      ],
+      "shared_analyze_realization_id": "2b8c4eb69c66d04f1719b6b9921357349d4d3130360c81b41a8b5f87896030ba"
+    },
+    "random-k": {
+      "analyze_after_drop": false,
+      "costs": {
+        "design_search": "not measured by stock physical executor",
+        "evaluation": {
+          "explain_wall_clock_seconds": 0.002346023999962199,
+          "postgresql_planner_query_calls": 3
+        },
+        "native_realization": {
+          "analyze_count": 1,
+          "analyze_sampling_stochastic": true,
+          "setseed_controls_analyze": false,
+          "shared_analyze_seconds": 0.21681737800008705,
+          "shared_union_create_and_alter_seconds": 2.3880000550000204
+        }
+      },
+      "deployment_order": [
+        "cand_3c438624aebec388e119d19b"
+      ],
+      "metrics": {
+        "lower_is_better": true,
+        "max": 5.161168708765316,
+        "mean": 2.7379334292375614,
+        "p50": 2.0526315789473686,
+        "p95": 4.8503149957835205,
+        "p99": 5.098997966168957,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 3,
+        "weighted_objective": 2.7379334292375614
+      },
+      "ordinary_statistics_equal_to_parent": true,
+      "ordinary_statistics_fingerprint": "5365d7ceb98defa7ce0ccea4aaa3366c5cf6b512131df977075ec33c60f6c58e",
+      "parent_realization_digest": "bf97ad3824696e9eecd6aa2f788fd47fab3bcd353f42b942a96c53e8ace0b08b",
+      "payload_bytes_equal_after_drop": true,
+      "payloads_exactly_preserved_after_drop": true,
+      "physical_evaluation_source": "stock-postgresql-explain",
+      "physical_statistics": [
+        {
+          "candidate_id": "cand_3c438624aebec388e119d19b",
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.mcv",
+          "name": "extstats_adv_mcv_a545473fd51485e5915383d8f6597513afa72573",
+          "oid": 16438,
+          "payload_bytes": 2727,
+          "payload_present": true,
+          "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+          "payload_sha256": "2fdae425ffb3d8a49622552e519c09267b55278dd0d5acc3ce7356344afb43ec",
+          "schema": "public",
+          "statistics_target": 100
+        }
+      ],
+      "plan_rows": [
+        {
+          "plan_rows": 1061,
+          "qerror": 5.161168708765316,
+          "query_id": "arecel_census13_test_000000",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"education\" = 'HS-grad' AND \"education_num\" BETWEEN 5.943130142992535 AND 12.056869857007465 AND \"marital_status\" = 'Married-civ-spouse' AND \"relationship\" = 'Husband' AND \"race\" = 'White' AND \"sex\" = 'Male' AND \"native_country\" = 'United-States';",
+          "truth": 5476,
+          "weight": 1.0
+        },
+        {
+          "plan_rows": 1,
+          "qerror": 1.0,
+          "query_id": "arecel_census13_test_000001",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"age\" <= 79.76037268060357 AND \"workclass\" = '?' AND \"education\" = 'Bachelors' AND \"education_num\" BETWEEN 12.845525838674982 AND 13.154474161325018 AND \"marital_status\" = 'Never-married' AND \"occupation\" = 'Priv-house-serv' AND \"relationship\" = 'Own-child' AND \"race\" = 'Asian-Pac-Islander' AND \"sex\" = 'Female' AND \"capital_gain\" <= 23072.22843913656 AND \"capital_loss\" BETWEEN 1611.2390883535536 AND 3092.7609116464464 AND \"hours_per_week\" BETWEEN 50.75912494399929 AND 71.24087505600072 AND \"native_country\" = 'Scotland';",
+          "truth": 0,
+          "weight": 1.0
+        },
+        {
+          "plan_rows": 78,
+          "qerror": 2.0526315789473686,
+          "query_id": "arecel_census13_test_000002",
+          "sql": "SELECT * FROM public.\"census13\" WHERE \"workclass\" = 'Self-emp-not-inc' AND \"education\" = 'HS-grad' AND \"relationship\" = 'Not-in-family' AND \"race\" = 'White' AND \"sex\" = 'Female' AND \"capital_loss\" <= 121.53592106458943 AND \"native_country\" = 'United-States';",
+          "truth": 38,
+          "weight": 1.0
+        }
+      ],
+      "selected_membership": [
+        "cand_3c438624aebec388e119d19b"
+      ],
+      "shared_analyze_realization_id": "2b8c4eb69c66d04f1719b6b9921357349d4d3130360c81b41a8b5f87896030ba"
+    }
+  },
+  "research_commit_sha": "987220eba39f91ab0684db3469a45b33745a24a4",
+  "semantic_digest": "0832484dd3b1ea3473f33cbfde446ff316f2e267ef732195dbfc9882ba3afe42",
+  "shared_realization": {
+    "analyze_count": 1,
+    "analyze_sampling_stochastic": true,
+    "format_version": "rq4-stock-shared-realization-v1",
+    "fresh_state_verified": true,
+    "ordinary_statistics_fingerprint": "5365d7ceb98defa7ce0ccea4aaa3366c5cf6b512131df977075ec33c60f6c58e",
+    "physical_statistics": [
+      {
+        "candidate_id": "cand_1071aef010da62986c2c084c",
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8cb6ac7b9ef9aa3c52ca74bbcb5330cba1c83fd4",
+        "oid": 16437,
+        "payload_bytes": 2654,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "e355a7ec79d5cd12cbf772fcafdcb15f7e062c1b331ae9bd68716fa20472320e",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_3c438624aebec388e119d19b",
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_a545473fd51485e5915383d8f6597513afa72573",
+        "oid": 16438,
+        "payload_bytes": 2727,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "2fdae425ffb3d8a49622552e519c09267b55278dd0d5acc3ce7356344afb43ec",
+        "schema": "public",
+        "statistics_target": 100
+      }
+    ],
+    "preexisting_extended_statistics": [],
+    "realization_id": "2b8c4eb69c66d04f1719b6b9921357349d4d3130360c81b41a8b5f87896030ba",
+    "setseed_is_not_analyze_reproducibility_proof": true,
+    "stock_server": {
+      "version": "16.14",
+      "version_num": 160014
+    },
+    "union_candidate_ids": [
+      "cand_1071aef010da62986c2c084c",
+      "cand_3c438624aebec388e119d19b"
+    ]
+  },
+  "snapshot_semantic_digest": "c59ef631e11f79524475f0345ea54dea35ae976e4b811842da208d63a9d80e26",
+  "status": "shared-realization-smoke",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+      "repository": "1951123/extstats-advisor"
+    },
+    "change_policy": "A semantic change to the frozen advisor, patched PostgreSQL, or stock PostgreSQL requires system-freeze-v2 and re-evaluation of affected confirmatory experiments. system-freeze-v1 is never silently overwritten.",
+    "format_version": "system-freeze-v1",
+    "patched_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "scope": "Frozen system under test for confirmatory paper experiments; research harness revisions are recorded per artifact.",
+    "status": "frozen",
+    "stock_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    }
+  },
+  "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+  "truth_binding": {
+    "cardinality_vector_digest": "ef1a16fdf80ada1654a79b2a7f14f85a4c7049ce8a675738a26c2384e385f3c4",
+    "qerror_contract": "qerror-cardinality-floor-1-v1",
+    "source_kind": "GroundTruthSource(kind='production-exact-execution', dbms='postgresql', server_version='16.14', server_version_num=160014, source_view_token='765:765:', authority=None, dataset_identity=None, source_revision=None, source_artifact_sha256=None)"
+  },
+  "workload": {
+    "query_count": 3,
+    "query_ids": [
+      "arecel_census13_test_000000",
+      "arecel_census13_test_000001",
+      "arecel_census13_test_000002"
+    ],
+    "workload_id": "arecel_census13_test_v1"
+  }
+}
