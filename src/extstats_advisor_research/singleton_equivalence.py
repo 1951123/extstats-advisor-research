@@ -16,7 +16,7 @@ from .pins import verify_git_sha, verify_research_repository
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 
 FORMAT_VERSION = "advisor-singleton-incremental-equivalence-v1"
-INCREMENTAL_ADVISOR_SHA = "ce5fadc9f241dbdd6a471c3a2ecf3b91001b51b1"
+INCREMENTAL_ADVISOR_SHA = "9c93925ebbcda0dc3306e8e63d86ccd782ffc539"
 REFERENCE_ADVISOR_SHA = FROZEN_ADVISOR_SHA
 MAX_VALIDATION_SECONDS = 300.0
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
