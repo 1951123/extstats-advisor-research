@@ -361,6 +361,30 @@ def _run(command: list[str]) -> dict[str, Any]:
     return json.loads(lines[-1]) if lines and lines[-1].startswith("{") else {"status": "ok"}
 
 
+def _same_catalog_dsn(dsn: str, database: str) -> str:
+    """Use a disposable planner database with the snapshot's catalog name."""
+
+    match = re.search(r"(?:^|\s)dbname=([^\s]+)", dsn)
+    if match is None:
+        return f"{dsn} dbname={database}"
+    return f"{dsn[: match.start(1)]}{database}{dsn[match.end(1) :]}"
+
+
+def _ensure_planner_catalog(dsn: str, database: str) -> str:
+    import psycopg
+
+    maintenance_dsn = _same_catalog_dsn(dsn, "postgres")
+    with psycopg.connect(maintenance_dsn, autocommit=True) as connection:
+        exists = bool(
+            connection.execute(
+                "SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname = %s)", (database,)
+            ).fetchone()[0]
+        )
+        if not exists:
+            connection.execute(f'CREATE DATABASE "{database}"')
+    return _same_catalog_dsn(dsn, database)
+
+
 def _semantic_build_identity(identity: dict[str, Any]) -> dict[str, Any]:
     semantic = {
         "format_version": identity["format_version"],
@@ -598,9 +622,10 @@ def run_census13_canary(
         )
         reinit_role("patched")
         reinit_role("stock")
+        planner_catalog_dsn = _ensure_planner_catalog(patched_dsn, "extstats_stock")
         advisor_result = run_census13(
             production_dsn=stock_dsn,
-            planner_dsn=patched_dsn,
+            planner_dsn=planner_catalog_dsn,
             advisor_root=advisor_root,
             patched_postgres_root=patched_postgres_root,
             output_root=runtime / "advisor-design",
@@ -618,7 +643,7 @@ def run_census13_canary(
         generated_truth = read_json(advisor_run / "ground-truth-v1.json")
         if _truth_rows(generated_truth, WORKLOAD_ID) != truths:
             raise ValueError("advisor design-time exact truth differs from matched canary truth")
-        _run([advisor_command, "sandbox", "destroy", "postgres", "--dsn", patched_dsn])
+        _run([advisor_command, "sandbox", "destroy", "postgres", "--dsn", planner_catalog_dsn])
         reinit_role("stock")
         deployment_output = runtime / "deployment-result-v1.json"
         source_paths = {
@@ -734,6 +759,7 @@ def run_census13_canary(
             "advisor_design_run_manifest_sha256": sha256_file(
                 Path(advisor_result["run_directory"]) / "manifest.json"
             ),
+            "patched_planner_catalog": "extstats_stock",
             "system_freeze_path": "paper/system-freeze-v1.json",
         },
     )
