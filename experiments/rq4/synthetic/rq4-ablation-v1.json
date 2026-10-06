@@ -1,0 +1,818 @@
+{
+  "candidate_exclusion_reasons": [
+    {
+      "candidate": {
+        "candidate_id": "cand_synthetic_excluded",
+        "column_names": [
+          "c1",
+          "c2"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.ndistinct",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 7
+      },
+      "reasons": [
+        "sample-built-native-payload-unavailable",
+        "unsupported-native-statistics-kind"
+      ]
+    }
+  ],
+  "candidate_universe": {
+    "candidate_universe_semantic_digest": "a4c460cb4583c66eeb37c0f680082a268fed514cef2ad59b220d77333d4c7b63",
+    "eligibility_rule": {
+      "allowed_kinds": [
+        "postgresql.mcv",
+        "postgresql.dependencies"
+      ],
+      "forbidden_signals": [
+        "singleton q-error improvement",
+        "greedy SearchResult",
+        "final Advisor recommendation",
+        "confirmatory full-data outcome"
+      ],
+      "requires_predeclared_postgresql_compatibility": true,
+      "requires_sample_built_payload": true,
+      "requires_schema_validity": true
+    },
+    "eligible_candidates": [
+      {
+        "candidate_id": "cand_synthetic_00",
+        "canonical_deployment_position": 1,
+        "column_names": [
+          "c1",
+          "c2"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 1
+      },
+      {
+        "candidate_id": "cand_synthetic_01",
+        "canonical_deployment_position": 2,
+        "column_names": [
+          "c2",
+          "c3"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 2
+      },
+      {
+        "candidate_id": "cand_synthetic_02",
+        "canonical_deployment_position": 3,
+        "column_names": [
+          "c3",
+          "c4"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 3
+      },
+      {
+        "candidate_id": "cand_synthetic_03",
+        "canonical_deployment_position": 4,
+        "column_names": [
+          "c4",
+          "c5"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 4
+      },
+      {
+        "candidate_id": "cand_synthetic_04",
+        "canonical_deployment_position": 5,
+        "column_names": [
+          "c5",
+          "c6"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 5
+      },
+      {
+        "candidate_id": "cand_synthetic_05",
+        "canonical_deployment_position": 6,
+        "column_names": [
+          "c6",
+          "c7"
+        ],
+        "column_ordinals": [
+          6,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_synthetic",
+        "static_precedence_rank": 6
+      }
+    ],
+    "excluded_candidates": [
+      {
+        "candidate": {
+          "candidate_id": "cand_synthetic_excluded",
+          "column_names": [
+            "c1",
+            "c2"
+          ],
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.ndistinct",
+          "relation_id": "rel_synthetic",
+          "static_precedence_rank": 7
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable",
+          "unsupported-native-statistics-kind"
+        ]
+      }
+    ],
+    "format_version": "rq4-eligible-universe-v1",
+    "native_repository_semantic_digest": "c190b7e54fde9e6302db43acdeee933474214b04e14cd9966c56a9b111e768d5",
+    "semantic_digest": "02ba2308dc75e793b5abe946af323dbc6c7b728dbf5efd5aa12a4d10aad9b966",
+    "source_snapshot_semantic_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "comparison": {
+    "budget": {
+      "max_planner_evaluations": 200,
+      "wall_clock_seconds": 30.0
+    },
+    "comparison_mode": "fixed_k_quality",
+    "fixed_k": 4,
+    "method_order": [
+      "random-k",
+      "workload-frequency-top-k",
+      "dependency-correlation-top-k",
+      "singleton-utility-top-k",
+      "greedy-ADD",
+      "exhaustive-tiny-universe"
+    ],
+    "methods": {
+      "dependency-correlation-top-k": {
+        "deployment_order": [
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03",
+          "cand_synthetic_04"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 49.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03",
+          "cand_synthetic_04"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "predeclared sample-side signal"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "dependency-correlation-top-k",
+        "planner_evaluations": 0,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03",
+          "cand_synthetic_04"
+        ],
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_trace": [],
+        "status": "complete",
+        "wall_time_seconds": 9.070000487554353e-06
+      },
+      "exhaustive-tiny-universe": {
+        "deployment_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 35.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample planner",
+            "GroundTruthSet"
+          ],
+          "forbidden_inputs": [],
+          "ground_truth_during_selection": true
+        },
+        "method": "exhaustive-tiny-universe",
+        "planner_evaluations": 15,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "selection_evaluations_accounted_by_backend": true,
+        "selection_planner_evaluations": 15,
+        "selection_trace": [
+          {
+            "objective": 41.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_03"
+            ]
+          },
+          {
+            "objective": 35.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 45.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 40.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_03",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 48.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_03",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 44.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 42.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_02",
+              "cand_synthetic_03",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 50.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_02",
+              "cand_synthetic_03",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 46.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_02",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 46.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_03",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 49.0,
+            "selected": [
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_03",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 49.0,
+            "selected": [
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_03",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 53.0,
+            "selected": [
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 56.0,
+            "selected": [
+              "cand_synthetic_01",
+              "cand_synthetic_03",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          },
+          {
+            "objective": 58.0,
+            "selected": [
+              "cand_synthetic_02",
+              "cand_synthetic_03",
+              "cand_synthetic_04",
+              "cand_synthetic_05"
+            ]
+          }
+        ],
+        "status": "complete",
+        "wall_time_seconds": 5.1437000365694985e-05
+      },
+      "greedy-ADD": {
+        "deployment_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 35.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample planner",
+            "GroundTruthSet"
+          ],
+          "forbidden_inputs": [],
+          "ground_truth_during_selection": true
+        },
+        "method": "greedy-ADD",
+        "planner_evaluations": 19,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_04"
+        ],
+        "selection_evaluations_accounted_by_backend": true,
+        "selection_planner_evaluations": 19,
+        "selection_trace": [
+          {
+            "objective": 100.0,
+            "selected": []
+          },
+          {
+            "objective": 83.0,
+            "selected": [
+              "cand_synthetic_00"
+            ]
+          },
+          {
+            "objective": 66.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 51.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_04"
+            ]
+          },
+          {
+            "objective": 35.0,
+            "selected": [
+              "cand_synthetic_00",
+              "cand_synthetic_01",
+              "cand_synthetic_02",
+              "cand_synthetic_04"
+            ]
+          }
+        ],
+        "status": "complete",
+        "wall_time_seconds": 6.521599971165415e-05
+      },
+      "random-k": {
+        "deployment_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_05"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 45.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_05"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "pre-registered random seed"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "random-k",
+        "planner_evaluations": 0,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_05"
+        ],
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_trace": [],
+        "status": "complete",
+        "wall_time_seconds": 3.568299962353194e-05
+      },
+      "singleton-utility-top-k": {
+        "deployment_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 41.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample planner",
+            "GroundTruthSet"
+          ],
+          "forbidden_inputs": [],
+          "ground_truth_during_selection": true
+        },
+        "method": "singleton-utility-top-k",
+        "planner_evaluations": 6,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 6,
+        "selection_trace": [
+          {
+            "candidate_id": "cand_synthetic_00",
+            "singleton_utility": 17.0
+          },
+          {
+            "candidate_id": "cand_synthetic_01",
+            "singleton_utility": 15.0
+          },
+          {
+            "candidate_id": "cand_synthetic_02",
+            "singleton_utility": 13.0
+          },
+          {
+            "candidate_id": "cand_synthetic_03",
+            "singleton_utility": 11.0
+          },
+          {
+            "candidate_id": "cand_synthetic_04",
+            "singleton_utility": 9.0
+          },
+          {
+            "candidate_id": "cand_synthetic_05",
+            "singleton_utility": 7.0
+          }
+        ],
+        "status": "complete",
+        "wall_time_seconds": 8.259999958681874e-06
+      },
+      "workload-frequency-top-k": {
+        "deployment_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "evaluation": {
+          "planner_evaluations": 1,
+          "sandbox_objective": 41.0,
+          "status": "complete"
+        },
+        "evaluation_order": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "information_access_policy": {
+          "allowed_inputs": [
+            "eligible candidate IDs",
+            "workload predicate incidence"
+          ],
+          "forbidden_inputs": [
+            "q-error",
+            "singleton utility",
+            "full-data estimates"
+          ],
+          "ground_truth_during_selection": false
+        },
+        "method": "workload-frequency-top-k",
+        "planner_evaluations": 0,
+        "random_seed": 123,
+        "selected_membership": [
+          "cand_synthetic_00",
+          "cand_synthetic_01",
+          "cand_synthetic_02",
+          "cand_synthetic_03"
+        ],
+        "selection_evaluations_accounted_by_backend": false,
+        "selection_planner_evaluations": 0,
+        "selection_trace": [],
+        "status": "complete",
+        "wall_time_seconds": 1.4575000022887252e-05
+      }
+    }
+  },
+  "dataset": {
+    "content_identity": "synthetic-fixed-fixture-v1",
+    "dataset_id": "synthetic-rq4-fixture-v1"
+  },
+  "eligible_universe_digest": "02ba2308dc75e793b5abe946af323dbc6c7b728dbf5efd5aa12a4d10aad9b966",
+  "experiment_id": "rq4-fixed-k-synthetic-validation-v1",
+  "formal_confirmatory_experiment": false,
+  "format_version": "rq4-ablation-v1",
+  "ground_truth": {
+    "bound_to_snapshot": true,
+    "semantic_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "source_kind": "synthetic-validation-only"
+  },
+  "k_policy": {
+    "fixed_k": 4,
+    "independent_of_advisor_recommendation": true,
+    "infeasible_policy": "infeasible-or-censored; never silently continue",
+    "not_advisor_candidate_limit": true
+  },
+  "native_repository_digest": "c190b7e54fde9e6302db43acdeee933474214b04e14cd9966c56a9b111e768d5",
+  "research_commit_sha": "248a167becd501c8d3832a1bdc68d62b3122a650",
+  "selection_information_policies": {
+    "dependency-correlation-top-k": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "predeclared sample-side signal"
+      ],
+      "forbidden_inputs": [
+        "q-error",
+        "singleton utility",
+        "full-data estimates"
+      ],
+      "ground_truth_during_selection": false
+    },
+    "exhaustive-tiny-universe": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "sample planner",
+        "GroundTruthSet"
+      ],
+      "forbidden_inputs": [],
+      "ground_truth_during_selection": true
+    },
+    "greedy-ADD": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "sample planner",
+        "GroundTruthSet"
+      ],
+      "forbidden_inputs": [],
+      "ground_truth_during_selection": true
+    },
+    "random-k": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "pre-registered random seed"
+      ],
+      "forbidden_inputs": [
+        "q-error",
+        "singleton utility",
+        "full-data estimates"
+      ],
+      "ground_truth_during_selection": false
+    },
+    "singleton-utility-top-k": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "sample planner",
+        "GroundTruthSet"
+      ],
+      "forbidden_inputs": [],
+      "ground_truth_during_selection": true
+    },
+    "workload-frequency-top-k": {
+      "allowed_inputs": [
+        "eligible candidate IDs",
+        "workload predicate incidence"
+      ],
+      "forbidden_inputs": [
+        "q-error",
+        "singleton utility",
+        "full-data estimates"
+      ],
+      "ground_truth_during_selection": false
+    }
+  },
+  "semantic_digest": "31bfc84423cd319e87de599297de7e4c3aefbe76a06f79161d35066abde08aa3",
+  "snapshot": {
+    "semantic_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "source_artifacts": {
+    "candidate_universe": "synthetic-fixture-generated-in-memory",
+    "native_repository": "synthetic-payload-availability-fixture"
+  },
+  "status": "synthetic-validation",
+  "stock_full_data_evaluation_metrics": null,
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+      "repository": "1951123/extstats-advisor"
+    },
+    "change_policy": "A semantic change to the frozen advisor, patched PostgreSQL, or stock PostgreSQL requires system-freeze-v2 and re-evaluation of affected confirmatory experiments. system-freeze-v1 is never silently overwritten.",
+    "format_version": "system-freeze-v1",
+    "patched_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "scope": "Frozen system under test for confirmatory paper experiments; research harness revisions are recorded per artifact.",
+    "status": "frozen",
+    "stock_postgresql": {
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      },
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    }
+  },
+  "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+  "validation_outcome": {
+    "backend_contract": "injected-configuration-evaluation-backend-v1",
+    "candidate_count": 6,
+    "deterministic_subset_enumeration": true,
+    "exhaustive_combination_count": 20,
+    "exhaustive_evaluated_count": 20,
+    "exhaustive_objective": 51.0,
+    "greedy_objective": 51.0,
+    "greedy_optimality_gap": 0.0,
+    "greedy_trace_replayable": true,
+    "ordering_consistent": true,
+    "scope": "synthetic readiness validation only; not an AreCEL result",
+    "status": "passed",
+    "tie_breaking_deterministic": true,
+    "tiny_fixed_k": 3
+  },
+  "workload": {
+    "query_count": 6,
+    "workload_id": "synthetic-rq4-workload-v1"
+  }
+}

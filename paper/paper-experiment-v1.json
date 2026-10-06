@@ -422,7 +422,7 @@
       "synthetic_validation_artifact": {
         "path": "experiments/rq4/synthetic/rq4-ablation-v1.json",
         "format_version": "rq4-ablation-v1",
-        "semantic_digest": "f3ca23dabab70bb6e9861247bbb3a43cf38012a7941cc8441aec1c66d75ec8e5",
+        "semantic_digest": "31bfc84423cd319e87de599297de7e4c3aefbe76a06f79161d35066abde08aa3",
         "formal_confirmatory_experiment": false,
         "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
       },
