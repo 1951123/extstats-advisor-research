@@ -352,7 +352,7 @@ def run_equivalence(
         },
         "sandbox_verification": {
             "prepared": prepared.metadata.to_dict(),
-            "verified": verification[2],
+            "verified": verification,
         },
         "reference": {
             "profile_semantic_digest": reference.computed_semantic_digest,
