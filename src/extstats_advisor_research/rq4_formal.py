@@ -141,7 +141,7 @@ def _truth_binding(research_root: Path) -> dict[str, Any]:
         "authority": spec["authority"],
         "source_revision": spec["source_revision"],
         "dataset_identity": spec["dataset_identity"],
-        "workload_id": spec["workload_id"],
+        "workload_id": "arecel_forest10_test_v1",
         "query_count": spec["query_count"],
         "authoritative_observations_sha256": spec["observations_sha256"],
         "authoritative_observations_semantic_digest": audit["observation_semantic_digest"],
