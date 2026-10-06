@@ -99,6 +99,20 @@ def test_dataset_complete_requires_current_dataset_progress_complete() -> None:
         validate_rq1_artifact(broken)
 
 
+def test_power7_artifact_records_only_requested_dataset_run() -> None:
+    power = _read(
+        ROOT / "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json"
+    )
+    assert power["dataset_progress"] == {
+        "arecel-census13": "complete",
+        "arecel-dmv11": "planned",
+        "arecel-forest10": "complete",
+        "arecel-power7": "complete",
+    }
+    assert power["provenance"]["unrequested_dataset_runs"] == []
+    assert "power7_and_dmv11_run" not in power["provenance"]
+
+
 def test_external_truth_import_fails_closed_without_observations(
     tmp_path: Path, monkeypatch
 ) -> None:

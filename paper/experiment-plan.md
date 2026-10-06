@@ -2,10 +2,10 @@
 
 This document specifies the experiments behind the manuscript. It is a plan,
 not a claim that every row is complete. Historical Census13, Forest10, Power7,
-and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13 and
-Forest10 matched-comparison artifacts are dataset-level canonical results under
-the current confirmatory truth policy. The four-dataset RQ1 campaign remains
-incomplete.
+and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13,
+Forest10, and Power7 matched-comparison artifacts are dataset-level canonical
+results under the current confirmatory truth policy. The four-dataset RQ1
+campaign remains incomplete because DMV11 is still planned.
 
 ## Shared protocol
 
@@ -82,7 +82,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13 and Forest10 are complete as dataset-level canonical artifacts; Power7 and DMV11 remain planned, so the global campaign is incomplete. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `planned` | Census13, Forest10, and Power7 are complete as dataset-level canonical artifacts; DMV11 remains planned, so the global campaign is incomplete. The heuristic configurations remain RQ4 work. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
@@ -112,12 +112,18 @@ simple selection baselines, but does not improve every query.
    column where the paper-baseline contract defines that setting. The current
    four manifests record target 10000; Census13 records it at baseline level,
    while the newer manifests also expose more column-level verification;
-3. workload-frequency top-k;
-4. dependency/correlation top-k;
-5. singleton-utility top-k;
-6. `ExtStats Advisor` recommendation;
-7. learned-CE results from Are We Ready, labeled literature/contextual data
+3. `ExtStats Advisor` recommendation;
+4. workload-frequency top-k, dependency/correlation top-k,
+   singleton-utility top-k, random-k, and exhaustive tiny-universe baselines
+   are RQ4 ablations, not completed RQ1 three-arm configurations;
+5. learned-CE results from Are We Ready, labeled literature/contextual data
    and never merged into the matched-system result table.
+
+The current RQ1 effectiveness comparison is explicitly in-workload: the
+evaluation workload is the workload used by the advisor objective. It does not
+establish held-out query generalization. The three-arm matched-comparison
+artifacts therefore do not imply that the RQ4 heuristic baselines have been
+completed.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact
 ground truth and an explicit dataset inclusion table.
@@ -155,6 +161,24 @@ full-data deployment plus one native `ANALYZE`; its sandbox objective and
 termination are separate fields. The result direction is empirical and is not
 an acceptance target.
 
+**Power7 canonical result:**
+`experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json`
+was run with the same frozen K=8 protocol: sample rows 10000, sample seed 42,
+statistics target 100, candidate limit 8, a 300-second search budget, and
+experiment seed identifier 123 with `SELECT setseed(1.0 / 123)`. Its
+authoritative AreCEL truth is `validated-provenance` (not
+`validated-full-equivalence`) and includes a ten-query live exact sanity check
+whose results are not the GroundTruthSet source. The three arms used
+independent `postgres-lab reinit` states; the advisor recommendation was
+regenerated with the frozen advisor, and headline estimates came from the
+fresh stock full-data deployment. The artifact digest is
+`e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5`.
+Its sandbox objective decreased from 167.64553643195066 to
+99.8095133469062 and terminated at `local-optimum`; this sandbox value is
+reported separately from the stock deployment headline. The result is
+diagnostic evidence for this frozen protocol, not an acceptance target based
+on the historical Power7 pilot.
+
 For every new dataset, confirmatory arms start from `postgres-lab reinit` and
 import audited AreCEL observations into a fresh snapshot-bound
 `GroundTruthSet`; there is no fallback to `production-exact-execution`.
@@ -166,9 +190,9 @@ extended statistics, target 10000 on every dataset column, the exact
 The unified artifact records the three arm identities, actual targets and
 ANALYZE protocol, physical extended-statistics inventory, recommendation and
 sandbox objective where applicable, per-query estimates/truth/q-errors, both
-paired comparisons, cleanup, and semantic digests. Census13 and Forest10 are
-currently `complete` at dataset level; Power7 and DMV11 remain `planned`, so
-the global RQ1 status stays `planned` until all four artifacts are complete.
+paired comparisons, cleanup, and semantic digests. Census13, Forest10, and
+Power7 are now `complete` at dataset level; DMV11 remains `planned`, so the
+global RQ1 status stays `planned` until all four artifacts are complete.
 
 **Current DMV11 protocol to reproduce (do not run in this unit):** 11 columns
 of `public.dmv11`, all column targets 10000, experiment seed identifier 123,
@@ -190,9 +214,9 @@ and improved/unchanged/worsened classification.
 
 **Intended paper output:** RQ1 distribution figure and summary table.
 
-**Status:** historical benchmark runs remain `pilot`/`preliminary`; Census13
-and Forest10 are `complete` dataset-level canonical artifacts, while the
-unified four-dataset comparison remains `planned`.
+**Status:** historical benchmark runs remain `pilot`/`preliminary`; Census13,
+Forest10, and Power7 are `complete` dataset-level canonical artifacts, while
+DMV11 and the unified four-dataset comparison remain `planned`.
 
 ## RQ2 — Sample-to-full-data transfer
 

@@ -179,11 +179,9 @@
       "configurations": [
         "stock-postgresql-baseline",
         "strong-conventional-postgresql-baseline",
-        "workload-frequency-top-k",
-        "dependency-correlation-top-k",
-        "singleton-utility-top-k",
         "extstats-advisor-recommendation"
       ],
+      "configuration_scope_note": "The matched RQ1 artifact is the fixed three-arm comparison (stock default, stock target10000, and advisor). workload-frequency-top-k, dependency-correlation-top-k, singleton-utility-top-k, random-k, greedy ADD, and exhaustive tiny-universe comparisons belong to RQ4 and are not complete merely because the RQ1 dataset campaign advances.",
       "canary_protocol": {
         "experiment_id": "rq1-matched-comparison-v1",
         "dataset_scope": ["arecel-census13"],
@@ -220,6 +218,23 @@
         "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
         "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436"
       },
+      "power7_confirmatory_protocol": {
+        "artifact": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "arms": ["pg16-default", "pg16-target10000", "pg16-advisor"],
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100,
+        "candidate_limit": 8,
+        "search_budget_seconds": 300,
+        "experiment_seed_identifier": 123,
+        "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+        "parameter_selection_basis": "pre-existing Forest10 canonical K=8 protocol",
+        "truth_source_kind": "authoritative-external-exact",
+        "truth_policy_status": "validated-provenance",
+        "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
+        "semantic_digest": "e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5",
+        "in_workload_scope": "The RQ1 workload is the workload used by the advisor objective; this result does not establish held-out query generalization."
+      },
       "dataset_artifacts": {
         "arecel-census13": {
           "status": "complete",
@@ -234,13 +249,19 @@
           "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436",
           "planner_reexecuted": true
         },
-        "arecel-power7": {"status": "planned"},
+        "arecel-power7": {
+          "status": "complete",
+          "artifact": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+          "semantic_digest": "e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5",
+          "planner_reexecuted": true,
+          "truth_policy_status": "validated-provenance"
+        },
         "arecel-dmv11": {"status": "planned"}
       },
       "dataset_progress": {
         "arecel-census13": "complete",
         "arecel-forest10": "complete",
-        "arecel-power7": "planned",
+        "arecel-power7": "complete",
         "arecel-dmv11": "planned"
       },
       "metrics": ["per-query q-error", "reporting aggregate metrics", "improved/unchanged/worsened counts"],
@@ -406,7 +427,7 @@
       {
         "experiment_id": "rq1-confirmatory-matched-baselines",
         "status": "planned",
-        "note": "Census13 and Forest10 have validated dataset-level canonical artifacts; Power7 and DMV11 remain planned, so the four-dataset RQ1 campaign remains incomplete."
+        "note": "Census13, Forest10, and Power7 have validated dataset-level canonical artifacts; DMV11 remains planned, so the four-dataset RQ1 campaign remains incomplete. RQ4 heuristic ablations are separate and remain planned."
       },
       {
         "experiment_id": "rq1-existing-baselines",

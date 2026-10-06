@@ -39,6 +39,9 @@ from .system_freeze import DEFAULT_SYSTEM_FREEZE_PATH, load_system_freeze
 SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
 RQ1_DATASETS = tuple(sorted(DATASETS))
+COMPLETED_CANONICAL_RQ1_DATASETS = frozenset(
+    {"arecel-census13", "arecel-forest10"}
+)
 
 
 @dataclass(frozen=True)
@@ -477,7 +480,11 @@ def run_rq1_matched(
         truth=truth_identity,
         arms=arms,
         dataset_progress={
-            item: ("complete" if item in {"arecel-census13", dataset_id} else "planned")
+            item: (
+                "complete"
+                if item in COMPLETED_CANONICAL_RQ1_DATASETS or item == dataset_id
+                else "planned"
+            )
             for item in RQ1_DATASETS
         },
         experiment_status="dataset-complete",
@@ -512,7 +519,7 @@ def run_rq1_matched(
                 "postgresql_setseed_sql": SETSEED_SQL,
             },
             "same_authoritative_observation_vector_for_all_arms": True,
-            "power7_and_dmv11_run": False,
+            "unrequested_dataset_runs": [],
         },
     )
     write_json(output, artifact)
