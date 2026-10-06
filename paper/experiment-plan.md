@@ -172,7 +172,7 @@ whose results are not the GroundTruthSet source. The three arms used
 independent `postgres-lab reinit` states; the advisor recommendation was
 regenerated with the frozen advisor, and headline estimates came from the
 fresh stock full-data deployment. The artifact digest is
-`e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5`.
+`fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750`.
 Its sandbox objective decreased from 167.64553643195066 to
 99.8095133469062 and terminated at `local-optimum`; this sandbox value is
 reported separately from the stock deployment headline. The result is

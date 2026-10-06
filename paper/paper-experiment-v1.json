@@ -232,7 +232,7 @@
         "truth_source_kind": "authoritative-external-exact",
         "truth_policy_status": "validated-provenance",
         "headline_evaluation": "stock PostgreSQL full-data deployment; sandbox objective is separate",
-        "semantic_digest": "e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5",
+        "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
         "in_workload_scope": "The RQ1 workload is the workload used by the advisor objective; this result does not establish held-out query generalization."
       },
       "dataset_artifacts": {
@@ -252,7 +252,7 @@
         "arecel-power7": {
           "status": "complete",
           "artifact": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
-          "semantic_digest": "e76dab8ce1a293924d268af76019358ba67faeb675334da9dcf4a3d706bef1a5",
+          "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
           "planner_reexecuted": true,
           "truth_policy_status": "validated-provenance"
         },

@@ -39,9 +39,7 @@ from .system_freeze import DEFAULT_SYSTEM_FREEZE_PATH, load_system_freeze
 SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
 RQ1_DATASETS = tuple(sorted(DATASETS))
-COMPLETED_CANONICAL_RQ1_DATASETS = frozenset(
-    {"arecel-census13", "arecel-forest10"}
-)
+COMPLETED_CANONICAL_RQ1_DATASETS = frozenset({"arecel-census13", "arecel-forest10"})
 
 
 @dataclass(frozen=True)
