@@ -404,7 +404,8 @@
     {
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
-      "status": "ready-to-run",
+      "status": "implementation-needed",
+      "implementation_status": "stock-full-data-per-method-executor-needed",
       "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
       "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_k_quality",
@@ -524,8 +525,8 @@
       },
       {
         "experiment_id": "rq4-fixed-k-ablations",
-        "status": "ready-to-run",
-        "note": "Synthetic and real-backend integration gates passed with independent fixed k=4 policy. No formal AreCEL result is complete."
+        "status": "implementation-needed",
+        "note": "Synthetic and patched-backend integration gates passed with independent fixed k=4 policy; stock full-data per-method deployment/evaluation orchestration is still needed. No formal AreCEL result is complete."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
