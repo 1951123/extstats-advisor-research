@@ -313,6 +313,7 @@ def run_rq1_matched(
         raise ValueError(f"unsupported RQ1 dataset: {dataset_id}") from exc
     if output.exists():
         raise FileExistsError(output)
+    output = output.resolve()
     research_root = Path(__file__).resolve().parents[2]
     research_identity = verify_research_repository(research_root)
     system_freeze = load_system_freeze(DEFAULT_SYSTEM_FREEZE_PATH)
