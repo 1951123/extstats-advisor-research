@@ -1,4 +1,4 @@
-"""Build and validate the four-dataset RQ1 matched-comparison summary."""
+"""Build and validate the versioned four-dataset RQ1 summary."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from typing import Any
 from .provenance import read_json, semantic_digest, write_json
 from .rq1_canary import ARM_IDS, validate_rq1_artifact
 
-SUMMARY_FORMAT = "rq1-cross-dataset-summary-v1"
+SUMMARY_FORMAT = "rq1-cross-dataset-summary-v2"
 RQ1_DATASETS = (
     "arecel-census13",
     "arecel-forest10",
@@ -77,7 +77,87 @@ def _top_regressions(
     return {"count": len(deltas), "top": deltas[:limit]}
 
 
-def _dataset_summary(artifact: dict[str, Any], path: Path) -> dict[str, Any]:
+def _payload(value: dict[str, Any]) -> dict[str, Any]:
+    return {key: item for key, item in value.items() if key != "semantic_digest"}
+
+
+def _census_equivalence_provenance(
+    artifact: dict[str, Any], repository_root: Path
+) -> dict[str, Any]:
+    equivalence_path = (
+        repository_root / "experiments/arecel-census13/arecel-truth-equivalence-v1.json"
+    )
+    equivalence = read_json(equivalence_path)
+    if equivalence.get("format_version") != "arecel-truth-equivalence-v1":
+        raise ValueError("Census13 equivalence evidence has an unsupported format")
+    if equivalence.get("semantic_digest") != semantic_digest(_payload(equivalence)):
+        raise ValueError("Census13 equivalence evidence digest mismatch")
+    if equivalence.get("dataset_id") != artifact["dataset"]["dataset_id"]:
+        raise ValueError("Census13 equivalence evidence dataset mismatch")
+    if equivalence.get("workload_id") != artifact["workload"]["workload_id"]:
+        raise ValueError("Census13 equivalence evidence workload mismatch")
+    if equivalence.get("external_observations_sha256") != artifact["truth"]["observations_sha256"]:
+        raise ValueError("Census13 equivalence evidence observations mismatch")
+    if any(
+        equivalence.get(key) != expected
+        for key, expected in {
+            "query_count": 10_000,
+            "matched": 10_000,
+            "mismatched": 0,
+            "missing": 0,
+            "extra": 0,
+            "status": "validated-full-equivalence",
+        }.items()
+    ):
+        raise ValueError("Census13 equivalence evidence does not pass its full gate")
+    required = (
+        "bound_external_ground_truth_semantic_digest",
+        "bound_snapshot_semantic_digest",
+        "production_exact_ground_truth_semantic_digest",
+    )
+    if any(not isinstance(equivalence.get(key), str) for key in required):
+        raise ValueError("Census13 equivalence evidence lacks a bound truth digest")
+    return {
+        "snapshot_bound_ground_truth_set_semantic_digest": equivalence[
+            "bound_snapshot_semantic_digest"
+        ],
+        "historical_production_exact_ground_truth_semantic_digest": equivalence[
+            "production_exact_ground_truth_semantic_digest"
+        ],
+        "equivalence_bound_external_ground_truth_semantic_digest": equivalence[
+            "bound_external_ground_truth_semantic_digest"
+        ],
+        "equivalence_bound_snapshot_semantic_digest": equivalence["bound_snapshot_semantic_digest"],
+        "equivalence_artifact": _repository_relative_path(equivalence_path),
+        "equivalence_artifact_semantic_digest": equivalence["semantic_digest"],
+    }
+
+
+def _ground_truth_provenance(artifact: dict[str, Any], repository_root: Path) -> dict[str, Any]:
+    provenance = artifact.get("provenance", {})
+    snapshot_digest = provenance.get("bound_ground_truth_set_semantic_digest")
+    result = {
+        "snapshot_bound_ground_truth_set_semantic_digest": snapshot_digest,
+        "historical_production_exact_ground_truth_semantic_digest": provenance.get(
+            "historical_production_exact_ground_truth_semantic_digest"
+        ),
+        "equivalence_bound_external_ground_truth_semantic_digest": None,
+        "equivalence_bound_snapshot_semantic_digest": None,
+        "equivalence_artifact": None,
+        "equivalence_artifact_semantic_digest": provenance.get(
+            "equivalence_artifact_semantic_digest"
+        ),
+    }
+    if artifact["dataset"]["dataset_id"] == "arecel-census13":
+        result.update(_census_equivalence_provenance(artifact, repository_root))
+    elif not isinstance(snapshot_digest, str):
+        raise ValueError(
+            f"{artifact['dataset']['dataset_id']} lacks a snapshot-bound GroundTruthSet digest"
+        )
+    return result
+
+
+def _dataset_summary(artifact: dict[str, Any], path: Path, repository_root: Path) -> dict[str, Any]:
     dataset_id = artifact["dataset"]["dataset_id"]
     per_arm = artifact["per_arm"]
     default = per_arm["pg16-default"]
@@ -114,10 +194,7 @@ def _dataset_summary(artifact: dict[str, Any], path: Path) -> dict[str, Any]:
             "policy_status": artifact["truth"]["policy_status"],
             "observations_sha256": artifact["truth"]["observations_sha256"],
             "observations_semantic_digest": artifact["truth"]["observations_semantic_digest"],
-            "bound_ground_truth_set_semantic_digest": artifact["provenance"].get(
-                "bound_ground_truth_set_semantic_digest",
-                artifact["truth"]["observations_semantic_digest"],
-            ),
+            "ground_truth_provenance": _ground_truth_provenance(artifact, repository_root),
         },
         "arms": {
             arm_id: {
@@ -161,6 +238,7 @@ def _assemble(paths: tuple[Path, ...]) -> dict[str, Any]:
     if len(paths) != len(RQ1_DATASETS):
         raise ValueError("RQ1 cross-dataset summary requires exactly four datasets")
 
+    repository_root = Path(__file__).resolve().parents[2]
     artifacts: list[dict[str, Any]] = []
     rows: list[dict[str, Any]] = []
     for path, expected_dataset in zip(paths, RQ1_DATASETS, strict=True):
@@ -173,7 +251,7 @@ def _assemble(paths: tuple[Path, ...]) -> dict[str, Any]:
         if artifact["truth"]["source_kind"] != "authoritative-external-exact":
             raise ValueError(f"{expected_dataset} does not use authoritative external truth")
         artifacts.append(artifact)
-        rows.append(_dataset_summary(artifact, path))
+        rows.append(_dataset_summary(artifact, path, repository_root))
 
     freeze_digests = {artifact["system_freeze_semantic_digest"] for artifact in artifacts}
     if len(freeze_digests) != 1:

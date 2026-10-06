@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from extstats_advisor_research.provenance import semantic_digest
 from extstats_advisor_research.rq1_canary import validate_rq1_artifact
 from extstats_advisor_research.rq1_matched import _external_truth, run_rq1_matched
 from extstats_advisor_research.rq1_rebind import validate_rebound_artifact
@@ -146,3 +147,22 @@ def test_external_truth_import_fails_closed_without_observations(
     )
     with pytest.raises(FileNotFoundError):
         _external_truth("arecel-forest10", ROOT)
+
+
+def test_power7_metadata_revision_has_explicit_immutable_lineage() -> None:
+    lineage = _read(
+        ROOT / "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-lineage-v1.json"
+    )
+    assert lineage["transformation"]["kind"] == "provenance-metadata-correction"
+    assert lineage["historical_artifact"]["semantic_digest"] == (
+        "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750"
+    )
+    assert lineage["revised_artifact"]["semantic_digest"] == (
+        "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124"
+    )
+    assert lineage["impact"]["planner_estimates_changed"] is False
+    assert lineage["impact"]["aggregate_metrics_changed"] is False
+    assert (
+        semantic_digest({key: value for key, value in lineage.items() if key != "semantic_digest"})
+        == lineage["semantic_digest"]
+    )

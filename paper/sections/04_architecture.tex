@@ -9,8 +9,9 @@ semantics; the production advisor is invoked through its public interfaces.
   \fbox{\parbox{0.92\columnwidth}{\centering
   production capture $\rightarrow$ \texttt{AdvisorSnapshot} $\rightarrow$
   fixed sample $\rightarrow$ native payloads $\rightarrow$ isolated patched
-  planner $\rightarrow$ estimates $+$ \texttt{GroundTruthSet}
-  $\rightarrow$ utility/search $\rightarrow$ recommendation $\rightarrow$
+  planner $\rightarrow$ planner estimates $+$ independent
+  \texttt{GroundTruthSet} $\rightarrow$ utility/search $\rightarrow$
+  recommendation $\rightarrow$
   stock deployment}}
   \caption{The design-time and deployment-time boundary. The final two
   stages are not a second planner runtime in production.}

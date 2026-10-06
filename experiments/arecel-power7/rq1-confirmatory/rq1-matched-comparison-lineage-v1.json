@@ -1,0 +1,46 @@
+{
+  "format_version": "rq1-matched-comparison-lineage-v1",
+  "lineage_id": "arecel-power7-rq1-matched-comparison",
+  "dataset_id": "arecel-power7",
+  "historical_artifact": {
+    "repository_commit": "ab5bc9fcdbc91b45ecab37c53e0f678041d64cd9",
+    "path": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+    "semantic_digest": "fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750",
+    "role": "committed pre-revision artifact"
+  },
+  "revised_artifact": {
+    "path": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+    "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124",
+    "role": "current canonical artifact"
+  },
+  "transformation": {
+    "kind": "provenance-metadata-correction",
+    "planner_reexecuted": false,
+    "database_workload_reexecuted": false,
+    "exact_counts_reexecuted": false,
+    "changed_fields": [
+      {
+        "path": "/provenance/parameter_selection_basis",
+        "before": "pre-existing Forest10 canonical K=8 protocol",
+        "after": "pre-existing Power7 canonical K=8 protocol"
+      }
+    ],
+    "digest_change_reason": "The semantic artifact digest changes because the provenance field is part of the artifact payload."
+  },
+  "impact": {
+    "planner_estimates_changed": false,
+    "truth_changed": false,
+    "per_query_qerror_changed": false,
+    "aggregate_metrics_changed": false,
+    "recommendation_membership_changed": false,
+    "search_trace_changed": false,
+    "deployment_evidence_changed": false
+  },
+  "audit_basis": {
+    "field_diff_scope": "semantic payload comparison between the historical committed artifact and the revised artifact",
+    "current_system_freeze_unchanged": true,
+    "current_truth_policy_unchanged": true,
+    "validation": "rq1-matched artifact validator passed for the revised artifact"
+  },
+  "semantic_digest": "0c71703870a66f0e7578b53a4c56504efe9e44762b8267d8328ac9e59bc67cf4"
+}

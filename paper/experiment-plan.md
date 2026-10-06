@@ -9,6 +9,12 @@ RQ1 matched campaign is complete only within its declared three-arm,
 in-workload scope; RQ4 heuristic ablations, held-out generalization, RQ2, RQ3,
 and RQ5 remain separate incomplete work.
 
+The immutable `rq1-cross-dataset-summary-v1.json` remains historical output.
+The current paper pointer is the versioned `rq1-cross-dataset-summary-v2.json`,
+which preserves the same estimates and metrics while making observations,
+snapshot-bound `GroundTruthSet`, historical production-exact truth, and the
+Census13 equivalence-bound external truth distinct provenance fields.
+
 ## Shared protocol
 
 - **Frozen SUT:** `paper/system-freeze-v1.json` freezes advisor
@@ -84,15 +90,15 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | Experiment ID | RQ | Status | Evidence or blocker |
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
-| `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v1.json`; RQ4 heuristic configurations remain separate planned work. |
+| `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
 | `rq3-primary-mechanism-fidelity` | RQ3 | `ready-to-run` | Live synthetic gate passed on the pinned patched build: three configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; this is readiness evidence, not a completed paper experiment. |
 | `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
-| `rq4-fixed-k` | RQ4 | `planned` | Requires pre-registered k, seeds, tie-breaking, and common candidate universe. |
-| `rq4-fixed-evaluation-budget` | RQ4 | `planned` | Requires common planner-evaluation and wall-clock caps. |
+| `rq4-fixed-k` | RQ4 | `ready-to-run` | Synthetic `rq4-ablation-v1` gate passed: primary fixed `k=4`, eligibility excludes utility/outcome signals, and tiny exhaustive validation enumerates all 20 subsets for six candidates. No formal AreCEL ablation has run. |
+| `rq4-fixed-evaluation-budget` | RQ4 | `ready-to-run` | Harness records common planner-evaluation/wall-clock caps and censoring; formal AreCEL execution remains outstanding. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -181,6 +187,16 @@ reported separately from the stock deployment headline. The result is
 diagnostic evidence for this frozen protocol, not an acceptance target based
 on the historical Power7 pilot.
 
+The committed lineage record
+`experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-lineage-v1.json`
+audits a metadata-only revision of this artifact. It records the historical
+digest `fc823a63f2f8075882d63875a868a97129c60aacdf40edd338238c907e693750`,
+the revised digest above, and the sole changed field:
+`provenance.parameter_selection_basis` changed from the pre-existing Forest10
+label to the pre-existing Power7 label. It verifies that estimates, truth,
+q-errors, aggregate metrics, recommendation, search, and deployment evidence
+were unchanged; no planner, database workload, or exact count was rerun.
+
 **DMV11 canonical result:**
 `experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json`
 uses the same three-arm schema, frozen SUT, K=8 parameter policy, and
@@ -200,14 +216,24 @@ deployment headline. The five selected objects are MCV recommendations, and
 their membership is immutable in the artifact.
 
 **Unified RQ1 result:**
-`experiments/rq1-cross-dataset-summary-v1.json` is the generated,
+`experiments/rq1-cross-dataset-summary-v2.json` is the current generated,
 content-addressed four-dataset summary with semantic digest
-`54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4`.
+`84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c`.
 It contains per-arm metrics, paired classifications, recommendation and
 sandbox fields, source artifact digests, per-query regression summaries, tail
-error concentration, and mean/p50 trends. Its scope is exactly
+error concentration, mean/p50 trends, and explicit truth provenance roles.
+Its scope is exactly
 `four-dataset, three-arm, in-workload matched comparison`; it excludes RQ4
 heuristics and makes no held-out query generalization claim.
+
+The v2 truth record keeps the observations file SHA and semantic digest
+separate from the snapshot-bound `GroundTruthSet` digest. For Census13 it also
+records the historical production-exact `GroundTruthSet` digest, the
+equivalence-bound external `GroundTruthSet` digest, the equivalence-bound
+snapshot digest, and the equivalence artifact digest. The Power7 and DMV11
+records retain their snapshot-bound external truth digest without inventing
+equivalence evidence. The v1 summary is not overwritten and remains a
+reproducible historical revision.
 
 For every new dataset, confirmatory arms start from `postgres-lab reinit` and
 import audited AreCEL observations into a fresh snapshot-bound
@@ -372,25 +398,33 @@ gap to exhaustive search on tiny universes quantifies search suboptimality.
 correlation/dependency top-k, singleton-utility top-k, greedy ADD, and
 exhaustive search on small candidate universes.
 
-**Fairness contract:** every method receives the identical frozen candidate
-universe, relation, candidate kinds, attribute keys, and sample-built
-`NativeStatsRepository`. No method may add candidates or change native
+**Fairness contract:** the primary eligible universe is frozen before any
+utility or outcome is observed. Eligibility uses only supported native
+statistics kind, valid relation/column schema, sample-built native payload
+availability, and predeclared PostgreSQL compatibility. It records exclusion
+reasons and forbids singleton q-error, `SearchResult`, final recommendation,
+and full-data outcome signals. A screened universe based on utility or outcome
+is a separate conditional diagnostic and is never silently substituted for the
+primary universe. Every method receives the identical primary universe,
+relation, candidate kinds, attribute keys, and sample-built
+`NativeStatsRepository`; no method may add candidates or change native
 statistics targets. Random-k uses pre-registered seeds and samples only from
-that universe. Workload-frequency uses workload predicate frequency but no
-ground truth. Correlation/dependency top-k uses the declared sample-side
-candidate/profile signal but no ground truth. Singleton-utility top-k,
-greedy ADD, and exhaustive search use the same bound `GroundTruthSet` and the
-same weighted utility/loss contracts. All methods are evaluated against the
-same truth after selection.
+that universe. Workload-frequency uses workload predicate incidence but no
+ground truth. Correlation/dependency top-k uses a predeclared sample-side
+signal but no ground truth. Singleton-utility top-k, greedy ADD, and exhaustive
+search use the same bound `GroundTruthSet` and weighted utility/loss contract.
+All selected configurations are evaluated against the same truth after
+selection.
 
-**Comparison modes:** report two distinct comparisons. (A) In fixed-k quality
-comparison, pre-register k values independently of the final advisor
-recommendation; a result using the advisor's selected k is labeled explicitly
-as fixed-k and is not presented as an unbiased unknown-k comparison. (B) In
-fixed-evaluation-budget comparison, pre-register a common planner-evaluation
-and wall-clock budget; selection methods may stop early, but unused budget is
-not silently converted into extra information. Every method reports its actual
-planner evaluations and wall time.
+**Comparison modes:** report two distinct comparisons. (A) The primary fixed-k
+quality comparison uses pre-registered `k=4`, independently of the final
+advisor recommendation; infeasible universes and at-most-k outcomes are
+reported explicitly. A result using the advisor's selected k is not an
+unbiased unknown-k comparison. (B) The fixed-evaluation-budget comparison
+uses a common pre-registered cap of 2,000 planner evaluations and 300 seconds;
+selection methods may stop early, but unused budget is not silently converted
+into extra information. Every method reports actual planner evaluations, wall
+time, and censoring reason.
 
 **Planner evaluation budget:** fixed-k runs must publish a declared maximum
 evaluation budget and actual evaluation count for every method, even when the
@@ -406,6 +440,9 @@ The same ordered configuration convention is used for planner evaluation.
 
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.
+The checked-in `experiments/rq4/synthetic/rq4-ablation-v1.json` is only the
+implementation gate. It is not an AreCEL result and does not make RQ4
+complete.
 
 **Independent variables:** search method, candidate-universe size, k/budget,
 and workload.
@@ -425,8 +462,11 @@ objective curve.
 
 **Intended paper output:** RQ4 ablation table and search-budget figure.
 
-**Status:** `planned`; existing k-budget calibration artifacts are supporting
-diagnostics, not a completed ablation.
+**Status:** `ready-to-run`; the implementation gate passed on a six-candidate
+synthetic universe (`6 choose 3 = 20` exhaustive subsets), with deterministic
+ordering, tie-breaking, replayable greedy trace, and zero greedy optimality
+gap for that fixture. Existing k-budget calibration artifacts remain
+supporting diagnostics, and no formal AreCEL ablation is complete.
 
 ## RQ5 — Practicality
 
@@ -485,10 +525,10 @@ rewritten.
 
 | Paper claim | RQ | Required evidence | Status |
 | --- | --- | --- | --- |
-| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for all four completed datasets; cross-dataset summary digest `54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4` | complete for the four-dataset, three-arm, in-workload claim; RQ4 heuristics and held-out generalization remain out of scope |
+| Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for all four completed datasets; cross-dataset summary v2 digest `84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c` | complete for the four-dataset, three-arm, in-workload claim; RQ4 heuristics and held-out generalization remain out of scope |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |
-| Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | Fair fixed-k and/or fixed-evaluation-budget ablations with declared seeds and tie-breaking | planned |
+| Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4 | `rq4-ablation-v1` harness, synthetic exhaustive gate, then formal AreCEL fixed-k/fixed-budget stock full-data evaluations | ready-to-run; synthetic gate only |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
 | Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |

@@ -236,12 +236,19 @@
         "in_workload_scope": "The RQ1 workload is the workload used by the advisor objective; this result does not establish held-out query generalization."
       },
       "cross_dataset_summary": {
-        "artifact": "experiments/rq1-cross-dataset-summary-v1.json",
-        "format_version": "rq1-cross-dataset-summary-v1",
-        "semantic_digest": "54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4",
+        "artifact": "experiments/rq1-cross-dataset-summary-v2.json",
+        "format_version": "rq1-cross-dataset-summary-v2",
+        "semantic_digest": "84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c",
         "scope": "four-dataset, three-arm, in-workload matched comparison",
         "held_out_generalization_claim": false,
-        "rq4_heuristics_included": false
+        "rq4_heuristics_included": false,
+        "previous_immutable_revision": {
+          "artifact": "experiments/rq1-cross-dataset-summary-v1.json",
+          "format_version": "rq1-cross-dataset-summary-v1",
+          "semantic_digest": "54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4",
+          "role": "historical immutable summary; not overwritten"
+        },
+        "revision_reason": "Strictly separate observations, snapshot-bound GroundTruthSet, historical production-exact truth, and Census13 equivalence-bound external truth provenance. Estimates and metrics are unchanged."
       },
       "dataset_artifacts": {
         "arecel-census13": {
@@ -396,27 +403,54 @@
     {
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
-      "status": "planned",
+      "status": "ready-to-run",
       "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
       "comparison_mode": "fixed_k_quality",
+      "fixed_k": 4,
+      "primary_eligible_universe": {
+        "eligibility_inputs": ["supported native statistics kind", "valid relation/column schema", "sample-built native payload availability", "predeclared PostgreSQL compatibility"],
+        "forbidden_selection_signals": ["singleton q-error", "SearchResult", "final advisor recommendation", "confirmatory full-data outcome"],
+        "conditional_screened_universe": "A utility/outcome-screened universe, if used, is a separately labeled conditional diagnostic and cannot replace the primary universe."
+      },
       "controls": ["identical candidate universe", "identical native kinds and keys", "identical sample-built NativeStatsRepository", "identical statistics target", "declared truth/loss contract", "declared workload"],
       "ground_truth_policy": "Only utility-based methods use GroundTruthSet during selection; every selected result is evaluated against the same bound truth.",
       "random_seed_policy": "Pre-register replicate seeds; record them and break non-random ties by candidate ID after declared score/static precedence.",
+      "deployment_policy": "Every method uses the same canonical evaluation/deployment ordering and records membership, evaluation order, deployment order, and physical identities.",
+      "independent_evaluation": "Stock PostgreSQL full-data physical estimates with the same authoritative truth; sandbox objective is separate.",
       "required_raw_artifacts": ["selection/SearchResult", "move trace", "planner evaluation log", "manifest"],
       "required_derived_artifacts": ["ablation summary", "membership overlap", "optimality gap on tiny universes"],
+      "synthetic_validation_artifact": {
+        "path": "experiments/rq4/synthetic/rq4-ablation-v1.json",
+        "format_version": "rq4-ablation-v1",
+        "semantic_digest": "f3ca23dabab70bb6e9861247bbb3a43cf38012a7941cc8441aec1c66d75ec8e5",
+        "formal_confirmatory_experiment": false,
+        "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
+      },
+      "formal_arecel_runs": false,
       "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
       "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "planner evaluation counts are reported for all methods"]
     },
     {
       "experiment_id": "rq4-fixed-evaluation-budget-ablations",
       "rq": "RQ4",
-      "status": "planned",
+      "status": "ready-to-run",
       "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD", "exhaustive-tiny-universe"],
       "comparison_mode": "fixed_evaluation_budget",
+      "fixed_k": 4,
+      "budget": {
+        "max_planner_evaluations": 2000,
+        "wall_clock_seconds": 300,
+        "selection_evaluations_for_cheap_methods": 0,
+        "censoring_rule": "Record budget-expired/infeasible methods and preserve the incomplete trace; never grant a larger budget silently."
+      },
+      "primary_eligible_universe": "The same primary universe as rq4-fixed-k-ablations; eligibility cannot use utility or outcome signals.",
       "controls": ["identical candidate universe", "identical sample/payloads", "identical truth/loss contract", "common planner-evaluation cap", "common wall-clock cap"],
       "random_seed_policy": "Pre-register replicate seeds and record actual planner evaluations and wall time.",
+      "independent_evaluation": "Stock PostgreSQL full-data physical estimates with the same authoritative truth; sandbox objective is separate.",
       "required_raw_artifacts": ["selection/SearchResult", "planner evaluation log", "timing log", "censoring reason if infeasible", "manifest"],
       "required_derived_artifacts": ["budget/objective curve", "method comparison", "censoring report"],
+      "synthetic_validation_artifact": "experiments/rq4/synthetic/rq4-ablation-v1.json",
+      "formal_arecel_runs": false,
       "expected_paper_outputs": ["fig-rq4-budget-objective", "tab-rq4-budget-comparison"],
       "completion_criteria": ["no method receives a silently larger budget", "infeasible exhaustive variants are labeled censored"]
     },
@@ -457,6 +491,16 @@
         "experiment_id": "rq4-existing-calibration",
         "status": "pilot",
         "note": "Calibration artifacts are supporting diagnostics, not completed ablations."
+      },
+      {
+        "experiment_id": "rq4-fixed-k-ablations",
+        "status": "ready-to-run",
+        "note": "The rq4-ablation-v1 synthetic gate passed with independent fixed k=4 policy and a six-candidate tiny-universe exhaustive validation. No formal AreCEL result is complete."
+      },
+      {
+        "experiment_id": "rq4-fixed-evaluation-budget-ablations",
+        "status": "ready-to-run",
+        "note": "The harness records common 2,000-evaluation/300-second caps and censoring. No formal AreCEL result is complete."
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",

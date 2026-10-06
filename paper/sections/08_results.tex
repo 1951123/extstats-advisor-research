@@ -20,8 +20,8 @@ maximum, and query outcome counts.
 \caption{Planned RQ1 figure; no values are supplied in this framework.}
 \end{figure}
 % The generated cross-dataset table below is derived from
-% experiments/rq1-cross-dataset-summary-v1.json (digest
-% 54b630da77506d9486e72202590de6a6a56e943cb5f5e466c5a6dea374ade0d4).
+% experiments/rq1-cross-dataset-summary-v2.json (digest
+% 84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c).
 % This RQ1 comparison is in-workload (the workload used by the advisor
 % objective), not a held-out query generalization evaluation. RQ4 heuristic
 % baselines are separate and remain planned.
@@ -31,6 +31,9 @@ maximum, and query outcome counts.
 The four-dataset summary is complete for the declared three-arm, in-workload
 comparison. It records paired classifications, tail-error concentration, and
 the largest per-query regressions in addition to the headline aggregates.
+The v2 summary also separates observations-file provenance from the
+snapshot-bound GroundTruthSet provenance; v1 remains retained as immutable
+historical output.
 These results do not claim that every query improves, do not complete the RQ4
 heuristic study, and do not replace the PostgreSQL estimator with a learned
 model.

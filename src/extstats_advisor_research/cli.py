@@ -53,6 +53,11 @@ from .rq3_fidelity import (
     run_synthetic_fidelity,
     validate_fidelity_artifact,
 )
+from .rq4_ablation import (
+    current_research_commit,
+    validate_rq4_artifact,
+    write_synthetic_rq4_artifact,
+)
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -398,6 +403,15 @@ def _parser() -> argparse.ArgumentParser:
     summary_create.add_argument("--output", type=Path, required=True)
     summary_validate = summary_commands.add_parser("validate")
     summary_validate.add_argument("artifact", type=Path)
+    rq4 = validate_commands.add_parser(
+        "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
+    )
+    rq4_commands = rq4.add_subparsers(dest="rq4_command", required=True)
+    rq4_synthetic = rq4_commands.add_parser("synthetic", aliases=["run", "create"])
+    rq4_synthetic.add_argument("--output", type=Path, required=True)
+    rq4_synthetic.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_PATH)
+    rq4_validate = rq4_commands.add_parser("validate")
+    rq4_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -628,6 +642,25 @@ def main(argv: list[str] | None = None) -> int:
                 result = build_cross_dataset_summary(default_source_paths(root), args.output)
             else:
                 result = validate_cross_dataset_summary(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-ablation":
+            if args.rq4_command in {"synthetic", "run", "create"}:
+                root = Path(__file__).resolve().parents[2]
+                result = write_synthetic_rq4_artifact(
+                    args.output,
+                    system_freeze_path=args.system_freeze,
+                    research_commit_sha=current_research_commit(root),
+                )
+                result = {
+                    "status": result["status"],
+                    "format_version": result["format_version"],
+                    "experiment_id": result["experiment_id"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
+            else:
+                result = validate_rq4_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-rebind":
