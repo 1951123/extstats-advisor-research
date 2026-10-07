@@ -6,12 +6,16 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 
+import extstats_advisor.optimization as advisor_optimization
 import pytest
-from extstats_advisor.optimization import (
-    TERMINATION_ALL_SELECTED,
-    TERMINATION_MAX_STATISTICS_COUNT,
-)
 from extstats_advisor.optimization.singleton import SINGLETON_PRECEDENCE_POLICY
+
+TERMINATION_ALL_SELECTED = advisor_optimization.TERMINATION_ALL_SELECTED
+# The historical Advisor remains a supported compatibility-test dependency;
+# v2-only tests are skipped there by _require_v2_validation_environment().
+TERMINATION_MAX_STATISTICS_COUNT = getattr(
+    advisor_optimization, "TERMINATION_MAX_STATISTICS_COUNT", "max-statistics-count"
+)
 
 from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.provenance import semantic_digest, write_json
