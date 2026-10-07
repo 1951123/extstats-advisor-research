@@ -297,14 +297,14 @@ def _evaluate_sample(
         raise ValueError("sample paired evaluation did not cover exactly 10,000 queries")
     return records, {
         "baseline": {
-            "weighted_objective": float(baseline["weighted_objective"]),
+            "weighted_objective": float(baseline["objective"]),
             "loss_contract": baseline["loss_contract"],
             "query_count": baseline["query_count"],
             "planner_calls": baseline["query_count"],
             "elapsed_seconds": baseline_seconds,
         },
         "final": {
-            "weighted_objective": float(final["weighted_objective"]),
+            "weighted_objective": float(final["objective"]),
             "loss_contract": final["loss_contract"],
             "query_count": final["query_count"],
             "planner_calls": final["query_count"],
