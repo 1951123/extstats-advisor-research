@@ -240,7 +240,18 @@ def run_hardening_smoke(
         }
         # The trace/final checks are the authoritative comparison; retain the
         # accepted sequence as a separately serialized diagnostic below.
-        q1 = (query_ids[0],)
+        all_positive_query_ids = tuple(
+            query.query_id for query in snapshot.workload.queries if query.weight > 0
+        )
+        q1 = (
+            min(
+                all_positive_query_ids,
+                key=lambda query_id: sum(
+                    query_id in set(universe.query_ids_for_candidate(candidate.candidate_id))
+                    for candidate in universe.candidates
+                ),
+            ),
+        )
         q1_workload = _subset_workload(snapshot, q1, modules["Workload"], modules["WorkloadQuery"])
         q1_truth = _subset_truth(truth, q1)
         q1_utility = modules["WeightedWorkloadUtility"](
