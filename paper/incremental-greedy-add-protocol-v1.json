@@ -3,7 +3,7 @@
   "status": "implementation-complete-small-smoke-passed",
   "readiness_status": "hardening-and-cross-dataset-equivalence-pending",
   "scope": "Production Advisor v2 incremental Greedy ADD and an independent maximum selected-statistics budget; this is compatibility evidence, not a formal RQ4 experiment.",
-  "current_advisor_revision": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
+  "current_advisor_revision": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
   "advisor_semantics": {
     "search_policy": "greedy-add-incidence-incremental-v1",
     "candidate_screening_width_symbol": "K_s",

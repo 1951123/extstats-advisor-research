@@ -25,7 +25,7 @@ from .pins import verify_git_sha, verify_research_repository
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 
 FORMAT_VERSION = "advisor-greedy-incremental-hardening-v2"
-ADVISOR_SHA = "ff6ec2dceaa95e4491d1f707dda123be6b71dd86"
+ADVISOR_SHA = "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 
 

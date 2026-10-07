@@ -57,7 +57,7 @@
   },
   "preflight_source_evidence": {
     "advisor_revision": "9c93925ebbcda0dc3306e8e63d86ccd782ffc539",
-    "current_incremental_execution_advisor_revision": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
+    "current_incremental_execution_advisor_revision": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
     "source_profile_revision_note": "The incidence summaries and immutable historical profile digests describe their source artifacts; current compatibility gates pin the rerunnable implementation separately.",
     "source_profiles_are_immutable": true,
     "datasets": [
