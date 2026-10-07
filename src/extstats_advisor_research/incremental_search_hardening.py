@@ -95,7 +95,8 @@ def _run_case(
         )
         audits = []
         selected = list(incremental.final_ordered_candidate_ids)
-        for before, after in zip(([], *selected[:-1]), selected):
+        for index, after in enumerate(selected):
+            before = selected[:index]
             audits.append(
                 incremental_evaluator.audit_configuration_transition(
                     frozenset(before),
