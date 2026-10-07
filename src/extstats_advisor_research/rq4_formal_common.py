@@ -227,10 +227,17 @@ def load_reusable_source(
 def _build_full_universe_plan(source: Mapping[str, Any], modules: Mapping[str, Any]) -> Any:
     """Construct an explicit full-eligible plan without singleton prefix screening."""
 
-    eligible = source["eligible_universe"]["eligible_candidates"]
-    ordered_ids = tuple(item["candidate_id"] for item in eligible)
     profile = source["singleton_profile"]
     profile_by_id = {item.candidate_id: item for item in profile.candidate_profiles}
+    eligible = source["eligible_universe"]["eligible_candidates"]
+    eligible_ids = {item["candidate_id"] for item in eligible}
+    ordered_ids = tuple(
+        candidate_id
+        for candidate_id in profile.frozen_ordered_candidate_ids
+        if candidate_id in eligible_ids
+    )
+    if set(ordered_ids) != eligible_ids:
+        raise RQ4ValidationError("eligible universe does not match singleton frozen order")
     records = tuple(
         modules["ScreenedCandidate"](
             candidate_id,
