@@ -472,31 +472,35 @@ def build_smoke_artifact(
         # Keep the backend patched while using the same catalog identity as the
         # frozen snapshot, matching the formal RQ4 runner contract.
         planner_dsn = _ensure_planner_catalog(patched_dsn, "extstats_stock")
-        prepared = modules["prepare_postgres_planner_sandbox"](
-            planner_dsn,
-            small["snapshot"],
-            source["candidate_universe"],
-            source["native_repository"],
-        )
-        verified = modules["verify_postgres_planner_sandbox"](
-            planner_dsn,
-            small["snapshot"],
-            source["candidate_universe"],
-            source["native_repository"],
-        )
-        profiling_planner = modules["PostgresPlannerSession"](
-            planner_dsn,
-            small["snapshot"],
-            source["candidate_universe"],
-            source["native_repository"],
-        )
-        profiling_planner.open()
         try:
-            bounded_profile, profiling_accounting = _profile_bounded_live_smoke(
-                small, modules, profiling_planner
+            prepared = modules["prepare_postgres_planner_sandbox"](
+                planner_dsn,
+                small["snapshot"],
+                source["candidate_universe"],
+                source["native_repository"],
             )
-        finally:
-            profiling_planner.close()
+            verified = modules["verify_postgres_planner_sandbox"](
+                planner_dsn,
+                small["snapshot"],
+                source["candidate_universe"],
+                source["native_repository"],
+            )
+            profiling_planner = modules["PostgresPlannerSession"](
+                planner_dsn,
+                small["snapshot"],
+                source["candidate_universe"],
+                source["native_repository"],
+            )
+            profiling_planner.open()
+            try:
+                bounded_profile, profiling_accounting = _profile_bounded_live_smoke(
+                    small, modules, profiling_planner
+                )
+            finally:
+                profiling_planner.close()
+        except BaseException:
+            modules["destroy_postgres_planner_sandbox"](planner_dsn)
+            raise
         small["singleton_profile"] = bounded_profile
     else:
         planner_dsn = None
