@@ -887,6 +887,7 @@ def run_formal_rq4_v2(
         experiment_id="rq4-stock-shared-realization-v2",
         artifact_format="rq4-stock-physical-evaluation-v2",
         shared_realization_format="rq4-stock-shared-realization-v2",
+        expected_advisor_sha=FROZEN_ADVISOR_SHA,
     )
     physical_path = output / "rq4-stock-shared-realization-v2.json"
     write_json(physical_path, physical)

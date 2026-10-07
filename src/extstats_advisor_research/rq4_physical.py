@@ -345,6 +345,7 @@ def build_shared_stock_realization(
     experiment_id: str | None = None,
     artifact_format: str = PHYSICAL_FORMAT,
     shared_realization_format: str = SHARED_REALIZATION_FORMAT,
+    expected_advisor_sha: str | None = None,
 ) -> dict[str, Any]:
     """Create one stock union realization and evaluate method clones.
 
@@ -355,7 +356,7 @@ def build_shared_stock_realization(
 
     if query_count <= 0 or statistics_target <= 0:
         raise ValueError("query_count and statistics_target must be positive")
-    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    verify_git_sha(advisor_root, expected_advisor_sha or FROZEN_ADVISOR_SHA)
     advisor_src = str(advisor_root / "src")
     if advisor_src not in sys.path:
         sys.path.insert(0, advisor_src)
