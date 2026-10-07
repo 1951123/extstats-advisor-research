@@ -743,6 +743,42 @@ def run_formal_rq4_v2(
         first_projection = _deterministic_projection({"methods": first["methods"]})
         second_projection = _deterministic_projection({"methods": second["methods"]})
         if semantic_digest(first_projection) != semantic_digest(second_projection):
+            diagnostic = {
+                "format_version": "rq4-fixed-k-v2-determinism-failure",
+                "dataset_id": dataset_id,
+                "first_projection_digest": semantic_digest(first_projection),
+                "second_projection_digest": semantic_digest(second_projection),
+                "methods": {
+                    method: {
+                        "first": {
+                            "selected_membership": first["methods"][method].get(
+                                "selected_membership"
+                            ),
+                            "termination_reason": first["methods"][method].get(
+                                "termination_reason"
+                            ),
+                            "final_objective": first["methods"][method]
+                            .get("search_result", {})
+                            .get("final_objective"),
+                        },
+                        "second": {
+                            "selected_membership": second["methods"][method].get(
+                                "selected_membership"
+                            ),
+                            "termination_reason": second["methods"][method].get(
+                                "termination_reason"
+                            ),
+                            "final_objective": second["methods"][method]
+                            .get("search_result", {})
+                            .get("final_objective"),
+                        },
+                    }
+                    for method in CANONICAL_METHOD_ORDER
+                },
+            }
+            diagnostic["semantic_digest"] = semantic_digest(diagnostic)
+            output.parent.mkdir(parents=True, exist_ok=True)
+            write_json(output.parent / f"{dataset_id}-determinism-failure-v2.json", diagnostic)
             raise RQ4ValidationError("RQ4 v2 selection replay is not semantically deterministic")
         final_evaluations = _final_sandbox_evaluations(
             source, advisor_root, planner_dsn, first["methods"]
