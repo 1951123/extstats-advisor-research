@@ -1,0 +1,356 @@
+{
+  "advisor": {
+    "commit_sha": "fbd912e94aa1bacedeb5070bc5584a0b84cc9fad",
+    "repository": "1951123/extstats-advisor"
+  },
+  "artifact_digest": "a22a9d57213ce940a6b434ac73ca89977fa07f4cf9c171d1a885b0ccab2e3f0e",
+  "experiment_id": "advisor-greedy-incremental-equivalence-v1",
+  "formal_experiment": false,
+  "format_version": "advisor-greedy-incremental-equivalence-v1",
+  "incremental": {
+    "final_objective": 1.5575741245761006,
+    "final_ordered_candidate_ids": [
+      "cand_1af5539c1001b3f9b2f29435",
+      "cand_0b505b8bacb3c643f4e4dc43"
+    ],
+    "runtime_metadata": {
+      "accepted_move_count": 2,
+      "audit_planner_query_calls": 12,
+      "audit_wall_clock_seconds": 0.005640437000010934,
+      "baseline_materialization_planner_calls": 3,
+      "cached_singleton_configuration_count": 3,
+      "completed_round_count": 2,
+      "elapsed_search_seconds": 0.00777957500008597,
+      "evaluation_strategy": "incidence-incremental-greedy-v1",
+      "first_winner_materialization_planner_calls": 3,
+      "live_configuration_evaluation_count": 3,
+      "max_statistics_count": 3,
+      "partial_final_round_evaluation_count": 0,
+      "planner_query_estimate_count": 12,
+      "planner_query_estimate_count_including_audit": 24,
+      "planner_query_reduction_fraction": -0.3333333333333333,
+      "proposal_configuration_evaluations": 3,
+      "proposal_planner_query_calls": 6,
+      "reference_full_workload_planner_calls": 9,
+      "saved_planner_query_calls": -3,
+      "screening_width": 3,
+      "search_wall_clock_seconds": 300.0,
+      "selected_candidate_count": 2,
+      "termination_reason": "local-optimum",
+      "winner_cache_entry_count": 3
+    },
+    "search_result_format": "optimization-search-result-v2",
+    "termination_reason": "local-optimum",
+    "trace": [
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "objective": 1.8086635083005318,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435"
+            ]
+          },
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "objective": 2.222066460825023,
+            "ordered_candidate_ids": [
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ]
+          },
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 2.3333849329205365,
+            "ordered_candidate_ids": [
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 1
+      },
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "objective": 1.5575741245761006,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ]
+          },
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 1.8086635083005318,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 2
+      },
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 1.5575741245761006,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_0b505b8bacb3c643f4e4dc43",
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 3
+      }
+    ]
+  },
+  "nonincident_audits": [
+    {
+      "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+      "changed_query_ids": [
+        "arecel_census13_test_000000"
+      ],
+      "current_membership": [],
+      "incident_query_count": 2,
+      "nonincident_changed_query_ids": [],
+      "passed": true,
+      "proposed_membership": [
+        "cand_1af5539c1001b3f9b2f29435"
+      ]
+    },
+    {
+      "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+      "changed_query_ids": [
+        "arecel_census13_test_000000"
+      ],
+      "current_membership": [
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "incident_query_count": 2,
+      "nonincident_changed_query_ids": [],
+      "passed": true,
+      "proposed_membership": [
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_0b505b8bacb3c643f4e4dc43"
+      ]
+    }
+  ],
+  "patched_postgresql": {
+    "commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "repository": "1951123/postgresql-pgextadv"
+  },
+  "plan": {
+    "candidate_screening_width_K_s": 3,
+    "format_version": "optimization-plan-v2",
+    "maximum_selected_statistics_B": 3,
+    "selected_k": 2,
+    "semantic_digest": "9e0df93089370d6a0511f8514c2fa24869f6e5732c8b9359bb5e2407a2d088ae"
+  },
+  "reference": {
+    "final_objective": 1.5575741245761006,
+    "final_ordered_candidate_ids": [
+      "cand_1af5539c1001b3f9b2f29435",
+      "cand_0b505b8bacb3c643f4e4dc43"
+    ],
+    "runtime_metadata": {
+      "accepted_move_count": 2,
+      "cached_singleton_configuration_count": 3,
+      "completed_round_count": 2,
+      "elapsed_search_seconds": 0.0067118730000856885,
+      "live_configuration_evaluation_count": 3,
+      "partial_final_round_evaluation_count": 0,
+      "planner_query_estimate_count": 9,
+      "termination_reason": "local-optimum"
+    },
+    "search_result_format": "optimization-search-result-v1",
+    "termination_reason": "local-optimum",
+    "trace": [
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "objective": 1.8086635083005318,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435"
+            ]
+          },
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "objective": 2.222066460825023,
+            "ordered_candidate_ids": [
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ]
+          },
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 2.3333849329205365,
+            "ordered_candidate_ids": [
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 1
+      },
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "objective": 1.5575741245761006,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ]
+          },
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 1.8086635083005318,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 2
+      },
+      {
+        "evaluations": [
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 1.5575741245761006,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435",
+              "cand_0b505b8bacb3c643f4e4dc43",
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          }
+        ],
+        "round": 3
+      }
+    ]
+  },
+  "research_repository": {
+    "research_commit_sha": "52af56a4117b76918d85a8a746525436cedb9bf8",
+    "research_repository": "1951123/extstats-advisor-research"
+  },
+  "sandbox_verification": {
+    "prepared": {
+      "backend_contract": "postgresql-pgextadv-16.14-v1",
+      "candidate_universe_semantic_digest": "a32294c6ed7a8446aec081a68a586762ff5870320f9d26ff838e275ff0271718",
+      "frozen_relation_name": {
+        "catalog": null,
+        "name": "frozen_sample_4dbddce2d31c343950aaa379",
+        "schema": "extstats_advisor_internal"
+      },
+      "internal_schema_created": true,
+      "managed_schema_created": false,
+      "native_stats_repository_semantic_digest": "02e3f05e12ba679ed6f2b45b9c04778fec8b07b4215d78531d26d6670fbfb1b8",
+      "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "population_quality": "estimate",
+      "population_row_count": 48842.0,
+      "prepared_at": "2026-10-07 10:09:02.332767+08:00",
+      "relation_id": "rel_792c9fc7c23cba759b9bab83",
+      "relation_name": {
+        "catalog": "extstats_stock",
+        "name": "census13",
+        "schema": "public"
+      },
+      "repository_absent_count": 20,
+      "repository_candidate_count": 156,
+      "repository_present_count": 136,
+      "sample_row_count": 10000,
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "server_version": "16.14",
+      "server_version_num": 160014,
+      "source_snapshot_semantic_digest": "4dbddce2d31c343950aaa37957910522a17f7c9f8eb5a592d8e9dc61960237a1",
+      "statistics_target": 100
+    },
+    "verified": {
+      "autovacuum_disabled": true,
+      "frozen_sample_row_count": 10000,
+      "metadata": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "candidate_universe_semantic_digest": "a32294c6ed7a8446aec081a68a586762ff5870320f9d26ff838e275ff0271718",
+        "frozen_relation_name": {
+          "catalog": null,
+          "name": "frozen_sample_4dbddce2d31c343950aaa379",
+          "schema": "extstats_advisor_internal"
+        },
+        "internal_schema_created": true,
+        "managed_schema_created": false,
+        "native_stats_repository_semantic_digest": "02e3f05e12ba679ed6f2b45b9c04778fec8b07b4215d78531d26d6670fbfb1b8",
+        "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+        "population_quality": "estimate",
+        "population_row_count": 48842.0,
+        "prepared_at": "2026-10-07 10:09:02.332767+08:00",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "relation_name": {
+          "catalog": "extstats_stock",
+          "name": "census13",
+          "schema": "public"
+        },
+        "repository_absent_count": 20,
+        "repository_candidate_count": 156,
+        "repository_present_count": 136,
+        "sample_row_count": 10000,
+        "sandbox_contract": "postgresql-planner-sandbox-v1",
+        "server_version": "16.14",
+        "server_version_num": 160014,
+        "source_snapshot_semantic_digest": "4dbddce2d31c343950aaa37957910522a17f7c9f8eb5a592d8e9dc61960237a1",
+        "statistics_target": 100
+      },
+      "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "physical_extstats_count": 0,
+      "reltuples": 48842.0,
+      "repository": {
+        "absent_count": 20,
+        "candidate_count": 156,
+        "present_count": 136,
+        "semantic_digest": "02e3f05e12ba679ed6f2b45b9c04778fec8b07b4215d78531d26d6670fbfb1b8"
+      },
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "target_relation_oid": 16534,
+      "target_sample_row_count": 10000
+    }
+  },
+  "semantic_equivalence": {
+    "accepted_sequence_equal": true,
+    "final_membership_equal": true,
+    "final_objective_equal": true,
+    "first_round_evaluations_equal": true,
+    "proposal_trace_equal": true,
+    "termination_reason_equal": true
+  },
+  "singleton_profile": {
+    "runtime_metadata": {
+      "configuration_objective_evaluations": 137,
+      "evaluation_strategy": "three-query-live-smoke-profile",
+      "positive_query_count": 3,
+      "present_candidate_count": 136,
+      "selection_preprocessing_wall_clock_seconds": 0.5437216840000474
+    },
+    "semantic_digest": "ad29023e88fa63a11a0bd118647c4411b4cd0ba27f6d1bed5ef8e4a85df782e9"
+  },
+  "smoke_fixture": {
+    "formal_rq4_comparison": false,
+    "full_workload_search": false,
+    "query_count": 3,
+    "query_ids": [
+      "arecel_census13_test_000000",
+      "arecel_census13_test_000001",
+      "arecel_census13_test_000002"
+    ],
+    "subset_ground_truth_semantic_digest": "5758701eb6f4f6db51d786b02fd08fb7d66b1afbb5db8d9c4e051853216b0dec",
+    "truth_source": "production-exact-execution"
+  },
+  "source_run": {
+    "candidate_universe_semantic_digest": "a32294c6ed7a8446aec081a68a586762ff5870320f9d26ff838e275ff0271718",
+    "full_workload_ground_truth_semantic_digest": "709f4276875ee59d5c10db1cbbf54f2f0186c8c1aea4f501503fb716a9ef5680",
+    "manifest_sha256": "b43feb34c9b24a32eaa0af5b503665ade15a7b7cab0e54072b23763da642228a",
+    "native_repository_semantic_digest": "02e3f05e12ba679ed6f2b45b9c04778fec8b07b4215d78531d26d6670fbfb1b8",
+    "path": "/home/wqts/projects/extstats-advisor-research/.runtime/rq1-census13-canary/advisor-design/1ad3a0f7fc9d8c1918e5b117",
+    "snapshot_semantic_digest": "4dbddce2d31c343950aaa37957910522a17f7c9f8eb5a592d8e9dc61960237a1"
+  },
+  "status": "complete"
+}
