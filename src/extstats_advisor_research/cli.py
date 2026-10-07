@@ -14,6 +14,16 @@ from .dmv_transfer import resolve_dmv_source_run, run_dmv_data_transfer
 from .forest_baseline import run_dmv11_baseline, run_forest_baseline, run_power7_baseline
 from .forest_transfer import run_forest_data_transfer
 from .full_data_transfer import run_full_data_transfer
+from .incremental_search_hardening import (
+    DEFAULT_SOURCE_RUN,
+    run_hardening_smoke,
+)
+from .incremental_search_hardening import (
+    inspect_artifact as inspect_incremental_hardening,
+)
+from .incremental_search_hardening import (
+    validate_artifact as validate_incremental_hardening,
+)
 from .paper_baseline import run_paper_baseline
 from .paper_spec import DEFAULT_SPEC_PATH, load_paper_spec, validate_paper_spec
 from .postgres_lab import (
@@ -536,6 +546,29 @@ def _parser() -> argparse.ArgumentParser:
     historical_validate.add_argument("artifact", type=Path)
     historical_inspect = historical_commands.add_parser("inspect")
     historical_inspect.add_argument("artifact", type=Path)
+    hardening = validate_commands.add_parser(
+        "incremental-search-hardening",
+        help="run or validate bounded live v2 incremental-search hardening evidence",
+    )
+    hardening_commands = hardening.add_subparsers(
+        dest="incremental_hardening_command", required=True
+    )
+    hardening_run = hardening_commands.add_parser("run", aliases=["create"])
+    hardening_run.add_argument("--patched-dsn", required=True)
+    hardening_run.add_argument("--output", type=Path, required=True)
+    hardening_run.add_argument("--source-run", type=Path, default=DEFAULT_SOURCE_RUN)
+    hardening_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    hardening_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    hardening_validate = hardening_commands.add_parser("validate")
+    hardening_validate.add_argument("artifact", type=Path)
+    hardening_inspect = hardening_commands.add_parser("inspect")
+    hardening_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -822,6 +855,21 @@ def main(argv: list[str] | None = None) -> int:
                 )
             else:
                 result = validate_rebound_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "incremental-search-hardening":
+            if args.incremental_hardening_command in {"run", "create"}:
+                result = run_hardening_smoke(
+                    advisor_root=args.advisor_root,
+                    patched_dsn=args.patched_dsn,
+                    patched_postgres_root=args.patched_postgres_root,
+                    output=args.output,
+                    source_run=args.source_run,
+                )
+            elif args.incremental_hardening_command == "validate":
+                result = validate_incremental_hardening(args.artifact)
+            else:
+                result = inspect_incremental_hardening(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "singleton-equivalence":
