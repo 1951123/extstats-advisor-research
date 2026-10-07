@@ -67,6 +67,7 @@ DETERMINISM_RUNTIME_KEYS = frozenset(
         "backend_wall_clock_seconds",
         "source_wall_clock_seconds",
         "new_selection_wall_clock_seconds",
+        "runtime_metadata",
     }
 )
 DATASETS = ("arecel-census13", "arecel-power7", "arecel-dmv11")
