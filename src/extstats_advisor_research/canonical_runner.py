@@ -472,6 +472,7 @@ def _run_canonical(
     dataset.write_dataset_manifest(paths["dataset_manifest"], data_root)
 
     timings: dict[str, float] = {}
+    load_started = time.monotonic()
     load_result = loader(
         production_dsn,
         data_root=data_root,
@@ -486,7 +487,9 @@ def _run_canonical(
         or load_result.get("physical_extended_statistics_count") != 0
     ):
         raise ValueError("fresh stock load does not satisfy the canonical physical contract")
-    timings["stock_load_initial_analyze"] = load_result["elapsed_seconds"]
+    timings["stock_load_initial_analyze"] = load_result.get(
+        "elapsed_seconds", round(time.monotonic() - load_started, 6)
+    )
     full_data = _run_full_data_target100(
         production_dsn,
         data_root=data_root,
