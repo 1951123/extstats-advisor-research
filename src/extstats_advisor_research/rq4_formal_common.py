@@ -103,10 +103,14 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
     from extstats_advisor.ground_truth.provider import ArtifactGroundTruthProvider
     from extstats_advisor.native_stats import load_native_stats_repository
     from extstats_advisor.optimization import (
+        SINGLETON_PRECEDENCE_POLICY,
+        BaselineProfile,
+        CandidateSingletonProfile,
         OptimizationBudget,
         OptimizationPlan,
         PlannerIdentity,
         ScreenedCandidate,
+        SingletonProfile,
         load_singleton_profile,
     )
 
@@ -136,6 +140,10 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         "OptimizationBudget": OptimizationBudget,
         "OptimizationPlan": OptimizationPlan,
         "PlannerIdentity": PlannerIdentity,
+        "BaselineProfile": BaselineProfile,
+        "CandidateSingletonProfile": CandidateSingletonProfile,
+        "SingletonProfile": SingletonProfile,
+        "SINGLETON_PRECEDENCE_POLICY": SINGLETON_PRECEDENCE_POLICY,
         "ScreenedCandidate": ScreenedCandidate,
         "greedy_add_search_incremental": greedy_add_search_incremental,
         "load_singleton_profile": load_singleton_profile,

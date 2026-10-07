@@ -330,6 +330,118 @@ def _bounded_smoke_inputs(source: Mapping[str, Any], modules: Mapping[str, Any])
     }
 
 
+def _profile_bounded_live_smoke(
+    source: Mapping[str, Any],
+    modules: Mapping[str, Any],
+    planner: Any,
+) -> tuple[Any, dict[str, Any]]:
+    """Build a transient profile whose objective covers only the smoke queries."""
+
+    from extstats_advisor.dbms.postgres.planner import PostgresStatisticsConfiguration
+
+    query_ids = tuple(source["smoke_query_ids"])
+    utility = modules["WeightedWorkloadUtility"](
+        source["smoke_workload"],
+        modules["ArtifactGroundTruthProvider"](source["smoke_ground_truth"]),
+        modules["QErrorLoss"](),
+    )
+    candidate_ids = tuple(
+        item["candidate_id"] for item in source["eligible_universe"]["eligible_candidates"]
+    )
+    candidate_by_id = {
+        candidate.candidate_id: candidate for candidate in source["candidate_universe"].candidates
+    }
+    native_by_id = {
+        candidate.candidate_id: candidate
+        for candidate in source["native_repository"].candidate_models
+    }
+
+    def evaluate(candidate_ids_to_activate: tuple[str, ...]) -> Any:
+        planner.activate(PostgresStatisticsConfiguration(candidate_ids_to_activate))
+        estimates = {
+            estimate.query_id: estimate.estimated_rows
+            for estimate in planner.estimate_queries(query_ids)
+        }
+        return utility.evaluate(estimates)
+
+    started = time.perf_counter()
+    baseline = evaluate(())
+    candidate_results = []
+    for candidate_id in candidate_ids:
+        result = evaluate((candidate_id,))
+        candidate = candidate_by_id[candidate_id]
+        native = native_by_id[candidate_id]
+        candidate_results.append(
+            modules["CandidateSingletonProfile"](
+                candidate_id,
+                native.state,
+                candidate.static_precedence_rank,
+                result.objective,
+                baseline.objective - result.objective,
+                None,
+            )
+        )
+    present = [item for item in candidate_results if item.native_state != "absent-native"]
+    ordered = tuple(
+        item.candidate_id
+        for item in sorted(
+            present,
+            key=lambda item: (
+                -item.improvement,
+                item.static_precedence_rank,
+                item.candidate_id,
+            ),
+        )
+    )
+    ranks = {candidate_id: rank for rank, candidate_id in enumerate(ordered, 1)}
+    ranked_profiles = tuple(
+        modules["CandidateSingletonProfile"](
+            item.candidate_id,
+            item.native_state,
+            item.static_precedence_rank,
+            item.singleton_objective,
+            item.improvement,
+            ranks.get(item.candidate_id),
+        )
+        for item in candidate_results
+    )
+    profile = modules["SingletonProfile"](
+        source["snapshot"].semantic_digest,
+        source["candidate_universe"].semantic_digest,
+        source["native_repository"].semantic_digest,
+        source["smoke_ground_truth"].computed_semantic_digest,
+        modules["POSTGRES_PLANNER_SANDBOX_CONTRACT"],
+        str(source["native_repository"].backend_contract),
+        source["native_repository"].server_version,
+        source["native_repository"].server_version_num,
+        source["native_repository"].ordinary_stats_fingerprint,
+        utility.utility_contract,
+        utility.loss_contract,
+        modules["SINGLETON_PRECEDENCE_POLICY"],
+        modules["BaselineProfile"](baseline.objective),
+        ranked_profiles,
+        ordered,
+        {
+            "evaluation_scope": "bounded-live-smoke",
+            "query_count": len(query_ids),
+            "candidate_count": len(candidate_ids),
+            "planner_query_estimate_count": len(query_ids) * (1 + len(candidate_ids)),
+            "profiling_wall_clock_seconds": time.perf_counter() - started,
+            "source_profile_semantic_digest": source["singleton_profile"].computed_semantic_digest,
+        },
+    )
+    return profile, {
+        "new_work": 1,
+        "scope": "bounded-live-smoke",
+        "profile_semantic_digest": profile.computed_semantic_digest,
+        "query_count": len(query_ids),
+        "candidate_count": len(candidate_ids),
+        "planner_query_estimate_count": len(query_ids) * (1 + len(candidate_ids)),
+        "wall_clock_seconds": profile.runtime_metadata["profiling_wall_clock_seconds"],
+        "source_profile_semantic_digest": source["singleton_profile"].computed_semantic_digest,
+    }
+
+
 def build_smoke_artifact(
     *,
     research_root: Path,
@@ -372,10 +484,29 @@ def build_smoke_artifact(
             source["candidate_universe"],
             source["native_repository"],
         )
+        profiling_planner = modules["PostgresPlannerSession"](
+            planner_dsn,
+            small["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+        profiling_planner.open()
+        try:
+            bounded_profile, profiling_accounting = _profile_bounded_live_smoke(
+                small, modules, profiling_planner
+            )
+        finally:
+            profiling_planner.close()
+        small["singleton_profile"] = bounded_profile
     else:
         planner_dsn = None
         prepared = None
         verified = None
+        profiling_accounting = {
+            "new_work": 0,
+            "scope": "committed-offline-profile-reuse",
+            "profile_semantic_digest": small["singleton_profile"].computed_semantic_digest,
+        }
     points = []
     try:
         for width in (4, "all"):
@@ -442,7 +573,7 @@ def build_smoke_artifact(
         "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA if patched_dsn else None,
         "source_profile_semantic_digest": source["singleton_profile"].computed_semantic_digest,
         "source_singleton_profiling": {
-            "new_work": 0,
+            **profiling_accounting,
             "source_accounting": dict(source["singleton_profile"].runtime_metadata),
         },
         "tested_screening_widths": [4, "all"],
