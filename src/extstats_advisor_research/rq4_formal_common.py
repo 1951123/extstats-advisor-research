@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Any
 
 from .provenance import read_json, semantic_digest, write_json
+from .rq1_canary import _ensure_planner_catalog
 from .rq4_ablation import (
     CANONICAL_METHOD_IDS,
     FIXED_K,
@@ -46,8 +47,9 @@ from .system_freeze_v2 import (
 FORMAL_FORMAT = "rq4-fixed-k-v2"
 DESIGN_FORMAT = "rq4-design-evaluation-v2"
 DETERMINISM_FORMAT = "rq4-design-determinism-v2"
-PREflight_FORMAT = "rq4-fixed-k-preflight-v2"
-PREFLIGHT_FORMAT = PREflight_FORMAT
+PREFLIGHT_FORMAT = "rq4-fixed-k-preflight-v2"
+# Compatibility alias retained for the producer's existing import contract.
+PREflight_FORMAT = PREFLIGHT_FORMAT
 SELECTION_MAX_CONFIGURATION_EVALUATIONS = 2_000
 SELECTION_WALL_CLOCK_SECONDS = 300.0
 FINAL_EVALUATION_WALL_CLOCK_SECONDS = 300.0
@@ -79,6 +81,7 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         sys.path.insert(0, source)
     from extstats_advisor.candidates import load_candidate_universe
     from extstats_advisor.dbms.postgres.planner import PostgresPlannerSession
+    from extstats_advisor.dbms.postgres.sandbox import POSTGRES_PLANNER_SANDBOX_CONTRACT
     from extstats_advisor.dbms.postgres.search import IncrementalPostgresSearchEvaluator
     from extstats_advisor.ground_truth import load_ground_truth_set
     from extstats_advisor.ground_truth.provider import ArtifactGroundTruthProvider
@@ -113,6 +116,7 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         "WeightedWorkloadUtility": WeightedWorkloadUtility,
         "QErrorLoss": QErrorLoss,
         "IncrementalPostgresSearchEvaluator": IncrementalPostgresSearchEvaluator,
+        "POSTGRES_PLANNER_SANDBOX_CONTRACT": POSTGRES_PLANNER_SANDBOX_CONTRACT,
     }
 
 
@@ -694,17 +698,39 @@ def run_formal_rq4_v2(
         > SELECTION_MAX_CONFIGURATION_EVALUATIONS
     ):
         raise RQ4ValidationError("predicted Greedy configuration evaluations exceed selection cap")
-    first = _method_selection(source, advisor_root, patched_dsn)
-    second = _method_selection(source, advisor_root, patched_dsn)
-    first_projection = {"methods": first["methods"]}
-    second_projection = {"methods": second["methods"]}
-    if semantic_digest(first_projection) != semantic_digest(second_projection):
-        raise RQ4ValidationError("RQ4 v2 selection replay is not semantically deterministic")
-    final_evaluations = _final_sandbox_evaluations(
-        source, advisor_root, patched_dsn, first["methods"]
+    # The reusable RQ2 snapshot is catalog-bound to the stock database name.
+    # The patched cluster therefore gets an isolated database with that same
+    # catalog identity, while the frozen Advisor creates and destroys its
+    # sample-only planner sandbox inside it.
+    planner_dsn = _ensure_planner_catalog(patched_dsn, "extstats_stock")
+    from extstats_advisor.dbms.postgres.sandbox import (
+        destroy_postgres_planner_sandbox,
+        prepare_postgres_planner_sandbox,
     )
-    for method, evaluation in final_evaluations.items():
-        first["methods"][method]["final_sandbox_evaluation"] = evaluation
+
+    sandbox_prepared = False
+    try:
+        prepare_postgres_planner_sandbox(
+            planner_dsn,
+            source["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+        sandbox_prepared = True
+        first = _method_selection(source, advisor_root, planner_dsn)
+        second = _method_selection(source, advisor_root, planner_dsn)
+        first_projection = {"methods": first["methods"]}
+        second_projection = {"methods": second["methods"]}
+        if semantic_digest(first_projection) != semantic_digest(second_projection):
+            raise RQ4ValidationError("RQ4 v2 selection replay is not semantically deterministic")
+        final_evaluations = _final_sandbox_evaluations(
+            source, advisor_root, planner_dsn, first["methods"]
+        )
+        for method, evaluation in final_evaluations.items():
+            first["methods"][method]["final_sandbox_evaluation"] = evaluation
+    finally:
+        if sandbox_prepared:
+            destroy_postgres_planner_sandbox(planner_dsn)
     output.mkdir(parents=True, exist_ok=False)
     preflight_path = output / "rq4-preflight-v2.json"
     write_json(preflight_path, preflight)
