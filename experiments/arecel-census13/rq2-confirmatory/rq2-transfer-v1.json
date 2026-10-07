@@ -1,0 +1,1043 @@
+{
+  "accepted_move_order": [
+    "cand_0b505b8bacb3c643f4e4dc43",
+    "cand_1af5539c1001b3f9b2f29435",
+    "cand_65bf58e313a4b96876b72b19",
+    "cand_732acc055f32ca48ff994adf",
+    "cand_2a400fd096108f66712fa5d7",
+    "cand_ba355e70a4c2c126688383df",
+    "cand_1edd4a89495b1c0989812ef6"
+  ],
+  "actual_selected_k": 7,
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "candidate_universe_digest": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+  "canonical_parameters": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "experiment_seed_identifier": 123,
+    "postgresql_setseed_sql": "SELECT setseed(1.0 / 123)",
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100
+  },
+  "cleanup": {
+    "dropped_names": [
+      "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+      "extstats_adv_mcv_8cc35a14f63cee85a18a4c7ec15c79cd9b5b8604",
+      "extstats_adv_mcv_6043af9ad2ea0d18408114528719ee31dec2b018",
+      "extstats_adv_mcv_a9caaa07c0e4f1cff4b02a1bee20be3637fda18a",
+      "extstats_adv_mcv_03547ffd5846d3131af615b5ffd4f18f58e7bc58",
+      "extstats_adv_mcv_5e6b6cd41d4b6e12c5c6b0d4fcbb1fa4e66f5b71",
+      "extstats_adv_mcv_8134ac21a195d061dafc0588fcdbb3e98c79ca18"
+    ],
+    "remaining_extended_statistics": []
+  },
+  "credentials_recorded": false,
+  "dataset_id": "arecel-census13",
+  "execution_status": "complete",
+  "formal_experiment": "rq2-formal-sample-to-full-transfer-v1",
+  "format_version": "rq2-transfer-v1",
+  "full_data": {
+    "P0": {
+      "arithmetic_mean": 5.239770377794661,
+      "max": 1637.0,
+      "median": 1.404792910942771,
+      "min": 1.0,
+      "p50": 1.404792910942771,
+      "p75": 3.6666666666666665,
+      "p90": 10.25,
+      "p95": 18.508333333333212,
+      "p99": 57.86800000000003,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.239770377794661
+    },
+    "P1": {
+      "arithmetic_mean": 2.234682097088506,
+      "max": 103.0,
+      "median": 1.1866269323896441,
+      "min": 1.0,
+      "p50": 1.1866269323896441,
+      "p75": 2.0,
+      "p90": 4.0,
+      "p95": 6.0,
+      "p99": 16.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 2.234682097088506
+    },
+    "P2": {
+      "arithmetic_mean": 5.240743890436734,
+      "max": 1633.0,
+      "median": 1.4070004070004072,
+      "min": 1.0,
+      "p50": 1.4070004070004072,
+      "p75": 3.6488128753753752,
+      "p90": 10.223165137614691,
+      "p95": 18.551515151515066,
+      "p99": 57.01000000000022,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.240743890436734
+    },
+    "deployment": {
+      "commit_status": "committed",
+      "object_count": 7,
+      "path": "deployment-result-v1.json",
+      "post_commit_verified": true,
+      "semantic_digest": "51c6ab5eaace99629b8c51662633cd8d58f4798c4cd3914e13b03755319a79bf"
+    },
+    "ordinary_stats_fingerprint_p0": "a45d0dcd2346819e7ba97d348435c3697870a7d4b14baf41a368a74bbf20a8e6",
+    "ordinary_stats_fingerprint_p1": "35c6b5e59a75364bbd0112bd728ad0254d8fcda51258f2a4f836c0be797da455",
+    "ordinary_stats_fingerprint_p2": "35c6b5e59a75364bbd0112bd728ad0254d8fcda51258f2a4f836c0be797da455",
+    "ordinary_stats_p1_p2_equal": true,
+    "payload_verification": {
+      "all_payloads_nonempty": true,
+      "all_target_100": true,
+      "statistics_kind": [
+        "postgresql.mcv"
+      ]
+    },
+    "physical_statistics": [
+      {
+        "columns": "3 4",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+        "oid": 16399,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "5 7",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8cc35a14f63cee85a18a4c7ec15c79cd9b5b8604",
+        "oid": 16400,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "2 6",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_6043af9ad2ea0d18408114528719ee31dec2b018",
+        "oid": 16401,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "3 6",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_a9caaa07c0e4f1cff4b02a1bee20be3637fda18a",
+        "oid": 16402,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "7 9",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_03547ffd5846d3131af615b5ffd4f18f58e7bc58",
+        "oid": 16403,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "1 5",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_5e6b6cd41d4b6e12c5c6b0d4fcbb1fa4e66f5b71",
+        "oid": 16404,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      },
+      {
+        "columns": "1 7",
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8134ac21a195d061dafc0588fcdbb3e98c79ca18",
+        "oid": 16405,
+        "payload": true,
+        "schema": "public",
+        "target": 100
+      }
+    ],
+    "runtime": {
+      "deployment_including_final_analyze": 19.749477,
+      "p0_explain": 1.798747,
+      "p1_explain": 2.042778,
+      "p2_transaction_evaluation_rollback": 1.72262,
+      "restoration_verification": 0.00879,
+      "stock_load_seconds": 0.539163
+    }
+  },
+  "ground_truth_digest": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+  "historical_pilot_paths": [
+    "experiments/arecel-census13/full-data-transfer-k8"
+  ],
+  "live_experiment_elapsed_seconds": 360.649325,
+  "native_analyze_realizations": 1,
+  "native_repository_digest": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+  "optimization_plan_digest": "08a55acab35955de9ed21d590f341533f5ad5be2473efd23914f76f51b4cd677",
+  "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "per_query_sha256": "800e999d654fe8d972e1b299dee5da23d7a7ea2f17e279fd652617d2a7a4df3d",
+  "postgres_version": "16.14",
+  "preflight": {
+    "basis": "historical committed pilot timing when available; unknown stages remain explicit",
+    "blocked_stages": [],
+    "checks": [
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "snapshot/sample preparation",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "singleton profiling",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "greedy search",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "sample-side paired evaluation",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "stock data load",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "P0 EXPLAIN",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "deployment + ANALYZE",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "P1 EXPLAIN",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "P2 EXPLAIN",
+        "unknown_is_not_zero": true
+      },
+      {
+        "gate": "pass",
+        "historical_seconds": null,
+        "stage": "artifact analysis/write",
+        "unknown_is_not_zero": true
+      }
+    ],
+    "dataset_id": "arecel-census13",
+    "hard_cap_seconds": 300,
+    "protocol": "single-stage-hard-cap-v1",
+    "status": "pass"
+  },
+  "producer_research_sha": "fbbeb375cf34885971af15483815b60d1a419285",
+  "qerror_contract": "qerror-cardinality-floor-1-v1",
+  "raw_per_query_path": "per-query-transfer-v1.jsonl",
+  "recommendation_digest": "0eae431519fcc75e4d932c34d442d2d499313b0e990fabdd1382a953d930c4ce",
+  "rq2a_summary": {
+    "J_D_P0": 5.239770377794661,
+    "J_D_P1": 2.234682097088506,
+    "J_D_P2": 5.240743890436734,
+    "P0_to_P1_direction_counts": {
+      "improved": 5183,
+      "unchanged": 2917,
+      "worsened": 1900
+    },
+    "P2_to_P1_direction_counts": {
+      "improved": 3659,
+      "unchanged": 5733,
+      "worsened": 608
+    },
+    "delta_controlled_P2_to_P1": 3.0060617933482283,
+    "delta_operational_P0_to_P1": 3.0050882807061554,
+    "relative_controlled_improvement_R_D": 0.5735944850946952,
+    "relative_operational_improvement": 0.5735152619361443
+  },
+  "rq2b_summary": {
+    "full_data": {
+      "J_D_P0": 5.239770377794661,
+      "J_D_P1": 2.234682097088506,
+      "J_D_P2": 5.240743890436734,
+      "P0_to_P1_direction_counts": {
+        "improved": 5183,
+        "unchanged": 2917,
+        "worsened": 1900
+      },
+      "P2_to_P1_direction_counts": {
+        "improved": 3659,
+        "unchanged": 5733,
+        "worsened": 608
+      },
+      "delta_controlled_P2_to_P1": 3.0060617933482283,
+      "delta_operational_P0_to_P1": 3.0050882807061554,
+      "relative_controlled_improvement_R_D": 0.5735944850946952,
+      "relative_operational_improvement": 0.5735152619361443
+    },
+    "sample": {
+      "J_S_M": 2.3829607477239407,
+      "J_S_empty": 5.256435607220747,
+      "delta_J_S": 2.8734748594968065,
+      "direction_counts": {
+        "improved": 3662,
+        "unchanged": 5740,
+        "worsened": 598
+      },
+      "relative_improvement_R_S": 0.5466584343865116
+    },
+    "transfer": {
+      "contingency_3x3": {
+        "improved": {
+          "improved": 3582,
+          "unchanged": 49,
+          "worsened": 31
+        },
+        "unchanged": {
+          "improved": 44,
+          "unchanged": 5677,
+          "worsened": 19
+        },
+        "worsened": {
+          "improved": 33,
+          "unchanged": 7,
+          "worsened": 558
+        }
+      },
+      "opposite_direction_count": 64,
+      "opposite_direction_fraction": 0.0064,
+      "p_value": null,
+      "paired_query_count": 10000,
+      "retention_ratio": 1.0492740055102463,
+      "retention_ratio_reason": null,
+      "same_direction_count": 9817,
+      "same_direction_fraction": 0.9817,
+      "spearman_gs_gd": 0.9681788244033384,
+      "unchanged_involved_count": 119
+    }
+  },
+  "sample_evaluation": {
+    "baseline": 5.256435607220747,
+    "final": 2.3829607477239407,
+    "per_query_path": "per-query-transfer-v1.jsonl",
+    "runtime": {
+      "baseline": {
+        "elapsed_seconds": 7.450242,
+        "loss_contract": "qerror-cardinality-floor-1-v1",
+        "planner_calls": 10000,
+        "query_count": 10000,
+        "weighted_objective": 5.256435607220752
+      },
+      "configuration_evaluations": 2,
+      "final": {
+        "elapsed_seconds": 7.669412,
+        "loss_contract": "qerror-cardinality-floor-1-v1",
+        "planner_calls": 10000,
+        "query_count": 10000,
+        "weighted_objective": 2.3829607477239465
+      },
+      "planner_query_calls": 20000,
+      "runtime_seconds": 20.09979,
+      "selection_repeated": false
+    }
+  },
+  "screened_candidate_ids": [
+    "cand_0b505b8bacb3c643f4e4dc43",
+    "cand_1af5539c1001b3f9b2f29435",
+    "cand_65bf58e313a4b96876b72b19",
+    "cand_ba355e70a4c2c126688383df",
+    "cand_2a400fd096108f66712fa5d7",
+    "cand_732acc055f32ca48ff994adf",
+    "cand_ad015de15a1d84aada0a7ea6",
+    "cand_1edd4a89495b1c0989812ef6"
+  ],
+  "search_result_digest": "6045223204663add7dcb24bfb5f7a8c30898f6e42e3e9195128d9e1424912178",
+  "selected_candidate_ids": [
+    "cand_0b505b8bacb3c643f4e4dc43",
+    "cand_1af5539c1001b3f9b2f29435",
+    "cand_65bf58e313a4b96876b72b19",
+    "cand_ba355e70a4c2c126688383df",
+    "cand_2a400fd096108f66712fa5d7",
+    "cand_732acc055f32ca48ff994adf",
+    "cand_1edd4a89495b1c0989812ef6"
+  ],
+  "semantic_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+  "singleton_profile_digest": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+  "snapshot_digest": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0",
+  "source_run": {
+    "artifact_digests": {
+      "candidate_universe": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+      "ground_truth": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+      "native_repository": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+      "optimization_plan": "08a55acab35955de9ed21d590f341533f5ad5be2473efd23914f76f51b4cd677",
+      "recommendation": "0eae431519fcc75e4d932c34d442d2d499313b0e990fabdd1382a953d930c4ce",
+      "search_result": "6045223204663add7dcb24bfb5f7a8c30898f6e42e3e9195128d9e1424912178",
+      "singleton_profile": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+      "snapshot": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0",
+      "workload": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+    },
+    "directory": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f",
+    "ground_truth_digest": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+    "run_id": "6fab9c14bec4c26ad44ff42f",
+    "snapshot_digest": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0",
+    "truth_capture": {
+      "mode": "authoritative-external-exact",
+      "observations_and_import_elapsed_seconds": 0.155349,
+      "observations_format_version": "authoritative-cardinality-observations-v1",
+      "observations_path": "authoritative-observations-v1.json",
+      "observations_query_count": 10000,
+      "observations_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+      "sanity_check": {
+        "all_match": true,
+        "checks": [
+          {
+            "audited_truth": 5476,
+            "observed": 5476,
+            "operators": [
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 7,
+            "query_id": "arecel_census13_test_000000",
+            "source_index": 0
+          },
+          {
+            "audited_truth": 0,
+            "observed": 0,
+            "operators": [
+              "<=",
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 13,
+            "query_id": "arecel_census13_test_000001",
+            "source_index": 1
+          },
+          {
+            "audited_truth": 0,
+            "observed": 0,
+            "operators": [
+              "<=",
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 10,
+            "query_id": "arecel_census13_test_000003",
+            "source_index": 3
+          },
+          {
+            "audited_truth": 238,
+            "observed": 238,
+            "operators": [
+              "<=",
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 9,
+            "query_id": "arecel_census13_test_000004",
+            "source_index": 4
+          },
+          {
+            "audited_truth": 2797,
+            "observed": 2797,
+            "operators": [
+              "<=",
+              "=",
+              ">="
+            ],
+            "predicate_arity": 7,
+            "query_id": "arecel_census13_test_000005",
+            "source_index": 5
+          },
+          {
+            "audited_truth": 3451,
+            "observed": 3451,
+            "operators": [
+              "="
+            ],
+            "predicate_arity": 4,
+            "query_id": "arecel_census13_test_000006",
+            "source_index": 6
+          },
+          {
+            "audited_truth": 38005,
+            "observed": 38005,
+            "operators": [
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 2,
+            "query_id": "arecel_census13_test_000007",
+            "source_index": 7
+          },
+          {
+            "audited_truth": 163,
+            "observed": 163,
+            "operators": [
+              "<=",
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 12,
+            "query_id": "arecel_census13_test_000009",
+            "source_index": 9
+          },
+          {
+            "audited_truth": 118,
+            "observed": 118,
+            "operators": [
+              "<=",
+              "=",
+              ">=",
+              "[]"
+            ],
+            "predicate_arity": 11,
+            "query_id": "arecel_census13_test_000013",
+            "source_index": 13
+          },
+          {
+            "audited_truth": 293,
+            "observed": 293,
+            "operators": [
+              "<=",
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 5,
+            "query_id": "arecel_census13_test_000017",
+            "source_index": 17
+          },
+          {
+            "audited_truth": 3,
+            "observed": 3,
+            "operators": [
+              "=",
+              "[]"
+            ],
+            "predicate_arity": 3,
+            "query_id": "arecel_census13_test_000023",
+            "source_index": 23
+          },
+          {
+            "audited_truth": 429,
+            "observed": 429,
+            "operators": [
+              "<=",
+              "="
+            ],
+            "predicate_arity": 6,
+            "query_id": "arecel_census13_test_000025",
+            "source_index": 25
+          },
+          {
+            "audited_truth": 29,
+            "observed": 29,
+            "operators": [
+              "<=",
+              "="
+            ],
+            "predicate_arity": 8,
+            "query_id": "arecel_census13_test_000049",
+            "source_index": 49
+          },
+          {
+            "audited_truth": 41762,
+            "observed": 41762,
+            "operators": [
+              "="
+            ],
+            "predicate_arity": 1,
+            "query_id": "arecel_census13_test_000052",
+            "source_index": 52
+          },
+          {
+            "audited_truth": 50,
+            "observed": 50,
+            "operators": [
+              "<=",
+              "="
+            ],
+            "predicate_arity": 7,
+            "query_id": "arecel_census13_test_005000",
+            "source_index": 5000
+          }
+        ],
+        "count": 15,
+        "method": "fresh-stock-live-exact-subset-v1",
+        "source_for_ground_truth_set": false
+      },
+      "sanity_check_elapsed_seconds": 0.157028,
+      "snapshot_capture_elapsed_seconds": 1.283194
+    },
+    "workload_id": "arecel_census13_test_v1",
+    "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+  },
+  "stage_timings_seconds": {
+    "canonical_source_run": {
+      "audit_replay": 14.187615,
+      "authoritative_observations_and_import": 0.155349,
+      "candidate_derivation": 3.865545,
+      "full_data_target100_explain_baseline": 1.758528,
+      "native_materialization": 4.745397,
+      "optimization_plan": 4.123046,
+      "optimization_search": 56.520813,
+      "recommendation_build_validation": 15.738751,
+      "sandbox_prepare_verify": 8.550381,
+      "singleton_profiling": 181.831876,
+      "snapshot_capture": 1.283194,
+      "stock_load_initial_analyze": 0.52856,
+      "truth_sanity_check": 0.157028
+    },
+    "full_data_transfer": {
+      "deployment_including_final_analyze": 19.749477,
+      "p0_explain": 1.798747,
+      "p1_explain": 2.042778,
+      "p2_transaction_evaluation_rollback": 1.72262,
+      "restoration_verification": 0.00879
+    },
+    "sample_side_paired_evaluation": 20.09979,
+    "stock_load": 0.539163
+  },
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "summary": {
+    "p0": {
+      "arithmetic_mean": 5.239770377794661,
+      "max": 1637.0,
+      "median": 1.404792910942771,
+      "min": 1.0,
+      "p50": 1.404792910942771,
+      "p75": 3.6666666666666665,
+      "p90": 10.25,
+      "p95": 18.508333333333212,
+      "p99": 57.86800000000003,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.239770377794661
+    },
+    "p0_to_p1_classification": {
+      "improved": 5183,
+      "unchanged": 2917,
+      "worsened": 1900
+    },
+    "p1": {
+      "arithmetic_mean": 2.234682097088506,
+      "max": 103.0,
+      "median": 1.1866269323896441,
+      "min": 1.0,
+      "p50": 1.1866269323896441,
+      "p75": 2.0,
+      "p90": 4.0,
+      "p95": 6.0,
+      "p99": 16.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 2.234682097088506
+    },
+    "p2": {
+      "arithmetic_mean": 5.240743890436734,
+      "max": 1633.0,
+      "median": 1.4070004070004072,
+      "min": 1.0,
+      "p50": 1.4070004070004072,
+      "p75": 3.6488128753753752,
+      "p90": 10.223165137614691,
+      "p95": 18.551515151515066,
+      "p99": 57.01000000000022,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.240743890436734
+    },
+    "p2_to_p1_classification": {
+      "improved": 3659,
+      "unchanged": 5733,
+      "worsened": 608
+    },
+    "query_count": 10000,
+    "sandbox_baseline": {
+      "arithmetic_mean": 5.256435607220747,
+      "max": 1668.0,
+      "median": 1.4139329805996472,
+      "min": 1.0,
+      "p50": 1.4139329805996472,
+      "p75": 3.6666666666666665,
+      "p90": 10.1201680672269,
+      "p95": 18.666666666666668,
+      "p99": 58.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 5.256435607220747
+    },
+    "sandbox_final": {
+      "arithmetic_mean": 2.3829607477239407,
+      "max": 887.0,
+      "median": 1.1886399639171854,
+      "min": 1.0,
+      "p50": 1.1886399639171854,
+      "p75": 2.0,
+      "p90": 4.0,
+      "p95": 6.0,
+      "p99": 16.0,
+      "quantile_method": "linear-interpolation-n-minus-1",
+      "weighted_objective": 2.3829607477239407
+    },
+    "sandbox_production_correspondence": {
+      "opposite_direction": 64,
+      "same_direction": 9817,
+      "sandbox_improved_production_improved": 3582,
+      "sandbox_improved_production_unchanged": 49,
+      "sandbox_improved_production_worsened": 31,
+      "sandbox_unchanged_production_improved": 44,
+      "sandbox_unchanged_production_unchanged": 5677,
+      "sandbox_unchanged_production_worsened": 19,
+      "sandbox_worsened_production_improved": 33,
+      "sandbox_worsened_production_unchanged": 7,
+      "sandbox_worsened_production_worsened": 558,
+      "unchanged_involved": 119
+    },
+    "top_10_p0_to_p1_improvements": [
+      {
+        "after_qerror": 82.0,
+        "before_qerror": 1637.0,
+        "delta": 1555.0,
+        "query_id": "arecel_census13_test_004017"
+      },
+      {
+        "after_qerror": 16.0,
+        "before_qerror": 754.0,
+        "delta": 738.0,
+        "query_id": "arecel_census13_test_003176"
+      },
+      {
+        "after_qerror": 16.0,
+        "before_qerror": 754.0,
+        "delta": 738.0,
+        "query_id": "arecel_census13_test_005979"
+      },
+      {
+        "after_qerror": 4.108108108108108,
+        "before_qerror": 456.0,
+        "delta": 451.8918918918919,
+        "query_id": "arecel_census13_test_002659"
+      },
+      {
+        "after_qerror": 1.375,
+        "before_qerror": 330.0,
+        "delta": 328.625,
+        "query_id": "arecel_census13_test_009400"
+      },
+      {
+        "after_qerror": 13.047619047619047,
+        "before_qerror": 274.0,
+        "delta": 260.95238095238096,
+        "query_id": "arecel_census13_test_004901"
+      },
+      {
+        "after_qerror": 4.448275862068965,
+        "before_qerror": 258.0,
+        "delta": 253.55172413793105,
+        "query_id": "arecel_census13_test_009860"
+      },
+      {
+        "after_qerror": 1.808888888888889,
+        "before_qerror": 203.5,
+        "delta": 201.6911111111111,
+        "query_id": "arecel_census13_test_001146"
+      },
+      {
+        "after_qerror": 5.135135135135135,
+        "before_qerror": 190.0,
+        "delta": 184.86486486486487,
+        "query_id": "arecel_census13_test_002313"
+      },
+      {
+        "after_qerror": 1.1226993865030674,
+        "before_qerror": 183.0,
+        "delta": 181.87730061349694,
+        "query_id": "arecel_census13_test_000417"
+      }
+    ],
+    "top_10_p0_to_p1_regressions": [
+      {
+        "after_qerror": 42.0,
+        "before_qerror": 20.0,
+        "delta": -22.0,
+        "query_id": "arecel_census13_test_007431"
+      },
+      {
+        "after_qerror": 14.0,
+        "before_qerror": 1.0,
+        "delta": -13.0,
+        "query_id": "arecel_census13_test_005841"
+      },
+      {
+        "after_qerror": 13.5,
+        "before_qerror": 2.0,
+        "delta": -11.5,
+        "query_id": "arecel_census13_test_007100"
+      },
+      {
+        "after_qerror": 10.0,
+        "before_qerror": 2.5,
+        "delta": -7.5,
+        "query_id": "arecel_census13_test_003614"
+      },
+      {
+        "after_qerror": 7.714285714285714,
+        "before_qerror": 1.0,
+        "delta": -6.714285714285714,
+        "query_id": "arecel_census13_test_006045"
+      },
+      {
+        "after_qerror": 7.0,
+        "before_qerror": 1.0,
+        "delta": -6.0,
+        "query_id": "arecel_census13_test_001272"
+      },
+      {
+        "after_qerror": 6.8,
+        "before_qerror": 1.2,
+        "delta": -5.6,
+        "query_id": "arecel_census13_test_003040"
+      },
+      {
+        "after_qerror": 8.2,
+        "before_qerror": 3.16,
+        "delta": -5.039999999999999,
+        "query_id": "arecel_census13_test_006926"
+      },
+      {
+        "after_qerror": 6.0,
+        "before_qerror": 1.0,
+        "delta": -5.0,
+        "query_id": "arecel_census13_test_000974"
+      },
+      {
+        "after_qerror": 7.0,
+        "before_qerror": 2.0,
+        "delta": -5.0,
+        "query_id": "arecel_census13_test_007481"
+      }
+    ],
+    "top_10_p2_to_p1_improvements": [
+      {
+        "after_qerror": 82.0,
+        "before_qerror": 1633.0,
+        "delta": 1551.0,
+        "query_id": "arecel_census13_test_004017"
+      },
+      {
+        "after_qerror": 16.0,
+        "before_qerror": 763.0,
+        "delta": 747.0,
+        "query_id": "arecel_census13_test_003176"
+      },
+      {
+        "after_qerror": 16.0,
+        "before_qerror": 763.0,
+        "delta": 747.0,
+        "query_id": "arecel_census13_test_005979"
+      },
+      {
+        "after_qerror": 4.108108108108108,
+        "before_qerror": 456.0,
+        "delta": 451.8918918918919,
+        "query_id": "arecel_census13_test_002659"
+      },
+      {
+        "after_qerror": 1.375,
+        "before_qerror": 330.0,
+        "delta": 328.625,
+        "query_id": "arecel_census13_test_009400"
+      },
+      {
+        "after_qerror": 13.047619047619047,
+        "before_qerror": 274.0,
+        "delta": 260.95238095238096,
+        "query_id": "arecel_census13_test_004901"
+      },
+      {
+        "after_qerror": 4.448275862068965,
+        "before_qerror": 258.0,
+        "delta": 253.55172413793105,
+        "query_id": "arecel_census13_test_009860"
+      },
+      {
+        "after_qerror": 1.808888888888889,
+        "before_qerror": 203.5,
+        "delta": 201.6911111111111,
+        "query_id": "arecel_census13_test_001146"
+      },
+      {
+        "after_qerror": 5.135135135135135,
+        "before_qerror": 190.0,
+        "delta": 184.86486486486487,
+        "query_id": "arecel_census13_test_002313"
+      },
+      {
+        "after_qerror": 1.1226993865030674,
+        "before_qerror": 183.0,
+        "delta": 181.87730061349694,
+        "query_id": "arecel_census13_test_000417"
+      }
+    ],
+    "top_10_p2_to_p1_regressions": [
+      {
+        "after_qerror": 42.0,
+        "before_qerror": 19.0,
+        "delta": -23.0,
+        "query_id": "arecel_census13_test_007431"
+      },
+      {
+        "after_qerror": 14.0,
+        "before_qerror": 1.0,
+        "delta": -13.0,
+        "query_id": "arecel_census13_test_005841"
+      },
+      {
+        "after_qerror": 13.5,
+        "before_qerror": 2.0,
+        "delta": -11.5,
+        "query_id": "arecel_census13_test_007100"
+      },
+      {
+        "after_qerror": 10.0,
+        "before_qerror": 2.0,
+        "delta": -8.0,
+        "query_id": "arecel_census13_test_003614"
+      },
+      {
+        "after_qerror": 7.714285714285714,
+        "before_qerror": 1.0,
+        "delta": -6.714285714285714,
+        "query_id": "arecel_census13_test_006045"
+      },
+      {
+        "after_qerror": 7.0,
+        "before_qerror": 1.0,
+        "delta": -6.0,
+        "query_id": "arecel_census13_test_001272"
+      },
+      {
+        "after_qerror": 6.8,
+        "before_qerror": 1.2,
+        "delta": -5.6,
+        "query_id": "arecel_census13_test_003040"
+      },
+      {
+        "after_qerror": 8.2,
+        "before_qerror": 3.04,
+        "delta": -5.159999999999999,
+        "query_id": "arecel_census13_test_006926"
+      },
+      {
+        "after_qerror": 6.0,
+        "before_qerror": 1.0,
+        "delta": -5.0,
+        "query_id": "arecel_census13_test_000974"
+      },
+      {
+        "after_qerror": 14.0,
+        "before_qerror": 9.0,
+        "delta": -5.0,
+        "query_id": "arecel_census13_test_007658"
+      }
+    ],
+    "top_10_sandbox_baseline": [
+      {
+        "estimate": 1668,
+        "qerror": 1668.0,
+        "query_id": "arecel_census13_test_004017",
+        "true_rows": 0
+      },
+      {
+        "estimate": 794,
+        "qerror": 794.0,
+        "query_id": "arecel_census13_test_003176",
+        "true_rows": 0
+      },
+      {
+        "estimate": 794,
+        "qerror": 794.0,
+        "query_id": "arecel_census13_test_005979",
+        "true_rows": 0
+      },
+      {
+        "estimate": 1,
+        "qerror": 456.0,
+        "query_id": "arecel_census13_test_002659",
+        "true_rows": 456
+      },
+      {
+        "estimate": 1,
+        "qerror": 330.0,
+        "query_id": "arecel_census13_test_009400",
+        "true_rows": 330
+      },
+      {
+        "estimate": 1,
+        "qerror": 274.0,
+        "query_id": "arecel_census13_test_004901",
+        "true_rows": 274
+      },
+      {
+        "estimate": 1,
+        "qerror": 258.0,
+        "query_id": "arecel_census13_test_009860",
+        "true_rows": 258
+      },
+      {
+        "estimate": 2,
+        "qerror": 203.5,
+        "query_id": "arecel_census13_test_001146",
+        "true_rows": 407
+      },
+      {
+        "estimate": 1,
+        "qerror": 194.0,
+        "query_id": "arecel_census13_test_009244",
+        "true_rows": 194
+      },
+      {
+        "estimate": 1,
+        "qerror": 190.0,
+        "query_id": "arecel_census13_test_002313",
+        "true_rows": 190
+      }
+    ]
+  },
+  "system_freeze": {
+    "format_version": "system-freeze-v2",
+    "path": "paper/system-freeze-v2.json",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48"
+  },
+  "termination_reason": "local-optimum",
+  "truth_provenance": {
+    "authority": "sfu-db/AreCELearnedYet",
+    "collection_contract": "authoritative-external-exact-cardinality-v1",
+    "dataset_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+    "external_labels_not_recounted": true,
+    "kind": "authoritative-external-exact",
+    "observations_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+    "production_exact_sanity_is_not_truth_source": true,
+    "query_count": 10000,
+    "snapshot_binding": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0",
+    "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+    "workload_id": "arecel_census13_test_v1"
+  },
+  "truth_source_kind": "authoritative-external-exact"
+}
