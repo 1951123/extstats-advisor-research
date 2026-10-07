@@ -59,6 +59,16 @@ STATISTICS_TARGET = 100
 SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
 QUERY_COUNT = 10_000
+DETERMINISM_RUNTIME_KEYS = frozenset(
+    {
+        "wall_clock_seconds",
+        "elapsed_wall_clock_seconds",
+        "elapsed_search_seconds",
+        "backend_wall_clock_seconds",
+        "source_wall_clock_seconds",
+        "new_selection_wall_clock_seconds",
+    }
+)
 DATASETS = ("arecel-census13", "arecel-power7", "arecel-dmv11")
 RQ2_SOURCE_RUNS = {
     "arecel-census13": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f",
@@ -579,6 +589,18 @@ def validate_reference_equivalence_gate(research_root: Path) -> dict[str, Any]:
     }
 
 
+def _deterministic_projection(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {
+            str(key): _deterministic_projection(item)
+            for key, item in value.items()
+            if key not in DETERMINISM_RUNTIME_KEYS
+        }
+    if isinstance(value, list):
+        return [_deterministic_projection(item) for item in value]
+    return value
+
+
 def _write_v2_determinism(
     path: Path,
     comparison: Mapping[str, Any],
@@ -587,20 +609,7 @@ def _write_v2_determinism(
     research_sha: str,
 ) -> dict[str, Any]:
     projection = copy.deepcopy(dict(comparison))
-    runtime_keys = {
-        "wall_clock_seconds",
-        "elapsed_wall_clock_seconds",
-        "backend_wall_clock_seconds",
-    }
-
-    def strip(value: Any) -> Any:
-        if isinstance(value, Mapping):
-            return {str(k): strip(v) for k, v in value.items() if k not in runtime_keys}
-        if isinstance(value, list):
-            return [strip(v) for v in value]
-        return value
-
-    projected = strip(projection)
+    projected = _deterministic_projection(projection)
     artifact = {
         "format_version": DETERMINISM_FORMAT,
         "experiment_id": DETERMINISM_FORMAT,
@@ -730,8 +739,8 @@ def run_formal_rq4_v2(
         sandbox_prepared = True
         first = _method_selection(source, advisor_root, planner_dsn)
         second = _method_selection(source, advisor_root, planner_dsn)
-        first_projection = {"methods": first["methods"]}
-        second_projection = {"methods": second["methods"]}
+        first_projection = _deterministic_projection({"methods": first["methods"]})
+        second_projection = _deterministic_projection({"methods": second["methods"]})
         if semantic_digest(first_projection) != semantic_digest(second_projection):
             raise RQ4ValidationError("RQ4 v2 selection replay is not semantically deterministic")
         final_evaluations = _final_sandbox_evaluations(
