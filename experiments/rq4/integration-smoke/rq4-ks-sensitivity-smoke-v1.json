@@ -80,9 +80,9 @@
       "termination_reason": "not-executed"
     }
   ],
-  "research_commit_sha": "209ef5b0fbafe205ba71d0ad6c99cb3489fdf94a",
-  "scope": "small-live-correctness-validation",
-  "semantic_digest": "7a6d6816d4369e762fda9d1103307e21e6791476135da9a7a1a6899448665512",
+  "research_commit_sha": "3f41cb9e12cae2187f3c8c91c8d93905ca07812e",
+  "scope": "small-plan-correctness-validation",
+  "semantic_digest": "28e0069c15ff3fb2c6f3412543665a2f68746782a2d40597ee3dd38d26abda38",
   "source_profile_semantic_digest": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
   "source_singleton_profiling": {
     "new_work": 0,
@@ -245,7 +245,7 @@
       "zero_incidence_present_candidate_count": 0
     }
   },
-  "status": "small-live-correctness-validation",
+  "status": "small-plan-correctness-validation",
   "stock_physical_evaluation": {
     "performed": false
   },
