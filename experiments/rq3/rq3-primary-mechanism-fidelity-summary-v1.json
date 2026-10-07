@@ -1,0 +1,52 @@
+{
+  "format": "rq3-primary-mechanism-fidelity-summary-v1",
+  "formal_experiment": true,
+  "execution_status": "complete",
+  "experiment_id": "rq3-primary-mechanism-fidelity",
+  "source_artifact": "experiments/rq3/rq3-primary-mechanism-fidelity-v1.json",
+  "source_artifact_digest": "e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6c6",
+  "producer_research_sha": "3dd9ff69212c48c70f25b74e1558189f9b8898ab",
+  "system_freeze": {
+    "format_version": "system-freeze-v2",
+    "path": "paper/system-freeze-v2.json",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48"
+  },
+  "primary_metric": "exact integer equality of physical and hypothetical root Plan Rows",
+  "configurations": [
+    {
+      "configuration_id": "mcv-only",
+      "paired_query_count": 3,
+      "exact_plan_rows_count": 3,
+      "mismatch_count": 0,
+      "fidelity_gate": "pass",
+      "physical_estimate_changed_from_no_extstats_count": 3
+    },
+    {
+      "configuration_id": "fd-only",
+      "paired_query_count": 3,
+      "exact_plan_rows_count": 3,
+      "mismatch_count": 0,
+      "fidelity_gate": "pass",
+      "physical_estimate_changed_from_no_extstats_count": 3
+    },
+    {
+      "configuration_id": "mcv-plus-fd",
+      "paired_query_count": 3,
+      "exact_plan_rows_count": 3,
+      "mismatch_count": 0,
+      "fidelity_gate": "pass",
+      "physical_estimate_changed_from_no_extstats_count": 3
+    }
+  ],
+  "overall": {
+    "paired_query_count": 9,
+    "exact_plan_rows_count": 9,
+    "mismatch_count": 0,
+    "fidelity_gate": "pass",
+    "mismatch_categories": {
+      "exact-match": 9
+    }
+  },
+  "interpretation_scope": "Controlled same-patched-binary synthetic equality-predicate fixture only; this does not establish universal PostgreSQL equivalence, production-workload accuracy, or sample-to-full transfer.",
+  "semantic_digest": "fd0e1f3a6cd84faeb1381ea1afbeb3efd1da52157c8ad38e45e28d7a9155b23d"
+}

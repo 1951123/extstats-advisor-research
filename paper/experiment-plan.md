@@ -121,8 +121,8 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
 | `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
-| `rq3-primary-mechanism-fidelity` | RQ3 | `ready-to-run` | Live synthetic gate passed on the pinned patched build: three configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; this is readiness evidence, not a completed paper experiment. |
-| `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
+| `rq3-primary-mechanism-fidelity` | RQ3 | `complete` | Formal artifact `experiments/rq3/rq3-primary-mechanism-fidelity-v1.json` (digest `e3304129...`) records the frozen producer SHA, v2 freeze, 3 configurations, 9 exact Plan Rows pairs, zero mismatches, payload/fingerprint controls, and cleanup. |
+| `rq3-secondary-build-sanity` | RQ3 | `complete` | Formal artifact `experiments/rq3/rq3-secondary-build-sanity-v1.json` (digest `2678bb4e...`) records 3 configurations, 9 exact stock/patched physical pairs, inactive overlay, payload/fingerprint controls, and cleanup. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
@@ -418,12 +418,13 @@ hypothetical-versus-physical estimate/error agreement plots.
 Plan Rows mismatch and returns `status=artifact-created` with
 `fidelity_gate=pass|fail`. `pass` means mismatch count is exactly zero. The
 small live gate passed for all three configurations on the pinned patched
-build, so the primary protocol is `ready-to-run`; it is not an official
-benchmark result and is not `complete`. A formal run records
-`execution_status=complete` separately from `fidelity_gate=pass|fail`. The
-secondary patched-versus-stock build sanity path likewise remains
-`ready-to-run` until its separate formal artifact is written; its passing
-synthetic gate is not a completed confirmatory benchmark result.
+build, and the formal artifact now records `execution_status=complete` and
+`fidelity_gate=pass` separately. The primary result contains 9 paired queries,
+9 exact Plan Rows matches, and zero mismatches. The secondary
+patched-versus-stock build sanity artifact likewise completed independently
+with 9/9 exact pairs and an inactive overlay. Both results are limited to the
+declared synthetic mechanism fixture and do not establish universal PostgreSQL
+equivalence.
 
 ## RQ4 — Advisor necessity / ablation
 
@@ -669,7 +670,7 @@ rewritten.
 | Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for all four completed datasets; cross-dataset summary v2 digest `84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c` | complete for the four-dataset, three-arm, in-workload claim; RQ4 heuristics and held-out generalization remain out of scope |
 | A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
 | Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
-| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | ready-to-run |
+| Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | complete for the declared synthetic fixture; limited scope |
 | Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4a/RQ4b | `rq4-ablation-v1`, deterministic replay artifact, shared stock union/drop artifact, then formal AreCEL fixed-k stock evaluations; RQ4b stability requires `native-analyze-stability-v1` | ready-to-run; readiness smokes only |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |
 | Deployment is stock-compatible and DBA-controlled, not a production-readiness claim | all / contract audit | Recommendation SQL, add-only ownership checks, collision fail-closed tests, deployment verification | contract established; empirical scope remains bounded |

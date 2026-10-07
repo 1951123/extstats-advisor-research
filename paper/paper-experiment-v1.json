@@ -328,7 +328,7 @@
     {
       "experiment_id": "rq3-primary-mechanism-fidelity",
       "rq": "RQ3",
-      "status": "ready-to-run",
+      "status": "complete",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "comparison": "Physical native statistics versus catalogless hypothetical overlay on the same patched PostgreSQL binary.",
       "main_factor": "physical catalog realization versus hypothetical overlay realization",
@@ -338,7 +338,7 @@
       "truth_contract": "GroundTruthSet is not required to establish mechanism fidelity; if utility is reported, bind audited observations separately to each snapshot and do not make it the primary fidelity metric.",
       "random_seed_policy": "Record all data/sample/statistics seeds; no unrecorded randomization in paired configurations.",
       "required_raw_artifacts": ["paired EXPLAIN JSON", "binary/build identity", "ordinary-statistics fingerprints", "active design and payload records", "physical catalog verification", "session settings", "transaction logs"],
-      "required_derived_artifacts": ["Plan Rows agreement table", "mismatch taxonomy", "paired estimate deltas", "derived objective difference"],
+      "required_derived_artifacts": ["Plan Rows agreement table", "mismatch taxonomy", "paired estimate deltas", "derived objective difference", "paper-ready fidelity summary"],
       "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
       "artifact_contract": {
         "format": "rq3-fidelity-v1",
@@ -349,7 +349,7 @@
         "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"],
         "formal_status_semantics": "The formal artifact uses experiment_id rq3-primary-mechanism-fidelity, formal_experiment=true, and system-freeze-v2 with its semantic digest. execution_status=complete is independent of fidelity_gate=pass|fail; mismatches are preserved."
       },
-      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. Formal execution is ready from a clean committed research SHA; the earlier small live gate remains readiness evidence only.",
+      "implementation_status": "Formal RQ3 primary execution is complete on the frozen patched PostgreSQL build: 3 configurations, 9 exact Plan Rows pairs, zero mismatches, payload correspondence, ordinary-statistics stability, and cleanup verified.",
       "implementation_gate": {
         "status": "passed",
         "artifact_format": "rq3-fidelity-v1",
@@ -360,6 +360,19 @@
         "cleanup_verified": true,
         "scope": "small synthetic live gate; readiness evidence only, not a completed confirmatory result"
       },
+      "formal_result": {
+        "status": "complete",
+        "artifact": "experiments/rq3/rq3-primary-mechanism-fidelity-v1.json",
+        "artifact_digest": "e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6c6",
+        "derived_summary": "experiments/rq3/rq3-primary-mechanism-fidelity-summary-v1.json",
+        "derived_summary_digest": "fd0e1f3a6cd84faeb1381ea1afbeb3efd1da52157c8ad38e45e28d7a9155b23d",
+        "producer_research_sha": "3dd9ff69212c48c70f25b74e1558189f9b8898ab",
+        "execution_status": "complete",
+        "fidelity_gate": "pass",
+        "paired_query_count": 9,
+        "exact_match_count": 9,
+        "mismatch_count": 0
+      },
       "validation_fixture": "rq3-synthetic-mcv-fd-v1",
       "canonical_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output <artifact.json>",
       "formal_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output experiments/rq3/rq3-primary-mechanism-fidelity-v1.json --formal",
@@ -368,13 +381,8 @@
     {
     "experiment_id": "rq3-secondary-build-sanity",
     "rq": "RQ3",
-      "status": "ready-to-run",
-    "datasets": [
-      "arecel-census13",
-      "arecel-forest10",
-      "arecel-power7",
-      "arecel-dmv11"
-    ],
+      "status": "complete",
+    "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "comparison": "Patched PostgreSQL physical statistics versus stock PostgreSQL physical statistics with hypothetical overlay inactive.",
       "role": "Secondary ordinary physical-statistics sanity check; never the primary hypothetical-fidelity result.",
       "controls": ["identical relation contents", "identical schema", "identical workload", "ordinary-statistics state/fingerprint", "statistics target", "physical statistics design/payload semantics", "planner/session settings"],
@@ -404,9 +412,20 @@
       "cleanup_verified": true,
       "scope": "small synthetic readiness evidence; secondary sanity only, not a completed confirmatory result"
     },
-    "implementation_status": "The independent patched-versus-stock physical sanity runner produced a passing small synthetic readiness artifact. Formal secondary execution is ready from a clean committed research SHA and remains separate from primary hypothetical fidelity.",
+    "implementation_status": "Formal RQ3 secondary build sanity is complete: stock and patched physical statistics matched for all 3 configurations and 9 paired Plan Rows, with overlay inactive and cleanup verified.",
       "formal_command": "extstats-research validate build-sanity run --stock-dsn <stock-dsn> --patched-dsn <patched-dsn> --output experiments/rq3/rq3-secondary-build-sanity-v1.json --formal",
-      "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only", "formal artifact records producer research SHA and system-freeze-v2 semantic digest"]
+      "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only", "formal artifact records producer research SHA and system-freeze-v2 semantic digest"],
+      "formal_result": {
+        "status": "complete",
+        "artifact": "experiments/rq3/rq3-secondary-build-sanity-v1.json",
+        "artifact_digest": "2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2",
+        "producer_research_sha": "3dd9ff69212c48c70f25b74e1558189f9b8898ab",
+        "execution_status": "complete",
+        "gate": "pass",
+        "paired_query_count": 9,
+        "exact_match_count": 9,
+        "mismatch_count": 0
+      }
     },
     {
       "experiment_id": "rq4-fixed-k-ablations",
@@ -649,13 +668,13 @@
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",
-        "status": "ready-to-run",
-        "note": "Small live synthetic gate passed on the pinned patched build: 3 configurations, 9 exact Plan Rows pairs, zero mismatches, cleanup verified; confirmatory paper execution remains outstanding."
+        "status": "complete",
+        "note": "Formal artifact experiments/rq3/rq3-primary-mechanism-fidelity-v1.json (digest e3304129...) completed on the frozen patched build: 3 configurations, 9 exact Plan Rows pairs, zero mismatches, payload/fingerprint controls, and cleanup verified."
       },
       {
         "experiment_id": "rq3-secondary-build-sanity",
-        "status": "ready-to-run",
-        "note": "Small synthetic artifact passed: three configurations, 9 exact Plan Rows pairs, payload and ordinary-statistics correspondence verified, overlay inactive, cleanup verified; readiness evidence only."
+        "status": "complete",
+        "note": "Formal artifact experiments/rq3/rq3-secondary-build-sanity-v1.json (digest 2678bb4e...) completed: stock and patched physical paths matched for three configurations and 9 pairs with overlay inactive and cleanup verified."
       }
     ]
   },

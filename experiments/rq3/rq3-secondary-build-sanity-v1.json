@@ -1,0 +1,1524 @@
+{
+  "configurations": [
+    {
+      "cleanup": {
+        "patched": {
+          "overlay_active_after": null,
+          "physical_extstats_count_after": 0,
+          "verified": true
+        },
+        "stock": {
+          "overlay_active_after": "not-applicable-stock-binary",
+          "physical_extstats_count_after": 0,
+          "verified": true
+        }
+      },
+      "configuration_id": "mcv-only",
+      "controls": {
+        "equivalent_design": true,
+        "identical_planner_settings": true,
+        "identical_relation_contents": true,
+        "identical_schema": true,
+        "identical_statistics_target": true,
+        "identical_workload": true,
+        "ordinary_stats_equal": true,
+        "patched_overlay_inactive": true,
+        "payload_correspondence_verified": true,
+        "physical_catalog_objects_present": true
+      },
+      "gate": "pass",
+      "paired_queries": [
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-equal",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 1",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 2) AND (rq3_build_sanity_mcv_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-rare",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 2 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 2) AND (rq3_build_sanity_mcv_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 1,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 1,
+          "query_id": "mcv-fd-cross",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 1,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 1
+        }
+      ],
+      "patched": {
+        "catalog_order": [
+          "rq3_build_mcv_only_mcv"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "5089488a40037f407e13e1259192b7f6d9fe717354ea9d055fb24eea270ff4bc",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 2) AND (rq3_build_sanity_mcv_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "a246249870a9e751a7e97b5c4e7a95ed985869537e276f3db366dcb1531974b4",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 1,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "269b9ba56c5a6a9a8b98c6f56d6e02b8129af55cdc36b03a4a521e3060158719",
+            "plan_rows": 1,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": true,
+        "payload_digests": {
+          "synthetic-mcv": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_mcv_only",
+          "oid": 16503,
+          "schema": "public"
+        },
+        "role": "patched",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-mcv",
+            "catalog_kinds": "{m}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_only_mcv (mcv) ON a, b FROM rq3_build_sanity_mcv_only",
+            "keys": "1 2",
+            "kind": "mcv",
+            "name": "rq3_build_mcv_only_mcv",
+            "oid": 16506,
+            "payload_sha256": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d",
+            "payload_size": 272
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "d5cd800d931fa52bb56152cc533a53ec490a91c53db42d636a13b69def266a0c"
+      },
+      "statistics_definitions": [
+        {
+          "candidate_id": "synthetic-mcv",
+          "kind": "mcv"
+        }
+      ],
+      "stock": {
+        "catalog_order": [
+          "rq3_build_mcv_only_mcv"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "5089488a40037f407e13e1259192b7f6d9fe717354ea9d055fb24eea270ff4bc",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 2) AND (rq3_build_sanity_mcv_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "a246249870a9e751a7e97b5c4e7a95ed985869537e276f3db366dcb1531974b4",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_only.a = 1) AND (rq3_build_sanity_mcv_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 1,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "269b9ba56c5a6a9a8b98c6f56d6e02b8129af55cdc36b03a4a521e3060158719",
+            "plan_rows": 1,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_only WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": "not-applicable-stock-binary",
+        "payload_digests": {
+          "synthetic-mcv": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_mcv_only",
+          "oid": 16436,
+          "schema": "public"
+        },
+        "role": "stock",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-mcv",
+            "catalog_kinds": "{m}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_only_mcv (mcv) ON a, b FROM rq3_build_sanity_mcv_only",
+            "keys": "1 2",
+            "kind": "mcv",
+            "name": "rq3_build_mcv_only_mcv",
+            "oid": 16439,
+            "payload_sha256": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d",
+            "payload_size": 272
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "d5cd800d931fa52bb56152cc533a53ec490a91c53db42d636a13b69def266a0c"
+      }
+    },
+    {
+      "cleanup": {
+        "patched": {
+          "overlay_active_after": null,
+          "physical_extstats_count_after": 0,
+          "verified": true
+        },
+        "stock": {
+          "overlay_active_after": "not-applicable-stock-binary",
+          "physical_extstats_count_after": 0,
+          "verified": true
+        }
+      },
+      "configuration_id": "fd-only",
+      "controls": {
+        "equivalent_design": true,
+        "identical_planner_settings": true,
+        "identical_relation_contents": true,
+        "identical_schema": true,
+        "identical_statistics_target": true,
+        "identical_workload": true,
+        "ordinary_stats_equal": true,
+        "patched_overlay_inactive": true,
+        "payload_correspondence_verified": true,
+        "physical_catalog_objects_present": true
+      },
+      "gate": "pass",
+      "paired_queries": [
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-equal",
+          "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 1",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 2) AND (rq3_build_sanity_fd_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-rare",
+          "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 2 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 2) AND (rq3_build_sanity_fd_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-cross",
+          "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_fd_only",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_fd_only",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        }
+      ],
+      "patched": {
+        "catalog_order": [
+          "rq3_build_fd_only_fd"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "e9232d473b0f335b3938392b237a0abe5bcba38dbebfab074743e0894cc55435",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 2) AND (rq3_build_sanity_fd_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "ff4ee1cbcab4a2eafb21788e801f553b1d19a0e51e9746683842bc97f7b44d6d",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "621e807e406153584f570227d91c190d821a75ab834831214726cf2ee86282fb",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": true,
+        "payload_digests": {
+          "synthetic-fd": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_fd_only",
+          "oid": 16507,
+          "schema": "public"
+        },
+        "role": "patched",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-fd",
+            "catalog_kinds": "{f}",
+            "definition": "CREATE STATISTICS public.rq3_build_fd_only_fd (dependencies) ON a, b FROM rq3_build_sanity_fd_only",
+            "keys": "1 2",
+            "kind": "dependencies",
+            "name": "rq3_build_fd_only_fd",
+            "oid": 16510,
+            "payload_sha256": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+            "payload_size": 40
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "5f4370c640b3e817bf4144ac098e954053f7d4ff50f0e8ff789f36e77bbdf182"
+      },
+      "statistics_definitions": [
+        {
+          "candidate_id": "synthetic-fd",
+          "kind": "dependencies"
+        }
+      ],
+      "stock": {
+        "catalog_order": [
+          "rq3_build_fd_only_fd"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "e9232d473b0f335b3938392b237a0abe5bcba38dbebfab074743e0894cc55435",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 2) AND (rq3_build_sanity_fd_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "ff4ee1cbcab4a2eafb21788e801f553b1d19a0e51e9746683842bc97f7b44d6d",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_fd_only",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_fd_only.a = 1) AND (rq3_build_sanity_fd_only.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_fd_only",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "621e807e406153584f570227d91c190d821a75ab834831214726cf2ee86282fb",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_fd_only WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": "not-applicable-stock-binary",
+        "payload_digests": {
+          "synthetic-fd": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_fd_only",
+          "oid": 16440,
+          "schema": "public"
+        },
+        "role": "stock",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-fd",
+            "catalog_kinds": "{f}",
+            "definition": "CREATE STATISTICS public.rq3_build_fd_only_fd (dependencies) ON a, b FROM rq3_build_sanity_fd_only",
+            "keys": "1 2",
+            "kind": "dependencies",
+            "name": "rq3_build_fd_only_fd",
+            "oid": 16443,
+            "payload_sha256": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+            "payload_size": 40
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "5f4370c640b3e817bf4144ac098e954053f7d4ff50f0e8ff789f36e77bbdf182"
+      }
+    },
+    {
+      "cleanup": {
+        "patched": {
+          "overlay_active_after": null,
+          "physical_extstats_count_after": 0,
+          "verified": true
+        },
+        "stock": {
+          "overlay_active_after": "not-applicable-stock-binary",
+          "physical_extstats_count_after": 0,
+          "verified": true
+        }
+      },
+      "configuration_id": "mcv-plus-fd",
+      "controls": {
+        "equivalent_design": true,
+        "identical_planner_settings": true,
+        "identical_relation_contents": true,
+        "identical_schema": true,
+        "identical_statistics_target": true,
+        "identical_workload": true,
+        "ordinary_stats_equal": true,
+        "patched_overlay_inactive": true,
+        "payload_correspondence_verified": true,
+        "physical_catalog_objects_present": true
+      },
+      "gate": "pass",
+      "paired_queries": [
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-equal",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 1",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 1))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 2) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 143,
+          "query_id": "mcv-fd-rare",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 2 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 2) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 143,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 143
+        },
+        {
+          "absolute_delta": 0,
+          "exact_match": true,
+          "mismatch_category": "exact-match",
+          "patched_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 1,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "patched_plan_rows": 1,
+          "query_id": "mcv-fd-cross",
+          "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 2",
+          "stock_explain": {
+            "Plan": {
+              "Alias": "rq3_build_sanity_mcv_plus_fd",
+              "Async Capable": false,
+              "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+              "Node Type": "Seq Scan",
+              "Output": [
+                "a",
+                "b",
+                "c"
+              ],
+              "Parallel Aware": false,
+              "Plan Rows": 1,
+              "Plan Width": 12,
+              "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+              "Schema": "public",
+              "Startup Cost": 0.0,
+              "Total Cost": 21.0
+            }
+          },
+          "stock_plan_rows": 1
+        }
+      ],
+      "patched": {
+        "catalog_order": [
+          "rq3_build_mcv_plus_fd_mcv",
+          "rq3_build_mcv_plus_fd_fd"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "6d3bc53d5da569d06dc34a34ea5b6e00f59d185331d2ee6c6c09e68831b61bd6",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 2) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "4c26260fff9468fb1d7c21a9d63b989e22b85fe75be0570313a6d7c8c44d7b6e",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 1,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "ed3e344c66bced8938abae544ca8b324c9906ac3b4f8919339ae0651318214ad",
+            "plan_rows": 1,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": true,
+        "payload_digests": {
+          "synthetic-fd": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+          "synthetic-mcv": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_mcv_plus_fd",
+          "oid": 16511,
+          "schema": "public"
+        },
+        "role": "patched",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-mcv",
+            "catalog_kinds": "{m}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_plus_fd_mcv (mcv) ON a, b FROM rq3_build_sanity_mcv_plus_fd",
+            "keys": "1 2",
+            "kind": "mcv",
+            "name": "rq3_build_mcv_plus_fd_mcv",
+            "oid": 16514,
+            "payload_sha256": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d",
+            "payload_size": 272
+          },
+          {
+            "candidate_id": "synthetic-fd",
+            "catalog_kinds": "{f}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_plus_fd_fd (dependencies) ON a, b FROM rq3_build_sanity_mcv_plus_fd",
+            "keys": "1 2",
+            "kind": "dependencies",
+            "name": "rq3_build_mcv_plus_fd_fd",
+            "oid": 16515,
+            "payload_sha256": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+            "payload_size": 40
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "7cd741b5273c026bd823dcf5b559ad588165f3a58110d1f9e25c76e03146fad9"
+      },
+      "statistics_definitions": [
+        {
+          "candidate_id": "synthetic-mcv",
+          "kind": "mcv"
+        },
+        {
+          "candidate_id": "synthetic-fd",
+          "kind": "dependencies"
+        }
+      ],
+      "stock": {
+        "catalog_order": [
+          "rq3_build_mcv_plus_fd_mcv",
+          "rq3_build_mcv_plus_fd_fd"
+        ],
+        "data_digest": "05935023903023f44dcf9c4ae17c0f7abf5389d8cf2550462466d987dc39abd8",
+        "explain": [
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 1))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "6d3bc53d5da569d06dc34a34ea5b6e00f59d185331d2ee6c6c09e68831b61bd6",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-equal",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 1"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 2) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 143,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "4c26260fff9468fb1d7c21a9d63b989e22b85fe75be0570313a6d7c8c44d7b6e",
+            "plan_rows": 143,
+            "query_id": "mcv-fd-rare",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 2 AND b = 2"
+          },
+          {
+            "explain": {
+              "Plan": {
+                "Alias": "rq3_build_sanity_mcv_plus_fd",
+                "Async Capable": false,
+                "Filter": "((rq3_build_sanity_mcv_plus_fd.a = 1) AND (rq3_build_sanity_mcv_plus_fd.b = 2))",
+                "Node Type": "Seq Scan",
+                "Output": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "Parallel Aware": false,
+                "Plan Rows": 1,
+                "Plan Width": 12,
+                "Relation Name": "rq3_build_sanity_mcv_plus_fd",
+                "Schema": "public",
+                "Startup Cost": 0.0,
+                "Total Cost": 21.0
+              }
+            },
+            "explain_sha256": "ed3e344c66bced8938abae544ca8b324c9906ac3b4f8919339ae0651318214ad",
+            "plan_rows": 1,
+            "query_id": "mcv-fd-cross",
+            "sql": "SELECT * FROM public.rq3_build_sanity_mcv_plus_fd WHERE a = 1 AND b = 2"
+          }
+        ],
+        "ordinary_stats_fingerprint": "150263a8f34f03d8517be9fc99ab13d96493f01c8a9d4c50b39f3912483f459a",
+        "overlay_inactive": "not-applicable-stock-binary",
+        "payload_digests": {
+          "synthetic-fd": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+          "synthetic-mcv": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d"
+        },
+        "physical_catalog_objects_present": true,
+        "relation": {
+          "name": "rq3_build_sanity_mcv_plus_fd",
+          "oid": 16444,
+          "schema": "public"
+        },
+        "role": "stock",
+        "schema_digest": "3daf5e483b42a506f2e1ed6bc76a9959d234349c5de130536adcfc4166d33322",
+        "settings": {
+          "DateStyle": "ISO, YMD",
+          "default_statistics_target": "100",
+          "enable_bitmapscan": "on",
+          "enable_indexscan": "on",
+          "enable_seqscan": "on",
+          "jit": "off",
+          "plan_cache_mode": "auto",
+          "search_path": "\"$user\", public",
+          "timezone": "UTC",
+          "transaction_isolation": "read committed",
+          "transaction_read_only": "off"
+        },
+        "statistics_definitions": [
+          {
+            "candidate_id": "synthetic-mcv",
+            "catalog_kinds": "{m}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_plus_fd_mcv (mcv) ON a, b FROM rq3_build_sanity_mcv_plus_fd",
+            "keys": "1 2",
+            "kind": "mcv",
+            "name": "rq3_build_mcv_plus_fd_mcv",
+            "oid": 16447,
+            "payload_sha256": "0aa2458c1b5643bcbfacd79fc7fba383f564923b722dfadc6d5a6fd66fec375d",
+            "payload_size": 272
+          },
+          {
+            "candidate_id": "synthetic-fd",
+            "catalog_kinds": "{f}",
+            "definition": "CREATE STATISTICS public.rq3_build_mcv_plus_fd_fd (dependencies) ON a, b FROM rq3_build_sanity_mcv_plus_fd",
+            "keys": "1 2",
+            "kind": "dependencies",
+            "name": "rq3_build_mcv_plus_fd_fd",
+            "oid": 16448,
+            "payload_sha256": "dfc01ee8e38b888590bbcccc5527a8ddb3a1846eac8ea4533bee72188037ca2a",
+            "payload_size": 40
+          }
+        ],
+        "statistics_target": 100,
+        "table_sql": "CREATE TABLE public.<table> (a integer, b integer, c integer)",
+        "workload_digest": "7cd741b5273c026bd823dcf5b559ad588165f3a58110d1f9e25c76e03146fad9"
+      }
+    }
+  ],
+  "execution_status": "complete",
+  "experiment_id": "rq3-secondary-build-sanity",
+  "fixture": {
+    "data_generator": "generate_series(1,1000) -> (i % 7, i % 7, i % 3)",
+    "encoding": "UTF8",
+    "fixture_id": "rq3-synthetic-build-sanity-v1",
+    "locale": "C.utf8",
+    "relation_schema": "public",
+    "row_count": 1000,
+    "setseed": {
+      "experiment_seed_identifier": 123,
+      "postgresql_sql": "SELECT setseed(1.0 / 123)"
+    },
+    "statistics_target": 100
+  },
+  "formal_experiment": true,
+  "format": "rq3-build-sanity-v1",
+  "paper_specification": {
+    "experiment_id": "rq3-secondary-build-sanity",
+    "identity": "paper-experiment-v1"
+  },
+  "semantic_digest": "2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2",
+  "summary": {
+    "configuration_count": 3,
+    "exact_match_count": 9,
+    "exact_match_fraction": 1.0,
+    "gate": "pass",
+    "mismatch_categories": {
+      "exact-match": 9
+    },
+    "mismatch_count": 0,
+    "query_count": 9
+  },
+  "system": {
+    "advisor_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "advisor_repository": "1951123/extstats-advisor",
+    "binary_difference_is_intended_secondary_factor": true,
+    "configure_identity": {
+      "patched": [
+        "/home/wqts/projects/postgresql-src-pgextadv/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "stock": [
+        "/home/wqts/projects/postgresql-src/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ]
+    },
+    "patched_build_identity": {
+      "build_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/build",
+      "build_environment": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "compiler": "/usr/bin/cc",
+      "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "configure_command": [
+        "/home/wqts/projects/postgresql-src-pgextadv/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/data",
+      "database": "extstats_patched",
+      "encoding": "UTF8",
+      "format_version": "postgres-lab-instance-v1",
+      "initdb_identity": {
+        "binary": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install/bin/initdb",
+        "command": [
+          "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install/bin/initdb",
+          "--locale=C.utf8",
+          "--encoding=UTF8",
+          "--auth-local=trust",
+          "--auth-host=reject"
+        ],
+        "version": "initdb (PostgreSQL) 16.14"
+      },
+      "install_prefix": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install",
+      "locale": "C.utf8",
+      "make_version": "GNU Make 4.3",
+      "pg_config_configure": "'--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install' '--with-icu' '--with-libxml' '--with-libxslt' '--with-ssl=openssl' 'CC=cc' 'CFLAGS='",
+      "port": 55433,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "patched",
+      "runtime_created_at": "2026-10-07T03:19:45.486258+00:00",
+      "socket_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/socket",
+      "source_branch": "main",
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "source_description": "6d7f5c9cd6c",
+      "source_dirty": false,
+      "source_materialization": "temporary clean git archive of source_commit_sha",
+      "source_repository": "/home/wqts/projects/postgresql-src-pgextadv"
+    },
+    "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "patched_postgres_repository": "1951123/postgresql-pgextadv",
+    "research_commit_sha": "3dd9ff69212c48c70f25b74e1558189f9b8898ab",
+    "research_repository": "1951123/extstats-advisor-research",
+    "stock_build_identity": {
+      "build_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/build",
+      "build_environment": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "compiler": "/usr/bin/cc",
+      "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "configure_command": [
+        "/home/wqts/projects/postgresql-src/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/data",
+      "database": "extstats_stock",
+      "encoding": "UTF8",
+      "format_version": "postgres-lab-instance-v1",
+      "initdb_identity": {
+        "binary": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install/bin/initdb",
+        "command": [
+          "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install/bin/initdb",
+          "--locale=C.utf8",
+          "--encoding=UTF8",
+          "--auth-local=trust",
+          "--auth-host=reject"
+        ],
+        "version": "initdb (PostgreSQL) 16.14"
+      },
+      "install_prefix": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install",
+      "locale": "C.utf8",
+      "make_version": "GNU Make 4.3",
+      "pg_config_configure": "'--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install' '--with-icu' '--with-libxml' '--with-libxslt' '--with-ssl=openssl' 'CC=cc' 'CFLAGS='",
+      "port": 55432,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "stock",
+      "runtime_created_at": "2026-10-06T14:06:23.342285+00:00",
+      "socket_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/socket",
+      "source_branch": "",
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "source_description": "0d1c00c624f",
+      "source_dirty": false,
+      "source_materialization": "temporary clean git archive of source_commit_sha",
+      "source_repository": "/home/wqts/projects/postgresql-src"
+    },
+    "stock_postgres_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "stock_postgres_repository": "1951123/postgresql-src"
+  },
+  "system_freeze": {
+    "format_version": "system-freeze-v2",
+    "path": "paper/system-freeze-v2.json",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48"
+  }
+}

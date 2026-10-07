@@ -90,8 +90,9 @@ SHA and `system-freeze-v2` semantic digest, and verifies the pinned v2 Advisor
 and patched-source revisions. It does not run Census13, Forest10, Power7, or
 DMV11. The non-`--formal` mode remains useful for local readiness fixtures.
 The stock-versus-patched physical sanity check is a separate secondary
-contract and is still `implementation-needed`; it is not substituted for the
-primary same-binary comparison.
+contract and is recorded in
+`experiments/rq3/rq3-secondary-build-sanity-v1.json`; it is not substituted
+for the primary same-binary comparison.
 
 ## Limitations
 
