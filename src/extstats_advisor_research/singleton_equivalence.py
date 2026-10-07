@@ -224,6 +224,18 @@ def truth_digest(truth: Any) -> str:
     return str(truth.semantic_digest or truth.computed_semantic_digest)
 
 
+def _canonical_candidate_profiles(profile: Any) -> tuple[tuple[str, dict[str, Any]], ...]:
+    return tuple(
+        sorted(
+            (
+                candidate.candidate_id,
+                candidate.to_dict(),
+            )
+            for candidate in profile.candidate_profiles
+        )
+    )
+
+
 def run_equivalence(
     dataset_id: str,
     source_run: Path,
@@ -500,8 +512,8 @@ def run_historical_incremental_equivalence(
         == historical_digest,
         "semantic_output_equal": incremental.computed_semantic_digest
         == source_profile.computed_semantic_digest,
-        "candidate_profiles_equal": incremental.candidate_profiles
-        == source_profile.candidate_profiles,
+        "candidate_profiles_equal": _canonical_candidate_profiles(incremental)
+        == _canonical_candidate_profiles(source_profile),
         "frozen_order_equal": incremental.frozen_ordered_candidate_ids
         == source_profile.frozen_ordered_candidate_ids,
         "baseline_objective_equal": incremental.baseline.objective
