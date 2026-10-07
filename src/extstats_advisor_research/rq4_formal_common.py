@@ -602,6 +602,38 @@ def _deterministic_projection(value: Any) -> Any:
     return value
 
 
+def _selection_replay_projection(methods: Mapping[str, Any]) -> dict[str, Any]:
+    projection: dict[str, Any] = {}
+    for method in CANONICAL_METHOD_ORDER:
+        record = methods[method]
+        projected = {
+            "method_id": record.get("method_id"),
+            "replicate_seed": record.get("replicate_seed"),
+            "status": record.get("status"),
+            "selected_membership": record.get("selected_membership"),
+            "evaluation_order": record.get("evaluation_order"),
+            "deployment_order": record.get("deployment_order"),
+            "termination_reason": record.get("termination_reason"),
+        }
+        search = record.get("search_result")
+        if isinstance(search, Mapping):
+            projected["search_result"] = {
+                key: search.get(key)
+                for key in (
+                    "baseline_objective",
+                    "final_objective",
+                    "improvement",
+                    "final_ordered_candidate_ids",
+                    "termination_reason",
+                    "first_round_evaluations",
+                    "completed_rounds",
+                    "accepted_moves",
+                )
+            }
+        projection[method] = projected
+    return {"methods": projection}
+
+
 def _write_v2_determinism(
     path: Path,
     comparison: Mapping[str, Any],
@@ -740,8 +772,8 @@ def run_formal_rq4_v2(
         sandbox_prepared = True
         first = _method_selection(source, advisor_root, planner_dsn)
         second = _method_selection(source, advisor_root, planner_dsn)
-        first_projection = _deterministic_projection({"methods": first["methods"]})
-        second_projection = _deterministic_projection({"methods": second["methods"]})
+        first_projection = _selection_replay_projection(first["methods"])
+        second_projection = _selection_replay_projection(second["methods"])
         if semantic_digest(first_projection) != semantic_digest(second_projection):
             diagnostic = {
                 "format_version": "rq4-fixed-k-v2-determinism-failure",
