@@ -1,9 +1,9 @@
 {
   "advisor": {
-    "current_incremental_commit_sha": "67206c4e0e30bc0726ca6febaa887e9ae9e7bbbd",
+    "current_incremental_commit_sha": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
     "historical_oracle_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
   },
-  "artifact_digest": "05765f9db47aaeb6698f47a460f2ede6e3f7f0ea0654daa29091b86762ea0250",
+  "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
   "dataset_id": "arecel-forest10",
   "equivalence": {
     "audit": {
@@ -389,7 +389,7 @@
       "full_workload_reference_planner_query_estimate_count": 580000,
       "planner_query_estimate_count": 220640,
       "planner_query_reduction_fraction": 0.6195862068965517,
-      "profiling_wall_clock_seconds": 82.46443505499974,
+      "profiling_wall_clock_seconds": 86.4010922970001,
       "saved_planner_query_estimate_count": 359360,
       "singleton_configuration_count": 57,
       "singleton_planner_query_estimate_count": 210640,
@@ -411,7 +411,7 @@
     "validation_wall_clock_gate_seconds": 300.0
   },
   "research_repository": {
-    "research_commit_sha": "a167e817296cc78123872973b4847e33866e31d4",
+    "research_commit_sha": "e3e0b124c7fb5257af94a1a59dbd00d85a36d90e",
     "research_repository": "1951123/extstats-advisor-research"
   },
   "sandbox_verification": {
@@ -429,7 +429,7 @@
       "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
       "population_quality": "estimate",
       "population_row_count": 581012.0,
-      "prepared_at": "2026-10-07 11:04:48.105280+08:00",
+      "prepared_at": "2026-10-07 11:08:31.427915+08:00",
       "relation_id": "rel_96c2e4f82f8ed10b05330552",
       "relation_name": {
         "catalog": "extstats_stock",
@@ -463,7 +463,7 @@
         "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
         "population_quality": "estimate",
         "population_row_count": 581012.0,
-        "prepared_at": "2026-10-07 11:04:48.105280+08:00",
+        "prepared_at": "2026-10-07 11:08:31.427915+08:00",
         "relation_id": "rel_96c2e4f82f8ed10b05330552",
         "relation_name": {
           "catalog": "extstats_stock",
@@ -490,7 +490,7 @@
         "semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc"
       },
       "sandbox_contract": "postgresql-planner-sandbox-v1",
-      "target_relation_oid": 16706,
+      "target_relation_oid": 16722,
       "target_sample_row_count": 10000
     }
   },
