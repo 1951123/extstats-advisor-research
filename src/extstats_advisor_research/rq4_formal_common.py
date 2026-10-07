@@ -688,7 +688,10 @@ def run_formal_rq4_v2(
     research_identity = verify_research_repository(research_root)
     verify_frozen_systems_v2(advisor_root, patched_postgres_root, stock_postgres_root)
     freeze = load_system_freeze_v2(system_freeze_path)
-    if semantic_digest(freeze) != FROZEN_SYSTEM_FREEZE_V2_DIGEST:
+    freeze_digest = semantic_digest(
+        {key: item for key, item in freeze.items() if key != "semantic_digest"}
+    )
+    if freeze_digest != FROZEN_SYSTEM_FREEZE_V2_DIGEST:
         raise RQ4ValidationError("system-freeze-v2 digest mismatch")
     source = load_reusable_source(dataset_id, research_root, advisor_root)
     reference_gate = validate_reference_equivalence_gate(research_root)
@@ -742,7 +745,7 @@ def run_formal_rq4_v2(
         "status": "formal-confirmatory",
         "research_commit_sha": research_identity["research_commit_sha"],
         "system_freeze": freeze,
-        "system_freeze_semantic_digest": semantic_digest(freeze),
+        "system_freeze_semantic_digest": freeze_digest,
         "dataset_id": dataset_id,
         "workload_id": source["snapshot"].workload.workload_id,
         "query_count": QUERY_COUNT,
@@ -826,7 +829,7 @@ def run_formal_rq4_v2(
         "status": "complete",
         "research_commit_sha": research_identity["research_commit_sha"],
         "system_freeze": freeze,
-        "system_freeze_semantic_digest": semantic_digest(freeze),
+        "system_freeze_semantic_digest": freeze_digest,
         "dataset_id": dataset_id,
         "workload_id": source["snapshot"].workload.workload_id,
         "query_count": QUERY_COUNT,
