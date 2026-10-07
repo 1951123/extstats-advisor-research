@@ -2,16 +2,25 @@ from __future__ import annotations
 
 import copy
 import inspect
+import os
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from extstats_advisor.optimization import (
+    TERMINATION_ALL_SELECTED,
+    TERMINATION_MAX_STATISTICS_COUNT,
+)
 from extstats_advisor.optimization.singleton import SINGLETON_PRECEDENCE_POLICY
 
 from extstats_advisor_research.cli import _parser
-from extstats_advisor_research.provenance import semantic_digest
+from extstats_advisor_research.provenance import semantic_digest, write_json
 from extstats_advisor_research.rq4_ablation import RQ4ValidationError
-from extstats_advisor_research.rq4_formal_common import _advisor_modules, _build_full_universe_plan
+from extstats_advisor_research.rq4_formal_common import (
+    _advisor_modules,
+    _build_full_universe_plan,
+    load_reusable_source,
+)
 from extstats_advisor_research.rq4_ks_sensitivity import (
     FIXED_B,
     FORMAL_EXECUTION_WIDTHS,
@@ -24,11 +33,13 @@ from extstats_advisor_research.rq4_ks_sensitivity import (
     TOP_K_PROTOCOL_DIGEST,
     _ConfigurationEvaluationGuard,
     _formal_selection_accounting,
+    _reused_all_point,
     build_sensitivity_plan,
     candidate_prefix_digest,
     effective_candidate_count,
     normalize_screening_width,
     selection_configuration_evaluation_count,
+    validate_all_reuse_gate,
     validate_formal_ks_sensitivity,
     worst_case_live_proposals,
 )
@@ -266,6 +277,7 @@ def _formal_source_fixture() -> dict:
     profile = SimpleNamespace(
         computed_semantic_digest="p" * 64,
         frozen_ordered_candidate_ids=candidate_ids,
+        runtime_metadata={},
     )
     return {
         "eligible_universe": {
@@ -277,12 +289,18 @@ def _formal_source_fixture() -> dict:
     }
 
 
+def _require_v2_validation_environment() -> None:
+    if os.environ.get("EXTSTATS_ADVISOR_VALIDATION") != "v2":
+        pytest.skip("historical compatibility job does not assert frozen-v2-only APIs")
+
+
 def _final_evaluation() -> dict:
     return {
         "performed": True,
         "evaluation_scope": "independent-final-sandbox-evaluation",
         "selection_budget_charged": False,
         "stock_physical_evaluation": False,
+        "status": "complete",
     }
 
 
@@ -306,7 +324,7 @@ def _finite_point(width: int, selected: list[str] | None = None) -> dict:
         "status": "complete",
         "selected_candidate_ids": selected,
         "selected_k": len(selected),
-        "termination_reason": "max-statistics-count",
+        "termination_reason": TERMINATION_MAX_STATISTICS_COUNT,
         "search_result": {"final_ordered_candidate_ids": selected},
         "selection_accounting": accounting,
         **_formal_selection_accounting(accounting, wall_clock_seconds=1.0),
@@ -317,9 +335,18 @@ def _finite_point(width: int, selected: list[str] | None = None) -> dict:
 
 
 def _formal_artifact_fixture() -> tuple[dict, dict, dict]:
+    _require_v2_validation_environment()
     source = _formal_source_fixture()
     points = [_finite_point(width) for width in FORMAL_EXECUTION_WIDTHS]
     all_ids = ["a", "b", "c", "d"]
+    all_accounting = {
+        "proposal_configuration_evaluations": 3,
+        "actual_search_planner_calls": 10,
+        "reference_search_planner_calls": 20,
+        "saved_search_planner_calls": 10,
+        "planner_query_reduction_fraction": 0.5,
+    }
+    all_runtime = {"elapsed_search_seconds": 1.0}
     points.append(
         {
             "K_s": FORMAL_REUSED_WIDTH,
@@ -331,9 +358,14 @@ def _formal_artifact_fixture() -> tuple[dict, dict, dict]:
             "status": "complete",
             "selected_candidate_ids": all_ids,
             "selected_k": len(all_ids),
-            "termination_reason": "max-statistics-count",
-            "search_result": {"final_ordered_candidate_ids": all_ids},
-            "selection_accounting": {"proposal_configuration_evaluations": 3},
+            "termination_reason": TERMINATION_MAX_STATISTICS_COUNT,
+            "search_result": {
+                "final_ordered_candidate_ids": all_ids,
+                "runtime_metadata": all_runtime,
+            },
+            "selection_accounting": all_accounting,
+            **_formal_selection_accounting(all_accounting, wall_clock_seconds=1.0),
+            "selection_wall_clock_seconds": 1.0,
             "source_singleton_profiling_accounting": {"new_work": 0},
             "final_sandbox_evaluation": _final_evaluation(),
             "reuse": {
@@ -399,6 +431,21 @@ def test_synthetic_five_point_artifact_validates_and_censoring_is_allowed() -> N
     assert result["status"] == "valid"
 
 
+def test_canonical_all_selected_termination_is_accepted() -> None:
+    artifact, source, gate = _formal_artifact_fixture()
+    point = artifact["points"][0]
+    point["termination_reason"] = TERMINATION_ALL_SELECTED
+    point["status"] = "complete"
+    point["selected_candidate_ids"] = ["a", "b", "c", "d"]
+    point["selected_k"] = FIXED_B
+    point["search_result"]["final_ordered_candidate_ids"] = ["a", "b", "c", "d"]
+    broken = _redigest(artifact)
+    assert (
+        validate_formal_ks_sensitivity(broken, source=source, all_reuse_gate=gate)["status"]
+        == "valid"
+    )
+
+
 @pytest.mark.parametrize(
     ("mutation", "match"),
     [
@@ -421,6 +468,10 @@ def test_synthetic_five_point_artifact_validates_and_censoring_is_allowed() -> N
         (
             lambda value: value["stock_physical_evaluation"].update(performed=True),
             "stock physical",
+        ),
+        (
+            lambda value: value["points"][0].update(termination_reason="all-selected"),
+            "illegal termination",
         ),
     ],
 )
@@ -466,3 +517,88 @@ def test_final_evaluation_is_required_even_for_censored_point() -> None:
     broken = _redigest(artifact)
     with pytest.raises(RQ4ValidationError, match="final evaluation"):
         validate_formal_ks_sensitivity(broken, source=source, all_reuse_gate=gate)
+
+
+def _write_reuse_fixture(root: Path, greedy: dict) -> dict:
+    write_json(
+        root / "child.json",
+        {"rq4a": {"artifact": "design.json"}},
+    )
+    write_json(root / "design.json", {"methods": {"greedy-ADD": greedy}})
+    return {
+        "source_path": "child.json",
+        "source_semantic_digest": "r" * 64,
+        "source_method": "greedy-ADD",
+    }
+
+
+def _reuse_greedy_fixture() -> dict:
+    accounting = {
+        "proposal_configuration_evaluations": 120,
+        "actual_search_planner_calls": 468090,
+        "reference_search_planner_calls": 1200000,
+        "saved_search_planner_calls": 731910,
+        "planner_query_reduction_fraction": 0.609925,
+    }
+    return {
+        "search_result": {
+            "runtime_metadata": {"elapsed_search_seconds": 185.87962744},
+            "final_ordered_candidate_ids": ["a", "b", "c", "d"],
+        },
+        "termination_reason": TERMINATION_MAX_STATISTICS_COUNT,
+        "selected_membership": ["a", "b", "c", "d"],
+        "selection_accounting": accounting,
+        "final_sandbox_evaluation": _final_evaluation(),
+    }
+
+
+def test_reused_all_projects_canonical_accounting_from_runtime_metadata(tmp_path: Path) -> None:
+    _require_v2_validation_environment()
+    source = _formal_source_fixture()
+    gate = _write_reuse_fixture(tmp_path, _reuse_greedy_fixture())
+    point = _reused_all_point(source, tmp_path, gate)
+    assert point["execution_mode"] == "reused"
+    assert point["selection_configuration_objective_evaluations"] == 120
+    assert point["proposal_configuration_objective_evaluations"] == 120
+    assert point["incremental_planner_calls"] == 468090
+    assert point["reference_search_planner_calls"] == 1200000
+    assert point["saved_search_planner_calls"] == 731910
+    assert point["planner_call_reduction_fraction"] == 0.609925
+    assert point["selection_wall_clock_seconds"] == 185.87962744
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda greedy: greedy["search_result"].pop("runtime_metadata"),
+        lambda greedy: greedy["search_result"]["runtime_metadata"].pop("elapsed_search_seconds"),
+        lambda greedy: greedy["selection_accounting"].pop("proposal_configuration_evaluations"),
+    ],
+)
+def test_reused_all_projection_fails_closed_on_missing_source_accounting(
+    tmp_path: Path, mutation
+) -> None:
+    _require_v2_validation_environment()
+    greedy = _reuse_greedy_fixture()
+    mutation(greedy)
+    source = _formal_source_fixture()
+    gate = _write_reuse_fixture(tmp_path, greedy)
+    with pytest.raises(RQ4ValidationError):
+        _reused_all_point(source, tmp_path, gate)
+
+
+def test_power7_immutable_reused_all_projection_matches_source() -> None:
+    _require_v2_validation_environment()
+    root = Path(__file__).resolve().parents[1]
+    advisor_root = Path("/home/wqts/projects/extstats-advisor")
+    source = load_reusable_source("arecel-power7", root, advisor_root)
+    gate = validate_all_reuse_gate("arecel-power7", root, source)
+    point = _reused_all_point(source, root, gate)
+    assert point["execution_mode"] == "reused"
+    assert point["termination_reason"] == TERMINATION_MAX_STATISTICS_COUNT
+    assert point["selected_k"] == 4
+    assert point["selection_configuration_objective_evaluations"] == 120
+    assert point["incremental_planner_calls"] == 468090
+    assert point["selection_wall_clock_seconds"] == pytest.approx(185.87962744)
+    assert point["final_sandbox_evaluation"]["performed"] is True
+    assert point["final_sandbox_evaluation"]["stock_physical_evaluation"] is False

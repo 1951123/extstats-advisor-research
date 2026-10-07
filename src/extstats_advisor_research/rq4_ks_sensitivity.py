@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import copy
 import dataclasses
+import math
 import time
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -67,6 +68,36 @@ FORMAL_LIVE_SMOKE_DIGEST = "5209293d9ab850b109b54f9b3970035a9ec1424f69d02525c476
 FORMAL_LIVE_SMOKE_PRODUCER_SHA = "17fc6d96f4e9cd615ab733f2add47adf691d4820"
 TOP_K_PROTOCOL_DIGEST = "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec"
 FORMAL_WALL_CLOCK_TOLERANCE_SECONDS = 1.0
+
+
+def _formal_termination_contract() -> tuple[set[str], set[str]]:
+    """Load termination vocabulary from the Advisor selected for the run."""
+
+    try:
+        from extstats_advisor.optimization import (
+            TERMINATION_ALL_SELECTED,
+            TERMINATION_BUDGET_BEFORE_ROUND,
+            TERMINATION_BUDGET_INCOMPLETE_ROUND,
+            TERMINATION_LOCAL_OPTIMUM,
+            TERMINATION_MAX_STATISTICS_COUNT,
+        )
+    except ImportError as exc:
+        raise RQ4ValidationError(
+            "the selected Advisor build does not expose the frozen termination contract"
+        ) from exc
+    budget_terminations = {
+        TERMINATION_BUDGET_BEFORE_ROUND,
+        TERMINATION_BUDGET_INCOMPLETE_ROUND,
+    }
+    return (
+        {
+            TERMINATION_LOCAL_OPTIMUM,
+            TERMINATION_MAX_STATISTICS_COUNT,
+            TERMINATION_ALL_SELECTED,
+            *budget_terminations,
+        },
+        budget_terminations,
+    )
 
 
 def selection_configuration_evaluation_count(selection: Mapping[str, Any]) -> int:
@@ -990,6 +1021,13 @@ def _formal_selection_accounting(
         raise RQ4ValidationError("formal planner-call reduction is invalid")
     if count > MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS:
         raise RQ4ValidationError("formal point exceeded the configuration-evaluation cap")
+    if (
+        isinstance(wall_clock_seconds, bool)
+        or not isinstance(wall_clock_seconds, (int, float))
+        or not math.isfinite(wall_clock_seconds)
+        or wall_clock_seconds < 0
+    ):
+        raise RQ4ValidationError("formal selection wall-clock accounting is invalid")
     if wall_clock_seconds > SEARCH_WALL_CLOCK_SECONDS + FORMAL_WALL_CLOCK_TOLERANCE_SECONDS:
         raise RQ4ValidationError("formal finite-point selection exceeded the wall-clock cap")
     return {
@@ -1085,10 +1123,7 @@ def _run_formal_finite_point(
             "status": "complete",
         }
         termination = result.termination_reason
-        budget_terminations = {
-            "budget-expired-before-round",
-            "budget-expired-incomplete-round",
-        }
+        _, budget_terminations = _formal_termination_contract()
         status = "budget-censored" if termination in budget_terminations else "complete"
         return {
             "K_s": width,
@@ -1131,11 +1166,8 @@ def _reused_all_point(
     greedy = design["methods"]["greedy-ADD"]
     search_result = greedy["search_result"]
     termination = greedy["termination_reason"]
-    status = (
-        "budget-censored"
-        if termination in {"budget-expired-before-round", "budget-expired-incomplete-round"}
-        else "complete"
-    )
+    _, budget_terminations = _formal_termination_contract()
+    status = "budget-censored" if termination in budget_terminations else "complete"
     prefix = frozen_candidate_prefix(source, FORMAL_REUSED_WIDTH)
     selection = dict(greedy["selection_accounting"])
     point = {
@@ -1164,11 +1196,38 @@ def _reused_all_point(
             "source_method": gate["source_method"],
         },
     }
-    runtime = search_result.get("runtime", {})
-    if isinstance(runtime, Mapping) and isinstance(
-        runtime.get("elapsed_search_seconds"), (int, float)
+    runtime = search_result.get("runtime_metadata")
+    if not isinstance(runtime, Mapping):
+        raise RQ4ValidationError("reused all point lacks search_result.runtime_metadata")
+    elapsed = runtime.get("elapsed_search_seconds")
+    if (
+        isinstance(elapsed, bool)
+        or not isinstance(elapsed, (int, float))
+        or not math.isfinite(elapsed)
+        or elapsed < 0
     ):
-        point["selection_wall_clock_seconds"] = runtime["elapsed_search_seconds"]
+        raise RQ4ValidationError(
+            "reused all point lacks finite non-negative elapsed_search_seconds"
+        )
+    source_final = greedy.get("final_sandbox_evaluation")
+    if not isinstance(source_final, Mapping):
+        raise RQ4ValidationError("reused all point lacks final sandbox evidence")
+    if (
+        source_final.get("status") != "complete"
+        or source_final.get("evaluation_scope") != "independent-final-sandbox-evaluation"
+        or source_final.get("selection_budget_charged") is not False
+    ):
+        raise RQ4ValidationError("reused all point final sandbox evidence is invalid")
+    # The fixed-k-v2 source schema predates these two explicit booleans.  The
+    # validated scope/status above make this a provenance-preserving schema
+    # projection, not a new evaluation or a fabricated measurement.
+    point["final_sandbox_evaluation"] = {
+        **dict(source_final),
+        "performed": True,
+        "stock_physical_evaluation": False,
+    }
+    point.update(_formal_selection_accounting(selection, wall_clock_seconds=elapsed))
+    point["selection_wall_clock_seconds"] = elapsed
     return point
 
 
@@ -1354,13 +1413,7 @@ def validate_formal_ks_sensitivity(
     if set(by_width) != set(SCREENING_WIDTHS):
         raise RQ4ValidationError("formal K_s sensitivity grid is incomplete")
 
-    budget_terminations = {"budget-expired-before-round", "budget-expired-incomplete-round"}
-    legal_terminations = {
-        "local-optimum",
-        "max-statistics-count",
-        "all-selected",
-        *budget_terminations,
-    }
+    legal_terminations, budget_terminations = _formal_termination_contract()
     for width in SCREENING_WIDTHS:
         point = by_width[width]
         for field in (
@@ -1403,7 +1456,17 @@ def validate_formal_ks_sensitivity(
             raise RQ4ValidationError(f"formal K_s={width} has an invalid status")
         if (termination in budget_terminations) != (status == "budget-censored"):
             raise RQ4ValidationError(f"formal K_s={width} censoring status is inconsistent")
-        if width == "all":
+        selection = point.get("selection_accounting")
+        if not isinstance(selection, Mapping):
+            raise RQ4ValidationError(f"formal K_s={width} selection accounting is missing")
+        selection_wall_clock_seconds = point.get("selection_wall_clock_seconds", -1)
+        canonical = _formal_selection_accounting(
+            selection, wall_clock_seconds=selection_wall_clock_seconds
+        )
+        for key, expected in canonical.items():
+            if point.get(key) != expected:
+                raise RQ4ValidationError(f"formal K_s={width} canonical accounting mismatch: {key}")
+        if width == FORMAL_REUSED_WIDTH:
             if point.get("execution_mode") != "reused":
                 raise RQ4ValidationError("formal all point was executed instead of reused")
             reuse = point.get("reuse")
@@ -1415,20 +1478,16 @@ def validate_formal_ks_sensitivity(
                 != all_reuse_gate.get("source_semantic_digest")
             ):
                 raise RQ4ValidationError("formal all point reuse source does not match the gate")
+            runtime = point["search_result"].get("runtime_metadata")
+            if not isinstance(runtime, Mapping):
+                raise RQ4ValidationError("formal all point lacks runtime metadata")
+            if runtime.get("elapsed_search_seconds") != selection_wall_clock_seconds:
+                raise RQ4ValidationError(
+                    "formal all point wall-clock accounting differs from source runtime metadata"
+                )
         else:
             if point.get("execution_mode") != "executed":
                 raise RQ4ValidationError(f"formal K_s={width} finite point was not executed")
-            selection = point.get("selection_accounting")
-            if not isinstance(selection, Mapping):
-                raise RQ4ValidationError(f"formal K_s={width} selection accounting is missing")
-            canonical = _formal_selection_accounting(
-                selection, wall_clock_seconds=point.get("selection_wall_clock_seconds", -1)
-            )
-            for key, expected in canonical.items():
-                if point.get(key) != expected:
-                    raise RQ4ValidationError(
-                        f"formal K_s={width} canonical accounting mismatch: {key}"
-                    )
             final = point.get("final_sandbox_evaluation")
             if (
                 not isinstance(final, Mapping)
