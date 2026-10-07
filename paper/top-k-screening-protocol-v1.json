@@ -5,16 +5,21 @@
   "scope": "Pre-pruning screening-width cost model for the existing advisor pipeline; this document does not change recommendation semantics.",
   "symbols": {
     "K_s": "singleton screening width (candidate_limit / top-K prefix)",
-    "k": "number of statistics selected by the downstream search",
+    "k": "observed number of statistics selected by the downstream search; k <= B",
+    "B": "maximum selected statistics candidate definitions",
     "I(c)": "positive-weight supported workload query IDs incident on candidate c",
     "W": "positive-weight supported workload query IDs"
   },
   "canonical_pipeline": {
     "singleton_profiling": "profile every eligible candidate with incidence-incremental evaluation before screening",
     "screening": "retain the first K_s candidates in the frozen singleton precedence order",
-    "search": "run the existing greedy ADD search over that prefix",
+    "search": "run incremental Greedy ADD over that prefix with an explicit maximum selected-count budget B",
     "canonical_K_s": 8,
-    "canonical_k": 8,
+    "canonical_selected_k": "not-fixed",
+    "canonical_B": 8,
+    "selected_k_constraint": "k <= B; strict-improvement Greedy ADD may stop below B at local optimum",
+    "B_is_candidate_definition_count": true,
+    "physical_statistics_object_count_is_separate": true,
     "screening_is_semantics_preserving": false,
     "search_deadline_seconds": 300
   },

@@ -1,0 +1,51 @@
+{
+  "specification_identity": "incremental-greedy-add-protocol-v1",
+  "status": "implementation-complete-small-smoke-pending",
+  "scope": "Production Advisor v2 incremental Greedy ADD and an independent maximum selected-statistics budget; this is compatibility evidence, not a formal RQ4 experiment.",
+  "advisor_semantics": {
+    "search_policy": "greedy-add-incidence-incremental-v1",
+    "candidate_screening_width_symbol": "K_s",
+    "maximum_selected_statistics_symbol": "B",
+    "selected_count_symbol": "k",
+    "selection_constraint": "k <= B",
+    "B_counts": "candidate definitions selected by the Advisor",
+    "physical_statistics_object_count": "reported separately from k",
+    "strict_improvement": true,
+    "search_wall_clock_seconds": 300.0,
+    "termination_precedence": [
+      "budget-expired-before-round",
+      "budget-expired-incomplete-round",
+      "max-statistics-count",
+      "all-screened-candidates-selected",
+      "local-optimum"
+    ]
+  },
+  "reference_compatibility": {
+    "reference_policy": "greedy-add-v1-full-workload-evaluation",
+    "incremental_policy": "greedy-add-incidence-incremental-v1",
+    "required_comparison": [
+      "winner per proposal round",
+      "every proposal objective",
+      "accepted sequence",
+      "final membership and objective",
+      "termination reason"
+    ],
+    "nonincident_invariant": "for every transition M -> M+c, Plan Rows for queries outside I(c) are unchanged",
+    "audit": "full-workload semantic audit on a small live patched PostgreSQL fixture"
+  },
+  "runtime_accounting": {
+    "configuration_objective_evaluations": true,
+    "postgresql_per_query_planner_calls": true,
+    "selection_preprocessing_cost": true,
+    "final_evaluation_cost": "separate and excluded from the selection budget",
+    "elapsed_wall_clock_seconds": true,
+    "reference_call_model": "positive workload query count multiplied by completed proposal configuration evaluations; singleton profiling is reported separately"
+  },
+  "protocol_gates": {
+    "formal_rq4_execution": false,
+    "formal_rq2_rq3_rq5_execution": false,
+    "system_freeze_v2": "not-created; requires all singleton equivalence gates",
+    "historical_v1_artifacts_modified": false,
+    "small_smoke_must_be_live": true
+  }
+}

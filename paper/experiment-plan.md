@@ -540,6 +540,33 @@ artifact. Power7 completed the semantic and nonincident audit; its result is
 validation evidence for this implementation unit, not an RQ1/RQ4 paper
 result.
 
+### Incremental Greedy ADD and maximum-statistics-count compatibility protocol
+
+The production Advisor now has an explicit v2 search path described by
+`paper/incremental-greedy-add-protocol-v1.json`. The singleton screening width
+`K_s` controls the candidate prefix; the independent selected-definition budget
+`B` constrains the selected count `k` with `k <= B`. `B` counts candidate
+definitions, not physical catalog objects, and physical object count is reported
+separately.
+
+The v2 path retains the v1 full-workload Greedy ADD implementation as a
+reference. For an incumbent membership `M` and proposal `M+c`, it activates
+the proposal, replans only the positive-weight workload queries incident on
+`c`, merges those estimates into the immutable incumbent estimate map, and
+evaluates the complete utility. A proposal cache is committed only after a
+whole round selects its winner, so a rejected or deadline-incomplete round
+cannot mutate the incumbent. The exact invariant is audited with full
+workload estimates: nonincident queries must retain identical `Plan Rows`.
+
+The compatibility gate compares the reference and incremental paths on the
+same small live patched-PostgreSQL fixture: each proposal objective, each
+round winner, accepted sequence, final membership/objective, and termination
+reason must agree. Runtime accounting separates configuration objective
+evaluations, PostgreSQL per-query planner calls, profiling/preprocessing time,
+selection time, and any independent final evaluation. This is readiness and
+semantic-equivalence evidence only; it does not constitute a formal RQ4
+AreCEL experiment.
+
 ## RQ5 — Practicality
 
 **Question:** What operational cost is paid for the obtained accuracy
