@@ -595,6 +595,10 @@ def test_power7_immutable_reused_all_projection_matches_source() -> None:
     _require_v2_validation_environment()
     root = Path(__file__).resolve().parents[1]
     advisor_root = Path("/home/wqts/projects/extstats-advisor")
+    if not (advisor_root / "src").is_dir():
+        # GitHub Actions uses the installed pinned Advisor wheel; the author's
+        # local source checkout is intentionally absent there.
+        advisor_root = root
     source = load_reusable_source("arecel-power7", root, advisor_root)
     gate = validate_all_reuse_gate("arecel-power7", root, source)
     point = _reused_all_point(source, root, gate)
