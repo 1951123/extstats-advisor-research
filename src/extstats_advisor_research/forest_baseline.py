@@ -155,6 +155,14 @@ def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
         return validate_dmv11_physical_schema(
             columns, row_count=row_count, extended_statistics_count=extended_statistics_count
         )
+    type_aliases = {
+        "double precision": "DOUBLE PRECISION",
+        "character varying(64)": "VARCHAR(64)",
+    }
+
+    def canonical_type(value: str) -> str:
+        return type_aliases.get(value.casefold(), value.upper())
+
     schema_contract = dataset.schema_contract()
     expected = [
         {
@@ -166,7 +174,7 @@ def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
     ]
     if len(columns) != len(expected) or any(
         observed["name"] != required["name"]
-        or observed["postgres_type"].casefold() != required["postgres_type"].casefold()
+        or canonical_type(observed["postgres_type"]) != canonical_type(required["postgres_type"])
         or observed["not_null"] != required["not_null"]
         for observed, required in zip(columns, expected, strict=True)
     ):
