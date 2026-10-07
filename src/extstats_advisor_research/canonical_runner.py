@@ -98,7 +98,10 @@ def _paper_tail_contribution(directory: Path, artifact: dict[str, Any]) -> dict[
     with path.open(encoding="utf-8") as stream:
         for line in stream:
             value = json.loads(line)
-            records.append({"weight": value["weight"], "qerror": value["qerror"]})
+            # The legacy Census13 paper baseline predates explicit workload
+            # weights; its audited workload is uniformly weighted.  Newer
+            # baseline artifacts carry the field explicitly.
+            records.append({"weight": value.get("weight", 1.0), "qerror": value["qerror"]})
     result = _qerror_contribution(records, "qerror")
     result["max_query_id"] = artifact["summary"]["max_query_id"]
     return result
