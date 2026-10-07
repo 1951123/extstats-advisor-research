@@ -311,8 +311,10 @@ ordinary statistics fixed.
 `ANALYZE` P1, and research-only removal without `ANALYZE` followed by rollback
 P2. P2 is not production reconciliation.
 
-**Datasets:** each benchmark with an immutable recommendation and a full-data
-transfer path; DMV11 currently has an explicit full-data-transfer artifact.
+**Datasets:** four independent formal children: Census13, Forest10, Power7,
+and DMV11. The historical `full-data-transfer-k8` directories remain pilot
+evidence only; each formal child must produce a new `rq2-transfer-v1` artifact
+bound to the current system-freeze-v2 and producer research SHA.
 
 **Independent variables:** P0/P1/P2 state, dataset, recommendation, and
 full-data versus fixed-sample payload construction.
@@ -327,21 +329,43 @@ cost, query outcome counts, and the relationship between sample utility and
 full-data utility. Report two labels separately: **RQ2a** deployment benefit
 retention and **RQ2b** sandbox-utility/full-data-utility relationship.
 
+RQ2a reports the operational effect
+`Delta_operational = J_D(P0) - J_D(P1)` and the controlled full-data
+extended-statistics effect `Delta_controlled = J_D(P2) - J_D(P1)`. P2 is a
+research-only transaction-local counterfactual: it drops exactly the
+advisor-managed objects, performs no `ANALYZE`, and rolls back. The P1/P2
+ordinary-statistics fingerprints must be identical. A regression remains a
+valid completed observation; it is not a reason to change the Recommendation.
+
+RQ2b evaluates the same final membership on the sample and full-data states.
+It records `J_S(empty)`, `J_S(M)`, `J_D(P2)`, and `J_D(P1)`, the two relative
+improvements, a complete 3x3 direction contingency, same/opposite/unchanged-
+involved counts, and descriptive per-query Spearman correlation between
+`G_S(q)=log(Q_S(empty)/Q_S(M))` and
+`G_D(q)=log(Q_D(P2)/Q_D(P1))`. No p-value is claimed. A single recorded
+full-data native `ANALYZE` realization is used per formal child.
+
 The fixed-sample objective is $J_S(M)$. A full-data result is $J_D(M;A)$ for
 one native `ANALYZE` realization $A$; transfer analysis must not conflate the
 two with mechanism fidelity or treat native realization noise as a planner
 overlay error.
 
-**Raw artifact:** deployment result, per-query transfer JSONL, object/catalog
-verification, ordinary-stat fingerprints, and source digests.
+**Raw artifact:** one `rq2-transfer-v1` child artifact plus its per-query
+JSONL, fresh v2 source-run digests, new snapshot-bound external GroundTruthSet
+provenance, Recommendation/SearchResult/profile digests, DeploymentResult,
+object/catalog verification, ordinary-stat fingerprints, stage timings, and
+cleanup evidence. External truth import/validation is reported separately from
+planner evaluation and exact-count truth acquisition; formal RQ2 uses no
+10,000-query exact recount.
 
 **Derived artifact:** P0/P1/P2 summary table, paired scatter/violin plots, and
 transfer validity report.
 
 **Intended paper output:** RQ2a transfer table and RQ2b utility-transfer figure.
 
-**Status:** `pilot`/`preliminary` for current DMV11 and related artifacts;
-`planned` for final cross-dataset reporting.
+**Status:** formal runner and validators are `ready-to-run`; no formal child is
+complete until its artifact passes validation. The existing four
+`full-data-transfer-k8` artifacts remain `pilot`/`preliminary`.
 
 ## RQ3 — Fidelity
 

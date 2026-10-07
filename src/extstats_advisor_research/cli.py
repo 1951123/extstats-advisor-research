@@ -41,6 +41,7 @@ from .postgres_lab import (
     stop_role,
 )
 from .power_transfer import run_power_data_transfer
+from .provenance import semantic_digest, write_json
 from .rq1_canary import (
     inspect_rq1_artifact,
     run_census13_canary,
@@ -52,6 +53,14 @@ from .rq1_summary import (
     build_cross_dataset_summary,
     default_source_paths,
     validate_cross_dataset_summary,
+)
+from .rq2_transfer import (
+    RQ2_DATASETS,
+    inspect_rq2_artifact,
+    preflight_rq2,
+    run_rq2_child,
+    validate_rq2_artifact,
+    validate_rq2_cross_dataset,
 )
 from .rq3_build_sanity import (
     inspect_build_sanity_artifact,
@@ -466,6 +475,46 @@ def _parser() -> argparse.ArgumentParser:
     summary_create.add_argument("--output", type=Path, required=True)
     summary_validate = summary_commands.add_parser("validate")
     summary_validate.add_argument("artifact", type=Path)
+    rq2 = validate_commands.add_parser(
+        "rq2-transfer", help="run or validate one formal RQ2 transfer child"
+    )
+    rq2_commands = rq2.add_subparsers(dest="rq2_command", required=True)
+    rq2_preflight = rq2_commands.add_parser("preflight")
+    rq2_preflight.add_argument("--dataset", choices=RQ2_DATASETS, required=True)
+    rq2_run = rq2_commands.add_parser("run", aliases=["create"])
+    rq2_run.add_argument("--dataset", choices=RQ2_DATASETS, required=True)
+    rq2_run.add_argument("--stock-dsn", required=True)
+    rq2_run.add_argument("--patched-dsn", required=True)
+    rq2_run.add_argument("--output", type=Path, required=True)
+    rq2_run.add_argument("--data-root", type=Path)
+    rq2_run.add_argument("--runtime-root", type=Path)
+    rq2_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq2_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    rq2_run.add_argument(
+        "--stock-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src"),
+    )
+    rq2_run.add_argument("--advisor-command", default="extstats-advisor")
+    rq2_validate = rq2_commands.add_parser("validate")
+    rq2_validate.add_argument("artifact", type=Path)
+    rq2_inspect = rq2_commands.add_parser("inspect")
+    rq2_inspect.add_argument("artifact", type=Path)
+    rq2_summary = validate_commands.add_parser(
+        "rq2-summary", help="validate or derive the RQ2 cross-dataset summary"
+    )
+    rq2_summary_commands = rq2_summary.add_subparsers(dest="rq2_summary_command", required=True)
+    rq2_summary_create = rq2_summary_commands.add_parser("create", aliases=["run"])
+    rq2_summary_create.add_argument("artifacts", type=Path, nargs="+")
+    rq2_summary_create.add_argument("--output", type=Path, required=True)
+    rq2_summary_validate = rq2_summary_commands.add_parser("validate")
+    rq2_summary_validate.add_argument("artifacts", type=Path, nargs="+")
     rq4 = validate_commands.add_parser(
         "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
     )
@@ -828,6 +877,36 @@ def main(argv: list[str] | None = None) -> int:
                 result = build_cross_dataset_summary(default_source_paths(root), args.output)
             else:
                 result = validate_cross_dataset_summary(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq2-transfer":
+            if args.rq2_command == "preflight":
+                result = preflight_rq2(args.dataset)
+            elif args.rq2_command in {"run", "create"}:
+                result = run_rq2_child(
+                    args.dataset,
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    data_root=args.data_root,
+                    runtime_root=args.runtime_root,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                    stock_postgres_root=args.stock_postgres_root,
+                    advisor_command=args.advisor_command,
+                )
+            elif args.rq2_command == "validate":
+                result = validate_rq2_artifact(args.artifact)
+            else:
+                result = inspect_rq2_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq2-summary":
+            result = validate_rq2_cross_dataset(args.artifacts)
+            if args.rq2_summary_command in {"create", "run"}:
+                result["semantic_digest"] = semantic_digest(result)
+                write_json(args.output, result)
+                result = {"status": "written", "output": str(args.output), **result}
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-ablation":

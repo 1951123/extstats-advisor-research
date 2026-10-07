@@ -26,6 +26,7 @@ from .forest_canonical import (
 from .pins import verify_frozen_systems, verify_research_repository
 from .provenance import read_json, reject_credentials, sha256_file, write_json
 from .runs.layout import RunLayout, create_layout, update_manifest
+from .system_freeze_v2 import formal_system_freeze_v2_identity, verify_frozen_systems_v2
 
 
 def _run(command: list[str], log_path: Path) -> dict[str, Any]:
@@ -402,6 +403,8 @@ def _run_canonical(
     authoritative_truth: dict[str, Any] | None = None,
     seed_identifier: int | None = None,
     compact_evidence_directory: Path | None = None,
+    system_freeze_v2: bool = False,
+    stock_postgres_root: Path | None = None,
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
@@ -412,7 +415,16 @@ def _run_canonical(
 
     research_root = Path(__file__).resolve().parents[2]
     research_identity = verify_research_repository(research_root)
-    pins = verify_frozen_systems(advisor_root, patched_postgres_root)
+    if system_freeze_v2:
+        if stock_postgres_root is None:
+            raise ValueError("system-freeze-v2 canonical runs require the stock source root")
+        pins = verify_frozen_systems_v2(advisor_root, patched_postgres_root, stock_postgres_root)
+        expected_advisor_sha = pins["advisor_commit_sha"]
+        freeze_identity = formal_system_freeze_v2_identity()
+    else:
+        pins = verify_frozen_systems(advisor_root, patched_postgres_root)
+        expected_advisor_sha = pins["advisor_commit_sha"]
+        freeze_identity = None
     dataset_metadata = dataset.inspect(data_root)
     slug = dataset.BENCHMARK_ID.removeprefix("arecel-")
     workload_path = Path(output_root) / f"_{slug}_workload.json"
@@ -440,6 +452,8 @@ def _run_canonical(
         "candidate_limit": candidate_limit,
         "search_wall_clock_seconds": search_wall_clock_seconds,
     }
+    if freeze_identity is not None:
+        identity["system_freeze"] = freeze_identity
     if authoritative_truth is not None:
         identity["truth_source"] = {
             "kind": "authoritative-external-exact",
@@ -516,6 +530,7 @@ def _run_canonical(
             paths["ground_truth"],
             records,
             advisor_root=advisor_root,
+            expected_advisor_sha=expected_advisor_sha,
         )
         timings["snapshot_capture_exact_truth"] = round(time.monotonic() - started, 6)
         truth_capture = {
@@ -573,6 +588,7 @@ def _run_canonical(
             authority=str(authoritative_truth["authority"]),
             dataset_identity=str(authoritative_truth["dataset_identity"]),
             source_revision=str(authoritative_truth["source_revision"]),
+            expected_advisor_sha=expected_advisor_sha,
         )
         truth_validation["sanity_check"] = sanity
         truth_capture = {
@@ -591,6 +607,7 @@ def _run_canonical(
     sampling = sampling_provenance(
         paths["snapshot"],
         advisor_root=advisor_root,
+        expected_advisor_sha=expected_advisor_sha,
         expected_rows=sample_rows,
         expected_seed=sample_seed,
     )
@@ -630,6 +647,7 @@ def _run_canonical(
         paths["candidate_universe"],
         paths["native_repository"],
         statistics_target,
+        expected_advisor_sha=expected_advisor_sha,
     )
     timings["native_materialization"] = round(time.monotonic() - started, 6)
     native_manifest = read_json(paths["native_repository"] / "manifest.json")
@@ -937,6 +955,7 @@ def _run_canonical(
         planner_dsn=planner_dsn,
         advisor_root=advisor_root,
         patched_postgres_root=patched_postgres_root,
+        expected_advisor_sha=expected_advisor_sha,
     )
     timings["audit_replay"] = round(time.monotonic() - started, 6)
     audit_artifact = read_json(Path(audit_result["audit_path"]))

@@ -111,8 +111,6 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
         "rq1-confirmatory-matched-baselines",
         "rq2a-confirmatory-transfer",
         "rq2b-sample-full-utility",
-        "rq3-primary-mechanism-fidelity",
-        "rq3-secondary-build-sanity",
         "rq5-cost-accounting",
     }
     for experiment_id in exact_arecel_ids:
@@ -122,14 +120,26 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
 
     primary = by_id.get("rq3-primary-mechanism-fidelity")
     if primary is not None:
-        fixture = primary.get("validation_fixture")
+        fixture = primary.get("execution_fixture")
         if fixture not in SYNTHETIC_FIXTURES:
-            raise ValueError("RQ3 primary implementation fixture is not declared separately")
-        if fixture in primary.get("datasets", []):
-            raise ValueError("RQ3 implementation fixture must not be in confirmatory datasets")
+            raise ValueError("RQ3 primary execution fixture is not declared")
+        if primary.get("execution_scope") != "controlled-synthetic":
+            raise ValueError("RQ3 primary execution scope must be controlled-synthetic")
+        if primary.get("datasets") != [fixture]:
+            raise ValueError("RQ3 primary datasets must identify only its synthetic fixture")
         gate = primary.get("implementation_gate")
         if not isinstance(gate, dict) or not gate.get("artifact_format"):
             raise ValueError("RQ3 primary implementation gate is missing")
+
+    secondary = by_id.get("rq3-secondary-build-sanity")
+    if secondary is not None:
+        fixture = secondary.get("execution_fixture")
+        if fixture != "rq3-synthetic-build-sanity-v1":
+            raise ValueError("RQ3 secondary execution fixture is not declared")
+        if secondary.get("execution_scope") != "controlled-synthetic":
+            raise ValueError("RQ3 secondary execution scope must be controlled-synthetic")
+        if secondary.get("datasets") != [fixture]:
+            raise ValueError("RQ3 secondary datasets must identify only its synthetic fixture")
 
     entries = ledger.get("entries")
     if not isinstance(entries, list):

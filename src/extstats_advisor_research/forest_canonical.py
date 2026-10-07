@@ -50,10 +50,11 @@ def compare_production_truth_to_labels(
     audited_records: list[dict[str, Any]],
     *,
     advisor_root: Path,
+    expected_advisor_sha: str = FROZEN_ADVISOR_SHA,
     expected_query_count: int = 10_000,
 ) -> dict[str, Any]:
     """Load production artifacts through public APIs and compare every audited label."""
-    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    verify_git_sha(advisor_root, expected_advisor_sha)
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.ground_truth.artifact import load_ground_truth_set
     from extstats_advisor.snapshot.bundle import load_snapshot
@@ -87,13 +88,14 @@ def compare_authoritative_truth_to_labels(
     audited_records: list[dict[str, Any]],
     *,
     advisor_root: Path,
+    expected_advisor_sha: str = FROZEN_ADVISOR_SHA,
     authority: str,
     dataset_identity: str,
     source_revision: str,
     expected_query_count: int = 10_000,
 ) -> dict[str, Any]:
     """Validate an external exact GroundTruthSet and compare all labels in memory."""
-    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    verify_git_sha(advisor_root, expected_advisor_sha)
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.ground_truth.artifact import load_ground_truth_set
     from extstats_advisor.snapshot.bundle import load_snapshot
@@ -150,10 +152,11 @@ def sampling_provenance(
     snapshot_path: Path,
     *,
     advisor_root: Path,
+    expected_advisor_sha: str = FROZEN_ADVISOR_SHA,
     expected_rows: int = 10_000,
     expected_seed: int = 42,
 ) -> dict[str, Any]:
-    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    verify_git_sha(advisor_root, expected_advisor_sha)
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.snapshot.bundle import load_snapshot
 

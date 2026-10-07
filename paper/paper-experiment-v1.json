@@ -301,7 +301,7 @@
     {
       "experiment_id": "rq2a-confirmatory-transfer",
       "rq": "RQ2a",
-      "status": "planned",
+      "status": "ready-to-run",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "protocol": ["P0 fresh full-data baseline", "P1 add-only Recommendation plus final ANALYZE", "P2 research-only advisor-object removal without ANALYZE followed by rollback"],
       "metrics": ["paired q-error", "P0/P1/P2 deltas", "ordinary-statistics fingerprints", "payload/object verification", "deployment and rollback cost"],
@@ -310,12 +310,21 @@
       "required_raw_artifacts": ["P0/P1/P2 per-query results", "DeploymentResult", "catalog verification", "ordinary-statistics fingerprints", "source digests"],
       "required_derived_artifacts": ["transfer summary", "paired delta data", "transfer validity report"],
       "expected_paper_outputs": ["tab-rq2a-p0-p1-p2-transfer", "fig-rq2a-transfer"],
-      "completion_criteria": ["P1/P2 ordinary-statistics contract verified", "advisor-managed object identity verified", "rollback evidence present"]
+      "completion_criteria": ["P1/P2 ordinary-statistics contract verified", "advisor-managed object identity verified", "rollback evidence present"],
+      "formal_artifact_contract": {
+        "format": "rq2-transfer-v1",
+        "child_scope": "one independent child per AreCEL dataset",
+        "required_states": ["P0", "P1", "P2"],
+        "system_freeze": "paper/system-freeze-v2.json",
+        "truth_source": "authoritative-external-exact",
+        "ordinary_stats_rule": "P1 and P2 fingerprints must be equal; P2 performs no ANALYZE",
+        "completion_semantics": "execution and artifact validity, independent of improvement direction"
+      }
     },
     {
       "experiment_id": "rq2b-sample-full-utility",
       "rq": "RQ2b",
-      "status": "planned",
+      "status": "ready-to-run",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "metrics": ["sample utility", "full-data utility", "paired utility delta", "correlation/agreement analysis"],
       "truth_contract": "One freshly bound GroundTruthSet per snapshot, imported from the dataset-gated audited AreCEL observations policy.",
@@ -323,13 +332,22 @@
       "required_raw_artifacts": ["sample SearchResult/utility", "full-data SearchResult/utility", "paired manifest bindings"],
       "required_derived_artifacts": ["sample/full utility pairs", "agreement statistics", "outlier classification"],
       "expected_paper_outputs": ["fig-rq2b-sample-full-utility", "tab-rq2b-transfer-agreement"],
-      "completion_criteria": ["both utilities use the declared loss/weight contracts", "no RQ3 mechanism claim is inferred from this relationship"]
+      "completion_criteria": ["both utilities use the declared loss/weight contracts", "no RQ3 mechanism claim is inferred from this relationship"],
+      "formal_artifact_contract": {
+        "format": "rq2-transfer-v1",
+        "same_membership_as": "rq2a-confirmatory-transfer",
+        "required_metrics": ["J_S(empty)", "J_S(M)", "J_D(P2)", "J_D(P1)", "3x3 direction contingency", "Spearman G_S/G_D"],
+        "truth_source": "same snapshot-bound authoritative-external-exact GroundTruthSet as RQ2a",
+        "completion_semantics": "descriptive transfer evidence; no inferential p-value"
+      }
     },
     {
       "experiment_id": "rq3-primary-mechanism-fidelity",
       "rq": "RQ3",
       "status": "complete",
-      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "datasets": ["rq3-synthetic-mcv-fd-v1"],
+      "execution_fixture": "rq3-synthetic-mcv-fd-v1",
+      "execution_scope": "controlled-synthetic",
       "comparison": "Physical native statistics versus catalogless hypothetical overlay on the same patched PostgreSQL binary.",
       "main_factor": "physical catalog realization versus hypothetical overlay realization",
       "controls": ["identical patched binary", "identical relation contents", "identical schema", "identical workload", "identical ordinary-statistics state/fingerprint", "identical statistics target", "equivalent statistics design", "equivalent payload semantics", "identical payload bytes where technically possible", "identical planner/session settings"],
@@ -382,7 +400,9 @@
     "experiment_id": "rq3-secondary-build-sanity",
     "rq": "RQ3",
       "status": "complete",
-    "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+    "datasets": ["rq3-synthetic-build-sanity-v1"],
+      "execution_fixture": "rq3-synthetic-build-sanity-v1",
+      "execution_scope": "controlled-synthetic",
       "comparison": "Patched PostgreSQL physical statistics versus stock PostgreSQL physical statistics with hypothetical overlay inactive.",
       "role": "Secondary ordinary physical-statistics sanity check; never the primary hypothetical-fidelity result.",
       "controls": ["identical relation contents", "identical schema", "identical workload", "ordinary-statistics state/fingerprint", "statistics target", "physical statistics design/payload semantics", "planner/session settings"],
@@ -635,6 +655,16 @@
         "experiment_id": "rq2a-existing-transfer",
         "status": "pilot",
         "note": "Existing transfer artifacts remain pilot/preliminary."
+      },
+      {
+        "experiment_id": "rq2a-confirmatory-transfer",
+        "status": "ready-to-run",
+        "note": "Formal v2 runner and validator are committed; four independent children require fresh Recommendation and P0/P1/P2 evidence."
+      },
+      {
+        "experiment_id": "rq2b-sample-full-utility",
+        "status": "ready-to-run",
+        "note": "Formal v2 runner records paired sample/full utility, direction agreement, and Spearman transfer diagnostics under one truth contract."
       },
       {
         "experiment_id": "rq4-existing-calibration",

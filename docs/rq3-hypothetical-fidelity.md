@@ -94,6 +94,19 @@ contract and is recorded in
 `experiments/rq3/rq3-secondary-build-sanity-v1.json`; it is not substituted
 for the primary same-binary comparison.
 
+## Current formal status
+
+The formal RQ3 primary mechanism-fidelity execution is complete for the
+declared controlled synthetic fixture, with artifact
+`experiments/rq3/rq3-primary-mechanism-fidelity-v1.json` and semantic digest
+`e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6`.
+The formal secondary stock-versus-patched physical build-sanity execution is
+also complete, with artifact
+`experiments/rq3/rq3-secondary-build-sanity-v1.json` and semantic digest
+`2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2`.
+These are formal executions of the controlled synthetic fixtures, not claims
+that the RQ3 fidelity protocol has been run on all four AreCEL datasets.
+
 ## Limitations
 
 The fixture validates the MCV and dependency registration paths and

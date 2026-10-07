@@ -8,7 +8,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from ..pins import verify_frozen_systems, verify_research_repository
+from .. import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
+from ..pins import verify_git_sha, verify_research_repository
 from ..provenance import read_json, reject_credentials, semantic_digest, sha256_file, write_json
 
 AUDIT_FORMAT_VERSION = "research-run-audit-v1"
@@ -315,6 +316,7 @@ def run_audit(
     planner_dsn: str,
     advisor_root: Path,
     patched_postgres_root: Path,
+    expected_advisor_sha: str | None = None,
     output_directory: Path | None = None,
 ) -> dict[str, Any]:
     """Replay baseline/final configurations against one immutable completed run."""
@@ -323,7 +325,16 @@ def run_audit(
     if manifest.get("run_id") != run_directory.name or manifest.get("status") != "complete":
         raise ValueError("audit source must be one completed canonical run")
     current_research = verify_research_repository(Path(__file__).resolve().parents[2])
-    systems = verify_frozen_systems(advisor_root, patched_postgres_root)
+    advisor_sha = verify_git_sha(
+        advisor_root,
+        expected_advisor_sha or FROZEN_ADVISOR_SHA,
+    )
+    systems = {
+        "advisor_commit_sha": advisor_sha,
+        "patched_postgres_commit_sha": verify_git_sha(
+            patched_postgres_root, FROZEN_PATCHED_POSTGRES_SHA
+        ),
+    }
     for key in ("advisor_commit_sha", "patched_postgres_commit_sha"):
         if manifest.get(key) != systems[key]:
             raise ValueError(f"source run {key} does not match the frozen system")

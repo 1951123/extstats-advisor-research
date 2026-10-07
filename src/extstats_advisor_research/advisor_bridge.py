@@ -16,9 +16,10 @@ def materialize_native_repository(
     candidate_path: Path,
     output_path: Path,
     statistics_target: int,
+    expected_advisor_sha: str = FROZEN_ADVISOR_SHA,
 ) -> str:
     """Materialize the fixed sample through production's public API."""
-    verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA)
+    verify_git_sha(advisor_root, expected_advisor_sha)
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.candidates import load_candidate_universe
     from extstats_advisor.dbms.postgres import materialize_native_stats

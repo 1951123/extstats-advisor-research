@@ -11,7 +11,7 @@ from extstats_advisor_research.paper_spec import (
 )
 
 
-def test_current_spec_keeps_confirmatory_datasets_and_separates_fixture() -> None:
+def test_current_spec_keeps_confirmatory_datasets_and_declares_synthetic_rq3_scope() -> None:
     spec = load_paper_spec()
     assert spec["freeze_gate"]["status"] == "sut-v2-frozen-research-per-experiment"
     assert spec["freeze_gate"]["system_under_test"]["format_version"] == "system-freeze-v2"
@@ -25,15 +25,17 @@ def test_current_spec_keeps_confirmatory_datasets_and_separates_fixture() -> Non
         "rq1-confirmatory-matched-baselines",
         "rq2a-confirmatory-transfer",
         "rq2b-sample-full-utility",
-        "rq3-primary-mechanism-fidelity",
-        "rq3-secondary-build-sanity",
         "rq5-cost-accounting",
     ):
         assert experiments[experiment_id]["datasets"] == list(ARECEL_DATASETS)
-    assert (
-        experiments["rq3-primary-mechanism-fidelity"]["validation_fixture"]
-        not in experiments["rq3-primary-mechanism-fidelity"]["datasets"]
+    assert experiments["rq3-primary-mechanism-fidelity"]["datasets"] == ["rq3-synthetic-mcv-fd-v1"]
+    assert experiments["rq3-primary-mechanism-fidelity"]["execution_scope"] == (
+        "controlled-synthetic"
     )
+    assert experiments["rq3-secondary-build-sanity"]["datasets"] == [
+        "rq3-synthetic-build-sanity-v1"
+    ]
+    assert experiments["rq3-secondary-build-sanity"]["execution_scope"] == ("controlled-synthetic")
 
 
 def test_synthetic_fixture_in_rq1_is_rejected() -> None:
