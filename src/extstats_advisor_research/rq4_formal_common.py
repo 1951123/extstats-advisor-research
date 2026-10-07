@@ -449,14 +449,15 @@ def _method_selection(
         }
     greedy = _incidence_greedy(source, advisor_root, patched_dsn)
     search = greedy["search_result"]
+    selected_ids = list(search["final_ordered_candidate_ids"])
     methods["greedy-ADD"] = {
         "method_id": "greedy-ADD",
         "status": "complete"
         if search["termination_reason"] in {"all-selected", "max-statistics-count", "local-optimum"}
         else "budget-censored",
-        "selected_membership": list(search["selected_candidate_ids"]),
-        "evaluation_order": list(search["selected_candidate_ids"]),
-        "deployment_order": list(search["selected_candidate_ids"]),
+        "selected_membership": selected_ids,
+        "evaluation_order": selected_ids,
+        "deployment_order": selected_ids,
         "termination_reason": search["termination_reason"],
         "search_result": search,
         "selection_accounting": greedy["runtime_metadata"],
