@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import copy
 import gzip
+import inspect
 import json
 import random
 import sys
@@ -93,7 +94,6 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
     from extstats_advisor.candidates import load_candidate_universe
     from extstats_advisor.dbms.postgres.planner import PostgresPlannerSession
     from extstats_advisor.dbms.postgres.sandbox import POSTGRES_PLANNER_SANDBOX_CONTRACT
-    from extstats_advisor.dbms.postgres.search import IncrementalPostgresSearchEvaluator
     from extstats_advisor.ground_truth import load_ground_truth_set
     from extstats_advisor.ground_truth.provider import ArtifactGroundTruthProvider
     from extstats_advisor.native_stats import load_native_stats_repository
@@ -102,9 +102,21 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         OptimizationPlan,
         PlannerIdentity,
         ScreenedCandidate,
-        greedy_add_search_incremental,
         load_singleton_profile,
     )
+
+    try:
+        from extstats_advisor.dbms.postgres.search import IncrementalPostgresSearchEvaluator
+    except ImportError:
+        # The frozen Advisor v1 used to produce the committed RQ2/RQ4 source
+        # artifacts predates the incremental evaluator.  Loading and checking
+        # those artifacts must remain possible; live incremental execution
+        # fails closed below when the API is actually needed.
+        IncrementalPostgresSearchEvaluator = None
+    try:
+        from extstats_advisor.optimization import greedy_add_search_incremental
+    except ImportError:
+        greedy_add_search_incremental = None
     from extstats_advisor.optimization.plan import SCREENING_POLICY
     from extstats_advisor.snapshot.bundle import load_snapshot
     from extstats_advisor.utility import WeightedWorkloadUtility
@@ -129,6 +141,16 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         "IncrementalPostgresSearchEvaluator": IncrementalPostgresSearchEvaluator,
         "POSTGRES_PLANNER_SANDBOX_CONTRACT": POSTGRES_PLANNER_SANDBOX_CONTRACT,
     }
+
+
+def _require_incremental_backend(modules: Mapping[str, Any]) -> None:
+    if (
+        modules.get("IncrementalPostgresSearchEvaluator") is None
+        or modules.get("greedy_add_search_incremental") is None
+    ):
+        raise RQ4ValidationError(
+            "the selected Advisor build does not provide the incremental Greedy backend"
+        )
 
 
 def _source_root(research_root: Path, dataset_id: str) -> Path:
@@ -299,9 +321,15 @@ def build_ranked_plan(
     )
     present = set(present_ordered)
     absent = tuple(sorted(all_ids - present))
-    budget = modules["OptimizationBudget"](
-        len(ordered_ids), float(wall_clock_seconds), max_statistics_count
-    )
+    budget_type = modules["OptimizationBudget"]
+    if "max_statistics_count" not in inspect.signature(budget_type).parameters:
+        if max_statistics_count != len(ordered_ids):
+            raise RQ4ValidationError(
+                "selected Advisor build cannot represent K_s > B as a separate budget"
+            )
+        budget = budget_type(len(ordered_ids), float(wall_clock_seconds))
+    else:
+        budget = budget_type(len(ordered_ids), float(wall_clock_seconds), max_statistics_count)
     return modules["OptimizationPlan"](
         profile.source_snapshot_semantic_digest,
         profile.candidate_universe_semantic_digest,
@@ -376,6 +404,7 @@ def _incidence_greedy(
     patched_dsn: str,
 ) -> dict[str, Any]:
     modules = _advisor_modules(advisor_root)
+    _require_incremental_backend(modules)
     snapshot = source["snapshot"]
     universe = source["candidate_universe"]
     native = source["native_repository"]

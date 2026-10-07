@@ -22,6 +22,7 @@ from .rq4_formal_common import (
     DATASETS,
     _advisor_modules,
     _planner_identity,
+    _require_incremental_backend,
     build_ranked_plan,
     load_reusable_source,
 )
@@ -302,6 +303,8 @@ def build_smoke_artifact(
     )
     small = _small_source(source, candidate_count)
     modules = _advisor_modules(Path("/home/wqts/projects/extstats-advisor"))
+    if patched_dsn is not None:
+        _require_incremental_backend(modules)
     points = []
     for width in (4, "all"):
         plan = build_sensitivity_plan(small, modules, width)
