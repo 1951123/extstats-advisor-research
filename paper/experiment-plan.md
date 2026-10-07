@@ -6,8 +6,10 @@ and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13,
 Forest10, Power7, and DMV11 matched-comparison artifacts are dataset-level
 canonical results under the current confirmatory truth policy. The four-dataset
 RQ1 matched campaign is complete only within its declared three-arm,
-in-workload scope; RQ4 heuristic ablations, held-out generalization, RQ2, RQ3,
-and RQ5 remain separate incomplete work.
+in-workload scope; RQ4 heuristic ablations, held-out generalization, RQ3, and
+RQ5 remain separate incomplete work. The formal four-child RQ2 transfer
+campaign is complete under the frozen v2 protocol; historical transfer
+directories remain pilot evidence.
 
 The immutable `rq1-cross-dataset-summary-v1.json` remains historical output.
 The current paper pointer is the versioned `rq1-cross-dataset-summary-v2.json`,
@@ -119,8 +121,8 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
-| `rq2a-confirmatory-transfer` | RQ2a | `planned` | Requires frozen Recommendation, stock build, and P0/P1/P2 evidence. |
-| `rq2b-sample-full-utility` | RQ2b | `planned` | Requires paired utility artifacts under one truth contract. |
+| `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
+| `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq3-primary-mechanism-fidelity` | RQ3 | `complete` | Formal artifact `experiments/rq3/rq3-primary-mechanism-fidelity-v1.json` (digest `e3304129...`) records the frozen producer SHA, v2 freeze, 3 configurations, 9 exact Plan Rows pairs, zero mismatches, payload/fingerprint controls, and cleanup. |
 | `rq3-secondary-build-sanity` | RQ3 | `complete` | Formal artifact `experiments/rq3/rq3-secondary-build-sanity-v1.json` (digest `2678bb4e...`) records 3 configurations, 9 exact stock/patched physical pairs, inactive overlay, payload/fingerprint controls, and cleanup. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
@@ -363,9 +365,20 @@ transfer validity report.
 
 **Intended paper output:** RQ2a transfer table and RQ2b utility-transfer figure.
 
-**Status:** formal runner and validators are `ready-to-run`; no formal child is
-complete until its artifact passes validation. The existing four
-`full-data-transfer-k8` artifacts remain `pilot`/`preliminary`.
+**Status:** the four formal children are complete and passed the offline RQ2
+validator. Their historical `full-data-transfer-k8` counterparts remain
+`pilot`/`preliminary`. The versioned cross-dataset derived artifact is
+`experiments/rq2-cross-dataset-transfer-summary-v1.json` with semantic digest
+`dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`.
+
+The formal children produced these actual search outcomes: Census13 selected
+7 objects and terminated at `local-optimum`; Forest10 selected 8 and reached
+`all-screened-candidates-selected`; Power7 selected 7 and terminated at
+`local-optimum`; DMV11 selected 5 and terminated at `local-optimum`. No child
+was forced to select eight objects. All four children use fresh
+snapshot-bound authoritative external truth, keep external labels out of
+statistics construction, and record P1/P2 ordinary-statistics fingerprint
+equality. No 10,000-query exact truth recount was performed.
 
 ## RQ3 — Fidelity
 
@@ -692,8 +705,8 @@ rewritten.
 | Paper claim | RQ | Required evidence | Status |
 | --- | --- | --- | --- |
 | Native statistics can improve some workload estimates without replacing the estimator | RQ1 | Matched stock/strong-conventional/advisor per-query results and immutable manifests for all four completed datasets; cross-dataset summary v2 digest `84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c` | complete for the four-dataset, three-arm, in-workload claim; RQ4 heuristics and held-out generalization remain out of scope |
-| A sample-selected design can transfer to full-data native payloads | RQ2a | Valid P0/P1/P2 transfer, payload/object verification, paired q-error analysis | pilot/preliminary |
-| Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Paired sample/full utility and correlation analysis under the same truth contract | planned |
+| A sample-selected design can transfer to full-data native payloads | RQ2a | Four valid P0/P1/P2 transfer children, payload/object verification, paired q-error analysis, and cross-dataset summary `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7` | complete for the four declared AreCEL datasets and frozen v2 protocol |
+| Sample-sandbox utility predicts full-data utility to a measured degree | RQ2b | Four paired sample/full utility artifacts with 3x3 direction tables, same/opposite/unchanged-involved counts, and descriptive Spearman correlations under the same truth contract | complete descriptively; no inferential p-value |
 | Catalogless hypothetical evaluation reproduces physical behavior under controlled equivalent realization | RQ3 | Same-patched-binary primary comparison with direct `Plan Rows` agreement and mismatch classification; patched-vs-stock physical sanity check is secondary | complete for the declared synthetic fixture; limited scope |
 | Planner-in-the-loop search adds value beyond inexpensive heuristics | RQ4a/RQ4b | `rq4-ablation-v1`, deterministic replay artifact, shared stock union/drop artifact, then formal AreCEL fixed-k stock evaluations; RQ4b stability requires `native-analyze-stability-v1` | ready-to-run; readiness smokes only |
 | Operational trade-offs are measurable and include truth acquisition | RQ5 | Stage timing/size/cost records separating external import from exact counting | planned |

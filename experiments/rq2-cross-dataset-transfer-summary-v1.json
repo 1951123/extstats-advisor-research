@@ -1,0 +1,62 @@
+{
+  "format_version": "rq2-cross-dataset-transfer-summary-v1",
+  "rows": [
+    {
+      "J_D_P0": 5.239770377794661,
+      "J_D_P1": 2.234682097088506,
+      "J_D_P2": 5.240743890436734,
+      "actual_selected_k": 7,
+      "controlled_relative_improvement": 0.5735944850946952,
+      "dataset_id": "arecel-census13",
+      "operational_relative_improvement": 0.5735152619361443,
+      "opposite_direction_fraction": 0.0064,
+      "retention_ratio": 1.0492740055102463,
+      "same_direction_fraction": 0.9817,
+      "sample_relative_improvement": 0.5466584343865116,
+      "spearman_gs_gd": 0.9681788244033384
+    },
+    {
+      "J_D_P0": 257.3450068113743,
+      "J_D_P1": 43.53935131388201,
+      "J_D_P2": 257.3993390673347,
+      "actual_selected_k": 5,
+      "controlled_relative_improvement": 0.8308490166616462,
+      "dataset_id": "arecel-dmv11",
+      "operational_relative_improvement": 0.8308133044687556,
+      "opposite_direction_fraction": 0.0261,
+      "retention_ratio": 1.051786244171985,
+      "same_direction_fraction": 0.9593,
+      "sample_relative_improvement": 0.7899409421500176,
+      "spearman_gs_gd": 0.8857671843778812
+    },
+    {
+      "J_D_P0": 7.077746964695589,
+      "J_D_P1": 6.608288716957246,
+      "J_D_P2": 7.114475540358426,
+      "actual_selected_k": 8,
+      "controlled_relative_improvement": 0.07114885988850811,
+      "dataset_id": "arecel-forest10",
+      "operational_relative_improvement": 0.06632876960423145,
+      "opposite_direction_fraction": 0.0317,
+      "retention_ratio": 1.3894226545285802,
+      "same_direction_fraction": 0.9228,
+      "sample_relative_improvement": 0.05120749950104156,
+      "spearman_gs_gd": 0.7961537296582213
+    },
+    {
+      "J_D_P0": 136.45767900106677,
+      "J_D_P1": 87.50591162923818,
+      "J_D_P2": 138.3759518945178,
+      "actual_selected_k": 7,
+      "controlled_relative_improvement": 0.3676219716562976,
+      "dataset_id": "arecel-power7",
+      "operational_relative_improvement": 0.35873222914370323,
+      "opposite_direction_fraction": 0.022,
+      "retention_ratio": 0.9085170362246361,
+      "same_direction_fraction": 0.9438,
+      "sample_relative_improvement": 0.4046396016787526,
+      "spearman_gs_gd": 0.4775025737983189
+    }
+  ],
+  "semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7"
+}

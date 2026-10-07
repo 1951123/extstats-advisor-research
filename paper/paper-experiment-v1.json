@@ -301,7 +301,7 @@
     {
       "experiment_id": "rq2a-confirmatory-transfer",
       "rq": "RQ2a",
-      "status": "ready-to-run",
+      "status": "complete",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "protocol": ["P0 fresh full-data baseline", "P1 add-only Recommendation plus final ANALYZE", "P2 research-only advisor-object removal without ANALYZE followed by rollback"],
       "metrics": ["paired q-error", "P0/P1/P2 deltas", "ordinary-statistics fingerprints", "payload/object verification", "deployment and rollback cost"],
@@ -311,6 +311,13 @@
       "required_derived_artifacts": ["transfer summary", "paired delta data", "transfer validity report"],
       "expected_paper_outputs": ["tab-rq2a-p0-p1-p2-transfer", "fig-rq2a-transfer"],
       "completion_criteria": ["P1/P2 ordinary-statistics contract verified", "advisor-managed object identity verified", "rollback evidence present"],
+      "dataset_progress": {
+        "arecel-census13": {"status": "complete", "artifact": "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json", "semantic_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790", "actual_selected_k": 7, "termination_reason": "local-optimum"},
+        "arecel-forest10": {"status": "complete", "artifact": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json", "semantic_digest": "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4", "actual_selected_k": 8, "termination_reason": "all-screened-candidates-selected"},
+        "arecel-power7": {"status": "complete", "artifact": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json", "semantic_digest": "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600", "actual_selected_k": 7, "termination_reason": "local-optimum"},
+        "arecel-dmv11": {"status": "complete", "artifact": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json", "semantic_digest": "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc", "actual_selected_k": 5, "termination_reason": "local-optimum"}
+      },
+      "cross_dataset_summary": {"artifact": "experiments/rq2-cross-dataset-transfer-summary-v1.json", "semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7"},
       "formal_artifact_contract": {
         "format": "rq2-transfer-v1",
         "child_scope": "one independent child per AreCEL dataset",
@@ -324,7 +331,7 @@
     {
       "experiment_id": "rq2b-sample-full-utility",
       "rq": "RQ2b",
-      "status": "ready-to-run",
+      "status": "complete",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "metrics": ["sample utility", "full-data utility", "paired utility delta", "correlation/agreement analysis"],
       "truth_contract": "One freshly bound GroundTruthSet per snapshot, imported from the dataset-gated audited AreCEL observations policy.",
@@ -333,6 +340,13 @@
       "required_derived_artifacts": ["sample/full utility pairs", "agreement statistics", "outlier classification"],
       "expected_paper_outputs": ["fig-rq2b-sample-full-utility", "tab-rq2b-transfer-agreement"],
       "completion_criteria": ["both utilities use the declared loss/weight contracts", "no RQ3 mechanism claim is inferred from this relationship"],
+      "dataset_progress": {
+        "arecel-census13": "complete",
+        "arecel-forest10": "complete",
+        "arecel-power7": "complete",
+        "arecel-dmv11": "complete"
+      },
+      "cross_dataset_summary": {"artifact": "experiments/rq2-cross-dataset-transfer-summary-v1.json", "semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7"},
       "formal_artifact_contract": {
         "format": "rq2-transfer-v1",
         "same_membership_as": "rq2a-confirmatory-transfer",
@@ -658,13 +672,13 @@
       },
       {
         "experiment_id": "rq2a-confirmatory-transfer",
-        "status": "ready-to-run",
-        "note": "Formal v2 runner and validator are committed; four independent children require fresh Recommendation and P0/P1/P2 evidence."
+        "status": "complete",
+        "note": "Four independent frozen-v2 children passed validation. The derived cross-dataset summary is experiments/rq2-cross-dataset-transfer-summary-v1.json (digest dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7); historical full-data-transfer-k8 artifacts remain pilot/preliminary."
       },
       {
         "experiment_id": "rq2b-sample-full-utility",
-        "status": "ready-to-run",
-        "note": "Formal v2 runner records paired sample/full utility, direction agreement, and Spearman transfer diagnostics under one truth contract."
+        "status": "complete",
+        "note": "The four validated children record paired sample/full utility, 3x3 direction agreement, and descriptive Spearman transfer diagnostics under one truth contract; no inferential p-value is claimed."
       },
       {
         "experiment_id": "rq4-existing-calibration",
