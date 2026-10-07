@@ -874,9 +874,9 @@ def validate_rq2_cross_dataset(paths: list[Path]) -> dict[str, Any]:
             {
                 "dataset_id": value["dataset_id"],
                 "actual_selected_k": value["actual_selected_k"],
-                "J_D_P0": rq2a["P0"]["weighted_objective"],
-                "J_D_P1": rq2a["P1"]["weighted_objective"],
-                "J_D_P2": rq2a["P2"]["weighted_objective"],
+                "J_D_P0": rq2a["J_D_P0"],
+                "J_D_P1": rq2a["J_D_P1"],
+                "J_D_P2": rq2a["J_D_P2"],
                 "operational_relative_improvement": rq2a["relative_operational_improvement"],
                 "controlled_relative_improvement": rq2a["relative_controlled_improvement_R_D"],
                 "sample_relative_improvement": rq2b["sample"]["relative_improvement_R_S"],
