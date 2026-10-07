@@ -1,0 +1,507 @@
+{
+  "advisor": {
+    "current_incremental_commit_sha": "67206c4e0e30bc0726ca6febaa887e9ae9e7bbbd",
+    "historical_oracle_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+  },
+  "artifact_digest": "05765f9db47aaeb6698f47a460f2ede6e3f7f0ea0654daa29091b86762ea0250",
+  "dataset_id": "arecel-forest10",
+  "equivalence": {
+    "audit": {
+      "all_nonincident_estimates_unchanged": true,
+      "records": [
+        {
+          "affected_query_count": 3684,
+          "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3670,
+          "candidate_id": "cand_c2737dfb5bfbb3e415dfb793",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3723,
+          "candidate_id": "cand_817be8bf7bbbc96c20bde230",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3720,
+          "candidate_id": "cand_4de3778bb8674287b6dd5b29",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3699,
+          "candidate_id": "cand_cbf4af3acd6feaa65760c6d1",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3689,
+          "candidate_id": "cand_76679921292e8c769dbbd7bc",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3659,
+          "candidate_id": "cand_0deae0d5de82a5a1fdc34111",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3748,
+          "candidate_id": "cand_77c3e92fff291d4d9515dc69",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3653,
+          "candidate_id": "cand_5ba9cc937a696a76876f820d",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3651,
+          "candidate_id": "cand_bafa53ec095d804233d42826",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3656,
+          "candidate_id": "cand_01933ab615fb49e2f81b5b92",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3710,
+          "candidate_id": "cand_599a2efab190b6e2b7457ff1",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3680,
+          "candidate_id": "cand_42d3a67034bf5f02658cb7bf",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3716,
+          "candidate_id": "cand_6da3014a15c7b2b3c07e9d00",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3724,
+          "candidate_id": "cand_c66e567561c42b80680d57a2",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3715,
+          "candidate_id": "cand_6b7c22215c39c807cda3872e",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3734,
+          "candidate_id": "cand_12b552d6e4274b3e7916918d",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3719,
+          "candidate_id": "cand_5ef1e17a9fde8da19eda6ffc",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3707,
+          "candidate_id": "cand_9be7db5012712e534c019f4c",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3777,
+          "candidate_id": "cand_da7591327792c9bc98b427d7",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3690,
+          "candidate_id": "cand_2d0c2bee852360475ed257b4",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3691,
+          "candidate_id": "cand_c896441b03802e5c10cf4551",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3699,
+          "candidate_id": "cand_04524e4170fda10f288de2ad",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3692,
+          "candidate_id": "cand_14cd836002a9a76c97eb6c1e",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3680,
+          "candidate_id": "cand_93882884648663deb326f015",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3684,
+          "candidate_id": "cand_337495ed13b57f0375c7bcab",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3670,
+          "candidate_id": "cand_6937f79d38c06930e7c9a9ac",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3723,
+          "candidate_id": "cand_eacd76ebde5ba7e94ae853aa",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3698,
+          "candidate_id": "cand_f2d14d17235b34bf39a631f5",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3720,
+          "candidate_id": "cand_1b63c8f8f8149f09f2ecb7c4",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3699,
+          "candidate_id": "cand_2bfd4df050e52e03bab680f1",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3669,
+          "candidate_id": "cand_81dab29687d98fe8038c0eaa",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3689,
+          "candidate_id": "cand_7bbe4e7fc76c5686e2511cd9",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3659,
+          "candidate_id": "cand_ee4e6f9b6b050fa4d222c6a7",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3748,
+          "candidate_id": "cand_4af628931e0d02eb50415f2b",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3644,
+          "candidate_id": "cand_1c45580597c36333ce8f1444",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3653,
+          "candidate_id": "cand_8b7a8e0422ed4ae2befb1bc8",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3651,
+          "candidate_id": "cand_478f6c4acd54af28ee697d8d",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3644,
+          "candidate_id": "cand_326fad30e7ded583291003e6",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3651,
+          "candidate_id": "cand_4293ec8c30a7314cb8ef5dbf",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3704,
+          "candidate_id": "cand_c9b6667734c10464fab19fca",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3698,
+          "candidate_id": "cand_9e2c1625957106365a4e00c0",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3705,
+          "candidate_id": "cand_25decdfdae3f06f5b53849b4",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3656,
+          "candidate_id": "cand_b5554ee4928fcdbe8d6f046c",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3710,
+          "candidate_id": "cand_a393d81ec58b047e1e129db0",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3766,
+          "candidate_id": "cand_ea8b2557e86251bb3994535b",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3698,
+          "candidate_id": "cand_eaa4ce0396b4cc5c68b2550e",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3711,
+          "candidate_id": "cand_51488597ac9ebd3cb59d2ff1",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3679,
+          "candidate_id": "cand_b431757a4868f78ad44fa186",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3711,
+          "candidate_id": "cand_929dfbf8e7ddadf6f4b97e87",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3687,
+          "candidate_id": "cand_d8596bbbd92afbad9d401cd6",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3682,
+          "candidate_id": "cand_d94eec73746ef01a6811815f",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3718,
+          "candidate_id": "cand_66f3d1c2b0b2b61a41f44994",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3672,
+          "candidate_id": "cand_e15685675a396385fa8dc298",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3743,
+          "candidate_id": "cand_c7595f3b6addcec1b9919cbe",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3669,
+          "candidate_id": "cand_71249b442b7dc4205d74a4b9",
+          "nonincident_estimates_unchanged": true
+        },
+        {
+          "affected_query_count": 3743,
+          "candidate_id": "cand_e1a89b9755e5e3f384afc69f",
+          "nonincident_estimates_unchanged": true
+        }
+      ]
+    },
+    "baseline_objective_equal": true,
+    "candidate_profiles_equal": true,
+    "frozen_order_equal": true,
+    "historical_identity_validated": true,
+    "historical_profile_oracle_digest_equal": true,
+    "runtime_incremental_call_count_equal": true,
+    "semantic_output_equal": true
+  },
+  "experiment_id": "advisor-singleton-incremental-historical-equivalence-v2:arecel-forest10",
+  "format_version": "advisor-singleton-incremental-historical-equivalence-v2",
+  "historical_oracle": {
+    "profile_semantic_digest": "80f515d9884e40caec8021dec8894cac2a866aa6901ae519eb5093471d5d9563",
+    "runtime_metadata": {
+      "baseline_configuration_count": 1,
+      "planner_query_estimate_count": 580000,
+      "singleton_configuration_count": 57
+    }
+  },
+  "incremental": {
+    "profile_semantic_digest": "80f515d9884e40caec8021dec8894cac2a866aa6901ae519eb5093471d5d9563",
+    "runtime_metadata": {
+      "baseline_configuration_count": 1,
+      "baseline_planner_query_estimate_count": 10000,
+      "candidate_incidence_counts": {
+        "cand_01933ab615fb49e2f81b5b92": 3656,
+        "cand_04524e4170fda10f288de2ad": 3699,
+        "cand_0deae0d5de82a5a1fdc34111": 3659,
+        "cand_12b552d6e4274b3e7916918d": 3734,
+        "cand_14cd836002a9a76c97eb6c1e": 3692,
+        "cand_1537a6ae8ef67c379c8d0fa0": 3684,
+        "cand_1b63c8f8f8149f09f2ecb7c4": 3720,
+        "cand_1c45580597c36333ce8f1444": 3644,
+        "cand_25decdfdae3f06f5b53849b4": 3705,
+        "cand_2bfd4df050e52e03bab680f1": 3699,
+        "cand_2d0c2bee852360475ed257b4": 3690,
+        "cand_326fad30e7ded583291003e6": 3644,
+        "cand_337495ed13b57f0375c7bcab": 3684,
+        "cand_4293ec8c30a7314cb8ef5dbf": 3651,
+        "cand_42d3a67034bf5f02658cb7bf": 3680,
+        "cand_478f6c4acd54af28ee697d8d": 3651,
+        "cand_4af628931e0d02eb50415f2b": 3748,
+        "cand_4de3778bb8674287b6dd5b29": 3720,
+        "cand_51488597ac9ebd3cb59d2ff1": 3711,
+        "cand_599a2efab190b6e2b7457ff1": 3710,
+        "cand_5ba9cc937a696a76876f820d": 3653,
+        "cand_5ef1e17a9fde8da19eda6ffc": 3719,
+        "cand_66f3d1c2b0b2b61a41f44994": 3718,
+        "cand_6937f79d38c06930e7c9a9ac": 3670,
+        "cand_6b7c22215c39c807cda3872e": 3715,
+        "cand_6da3014a15c7b2b3c07e9d00": 3716,
+        "cand_71249b442b7dc4205d74a4b9": 3669,
+        "cand_76679921292e8c769dbbd7bc": 3689,
+        "cand_77c3e92fff291d4d9515dc69": 3748,
+        "cand_7bbe4e7fc76c5686e2511cd9": 3689,
+        "cand_817be8bf7bbbc96c20bde230": 3723,
+        "cand_81dab29687d98fe8038c0eaa": 3669,
+        "cand_8b7a8e0422ed4ae2befb1bc8": 3653,
+        "cand_929dfbf8e7ddadf6f4b97e87": 3711,
+        "cand_93882884648663deb326f015": 3680,
+        "cand_9be7db5012712e534c019f4c": 3707,
+        "cand_9e2c1625957106365a4e00c0": 3698,
+        "cand_a393d81ec58b047e1e129db0": 3710,
+        "cand_b431757a4868f78ad44fa186": 3679,
+        "cand_b5554ee4928fcdbe8d6f046c": 3656,
+        "cand_bafa53ec095d804233d42826": 3651,
+        "cand_c2737dfb5bfbb3e415dfb793": 3670,
+        "cand_c66e567561c42b80680d57a2": 3724,
+        "cand_c7595f3b6addcec1b9919cbe": 3743,
+        "cand_c896441b03802e5c10cf4551": 3691,
+        "cand_c9b6667734c10464fab19fca": 3704,
+        "cand_cbf4af3acd6feaa65760c6d1": 3699,
+        "cand_d8596bbbd92afbad9d401cd6": 3687,
+        "cand_d94eec73746ef01a6811815f": 3682,
+        "cand_da7591327792c9bc98b427d7": 3777,
+        "cand_e15685675a396385fa8dc298": 3672,
+        "cand_e1a89b9755e5e3f384afc69f": 3743,
+        "cand_ea8b2557e86251bb3994535b": 3766,
+        "cand_eaa4ce0396b4cc5c68b2550e": 3698,
+        "cand_eacd76ebde5ba7e94ae853aa": 3723,
+        "cand_ee4e6f9b6b050fa4d222c6a7": 3659,
+        "cand_f2d14d17235b34bf39a631f5": 3698
+      },
+      "candidate_incidence_summary": {
+        "max": 3777,
+        "mean": 3695.438596491228,
+        "median": 3698.0,
+        "min": 3644,
+        "p95": 3748.0
+      },
+      "evaluation_strategy": "incidence-incremental-v1",
+      "full_workload_reference_planner_query_estimate_count": 580000,
+      "planner_query_estimate_count": 220640,
+      "planner_query_reduction_fraction": 0.6195862068965517,
+      "profiling_wall_clock_seconds": 82.46443505499974,
+      "saved_planner_query_estimate_count": 359360,
+      "singleton_configuration_count": 57,
+      "singleton_planner_query_estimate_count": 210640,
+      "zero_incidence_present_candidate_count": 0
+    }
+  },
+  "patched_postgresql": {
+    "commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "repository": "1951123/postgresql-pgextadv"
+  },
+  "protocol": {
+    "historical_profile_role": "immutable-semantic-oracle",
+    "nonincident_estimate_invariant": "fail-closed-audited",
+    "reference_profile_rerun": false,
+    "same_patched_postgresql_binary": true,
+    "same_snapshot_universe_native_repository": true,
+    "strategy": "incidence-incremental-v1",
+    "validation_wall_clock_gate_seconds": 300.0
+  },
+  "research_repository": {
+    "research_commit_sha": "a167e817296cc78123872973b4847e33866e31d4",
+    "research_repository": "1951123/extstats-advisor-research"
+  },
+  "sandbox_verification": {
+    "prepared": {
+      "backend_contract": "postgresql-pgextadv-16.14-v1",
+      "candidate_universe_semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+      "frozen_relation_name": {
+        "catalog": null,
+        "name": "frozen_sample_65cc525eee74175abbe53dd1",
+        "schema": "extstats_advisor_internal"
+      },
+      "internal_schema_created": true,
+      "managed_schema_created": false,
+      "native_stats_repository_semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc",
+      "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+      "population_quality": "estimate",
+      "population_row_count": 581012.0,
+      "prepared_at": "2026-10-07 11:04:48.105280+08:00",
+      "relation_id": "rel_96c2e4f82f8ed10b05330552",
+      "relation_name": {
+        "catalog": "extstats_stock",
+        "name": "forest10",
+        "schema": "public"
+      },
+      "repository_absent_count": 33,
+      "repository_candidate_count": 90,
+      "repository_present_count": 57,
+      "sample_row_count": 10000,
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "server_version": "16.14",
+      "server_version_num": 160014,
+      "source_snapshot_semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+      "statistics_target": 100
+    },
+    "verified": {
+      "autovacuum_disabled": true,
+      "frozen_sample_row_count": 10000,
+      "metadata": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "candidate_universe_semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+        "frozen_relation_name": {
+          "catalog": null,
+          "name": "frozen_sample_65cc525eee74175abbe53dd1",
+          "schema": "extstats_advisor_internal"
+        },
+        "internal_schema_created": true,
+        "managed_schema_created": false,
+        "native_stats_repository_semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc",
+        "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+        "population_quality": "estimate",
+        "population_row_count": 581012.0,
+        "prepared_at": "2026-10-07 11:04:48.105280+08:00",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "relation_name": {
+          "catalog": "extstats_stock",
+          "name": "forest10",
+          "schema": "public"
+        },
+        "repository_absent_count": 33,
+        "repository_candidate_count": 90,
+        "repository_present_count": 57,
+        "sample_row_count": 10000,
+        "sandbox_contract": "postgresql-planner-sandbox-v1",
+        "server_version": "16.14",
+        "server_version_num": 160014,
+        "source_snapshot_semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+        "statistics_target": 100
+      },
+      "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+      "physical_extstats_count": 0,
+      "reltuples": 581012.0,
+      "repository": {
+        "absent_count": 33,
+        "candidate_count": 90,
+        "present_count": 57,
+        "semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc"
+      },
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "target_relation_oid": 16706,
+      "target_sample_row_count": 10000
+    }
+  },
+  "source_run": {
+    "candidate_universe_semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+    "ground_truth_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
+    "historical_singleton_profile_semantic_digest": "80f515d9884e40caec8021dec8894cac2a866aa6901ae519eb5093471d5d9563",
+    "manifest_sha256": "dc3173472028c17789c24c60936971b9a4940bcd164d079b58a6f63db0075767",
+    "native_repository_semantic_digest": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc",
+    "path": "/home/wqts/projects/extstats-advisor-research/.runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c",
+    "snapshot_semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a"
+  },
+  "status": "complete"
+}
