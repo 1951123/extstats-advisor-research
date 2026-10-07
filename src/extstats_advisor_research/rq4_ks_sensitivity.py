@@ -378,7 +378,7 @@ def _profile_bounded_live_smoke(
                 candidate.static_precedence_rank,
                 result.objective,
                 baseline.objective - result.objective,
-                None,
+                1 if native.state != "absent-native" else None,
             )
         )
     present = [item for item in candidate_results if item.native_state != "absent-native"]
