@@ -281,7 +281,7 @@ def run_hardening_smoke(
                 q1_truth.computed_semantic_digest,
             )
         q1_plan = modules["create_optimization_plan"](
-            q1_profile, candidate_limit=3, wall_clock_seconds=300.0
+            q1_profile, candidate_limit=8, wall_clock_seconds=300.0
         )
         empty_candidates = [
             candidate_id
