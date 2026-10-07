@@ -17,7 +17,7 @@ from .provenance import read_json, semantic_digest, sha256_file, write_json
 
 FORMAT_VERSION = "advisor-singleton-incremental-equivalence-v1"
 INCREMENTAL_ADVISOR_SHA = "9c93925ebbcda0dc3306e8e63d86ccd782ffc539"
-CURRENT_INCREMENTAL_ADVISOR_SHA = "0fdc0eed4b0858a65746191d46ff74cc3e28ae61"
+CURRENT_INCREMENTAL_ADVISOR_SHA = "67206c4e0e30bc0726ca6febaa887e9ae9e7bbbd"
 REFERENCE_ADVISOR_SHA = FROZEN_ADVISOR_SHA
 HISTORICAL_PROFILE_DIGESTS = {
     "arecel-census13": "0e6330007b46ca57bc456183564c6cf236b5db5654883a3321bb9128f6f17ee9",
