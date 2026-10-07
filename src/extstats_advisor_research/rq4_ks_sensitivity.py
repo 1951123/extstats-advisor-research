@@ -15,7 +15,8 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, Literal
 
-from . import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
+from . import FROZEN_PATCHED_POSTGRES_SHA
+from .pins import verify_git_sha
 from .provenance import read_json, semantic_digest
 from .rq4_ablation import RQ4ValidationError
 from .rq4_formal_common import (
@@ -26,11 +27,13 @@ from .rq4_formal_common import (
     build_ranked_plan,
     load_reusable_source,
 )
+from .system_freeze_v2 import FROZEN_ADVISOR_SHA as FROZEN_V2_ADVISOR_SHA
 from .system_freeze_v2 import FROZEN_STOCK_POSTGRES_SHA, FROZEN_SYSTEM_FREEZE_V2_DIGEST
 
 FORMAT_VERSION = "rq4-ks-sensitivity-v1"
 PREFLIGHT_FORMAT = "rq4-ks-sensitivity-preflight-v1"
 SMOKE_FORMAT = "rq4-ks-sensitivity-smoke-v1"
+LIVE_SMOKE_FORMAT = "rq4-ks-sensitivity-live-smoke-v1"
 LIVE_SMOKE_SCOPE = "small-live-correctness-validation"
 OFFLINE_SMOKE_SCOPE = "small-plan-correctness-validation"
 EXPERIMENT_ID = "rq4-ks-sensitivity"
@@ -39,6 +42,7 @@ FIXED_B = 4
 SEARCH_WALL_CLOCK_SECONDS = 300.0
 MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS = 2_000
 SMOKE_CANDIDATE_COUNT = 6
+SMOKE_QUERY_COUNT = 3
 FORMAL_DATASETS = DATASETS
 
 _FIXED_K_CHILD_DIGESTS = {
@@ -221,7 +225,7 @@ def build_preflight(
         "all_point_reuse_gate": validate_all_reuse_gate(dataset_id, research_root, source),
         "source_artifact_digests": source["source_artifact_digests"],
         "frozen_system_identities": {
-            "advisor_sha": FROZEN_ADVISOR_SHA,
+            "advisor_sha": FROZEN_V2_ADVISOR_SHA,
             "patched_postgres_sha": FROZEN_PATCHED_POSTGRES_SHA,
             "stock_postgres_sha": FROZEN_STOCK_POSTGRES_SHA,
             "system_freeze_v2_digest": FROZEN_SYSTEM_FREEZE_V2_DIGEST,
@@ -284,6 +288,47 @@ def _small_source(source: Mapping[str, Any], count: int = SMOKE_CANDIDATE_COUNT)
     return {**source, "singleton_profile": projected, "eligible_universe": eligible}
 
 
+def _bounded_smoke_inputs(source: Mapping[str, Any], modules: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind utility/evaluation to three existing positive-weight queries.
+
+    The planner still receives the immutable source snapshot so its sandbox
+    and native-repository identities remain valid.  Only the bounded smoke's
+    utility and evaluator query list are projected to this small subset.
+    """
+
+    from extstats_advisor.snapshot.model import Workload, WorkloadQuery
+
+    queries = tuple(query for query in source["snapshot"].workload.queries if query.weight > 0)[
+        :SMOKE_QUERY_COUNT
+    ]
+    if len(queries) != SMOKE_QUERY_COUNT:
+        raise RQ4ValidationError("live smoke source has fewer than three positive-weight queries")
+    query_ids = tuple(query.query_id for query in queries)
+    workload = Workload(
+        source["snapshot"].workload.workload_id,
+        tuple(WorkloadQuery(query.query_id, query.sql, query.weight) for query in queries),
+        {**source["snapshot"].workload.provenance, "rq4_ks_smoke_query_subset": True},
+    )
+    truths = tuple(truth for truth in source["ground_truth"].truths if truth.query_id in query_ids)
+    if len(truths) != SMOKE_QUERY_COUNT:
+        raise RQ4ValidationError("live smoke source lacks truth for every bounded query")
+    smoke_truth = dataclasses.replace(
+        source["ground_truth"],
+        truths=truths,
+        runtime_metadata={
+            **dict(source["ground_truth"].runtime_metadata),
+            "rq4_ks_smoke_query_subset": True,
+        },
+        semantic_digest=None,
+    )
+    return {
+        **source,
+        "smoke_query_ids": query_ids,
+        "smoke_workload": workload,
+        "smoke_ground_truth": smoke_truth,
+    }
+
+
 def build_smoke_artifact(
     *,
     research_root: Path,
@@ -291,6 +336,8 @@ def build_smoke_artifact(
     source: Mapping[str, Any] | None = None,
     candidate_count: int = SMOKE_CANDIDATE_COUNT,
     patched_dsn: str | None = None,
+    advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
+    patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
 ) -> dict[str, Any]:
     """Create a bounded protocol smoke from committed profile evidence.
 
@@ -300,55 +347,76 @@ def build_smoke_artifact(
     mode performs stock evaluation or new singleton profiling.
     """
 
-    source = source or load_reusable_source(
-        "arecel-census13", research_root, Path("/home/wqts/projects/extstats-advisor")
-    )
+    source = source or load_reusable_source("arecel-census13", research_root, advisor_root)
     small = _small_source(source, candidate_count)
-    modules = _advisor_modules(Path("/home/wqts/projects/extstats-advisor"))
+    modules = _advisor_modules(advisor_root)
     if patched_dsn is not None:
+        verify_git_sha(advisor_root, FROZEN_V2_ADVISOR_SHA)
+        verify_git_sha(patched_postgres_root, FROZEN_PATCHED_POSTGRES_SHA)
         _require_incremental_backend(modules)
+        small = _bounded_smoke_inputs(small, modules)
+        prepared = modules["prepare_postgres_planner_sandbox"](
+            patched_dsn,
+            small["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+        verified = modules["verify_postgres_planner_sandbox"](
+            patched_dsn,
+            small["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+    else:
+        prepared = None
+        verified = None
     points = []
-    for width in (4, "all"):
-        plan = build_sensitivity_plan(small, modules, width)
-        prefix = tuple(plan.screened_candidate_ids)
-        if patched_dsn is None:
-            points.append(
-                {
-                    "K_s": width,
-                    "execution_mode": "plan-validated",
-                    "effective_candidate_count": len(prefix),
-                    "candidate_prefix": list(prefix),
-                    "candidate_prefix_semantic_digest": candidate_prefix_digest(prefix),
-                    "B": FIXED_B,
-                    "selected_candidate_ids": [],
-                    "selected_k": None,
-                    "termination_reason": "not-executed",
-                    "selection": {
-                        "configuration_objective_evaluations": 0,
-                        "postgresql_planner_query_calls": 0,
-                        "wall_clock_seconds": 0.0,
-                    },
-                    "final_evaluation": {
-                        "performed": False,
-                        "stock_physical_evaluation": False,
-                        "sandbox_evaluation": False,
-                    },
-                    "deterministic_replay": {
-                        "prefix_equal_on_reconstruction": True,
-                        "plan_semantic_digest": plan.computed_semantic_digest,
-                    },
-                }
-            )
-        else:
-            points.append(
-                _run_live_smoke_point(
-                    small,
-                    modules,
-                    width,
-                    patched_dsn,
-                    plan,
+    try:
+        for width in (4, "all"):
+            plan = build_sensitivity_plan(small, modules, width)
+            prefix = tuple(plan.screened_candidate_ids)
+            if patched_dsn is None:
+                points.append(
+                    {
+                        "K_s": width,
+                        "execution_mode": "plan-validated",
+                        "effective_candidate_count": len(prefix),
+                        "candidate_prefix": list(prefix),
+                        "candidate_prefix_semantic_digest": candidate_prefix_digest(prefix),
+                        "B": FIXED_B,
+                        "selected_candidate_ids": [],
+                        "selected_k": None,
+                        "termination_reason": "not-executed",
+                        "selection": {
+                            "configuration_objective_evaluations": 0,
+                            "postgresql_planner_query_calls": 0,
+                            "wall_clock_seconds": 0.0,
+                        },
+                        "final_evaluation": {
+                            "performed": False,
+                            "stock_physical_evaluation": False,
+                            "sandbox_evaluation": False,
+                        },
+                        "deterministic_replay": {
+                            "prefix_equal_on_reconstruction": True,
+                            "plan_semantic_digest": plan.computed_semantic_digest,
+                        },
+                    }
                 )
-            )
+            else:
+                points.append(
+                    _run_live_smoke_point(
+                        small,
+                        modules,
+                        width,
+                        patched_dsn,
+                        plan,
+                        advisor_root,
+                    )
+                )
+    finally:
+        if patched_dsn is not None:
+            modules["destroy_postgres_planner_sandbox"](patched_dsn)
     hardening_path = research_root / (
         "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json"
     )
@@ -364,6 +432,8 @@ def build_smoke_artifact(
         "dataset_id": "arecel-census13",
         "candidate_universe_size": candidate_count,
         "backend_mode": "patched-postgresql-sandbox" if patched_dsn else "offline-plan-validation",
+        "advisor_commit_sha": FROZEN_V2_ADVISOR_SHA if patched_dsn else None,
+        "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA if patched_dsn else None,
         "source_profile_semantic_digest": source["singleton_profile"].computed_semantic_digest,
         "source_singleton_profiling": {
             "new_work": 0,
@@ -380,7 +450,46 @@ def build_smoke_artifact(
         "stock_physical_evaluation": {"performed": False},
         "formal_arecel_runs": {dataset: False for dataset in FORMAL_DATASETS},
     }
+    if patched_dsn is not None:
+        artifact["sandbox_lifecycle"] = {
+            "prepared": prepared.metadata.to_dict(),
+            "verified": verified,
+            "destroyed_after_run": True,
+        }
     artifact["semantic_digest"] = semantic_digest(artifact)
+    return artifact
+
+
+def build_live_smoke_artifact(
+    *,
+    research_root: Path,
+    producer_research_sha: str,
+    patched_dsn: str,
+    advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
+    patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
+) -> dict[str, Any]:
+    """Build the distinct frozen-v2 live smoke artifact."""
+
+    artifact = build_smoke_artifact(
+        research_root=research_root,
+        producer_research_sha=producer_research_sha,
+        patched_dsn=patched_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+    )
+    artifact["format_version"] = LIVE_SMOKE_FORMAT
+    artifact["experiment_id"] = LIVE_SMOKE_FORMAT
+    artifact["advisor_commit_sha"] = FROZEN_V2_ADVISOR_SHA
+    artifact["patched_postgres_commit_sha"] = FROZEN_PATCHED_POSTGRES_SHA
+    artifact["live_fixture"] = {
+        "candidate_universe_size": SMOKE_CANDIDATE_COUNT,
+        "positive_weight_query_count": SMOKE_QUERY_COUNT,
+        "screening_points": [4, "all"],
+        "stock_physical_evaluation": False,
+    }
+    artifact["semantic_digest"] = semantic_digest(
+        {key: value for key, value in artifact.items() if key != "semantic_digest"}
+    )
     return artifact
 
 
@@ -390,14 +499,16 @@ def _run_live_smoke_point(
     width: int | str,
     patched_dsn: str,
     plan: Any,
+    advisor_root: Path,
 ) -> dict[str, Any]:
     """Run one bounded patched-sandbox smoke point and an exact replay."""
 
     from extstats_advisor.dbms.postgres.planner import PostgresStatisticsConfiguration
 
+    query_ids = tuple(source["smoke_query_ids"])
     utility = modules["WeightedWorkloadUtility"](
-        source["snapshot"].workload,
-        modules["ArtifactGroundTruthProvider"](source["ground_truth"]),
+        source["smoke_workload"],
+        modules["ArtifactGroundTruthProvider"](source["smoke_ground_truth"]),
         modules["QErrorLoss"](),
     )
     replay_records = []
@@ -410,15 +521,14 @@ def _run_live_smoke_point(
         )
         planner.open()
         try:
-            identity = _planner_identity(
-                planner, Path("/home/wqts/projects/extstats-advisor"), source["snapshot"]
-            )
+            identity = _planner_identity(planner, advisor_root, source["snapshot"])
             evaluator = modules["IncrementalPostgresSearchEvaluator"](
                 planner,
                 source["snapshot"],
                 source["candidate_universe"],
                 plan,
                 utility,
+                query_ids=query_ids,
                 expected_baseline_objective=source["singleton_profile"].baseline.objective,
             )
             started = time.perf_counter()
@@ -435,9 +545,6 @@ def _run_live_smoke_point(
             )
             selected = tuple(result.final_ordered_candidate_ids)
             planner.activate(PostgresStatisticsConfiguration(selected))
-            query_ids = tuple(
-                query.query_id for query in source["snapshot"].workload.queries if query.weight > 0
-            )
             estimates = {
                 estimate.query_id: estimate.estimated_rows
                 for estimate in planner.estimate_queries(query_ids)
@@ -465,9 +572,40 @@ def _run_live_smoke_point(
         finally:
             planner.close()
     first, second = replay_records
-    projection_fields = ("selected_candidate_ids", "selected_k", "termination_reason")
+    projection_fields = (
+        "selected_candidate_ids",
+        "selected_k",
+        "termination_reason",
+        "final_sandbox_evaluation",
+    )
     if any(first[field] != second[field] for field in projection_fields):
         raise RQ4ValidationError(f"non-deterministic sensitivity smoke replay for K_s={width}")
+
+    def replay_projection(record: Mapping[str, Any]) -> dict[str, Any]:
+        search = record["search_result"]
+        return {
+            "selected_candidate_ids": record["selected_candidate_ids"],
+            "selected_k": record["selected_k"],
+            "termination_reason": record["termination_reason"],
+            "final_sandbox_evaluation": record["final_sandbox_evaluation"],
+            "search_result": {
+                key: search.get(key)
+                for key in (
+                    "baseline_objective",
+                    "final_objective",
+                    "improvement",
+                    "final_ordered_candidate_ids",
+                    "termination_reason",
+                    "first_round_evaluations",
+                    "completed_rounds",
+                    "accepted_moves",
+                )
+            },
+        }
+
+    replay_projections = [replay_projection(first), replay_projection(second)]
+    if replay_projections[0] != replay_projections[1]:
+        raise RQ4ValidationError(f"non-deterministic sensitivity SearchResult for K_s={width}")
     return {
         "K_s": width,
         "execution_mode": "executed",
@@ -479,24 +617,23 @@ def _run_live_smoke_point(
         "selected_k": first["selected_k"],
         "termination_reason": first["termination_reason"],
         "selection": first["selection_accounting"],
+        "selection_wall_clock_seconds": first["selection_wall_clock_seconds"],
         "final_evaluation": first["final_sandbox_evaluation"],
         "deterministic_replay": {
             "replay_count": 2,
             "prefix_equal_on_reconstruction": True,
             "selection_projection_equal": True,
-            "replay_semantic_digests": [
-                semantic_digest(
-                    {key: value for key, value in item.items() if key != "search_result"}
-                )
-                for item in replay_records
-            ],
+            "final_evaluation_equal": True,
+            "search_result_projection_equal": True,
+            "replay_semantic_digests": [semantic_digest(item) for item in replay_projections],
+            "deterministic_search_result_projection": replay_projections[0]["search_result"],
         },
     }
 
 
-def validate_smoke_artifact(path: Path) -> dict[str, Any]:
+def _validate_smoke_artifact(path: Path, expected_format: str) -> dict[str, Any]:
     value = read_json(path)
-    if value.get("format_version") != SMOKE_FORMAT:
+    if value.get("format_version") != expected_format:
         raise RQ4ValidationError("unsupported K_s sensitivity smoke format")
     expected = semantic_digest(
         {key: item for key, item in value.items() if key != "semantic_digest"}
@@ -538,13 +675,47 @@ def validate_smoke_artifact(path: Path) -> dict[str, Any]:
                 raise RQ4ValidationError("live sensitivity smoke point was not executed")
             if point.get("final_evaluation", {}).get("performed") is not True:
                 raise RQ4ValidationError("live sensitivity smoke lacks final sandbox evidence")
-            if point.get("deterministic_replay", {}).get("replay_count") != 2:
+            replay = point.get("deterministic_replay", {})
+            if replay.get("replay_count") != 2:
                 raise RQ4ValidationError("live sensitivity smoke lacks exact replay evidence")
+            digests = replay.get("replay_semantic_digests")
+            if (
+                replay.get("selection_projection_equal") is not True
+                or replay.get("final_evaluation_equal") is not True
+                or replay.get("search_result_projection_equal") is not True
+                or not isinstance(digests, list)
+                or len(digests) != 2
+                or digests[0] != digests[1]
+            ):
+                raise RQ4ValidationError("live sensitivity smoke replay determinism gate failed")
         elif point.get("final_evaluation", {}).get("performed"):
             raise RQ4ValidationError("sensitivity smoke performed a forbidden final evaluation")
     if value.get("stock_physical_evaluation", {}).get("performed") is not False:
         raise RQ4ValidationError("sensitivity smoke performed stock physical evaluation")
-    return {"status": "valid", "format_version": SMOKE_FORMAT, "semantic_digest": expected}
+    if expected_format == LIVE_SMOKE_FORMAT:
+        if value.get("backend_mode") != "patched-postgresql-sandbox":
+            raise RQ4ValidationError("live sensitivity smoke is not bound to the patched sandbox")
+        if value.get("advisor_commit_sha") != FROZEN_V2_ADVISOR_SHA:
+            raise RQ4ValidationError("live sensitivity smoke Advisor SHA is not frozen v2")
+        if value.get("patched_postgres_commit_sha") != FROZEN_PATCHED_POSTGRES_SHA:
+            raise RQ4ValidationError("live sensitivity smoke PostgreSQL SHA is not frozen")
+        fixture = value.get("live_fixture", {})
+        if fixture.get("candidate_universe_size") != SMOKE_CANDIDATE_COUNT:
+            raise RQ4ValidationError("live sensitivity smoke candidate bound drifted")
+        if fixture.get("positive_weight_query_count") != SMOKE_QUERY_COUNT:
+            raise RQ4ValidationError("live sensitivity smoke query bound drifted")
+        lifecycle = value.get("sandbox_lifecycle", {})
+        if lifecycle.get("destroyed_after_run") is not True:
+            raise RQ4ValidationError("live sensitivity smoke did not record sandbox cleanup")
+    return {"status": "valid", "format_version": expected_format, "semantic_digest": expected}
+
+
+def validate_smoke_artifact(path: Path) -> dict[str, Any]:
+    return _validate_smoke_artifact(path, SMOKE_FORMAT)
+
+
+def validate_live_smoke_artifact(path: Path) -> dict[str, Any]:
+    return _validate_smoke_artifact(path, LIVE_SMOKE_FORMAT)
 
 
 __all__ = [
@@ -552,6 +723,7 @@ __all__ = [
     "FIXED_B",
     "FORMAL_DATASETS",
     "FORMAT_VERSION",
+    "LIVE_SMOKE_FORMAT",
     "LIVE_SMOKE_SCOPE",
     "MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS",
     "OFFLINE_SMOKE_SCOPE",
@@ -559,6 +731,7 @@ __all__ = [
     "SCREENING_WIDTHS",
     "SEARCH_WALL_CLOCK_SECONDS",
     "SMOKE_FORMAT",
+    "build_live_smoke_artifact",
     "build_preflight",
     "build_ranked_plan",
     "build_sensitivity_plan",
@@ -568,6 +741,7 @@ __all__ = [
     "frozen_candidate_prefix",
     "normalize_screening_width",
     "validate_all_reuse_gate",
+    "validate_live_smoke_artifact",
     "validate_preflight",
     "validate_smoke_artifact",
     "worst_case_live_proposals",

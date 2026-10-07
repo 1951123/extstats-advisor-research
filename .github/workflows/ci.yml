@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test-historical-advisor:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -22,6 +22,30 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e '.[dev,advisor]'
       - name: Run tests
+        run: python -m pytest
+      - name: Check Ruff
+        run: ruff check .
+      - name: Check formatting
+        run: ruff format --check .
+      - name: Check CLI
+        run: extstats-research --help
+
+  test-frozen-v2-advisor:
+    runs-on: ubuntu-latest
+    env:
+      EXTSTATS_ADVISOR_VALIDATION: v2
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install frozen v2 test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev,advisor-v2]'
+      - name: Run frozen v2 contract tests
         run: python -m pytest
       - name: Check Ruff
         run: ruff check .

@@ -93,7 +93,12 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         sys.path.insert(0, source)
     from extstats_advisor.candidates import load_candidate_universe
     from extstats_advisor.dbms.postgres.planner import PostgresPlannerSession
-    from extstats_advisor.dbms.postgres.sandbox import POSTGRES_PLANNER_SANDBOX_CONTRACT
+    from extstats_advisor.dbms.postgres.sandbox import (
+        POSTGRES_PLANNER_SANDBOX_CONTRACT,
+        destroy_postgres_planner_sandbox,
+        prepare_postgres_planner_sandbox,
+        verify_postgres_planner_sandbox,
+    )
     from extstats_advisor.ground_truth import load_ground_truth_set
     from extstats_advisor.ground_truth.provider import ArtifactGroundTruthProvider
     from extstats_advisor.native_stats import load_native_stats_repository
@@ -140,6 +145,9 @@ def _advisor_modules(advisor_root: Path) -> dict[str, Any]:
         "QErrorLoss": QErrorLoss,
         "IncrementalPostgresSearchEvaluator": IncrementalPostgresSearchEvaluator,
         "POSTGRES_PLANNER_SANDBOX_CONTRACT": POSTGRES_PLANNER_SANDBOX_CONTRACT,
+        "prepare_postgres_planner_sandbox": prepare_postgres_planner_sandbox,
+        "verify_postgres_planner_sandbox": verify_postgres_planner_sandbox,
+        "destroy_postgres_planner_sandbox": destroy_postgres_planner_sandbox,
     }
 
 

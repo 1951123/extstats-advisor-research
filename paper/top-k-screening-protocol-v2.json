@@ -2,6 +2,7 @@
   "specification_identity": "top-k-screening-protocol-v2",
   "experiment_id": "rq4-ks-sensitivity-v1",
   "status": "preregistered",
+  "semantic_digest": "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec",
   "formal_sweep_executed": false,
   "supersedes": "paper/top-k-screening-protocol-v1.json",
   "reason": "post-RQ4-fixed-k quality-cost protocol refinement",

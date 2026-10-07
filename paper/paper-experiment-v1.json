@@ -714,6 +714,7 @@
       "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
       "excluded_datasets": ["arecel-forest10"],
       "protocol_identity": "paper/top-k-screening-protocol-v2.json",
+      "protocol_semantic_digest": "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec",
       "grid": [4, 8, 16, 32, "all"],
       "fixed_B": 4,
       "search_wall_clock_seconds": 300,

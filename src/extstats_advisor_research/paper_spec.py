@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .provenance import semantic_digest
+
 PAPER_SPECIFICATION = "paper-experiment-v1"
 CURRENT_SYSTEM_FREEZE_FORMAT = "system-freeze-v2"
 ARECEL_DATASETS = (
@@ -25,6 +27,47 @@ ALLOWED_STATUSES = {
 }
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SPEC_PATH = RESEARCH_ROOT / "paper" / "paper-experiment-v1.json"
+TOP_K_PROTOCOL_IDENTITY = "top-k-screening-protocol-v2"
+TOP_K_PROTOCOL_PATH = RESEARCH_ROOT / "paper" / "top-k-screening-protocol-v2.json"
+
+
+def validate_top_k_screening_protocol(value: Any) -> dict[str, Any]:
+    """Validate the preregistered K_s protocol and its content digest."""
+
+    if (
+        not isinstance(value, dict)
+        or value.get("specification_identity") != TOP_K_PROTOCOL_IDENTITY
+    ):
+        raise ValueError("unsupported top-k screening protocol")
+    if value.get("status") != "preregistered":
+        raise ValueError("top-k screening protocol must remain preregistered")
+    if value.get("formal_sweep_executed") is not False:
+        raise ValueError("top-k screening protocol cannot claim a formal sweep")
+    if value.get("grid") != [4, 8, 16, 32, "all"]:
+        raise ValueError("top-k screening grid drifted")
+    if value.get("fixed_B") != 4:
+        raise ValueError("top-k screening B drifted")
+    if value.get("search_wall_clock_seconds") != 300.0:
+        raise ValueError("top-k screening wall cap drifted")
+    if value.get("max_configuration_objective_evaluations") != 2000:
+        raise ValueError("top-k screening evaluation cap drifted")
+    digest = value.get("semantic_digest")
+    expected = semantic_digest(
+        {key: item for key, item in value.items() if key != "semantic_digest"}
+    )
+    if digest != expected:
+        raise ValueError("top-k screening protocol semantic digest mismatch")
+    return {
+        "status": "valid",
+        "specification_identity": TOP_K_PROTOCOL_IDENTITY,
+        "semantic_digest": expected,
+    }
+
+
+def load_top_k_screening_protocol(path: Path = TOP_K_PROTOCOL_PATH) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    validate_top_k_screening_protocol(value)
+    return value
 
 
 def load_paper_spec(path: Path = DEFAULT_SPEC_PATH) -> dict[str, Any]:
@@ -167,6 +210,9 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
             raise ValueError("RQ4 K_s sensitivity evaluation cap drifted")
         if screening.get("formal_arecel_runs") is not False:
             raise ValueError("RQ4 K_s sensitivity must remain unexecuted")
+        protocol = load_top_k_screening_protocol()
+        if screening.get("protocol_semantic_digest") != protocol["semantic_digest"]:
+            raise ValueError("paper specification does not bind top-k protocol digest")
 
     primary = by_id.get("rq3-primary-mechanism-fidelity")
     if primary is not None:

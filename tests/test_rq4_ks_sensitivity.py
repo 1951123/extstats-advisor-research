@@ -107,7 +107,7 @@ def test_all_width_projection_matches_existing_full_universe_plan() -> None:
     source = _plan_source()
     modules = _advisor_modules(__import__("pathlib").Path("/home/wqts/projects/extstats-advisor"))
     if "max_statistics_count" not in inspect.signature(modules["OptimizationBudget"]).parameters:
-        pytest.skip("frozen Advisor v1 cannot represent K_s separately from B")
+        pytest.skip("installed historical v1 Advisor does not expose max_statistics_count")
     modules = {**modules, "SCREENING_POLICY": modules["SCREENING_POLICY"]}
     old_plan = _build_full_universe_plan(source, modules)
     new_plan = build_sensitivity_plan(source, modules, "all")

@@ -25,7 +25,14 @@ from .incremental_search_hardening import (
     validate_artifact as validate_incremental_hardening,
 )
 from .paper_baseline import run_paper_baseline
-from .paper_spec import DEFAULT_SPEC_PATH, load_paper_spec, validate_paper_spec
+from .paper_spec import (
+    DEFAULT_SPEC_PATH,
+    TOP_K_PROTOCOL_PATH,
+    load_paper_spec,
+    load_top_k_screening_protocol,
+    validate_paper_spec,
+    validate_top_k_screening_protocol,
+)
 from .postgres_lab import (
     build_role,
     destroy_role,
@@ -96,11 +103,13 @@ from .rq4_ks_sensitivity import (
     FORMAL_DATASETS as RQ4_KS_DATASETS,
 )
 from .rq4_ks_sensitivity import (
-    build_preflight as build_rq4_ks_preflight,
+    build_live_smoke_artifact,
+    build_smoke_artifact,
+    validate_live_smoke_artifact,
+    validate_smoke_artifact,
 )
 from .rq4_ks_sensitivity import (
-    build_smoke_artifact,
-    validate_smoke_artifact,
+    build_preflight as build_rq4_ks_preflight,
 )
 from .rq4_ks_sensitivity import (
     validate_preflight as validate_rq4_ks_preflight,
@@ -398,6 +407,10 @@ def _parser() -> argparse.ArgumentParser:
         "paper-spec", help="validate paper-experiment-v1 semantic invariants"
     )
     paper_spec.add_argument("spec", type=Path, nargs="?", default=DEFAULT_SPEC_PATH)
+    top_k_protocol = validate_commands.add_parser(
+        "top-k-screening-protocol", help="validate the preregistered RQ4 K_s protocol"
+    )
+    top_k_protocol.add_argument("path", type=Path, nargs="?", default=TOP_K_PROTOCOL_PATH)
     truth_policy = validate_commands.add_parser(
         "benchmark-truth-policy",
         help="validate the audited AreCEL truth policy and equivalence gates",
@@ -639,6 +652,19 @@ def _parser() -> argparse.ArgumentParser:
     rq4_ks_smoke.add_argument(
         "--patched-dsn",
         help="optional disposable patched PostgreSQL DSN for the bounded live smoke",
+    )
+    rq4_ks_live = rq4_ks_commands.add_parser(
+        "live-smoke", help="run the distinct frozen-v2 bounded patched-sandbox smoke"
+    )
+    rq4_ks_live.add_argument("--patched-dsn", required=True)
+    rq4_ks_live.add_argument("--output", type=Path, required=True)
+    rq4_ks_live.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq4_ks_live.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
     rq4_ks_validate = rq4_ks_commands.add_parser("validate")
     rq4_ks_validate.add_argument("artifact", type=Path)
@@ -893,6 +919,10 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_paper_spec(load_paper_spec(args.spec))
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
+        if args.validate_command == "top-k-screening-protocol":
+            result = validate_top_k_screening_protocol(load_top_k_screening_protocol(args.path))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
         if args.validate_command == "benchmark-truth-policy":
             result = validate_truth_policy(
                 json.loads(args.path.read_text(encoding="utf-8")),
@@ -1077,9 +1107,26 @@ def main(argv: list[str] | None = None) -> int:
                     "semantic_digest": result["semantic_digest"],
                     "output": str(args.output),
                 }
+            elif args.rq4_ks_command == "live-smoke":
+                result = build_live_smoke_artifact(
+                    research_root=root,
+                    producer_research_sha=current_research_commit(root),
+                    patched_dsn=args.patched_dsn,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                )
+                write_json(args.output, result)
+                result = {
+                    "status": "written",
+                    "format_version": result["format_version"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
             else:
                 if args.artifact.name.endswith("rq4-ks-sensitivity-preflight-v1.json"):
                     result = validate_rq4_ks_preflight(args.artifact)
+                elif args.artifact.name.endswith("rq4-ks-sensitivity-live-smoke-v1.json"):
+                    result = validate_live_smoke_artifact(args.artifact)
                 else:
                     result = validate_smoke_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
