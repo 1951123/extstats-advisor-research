@@ -18,6 +18,7 @@ from typing import Any, Literal
 from . import FROZEN_PATCHED_POSTGRES_SHA
 from .pins import verify_git_sha
 from .provenance import read_json, semantic_digest
+from .rq1_canary import _ensure_planner_catalog
 from .rq4_ablation import RQ4ValidationError
 from .rq4_formal_common import (
     DATASETS,
@@ -355,19 +356,24 @@ def build_smoke_artifact(
         verify_git_sha(patched_postgres_root, FROZEN_PATCHED_POSTGRES_SHA)
         _require_incremental_backend(modules)
         small = _bounded_smoke_inputs(small, modules)
+        # The reusable snapshot is catalog-bound to the stock database name.
+        # Keep the backend patched while using the same catalog identity as the
+        # frozen snapshot, matching the formal RQ4 runner contract.
+        planner_dsn = _ensure_planner_catalog(patched_dsn, "extstats_stock")
         prepared = modules["prepare_postgres_planner_sandbox"](
-            patched_dsn,
+            planner_dsn,
             small["snapshot"],
             source["candidate_universe"],
             source["native_repository"],
         )
         verified = modules["verify_postgres_planner_sandbox"](
-            patched_dsn,
+            planner_dsn,
             small["snapshot"],
             source["candidate_universe"],
             source["native_repository"],
         )
     else:
+        planner_dsn = None
         prepared = None
         verified = None
     points = []
@@ -409,14 +415,14 @@ def build_smoke_artifact(
                         small,
                         modules,
                         width,
-                        patched_dsn,
+                        planner_dsn,
                         plan,
                         advisor_root,
                     )
                 )
     finally:
         if patched_dsn is not None:
-            modules["destroy_postgres_planner_sandbox"](patched_dsn)
+            modules["destroy_postgres_planner_sandbox"](planner_dsn)
     hardening_path = research_root / (
         "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json"
     )
