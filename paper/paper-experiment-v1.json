@@ -515,6 +515,25 @@
       "completion_criteria": ["real candidate universe is built before utility signals", "catalogless activation succeeds", "q-error objective is returned by frozen utility", "physical deployment contract is verified", "no 10000-query formal ablation is implied"]
     },
     {
+      "experiment_id": "rq4-incremental-greedy-hardening",
+      "rq": "RQ4",
+      "status": "complete",
+      "datasets": ["real-artifact-fixture"],
+      "fixture": "three-query Census13 artifact-backed live patched-PostgreSQL fixture",
+      "protocol_identity": "incremental-greedy-add-protocol-v1",
+      "coverage": ["K_s=3,B=3", "K_s=3,B=2", "K_s=3,B=1", "empty-incidence ADD", "nonincident Plan Rows audit", "local optimum", "maximum-count termination", "deadline-incomplete round", "explicit v1 reference mode"],
+      "formal_confirmatory_experiment": false,
+      "artifact": {
+        "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+        "format_version": "advisor-greedy-incremental-hardening-v2",
+        "semantic_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+        "execution_advisor_commit_sha": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86"
+      },
+      "required_raw_artifacts": ["exact proposal/round traces", "runtime planner-call accounting", "cache peak counters", "deadline termination evidence", "sandbox cleanup evidence"],
+      "expected_paper_outputs": ["tab-rq4-incremental-readiness"],
+      "completion_criteria": ["bounded v2 reference and incremental traces match exactly", "materialized first winner is validated against cached singleton objective", "empty-incidence proposal performs zero planner calls", "nonincident Plan Rows audit passes", "no formal AreCEL RQ4 comparison is implied"]
+    },
+    {
       "experiment_id": "rq4-fixed-evaluation-budget-ablations",
       "rq": "RQ4",
       "status": "implementation-needed",
@@ -600,6 +619,11 @@
         "experiment_id": "rq4-real-backend-integration-smoke",
         "status": "complete",
         "note": "Three-query Census13 smoke passed through the frozen patched planner/utility backend and a separate one-MCV frozen stock deployment-contract probe; this is integration readiness evidence only."
+      },
+      {
+        "experiment_id": "rq4-incremental-greedy-hardening",
+        "status": "complete",
+        "note": "The v2 live hardening fixture passed B=3,2,1, exact bounded-reference/incremental traces, empty-incidence ADD, nonincident audit, local-optimum/max-count/deadline termination, and explicit v1 reference coverage. This is implementation-readiness evidence only, not a formal AreCEL ablation."
       },
       {
         "experiment_id": "rq4-fixed-k-ablations",

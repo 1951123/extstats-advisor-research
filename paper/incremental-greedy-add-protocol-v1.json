@@ -1,7 +1,9 @@
 {
   "specification_identity": "incremental-greedy-add-protocol-v1",
-  "status": "implementation-complete-small-smoke-pending",
+  "status": "implementation-complete-small-smoke-passed",
+  "readiness_status": "hardening-and-cross-dataset-equivalence-pending",
   "scope": "Production Advisor v2 incremental Greedy ADD and an independent maximum selected-statistics budget; this is compatibility evidence, not a formal RQ4 experiment.",
+  "current_advisor_revision": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
   "advisor_semantics": {
     "search_policy": "greedy-add-incidence-incremental-v1",
     "candidate_screening_width_symbol": "K_s",
@@ -39,7 +41,84 @@
     "selection_preprocessing_cost": true,
     "final_evaluation_cost": "separate and excluded from the selection budget",
     "elapsed_wall_clock_seconds": true,
-    "reference_call_model": "positive workload query count multiplied by completed proposal configuration evaluations; singleton profiling is reported separately"
+    "search_budget_seconds": "the declared 300-second budget, covering baseline/winner materialization, proposal evaluation, utility evaluation, round completion, and cache commit",
+    "elapsed_search_seconds": "measured monotonic elapsed time, distinct from the budget",
+    "reference_call_model": "positive workload query count multiplied by completed proposal configuration evaluations; singleton profiling is reported separately",
+    "required_runtime_fields": [
+      "baseline_materialization_planner_calls",
+      "winner_materialization_planner_calls",
+      "proposal_planner_query_calls",
+      "audit_planner_query_calls",
+      "actual_search_planner_calls",
+      "actual_search_planner_calls_including_audit",
+      "reference_search_planner_calls",
+      "saved_search_planner_calls",
+      "search_budget_seconds",
+      "elapsed_search_seconds",
+      "proposal_only_call_reduction",
+      "end_to_end_search_call_reduction"
+    ],
+    "audit_calls_are_separate": true,
+    "independent_final_evaluation_excluded": true,
+    "singleton_preprocessing_excluded_from_search_budget": true
+  },
+  "materialization_contract": {
+    "baseline_calls": "|W|",
+    "first_winner_calls": "|I(c*)|",
+    "old_reference_first_winner_calls": "|W|",
+    "winner_estimates_merge_with_baseline": true,
+    "materialized_singleton_objective_must_equal_cached_objective_exactly": true,
+    "timeout_or_error_atomicity": "return the last fully committed incumbent and discard uncommitted patches"
+  },
+  "cache_contract": {
+    "incumbent": "one full positive-workload estimate map",
+    "proposal": "affected-query patch plus objective only",
+    "commit_clears_proposal_cache": true,
+    "incomplete_round_clears_proposal_cache": true,
+    "required_peak_fields": [
+      "incumbent_estimate_count",
+      "peak_proposal_cache_entries",
+      "peak_cached_estimate_entries"
+    ]
+  },
+  "live_hardening_evidence": {
+    "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+    "format_version": "advisor-greedy-incremental-hardening-v2",
+    "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+    "status": "complete",
+    "formal_experiment": false,
+    "coverage": [
+      "K_s=3, B=3",
+      "K_s=3, B=2",
+      "K_s=3, B=1",
+      "empty-incidence ADD",
+      "nonincident Plan Rows audit",
+      "local-optimum",
+      "max-statistics-count",
+      "deadline incomplete round",
+      "explicit v1 reference mode"
+    ]
+  },
+  "historical_singleton_gates": {
+    "preflight_artifact": "experiments/rq4/integration-smoke/advisor-singleton-incremental-equivalence-v1-preflight.json",
+    "preflight_digest": "945f878134433eee5e0fd905d0e2160174188f03a585a29d53ad303097d8c49a",
+    "arecel-forest10": {
+      "status": "complete",
+      "artifact": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+      "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41"
+    },
+    "arecel-power7": {
+      "status": "complete",
+      "artifact": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+      "artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c"
+    },
+    "arecel-census13": {
+      "status": "blocked-missing-historical-reference-wall-clock"
+    },
+    "arecel-dmv11": {
+      "status": "blocked-over-300-second-validation-gate",
+      "projected_total_validation_seconds": 427.9069652676849
+    }
   },
   "protocol_gates": {
     "formal_rq4_execution": false,

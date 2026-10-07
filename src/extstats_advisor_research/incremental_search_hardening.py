@@ -446,11 +446,37 @@ def validate_artifact(path: Path) -> dict[str, Any]:
         raise ValueError("incremental hardening status is invalid")
     if value.get("plan_policy", {}).get("tested_budgets") != [3, 2, 1]:
         raise ValueError("incremental hardening budgets are incomplete")
+    required_runtime_fields = {
+        "baseline_materialization_planner_calls",
+        "winner_materialization_planner_calls",
+        "proposal_planner_query_calls",
+        "audit_planner_query_calls",
+        "actual_search_planner_calls",
+        "actual_search_planner_calls_including_audit",
+        "reference_search_planner_calls",
+        "saved_search_planner_calls",
+        "search_budget_seconds",
+        "elapsed_search_seconds",
+        "proposal_only_call_reduction",
+        "end_to_end_search_call_reduction",
+        "incumbent_estimate_count",
+        "peak_proposal_cache_entries",
+        "peak_cached_estimate_entries",
+    }
     for case in value.get("cases", {}).values():
         if not all(case.get("semantic_equivalence", {}).values()):
             raise ValueError("incremental hardening semantic gate failed")
+        runtime = case.get("incremental", {}).get("runtime_metadata", {})
+        if not required_runtime_fields.issubset(runtime):
+            raise ValueError("incremental hardening runtime accounting is incomplete")
+    if not all(
+        value.get("explicit_v1_reference", {}).get("semantic_equal_to_bounded_v2_B3", {}).values()
+    ):
+        raise ValueError("explicit v1 reference compatibility gate failed")
     if value.get("empty_incidence_add", {}).get("passed") is not True:
         raise ValueError("empty-incidence ADD gate failed")
+    if value.get("empty_incidence_add", {}).get("objective_unchanged") is not True:
+        raise ValueError("empty-incidence objective gate failed")
     if value.get("deadline_incomplete_round", {}).get("termination_reason") != (
         "budget-expired-incomplete-round"
     ):

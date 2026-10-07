@@ -105,7 +105,8 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq3-secondary-build-sanity` | RQ3 | `ready-to-run` | Small synthetic artifact passed: 3 configurations, 9 exact Plan Rows pairs, payload/ordinary-stat correspondence, overlay inactive, and cleanup verified; readiness evidence only. |
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
-| `rq4-fixed-k` | RQ4 | `ready-to-run` | Global status remains incomplete: the Forest10 dataset-scoped formal canary passed RQ4a replay and nine RQ4b physical children (`experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json`, digest `736ba74f...`; replay digest `ffc4dff1...`; lossless raw replay SHA `5f8eeb00...`). Census13, Power7, and DMV11 remain planned; the fixed-evaluation-budget mode remains implementation-needed. |
+| `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
+| `rq4-fixed-k` | RQ4 | `ready-to-run` | Global status remains incomplete: the Forest10 dataset-scoped formal canary passed RQ4a replay and nine RQ4b physical children (`experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json`, digest `736ba74f...`; replay digest `ffc4dff1...`; lossless raw replay SHA `5f8eeb00...`). The incremental execution hardening is complete, but the global AreCEL heuristic campaign and fixed-evaluation-budget mode remain incomplete. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -532,13 +533,19 @@ profiling reduces the profiling cost independently of the prefix width. The
 machine-readable protocol and proposed, not-yet-run grid are in
 `paper/top-k-screening-protocol-v1.json`. No formal K sweep is complete.
 
-The initial immutable preflight predicts that Forest10 and Power7 are within
-the 300-second reference-plus-incremental validation gate; DMV11 is not, and
-Census13 lacks an immutable historical wall-clock measurement. The Forest10
-live attempt exceeded the hard gate and therefore has no complete equivalence
-artifact. Power7 completed the semantic and nonincident audit; its result is
-validation evidence for this implementation unit, not an RQ1/RQ4 paper
-result.
+The immutable preflight predicts that Forest10 and Power7 are within the
+300-second reference-plus-incremental validation gate; DMV11 is not, and
+Census13 lacks an immutable historical wall-clock measurement. Forest10 now
+has a current-Advisor historical-oracle gate with exact semantic output,
+candidate-profile, frozen-order, baseline-objective, call-count, and
+nonincident-audit equality in
+`experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json`
+(digest `c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41`).
+Power7's existing v1 equivalence artifact remains complete evidence for the
+previous incremental implementation. Census13 remains blocked because no
+immutable historical reference wall-clock is available; DMV11 remains blocked
+because the projected validation total is 427.91 seconds. No blocked or
+unmeasured dataset is promoted to complete, and no system-freeze-v2 is created.
 
 ### Incremental Greedy ADD and maximum-statistics-count compatibility protocol
 
@@ -553,19 +560,27 @@ The v2 path retains the v1 full-workload Greedy ADD implementation as a
 reference. For an incumbent membership `M` and proposal `M+c`, it activates
 the proposal, replans only the positive-weight workload queries incident on
 `c`, merges those estimates into the immutable incumbent estimate map, and
-evaluates the complete utility. A proposal cache is committed only after a
-whole round selects its winner, so a rejected or deadline-incomplete round
-cannot mutate the incumbent. The exact invariant is audited with full
-workload estimates: nonincident queries must retain identical `Plan Rows`.
+evaluates the complete utility. The first winner is materialized with `|W|`
+baseline calls plus only `|I(c*)|` winner calls, rather than a second `|W|`
+workload pass; the materialized utility must exactly equal the cached singleton
+objective. A proposal cache stores only affected-query patches and objectives,
+and is committed only after a whole round selects its winner, so a rejected or
+deadline-incomplete round cannot mutate the incumbent. The exact invariant is
+audited with full workload estimates: nonincident queries must retain identical
+`Plan Rows`.
 
 The compatibility gate compares the reference and incremental paths on the
 same small live patched-PostgreSQL fixture: each proposal objective, each
 round winner, accepted sequence, final membership/objective, and termination
-reason must agree. Runtime accounting separates configuration objective
-evaluations, PostgreSQL per-query planner calls, profiling/preprocessing time,
-selection time, and any independent final evaluation. This is readiness and
-semantic-equivalence evidence only; it does not constitute a formal RQ4
-AreCEL experiment.
+reason must agree. The v2 hardening artifact covers `B=3`, `B=2`, and `B=1`,
+empty-incidence ADD, nonincident audits, local optimum, maximum-count
+termination, deadline-incomplete rounds, default v2 plans, and explicit v1
+reference mode. Runtime accounting separates baseline/winner materialization,
+proposal and audit planner calls, actual versus reference selection calls,
+proposal-only versus end-to-end reductions, the 300-second budget, and measured
+elapsed time; singleton profiling and independent final evaluation remain
+separate. This is readiness and semantic-equivalence evidence only; it does not
+constitute a formal RQ4 AreCEL experiment.
 
 ## RQ5 — Practicality
 

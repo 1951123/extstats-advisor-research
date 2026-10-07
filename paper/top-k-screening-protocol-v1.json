@@ -21,7 +21,10 @@
     "B_is_candidate_definition_count": true,
     "physical_statistics_object_count_is_separate": true,
     "screening_is_semantics_preserving": false,
-    "search_deadline_seconds": 300
+    "search_deadline_seconds": 300,
+    "default_execution_strategy": "incidence-incremental-greedy-v1",
+    "default_B_equals_K_s": true,
+    "observed_k_is_not_fixed": true
   },
   "cost_model": {
     "singleton_configuration_count": "1 + number of PRESENT candidates",
@@ -29,6 +32,20 @@
     "reference_planner_query_estimate_count": "|W| * (1 + number of PRESENT candidates)",
     "saved_planner_query_estimate_count": "reference count - incremental count",
     "search_configuration_cost": "measured per-configuration planner calls and wall-clock time; independent final stock evaluation is excluded",
+    "search_accounting_fields": [
+      "baseline_materialization_planner_calls",
+      "winner_materialization_planner_calls",
+      "proposal_planner_query_calls",
+      "audit_planner_query_calls",
+      "actual_search_planner_calls",
+      "actual_search_planner_calls_including_audit",
+      "reference_search_planner_calls",
+      "saved_search_planner_calls",
+      "search_budget_seconds",
+      "elapsed_search_seconds",
+      "proposal_only_call_reduction",
+      "end_to_end_search_call_reduction"
+    ],
     "screening_width_effect": "K_s changes the candidate prefix and therefore downstream search cost; it does not change the all-candidate singleton profiling cost",
     "required_measurements": [
       "incidence-count distribution",
@@ -40,6 +57,8 @@
   },
   "preflight_source_evidence": {
     "advisor_revision": "9c93925ebbcda0dc3306e8e63d86ccd782ffc539",
+    "current_incremental_execution_advisor_revision": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
+    "source_profile_revision_note": "The incidence summaries and immutable historical profile digests describe their source artifacts; current compatibility gates pin the rerunnable implementation separately.",
     "source_profiles_are_immutable": true,
     "datasets": [
       {
@@ -60,7 +79,7 @@
         "reference_planner_query_estimate_count": 580000,
         "incremental_planner_query_estimate_count": 220640,
         "incidence_summary": {"min": 3644, "mean": 3695.438596491228, "median": 3698.0, "p95": 3748.0, "max": 3777},
-        "wall_clock_measurement": "live-equivalence-gate-blocked-by-300-second-hard-timeout"
+        "wall_clock_measurement": "current historical incremental equivalence artifact: experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json"
       },
       {
         "dataset_id": "arecel-power7",
@@ -70,7 +89,7 @@
         "reference_planner_query_estimate_count": 430000,
         "incremental_planner_query_estimate_count": 169042,
         "incidence_summary": {"min": 3711, "mean": 3786.714285714286, "median": 3800.0, "p95": 3825.0, "max": 3835},
-        "wall_clock_measurement": "see advisor-singleton-incremental-equivalence-v1 artifact"
+        "wall_clock_measurement": "see experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json; current hardening revision is separately pinned"
       },
       {
         "dataset_id": "arecel-dmv11",
@@ -80,7 +99,7 @@
         "reference_planner_query_estimate_count": 1060000,
         "incremental_planner_query_estimate_count": 391171,
         "incidence_summary": {"min": 3566, "mean": 3630.2, "median": 3631.0, "p95": 3678.0, "max": 3683},
-        "wall_clock_measurement": "not-run-over-300-second-preflight-gate"
+        "wall_clock_measurement": "not-run; preflight projected total validation is over the 300-second gate"
       }
     ]
   },
