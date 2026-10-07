@@ -105,6 +105,8 @@ from .rq4_ks_sensitivity import (
 from .rq4_ks_sensitivity import (
     build_live_smoke_artifact,
     build_smoke_artifact,
+    run_formal_ks_sensitivity,
+    validate_formal_ks_sensitivity,
     validate_live_smoke_artifact,
     validate_smoke_artifact,
 )
@@ -666,6 +668,20 @@ def _parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
     )
+    rq4_ks_run = rq4_ks_commands.add_parser(
+        "run", aliases=["create"], help="run one formal patched-sandbox K_s child"
+    )
+    rq4_ks_run.add_argument("--dataset", choices=RQ4_KS_DATASETS, required=True)
+    rq4_ks_run.add_argument("--patched-dsn", required=True)
+    rq4_ks_run.add_argument("--output", type=Path, required=True)
+    rq4_ks_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq4_ks_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
     rq4_ks_validate = rq4_ks_commands.add_parser("validate")
     rq4_ks_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
@@ -1122,11 +1138,29 @@ def main(argv: list[str] | None = None) -> int:
                     "semantic_digest": result["semantic_digest"],
                     "output": str(args.output),
                 }
+            elif args.rq4_ks_command in {"run", "create"}:
+                result = run_formal_ks_sensitivity(
+                    dataset_id=args.dataset,
+                    research_root=root,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                )
+                result = {
+                    "status": result["status"],
+                    "format_version": result["format_version"],
+                    "experiment_id": result["experiment_id"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
             else:
                 if args.artifact.name.endswith("rq4-ks-sensitivity-preflight-v1.json"):
                     result = validate_rq4_ks_preflight(args.artifact)
                 elif args.artifact.name.endswith("rq4-ks-sensitivity-live-smoke-v1.json"):
                     result = validate_live_smoke_artifact(args.artifact)
+                elif args.artifact.name.endswith("rq4-ks-sensitivity-v1.json"):
+                    result = validate_formal_ks_sensitivity(args.artifact, research_root=root)
                 else:
                     result = validate_smoke_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))

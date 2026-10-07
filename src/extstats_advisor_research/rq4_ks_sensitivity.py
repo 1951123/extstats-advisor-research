@@ -16,7 +16,8 @@ from pathlib import Path
 from typing import Any, Literal
 
 from . import FROZEN_PATCHED_POSTGRES_SHA
-from .pins import verify_git_sha
+from .paper_spec import load_top_k_screening_protocol, validate_top_k_screening_protocol
+from .pins import verify_git_sha, verify_research_repository
 from .provenance import read_json, semantic_digest
 from .rq1_canary import _ensure_planner_catalog
 from .rq4_ablation import RQ4ValidationError
@@ -29,7 +30,11 @@ from .rq4_formal_common import (
     load_reusable_source,
 )
 from .system_freeze_v2 import FROZEN_ADVISOR_SHA as FROZEN_V2_ADVISOR_SHA
-from .system_freeze_v2 import FROZEN_STOCK_POSTGRES_SHA, FROZEN_SYSTEM_FREEZE_V2_DIGEST
+from .system_freeze_v2 import (
+    FROZEN_STOCK_POSTGRES_SHA,
+    FROZEN_SYSTEM_FREEZE_V2_DIGEST,
+    verify_frozen_systems_v2,
+)
 
 FORMAT_VERSION = "rq4-ks-sensitivity-v1"
 PREFLIGHT_FORMAT = "rq4-ks-sensitivity-preflight-v1"
@@ -38,7 +43,12 @@ LIVE_SMOKE_FORMAT = "rq4-ks-sensitivity-live-smoke-v1"
 LIVE_SMOKE_SCOPE = "small-live-correctness-validation"
 OFFLINE_SMOKE_SCOPE = "small-plan-correctness-validation"
 EXPERIMENT_ID = "rq4-ks-sensitivity"
-SCREENING_WIDTHS: tuple[int | Literal["all"], ...] = (4, 8, 16, 32, "all")
+FORMAL_EXECUTION_WIDTHS: tuple[int, ...] = (4, 8, 16, 32)
+FORMAL_REUSED_WIDTH: Literal["all"] = "all"
+SCREENING_WIDTHS: tuple[int | Literal["all"], ...] = (
+    *FORMAL_EXECUTION_WIDTHS,
+    FORMAL_REUSED_WIDTH,
+)
 FIXED_B = 4
 SEARCH_WALL_CLOCK_SECONDS = 300.0
 MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS = 2_000
@@ -52,6 +62,58 @@ _FIXED_K_CHILD_DIGESTS = {
     "arecel-dmv11": "15182b79f7691890cbfa5121d7eda65bbbb02737fb5129646dcc25341330b693",
 }
 _FULL_K_SUMMARY_DIGEST = "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"
+FORMAL_LIVE_SMOKE_PATH = "experiments/rq4/integration-smoke/rq4-ks-sensitivity-live-smoke-v1.json"
+FORMAL_LIVE_SMOKE_DIGEST = "5209293d9ab850b109b54f9b3970035a9ec1424f69d02525c47641e76d2827bc"
+FORMAL_LIVE_SMOKE_PRODUCER_SHA = "17fc6d96f4e9cd615ab733f2add47adf691d4820"
+TOP_K_PROTOCOL_DIGEST = "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec"
+FORMAL_WALL_CLOCK_TOLERANCE_SECONDS = 1.0
+
+
+def selection_configuration_evaluation_count(selection: Mapping[str, Any]) -> int:
+    """Return the native incremental proposal-evaluation count.
+
+    This is deliberately strict: missing accounting is not equivalent to zero
+    and planner-call counts are not a substitute for objective evaluations.
+    """
+
+    value = selection.get("proposal_configuration_evaluations")
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise RQ4ValidationError(
+            "selection accounting must expose non-negative proposal_configuration_evaluations"
+        )
+    if value > MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS:
+        raise RQ4ValidationError("selection accounting exceeded the configuration-evaluation cap")
+    return value
+
+
+class _ConfigurationEvaluationGuard:
+    """Research-side hard guard for the finite-point objective budget."""
+
+    def __init__(self, evaluator: Any, maximum: int) -> None:
+        self._evaluator = evaluator
+        self._maximum = maximum
+        self.attempted = 0
+        self.completed = 0
+
+    def __call__(self, membership: frozenset[str], deadline: Any) -> Any:
+        from extstats_advisor.errors import SearchBudgetExpired
+
+        if self.attempted >= self._maximum:
+            raise SearchBudgetExpired("configuration-objective evaluation cap reached")
+        self.attempted += 1
+        result = self._evaluator(membership, deadline)
+        self.completed += 1
+        return result
+
+    def runtime_metadata(self) -> dict[str, Any]:
+        return {
+            "configuration_evaluation_guard": {
+                "maximum": self._maximum,
+                "attempted": self.attempted,
+                "completed": self.completed,
+                "hard_guard_enforced": True,
+            }
+        }
 
 
 def normalize_screening_width(value: int | str) -> int | Literal["all"]:
@@ -190,6 +252,21 @@ def build_preflight(
 ) -> dict[str, Any]:
     source = load_reusable_source(dataset_id, research_root, advisor_root)
     _system_freeze_digest(research_root)
+    protocol = load_top_k_screening_protocol(
+        research_root / "paper/top-k-screening-protocol-v2.json"
+    )
+    validate_top_k_screening_protocol(protocol)
+    smoke_path = research_root / FORMAL_LIVE_SMOKE_PATH
+    smoke = read_json(smoke_path)
+    validate_live_smoke_artifact(smoke_path)
+    if smoke.get("semantic_digest") != FORMAL_LIVE_SMOKE_DIGEST:
+        raise RQ4ValidationError("registered live K_s smoke digest drifted")
+    if smoke.get("research_commit_sha") != FORMAL_LIVE_SMOKE_PRODUCER_SHA:
+        raise RQ4ValidationError("registered live K_s smoke producer SHA drifted")
+    if smoke.get("advisor_commit_sha") != FROZEN_V2_ADVISOR_SHA:
+        raise RQ4ValidationError("live K_s smoke Advisor SHA is not frozen v2")
+    if smoke.get("patched_postgres_commit_sha") != FROZEN_PATCHED_POSTGRES_SHA:
+        raise RQ4ValidationError("live K_s smoke PostgreSQL SHA is not frozen")
     n = len(source["eligible_universe"]["eligible_candidates"])
     points = []
     for width in SCREENING_WIDTHS:
@@ -214,6 +291,8 @@ def build_preflight(
         "screening_widths": list(SCREENING_WIDTHS),
         "search_wall_clock_seconds": SEARCH_WALL_CLOCK_SECONDS,
         "max_configuration_objective_evaluations": MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS,
+        "protocol_path": "paper/top-k-screening-protocol-v2.json",
+        "protocol_semantic_digest": protocol["semantic_digest"],
         "eligible_candidate_count": n,
         "eligible_universe_semantic_digest": source["eligible_universe"]["semantic_digest"],
         "singleton_profile_reuse": {
@@ -224,6 +303,13 @@ def build_preflight(
         },
         "points": points,
         "all_point_reuse_gate": validate_all_reuse_gate(dataset_id, research_root, source),
+        "live_readiness_smoke": {
+            "path": FORMAL_LIVE_SMOKE_PATH,
+            "semantic_digest": smoke["semantic_digest"],
+            "producer_research_commit_sha": smoke["research_commit_sha"],
+            "advisor_commit_sha": smoke["advisor_commit_sha"],
+            "patched_postgres_commit_sha": smoke["patched_postgres_commit_sha"],
+        },
         "source_artifact_digests": source["source_artifact_digests"],
         "frozen_system_identities": {
             "advisor_sha": FROZEN_V2_ADVISOR_SHA,
@@ -249,6 +335,19 @@ def validate_preflight(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("preflight must not claim a formal run")
     if value.get("fixed_B") != FIXED_B or value.get("screening_widths") != list(SCREENING_WIDTHS):
         raise RQ4ValidationError("preflight protocol constants drifted")
+    protocol = value.get("protocol_semantic_digest")
+    if protocol != TOP_K_PROTOCOL_DIGEST:
+        raise RQ4ValidationError("preflight protocol digest is not frozen")
+    smoke = value.get("live_readiness_smoke")
+    if not isinstance(smoke, Mapping):
+        raise RQ4ValidationError("preflight is missing live readiness smoke evidence")
+    if (
+        smoke.get("semantic_digest") != FORMAL_LIVE_SMOKE_DIGEST
+        or smoke.get("producer_research_commit_sha") != FORMAL_LIVE_SMOKE_PRODUCER_SHA
+        or smoke.get("advisor_commit_sha") != FROZEN_V2_ADVISOR_SHA
+        or smoke.get("patched_postgres_commit_sha") != FROZEN_PATCHED_POSTGRES_SHA
+    ):
+        raise RQ4ValidationError("preflight live readiness smoke binding drifted")
     n = value.get("eligible_candidate_count")
     for point in value.get("points", []):
         if point["effective_candidate_count"] != effective_candidate_count(n, point["K_s"]):
@@ -261,7 +360,7 @@ def validate_preflight(path: Path) -> dict[str, Any]:
 def _small_source(source: Mapping[str, Any], count: int = SMOKE_CANDIDATE_COUNT) -> dict[str, Any]:
     """Project committed profile rows into a bounded, non-formal smoke fixture."""
 
-    ordered = frozen_candidate_prefix(source, "all")
+    ordered = frozen_candidate_prefix(source, FORMAL_REUSED_WIDTH)
     if len(ordered) < count or count <= FIXED_B:
         raise RQ4ValidationError("smoke fixture needs more than B eligible candidates")
     selected = set(ordered[:count])
@@ -806,10 +905,15 @@ def _validate_smoke_artifact(path: Path, expected_format: str) -> dict[str, Any]
         if point.get("B") != FIXED_B:
             raise RQ4ValidationError("sensitivity smoke B is incorrect")
         selection = point.get("selection", {})
-        if (
-            selection.get("configuration_objective_evaluations", 0)
-            > MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS
-        ):
+        if value.get("backend_mode") == "patched-postgresql-sandbox":
+            count = selection_configuration_evaluation_count(selection)
+        else:
+            count = selection.get("configuration_objective_evaluations")
+            if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+                raise RQ4ValidationError(
+                    "offline sensitivity smoke lacks configuration evaluation accounting"
+                )
+        if count > MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS:
             raise RQ4ValidationError("sensitivity smoke exceeded the preregistered evaluation cap")
         if value.get("backend_mode") == "patched-postgresql-sandbox":
             if point.get("execution_mode") != "executed":
@@ -859,10 +963,507 @@ def validate_live_smoke_artifact(path: Path) -> dict[str, Any]:
     return _validate_smoke_artifact(path, LIVE_SMOKE_FORMAT)
 
 
+def _formal_selection_accounting(
+    selection: Mapping[str, Any], *, wall_clock_seconds: float
+) -> dict[str, Any]:
+    count = selection_configuration_evaluation_count(selection)
+    required = {
+        "actual_search_planner_calls",
+        "reference_search_planner_calls",
+        "saved_search_planner_calls",
+        "planner_query_reduction_fraction",
+    }
+    missing = sorted(key for key in required if key not in selection)
+    if missing:
+        raise RQ4ValidationError(
+            "formal selection accounting is missing required fields: " + ", ".join(missing)
+        )
+    if any(
+        isinstance(selection[key], bool)
+        or not isinstance(selection[key], (int, float))
+        or selection[key] < 0
+        for key in required - {"planner_query_reduction_fraction"}
+    ):
+        raise RQ4ValidationError("formal selection planner accounting is invalid")
+    reduction = selection["planner_query_reduction_fraction"]
+    if isinstance(reduction, bool) or not isinstance(reduction, (int, float)) or reduction < 0:
+        raise RQ4ValidationError("formal planner-call reduction is invalid")
+    if count > MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS:
+        raise RQ4ValidationError("formal point exceeded the configuration-evaluation cap")
+    if wall_clock_seconds > SEARCH_WALL_CLOCK_SECONDS + FORMAL_WALL_CLOCK_TOLERANCE_SECONDS:
+        raise RQ4ValidationError("formal finite-point selection exceeded the wall-clock cap")
+    return {
+        "selection_configuration_objective_evaluations": count,
+        "proposal_configuration_objective_evaluations": count,
+        "incremental_planner_calls": selection["actual_search_planner_calls"],
+        "reference_search_planner_calls": selection["reference_search_planner_calls"],
+        "saved_search_planner_calls": selection["saved_search_planner_calls"],
+        "planner_call_reduction_fraction": reduction,
+    }
+
+
+def _run_formal_finite_point(
+    source: Mapping[str, Any],
+    modules: Mapping[str, Any],
+    *,
+    width: int,
+    planner_dsn: str,
+    advisor_root: Path,
+) -> dict[str, Any]:
+    """Execute one finite formal point; never called for the reused ``all`` point."""
+
+    from extstats_advisor.dbms.postgres.planner import PostgresStatisticsConfiguration
+
+    plan = build_sensitivity_plan(source, modules, width)
+    utility = modules["WeightedWorkloadUtility"](
+        source["snapshot"].workload,
+        modules["ArtifactGroundTruthProvider"](source["ground_truth"]),
+        modules["QErrorLoss"](),
+    )
+    query_ids = tuple(
+        query.query_id for query in source["snapshot"].workload.queries if query.weight > 0
+    )
+    planner = modules["PostgresPlannerSession"](
+        planner_dsn,
+        source["snapshot"],
+        source["candidate_universe"],
+        source["native_repository"],
+    )
+    planner.open()
+    try:
+        identity = _planner_identity(planner, advisor_root, source["snapshot"])
+        evaluator = modules["IncrementalPostgresSearchEvaluator"](
+            planner,
+            source["snapshot"],
+            source["candidate_universe"],
+            plan,
+            utility,
+            expected_baseline_objective=source["singleton_profile"].baseline.objective,
+        )
+        guard = _ConfigurationEvaluationGuard(evaluator, MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS)
+        started = time.perf_counter()
+        result = modules["greedy_add_search_incremental"](
+            source["singleton_profile"],
+            plan,
+            utility,
+            guard,
+            identity,
+            prepare_initial_configuration=evaluator.prepare_initial_configuration,
+            commit_configuration=evaluator.commit_configuration,
+            discard_proposals=evaluator.discard_proposals,
+            runtime_metadata_provider=lambda: {
+                **dict(evaluator.runtime_metadata()),
+                **guard.runtime_metadata(),
+            },
+        )
+        selection_wall_clock_seconds = time.perf_counter() - started
+        selection_accounting = dict(evaluator.runtime_metadata())
+        selection_accounting.update(guard.runtime_metadata())
+        canonical_accounting = _formal_selection_accounting(
+            selection_accounting, wall_clock_seconds=selection_wall_clock_seconds
+        )
+
+        selected = tuple(result.final_ordered_candidate_ids)
+        final_started = time.perf_counter()
+        planner.activate(PostgresStatisticsConfiguration(selected))
+        estimates = {
+            estimate.query_id: estimate.estimated_rows
+            for estimate in planner.estimate_queries(query_ids)
+        }
+        final_utility = utility.evaluate(estimates)
+        final_evaluation = {
+            "performed": True,
+            "evaluation_scope": "independent-final-sandbox-evaluation",
+            "sandbox_evaluation": True,
+            "stock_physical_evaluation": False,
+            "selection_budget_charged": False,
+            "configuration_objective_evaluations": 1,
+            "sandbox_objective": float(final_utility.objective),
+            "postgresql_planner_query_calls": len(query_ids),
+            "planner_estimates_semantic_digest": semantic_digest(estimates),
+            "wall_clock_seconds": time.perf_counter() - final_started,
+            "status": "complete",
+        }
+        termination = result.termination_reason
+        budget_terminations = {
+            "budget-expired-before-round",
+            "budget-expired-incomplete-round",
+        }
+        status = "budget-censored" if termination in budget_terminations else "complete"
+        return {
+            "K_s": width,
+            "execution_mode": "executed",
+            "effective_candidate_count": len(plan.screened_candidate_ids),
+            "candidate_prefix": list(plan.screened_candidate_ids),
+            "candidate_prefix_semantic_digest": candidate_prefix_digest(
+                plan.screened_candidate_ids
+            ),
+            "B": FIXED_B,
+            "status": status,
+            "selected_candidate_ids": list(selected),
+            "selected_k": len(selected),
+            "termination_reason": termination,
+            "search_result": result.to_manifest(),
+            "selection_accounting": selection_accounting,
+            **canonical_accounting,
+            "selection_wall_clock_seconds": selection_wall_clock_seconds,
+            "source_singleton_profiling_accounting": {
+                "new_work": 0,
+                "source_profile_semantic_digest": source[
+                    "singleton_profile"
+                ].computed_semantic_digest,
+                "source_artifact_digest": source["source_artifact_digests"]["singleton_profile"],
+                "source_accounting": dict(source["singleton_profile"].runtime_metadata),
+            },
+            "final_sandbox_evaluation": final_evaluation,
+        }
+    finally:
+        planner.close()
+
+
+def _reused_all_point(
+    source: Mapping[str, Any], research_root: Path, gate: Mapping[str, Any]
+) -> dict[str, Any]:
+    child_path = research_root / gate["source_path"]
+    child = read_json(child_path)
+    design_path = child_path.parent / child["rq4a"]["artifact"]
+    design = read_json(design_path)
+    greedy = design["methods"]["greedy-ADD"]
+    search_result = greedy["search_result"]
+    termination = greedy["termination_reason"]
+    status = (
+        "budget-censored"
+        if termination in {"budget-expired-before-round", "budget-expired-incomplete-round"}
+        else "complete"
+    )
+    prefix = frozen_candidate_prefix(source, FORMAL_REUSED_WIDTH)
+    selection = dict(greedy["selection_accounting"])
+    point = {
+        "K_s": FORMAL_REUSED_WIDTH,
+        "execution_mode": "reused",
+        "effective_candidate_count": len(prefix),
+        "candidate_prefix": list(prefix),
+        "candidate_prefix_semantic_digest": candidate_prefix_digest(prefix),
+        "B": FIXED_B,
+        "status": status,
+        "selected_candidate_ids": list(greedy["selected_membership"]),
+        "selected_k": len(greedy["selected_membership"]),
+        "termination_reason": termination,
+        "search_result": search_result,
+        "selection_accounting": selection,
+        "source_singleton_profiling_accounting": {
+            "new_work": 0,
+            "source_profile_semantic_digest": source["singleton_profile"].computed_semantic_digest,
+            "source_artifact_digest": source["source_artifact_digests"]["singleton_profile"],
+            "source_accounting": dict(source["singleton_profile"].runtime_metadata),
+        },
+        "final_sandbox_evaluation": greedy["final_sandbox_evaluation"],
+        "reuse": {
+            "source_path": gate["source_path"],
+            "source_semantic_digest": gate["source_semantic_digest"],
+            "source_method": gate["source_method"],
+        },
+    }
+    runtime = search_result.get("runtime", {})
+    if isinstance(runtime, Mapping) and isinstance(
+        runtime.get("elapsed_search_seconds"), (int, float)
+    ):
+        point["selection_wall_clock_seconds"] = runtime["elapsed_search_seconds"]
+    return point
+
+
+def run_formal_ks_sensitivity(
+    *,
+    dataset_id: str,
+    research_root: Path,
+    patched_dsn: str,
+    output: Path,
+    advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
+    patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
+) -> dict[str, Any]:
+    """Run one formal dataset child, excluding the reused ``all`` point."""
+
+    if dataset_id not in FORMAL_DATASETS:
+        raise RQ4ValidationError(f"unsupported sensitivity dataset: {dataset_id}")
+    if output.exists():
+        raise FileExistsError(f"formal K_s sensitivity output exists: {output}")
+    research_identity = verify_research_repository(research_root)
+    systems = verify_frozen_systems_v2(advisor_root, patched_postgres_root)
+    source = load_reusable_source(dataset_id, research_root, advisor_root)
+    preflight = build_preflight(dataset_id, research_root, advisor_root)
+    preflight_path = output.parent / "rq4-ks-sensitivity-preflight-v1.json"
+    from .provenance import write_json
+
+    write_json(preflight_path, preflight)
+    validate_preflight(preflight_path)
+    if preflight["status"] != "ready-to-run" or preflight["formal_run_executed"] is not False:
+        raise RQ4ValidationError("formal K_s run preflight is not ready-to-run")
+
+    planner_dsn = _ensure_planner_catalog(patched_dsn, "extstats_stock")
+    modules = _advisor_modules(advisor_root)
+    _require_incremental_backend(modules)
+    prepared = None
+    points: list[dict[str, Any]] = []
+    try:
+        prepared = modules["prepare_postgres_planner_sandbox"](
+            planner_dsn,
+            source["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+        modules["verify_postgres_planner_sandbox"](
+            planner_dsn,
+            source["snapshot"],
+            source["candidate_universe"],
+            source["native_repository"],
+        )
+        for width in FORMAL_EXECUTION_WIDTHS:
+            points.append(
+                _run_formal_finite_point(
+                    source,
+                    modules,
+                    width=width,
+                    planner_dsn=planner_dsn,
+                    advisor_root=advisor_root,
+                )
+            )
+        points.append(_reused_all_point(source, research_root, preflight["all_point_reuse_gate"]))
+    finally:
+        modules["destroy_postgres_planner_sandbox"](planner_dsn)
+
+    artifact = {
+        "format_version": FORMAT_VERSION,
+        "experiment_id": "rq4-ks-sensitivity-v1",
+        "dataset_id": dataset_id,
+        "status": "complete",
+        "research_commit_sha": research_identity["research_commit_sha"],
+        "advisor_commit_sha": systems["advisor_commit_sha"],
+        "patched_postgres_commit_sha": systems["patched_postgres_commit_sha"],
+        "system_freeze_semantic_digest": FROZEN_SYSTEM_FREEZE_V2_DIGEST,
+        "protocol_path": "paper/top-k-screening-protocol-v2.json",
+        "protocol_semantic_digest": preflight["protocol_semantic_digest"],
+        "eligible_universe_semantic_digest": source["eligible_universe"]["semantic_digest"],
+        "source_singleton_profile_semantic_digest": source[
+            "singleton_profile"
+        ].computed_semantic_digest,
+        "source_artifact_digests": source["source_artifact_digests"],
+        "fixed_B": FIXED_B,
+        "screening_widths": list(SCREENING_WIDTHS),
+        "search_wall_clock_seconds": SEARCH_WALL_CLOCK_SECONDS,
+        "max_configuration_objective_evaluations": MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS,
+        "preflight": {
+            "path": str(preflight_path.relative_to(research_root)),
+            "semantic_digest": preflight["semantic_digest"],
+            "status": preflight["status"],
+        },
+        "points": points,
+        "formal_confirmatory_experiment": True,
+        "stock_physical_evaluation": {"performed": False},
+        "sandbox_lifecycle": {"prepared": prepared.metadata.to_dict(), "destroyed_after_run": True},
+    }
+    artifact["semantic_digest"] = semantic_digest(artifact)
+    validation = validate_formal_ks_sensitivity(
+        artifact,
+        research_root=research_root,
+        source=source,
+        all_reuse_gate=preflight["all_point_reuse_gate"],
+    )
+    write_json(output, artifact)
+    return {**artifact, "validation": validation}
+
+
+def validate_formal_ks_sensitivity(
+    artifact_or_path: Mapping[str, Any] | Path,
+    *,
+    research_root: Path | None = None,
+    advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
+    source: Mapping[str, Any] | None = None,
+    all_reuse_gate: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Fail-closed validator for one formal K_s dataset child."""
+
+    value = (
+        read_json(artifact_or_path)
+        if isinstance(artifact_or_path, Path)
+        else dict(artifact_or_path)
+    )
+    if value.get("format_version") != FORMAT_VERSION:
+        raise RQ4ValidationError("unsupported formal K_s sensitivity format")
+    if value.get("experiment_id") != "rq4-ks-sensitivity-v1":
+        raise RQ4ValidationError("formal K_s sensitivity experiment identity drifted")
+    dataset_id = value.get("dataset_id")
+    if dataset_id not in FORMAL_DATASETS:
+        raise RQ4ValidationError("formal K_s sensitivity dataset is not in scope")
+    if value.get("status") != "complete":
+        raise RQ4ValidationError("formal K_s sensitivity artifact is not complete")
+    if value.get("formal_confirmatory_experiment") is not True:
+        raise RQ4ValidationError("formal K_s sensitivity artifact is not formal")
+    if value.get("stock_physical_evaluation", {}).get("performed") is not False:
+        raise RQ4ValidationError("formal K_s sensitivity contains stock physical evaluation")
+    if value.get("fixed_B") != FIXED_B or value.get("screening_widths") != list(SCREENING_WIDTHS):
+        raise RQ4ValidationError("formal K_s sensitivity protocol constants drifted")
+    if value.get("search_wall_clock_seconds") != SEARCH_WALL_CLOCK_SECONDS:
+        raise RQ4ValidationError("formal K_s sensitivity wall cap drifted")
+    if (
+        value.get("max_configuration_objective_evaluations")
+        != MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS
+    ):
+        raise RQ4ValidationError("formal K_s sensitivity evaluation cap drifted")
+    if value.get("protocol_semantic_digest") != TOP_K_PROTOCOL_DIGEST:
+        raise RQ4ValidationError("formal K_s sensitivity protocol digest drifted")
+    if value.get("system_freeze_semantic_digest") != FROZEN_SYSTEM_FREEZE_V2_DIGEST:
+        raise RQ4ValidationError("formal K_s sensitivity system freeze drifted")
+    if value.get("advisor_commit_sha") != FROZEN_V2_ADVISOR_SHA:
+        raise RQ4ValidationError("formal K_s sensitivity Advisor SHA drifted")
+    if value.get("patched_postgres_commit_sha") != FROZEN_PATCHED_POSTGRES_SHA:
+        raise RQ4ValidationError("formal K_s sensitivity PostgreSQL SHA drifted")
+    preflight = value.get("preflight")
+    if not isinstance(preflight, Mapping) or preflight.get("status") != "ready-to-run":
+        raise RQ4ValidationError("formal K_s sensitivity preflight is not ready")
+
+    if source is None and research_root is not None:
+        source = load_reusable_source(dataset_id, research_root, advisor_root)
+    if source is not None:
+        if (
+            value.get("eligible_universe_semantic_digest")
+            != source["eligible_universe"]["semantic_digest"]
+        ):
+            raise RQ4ValidationError("formal eligible-universe digest differs from source")
+        if (
+            value.get("source_singleton_profile_semantic_digest")
+            != source["singleton_profile"].computed_semantic_digest
+        ):
+            raise RQ4ValidationError("formal singleton-profile digest differs from source")
+        if value.get("source_artifact_digests") != source["source_artifact_digests"]:
+            raise RQ4ValidationError("formal source artifact digests differ from source")
+        expected_prefixes = {
+            width: frozen_candidate_prefix(source, width) for width in SCREENING_WIDTHS
+        }
+    else:
+        expected_prefixes = {}
+
+    points = value.get("points")
+    if not isinstance(points, list) or len(points) != len(SCREENING_WIDTHS):
+        raise RQ4ValidationError("formal K_s sensitivity must contain exactly five points")
+    by_width: dict[int | str, Mapping[str, Any]] = {}
+    for point in points:
+        width = point.get("K_s") if isinstance(point, Mapping) else None
+        if width in by_width:
+            raise RQ4ValidationError("formal K_s sensitivity contains duplicate widths")
+        by_width[width] = point
+    if set(by_width) != set(SCREENING_WIDTHS):
+        raise RQ4ValidationError("formal K_s sensitivity grid is incomplete")
+
+    budget_terminations = {"budget-expired-before-round", "budget-expired-incomplete-round"}
+    legal_terminations = {
+        "local-optimum",
+        "max-statistics-count",
+        "all-selected",
+        *budget_terminations,
+    }
+    for width in SCREENING_WIDTHS:
+        point = by_width[width]
+        for field in (
+            "search_result",
+            "selection_accounting",
+            "source_singleton_profiling_accounting",
+        ):
+            if not isinstance(point.get(field), Mapping):
+                raise RQ4ValidationError(f"formal K_s={width} is missing {field}")
+        expected_prefix = expected_prefixes.get(width)
+        if (
+            expected_prefix is not None
+            and tuple(point.get("candidate_prefix", [])) != expected_prefix
+        ):
+            raise RQ4ValidationError(f"formal K_s={width} prefix is not the frozen prefix")
+        prefix = tuple(point.get("candidate_prefix", []))
+        if point.get("candidate_prefix_semantic_digest") != candidate_prefix_digest(prefix):
+            raise RQ4ValidationError(f"formal K_s={width} prefix digest mismatch")
+        if point.get("effective_candidate_count") != len(prefix) or point.get("B") != FIXED_B:
+            raise RQ4ValidationError(f"formal K_s={width} prefix/B fields are invalid")
+        selected = point.get("selected_candidate_ids")
+        if not isinstance(selected, list) or point.get("selected_k") != len(selected):
+            raise RQ4ValidationError(f"formal K_s={width} selected membership is invalid")
+        if point.get("selected_k") > FIXED_B or any(item not in prefix for item in selected):
+            raise RQ4ValidationError(f"formal K_s={width} selected membership exceeds its prefix/B")
+        search_result = point.get("search_result")
+        if (
+            isinstance(search_result, Mapping)
+            and "final_ordered_candidate_ids" in search_result
+            and list(search_result["final_ordered_candidate_ids"]) != selected
+        ):
+            raise RQ4ValidationError(
+                f"formal K_s={width} committed selection differs from SearchResult final order"
+            )
+        termination = point.get("termination_reason")
+        if termination not in legal_terminations:
+            raise RQ4ValidationError(f"formal K_s={width} has an illegal termination reason")
+        status = point.get("status")
+        if status not in {"complete", "budget-censored"}:
+            raise RQ4ValidationError(f"formal K_s={width} has an invalid status")
+        if (termination in budget_terminations) != (status == "budget-censored"):
+            raise RQ4ValidationError(f"formal K_s={width} censoring status is inconsistent")
+        if width == "all":
+            if point.get("execution_mode") != "reused":
+                raise RQ4ValidationError("formal all point was executed instead of reused")
+            reuse = point.get("reuse")
+            if not isinstance(reuse, Mapping) or reuse.get("source_method") != "greedy-ADD":
+                raise RQ4ValidationError("formal all point lacks explicit Greedy reuse provenance")
+            if all_reuse_gate is not None and (
+                reuse.get("source_path") != all_reuse_gate.get("source_path")
+                or reuse.get("source_semantic_digest")
+                != all_reuse_gate.get("source_semantic_digest")
+            ):
+                raise RQ4ValidationError("formal all point reuse source does not match the gate")
+        else:
+            if point.get("execution_mode") != "executed":
+                raise RQ4ValidationError(f"formal K_s={width} finite point was not executed")
+            selection = point.get("selection_accounting")
+            if not isinstance(selection, Mapping):
+                raise RQ4ValidationError(f"formal K_s={width} selection accounting is missing")
+            canonical = _formal_selection_accounting(
+                selection, wall_clock_seconds=point.get("selection_wall_clock_seconds", -1)
+            )
+            for key, expected in canonical.items():
+                if point.get(key) != expected:
+                    raise RQ4ValidationError(
+                        f"formal K_s={width} canonical accounting mismatch: {key}"
+                    )
+            final = point.get("final_sandbox_evaluation")
+            if (
+                not isinstance(final, Mapping)
+                or final.get("performed") is not True
+                or final.get("selection_budget_charged") is not False
+                or final.get("stock_physical_evaluation") is not False
+                or final.get("evaluation_scope") != "independent-final-sandbox-evaluation"
+            ):
+                raise RQ4ValidationError(f"formal K_s={width} final evaluation is invalid")
+        final = point.get("final_sandbox_evaluation")
+        if not isinstance(final, Mapping) or final.get("performed") is not True:
+            raise RQ4ValidationError(f"formal K_s={width} final evaluation is missing")
+        if (
+            final.get("stock_physical_evaluation") is not False
+            or final.get("selection_budget_charged") is not False
+            or final.get("evaluation_scope") != "independent-final-sandbox-evaluation"
+        ):
+            raise RQ4ValidationError(
+                f"formal K_s={width} final evaluation is not independent and out of budget"
+            )
+
+    expected = semantic_digest(
+        {key: item for key, item in value.items() if key != "semantic_digest"}
+    )
+    if value.get("semantic_digest") != expected:
+        raise RQ4ValidationError("formal K_s sensitivity semantic digest mismatch")
+    return {"status": "valid", "format_version": FORMAT_VERSION, "semantic_digest": expected}
+
+
 __all__ = [
     "EXPERIMENT_ID",
     "FIXED_B",
     "FORMAL_DATASETS",
+    "FORMAL_EXECUTION_WIDTHS",
+    "FORMAL_REUSED_WIDTH",
     "FORMAT_VERSION",
     "LIVE_SMOKE_FORMAT",
     "LIVE_SMOKE_SCOPE",
@@ -872,6 +1473,7 @@ __all__ = [
     "SCREENING_WIDTHS",
     "SEARCH_WALL_CLOCK_SECONDS",
     "SMOKE_FORMAT",
+    "TOP_K_PROTOCOL_DIGEST",
     "build_live_smoke_artifact",
     "build_preflight",
     "build_ranked_plan",
@@ -881,7 +1483,10 @@ __all__ = [
     "effective_candidate_count",
     "frozen_candidate_prefix",
     "normalize_screening_width",
+    "run_formal_ks_sensitivity",
+    "selection_configuration_evaluation_count",
     "validate_all_reuse_gate",
+    "validate_formal_ks_sensitivity",
     "validate_live_smoke_artifact",
     "validate_preflight",
     "validate_smoke_artifact",
