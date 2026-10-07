@@ -342,7 +342,7 @@
       "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
       "artifact_contract": {
         "format": "rq3-fidelity-v1",
-        "required_fields": ["formal_experiment", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
+        "required_fields": ["formal_experiment", "execution_status", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
         "configuration_required_fields": ["configuration_id", "settings", "controls", "physical", "hypothetical", "paired_queries", "summary", "cleanup"],
         "configuration_ids": ["mcv-only", "fd-only", "mcv-plus-fd"],
         "primary_metric": "direct exact root Plan Rows agreement",
@@ -384,7 +384,7 @@
     "expected_paper_outputs": ["tab-rq3-build-sanity"],
       "artifact_contract": {
         "format": "rq3-build-sanity-v1",
-        "required_fields": ["formal_experiment", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
+        "required_fields": ["formal_experiment", "execution_status", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
         "gate_states": ["pass", "fail", "inconclusive"],
       "pass_rule": "Only exact paired Plan Rows matches with equivalent state/payload/settings controls pass.",
       "fail_rule": "A Plan Rows mismatch is fail only after every control is satisfied.",

@@ -113,6 +113,7 @@ def test_formal_build_sanity_artifact_requires_v2_freeze_identity() -> None:
         system_freeze=formal_system_freeze_v2_identity(),
     )
     assert artifact["formal_experiment"] is True
+    assert artifact["execution_status"] == "complete"
     artifact["system_freeze"]["semantic_digest"] = "a" * 64
     with pytest.raises(ValueError, match="system-freeze-v2"):
         validate_build_sanity_artifact(

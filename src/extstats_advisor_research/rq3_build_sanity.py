@@ -158,6 +158,7 @@ def build_build_sanity_artifact(
         "format": BUILD_SANITY_FORMAT,
         "experiment_id": EXPERIMENT_ID,
         "formal_experiment": formal_experiment,
+        "execution_status": "complete" if formal_experiment else "readiness-artifact",
         "paper_specification": {"identity": "paper-experiment-v1", "experiment_id": EXPERIMENT_ID},
         "system": system,
         "fixture": fixture,
@@ -203,6 +204,8 @@ def validate_build_sanity_artifact(artifact: Any) -> dict[str, Any]:
         raise TypeError("build-sanity formal_experiment must be boolean")
     if formal_experiment and artifact.get("system_freeze") != formal_system_freeze_v2_identity():
         raise ValueError("formal build-sanity artifact is not bound to system-freeze-v2")
+    if formal_experiment and artifact.get("execution_status") != "complete":
+        raise ValueError("formal build-sanity artifact execution_status is not complete")
     if artifact["paper_specification"] != {
         "identity": "paper-experiment-v1",
         "experiment_id": EXPERIMENT_ID,

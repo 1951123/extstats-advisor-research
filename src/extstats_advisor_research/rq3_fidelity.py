@@ -18,6 +18,7 @@ from typing import Any
 
 from . import FROZEN_PATCHED_POSTGRES_SHA
 from .pins import verify_research_repository
+from .postgres_lab import _read_identity, role_spec
 from .provenance import read_json, reject_credentials, semantic_digest, write_json
 from .system_freeze_v2 import (
     FROZEN_ADVISOR_SHA,
@@ -214,6 +215,7 @@ def build_fidelity_artifact(
         "format": FIDELITY_FORMAT,
         "experiment_id": experiment_id,
         "formal_experiment": formal_experiment,
+        "execution_status": "complete" if formal_experiment else "readiness-artifact",
         "paper_specification": {
             "identity": PAPER_SPECIFICATION,
             "experiment_id": PRIMARY_EXPERIMENT_ID,
@@ -264,6 +266,8 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
             raise ValueError("formal RQ3 artifact must use the primary experiment ID")
         if artifact.get("system_freeze") != formal_system_freeze_v2_identity():
             raise ValueError("formal RQ3 artifact is not bound to system-freeze-v2")
+        if artifact.get("execution_status") != "complete":
+            raise ValueError("formal RQ3 artifact execution_status is not complete")
     paper = artifact["paper_specification"]
     if paper != {"identity": PAPER_SPECIFICATION, "experiment_id": PRIMARY_EXPERIMENT_ID}:
         raise ValueError("RQ3 artifact is not bound to paper-experiment-v1 RQ3 primary")
@@ -285,6 +289,8 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
     _require_sha(system["patched_postgres_commit_sha"], "patched_postgres_commit_sha", length=40)
     if formal_experiment and system["advisor_commit_sha"] != FROZEN_ADVISOR_SHA:
         raise ValueError("formal RQ3 artifact is not bound to the frozen v2 Advisor")
+    if formal_experiment and not isinstance(system.get("patched_build_identity"), dict):
+        raise TypeError("formal RQ3 artifact is missing patched build identity")
     configurations = artifact["configurations"]
     if not isinstance(configurations, list) or not configurations:
         raise ValueError("RQ3 artifact needs configurations")
@@ -931,6 +937,7 @@ def run_synthetic_fidelity(
         "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
     }
     verify_frozen_systems_v2(advisor_root, patched_postgres_root)
+    patched_build_identity = _read_identity(role_spec("patched"))
     import psycopg
     from extstats_advisor.dbms.postgres.patch import probe_patched_postgres
 
@@ -976,6 +983,7 @@ def run_synthetic_fidelity(
                 "patched_reference_source_commit": capabilities.reference_source_commit,
                 "patched_server_version": capabilities.server_version,
                 "patched_server_version_num": capabilities.server_version_num,
+                "patched_build_identity": patched_build_identity,
             },
             fixture={
                 "fixture_id": SYNTHETIC_FIXTURE_ID,

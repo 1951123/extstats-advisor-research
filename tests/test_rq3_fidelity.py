@@ -148,6 +148,7 @@ def _artifact() -> dict:
             "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
             "patched_backend_contract": "postgresql-pgextadv-16.14-v1",
             "patched_server_version": "16.14",
+            "patched_build_identity": {},
         },
         fixture={"fixture_id": "fixture", "workload_digest": _DIGEST},
         configurations=[
@@ -285,6 +286,7 @@ def test_formal_fidelity_artifact_requires_v2_freeze_identity() -> None:
             "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
             "patched_backend_contract": "postgresql-pgextadv-16.14-v1",
             "patched_server_version": "16.14",
+            "patched_build_identity": {},
         },
         fixture={"fixture_id": "fixture", "workload_digest": _DIGEST},
         configurations=[_configuration("mcv-only", ["mcv"], [101])],
@@ -292,6 +294,7 @@ def test_formal_fidelity_artifact_requires_v2_freeze_identity() -> None:
         system_freeze=formal_system_freeze_v2_identity(),
     )
     assert artifact["formal_experiment"] is True
+    assert artifact["execution_status"] == "complete"
     broken = copy.deepcopy(artifact)
     broken["system_freeze"]["semantic_digest"] = _DIGEST
     with pytest.raises(ValueError, match="system-freeze-v2"):
