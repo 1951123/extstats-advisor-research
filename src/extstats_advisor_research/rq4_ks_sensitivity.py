@@ -31,6 +31,8 @@ from .system_freeze_v2 import FROZEN_STOCK_POSTGRES_SHA, FROZEN_SYSTEM_FREEZE_V2
 FORMAT_VERSION = "rq4-ks-sensitivity-v1"
 PREFLIGHT_FORMAT = "rq4-ks-sensitivity-preflight-v1"
 SMOKE_FORMAT = "rq4-ks-sensitivity-smoke-v1"
+LIVE_SMOKE_SCOPE = "small-live-correctness-validation"
+OFFLINE_SMOKE_SCOPE = "small-plan-correctness-validation"
 EXPERIMENT_ID = "rq4-ks-sensitivity"
 SCREENING_WIDTHS: tuple[int | Literal["all"], ...] = (4, 8, 16, 32, "all")
 FIXED_B = 4
@@ -351,12 +353,13 @@ def build_smoke_artifact(
         "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json"
     )
     hardening = read_json(hardening_path)
+    smoke_scope = LIVE_SMOKE_SCOPE if patched_dsn else OFFLINE_SMOKE_SCOPE
     artifact = {
         "format_version": SMOKE_FORMAT,
         "experiment_id": "rq4-ks-sensitivity-smoke-v1",
-        "status": "small-live-correctness-validation",
+        "status": smoke_scope,
         "formal_confirmatory_experiment": False,
-        "scope": "small-live-correctness-validation",
+        "scope": smoke_scope,
         "research_commit_sha": producer_research_sha,
         "dataset_id": "arecel-census13",
         "candidate_universe_size": candidate_count,
@@ -502,8 +505,13 @@ def validate_smoke_artifact(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("K_s sensitivity smoke digest mismatch")
     if value.get("formal_confirmatory_experiment") is not False:
         raise RQ4ValidationError("sensitivity smoke must not be formal")
-    if value.get("scope") != "small-live-correctness-validation":
-        raise RQ4ValidationError("sensitivity smoke scope is not explicit")
+    expected_scope = (
+        LIVE_SMOKE_SCOPE
+        if value.get("backend_mode") == "patched-postgresql-sandbox"
+        else OFFLINE_SMOKE_SCOPE
+    )
+    if value.get("scope") != expected_scope or value.get("status") != expected_scope:
+        raise RQ4ValidationError("sensitivity smoke scope does not match its backend mode")
     if value.get("fixed_B") != FIXED_B or value.get("tested_screening_widths") != [4, "all"]:
         raise RQ4ValidationError("sensitivity smoke constants drifted")
     n = value.get("candidate_universe_size")
@@ -544,7 +552,9 @@ __all__ = [
     "FIXED_B",
     "FORMAL_DATASETS",
     "FORMAT_VERSION",
+    "LIVE_SMOKE_SCOPE",
     "MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS",
+    "OFFLINE_SMOKE_SCOPE",
     "PREFLIGHT_FORMAT",
     "SCREENING_WIDTHS",
     "SEARCH_WALL_CLOCK_SECONDS",
