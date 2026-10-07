@@ -80,6 +80,18 @@ from .rq4_ablation import (
 from .rq4_baseline_resolution import validate_resolution_artifact
 from .rq4_determinism import validate_design_determinism_smoke
 from .rq4_formal import run_forest10_fixed_k, validate_forest10_fixed_k_artifact
+from .rq4_formal_common import (
+    DATASETS as RQ4_V2_DATASETS,
+)
+from .rq4_formal_common import (
+    build_preflight as build_rq4_v2_preflight,
+)
+from .rq4_formal_common import (
+    run_formal_rq4_v2,
+    validate_v2_design_artifact,
+    validate_v2_determinism,
+    validate_v2_summary,
+)
 from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
@@ -574,6 +586,31 @@ def _parser() -> argparse.ArgumentParser:
     )
     rq4_formal_validate = rq4_formal_commands.add_parser("validate")
     rq4_formal_validate.add_argument("artifact", type=Path)
+    rq4_v2 = validate_commands.add_parser(
+        "rq4-fixed-k-v2", help="run or validate the generic Census13/Power7/DMV11 RQ4 v2 campaign"
+    )
+    rq4_v2_commands = rq4_v2.add_subparsers(dest="rq4_v2_command", required=True)
+    rq4_v2_preflight = rq4_v2_commands.add_parser("preflight")
+    rq4_v2_preflight.add_argument("--dataset", choices=RQ4_V2_DATASETS, required=True)
+    rq4_v2_run = rq4_v2_commands.add_parser("run", aliases=["create"])
+    rq4_v2_run.add_argument("--dataset", choices=RQ4_V2_DATASETS, required=True)
+    rq4_v2_run.add_argument("--stock-dsn", required=True)
+    rq4_v2_run.add_argument("--patched-dsn", required=True)
+    rq4_v2_run.add_argument("--output", type=Path, required=True)
+    rq4_v2_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq4_v2_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    rq4_v2_run.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    rq4_v2_run.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_V2_PATH)
+    rq4_v2_validate = rq4_v2_commands.add_parser("validate")
+    rq4_v2_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -954,6 +991,41 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "rq4-stock-physical":
             result = validate_shared_stock_realization(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-fixed-k-v2":
+            root = Path(__file__).resolve().parents[2]
+            if args.rq4_v2_command == "preflight":
+                result = build_rq4_v2_preflight(
+                    args.dataset, root, Path("/home/wqts/projects/extstats-advisor")
+                )
+            elif args.rq4_v2_command in {"run", "create"}:
+                result = run_formal_rq4_v2(
+                    args.dataset,
+                    stock_dsn=args.stock_dsn,
+                    patched_dsn=args.patched_dsn,
+                    output=args.output,
+                    advisor_root=args.advisor_root,
+                    patched_postgres_root=args.patched_postgres_root,
+                    stock_postgres_root=args.stock_postgres_root,
+                    research_root=root,
+                    system_freeze_path=args.system_freeze,
+                )
+                result = {
+                    "status": result["status"],
+                    "format_version": result["format_version"],
+                    "experiment_id": result["experiment_id"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
+            else:
+                name = args.artifact.name
+                if name.endswith("rq4-design-evaluation-v2.json"):
+                    result = validate_v2_design_artifact(args.artifact)
+                elif name.endswith("rq4-design-determinism-v2.json.gz"):
+                    result = validate_v2_determinism(args.artifact)
+                else:
+                    result = validate_v2_summary(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-forest10-fixed-k":

@@ -25,6 +25,8 @@ from .rq4_ablation import METHOD_IDS, RQ4ValidationError
 
 PHYSICAL_FORMAT = "rq4-stock-physical-evaluation-v1"
 SHARED_REALIZATION_FORMAT = "rq4-stock-shared-realization-v1"
+PHYSICAL_FORMAT_V2 = "rq4-stock-physical-evaluation-v2"
+SHARED_REALIZATION_FORMAT_V2 = "rq4-stock-shared-realization-v2"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _RANDOM_REPLICATE = re.compile(r"^random-k-seed-([1-5])$")
 
@@ -341,6 +343,8 @@ def build_shared_stock_realization(
     dataset_id: str = "real-artifact-fixture",
     formal_confirmatory_experiment: bool = False,
     experiment_id: str | None = None,
+    artifact_format: str = PHYSICAL_FORMAT,
+    shared_realization_format: str = SHARED_REALIZATION_FORMAT,
 ) -> dict[str, Any]:
     """Create one stock union realization and evaluate method clones.
 
@@ -414,7 +418,7 @@ def build_shared_stock_realization(
         _, admin_dsn = _make_clone_dsn(stock_dsn, "postgres")
         realization_id = semantic_digest(
             {
-                "format_version": SHARED_REALIZATION_FORMAT,
+                "format_version": shared_realization_format,
                 "database": database,
                 "relation_oid": relation_oid,
                 "union_payloads": parent_payloads,
@@ -496,7 +500,7 @@ def build_shared_stock_realization(
             finally:
                 conn.close()
         artifact: dict[str, Any] = {
-            "format_version": PHYSICAL_FORMAT,
+            "format_version": artifact_format,
             "experiment_id": experiment_id or "rq4-stock-physical-evaluation-smoke-v1",
             "formal_confirmatory_experiment": formal_confirmatory_experiment,
             "status": (
@@ -527,7 +531,7 @@ def build_shared_stock_realization(
                 "qerror_contract": loss.contract_version,
             },
             "shared_realization": {
-                "format_version": SHARED_REALIZATION_FORMAT,
+                "format_version": shared_realization_format,
                 "realization_id": realization_id,
                 "union_candidate_ids": list(union),
                 "preexisting_extended_statistics": preexisting,
@@ -565,7 +569,7 @@ def build_shared_stock_realization(
 
 def validate_shared_stock_realization(path: Path) -> dict[str, Any]:
     artifact = read_json(path)
-    if artifact.get("format_version") != PHYSICAL_FORMAT:
+    if artifact.get("format_version") not in {PHYSICAL_FORMAT, PHYSICAL_FORMAT_V2}:
         raise RQ4ValidationError("unsupported stock physical artifact format")
     expected = semantic_digest(
         _runtime_free({k: v for k, v in artifact.items() if k != "semantic_digest"})
@@ -616,7 +620,7 @@ def validate_shared_stock_realization(path: Path) -> dict[str, Any]:
             raise RQ4ValidationError(f"{method} cost stages are not separated")
     return {
         "status": "valid",
-        "format_version": PHYSICAL_FORMAT,
+        "format_version": artifact.get("format_version"),
         "semantic_digest": expected,
         "method_count": len(methods),
         "formal_confirmatory_experiment": bool(
@@ -633,7 +637,9 @@ def write_shared_stock_realization(output: Path, **kwargs: Any) -> dict[str, Any
 
 __all__ = [
     "PHYSICAL_FORMAT",
+    "PHYSICAL_FORMAT_V2",
     "SHARED_REALIZATION_FORMAT",
+    "SHARED_REALIZATION_FORMAT_V2",
     "build_shared_stock_realization",
     "union_selected_memberships",
     "validate_method_union",

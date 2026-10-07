@@ -519,6 +519,49 @@ was native payload byte size. Derived reports use the canonical label
 memberships, or digests. The alias is recorded in
 `experiments/rq4-dependency-baseline-definition-resolution-v1.json`.
 
+### Generic RQ4 v2 formal campaign
+
+The formal AreCEL children for Census13, Power7, and DMV11 use the generic
+`rq4-fixed-k-v2` harness.  The frozen primary methods are five random
+replicates (`random-k-seed-1` through `random-k-seed-5`),
+`workload-frequency-top-k`, `native-payload-size-top-k`,
+`singleton-utility-top-k`, and `greedy-ADD`; the fixed primary size is
+`k=4`.  Forest10's historical v1 execution is not rerun or used as a runtime
+comparison target.
+
+The primary universe is built once, before singleton utility, GroundTruthSet,
+or Greedy search is consulted.  It contains only supported native kinds,
+valid relation/column metadata, sample-built payloads, and predeclared
+PostgreSQL-compatible candidates.  The RQ2 v2 snapshot, authoritative
+GroundTruthSet, native repository, candidate universe, and singleton profile
+may be reused only when their digests and frozen SUT identities match; source
+profiling cost is recorded and new selection calls are zero.
+
+Greedy uses the frozen Advisor incidence-incremental evaluator: the incumbent
+stores a complete estimate map, each ADD re-plans only incident queries, the
+changed estimates are merged, and the original weighted workload utility is
+evaluated on that complete map.  The first round uses cached singleton
+objectives, then has at most `3N-6` live proposal configuration evaluations
+for an eligible universe of size `N`.  It stops at a strict local optimum or
+the fixed `300` second deadline; it never fills to four with a non-improving
+ADD.  Selection accounting is separate from each unbudgeted (but individually
+bounded) final sandbox evaluation and from stock physical deployment.
+
+Each child writes `rq4-ablation-v2.json`,
+`rq4-design-evaluation-v2.json`, a gzip-compressed deterministic replay, a
+shared stock realization, and nine physical method children under
+`physical/`.  RQ4b creates the union of all memberships once, performs exactly
+one stock `ANALYZE`, then evaluates no-ANALYZE clones.  The primary truth is
+the same snapshot-bound `authoritative-external-exact` vector for every
+method; no new 10,000-query exact COUNT is permitted.
+
+RQ1 and RQ4 remain separate questions: the RQ1 matched comparison evaluates
+the advisor objective workload and therefore is an in-workload effectiveness
+result, not held-out-query generalization.  The RQ4 v2 status ledger can mark
+an individual child `complete`, `blocked-preflight`, `budget-censored`, or
+`failed-validation`, but the global RQ4 campaign remains incomplete until all
+three new children pass their design replay and physical realization gates.
+
 RQ4a is the primary deterministic patched-sandbox design comparison. RQ4b is
 the secondary stock physical consequence comparison. The fixed-k quality
 harness is executable for both evidence layers on a small fixture; the tracked

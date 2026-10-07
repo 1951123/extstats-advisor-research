@@ -483,6 +483,20 @@
         "native_analyze_variability_is_rq4a": false
       },
       "methods": ["random-k", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "formal_v2": {
+        "format_version": "rq4-fixed-k-v2",
+        "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
+        "method_order": ["random-k-seed-1", "random-k-seed-2", "random-k-seed-3", "random-k-seed-4", "random-k-seed-5", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
+        "fixed_k": 4,
+        "selection_budget": {"unit": "configuration-objective-evaluations", "max_configuration_evaluations": 2000, "wall_clock_seconds": 300, "final_evaluation_excluded": true},
+        "eligible_universe_freeze": "utility-independent supported kind/schema/sample-payload/predeclared-compatibility allowlist; frozen before GroundTruthSet, singleton utility, or SearchResult access",
+        "source_reuse": "RQ2 v2 snapshot, authoritative GroundTruthSet, candidate universe, native repository, and singleton profile only after identity/digest/coverage validation",
+        "greedy_semantics": "exact incidence-incremental full-map utility; strict improvement; at-most-k local optimum; no forced fill; worst-case live proposals 3N-6",
+        "truth_source": "authoritative-external-exact; no silent production-exact fallback; no new 10000-query COUNT",
+        "artifact_layout": ["rq4-ablation-v2.json", "rq4-design-evaluation-v2.json", "rq4-design-determinism-v2.json.gz", "rq4-stock-shared-realization-v2.json", "physical/*.json"],
+        "historical_forest10": "immutable v1 artifact retained; not rerun and not used for runtime comparison",
+        "status_ledger": {"arecel-census13": "planned", "arecel-power7": "planned", "arecel-dmv11": "planned", "global": "incomplete"}
+      },
       "historical_method_aliases": {
         "dependency-correlation-top-k": "native-payload-size-top-k"
       },
