@@ -155,54 +155,52 @@ def _build_smoke_profile(
     baseline = _estimate_utility(planner, utility, (), query_ids)
     native_by_id = {candidate.candidate_id: candidate for candidate in repository.candidate_models}
     candidate_by_id = {candidate.candidate_id: candidate for candidate in universe.candidates}
-    profiles: list[Any] = []
+    raw_profiles: list[tuple[str, str, int, float, float]] = []
     for candidate in universe.candidates:
         native = native_by_id[candidate.candidate_id]
         if native.state == modules["PRESENT"]:
             result = _estimate_utility(planner, utility, (candidate.candidate_id,), query_ids)
             objective = float(result.objective)
             improvement = float(baseline.objective - result.objective)
-            profiles.append(
-                modules["CandidateSingletonProfile"](
+            raw_profiles.append(
+                (
                     candidate.candidate_id,
                     native.state,
                     candidate.static_precedence_rank,
                     objective,
                     improvement,
-                    None,
                 )
             )
         else:
-            profiles.append(
-                modules["CandidateSingletonProfile"](
+            raw_profiles.append(
+                (
                     candidate.candidate_id,
                     modules["ABSENT_NATIVE"],
                     candidate.static_precedence_rank,
                     float(baseline.objective),
                     0.0,
-                    None,
                 )
             )
-    present = [profile for profile in profiles if profile.native_state == modules["PRESENT"]]
+    present = [profile for profile in raw_profiles if profile[1] == modules["PRESENT"]]
     ordered = sorted(
         present,
         key=lambda profile: (
-            -profile.improvement,
-            candidate_by_id[profile.candidate_id].static_precedence_rank,
-            profile.candidate_id,
+            -profile[4],
+            candidate_by_id[profile[0]].static_precedence_rank,
+            profile[0],
         ),
     )
-    rank = {profile.candidate_id: index for index, profile in enumerate(ordered, start=1)}
+    rank = {profile[0]: index for index, profile in enumerate(ordered, start=1)}
     ranked_profiles = tuple(
         modules["CandidateSingletonProfile"](
-            profile.candidate_id,
-            profile.native_state,
-            profile.static_precedence_rank,
-            profile.singleton_objective,
-            profile.improvement,
-            rank.get(profile.candidate_id),
+            candidate_id,
+            state,
+            static_rank,
+            objective,
+            improvement,
+            rank.get(candidate_id),
         )
-        for profile in profiles
+        for candidate_id, state, static_rank, objective, improvement in raw_profiles
     )
     return modules["SingletonProfile"](
         snapshot.semantic_digest,
@@ -219,7 +217,7 @@ def _build_smoke_profile(
         "singleton-utility-precedence-v1",
         modules["BaselineProfile"](float(baseline.objective)),
         ranked_profiles,
-        tuple(profile.candidate_id for profile in ordered),
+        tuple(profile[0] for profile in ordered),
         runtime_metadata={
             "evaluation_strategy": "three-query-live-smoke-profile",
             "positive_query_count": len(query_ids),
