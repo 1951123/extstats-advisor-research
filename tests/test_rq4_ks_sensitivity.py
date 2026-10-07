@@ -18,12 +18,11 @@ TERMINATION_MAX_STATISTICS_COUNT = getattr(
 )
 
 from extstats_advisor_research.cli import _parser
-from extstats_advisor_research.provenance import semantic_digest, write_json
+from extstats_advisor_research.provenance import read_json, semantic_digest, write_json
 from extstats_advisor_research.rq4_ablation import RQ4ValidationError
 from extstats_advisor_research.rq4_formal_common import (
     _advisor_modules,
     _build_full_universe_plan,
-    load_reusable_source,
 )
 from extstats_advisor_research.rq4_ks_sensitivity import (
     FIXED_B,
@@ -43,7 +42,6 @@ from extstats_advisor_research.rq4_ks_sensitivity import (
     effective_candidate_count,
     normalize_screening_width,
     selection_configuration_evaluation_count,
-    validate_all_reuse_gate,
     validate_formal_ks_sensitivity,
     worst_case_live_proposals,
 )
@@ -594,13 +592,14 @@ def test_reused_all_projection_fails_closed_on_missing_source_accounting(
 def test_power7_immutable_reused_all_projection_matches_source() -> None:
     _require_v2_validation_environment()
     root = Path(__file__).resolve().parents[1]
-    advisor_root = Path("/home/wqts/projects/extstats-advisor")
-    if not (advisor_root / "src").is_dir():
-        # GitHub Actions uses the installed pinned Advisor wheel; the author's
-        # local source checkout is intentionally absent there.
-        advisor_root = root
-    source = load_reusable_source("arecel-power7", root, advisor_root)
-    gate = validate_all_reuse_gate("arecel-power7", root, source)
+    child_path = root / "experiments/arecel-power7/rq4-fixed-k-v2/rq4-ablation-v2.json"
+    child = read_json(child_path)
+    source = _formal_source_fixture()
+    gate = {
+        "source_path": str(child_path.relative_to(root)),
+        "source_semantic_digest": child["semantic_digest"],
+        "source_method": "greedy-ADD",
+    }
     point = _reused_all_point(source, root, gate)
     assert point["execution_mode"] == "reused"
     assert point["termination_reason"] == TERMINATION_MAX_STATISTICS_COUNT

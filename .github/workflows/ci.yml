@@ -46,26 +46,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e '.[dev,advisor-v2]'
       - name: Run frozen v2 contract tests
-        run: |
-          set +e
-          python -m pytest --junitxml=/tmp/pytest-frozen-v2.xml
-          status=$?
-          if [ "$status" -ne 0 ]; then
-            python - <<'PY'
-          import xml.etree.ElementTree as ET
-
-          root = ET.parse("/tmp/pytest-frozen-v2.xml").getroot()
-          for case in root.iter("testcase"):
-              failure = case.find("failure")
-              error = case.find("error")
-              detail = failure if failure is not None else error
-              if detail is not None:
-                  message = detail.get("message", "pytest failure")
-                  text = " ".join((detail.text or "").split())
-                  print(f"::error file={case.get('classname','')},{case.get('name','')}::{message} {text}")
-          PY
-          fi
-          exit "$status"
+        run: python -m pytest
       - name: Check Ruff
         run: ruff check .
       - name: Check formatting
