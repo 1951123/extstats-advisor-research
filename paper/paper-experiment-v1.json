@@ -464,8 +464,8 @@
     {
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
-      "status": "ready-to-run",
-      "implementation_status": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, but its semantic naming resolution is now resolved; formal v2 execution is permitted and no v2 Census13, Power7, or DMV11 child has been run.",
+      "status": "complete",
+      "implementation_status": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, but its semantic naming resolution is resolved. Census13, Power7, and DMV11 each passed the frozen v2 RQ4a replay and RQ4b shared-stock gates; Forest10 remains immutable historical v1 evidence and was not rerun.",
       "dependency_baseline_definition_gate": {
         "historical_audit": "blocked",
         "resolution": "resolved",
@@ -495,7 +495,11 @@
         "truth_source": "authoritative-external-exact; no silent production-exact fallback; no new 10000-query COUNT",
         "artifact_layout": ["rq4-ablation-v2.json", "rq4-design-evaluation-v2.json", "rq4-design-determinism-v2.json.gz", "rq4-stock-shared-realization-v2.json", "physical/*.json"],
         "historical_forest10": "immutable v1 artifact retained; not rerun and not used for runtime comparison",
-        "status_ledger": {"arecel-census13": "planned", "arecel-power7": "planned", "arecel-dmv11": "planned", "global": "incomplete"}
+        "status_ledger": {"arecel-census13": "complete", "arecel-power7": "complete", "arecel-dmv11": "complete", "global": "incomplete"},
+        "derived_summary": {
+          "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+          "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"
+        }
       },
       "historical_method_aliases": {
         "dependency-correlation-top-k": "native-payload-size-top-k"
@@ -554,8 +558,8 @@
         "formal_confirmatory_experiment": false,
         "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
       },
-      "formal_arecel_runs": false,
-      "formal_arecel_scope_note": "false denotes that the global four-dataset RQ4 campaign is not complete; Forest10 has a dataset-scoped formal result and Census13, Power7, and DMV11 remain planned.",
+      "formal_arecel_runs": true,
+      "formal_arecel_scope_note": "Census13, Power7, and DMV11 have complete rq4-fixed-k-v2 children; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols.",
       "formal_dataset_status": {
         "arecel-forest10": {
           "status": "complete",
@@ -577,11 +581,62 @@
           "shared_union_size": 20,
           "shared_analyze_count": 1,
           "truth_policy_status": "validated-provenance",
-          "global_rq4_status": "ready-to-run"
+          "global_rq4_status": "incomplete"
         },
-        "arecel-census13": "planned",
-        "arecel-power7": "planned",
-        "arecel-dmv11": "planned"
+        "arecel-census13": {
+          "status": "complete",
+          "artifact": {
+            "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-ablation-v2.json",
+            "format_version": "rq4-fixed-k-v2",
+            "semantic_digest": "ed9031d8573f0048cbc852e5b8a236c7a29cc224b6012fd88b252700bbebba73"
+          },
+          "rq4a_replay": {
+            "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-design-determinism-v2.json.gz",
+            "format_version": "rq4-design-determinism-v2",
+            "semantic_digest": "62772721d5eef42aa18e621fe4737afb19e322daf6f8c8310c32dfbe3b87d4dc",
+            "replay_count": 2
+          },
+          "rq4b_child_count": 9,
+          "shared_analyze_count": 1,
+          "truth_policy_status": "validated-full-equivalence",
+          "global_rq4_status": "incomplete"
+        },
+        "arecel-power7": {
+          "status": "complete",
+          "artifact": {
+            "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-ablation-v2.json",
+            "format_version": "rq4-fixed-k-v2",
+            "semantic_digest": "c092541aa381a3e4eb8660e44f870f61ad1ea81eafc2d5fe94a87b79d8e853a7"
+          },
+          "rq4a_replay": {
+            "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-design-determinism-v2.json.gz",
+            "format_version": "rq4-design-determinism-v2",
+            "semantic_digest": "2157b492aa087c093f0c7db848f5d9a8bf4ec176a4eee240347981f3e4459d15",
+            "replay_count": 2
+          },
+          "rq4b_child_count": 9,
+          "shared_analyze_count": 1,
+          "truth_policy_status": "validated-provenance",
+          "global_rq4_status": "incomplete"
+        },
+        "arecel-dmv11": {
+          "status": "complete",
+          "artifact": {
+            "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-ablation-v2.json",
+            "format_version": "rq4-fixed-k-v2",
+            "semantic_digest": "15182b79f7691890cbfa5121d7eda65bbbb02737fb5129646dcc25341330b693"
+          },
+          "rq4a_replay": {
+            "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-design-determinism-v2.json.gz",
+            "format_version": "rq4-design-determinism-v2",
+            "semantic_digest": "38670c450e638ed127a9b9b535fa2daabeb8a4648db198f9a012625016784008",
+            "replay_count": 2
+          },
+          "rq4b_child_count": 9,
+          "shared_analyze_count": 1,
+          "truth_policy_status": "validated-provenance",
+          "global_rq4_status": "incomplete"
+        }
       },
       "expected_paper_outputs": ["tab-rq4-fixed-k-ablation", "fig-rq4-optimality-gap"],
       "completion_criteria": ["k is pre-registered independently of final advisor recommendation", "configuration-objective evaluations and PostgreSQL per-query planner calls are reported for all methods", "exhaustive is restricted to a separately declared tiny universe", "formal RQ4a replay and method evidence are complete", "formal RQ4b stock physical evidence records native realization identity and stochastic protocol"]
@@ -729,8 +784,8 @@
       },
       {
         "experiment_id": "rq4-fixed-k-ablations",
-        "status": "ready-to-run",
-        "note": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, while experiments/rq4-dependency-baseline-definition-resolution-v1.json resolves the semantic name as native-payload-size-top-k and permits formal execution. The historical Forest10 artifact remains immutable evidence; Census13, Power7, and DMV11 were not run."
+        "status": "complete",
+        "note": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, while experiments/rq4-dependency-baseline-definition-resolution-v1.json resolves the semantic name as native-payload-size-top-k. Census13, Power7, and DMV11 passed the frozen v2 RQ4a replay and RQ4b shared-stock gates; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",

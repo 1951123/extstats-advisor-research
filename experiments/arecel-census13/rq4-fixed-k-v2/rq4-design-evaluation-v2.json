@@ -1,0 +1,5268 @@
+{
+  "authoritative_observations_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+  "dataset_id": "arecel-census13",
+  "eligible_universe": {
+    "candidate_universe_semantic_digest": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+    "eligibility_rule": {
+      "allowed_kinds": [
+        "postgresql.mcv",
+        "postgresql.dependencies"
+      ],
+      "forbidden_signals": [
+        "singleton q-error improvement",
+        "greedy SearchResult",
+        "final Advisor recommendation",
+        "confirmatory full-data outcome"
+      ],
+      "requires_predeclared_postgresql_compatibility": true,
+      "requires_sample_built_payload": true,
+      "requires_schema_validity": true
+    },
+    "eligible_candidates": [
+      {
+        "candidate_id": "cand_b12275377576eefce9b89c42",
+        "canonical_deployment_position": 1,
+        "column_names": [
+          "age",
+          "workclass"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 1
+      },
+      {
+        "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+        "canonical_deployment_position": 2,
+        "column_names": [
+          "age",
+          "education"
+        ],
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 2
+      },
+      {
+        "candidate_id": "cand_3e70a6e82bad8deae62d349b",
+        "canonical_deployment_position": 3,
+        "column_names": [
+          "age",
+          "education_num"
+        ],
+        "column_ordinals": [
+          1,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 3
+      },
+      {
+        "candidate_id": "cand_732acc055f32ca48ff994adf",
+        "canonical_deployment_position": 4,
+        "column_names": [
+          "age",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 4
+      },
+      {
+        "candidate_id": "cand_aa68645890631aa4cb53e9a3",
+        "canonical_deployment_position": 5,
+        "column_names": [
+          "age",
+          "occupation"
+        ],
+        "column_ordinals": [
+          1,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 5
+      },
+      {
+        "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+        "canonical_deployment_position": 6,
+        "column_names": [
+          "age",
+          "relationship"
+        ],
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 6
+      },
+      {
+        "candidate_id": "cand_cd37ee0d9c064c4f164b0c43",
+        "canonical_deployment_position": 7,
+        "column_names": [
+          "age",
+          "race"
+        ],
+        "column_ordinals": [
+          1,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 7
+      },
+      {
+        "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+        "canonical_deployment_position": 8,
+        "column_names": [
+          "age",
+          "sex"
+        ],
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 8
+      },
+      {
+        "candidate_id": "cand_8dbfc04466e0428dc0bace4a",
+        "canonical_deployment_position": 9,
+        "column_names": [
+          "age",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          1,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 9
+      },
+      {
+        "candidate_id": "cand_48a67f9cfe6b06f538296675",
+        "canonical_deployment_position": 10,
+        "column_names": [
+          "age",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          1,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 10
+      },
+      {
+        "candidate_id": "cand_0b68634d2db5104514890167",
+        "canonical_deployment_position": 11,
+        "column_names": [
+          "age",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          1,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 11
+      },
+      {
+        "candidate_id": "cand_553429d8112680421624b60e",
+        "canonical_deployment_position": 12,
+        "column_names": [
+          "age",
+          "native_country"
+        ],
+        "column_ordinals": [
+          1,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 12
+      },
+      {
+        "candidate_id": "cand_223b8186574ec27eef627ee6",
+        "canonical_deployment_position": 13,
+        "column_names": [
+          "workclass",
+          "education"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 13
+      },
+      {
+        "candidate_id": "cand_169cfa92ed091ed819293261",
+        "canonical_deployment_position": 14,
+        "column_names": [
+          "workclass",
+          "education_num"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 14
+      },
+      {
+        "candidate_id": "cand_41eded1acb31e2a3075e7307",
+        "canonical_deployment_position": 15,
+        "column_names": [
+          "workclass",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 15
+      },
+      {
+        "candidate_id": "cand_65bf58e313a4b96876b72b19",
+        "canonical_deployment_position": 16,
+        "column_names": [
+          "workclass",
+          "occupation"
+        ],
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 16
+      },
+      {
+        "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+        "canonical_deployment_position": 17,
+        "column_names": [
+          "workclass",
+          "relationship"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 17
+      },
+      {
+        "candidate_id": "cand_89349165c26fe5452bf6c4de",
+        "canonical_deployment_position": 18,
+        "column_names": [
+          "workclass",
+          "race"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 18
+      },
+      {
+        "candidate_id": "cand_d69d8dede9951088f2866b00",
+        "canonical_deployment_position": 19,
+        "column_names": [
+          "workclass",
+          "sex"
+        ],
+        "column_ordinals": [
+          2,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 19
+      },
+      {
+        "candidate_id": "cand_08d0c91d6314dfc8cb424bd5",
+        "canonical_deployment_position": 20,
+        "column_names": [
+          "workclass",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 20
+      },
+      {
+        "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+        "canonical_deployment_position": 21,
+        "column_names": [
+          "workclass",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 21
+      },
+      {
+        "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+        "canonical_deployment_position": 22,
+        "column_names": [
+          "workclass",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          2,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 22
+      },
+      {
+        "candidate_id": "cand_57a44cba9481268f933571e7",
+        "canonical_deployment_position": 23,
+        "column_names": [
+          "workclass",
+          "native_country"
+        ],
+        "column_ordinals": [
+          2,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 23
+      },
+      {
+        "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+        "canonical_deployment_position": 24,
+        "column_names": [
+          "education",
+          "education_num"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 24
+      },
+      {
+        "candidate_id": "cand_af64a60c45cd194e77a47600",
+        "canonical_deployment_position": 25,
+        "column_names": [
+          "education",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          3,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 25
+      },
+      {
+        "candidate_id": "cand_ba355e70a4c2c126688383df",
+        "canonical_deployment_position": 26,
+        "column_names": [
+          "education",
+          "occupation"
+        ],
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 26
+      },
+      {
+        "candidate_id": "cand_b9510ae03f52378017bd059d",
+        "canonical_deployment_position": 27,
+        "column_names": [
+          "education",
+          "relationship"
+        ],
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 27
+      },
+      {
+        "candidate_id": "cand_83e889e4986d9c195173d8b4",
+        "canonical_deployment_position": 28,
+        "column_names": [
+          "education",
+          "race"
+        ],
+        "column_ordinals": [
+          3,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 28
+      },
+      {
+        "candidate_id": "cand_5798c5598742d74b46bc4dff",
+        "canonical_deployment_position": 29,
+        "column_names": [
+          "education",
+          "sex"
+        ],
+        "column_ordinals": [
+          3,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 29
+      },
+      {
+        "candidate_id": "cand_9773a98e0c8ac5270cbd32fd",
+        "canonical_deployment_position": 30,
+        "column_names": [
+          "education",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          3,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 30
+      },
+      {
+        "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+        "canonical_deployment_position": 31,
+        "column_names": [
+          "education",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          3,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 31
+      },
+      {
+        "candidate_id": "cand_81bcde1d7d6235f62aac94de",
+        "canonical_deployment_position": 32,
+        "column_names": [
+          "education",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          3,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 32
+      },
+      {
+        "candidate_id": "cand_71b63c6c36790cb15f4ff170",
+        "canonical_deployment_position": 33,
+        "column_names": [
+          "education",
+          "native_country"
+        ],
+        "column_ordinals": [
+          3,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 33
+      },
+      {
+        "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+        "canonical_deployment_position": 34,
+        "column_names": [
+          "education_num",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 34
+      },
+      {
+        "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+        "canonical_deployment_position": 35,
+        "column_names": [
+          "education_num",
+          "occupation"
+        ],
+        "column_ordinals": [
+          4,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 35
+      },
+      {
+        "candidate_id": "cand_4b3ea918bab3090e972df16e",
+        "canonical_deployment_position": 36,
+        "column_names": [
+          "education_num",
+          "relationship"
+        ],
+        "column_ordinals": [
+          4,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 36
+      },
+      {
+        "candidate_id": "cand_6eeb6f985923a556cbfdb7b5",
+        "canonical_deployment_position": 37,
+        "column_names": [
+          "education_num",
+          "race"
+        ],
+        "column_ordinals": [
+          4,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 37
+      },
+      {
+        "candidate_id": "cand_59e3334a421b38af9e1c1856",
+        "canonical_deployment_position": 38,
+        "column_names": [
+          "education_num",
+          "sex"
+        ],
+        "column_ordinals": [
+          4,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 38
+      },
+      {
+        "candidate_id": "cand_29b2f9be0f0f64bf9ebb43fb",
+        "canonical_deployment_position": 39,
+        "column_names": [
+          "education_num",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          4,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 39
+      },
+      {
+        "candidate_id": "cand_303f3f219e625001a5e679da",
+        "canonical_deployment_position": 40,
+        "column_names": [
+          "education_num",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          4,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 40
+      },
+      {
+        "candidate_id": "cand_04dcdd2e1c84ae4b440a32bf",
+        "canonical_deployment_position": 41,
+        "column_names": [
+          "education_num",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          4,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 41
+      },
+      {
+        "candidate_id": "cand_bbe682852a634389cda400b8",
+        "canonical_deployment_position": 42,
+        "column_names": [
+          "education_num",
+          "native_country"
+        ],
+        "column_ordinals": [
+          4,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 42
+      },
+      {
+        "candidate_id": "cand_7ade54d0980739460237baf8",
+        "canonical_deployment_position": 43,
+        "column_names": [
+          "marital_status",
+          "occupation"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 43
+      },
+      {
+        "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+        "canonical_deployment_position": 44,
+        "column_names": [
+          "marital_status",
+          "relationship"
+        ],
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 44
+      },
+      {
+        "candidate_id": "cand_d98907b61a58b77aa795ad9f",
+        "canonical_deployment_position": 45,
+        "column_names": [
+          "marital_status",
+          "race"
+        ],
+        "column_ordinals": [
+          5,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 45
+      },
+      {
+        "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+        "canonical_deployment_position": 46,
+        "column_names": [
+          "marital_status",
+          "sex"
+        ],
+        "column_ordinals": [
+          5,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 46
+      },
+      {
+        "candidate_id": "cand_009ee5882886dea010fe62b4",
+        "canonical_deployment_position": 47,
+        "column_names": [
+          "marital_status",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          5,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 47
+      },
+      {
+        "candidate_id": "cand_26d57c5837ad4a1c6ae5048a",
+        "canonical_deployment_position": 48,
+        "column_names": [
+          "marital_status",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          5,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 48
+      },
+      {
+        "candidate_id": "cand_fa0a7de0b79856165fff93e0",
+        "canonical_deployment_position": 49,
+        "column_names": [
+          "marital_status",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          5,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 49
+      },
+      {
+        "candidate_id": "cand_d61b034805f082d8e27f7a0d",
+        "canonical_deployment_position": 50,
+        "column_names": [
+          "marital_status",
+          "native_country"
+        ],
+        "column_ordinals": [
+          5,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 50
+      },
+      {
+        "candidate_id": "cand_265e33054e3fdbe18ac5cfdf",
+        "canonical_deployment_position": 51,
+        "column_names": [
+          "occupation",
+          "relationship"
+        ],
+        "column_ordinals": [
+          6,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 51
+      },
+      {
+        "candidate_id": "cand_82b759090241f0d5ec1e16c5",
+        "canonical_deployment_position": 52,
+        "column_names": [
+          "occupation",
+          "race"
+        ],
+        "column_ordinals": [
+          6,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 52
+      },
+      {
+        "candidate_id": "cand_aaf2706c0b434f8009b08214",
+        "canonical_deployment_position": 53,
+        "column_names": [
+          "occupation",
+          "sex"
+        ],
+        "column_ordinals": [
+          6,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 53
+      },
+      {
+        "candidate_id": "cand_e2cb8185df9edaf97b53916d",
+        "canonical_deployment_position": 54,
+        "column_names": [
+          "occupation",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          6,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 54
+      },
+      {
+        "candidate_id": "cand_8166650efcc675a4fe3b7dc0",
+        "canonical_deployment_position": 55,
+        "column_names": [
+          "occupation",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          6,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 55
+      },
+      {
+        "candidate_id": "cand_b1c3025f855c117b50ede374",
+        "canonical_deployment_position": 56,
+        "column_names": [
+          "occupation",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          6,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 56
+      },
+      {
+        "candidate_id": "cand_d599ea0d741f1f9a8a1d4812",
+        "canonical_deployment_position": 57,
+        "column_names": [
+          "occupation",
+          "native_country"
+        ],
+        "column_ordinals": [
+          6,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 57
+      },
+      {
+        "candidate_id": "cand_64a5ea00f18be3e74b9ac5b4",
+        "canonical_deployment_position": 58,
+        "column_names": [
+          "relationship",
+          "race"
+        ],
+        "column_ordinals": [
+          7,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 58
+      },
+      {
+        "candidate_id": "cand_2a400fd096108f66712fa5d7",
+        "canonical_deployment_position": 59,
+        "column_names": [
+          "relationship",
+          "sex"
+        ],
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 59
+      },
+      {
+        "candidate_id": "cand_1d911316eaff7bed913aea09",
+        "canonical_deployment_position": 60,
+        "column_names": [
+          "relationship",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          7,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 60
+      },
+      {
+        "candidate_id": "cand_dc9ef95a9408c9679784b874",
+        "canonical_deployment_position": 61,
+        "column_names": [
+          "relationship",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          7,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 61
+      },
+      {
+        "candidate_id": "cand_dac304ee81f8023795d63ab4",
+        "canonical_deployment_position": 62,
+        "column_names": [
+          "relationship",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          7,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 62
+      },
+      {
+        "candidate_id": "cand_9f0279b9c5f548bca907948f",
+        "canonical_deployment_position": 63,
+        "column_names": [
+          "relationship",
+          "native_country"
+        ],
+        "column_ordinals": [
+          7,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 63
+      },
+      {
+        "candidate_id": "cand_8668a058b5d7d13f3c5daabb",
+        "canonical_deployment_position": 64,
+        "column_names": [
+          "race",
+          "sex"
+        ],
+        "column_ordinals": [
+          8,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 64
+      },
+      {
+        "candidate_id": "cand_0cf9a63954ea8f66c8ae8e67",
+        "canonical_deployment_position": 65,
+        "column_names": [
+          "race",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          8,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 65
+      },
+      {
+        "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+        "canonical_deployment_position": 66,
+        "column_names": [
+          "race",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          8,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 66
+      },
+      {
+        "candidate_id": "cand_f2d1fb5e5791eb78e09dd53b",
+        "canonical_deployment_position": 67,
+        "column_names": [
+          "race",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          8,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 67
+      },
+      {
+        "candidate_id": "cand_489d98b21c7c931fd9cf3140",
+        "canonical_deployment_position": 68,
+        "column_names": [
+          "race",
+          "native_country"
+        ],
+        "column_ordinals": [
+          8,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 68
+      },
+      {
+        "candidate_id": "cand_75aad0422d969da4c500c9c4",
+        "canonical_deployment_position": 69,
+        "column_names": [
+          "sex",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          9,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 69
+      },
+      {
+        "candidate_id": "cand_9ad5c4f8bce1c644dc3385ac",
+        "canonical_deployment_position": 70,
+        "column_names": [
+          "sex",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          9,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 70
+      },
+      {
+        "candidate_id": "cand_06bd438063713fb39fe0177b",
+        "canonical_deployment_position": 71,
+        "column_names": [
+          "sex",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          9,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 71
+      },
+      {
+        "candidate_id": "cand_749bc21a184d298c15b09f15",
+        "canonical_deployment_position": 72,
+        "column_names": [
+          "sex",
+          "native_country"
+        ],
+        "column_ordinals": [
+          9,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 72
+      },
+      {
+        "candidate_id": "cand_b9fc8c47a3f7554889998172",
+        "canonical_deployment_position": 73,
+        "column_names": [
+          "capital_gain",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          10,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 73
+      },
+      {
+        "candidate_id": "cand_ab335721595078ebcde0b420",
+        "canonical_deployment_position": 74,
+        "column_names": [
+          "capital_gain",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          10,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 74
+      },
+      {
+        "candidate_id": "cand_76b8072d6a29b33eb9f7d8ec",
+        "canonical_deployment_position": 75,
+        "column_names": [
+          "capital_gain",
+          "native_country"
+        ],
+        "column_ordinals": [
+          10,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 75
+      },
+      {
+        "candidate_id": "cand_181e97e7cf962b08145d1f89",
+        "canonical_deployment_position": 76,
+        "column_names": [
+          "capital_loss",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          11,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 76
+      },
+      {
+        "candidate_id": "cand_80f2b971f5a0eae2767e59ca",
+        "canonical_deployment_position": 77,
+        "column_names": [
+          "capital_loss",
+          "native_country"
+        ],
+        "column_ordinals": [
+          11,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 77
+      },
+      {
+        "candidate_id": "cand_af2001646b1b90182083d14a",
+        "canonical_deployment_position": 78,
+        "column_names": [
+          "hours_per_week",
+          "native_country"
+        ],
+        "column_ordinals": [
+          12,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 78
+      },
+      {
+        "candidate_id": "cand_4fea85ffce03a731bac4eeda",
+        "canonical_deployment_position": 79,
+        "column_names": [
+          "age",
+          "workclass"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 79
+      },
+      {
+        "candidate_id": "cand_7d7f78d00d8bf6e5b1f259e9",
+        "canonical_deployment_position": 80,
+        "column_names": [
+          "age",
+          "education"
+        ],
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 80
+      },
+      {
+        "candidate_id": "cand_d880d91aa215fff014b69d59",
+        "canonical_deployment_position": 81,
+        "column_names": [
+          "age",
+          "education_num"
+        ],
+        "column_ordinals": [
+          1,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 81
+      },
+      {
+        "candidate_id": "cand_9915d513b1398c75dfc36902",
+        "canonical_deployment_position": 82,
+        "column_names": [
+          "age",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 82
+      },
+      {
+        "candidate_id": "cand_c234bb315f70d2701c99efbc",
+        "canonical_deployment_position": 83,
+        "column_names": [
+          "age",
+          "occupation"
+        ],
+        "column_ordinals": [
+          1,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 83
+      },
+      {
+        "candidate_id": "cand_02a6b74444d06643b624434f",
+        "canonical_deployment_position": 84,
+        "column_names": [
+          "age",
+          "relationship"
+        ],
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 84
+      },
+      {
+        "candidate_id": "cand_244fb54869d42904c0b3164b",
+        "canonical_deployment_position": 85,
+        "column_names": [
+          "age",
+          "race"
+        ],
+        "column_ordinals": [
+          1,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 85
+      },
+      {
+        "candidate_id": "cand_1e623219808547e4f42daed2",
+        "canonical_deployment_position": 86,
+        "column_names": [
+          "age",
+          "sex"
+        ],
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 86
+      },
+      {
+        "candidate_id": "cand_cb8e7e4cd5b74e43ce8fa45d",
+        "canonical_deployment_position": 87,
+        "column_names": [
+          "age",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          1,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 87
+      },
+      {
+        "candidate_id": "cand_353e6eab546b8c0ee0986e21",
+        "canonical_deployment_position": 88,
+        "column_names": [
+          "age",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          1,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 88
+      },
+      {
+        "candidate_id": "cand_b7ff57843b8f546f0d079e85",
+        "canonical_deployment_position": 89,
+        "column_names": [
+          "age",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          1,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 89
+      },
+      {
+        "candidate_id": "cand_9f085c09df567c4053953c4c",
+        "canonical_deployment_position": 90,
+        "column_names": [
+          "age",
+          "native_country"
+        ],
+        "column_ordinals": [
+          1,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 90
+      },
+      {
+        "candidate_id": "cand_bdf1a975ff40c899359c9199",
+        "canonical_deployment_position": 91,
+        "column_names": [
+          "workclass",
+          "marital_status"
+        ],
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 93
+      },
+      {
+        "candidate_id": "cand_563a1396818ae7124888fb89",
+        "canonical_deployment_position": 92,
+        "column_names": [
+          "workclass",
+          "occupation"
+        ],
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 94
+      },
+      {
+        "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+        "canonical_deployment_position": 93,
+        "column_names": [
+          "workclass",
+          "relationship"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 95
+      },
+      {
+        "candidate_id": "cand_b35879fae6fb906963b29ad3",
+        "canonical_deployment_position": 94,
+        "column_names": [
+          "workclass",
+          "race"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 96
+      },
+      {
+        "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "canonical_deployment_position": 95,
+        "column_names": [
+          "workclass",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 98
+      },
+      {
+        "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+        "canonical_deployment_position": 96,
+        "column_names": [
+          "workclass",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 99
+      },
+      {
+        "candidate_id": "cand_26d0826ecabb3cd36bbc78e4",
+        "canonical_deployment_position": 97,
+        "column_names": [
+          "workclass",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          2,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 100
+      },
+      {
+        "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+        "canonical_deployment_position": 98,
+        "column_names": [
+          "workclass",
+          "native_country"
+        ],
+        "column_ordinals": [
+          2,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 101
+      },
+      {
+        "candidate_id": "cand_dd87533e8de4bde602d578d8",
+        "canonical_deployment_position": 99,
+        "column_names": [
+          "education",
+          "education_num"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 102
+      },
+      {
+        "candidate_id": "cand_463bbead790a8b882d8ec90b",
+        "canonical_deployment_position": 100,
+        "column_names": [
+          "education",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          3,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 108
+      },
+      {
+        "candidate_id": "cand_ed3fd2cd9b7e1acb7bb1e46f",
+        "canonical_deployment_position": 101,
+        "column_names": [
+          "education",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          3,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 109
+      },
+      {
+        "candidate_id": "cand_df4e56f7a43cce985de58501",
+        "canonical_deployment_position": 102,
+        "column_names": [
+          "education",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          3,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 110
+      },
+      {
+        "candidate_id": "cand_ba13258ae38ff284d4f6d104",
+        "canonical_deployment_position": 103,
+        "column_names": [
+          "education",
+          "native_country"
+        ],
+        "column_ordinals": [
+          3,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 111
+      },
+      {
+        "candidate_id": "cand_663c0ca942329048a18273bb",
+        "canonical_deployment_position": 104,
+        "column_names": [
+          "education_num",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          4,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 117
+      },
+      {
+        "candidate_id": "cand_f45d72c75ba5083f4c695e92",
+        "canonical_deployment_position": 105,
+        "column_names": [
+          "education_num",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          4,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 118
+      },
+      {
+        "candidate_id": "cand_3e241907ca17ef6f20e97be9",
+        "canonical_deployment_position": 106,
+        "column_names": [
+          "education_num",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          4,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 119
+      },
+      {
+        "candidate_id": "cand_f164e5a65f45f451b2edf980",
+        "canonical_deployment_position": 107,
+        "column_names": [
+          "education_num",
+          "native_country"
+        ],
+        "column_ordinals": [
+          4,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 120
+      },
+      {
+        "candidate_id": "cand_abcb01a2586c0082e109aada",
+        "canonical_deployment_position": 108,
+        "column_names": [
+          "marital_status",
+          "occupation"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 121
+      },
+      {
+        "candidate_id": "cand_58068f17f9e129e00ca5ffdc",
+        "canonical_deployment_position": 109,
+        "column_names": [
+          "marital_status",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          5,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 125
+      },
+      {
+        "candidate_id": "cand_0f9c89111f8efa47e3a92569",
+        "canonical_deployment_position": 110,
+        "column_names": [
+          "marital_status",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          5,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 126
+      },
+      {
+        "candidate_id": "cand_1f1901e4f33203bc7c0da5c3",
+        "canonical_deployment_position": 111,
+        "column_names": [
+          "marital_status",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          5,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 127
+      },
+      {
+        "candidate_id": "cand_beb19ecfcbf3d25c4c357e8f",
+        "canonical_deployment_position": 112,
+        "column_names": [
+          "marital_status",
+          "native_country"
+        ],
+        "column_ordinals": [
+          5,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 128
+      },
+      {
+        "candidate_id": "cand_e9d526377450d8fd7141b1b9",
+        "canonical_deployment_position": 113,
+        "column_names": [
+          "occupation",
+          "sex"
+        ],
+        "column_ordinals": [
+          6,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 131
+      },
+      {
+        "candidate_id": "cand_9ef5cc32745e632825e636e8",
+        "canonical_deployment_position": 114,
+        "column_names": [
+          "occupation",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          6,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 132
+      },
+      {
+        "candidate_id": "cand_6f1d42e815f283ccc4fedfaf",
+        "canonical_deployment_position": 115,
+        "column_names": [
+          "occupation",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          6,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 133
+      },
+      {
+        "candidate_id": "cand_25aec16b68ea386dc525f927",
+        "canonical_deployment_position": 116,
+        "column_names": [
+          "occupation",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          6,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 134
+      },
+      {
+        "candidate_id": "cand_3bf9bfd55ac2ec28edbe0064",
+        "canonical_deployment_position": 117,
+        "column_names": [
+          "occupation",
+          "native_country"
+        ],
+        "column_ordinals": [
+          6,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 135
+      },
+      {
+        "candidate_id": "cand_ad015de15a1d84aada0a7ea6",
+        "canonical_deployment_position": 118,
+        "column_names": [
+          "relationship",
+          "sex"
+        ],
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 137
+      },
+      {
+        "candidate_id": "cand_825c864c3d841c5b80341423",
+        "canonical_deployment_position": 119,
+        "column_names": [
+          "relationship",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          7,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 138
+      },
+      {
+        "candidate_id": "cand_22b2431f84a2c998fe93a705",
+        "canonical_deployment_position": 120,
+        "column_names": [
+          "relationship",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          7,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 139
+      },
+      {
+        "candidate_id": "cand_63e3ed95e3640d25978eef19",
+        "canonical_deployment_position": 121,
+        "column_names": [
+          "relationship",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          7,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 140
+      },
+      {
+        "candidate_id": "cand_907082119654b274db2849b9",
+        "canonical_deployment_position": 122,
+        "column_names": [
+          "relationship",
+          "native_country"
+        ],
+        "column_ordinals": [
+          7,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 141
+      },
+      {
+        "candidate_id": "cand_5ae138edc8c7db1cb935693d",
+        "canonical_deployment_position": 123,
+        "column_names": [
+          "race",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          8,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 143
+      },
+      {
+        "candidate_id": "cand_f84540fbda0ca90e1c8a4342",
+        "canonical_deployment_position": 124,
+        "column_names": [
+          "race",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          8,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 144
+      },
+      {
+        "candidate_id": "cand_460882dc9e7660a8af18697e",
+        "canonical_deployment_position": 125,
+        "column_names": [
+          "race",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          8,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 145
+      },
+      {
+        "candidate_id": "cand_9a25df5bb9e0d5153d94fdcf",
+        "canonical_deployment_position": 126,
+        "column_names": [
+          "race",
+          "native_country"
+        ],
+        "column_ordinals": [
+          8,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 146
+      },
+      {
+        "candidate_id": "cand_d266669aa7c12a2f97443faf",
+        "canonical_deployment_position": 127,
+        "column_names": [
+          "sex",
+          "capital_gain"
+        ],
+        "column_ordinals": [
+          9,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 147
+      },
+      {
+        "candidate_id": "cand_de0139f08312e44a11986bdf",
+        "canonical_deployment_position": 128,
+        "column_names": [
+          "sex",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          9,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 148
+      },
+      {
+        "candidate_id": "cand_a8a88bd6f21fb3f7eddef389",
+        "canonical_deployment_position": 129,
+        "column_names": [
+          "sex",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          9,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 149
+      },
+      {
+        "candidate_id": "cand_0a20a38b15aafebce18d2c45",
+        "canonical_deployment_position": 130,
+        "column_names": [
+          "sex",
+          "native_country"
+        ],
+        "column_ordinals": [
+          9,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 150
+      },
+      {
+        "candidate_id": "cand_201c29c6903ecdb319bdd125",
+        "canonical_deployment_position": 131,
+        "column_names": [
+          "capital_gain",
+          "capital_loss"
+        ],
+        "column_ordinals": [
+          10,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 151
+      },
+      {
+        "candidate_id": "cand_80f7f7b6165c8497ff494211",
+        "canonical_deployment_position": 132,
+        "column_names": [
+          "capital_gain",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          10,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 152
+      },
+      {
+        "candidate_id": "cand_f6f63e66f60b4f8eaa892f84",
+        "canonical_deployment_position": 133,
+        "column_names": [
+          "capital_gain",
+          "native_country"
+        ],
+        "column_ordinals": [
+          10,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 153
+      },
+      {
+        "candidate_id": "cand_6e168da13d3923318b81e07c",
+        "canonical_deployment_position": 134,
+        "column_names": [
+          "capital_loss",
+          "hours_per_week"
+        ],
+        "column_ordinals": [
+          11,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 154
+      },
+      {
+        "candidate_id": "cand_11c22cb06f3d76c7016429da",
+        "canonical_deployment_position": 135,
+        "column_names": [
+          "capital_loss",
+          "native_country"
+        ],
+        "column_ordinals": [
+          11,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 155
+      },
+      {
+        "candidate_id": "cand_622cc12086322b75d4e08073",
+        "canonical_deployment_position": 136,
+        "column_names": [
+          "hours_per_week",
+          "native_country"
+        ],
+        "column_ordinals": [
+          12,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_792c9fc7c23cba759b9bab83",
+        "static_precedence_rank": 156
+      }
+    ],
+    "excluded_candidates": [
+      {
+        "candidate": {
+          "candidate_id": "cand_b4051d6ccf277161e2ef46ad",
+          "column_names": [
+            "workclass",
+            "education"
+          ],
+          "column_ordinals": [
+            2,
+            3
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 91
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_dc42566e174be818e84aa4a2",
+          "column_names": [
+            "workclass",
+            "education_num"
+          ],
+          "column_ordinals": [
+            2,
+            4
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 92
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_6c2f321dabcb4b7ce92905d7",
+          "column_names": [
+            "workclass",
+            "sex"
+          ],
+          "column_ordinals": [
+            2,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 97
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_5e1f3ff9cff32de41c061629",
+          "column_names": [
+            "education",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            3,
+            5
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 103
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_41cd0067aeb92114dc9dde5a",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 104
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_80912435fce90a35b187595d",
+          "column_names": [
+            "education",
+            "relationship"
+          ],
+          "column_ordinals": [
+            3,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 105
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_ab0f85fb514e1ab4d06af688",
+          "column_names": [
+            "education",
+            "race"
+          ],
+          "column_ordinals": [
+            3,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 106
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_ac7593d0aa9e46380b3660ae",
+          "column_names": [
+            "education",
+            "sex"
+          ],
+          "column_ordinals": [
+            3,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 107
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_12ec60bab6d93575af950f57",
+          "column_names": [
+            "education_num",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 112
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_4933ad0335a26a4a57198506",
+          "column_names": [
+            "education_num",
+            "occupation"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 113
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_1246d3d440b88b4252987800",
+          "column_names": [
+            "education_num",
+            "relationship"
+          ],
+          "column_ordinals": [
+            4,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 114
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_93956a44757e439260f9bc66",
+          "column_names": [
+            "education_num",
+            "race"
+          ],
+          "column_ordinals": [
+            4,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 115
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_9153b516c96a760230727fce",
+          "column_names": [
+            "education_num",
+            "sex"
+          ],
+          "column_ordinals": [
+            4,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 116
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_e0b87412f72f39d1e9ace29b",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 122
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_3a0fd9d1c52d4e6a5a43c7aa",
+          "column_names": [
+            "marital_status",
+            "race"
+          ],
+          "column_ordinals": [
+            5,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 123
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_228fb420ddcb11791c34733d",
+          "column_names": [
+            "marital_status",
+            "sex"
+          ],
+          "column_ordinals": [
+            5,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 124
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_94c5be1de18b33950873ca02",
+          "column_names": [
+            "occupation",
+            "relationship"
+          ],
+          "column_ordinals": [
+            6,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 129
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_7a5faba352f244c9bb33b388",
+          "column_names": [
+            "occupation",
+            "race"
+          ],
+          "column_ordinals": [
+            6,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 130
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_dcfef6fa9abec56bc961c209",
+          "column_names": [
+            "relationship",
+            "race"
+          ],
+          "column_ordinals": [
+            7,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 136
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_af3dff922bf4c0085e8e9bf6",
+          "column_names": [
+            "race",
+            "sex"
+          ],
+          "column_ordinals": [
+            8,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 142
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      }
+    ],
+    "format_version": "rq4-eligible-universe-v1",
+    "native_repository_semantic_digest": "7bb2fd41f634518ac134fed134756904e12f4e3827a048ef65b4d79c015b9504",
+    "semantic_digest": "d4533f216e07aebe5bd2b4117adb15b3da4fcf27e4ce643abbe7b689adc0453e",
+    "source_snapshot_semantic_digest": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0"
+  },
+  "experiment_id": "rq4-design-evaluation-v2",
+  "fixed_k": 4,
+  "formal_confirmatory_experiment": true,
+  "format_version": "rq4-design-evaluation-v2",
+  "implementation": {
+    "formal_scope": "RQ4a-design-and-RQ4b-physical",
+    "greedy": "advisor-incidence-incremental-v1",
+    "selection_evaluator": "exact-merged-estimate-map-weighted-utility"
+  },
+  "method_order": [
+    "random-k-seed-1",
+    "random-k-seed-2",
+    "random-k-seed-3",
+    "random-k-seed-4",
+    "random-k-seed-5",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD"
+  ],
+  "methods": {
+    "greedy-ADD": {
+      "deployment_order": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "evaluation_order": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "1caf7ce7cfdeba5ac6eb9fde0609bb45b7b38f99e2b7d24ca8befc04cb383fa5",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 3.0140142440167508,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.1428874480006925
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample planner",
+          "GroundTruthSet"
+        ],
+        "forbidden_inputs": [],
+        "ground_truth_during_selection": true
+      },
+      "method_id": "greedy-ADD",
+      "search_result": {
+        "accepted_moves": [
+          {
+            "added_candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "improvement": 1.417284859251085,
+            "objective_after": 3.8391507479696667,
+            "objective_before": 5.256435607220752,
+            "ordered_candidate_ids_after": [
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ],
+            "round_index": 1
+          },
+          {
+            "added_candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "improvement": 0.8251365039529159,
+            "objective_after": 3.0140142440167508,
+            "objective_before": 3.8391507479696667,
+            "ordered_candidate_ids_after": [
+              "cand_0b505b8bacb3c643f4e4dc43",
+              "cand_1af5539c1001b3f9b2f29435"
+            ],
+            "round_index": 2
+          }
+        ],
+        "baseline_objective": 5.256435607220752,
+        "budget": {
+          "candidate_limit": 136,
+          "contract": "optimization-budget-v1",
+          "max_statistics_count": 4,
+          "wall_clock_seconds": 300.0
+        },
+        "candidate_universe_semantic_digest": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+        "completed_rounds": [
+          {
+            "evaluations": [
+              {
+                "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+                "objective": 3.0140142440167508,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_1af5539c1001b3f9b2f29435"
+                ]
+              },
+              {
+                "candidate_id": "cand_65bf58e313a4b96876b72b19",
+                "objective": 3.2988054737248356,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_65bf58e313a4b96876b72b19"
+                ]
+              },
+              {
+                "candidate_id": "cand_ba355e70a4c2c126688383df",
+                "objective": 3.750535080880633,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ba355e70a4c2c126688383df"
+                ]
+              },
+              {
+                "candidate_id": "cand_2a400fd096108f66712fa5d7",
+                "objective": 3.547745157099141,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_2a400fd096108f66712fa5d7"
+                ]
+              },
+              {
+                "candidate_id": "cand_732acc055f32ca48ff994adf",
+                "objective": 3.542016718003616,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_732acc055f32ca48ff994adf"
+                ]
+              },
+              {
+                "candidate_id": "cand_ad015de15a1d84aada0a7ea6",
+                "objective": 3.5565460941714897,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ad015de15a1d84aada0a7ea6"
+                ]
+              },
+              {
+                "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+                "objective": 3.579878415422694,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_1edd4a89495b1c0989812ef6"
+                ]
+              },
+              {
+                "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+                "objective": 3.7668211560613463,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_4a28f778fbc449dfeede3fcd"
+                ]
+              },
+              {
+                "candidate_id": "cand_265e33054e3fdbe18ac5cfdf",
+                "objective": 3.6527557635070864,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_265e33054e3fdbe18ac5cfdf"
+                ]
+              },
+              {
+                "candidate_id": "cand_aaf2706c0b434f8009b08214",
+                "objective": 3.6862908232144656,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_aaf2706c0b434f8009b08214"
+                ]
+              },
+              {
+                "candidate_id": "cand_563a1396818ae7124888fb89",
+                "objective": 3.6676790835552326,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_563a1396818ae7124888fb89"
+                ]
+              },
+              {
+                "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+                "objective": 3.7366911513728223,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_6b5227c3cc929cee8be4b776"
+                ]
+              },
+              {
+                "candidate_id": "cand_aa68645890631aa4cb53e9a3",
+                "objective": 3.7252374059742115,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_aa68645890631aa4cb53e9a3"
+                ]
+              },
+              {
+                "candidate_id": "cand_7ade54d0980739460237baf8",
+                "objective": 3.706654986936616,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7ade54d0980739460237baf8"
+                ]
+              },
+              {
+                "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+                "objective": 3.8022116424240013,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_2e314f97c08689b6e7ad90b8"
+                ]
+              },
+              {
+                "candidate_id": "cand_b9510ae03f52378017bd059d",
+                "objective": 3.8065075012190674,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b9510ae03f52378017bd059d"
+                ]
+              },
+              {
+                "candidate_id": "cand_3e70a6e82bad8deae62d349b",
+                "objective": 3.8007571727129252,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_3e70a6e82bad8deae62d349b"
+                ]
+              },
+              {
+                "candidate_id": "cand_dac304ee81f8023795d63ab4",
+                "objective": 3.7681011396971837,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_dac304ee81f8023795d63ab4"
+                ]
+              },
+              {
+                "candidate_id": "cand_b1c3025f855c117b50ede374",
+                "objective": 3.7549842664130484,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b1c3025f855c117b50ede374"
+                ]
+              },
+              {
+                "candidate_id": "cand_4b3ea918bab3090e972df16e",
+                "objective": 3.821935091575117,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_4b3ea918bab3090e972df16e"
+                ]
+              },
+              {
+                "candidate_id": "cand_af64a60c45cd194e77a47600",
+                "objective": 3.821023650405994,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_af64a60c45cd194e77a47600"
+                ]
+              },
+              {
+                "candidate_id": "cand_0b68634d2db5104514890167",
+                "objective": 3.791854928121099,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_0b68634d2db5104514890167"
+                ]
+              },
+              {
+                "candidate_id": "cand_223b8186574ec27eef627ee6",
+                "objective": 3.8217949984629858,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_223b8186574ec27eef627ee6"
+                ]
+              },
+              {
+                "candidate_id": "cand_fa0a7de0b79856165fff93e0",
+                "objective": 3.7854644522285867,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_fa0a7de0b79856165fff93e0"
+                ]
+              },
+              {
+                "candidate_id": "cand_81bcde1d7d6235f62aac94de",
+                "objective": 3.8328578005098266,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_81bcde1d7d6235f62aac94de"
+                ]
+              },
+              {
+                "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+                "objective": 3.7688200117732698,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9da5f299ad8d39bb6c1d87aa"
+                ]
+              },
+              {
+                "candidate_id": "cand_b12275377576eefce9b89c42",
+                "objective": 3.7796393287284866,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b12275377576eefce9b89c42"
+                ]
+              },
+              {
+                "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+                "objective": 3.8260348235884267,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f50a783f33caca5a7d0b8f10"
+                ]
+              },
+              {
+                "candidate_id": "cand_489d98b21c7c931fd9cf3140",
+                "objective": 3.80308136011643,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_489d98b21c7c931fd9cf3140"
+                ]
+              },
+              {
+                "candidate_id": "cand_04dcdd2e1c84ae4b440a32bf",
+                "objective": 3.8292576163539334,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_04dcdd2e1c84ae4b440a32bf"
+                ]
+              },
+              {
+                "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+                "objective": 3.808800027507812,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_2bff6409ebf3f1068adcda97"
+                ]
+              },
+              {
+                "candidate_id": "cand_169cfa92ed091ed819293261",
+                "objective": 3.8231819975645456,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_169cfa92ed091ed819293261"
+                ]
+              },
+              {
+                "candidate_id": "cand_5798c5598742d74b46bc4dff",
+                "objective": 3.8307837398670825,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_5798c5598742d74b46bc4dff"
+                ]
+              },
+              {
+                "candidate_id": "cand_06bd438063713fb39fe0177b",
+                "objective": 3.812649185141673,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_06bd438063713fb39fe0177b"
+                ]
+              },
+              {
+                "candidate_id": "cand_64a5ea00f18be3e74b9ac5b4",
+                "objective": 3.821349678245587,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_64a5ea00f18be3e74b9ac5b4"
+                ]
+              },
+              {
+                "candidate_id": "cand_41eded1acb31e2a3075e7307",
+                "objective": 3.797206950035741,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_41eded1acb31e2a3075e7307"
+                ]
+              },
+              {
+                "candidate_id": "cand_d98907b61a58b77aa795ad9f",
+                "objective": 3.8302101377340105,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d98907b61a58b77aa795ad9f"
+                ]
+              },
+              {
+                "candidate_id": "cand_bbe682852a634389cda400b8",
+                "objective": 3.834167312628814,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_bbe682852a634389cda400b8"
+                ]
+              },
+              {
+                "candidate_id": "cand_71b63c6c36790cb15f4ff170",
+                "objective": 3.8367498386383296,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_71b63c6c36790cb15f4ff170"
+                ]
+              },
+              {
+                "candidate_id": "cand_59e3334a421b38af9e1c1856",
+                "objective": 3.834215097415878,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_59e3334a421b38af9e1c1856"
+                ]
+              },
+              {
+                "candidate_id": "cand_82b759090241f0d5ec1e16c5",
+                "objective": 3.8239171285748568,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_82b759090241f0d5ec1e16c5"
+                ]
+              },
+              {
+                "candidate_id": "cand_1d911316eaff7bed913aea09",
+                "objective": 3.8227925850380284,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_1d911316eaff7bed913aea09"
+                ]
+              },
+              {
+                "candidate_id": "cand_009ee5882886dea010fe62b4",
+                "objective": 3.820240322049879,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_009ee5882886dea010fe62b4"
+                ]
+              },
+              {
+                "candidate_id": "cand_d69d8dede9951088f2866b00",
+                "objective": 3.817181378597896,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d69d8dede9951088f2866b00"
+                ]
+              },
+              {
+                "candidate_id": "cand_dc9ef95a9408c9679784b874",
+                "objective": 3.829367704780232,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_dc9ef95a9408c9679784b874"
+                ]
+              },
+              {
+                "candidate_id": "cand_8dbfc04466e0428dc0bace4a",
+                "objective": 3.8266101000578607,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_8dbfc04466e0428dc0bace4a"
+                ]
+              },
+              {
+                "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+                "objective": 3.8336131760566774,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_381a799a1607fdc3cd3dfea7"
+                ]
+              },
+              {
+                "candidate_id": "cand_d599ea0d741f1f9a8a1d4812",
+                "objective": 3.83246434214417,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d599ea0d741f1f9a8a1d4812"
+                ]
+              },
+              {
+                "candidate_id": "cand_9f0279b9c5f548bca907948f",
+                "objective": 3.831601363353418,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9f0279b9c5f548bca907948f"
+                ]
+              },
+              {
+                "candidate_id": "cand_75aad0422d969da4c500c9c4",
+                "objective": 3.8312579972601677,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_75aad0422d969da4c500c9c4"
+                ]
+              },
+              {
+                "candidate_id": "cand_83e889e4986d9c195173d8b4",
+                "objective": 3.838760820894785,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_83e889e4986d9c195173d8b4"
+                ]
+              },
+              {
+                "candidate_id": "cand_9773a98e0c8ac5270cbd32fd",
+                "objective": 3.8366328225896176,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9773a98e0c8ac5270cbd32fd"
+                ]
+              },
+              {
+                "candidate_id": "cand_26d57c5837ad4a1c6ae5048a",
+                "objective": 3.832354031441822,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_26d57c5837ad4a1c6ae5048a"
+                ]
+              },
+              {
+                "candidate_id": "cand_08d0c91d6314dfc8cb424bd5",
+                "objective": 3.8345841070446425,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_08d0c91d6314dfc8cb424bd5"
+                ]
+              },
+              {
+                "candidate_id": "cand_29b2f9be0f0f64bf9ebb43fb",
+                "objective": 3.83613399245301,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_29b2f9be0f0f64bf9ebb43fb"
+                ]
+              },
+              {
+                "candidate_id": "cand_8668a058b5d7d13f3c5daabb",
+                "objective": 3.830639963037737,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_8668a058b5d7d13f3c5daabb"
+                ]
+              },
+              {
+                "candidate_id": "cand_6eeb6f985923a556cbfdb7b5",
+                "objective": 3.837773772495345,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_6eeb6f985923a556cbfdb7b5"
+                ]
+              },
+              {
+                "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+                "objective": 3.835871481401233,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7a72ebac1e220c1b2cbec353"
+                ]
+              },
+              {
+                "candidate_id": "cand_e2cb8185df9edaf97b53916d",
+                "objective": 3.8338854907481705,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_e2cb8185df9edaf97b53916d"
+                ]
+              },
+              {
+                "candidate_id": "cand_9a25df5bb9e0d5153d94fdcf",
+                "objective": 3.8354043800342077,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9a25df5bb9e0d5153d94fdcf"
+                ]
+              },
+              {
+                "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+                "objective": 3.8345046801711775,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7e97f5097a62763e6d4508ca"
+                ]
+              },
+              {
+                "candidate_id": "cand_e9d526377450d8fd7141b1b9",
+                "objective": 3.8346563426719977,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_e9d526377450d8fd7141b1b9"
+                ]
+              },
+              {
+                "candidate_id": "cand_303f3f219e625001a5e679da",
+                "objective": 3.839633651424272,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_303f3f219e625001a5e679da"
+                ]
+              },
+              {
+                "candidate_id": "cand_cd37ee0d9c064c4f164b0c43",
+                "objective": 3.835160435895431,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_cd37ee0d9c064c4f164b0c43"
+                ]
+              },
+              {
+                "candidate_id": "cand_8166650efcc675a4fe3b7dc0",
+                "objective": 3.8348036321918344,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_8166650efcc675a4fe3b7dc0"
+                ]
+              },
+              {
+                "candidate_id": "cand_749bc21a184d298c15b09f15",
+                "objective": 3.833886139417575,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_749bc21a184d298c15b09f15"
+                ]
+              },
+              {
+                "candidate_id": "cand_48a67f9cfe6b06f538296675",
+                "objective": 3.8378152225923454,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_48a67f9cfe6b06f538296675"
+                ]
+              },
+              {
+                "candidate_id": "cand_89349165c26fe5452bf6c4de",
+                "objective": 3.8291101188062275,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_89349165c26fe5452bf6c4de"
+                ]
+              },
+              {
+                "candidate_id": "cand_553429d8112680421624b60e",
+                "objective": 3.8359871128884295,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_553429d8112680421624b60e"
+                ]
+              },
+              {
+                "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+                "objective": 3.8380840338224713,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7f9c5d6e557d3522afffc809"
+                ]
+              },
+              {
+                "candidate_id": "cand_9ad5c4f8bce1c644dc3385ac",
+                "objective": 3.836245701208571,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9ad5c4f8bce1c644dc3385ac"
+                ]
+              },
+              {
+                "candidate_id": "cand_d61b034805f082d8e27f7a0d",
+                "objective": 3.837030589710649,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d61b034805f082d8e27f7a0d"
+                ]
+              },
+              {
+                "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+                "objective": 3.839116222598923,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7dbe9e5d6af3b0470f8593fd"
+                ]
+              },
+              {
+                "candidate_id": "cand_bdf1a975ff40c899359c9199",
+                "objective": 3.8391080154602872,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_bdf1a975ff40c899359c9199"
+                ]
+              },
+              {
+                "candidate_id": "cand_abcb01a2586c0082e109aada",
+                "objective": 3.8389382243578205,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_abcb01a2586c0082e109aada"
+                ]
+              },
+              {
+                "candidate_id": "cand_3bf9bfd55ac2ec28edbe0064",
+                "objective": 3.8390529542274505,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_3bf9bfd55ac2ec28edbe0064"
+                ]
+              },
+              {
+                "candidate_id": "cand_beb19ecfcbf3d25c4c357e8f",
+                "objective": 3.839113388813675,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_beb19ecfcbf3d25c4c357e8f"
+                ]
+              },
+              {
+                "candidate_id": "cand_b35879fae6fb906963b29ad3",
+                "objective": 3.839142441216801,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b35879fae6fb906963b29ad3"
+                ]
+              },
+              {
+                "candidate_id": "cand_907082119654b274db2849b9",
+                "objective": 3.839141147474863,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_907082119654b274db2849b9"
+                ]
+              },
+              {
+                "candidate_id": "cand_ba13258ae38ff284d4f6d104",
+                "objective": 3.83915067501191,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ba13258ae38ff284d4f6d104"
+                ]
+              },
+              {
+                "candidate_id": "cand_0a20a38b15aafebce18d2c45",
+                "objective": 3.8391504691034752,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_0a20a38b15aafebce18d2c45"
+                ]
+              },
+              {
+                "candidate_id": "cand_4fea85ffce03a731bac4eeda",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_4fea85ffce03a731bac4eeda"
+                ]
+              },
+              {
+                "candidate_id": "cand_7d7f78d00d8bf6e5b1f259e9",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_7d7f78d00d8bf6e5b1f259e9"
+                ]
+              },
+              {
+                "candidate_id": "cand_d880d91aa215fff014b69d59",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d880d91aa215fff014b69d59"
+                ]
+              },
+              {
+                "candidate_id": "cand_9915d513b1398c75dfc36902",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9915d513b1398c75dfc36902"
+                ]
+              },
+              {
+                "candidate_id": "cand_c234bb315f70d2701c99efbc",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_c234bb315f70d2701c99efbc"
+                ]
+              },
+              {
+                "candidate_id": "cand_02a6b74444d06643b624434f",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_02a6b74444d06643b624434f"
+                ]
+              },
+              {
+                "candidate_id": "cand_244fb54869d42904c0b3164b",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_244fb54869d42904c0b3164b"
+                ]
+              },
+              {
+                "candidate_id": "cand_1e623219808547e4f42daed2",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_1e623219808547e4f42daed2"
+                ]
+              },
+              {
+                "candidate_id": "cand_cb8e7e4cd5b74e43ce8fa45d",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_cb8e7e4cd5b74e43ce8fa45d"
+                ]
+              },
+              {
+                "candidate_id": "cand_353e6eab546b8c0ee0986e21",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_353e6eab546b8c0ee0986e21"
+                ]
+              },
+              {
+                "candidate_id": "cand_b7ff57843b8f546f0d079e85",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b7ff57843b8f546f0d079e85"
+                ]
+              },
+              {
+                "candidate_id": "cand_9f085c09df567c4053953c4c",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9f085c09df567c4053953c4c"
+                ]
+              },
+              {
+                "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ad1dc1d2ef71fa3a5f5e1bdb"
+                ]
+              },
+              {
+                "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_75cf66d723f62da49cc3efa7"
+                ]
+              },
+              {
+                "candidate_id": "cand_26d0826ecabb3cd36bbc78e4",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_26d0826ecabb3cd36bbc78e4"
+                ]
+              },
+              {
+                "candidate_id": "cand_dd87533e8de4bde602d578d8",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_dd87533e8de4bde602d578d8"
+                ]
+              },
+              {
+                "candidate_id": "cand_463bbead790a8b882d8ec90b",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_463bbead790a8b882d8ec90b"
+                ]
+              },
+              {
+                "candidate_id": "cand_ed3fd2cd9b7e1acb7bb1e46f",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ed3fd2cd9b7e1acb7bb1e46f"
+                ]
+              },
+              {
+                "candidate_id": "cand_df4e56f7a43cce985de58501",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_df4e56f7a43cce985de58501"
+                ]
+              },
+              {
+                "candidate_id": "cand_663c0ca942329048a18273bb",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_663c0ca942329048a18273bb"
+                ]
+              },
+              {
+                "candidate_id": "cand_f45d72c75ba5083f4c695e92",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f45d72c75ba5083f4c695e92"
+                ]
+              },
+              {
+                "candidate_id": "cand_3e241907ca17ef6f20e97be9",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_3e241907ca17ef6f20e97be9"
+                ]
+              },
+              {
+                "candidate_id": "cand_f164e5a65f45f451b2edf980",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f164e5a65f45f451b2edf980"
+                ]
+              },
+              {
+                "candidate_id": "cand_58068f17f9e129e00ca5ffdc",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_58068f17f9e129e00ca5ffdc"
+                ]
+              },
+              {
+                "candidate_id": "cand_0f9c89111f8efa47e3a92569",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_0f9c89111f8efa47e3a92569"
+                ]
+              },
+              {
+                "candidate_id": "cand_1f1901e4f33203bc7c0da5c3",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_1f1901e4f33203bc7c0da5c3"
+                ]
+              },
+              {
+                "candidate_id": "cand_9ef5cc32745e632825e636e8",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_9ef5cc32745e632825e636e8"
+                ]
+              },
+              {
+                "candidate_id": "cand_6f1d42e815f283ccc4fedfaf",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_6f1d42e815f283ccc4fedfaf"
+                ]
+              },
+              {
+                "candidate_id": "cand_25aec16b68ea386dc525f927",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_25aec16b68ea386dc525f927"
+                ]
+              },
+              {
+                "candidate_id": "cand_825c864c3d841c5b80341423",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_825c864c3d841c5b80341423"
+                ]
+              },
+              {
+                "candidate_id": "cand_22b2431f84a2c998fe93a705",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_22b2431f84a2c998fe93a705"
+                ]
+              },
+              {
+                "candidate_id": "cand_63e3ed95e3640d25978eef19",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_63e3ed95e3640d25978eef19"
+                ]
+              },
+              {
+                "candidate_id": "cand_5ae138edc8c7db1cb935693d",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_5ae138edc8c7db1cb935693d"
+                ]
+              },
+              {
+                "candidate_id": "cand_f84540fbda0ca90e1c8a4342",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f84540fbda0ca90e1c8a4342"
+                ]
+              },
+              {
+                "candidate_id": "cand_460882dc9e7660a8af18697e",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_460882dc9e7660a8af18697e"
+                ]
+              },
+              {
+                "candidate_id": "cand_d266669aa7c12a2f97443faf",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_d266669aa7c12a2f97443faf"
+                ]
+              },
+              {
+                "candidate_id": "cand_de0139f08312e44a11986bdf",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_de0139f08312e44a11986bdf"
+                ]
+              },
+              {
+                "candidate_id": "cand_a8a88bd6f21fb3f7eddef389",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_a8a88bd6f21fb3f7eddef389"
+                ]
+              },
+              {
+                "candidate_id": "cand_201c29c6903ecdb319bdd125",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_201c29c6903ecdb319bdd125"
+                ]
+              },
+              {
+                "candidate_id": "cand_80f7f7b6165c8497ff494211",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_80f7f7b6165c8497ff494211"
+                ]
+              },
+              {
+                "candidate_id": "cand_f6f63e66f60b4f8eaa892f84",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f6f63e66f60b4f8eaa892f84"
+                ]
+              },
+              {
+                "candidate_id": "cand_6e168da13d3923318b81e07c",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_6e168da13d3923318b81e07c"
+                ]
+              },
+              {
+                "candidate_id": "cand_11c22cb06f3d76c7016429da",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_11c22cb06f3d76c7016429da"
+                ]
+              },
+              {
+                "candidate_id": "cand_622cc12086322b75d4e08073",
+                "objective": 3.8391507479696667,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_622cc12086322b75d4e08073"
+                ]
+              },
+              {
+                "candidate_id": "cand_181e97e7cf962b08145d1f89",
+                "objective": 3.8394095530294834,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_181e97e7cf962b08145d1f89"
+                ]
+              },
+              {
+                "candidate_id": "cand_76b8072d6a29b33eb9f7d8ec",
+                "objective": 3.8392639347712714,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_76b8072d6a29b33eb9f7d8ec"
+                ]
+              },
+              {
+                "candidate_id": "cand_0cf9a63954ea8f66c8ae8e67",
+                "objective": 3.83934973631427,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_0cf9a63954ea8f66c8ae8e67"
+                ]
+              },
+              {
+                "candidate_id": "cand_80f2b971f5a0eae2767e59ca",
+                "objective": 3.8397193165951844,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_80f2b971f5a0eae2767e59ca"
+                ]
+              },
+              {
+                "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+                "objective": 3.8389518015732174,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_4c80e02718ed0de73de2e8a5"
+                ]
+              },
+              {
+                "candidate_id": "cand_57a44cba9481268f933571e7",
+                "objective": 3.8380326137895877,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_57a44cba9481268f933571e7"
+                ]
+              },
+              {
+                "candidate_id": "cand_b9fc8c47a3f7554889998172",
+                "objective": 3.839801777327465,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_b9fc8c47a3f7554889998172"
+                ]
+              },
+              {
+                "candidate_id": "cand_ab335721595078ebcde0b420",
+                "objective": 3.83817303919201,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_ab335721595078ebcde0b420"
+                ]
+              },
+              {
+                "candidate_id": "cand_f2d1fb5e5791eb78e09dd53b",
+                "objective": 3.8374456598953723,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_f2d1fb5e5791eb78e09dd53b"
+                ]
+              },
+              {
+                "candidate_id": "cand_af2001646b1b90182083d14a",
+                "objective": 3.839992584298372,
+                "ordered_candidate_ids": [
+                  "cand_0b505b8bacb3c643f4e4dc43",
+                  "cand_af2001646b1b90182083d14a"
+                ]
+              }
+            ],
+            "round_index": 2
+          }
+        ],
+        "final_objective": 3.0140142440167508,
+        "final_ordered_candidate_ids": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435"
+        ],
+        "first_round_evaluations": [
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "objective": 3.8391507479696667,
+            "ordered_candidate_ids": [
+              "cand_0b505b8bacb3c643f4e4dc43"
+            ]
+          },
+          {
+            "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "objective": 4.166548458755783,
+            "ordered_candidate_ids": [
+              "cand_1af5539c1001b3f9b2f29435"
+            ]
+          },
+          {
+            "candidate_id": "cand_65bf58e313a4b96876b72b19",
+            "objective": 4.692841472248454,
+            "ordered_candidate_ids": [
+              "cand_65bf58e313a4b96876b72b19"
+            ]
+          },
+          {
+            "candidate_id": "cand_ba355e70a4c2c126688383df",
+            "objective": 4.8669232825380515,
+            "ordered_candidate_ids": [
+              "cand_ba355e70a4c2c126688383df"
+            ]
+          },
+          {
+            "candidate_id": "cand_2a400fd096108f66712fa5d7",
+            "objective": 4.885299665072677,
+            "ordered_candidate_ids": [
+              "cand_2a400fd096108f66712fa5d7"
+            ]
+          },
+          {
+            "candidate_id": "cand_732acc055f32ca48ff994adf",
+            "objective": 4.885553272774479,
+            "ordered_candidate_ids": [
+              "cand_732acc055f32ca48ff994adf"
+            ]
+          },
+          {
+            "candidate_id": "cand_ad015de15a1d84aada0a7ea6",
+            "objective": 4.897926696240571,
+            "ordered_candidate_ids": [
+              "cand_ad015de15a1d84aada0a7ea6"
+            ]
+          },
+          {
+            "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+            "objective": 4.9460932667872965,
+            "ordered_candidate_ids": [
+              "cand_1edd4a89495b1c0989812ef6"
+            ]
+          },
+          {
+            "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+            "objective": 4.946594226320294,
+            "ordered_candidate_ids": [
+              "cand_4a28f778fbc449dfeede3fcd"
+            ]
+          },
+          {
+            "candidate_id": "cand_265e33054e3fdbe18ac5cfdf",
+            "objective": 5.046711352216166,
+            "ordered_candidate_ids": [
+              "cand_265e33054e3fdbe18ac5cfdf"
+            ]
+          },
+          {
+            "candidate_id": "cand_aaf2706c0b434f8009b08214",
+            "objective": 5.076296545557274,
+            "ordered_candidate_ids": [
+              "cand_aaf2706c0b434f8009b08214"
+            ]
+          },
+          {
+            "candidate_id": "cand_563a1396818ae7124888fb89",
+            "objective": 5.086803394237072,
+            "ordered_candidate_ids": [
+              "cand_563a1396818ae7124888fb89"
+            ]
+          },
+          {
+            "candidate_id": "cand_6b5227c3cc929cee8be4b776",
+            "objective": 5.105857440627327,
+            "ordered_candidate_ids": [
+              "cand_6b5227c3cc929cee8be4b776"
+            ]
+          },
+          {
+            "candidate_id": "cand_aa68645890631aa4cb53e9a3",
+            "objective": 5.1152949968933035,
+            "ordered_candidate_ids": [
+              "cand_aa68645890631aa4cb53e9a3"
+            ]
+          },
+          {
+            "candidate_id": "cand_7ade54d0980739460237baf8",
+            "objective": 5.121531357104672,
+            "ordered_candidate_ids": [
+              "cand_7ade54d0980739460237baf8"
+            ]
+          },
+          {
+            "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+            "objective": 5.12666481211493,
+            "ordered_candidate_ids": [
+              "cand_2e314f97c08689b6e7ad90b8"
+            ]
+          },
+          {
+            "candidate_id": "cand_b9510ae03f52378017bd059d",
+            "objective": 5.133733205357406,
+            "ordered_candidate_ids": [
+              "cand_b9510ae03f52378017bd059d"
+            ]
+          },
+          {
+            "candidate_id": "cand_3e70a6e82bad8deae62d349b",
+            "objective": 5.1388385006694905,
+            "ordered_candidate_ids": [
+              "cand_3e70a6e82bad8deae62d349b"
+            ]
+          },
+          {
+            "candidate_id": "cand_dac304ee81f8023795d63ab4",
+            "objective": 5.159798856875558,
+            "ordered_candidate_ids": [
+              "cand_dac304ee81f8023795d63ab4"
+            ]
+          },
+          {
+            "candidate_id": "cand_b1c3025f855c117b50ede374",
+            "objective": 5.164764842594991,
+            "ordered_candidate_ids": [
+              "cand_b1c3025f855c117b50ede374"
+            ]
+          },
+          {
+            "candidate_id": "cand_4b3ea918bab3090e972df16e",
+            "objective": 5.169241250832815,
+            "ordered_candidate_ids": [
+              "cand_4b3ea918bab3090e972df16e"
+            ]
+          },
+          {
+            "candidate_id": "cand_af64a60c45cd194e77a47600",
+            "objective": 5.1767131545219165,
+            "ordered_candidate_ids": [
+              "cand_af64a60c45cd194e77a47600"
+            ]
+          },
+          {
+            "candidate_id": "cand_0b68634d2db5104514890167",
+            "objective": 5.189305756796786,
+            "ordered_candidate_ids": [
+              "cand_0b68634d2db5104514890167"
+            ]
+          },
+          {
+            "candidate_id": "cand_223b8186574ec27eef627ee6",
+            "objective": 5.191224781121936,
+            "ordered_candidate_ids": [
+              "cand_223b8186574ec27eef627ee6"
+            ]
+          },
+          {
+            "candidate_id": "cand_fa0a7de0b79856165fff93e0",
+            "objective": 5.191911718448172,
+            "ordered_candidate_ids": [
+              "cand_fa0a7de0b79856165fff93e0"
+            ]
+          },
+          {
+            "candidate_id": "cand_81bcde1d7d6235f62aac94de",
+            "objective": 5.202402647292714,
+            "ordered_candidate_ids": [
+              "cand_81bcde1d7d6235f62aac94de"
+            ]
+          },
+          {
+            "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+            "objective": 5.205390269720318,
+            "ordered_candidate_ids": [
+              "cand_9da5f299ad8d39bb6c1d87aa"
+            ]
+          },
+          {
+            "candidate_id": "cand_b12275377576eefce9b89c42",
+            "objective": 5.206273108070288,
+            "ordered_candidate_ids": [
+              "cand_b12275377576eefce9b89c42"
+            ]
+          },
+          {
+            "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+            "objective": 5.20788172655703,
+            "ordered_candidate_ids": [
+              "cand_f50a783f33caca5a7d0b8f10"
+            ]
+          },
+          {
+            "candidate_id": "cand_489d98b21c7c931fd9cf3140",
+            "objective": 5.210427666951763,
+            "ordered_candidate_ids": [
+              "cand_489d98b21c7c931fd9cf3140"
+            ]
+          },
+          {
+            "candidate_id": "cand_04dcdd2e1c84ae4b440a32bf",
+            "objective": 5.211090432727049,
+            "ordered_candidate_ids": [
+              "cand_04dcdd2e1c84ae4b440a32bf"
+            ]
+          },
+          {
+            "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+            "objective": 5.221740015120927,
+            "ordered_candidate_ids": [
+              "cand_2bff6409ebf3f1068adcda97"
+            ]
+          },
+          {
+            "candidate_id": "cand_169cfa92ed091ed819293261",
+            "objective": 5.224545476235997,
+            "ordered_candidate_ids": [
+              "cand_169cfa92ed091ed819293261"
+            ]
+          },
+          {
+            "candidate_id": "cand_5798c5598742d74b46bc4dff",
+            "objective": 5.225541074431309,
+            "ordered_candidate_ids": [
+              "cand_5798c5598742d74b46bc4dff"
+            ]
+          },
+          {
+            "candidate_id": "cand_06bd438063713fb39fe0177b",
+            "objective": 5.227418376328764,
+            "ordered_candidate_ids": [
+              "cand_06bd438063713fb39fe0177b"
+            ]
+          },
+          {
+            "candidate_id": "cand_64a5ea00f18be3e74b9ac5b4",
+            "objective": 5.227594673714627,
+            "ordered_candidate_ids": [
+              "cand_64a5ea00f18be3e74b9ac5b4"
+            ]
+          },
+          {
+            "candidate_id": "cand_41eded1acb31e2a3075e7307",
+            "objective": 5.227712529549702,
+            "ordered_candidate_ids": [
+              "cand_41eded1acb31e2a3075e7307"
+            ]
+          },
+          {
+            "candidate_id": "cand_d98907b61a58b77aa795ad9f",
+            "objective": 5.2305227554320615,
+            "ordered_candidate_ids": [
+              "cand_d98907b61a58b77aa795ad9f"
+            ]
+          },
+          {
+            "candidate_id": "cand_bbe682852a634389cda400b8",
+            "objective": 5.232731027192523,
+            "ordered_candidate_ids": [
+              "cand_bbe682852a634389cda400b8"
+            ]
+          },
+          {
+            "candidate_id": "cand_71b63c6c36790cb15f4ff170",
+            "objective": 5.234062701477236,
+            "ordered_candidate_ids": [
+              "cand_71b63c6c36790cb15f4ff170"
+            ]
+          },
+          {
+            "candidate_id": "cand_59e3334a421b38af9e1c1856",
+            "objective": 5.23529550269219,
+            "ordered_candidate_ids": [
+              "cand_59e3334a421b38af9e1c1856"
+            ]
+          },
+          {
+            "candidate_id": "cand_82b759090241f0d5ec1e16c5",
+            "objective": 5.235587950916428,
+            "ordered_candidate_ids": [
+              "cand_82b759090241f0d5ec1e16c5"
+            ]
+          },
+          {
+            "candidate_id": "cand_1d911316eaff7bed913aea09",
+            "objective": 5.236622605597082,
+            "ordered_candidate_ids": [
+              "cand_1d911316eaff7bed913aea09"
+            ]
+          },
+          {
+            "candidate_id": "cand_009ee5882886dea010fe62b4",
+            "objective": 5.239445472081257,
+            "ordered_candidate_ids": [
+              "cand_009ee5882886dea010fe62b4"
+            ]
+          },
+          {
+            "candidate_id": "cand_d69d8dede9951088f2866b00",
+            "objective": 5.241687107776826,
+            "ordered_candidate_ids": [
+              "cand_d69d8dede9951088f2866b00"
+            ]
+          },
+          {
+            "candidate_id": "cand_dc9ef95a9408c9679784b874",
+            "objective": 5.243233363764639,
+            "ordered_candidate_ids": [
+              "cand_dc9ef95a9408c9679784b874"
+            ]
+          },
+          {
+            "candidate_id": "cand_8dbfc04466e0428dc0bace4a",
+            "objective": 5.243310150268184,
+            "ordered_candidate_ids": [
+              "cand_8dbfc04466e0428dc0bace4a"
+            ]
+          },
+          {
+            "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+            "objective": 5.244221800968296,
+            "ordered_candidate_ids": [
+              "cand_381a799a1607fdc3cd3dfea7"
+            ]
+          },
+          {
+            "candidate_id": "cand_d599ea0d741f1f9a8a1d4812",
+            "objective": 5.2464893920535545,
+            "ordered_candidate_ids": [
+              "cand_d599ea0d741f1f9a8a1d4812"
+            ]
+          },
+          {
+            "candidate_id": "cand_9f0279b9c5f548bca907948f",
+            "objective": 5.246734983332057,
+            "ordered_candidate_ids": [
+              "cand_9f0279b9c5f548bca907948f"
+            ]
+          },
+          {
+            "candidate_id": "cand_75aad0422d969da4c500c9c4",
+            "objective": 5.247051148470812,
+            "ordered_candidate_ids": [
+              "cand_75aad0422d969da4c500c9c4"
+            ]
+          },
+          {
+            "candidate_id": "cand_83e889e4986d9c195173d8b4",
+            "objective": 5.247273064084219,
+            "ordered_candidate_ids": [
+              "cand_83e889e4986d9c195173d8b4"
+            ]
+          },
+          {
+            "candidate_id": "cand_9773a98e0c8ac5270cbd32fd",
+            "objective": 5.247515906342119,
+            "ordered_candidate_ids": [
+              "cand_9773a98e0c8ac5270cbd32fd"
+            ]
+          },
+          {
+            "candidate_id": "cand_26d57c5837ad4a1c6ae5048a",
+            "objective": 5.247815570605501,
+            "ordered_candidate_ids": [
+              "cand_26d57c5837ad4a1c6ae5048a"
+            ]
+          },
+          {
+            "candidate_id": "cand_08d0c91d6314dfc8cb424bd5",
+            "objective": 5.248337798506028,
+            "ordered_candidate_ids": [
+              "cand_08d0c91d6314dfc8cb424bd5"
+            ]
+          },
+          {
+            "candidate_id": "cand_29b2f9be0f0f64bf9ebb43fb",
+            "objective": 5.248694758250177,
+            "ordered_candidate_ids": [
+              "cand_29b2f9be0f0f64bf9ebb43fb"
+            ]
+          },
+          {
+            "candidate_id": "cand_8668a058b5d7d13f3c5daabb",
+            "objective": 5.2490305755447855,
+            "ordered_candidate_ids": [
+              "cand_8668a058b5d7d13f3c5daabb"
+            ]
+          },
+          {
+            "candidate_id": "cand_6eeb6f985923a556cbfdb7b5",
+            "objective": 5.2490477961741355,
+            "ordered_candidate_ids": [
+              "cand_6eeb6f985923a556cbfdb7b5"
+            ]
+          },
+          {
+            "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+            "objective": 5.249097894345068,
+            "ordered_candidate_ids": [
+              "cand_7a72ebac1e220c1b2cbec353"
+            ]
+          },
+          {
+            "candidate_id": "cand_e2cb8185df9edaf97b53916d",
+            "objective": 5.249682838808953,
+            "ordered_candidate_ids": [
+              "cand_e2cb8185df9edaf97b53916d"
+            ]
+          },
+          {
+            "candidate_id": "cand_9a25df5bb9e0d5153d94fdcf",
+            "objective": 5.251031387229896,
+            "ordered_candidate_ids": [
+              "cand_9a25df5bb9e0d5153d94fdcf"
+            ]
+          },
+          {
+            "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+            "objective": 5.251506091654988,
+            "ordered_candidate_ids": [
+              "cand_7e97f5097a62763e6d4508ca"
+            ]
+          },
+          {
+            "candidate_id": "cand_e9d526377450d8fd7141b1b9",
+            "objective": 5.251813374312316,
+            "ordered_candidate_ids": [
+              "cand_e9d526377450d8fd7141b1b9"
+            ]
+          },
+          {
+            "candidate_id": "cand_303f3f219e625001a5e679da",
+            "objective": 5.251847366586876,
+            "ordered_candidate_ids": [
+              "cand_303f3f219e625001a5e679da"
+            ]
+          },
+          {
+            "candidate_id": "cand_cd37ee0d9c064c4f164b0c43",
+            "objective": 5.2521710906177885,
+            "ordered_candidate_ids": [
+              "cand_cd37ee0d9c064c4f164b0c43"
+            ]
+          },
+          {
+            "candidate_id": "cand_8166650efcc675a4fe3b7dc0",
+            "objective": 5.252196772431925,
+            "ordered_candidate_ids": [
+              "cand_8166650efcc675a4fe3b7dc0"
+            ]
+          },
+          {
+            "candidate_id": "cand_749bc21a184d298c15b09f15",
+            "objective": 5.252508140372709,
+            "ordered_candidate_ids": [
+              "cand_749bc21a184d298c15b09f15"
+            ]
+          },
+          {
+            "candidate_id": "cand_48a67f9cfe6b06f538296675",
+            "objective": 5.252849350519936,
+            "ordered_candidate_ids": [
+              "cand_48a67f9cfe6b06f538296675"
+            ]
+          },
+          {
+            "candidate_id": "cand_89349165c26fe5452bf6c4de",
+            "objective": 5.253083616884849,
+            "ordered_candidate_ids": [
+              "cand_89349165c26fe5452bf6c4de"
+            ]
+          },
+          {
+            "candidate_id": "cand_553429d8112680421624b60e",
+            "objective": 5.253322411545337,
+            "ordered_candidate_ids": [
+              "cand_553429d8112680421624b60e"
+            ]
+          },
+          {
+            "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+            "objective": 5.254435158008869,
+            "ordered_candidate_ids": [
+              "cand_7f9c5d6e557d3522afffc809"
+            ]
+          },
+          {
+            "candidate_id": "cand_9ad5c4f8bce1c644dc3385ac",
+            "objective": 5.255735117777695,
+            "ordered_candidate_ids": [
+              "cand_9ad5c4f8bce1c644dc3385ac"
+            ]
+          },
+          {
+            "candidate_id": "cand_d61b034805f082d8e27f7a0d",
+            "objective": 5.256009931795313,
+            "ordered_candidate_ids": [
+              "cand_d61b034805f082d8e27f7a0d"
+            ]
+          },
+          {
+            "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+            "objective": 5.256087264734537,
+            "ordered_candidate_ids": [
+              "cand_7dbe9e5d6af3b0470f8593fd"
+            ]
+          },
+          {
+            "candidate_id": "cand_bdf1a975ff40c899359c9199",
+            "objective": 5.256088847802767,
+            "ordered_candidate_ids": [
+              "cand_bdf1a975ff40c899359c9199"
+            ]
+          },
+          {
+            "candidate_id": "cand_abcb01a2586c0082e109aada",
+            "objective": 5.256150251604347,
+            "ordered_candidate_ids": [
+              "cand_abcb01a2586c0082e109aada"
+            ]
+          },
+          {
+            "candidate_id": "cand_3bf9bfd55ac2ec28edbe0064",
+            "objective": 5.256203192376217,
+            "ordered_candidate_ids": [
+              "cand_3bf9bfd55ac2ec28edbe0064"
+            ]
+          },
+          {
+            "candidate_id": "cand_beb19ecfcbf3d25c4c357e8f",
+            "objective": 5.25626455294663,
+            "ordered_candidate_ids": [
+              "cand_beb19ecfcbf3d25c4c357e8f"
+            ]
+          },
+          {
+            "candidate_id": "cand_b35879fae6fb906963b29ad3",
+            "objective": 5.2562705053142444,
+            "ordered_candidate_ids": [
+              "cand_b35879fae6fb906963b29ad3"
+            ]
+          },
+          {
+            "candidate_id": "cand_907082119654b274db2849b9",
+            "objective": 5.256289155486176,
+            "ordered_candidate_ids": [
+              "cand_907082119654b274db2849b9"
+            ]
+          },
+          {
+            "candidate_id": "cand_ba13258ae38ff284d4f6d104",
+            "objective": 5.256330951098861,
+            "ordered_candidate_ids": [
+              "cand_ba13258ae38ff284d4f6d104"
+            ]
+          },
+          {
+            "candidate_id": "cand_0a20a38b15aafebce18d2c45",
+            "objective": 5.2563310612359375,
+            "ordered_candidate_ids": [
+              "cand_0a20a38b15aafebce18d2c45"
+            ]
+          },
+          {
+            "candidate_id": "cand_4fea85ffce03a731bac4eeda",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_4fea85ffce03a731bac4eeda"
+            ]
+          },
+          {
+            "candidate_id": "cand_7d7f78d00d8bf6e5b1f259e9",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_7d7f78d00d8bf6e5b1f259e9"
+            ]
+          },
+          {
+            "candidate_id": "cand_d880d91aa215fff014b69d59",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_d880d91aa215fff014b69d59"
+            ]
+          },
+          {
+            "candidate_id": "cand_9915d513b1398c75dfc36902",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_9915d513b1398c75dfc36902"
+            ]
+          },
+          {
+            "candidate_id": "cand_c234bb315f70d2701c99efbc",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_c234bb315f70d2701c99efbc"
+            ]
+          },
+          {
+            "candidate_id": "cand_02a6b74444d06643b624434f",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_02a6b74444d06643b624434f"
+            ]
+          },
+          {
+            "candidate_id": "cand_244fb54869d42904c0b3164b",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_244fb54869d42904c0b3164b"
+            ]
+          },
+          {
+            "candidate_id": "cand_1e623219808547e4f42daed2",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_1e623219808547e4f42daed2"
+            ]
+          },
+          {
+            "candidate_id": "cand_cb8e7e4cd5b74e43ce8fa45d",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_cb8e7e4cd5b74e43ce8fa45d"
+            ]
+          },
+          {
+            "candidate_id": "cand_353e6eab546b8c0ee0986e21",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_353e6eab546b8c0ee0986e21"
+            ]
+          },
+          {
+            "candidate_id": "cand_b7ff57843b8f546f0d079e85",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_b7ff57843b8f546f0d079e85"
+            ]
+          },
+          {
+            "candidate_id": "cand_9f085c09df567c4053953c4c",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_9f085c09df567c4053953c4c"
+            ]
+          },
+          {
+            "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_ad1dc1d2ef71fa3a5f5e1bdb"
+            ]
+          },
+          {
+            "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_75cf66d723f62da49cc3efa7"
+            ]
+          },
+          {
+            "candidate_id": "cand_26d0826ecabb3cd36bbc78e4",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_26d0826ecabb3cd36bbc78e4"
+            ]
+          },
+          {
+            "candidate_id": "cand_dd87533e8de4bde602d578d8",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_dd87533e8de4bde602d578d8"
+            ]
+          },
+          {
+            "candidate_id": "cand_463bbead790a8b882d8ec90b",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_463bbead790a8b882d8ec90b"
+            ]
+          },
+          {
+            "candidate_id": "cand_ed3fd2cd9b7e1acb7bb1e46f",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_ed3fd2cd9b7e1acb7bb1e46f"
+            ]
+          },
+          {
+            "candidate_id": "cand_df4e56f7a43cce985de58501",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_df4e56f7a43cce985de58501"
+            ]
+          },
+          {
+            "candidate_id": "cand_663c0ca942329048a18273bb",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_663c0ca942329048a18273bb"
+            ]
+          },
+          {
+            "candidate_id": "cand_f45d72c75ba5083f4c695e92",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_f45d72c75ba5083f4c695e92"
+            ]
+          },
+          {
+            "candidate_id": "cand_3e241907ca17ef6f20e97be9",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_3e241907ca17ef6f20e97be9"
+            ]
+          },
+          {
+            "candidate_id": "cand_f164e5a65f45f451b2edf980",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_f164e5a65f45f451b2edf980"
+            ]
+          },
+          {
+            "candidate_id": "cand_58068f17f9e129e00ca5ffdc",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_58068f17f9e129e00ca5ffdc"
+            ]
+          },
+          {
+            "candidate_id": "cand_0f9c89111f8efa47e3a92569",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_0f9c89111f8efa47e3a92569"
+            ]
+          },
+          {
+            "candidate_id": "cand_1f1901e4f33203bc7c0da5c3",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_1f1901e4f33203bc7c0da5c3"
+            ]
+          },
+          {
+            "candidate_id": "cand_9ef5cc32745e632825e636e8",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_9ef5cc32745e632825e636e8"
+            ]
+          },
+          {
+            "candidate_id": "cand_6f1d42e815f283ccc4fedfaf",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_6f1d42e815f283ccc4fedfaf"
+            ]
+          },
+          {
+            "candidate_id": "cand_25aec16b68ea386dc525f927",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_25aec16b68ea386dc525f927"
+            ]
+          },
+          {
+            "candidate_id": "cand_825c864c3d841c5b80341423",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_825c864c3d841c5b80341423"
+            ]
+          },
+          {
+            "candidate_id": "cand_22b2431f84a2c998fe93a705",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_22b2431f84a2c998fe93a705"
+            ]
+          },
+          {
+            "candidate_id": "cand_63e3ed95e3640d25978eef19",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_63e3ed95e3640d25978eef19"
+            ]
+          },
+          {
+            "candidate_id": "cand_5ae138edc8c7db1cb935693d",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_5ae138edc8c7db1cb935693d"
+            ]
+          },
+          {
+            "candidate_id": "cand_f84540fbda0ca90e1c8a4342",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_f84540fbda0ca90e1c8a4342"
+            ]
+          },
+          {
+            "candidate_id": "cand_460882dc9e7660a8af18697e",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_460882dc9e7660a8af18697e"
+            ]
+          },
+          {
+            "candidate_id": "cand_d266669aa7c12a2f97443faf",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_d266669aa7c12a2f97443faf"
+            ]
+          },
+          {
+            "candidate_id": "cand_de0139f08312e44a11986bdf",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_de0139f08312e44a11986bdf"
+            ]
+          },
+          {
+            "candidate_id": "cand_a8a88bd6f21fb3f7eddef389",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_a8a88bd6f21fb3f7eddef389"
+            ]
+          },
+          {
+            "candidate_id": "cand_201c29c6903ecdb319bdd125",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_201c29c6903ecdb319bdd125"
+            ]
+          },
+          {
+            "candidate_id": "cand_80f7f7b6165c8497ff494211",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_80f7f7b6165c8497ff494211"
+            ]
+          },
+          {
+            "candidate_id": "cand_f6f63e66f60b4f8eaa892f84",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_f6f63e66f60b4f8eaa892f84"
+            ]
+          },
+          {
+            "candidate_id": "cand_6e168da13d3923318b81e07c",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_6e168da13d3923318b81e07c"
+            ]
+          },
+          {
+            "candidate_id": "cand_11c22cb06f3d76c7016429da",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_11c22cb06f3d76c7016429da"
+            ]
+          },
+          {
+            "candidate_id": "cand_622cc12086322b75d4e08073",
+            "objective": 5.256435607220752,
+            "ordered_candidate_ids": [
+              "cand_622cc12086322b75d4e08073"
+            ]
+          },
+          {
+            "candidate_id": "cand_181e97e7cf962b08145d1f89",
+            "objective": 5.256480020658509,
+            "ordered_candidate_ids": [
+              "cand_181e97e7cf962b08145d1f89"
+            ]
+          },
+          {
+            "candidate_id": "cand_76b8072d6a29b33eb9f7d8ec",
+            "objective": 5.25648927831587,
+            "ordered_candidate_ids": [
+              "cand_76b8072d6a29b33eb9f7d8ec"
+            ]
+          },
+          {
+            "candidate_id": "cand_0cf9a63954ea8f66c8ae8e67",
+            "objective": 5.256743990795843,
+            "ordered_candidate_ids": [
+              "cand_0cf9a63954ea8f66c8ae8e67"
+            ]
+          },
+          {
+            "candidate_id": "cand_80f2b971f5a0eae2767e59ca",
+            "objective": 5.256978270982079,
+            "ordered_candidate_ids": [
+              "cand_80f2b971f5a0eae2767e59ca"
+            ]
+          },
+          {
+            "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+            "objective": 5.257315068520772,
+            "ordered_candidate_ids": [
+              "cand_4c80e02718ed0de73de2e8a5"
+            ]
+          },
+          {
+            "candidate_id": "cand_57a44cba9481268f933571e7",
+            "objective": 5.258256726438146,
+            "ordered_candidate_ids": [
+              "cand_57a44cba9481268f933571e7"
+            ]
+          },
+          {
+            "candidate_id": "cand_b9fc8c47a3f7554889998172",
+            "objective": 5.258262649756024,
+            "ordered_candidate_ids": [
+              "cand_b9fc8c47a3f7554889998172"
+            ]
+          },
+          {
+            "candidate_id": "cand_ab335721595078ebcde0b420",
+            "objective": 5.258835743838917,
+            "ordered_candidate_ids": [
+              "cand_ab335721595078ebcde0b420"
+            ]
+          },
+          {
+            "candidate_id": "cand_f2d1fb5e5791eb78e09dd53b",
+            "objective": 5.25941309733879,
+            "ordered_candidate_ids": [
+              "cand_f2d1fb5e5791eb78e09dd53b"
+            ]
+          },
+          {
+            "candidate_id": "cand_af2001646b1b90182083d14a",
+            "objective": 5.260325719443538,
+            "ordered_candidate_ids": [
+              "cand_af2001646b1b90182083d14a"
+            ]
+          }
+        ],
+        "first_round_source": "singleton-profile-cache",
+        "format_version": "optimization-search-result-v2",
+        "ground_truth_semantic_digest": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+        "improvement": 2.242421363204001,
+        "native_stats_repository_semantic_digest": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+        "optimization_plan_semantic_digest": "ea1b162759d3af9016adf568e19e3da31c7d2b0c74c12899cc7f97836c0f0f4e",
+        "planner": {
+          "backend_contract": "postgresql-pgextadv-16.14-v1",
+          "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+          "sandbox_contract": "postgresql-planner-sandbox-v1",
+          "server_version": "16.14",
+          "server_version_num": 160014
+        },
+        "runtime_metadata": {
+          "accepted_move_count": 2,
+          "actual_search_planner_calls": 722567,
+          "actual_search_planner_calls_including_audit": 722567,
+          "audit_planner_query_calls": 0,
+          "baseline_materialization_planner_calls": 10000,
+          "cached_singleton_configuration_count": 136,
+          "completed_round_count": 1,
+          "elapsed_search_seconds": 300.02128408099816,
+          "end_to_end_saved_search_planner_calls": 1257433,
+          "end_to_end_search_call_reduction": 1257433,
+          "end_to_end_search_planner_calls": 722567,
+          "evaluation_strategy": "incidence-incremental-greedy-v1",
+          "first_winner_materialization_planner_calls": 3566,
+          "incumbent_estimate_count": 10000,
+          "live_configuration_evaluation_count": 199,
+          "max_statistics_count": 4,
+          "partial_final_round_evaluation_count": 64,
+          "peak_cached_estimate_entries": 483085,
+          "peak_proposal_cache_entries": 135,
+          "planner_query_estimate_count": 722567,
+          "planner_query_estimate_count_including_audit": 722567,
+          "planner_query_reduction_fraction": 0.6350671717171718,
+          "proposal_cache_entry_count": 0,
+          "proposal_configuration_evaluations": 198,
+          "proposal_only_call_reduction": 1270999,
+          "proposal_only_reference_planner_calls": 1980000,
+          "proposal_only_saved_planner_calls": 1270999,
+          "proposal_planner_query_calls": 709001,
+          "reference_full_workload_planner_calls": 1980000,
+          "reference_search_planner_calls": 1980000,
+          "saved_planner_query_calls": 1257433,
+          "saved_search_planner_calls": 1257433,
+          "screening_width": 136,
+          "search_budget_seconds": 300.0,
+          "search_wall_clock_seconds": 300.0,
+          "selected_candidate_count": 2,
+          "termination_reason": "budget-expired-incomplete-round",
+          "winner_cache_entry_count": 0,
+          "winner_materialization_planner_calls": 3566
+        },
+        "search_policy": "greedy-add-incidence-incremental-v1",
+        "semantic_digest": "3a5e4c5d7958107692173711a5fcfbebf3814f0dd2bfb182634bc48c13376f24",
+        "singleton_profile_semantic_digest": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+        "source_snapshot_semantic_digest": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0",
+        "termination_reason": "budget-expired-incomplete-round",
+        "utility": {
+          "loss_contract": "qerror-cardinality-floor-1-v1",
+          "utility_contract": "weighted-workload-mean-v1"
+        }
+      },
+      "selected_membership": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "selection_accounting": {
+        "actual_search_planner_calls": 722567,
+        "actual_search_planner_calls_including_audit": 722567,
+        "audit_planner_query_calls": 0,
+        "baseline_materialization_planner_calls": 10000,
+        "end_to_end_saved_search_planner_calls": 1257433,
+        "end_to_end_search_call_reduction": 1257433,
+        "end_to_end_search_planner_calls": 722567,
+        "first_winner_materialization_planner_calls": 3566,
+        "incumbent_estimate_count": 10000,
+        "peak_cached_estimate_entries": 483085,
+        "peak_proposal_cache_entries": 135,
+        "planner_query_estimate_count": 722567,
+        "planner_query_estimate_count_including_audit": 722567,
+        "planner_query_reduction_fraction": 0.6350671717171718,
+        "proposal_cache_entry_count": 0,
+        "proposal_configuration_evaluations": 198,
+        "proposal_only_call_reduction": 1270999,
+        "proposal_only_reference_planner_calls": 1980000,
+        "proposal_only_saved_planner_calls": 1270999,
+        "proposal_planner_query_calls": 709001,
+        "reference_full_workload_planner_calls": 1980000,
+        "reference_search_planner_calls": 1980000,
+        "saved_planner_query_calls": 1257433,
+        "saved_search_planner_calls": 1257433,
+        "winner_cache_entry_count": 0,
+        "winner_materialization_planner_calls": 3566
+      },
+      "status": "budget-censored",
+      "termination_reason": "budget-expired-incomplete-round"
+    },
+    "native-payload-size-top-k": {
+      "deployment_order": [
+        "cand_732acc055f32ca48ff994adf",
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_1edd4a89495b1c0989812ef6",
+        "cand_2e314f97c08689b6e7ad90b8"
+      ],
+      "evaluation_order": [
+        "cand_732acc055f32ca48ff994adf",
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_1edd4a89495b1c0989812ef6",
+        "cand_2e314f97c08689b6e7ad90b8"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "5fcedbcf27184e5c050d702a5bab049632c58126d99a1d12f3c9b602707a7267",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 4.8374337925255375,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.15895768900009
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample-built NativeStatsRepository payload_size",
+          "static candidate precedence"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "native-payload-size-top-k",
+      "selected_membership": [
+        "cand_732acc055f32ca48ff994adf",
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_1edd4a89495b1c0989812ef6",
+        "cand_2e314f97c08689b6e7ad90b8"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-1": {
+      "deployment_order": [
+        "cand_9da5f299ad8d39bb6c1d87aa",
+        "cand_7a72ebac1e220c1b2cbec353",
+        "cand_4a28f778fbc449dfeede3fcd",
+        "cand_4c80e02718ed0de73de2e8a5"
+      ],
+      "evaluation_order": [
+        "cand_9da5f299ad8d39bb6c1d87aa",
+        "cand_7a72ebac1e220c1b2cbec353",
+        "cand_4a28f778fbc449dfeede3fcd",
+        "cand_4c80e02718ed0de73de2e8a5"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "780ffde30f9c02ddc6432ed63423795a83104691a92e49550d6e444a19da0031",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 4.892226137536405,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.1217744019995735
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-1",
+      "replicate_seed": 1,
+      "selected_membership": [
+        "cand_9da5f299ad8d39bb6c1d87aa",
+        "cand_7a72ebac1e220c1b2cbec353",
+        "cand_4a28f778fbc449dfeede3fcd",
+        "cand_4c80e02718ed0de73de2e8a5"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-2": {
+      "deployment_order": [
+        "cand_41eded1acb31e2a3075e7307",
+        "cand_2bff6409ebf3f1068adcda97",
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_7e97f5097a62763e6d4508ca"
+      ],
+      "evaluation_order": [
+        "cand_41eded1acb31e2a3075e7307",
+        "cand_2bff6409ebf3f1068adcda97",
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_7e97f5097a62763e6d4508ca"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "a27e77b639160a017cb6f324dbda2692518f465d85383e9ac4aba17fda67e229",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 3.782020661669189,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.106610273000115
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-2",
+      "replicate_seed": 2,
+      "selected_membership": [
+        "cand_41eded1acb31e2a3075e7307",
+        "cand_2bff6409ebf3f1068adcda97",
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_7e97f5097a62763e6d4508ca"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-3": {
+      "deployment_order": [
+        "cand_f50a783f33caca5a7d0b8f10",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "cand_907082119654b274db2849b9"
+      ],
+      "evaluation_order": [
+        "cand_f50a783f33caca5a7d0b8f10",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "cand_907082119654b274db2849b9"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "fe689a6ae8c3c58122a3c50e9e8b4eec1460977cb5091bac62383f6431298946",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 5.19625642014804,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.044554613999935
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-3",
+      "replicate_seed": 3,
+      "selected_membership": [
+        "cand_f50a783f33caca5a7d0b8f10",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "cand_907082119654b274db2849b9"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-4": {
+      "deployment_order": [
+        "cand_b9510ae03f52378017bd059d",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_af2001646b1b90182083d14a",
+        "cand_df4e56f7a43cce985de58501"
+      ],
+      "evaluation_order": [
+        "cand_b9510ae03f52378017bd059d",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_af2001646b1b90182083d14a",
+        "cand_df4e56f7a43cce985de58501"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "1000f7b9387b460107b95b1457f035e723f83e92ebce15549a1550df6d2a82f5",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 5.133569081716598,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.1557633760021417
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-4",
+      "replicate_seed": 4,
+      "selected_membership": [
+        "cand_b9510ae03f52378017bd059d",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_af2001646b1b90182083d14a",
+        "cand_df4e56f7a43cce985de58501"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-5": {
+      "deployment_order": [
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_4c80e02718ed0de73de2e8a5",
+        "cand_563a1396818ae7124888fb89",
+        "cand_622cc12086322b75d4e08073"
+      ],
+      "evaluation_order": [
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_4c80e02718ed0de73de2e8a5",
+        "cand_563a1396818ae7124888fb89",
+        "cand_622cc12086322b75d4e08073"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "ce15619872a2286c68bc64b630fbbb62291030a40f380721724910be107db7a5",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 5.081250437816273,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.0580725979998533
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-5",
+      "replicate_seed": 5,
+      "selected_membership": [
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_4c80e02718ed0de73de2e8a5",
+        "cand_563a1396818ae7124888fb89",
+        "cand_622cc12086322b75d4e08073"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "singleton-utility-top-k": {
+      "deployment_order": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df"
+      ],
+      "evaluation_order": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "db0aff79288c28c551a967ee1108c9cee2090656f4496fe012ef01a91236eb9c",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 2.5212688613359724,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.1442219950004073
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample planner",
+          "GroundTruthSet"
+        ],
+        "forbidden_inputs": [],
+        "ground_truth_during_selection": true
+      },
+      "method_id": "singleton-utility-top-k",
+      "selected_membership": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df"
+      ],
+      "selection_accounting": {
+        "new_selection_configuration_objective_evaluations": 0,
+        "new_selection_postgresql_planner_query_calls": 0,
+        "new_selection_wall_clock_seconds": 0.0,
+        "reuse_policy": "RQ2-v2-singleton-profile-reuse; eligible coverage verified",
+        "source_configuration_objective_evaluations": 137,
+        "source_postgresql_planner_query_calls": 496651,
+        "source_profile_semantic_digest": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+        "source_wall_clock_seconds": null
+      },
+      "status": "complete"
+    },
+    "workload-frequency-top-k": {
+      "deployment_order": [
+        "cand_7f9c5d6e557d3522afffc809",
+        "cand_75cf66d723f62da49cc3efa7",
+        "cand_57a44cba9481268f933571e7",
+        "cand_7dbe9e5d6af3b0470f8593fd"
+      ],
+      "evaluation_order": [
+        "cand_7f9c5d6e557d3522afffc809",
+        "cand_75cf66d723f62da49cc3efa7",
+        "cand_57a44cba9481268f933571e7",
+        "cand_7dbe9e5d6af3b0470f8593fd"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "a3617adc97af30d20e4968dac16a049209994b8566c338144b901424196d832e",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 5.252227607406922,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 3.113833011000679
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "workload predicate incidence"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "workload-frequency-top-k",
+      "selected_membership": [
+        "cand_7f9c5d6e557d3522afffc809",
+        "cand_75cf66d723f62da49cc3efa7",
+        "cand_57a44cba9481268f933571e7",
+        "cand_7dbe9e5d6af3b0470f8593fd"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    }
+  },
+  "query_count": 10000,
+  "reference_equivalence_gate": {
+    "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+    "format_version": "advisor-greedy-incremental-hardening-v2",
+    "full_workload_search": false,
+    "passed": true,
+    "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+    "tested_budgets": [
+      3,
+      2,
+      1
+    ]
+  },
+  "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+  "selection_budget": {
+    "final_evaluation_excluded": true,
+    "max_configuration_evaluations": 2000,
+    "unit": "configuration-objective-evaluations",
+    "wall_clock_seconds": 300.0
+  },
+  "semantic_digest": "ef68256b9aa26ceb55a7a3e25a9969716ba3b1a19635e64febce4af8b4e88de8",
+  "singleton_profile_reuse": {
+    "new_selection_configuration_objective_evaluations": 0,
+    "new_selection_postgresql_planner_query_calls": 0,
+    "new_selection_wall_clock_seconds": 0.0,
+    "reuse_policy": "RQ2-v2-singleton-profile-reuse; eligible coverage verified",
+    "source_configuration_objective_evaluations": 137,
+    "source_postgresql_planner_query_calls": 496651,
+    "source_profile_semantic_digest": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+    "source_wall_clock_seconds": null
+  },
+  "source_artifact_digests": {
+    "candidate_universe": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+    "ground_truth": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+    "native_repository": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+    "singleton_profile": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+    "snapshot": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0"
+  },
+  "status": "formal-confirmatory",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "repository": "1951123/extstats-advisor",
+      "role": "canonical v2 Advisor execution identity"
+    },
+    "advisor_algorithm": {
+      "B_semantics": "maximum selected candidate definitions; physical object count is separate",
+      "canonical_parameters": {
+        "B": 8,
+        "K_s": 8,
+        "T_seconds": 300,
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100
+      },
+      "execution_optimizations": [
+        "incidence-indexed incremental singleton profiling",
+        "incidence-indexed incremental Greedy ADD",
+        "baseline/affected-query estimate caching",
+        "bounded proposal cache"
+      ],
+      "new_algorithmic_controls": [
+        "maximum statistics count B",
+        "canonical v2 default B=K_s",
+        "explicit budget termination semantics"
+      ],
+      "partial_round_policy": "discard incomplete round and retain last committed incumbent",
+      "strict_improvement": true,
+      "termination_reasons": [
+        "local-optimum",
+        "max-statistics-count",
+        "all-screened-candidates-selected",
+        "budget-expired-before-round",
+        "budget-expired-incomplete-round"
+      ]
+    },
+    "change_policy": "Any production semantic change to the advisor or either PostgreSQL build requires a new system freeze; historical v1 artifacts retain their v1 provenance.",
+    "compatibility_evidence": {
+      "forest10_singleton": {
+        "artifact": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+        "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+        "scope": "confirmatory Forest10 singleton equivalence"
+      },
+      "incremental_greedy_live": {
+        "artifact": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+        "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+        "scope": "small-live-correctness-validation"
+      },
+      "power7_singleton": {
+        "artifact": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+        "artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+        "scope": "confirmatory Power7 singleton equivalence"
+      },
+      "readiness_review": {
+        "artifact": "paper/system-freeze-v2-readiness-review-v1.json",
+        "artifact_digest": "34973689b5d43d4fe80352690c6bcab88adbdf94e1d96d73ec77396058a29c90"
+      }
+    },
+    "format_version": "system-freeze-v2",
+    "freeze_id": "system-freeze-v2",
+    "patched_postgresql": {
+      "commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "fingerprint_requirements": {
+        "build_identity_source": "postgres-lab identity.json",
+        "ordinary_stats_fingerprint_required_per_artifact": true,
+        "runtime_paths_are_not_semantic_identity": true,
+        "source_commit_sha_pinned": true
+      },
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "research_provenance": {
+      "freeze_digest_does_not_depend_on_future_freeze_commit": true,
+      "readiness_review_path": "paper/system-freeze-v2-readiness-review-v1.json",
+      "readiness_review_source_sha": "34c188f8c73e47f0bbccf2ea96f2194169d7a607"
+    },
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "status": "frozen",
+    "stock_postgresql": {
+      "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "v1_compatibility": {
+      "explicit_v1_plan_reference_path": "optimization-plan-v1 / greedy-add-v1-full-workload-evaluation",
+      "historical_artifact_rule": "Existing RQ1 and Forest10 RQ4 artifacts retain their embedded system-freeze-v1 provenance and are not retroactively reassigned to v2.",
+      "historical_artifacts_remain_v1": true,
+      "legacy_freeze_format": "system-freeze-v1",
+      "legacy_freeze_path": "paper/system-freeze-v1.json"
+    },
+    "validation_scope": {
+      "census13": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "dmv11": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "singleton_equivalence_claim": "Power7 and Forest10 confirmatory evidence only; not exhaustive cross-dataset validation"
+    }
+  },
+  "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+  "workload_id": "arecel_census13_test_v1"
+}

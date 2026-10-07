@@ -17,6 +17,10 @@ which preserves the same estimates and metrics while making observations,
 snapshot-bound `GroundTruthSet`, historical production-exact truth, and the
 Census13 equivalence-bound external truth distinct provenance fields.
 
+The RQ4 v2 fixed-k child results are summarized by
+`experiments/rq4-fixed-k-cross-dataset-summary-v1.json` (semantic digest
+`4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f`).
+
 ## Shared protocol
 
 - **Current frozen SUT:** `paper/system-freeze-v2.json` freezes advisor
@@ -128,7 +132,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
-| `rq4-fixed-k` | RQ4 | `ready-to-run` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`: the canonical method is native-payload-size top-k, ranking sample-built native payload bytes. Historical Forest10 evidence remains immutable; no v2 Census13, Power7, or DMV11 result exists, so formal execution is allowed but still planned. |
+| `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -555,12 +559,22 @@ one stock `ANALYZE`, then evaluates no-ANALYZE clones.  The primary truth is
 the same snapshot-bound `authoritative-external-exact` vector for every
 method; no new 10,000-query exact COUNT is permitted.
 
+The three new children are complete at dataset scope: Census13 digest
+`ed9031d8573f0048cbc852e5b8a236c7a29cc224b6012fd88b252700bbebba73`, Power7
+digest `c092541aa381a3e4eb8660e44f870f61ad1ea81eafc2d5fe94a87b79d8e853a7`,
+and DMV11 digest
+`15182b79f7691890cbfa5121d7eda65bbbb02737fb5129646dcc25341330b693`.
+Each has nine physical method children and one shared stock ANALYZE. Forest10's
+historical v1 artifact was not rerun.
+
 RQ1 and RQ4 remain separate questions: the RQ1 matched comparison evaluates
 the advisor objective workload and therefore is an in-workload effectiveness
-result, not held-out-query generalization.  The RQ4 v2 status ledger can mark
-an individual child `complete`, `blocked-preflight`, `budget-censored`, or
-`failed-validation`, but the global RQ4 campaign remains incomplete until all
-three new children pass their design replay and physical realization gates.
+result, not held-out-query generalization.  The three new RQ4 v2 children pass
+their design replay and physical realization gates and are marked `complete`;
+the global RQ4 program remains incomplete because fixed-evaluation-budget and
+native-ANALYZE stability are separate protocols.  A child method may still be
+`budget-censored` internally when Greedy reaches the fixed wall-clock deadline;
+that execution state is retained rather than relabeled as local optimum.
 
 RQ4a is the primary deterministic patched-sandbox design comparison. RQ4b is
 the secondary stock physical consequence comparison. The fixed-k quality

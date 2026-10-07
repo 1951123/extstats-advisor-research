@@ -1,0 +1,56 @@
+{
+  "format_version": "rq4-fixed-k-cross-dataset-summary-v1",
+  "experiment_id": "rq4-fixed-k-v2-cross-dataset-summary",
+  "formal_confirmatory_experiment": true,
+  "status": "dataset-scope-complete",
+  "fixed_k": 4,
+  "method_order": [
+    "random-k-seed-1",
+    "random-k-seed-2",
+    "random-k-seed-3",
+    "random-k-seed-4",
+    "random-k-seed-5",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD"
+  ],
+  "truth_source_kind": "authoritative-external-exact",
+  "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+  "datasets": {
+    "arecel-census13": {
+      "status": "complete",
+      "artifact": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-ablation-v2.json",
+      "artifact_semantic_digest": "ed9031d8573f0048cbc852e5b8a236c7a29cc224b6012fd88b252700bbebba73",
+      "rq4a_replay_semantic_digest": "62772721d5eef42aa18e621fe4737afb19e322daf6f8c8310c32dfbe3b87d4dc",
+      "rq4b_shared_realization_semantic_digest": "bf603912d66e76eb9a819f72d1a26ed80f3141d4c72cfd94a3140b0affcb2ca3"
+    },
+    "arecel-power7": {
+      "status": "complete",
+      "artifact": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-ablation-v2.json",
+      "artifact_semantic_digest": "c092541aa381a3e4eb8660e44f870f61ad1ea81eafc2d5fe94a87b79d8e853a7",
+      "rq4a_replay_semantic_digest": "2157b492aa087c093f0c7db848f5d9a8bf4ec176a4eee240347981f3e4459d15",
+      "rq4b_shared_realization_semantic_digest": "8398699ceaca528ece793ad4bb706df0d65789b2b5752bb0fdab371a983c495f"
+    },
+    "arecel-dmv11": {
+      "status": "complete",
+      "artifact": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-ablation-v2.json",
+      "artifact_semantic_digest": "15182b79f7691890cbfa5121d7eda65bbbb02737fb5129646dcc25341330b693",
+      "rq4a_replay_semantic_digest": "38670c450e638ed127a9b9b535fa2daabeb8a4648db198f9a012625016784008",
+      "rq4b_shared_realization_semantic_digest": "4c5e5963bc87be62a317d54d15d3de7a69f402b813362197a570bcc2e7a91859"
+    }
+  },
+  "forest10": {
+    "status": "historical-complete-v1",
+    "rerun": false,
+    "artifact": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+    "artifact_immutable": true
+  },
+  "global_rq4_status": "incomplete",
+  "global_incomplete_reasons": [
+    "rq4-fixed-evaluation-budget is implementation-needed",
+    "rq4-native-analyze-stability remains planned"
+  ],
+  "paper_scope": "RQ4 fixed-k AreCEL design and shared-stock physical evidence; not a held-out-query generalization claim",
+  "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"
+}

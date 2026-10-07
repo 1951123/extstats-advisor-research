@@ -1,0 +1,232 @@
+{
+  "authoritative_observations_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+  "cleanup": {
+    "pgdata_logs_sockets_credentials_serialized": false
+  },
+  "dataset_id": "arecel-census13",
+  "determinism": {
+    "artifact": "rq4-design-determinism-v2.json.gz",
+    "semantic_digest": "62772721d5eef42aa18e621fe4737afb19e322daf6f8c8310c32dfbe3b87d4dc"
+  },
+  "eligible_universe_digest": "d4533f216e07aebe5bd2b4117adb15b3da4fcf27e4ce643abbe7b689adc0453e",
+  "experiment_id": "rq4-fixed-k-v2",
+  "fixed_k": 4,
+  "formal_confirmatory_experiment": true,
+  "format_version": "rq4-fixed-k-v2",
+  "method_order": [
+    "random-k-seed-1",
+    "random-k-seed-2",
+    "random-k-seed-3",
+    "random-k-seed-4",
+    "random-k-seed-5",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD"
+  ],
+  "preflight": {
+    "artifact": "rq4-preflight-v2.json",
+    "semantic_digest": "80d4d92be7b7acc634f361c2aa74385e49a768ea0544d8dae4f65099be4ffd5a"
+  },
+  "progress": {
+    "census13": "complete",
+    "dmv11": "planned",
+    "power7": "planned",
+    "rq4_fixed_k_ablations": "ready-to-run"
+  },
+  "query_count": 10000,
+  "reference_equivalence_gate": {
+    "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+    "format_version": "advisor-greedy-incremental-hardening-v2",
+    "full_workload_search": false,
+    "passed": true,
+    "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+    "tested_budgets": [
+      3,
+      2,
+      1
+    ]
+  },
+  "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+  "rq4a": {
+    "artifact": "rq4-design-evaluation-v2.json",
+    "semantic_digest": "ef68256b9aa26ceb55a7a3e25a9969716ba3b1a19635e64febce4af8b4e88de8"
+  },
+  "rq4b": {
+    "artifact": "rq4-stock-shared-realization-v2.json",
+    "child_semantic_digests": {
+      "greedy-ADD": "f7569d1bba0d81a30f2e9bcdf6c6e9bf3edd5b88eb95caca7177327466c3f723",
+      "native-payload-size-top-k": "e864c3d594c184d02d90ba984d39cf7d7b51ad8862a99aef6f72f7dade242a26",
+      "random-k-seed-1": "db17c0db4920318d0510777569505c799c29bf9a6b99e0f50763a802d3f1323d",
+      "random-k-seed-2": "251068f0f1e19285671fb852a497b8a8d154d672ca0ee8f94d26303ec9730c98",
+      "random-k-seed-3": "38c53dff6c6db1a6c6220ae275c8bbe8bccc9d8026e23d70ca8fbbd22870e3ca",
+      "random-k-seed-4": "9376d9102f906f54b436495cc4ba2abe9777dd647672bbef6cc2241efb6da3ae",
+      "random-k-seed-5": "1932ee785adc64b526b5f17edf2ea00030e550327487dfda2481d719e285f3f6",
+      "singleton-utility-top-k": "db837090fa149fb170737a8129405e2da8dec92adaa54ae6b2f987bcb58cf9e6",
+      "workload-frequency-top-k": "9edfa8e2cee7fc8d88f4b1836817e4cb1f9e45110d56827755081bc4bb7b82cd"
+    },
+    "method_count": 9,
+    "physical_directory": "physical",
+    "semantic_digest": "bf603912d66e76eb9a819f72d1a26ed80f3141d4c72cfd94a3140b0affcb2ca3"
+  },
+  "semantic_digest": "ed9031d8573f0048cbc852e5b8a236c7a29cc224b6012fd88b252700bbebba73",
+  "source_artifact_digests": {
+    "candidate_universe": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+    "ground_truth": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+    "native_repository": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+    "singleton_profile": "2300f4e53bc28f1dfb81d5c5753905d3bb9ec266cd6ac88bde915de69879b6b0",
+    "snapshot": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0"
+  },
+  "status": "complete",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "repository": "1951123/extstats-advisor",
+      "role": "canonical v2 Advisor execution identity"
+    },
+    "advisor_algorithm": {
+      "B_semantics": "maximum selected candidate definitions; physical object count is separate",
+      "canonical_parameters": {
+        "B": 8,
+        "K_s": 8,
+        "T_seconds": 300,
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100
+      },
+      "execution_optimizations": [
+        "incidence-indexed incremental singleton profiling",
+        "incidence-indexed incremental Greedy ADD",
+        "baseline/affected-query estimate caching",
+        "bounded proposal cache"
+      ],
+      "new_algorithmic_controls": [
+        "maximum statistics count B",
+        "canonical v2 default B=K_s",
+        "explicit budget termination semantics"
+      ],
+      "partial_round_policy": "discard incomplete round and retain last committed incumbent",
+      "strict_improvement": true,
+      "termination_reasons": [
+        "local-optimum",
+        "max-statistics-count",
+        "all-screened-candidates-selected",
+        "budget-expired-before-round",
+        "budget-expired-incomplete-round"
+      ]
+    },
+    "change_policy": "Any production semantic change to the advisor or either PostgreSQL build requires a new system freeze; historical v1 artifacts retain their v1 provenance.",
+    "compatibility_evidence": {
+      "forest10_singleton": {
+        "artifact": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+        "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+        "scope": "confirmatory Forest10 singleton equivalence"
+      },
+      "incremental_greedy_live": {
+        "artifact": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+        "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+        "scope": "small-live-correctness-validation"
+      },
+      "power7_singleton": {
+        "artifact": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+        "artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+        "scope": "confirmatory Power7 singleton equivalence"
+      },
+      "readiness_review": {
+        "artifact": "paper/system-freeze-v2-readiness-review-v1.json",
+        "artifact_digest": "34973689b5d43d4fe80352690c6bcab88adbdf94e1d96d73ec77396058a29c90"
+      }
+    },
+    "format_version": "system-freeze-v2",
+    "freeze_id": "system-freeze-v2",
+    "patched_postgresql": {
+      "commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "fingerprint_requirements": {
+        "build_identity_source": "postgres-lab identity.json",
+        "ordinary_stats_fingerprint_required_per_artifact": true,
+        "runtime_paths_are_not_semantic_identity": true,
+        "source_commit_sha_pinned": true
+      },
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "research_provenance": {
+      "freeze_digest_does_not_depend_on_future_freeze_commit": true,
+      "readiness_review_path": "paper/system-freeze-v2-readiness-review-v1.json",
+      "readiness_review_source_sha": "34c188f8c73e47f0bbccf2ea96f2194169d7a607"
+    },
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "status": "frozen",
+    "stock_postgresql": {
+      "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "v1_compatibility": {
+      "explicit_v1_plan_reference_path": "optimization-plan-v1 / greedy-add-v1-full-workload-evaluation",
+      "historical_artifact_rule": "Existing RQ1 and Forest10 RQ4 artifacts retain their embedded system-freeze-v1 provenance and are not retroactively reassigned to v2.",
+      "historical_artifacts_remain_v1": true,
+      "legacy_freeze_format": "system-freeze-v1",
+      "legacy_freeze_path": "paper/system-freeze-v1.json"
+    },
+    "validation_scope": {
+      "census13": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "dmv11": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "singleton_equivalence_claim": "Power7 and Forest10 confirmatory evidence only; not exhaustive cross-dataset validation"
+    }
+  },
+  "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+  "workload_id": "arecel_census13_test_v1"
+}

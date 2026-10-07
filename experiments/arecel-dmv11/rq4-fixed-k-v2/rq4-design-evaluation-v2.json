@@ -1,0 +1,4053 @@
+{
+  "authoritative_observations_sha256": "aaedaf54313926fb03efb1051ba58c86b17729cad372a69e9c6faf5b192eb37a",
+  "dataset_id": "arecel-dmv11",
+  "eligible_universe": {
+    "candidate_universe_semantic_digest": "a17b0fb88c64d44f68a89636d9e44c8f8caa4507de5897f5324d720c66bee824",
+    "eligibility_rule": {
+      "allowed_kinds": [
+        "postgresql.mcv",
+        "postgresql.dependencies"
+      ],
+      "forbidden_signals": [
+        "singleton q-error improvement",
+        "greedy SearchResult",
+        "final Advisor recommendation",
+        "confirmatory full-data outcome"
+      ],
+      "requires_predeclared_postgresql_compatibility": true,
+      "requires_sample_built_payload": true,
+      "requires_schema_validity": true
+    },
+    "eligible_candidates": [
+      {
+        "candidate_id": "cand_446a7fc5aba413d985b7f659",
+        "canonical_deployment_position": 1,
+        "column_names": [
+          "record_type",
+          "registration_class"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 1
+      },
+      {
+        "candidate_id": "cand_f7d157076db54549cfe529ad",
+        "canonical_deployment_position": 2,
+        "column_names": [
+          "record_type",
+          "state"
+        ],
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 2
+      },
+      {
+        "candidate_id": "cand_e7042e504135edc2841ba025",
+        "canonical_deployment_position": 3,
+        "column_names": [
+          "record_type",
+          "county"
+        ],
+        "column_ordinals": [
+          1,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 3
+      },
+      {
+        "candidate_id": "cand_a321c061df418caa0b143ac4",
+        "canonical_deployment_position": 4,
+        "column_names": [
+          "record_type",
+          "body_type"
+        ],
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 4
+      },
+      {
+        "candidate_id": "cand_3ea8776430fffecefaa78983",
+        "canonical_deployment_position": 5,
+        "column_names": [
+          "record_type",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          1,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 5
+      },
+      {
+        "candidate_id": "cand_80001d29d786d9b0403f7a8c",
+        "canonical_deployment_position": 6,
+        "column_names": [
+          "record_type",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 6
+      },
+      {
+        "candidate_id": "cand_d2fb9059532b7c5acd9bf11c",
+        "canonical_deployment_position": 7,
+        "column_names": [
+          "record_type",
+          "color"
+        ],
+        "column_ordinals": [
+          1,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 7
+      },
+      {
+        "candidate_id": "cand_63b0438f7281938e19185a73",
+        "canonical_deployment_position": 8,
+        "column_names": [
+          "record_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 8
+      },
+      {
+        "candidate_id": "cand_2c24a59b91e163baa6b04f68",
+        "canonical_deployment_position": 9,
+        "column_names": [
+          "record_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 9
+      },
+      {
+        "candidate_id": "cand_9050410cd40b8a36b815d83d",
+        "canonical_deployment_position": 10,
+        "column_names": [
+          "record_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 10
+      },
+      {
+        "candidate_id": "cand_c41b12c3e1d0549a84df8d23",
+        "canonical_deployment_position": 11,
+        "column_names": [
+          "registration_class",
+          "state"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 11
+      },
+      {
+        "candidate_id": "cand_d63f42386de504161b5b2f9d",
+        "canonical_deployment_position": 12,
+        "column_names": [
+          "registration_class",
+          "county"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 12
+      },
+      {
+        "candidate_id": "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "canonical_deployment_position": 13,
+        "column_names": [
+          "registration_class",
+          "body_type"
+        ],
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 13
+      },
+      {
+        "candidate_id": "cand_f495ee73455905ddf4da0f95",
+        "canonical_deployment_position": 14,
+        "column_names": [
+          "registration_class",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 14
+      },
+      {
+        "candidate_id": "cand_eb2f5e76aee4d2509520eafa",
+        "canonical_deployment_position": 15,
+        "column_names": [
+          "registration_class",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 15
+      },
+      {
+        "candidate_id": "cand_61b909d76b855af0afdeb796",
+        "canonical_deployment_position": 16,
+        "column_names": [
+          "registration_class",
+          "color"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 16
+      },
+      {
+        "candidate_id": "cand_8173ebfcd4fc1962c8404874",
+        "canonical_deployment_position": 17,
+        "column_names": [
+          "registration_class",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 17
+      },
+      {
+        "candidate_id": "cand_92c3ee5c2d9f63a5173e590a",
+        "canonical_deployment_position": 18,
+        "column_names": [
+          "registration_class",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 18
+      },
+      {
+        "candidate_id": "cand_cc896d0038d93135ce1f8814",
+        "canonical_deployment_position": 19,
+        "column_names": [
+          "registration_class",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 19
+      },
+      {
+        "candidate_id": "cand_0c9de63f88d09047ab1f84c0",
+        "canonical_deployment_position": 20,
+        "column_names": [
+          "state",
+          "county"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 20
+      },
+      {
+        "candidate_id": "cand_327544363f878105117702d2",
+        "canonical_deployment_position": 21,
+        "column_names": [
+          "state",
+          "body_type"
+        ],
+        "column_ordinals": [
+          3,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 21
+      },
+      {
+        "candidate_id": "cand_fa92268555ecda7fb2052aff",
+        "canonical_deployment_position": 22,
+        "column_names": [
+          "state",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 22
+      },
+      {
+        "candidate_id": "cand_39ff5ea02aef5da55fce782a",
+        "canonical_deployment_position": 23,
+        "column_names": [
+          "state",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 23
+      },
+      {
+        "candidate_id": "cand_b506cef9b855c0ebf42b8ac6",
+        "canonical_deployment_position": 24,
+        "column_names": [
+          "state",
+          "color"
+        ],
+        "column_ordinals": [
+          3,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 24
+      },
+      {
+        "candidate_id": "cand_32dd7b43105520cf3ca2c6a8",
+        "canonical_deployment_position": 25,
+        "column_names": [
+          "state",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 25
+      },
+      {
+        "candidate_id": "cand_f1a1158e617ed0b52bf232a0",
+        "canonical_deployment_position": 26,
+        "column_names": [
+          "state",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 26
+      },
+      {
+        "candidate_id": "cand_5fe797defd7d202d60fd13dd",
+        "canonical_deployment_position": 27,
+        "column_names": [
+          "state",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 27
+      },
+      {
+        "candidate_id": "cand_e0e325aa177600c7efc65cad",
+        "canonical_deployment_position": 28,
+        "column_names": [
+          "county",
+          "body_type"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 28
+      },
+      {
+        "candidate_id": "cand_a6bd8d4b31471c8ae584088b",
+        "canonical_deployment_position": 29,
+        "column_names": [
+          "county",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          4,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 29
+      },
+      {
+        "candidate_id": "cand_50be312ca41b140ea96628ba",
+        "canonical_deployment_position": 30,
+        "column_names": [
+          "county",
+          "color"
+        ],
+        "column_ordinals": [
+          4,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 31
+      },
+      {
+        "candidate_id": "cand_83905d0c78d91e30eae5919f",
+        "canonical_deployment_position": 31,
+        "column_names": [
+          "county",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 32
+      },
+      {
+        "candidate_id": "cand_8f4ff4e8e0cd5dd097164267",
+        "canonical_deployment_position": 32,
+        "column_names": [
+          "county",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 33
+      },
+      {
+        "candidate_id": "cand_be42b3b48f0d3177f8ce1bcf",
+        "canonical_deployment_position": 33,
+        "column_names": [
+          "county",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 34
+      },
+      {
+        "candidate_id": "cand_5d60cd8bc3c6c4df47d3c8f8",
+        "canonical_deployment_position": 34,
+        "column_names": [
+          "body_type",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 35
+      },
+      {
+        "candidate_id": "cand_180eff25d9d08ae74542467e",
+        "canonical_deployment_position": 35,
+        "column_names": [
+          "body_type",
+          "color"
+        ],
+        "column_ordinals": [
+          5,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 37
+      },
+      {
+        "candidate_id": "cand_d5cd341aabb733dd3d14006e",
+        "canonical_deployment_position": 36,
+        "column_names": [
+          "body_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 38
+      },
+      {
+        "candidate_id": "cand_386be49af6ad39771e0e36ef",
+        "canonical_deployment_position": 37,
+        "column_names": [
+          "body_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 39
+      },
+      {
+        "candidate_id": "cand_bf8adfb27dd03eaf78885e3f",
+        "canonical_deployment_position": 38,
+        "column_names": [
+          "body_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 40
+      },
+      {
+        "candidate_id": "cand_77c30674b97dc0c906422eed",
+        "canonical_deployment_position": 39,
+        "column_names": [
+          "fuel_type",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          6,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 41
+      },
+      {
+        "candidate_id": "cand_8610f2372283e1492dd5a908",
+        "canonical_deployment_position": 40,
+        "column_names": [
+          "fuel_type",
+          "color"
+        ],
+        "column_ordinals": [
+          6,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 42
+      },
+      {
+        "candidate_id": "cand_87c19717fadd6c9fa67b27d0",
+        "canonical_deployment_position": 41,
+        "column_names": [
+          "fuel_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 43
+      },
+      {
+        "candidate_id": "cand_be8a50e42b6902218a7513c1",
+        "canonical_deployment_position": 42,
+        "column_names": [
+          "fuel_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 44
+      },
+      {
+        "candidate_id": "cand_7eebfd899c4b78d73f369b5f",
+        "canonical_deployment_position": 43,
+        "column_names": [
+          "fuel_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 45
+      },
+      {
+        "candidate_id": "cand_acf9e531983db1cd2c7e3da4",
+        "canonical_deployment_position": 44,
+        "column_names": [
+          "reg_valid_date",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 47
+      },
+      {
+        "candidate_id": "cand_1b85c6467ace3fd56f43c3c3",
+        "canonical_deployment_position": 45,
+        "column_names": [
+          "reg_valid_date",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 48
+      },
+      {
+        "candidate_id": "cand_a7d6924ed62c20dc9a788eee",
+        "canonical_deployment_position": 46,
+        "column_names": [
+          "reg_valid_date",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 49
+      },
+      {
+        "candidate_id": "cand_eef9f1447e54a5874b807c19",
+        "canonical_deployment_position": 47,
+        "column_names": [
+          "color",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 50
+      },
+      {
+        "candidate_id": "cand_ac9ffdf101674bdfeabc3d5b",
+        "canonical_deployment_position": 48,
+        "column_names": [
+          "color",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 51
+      },
+      {
+        "candidate_id": "cand_cc927188a913d3c18ef5efbb",
+        "canonical_deployment_position": 49,
+        "column_names": [
+          "color",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 52
+      },
+      {
+        "candidate_id": "cand_6a91b1525b3fe7a79fd9d5fb",
+        "canonical_deployment_position": 50,
+        "column_names": [
+          "scofflaw_indicator",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          9,
+          10
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 53
+      },
+      {
+        "candidate_id": "cand_a031457f147af0cc7e36ccc6",
+        "canonical_deployment_position": 51,
+        "column_names": [
+          "scofflaw_indicator",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          9,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 54
+      },
+      {
+        "candidate_id": "cand_c5c042a714635a3fea6bba79",
+        "canonical_deployment_position": 52,
+        "column_names": [
+          "suspension_indicator",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          10,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 55
+      },
+      {
+        "candidate_id": "cand_025ef605b7fda01f7e5a731d",
+        "canonical_deployment_position": 53,
+        "column_names": [
+          "record_type",
+          "registration_class"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 56
+      },
+      {
+        "candidate_id": "cand_09a50af185d6aa6f260ecd66",
+        "canonical_deployment_position": 54,
+        "column_names": [
+          "record_type",
+          "state"
+        ],
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 57
+      },
+      {
+        "candidate_id": "cand_39b83032f1022a5ccc5f88c9",
+        "canonical_deployment_position": 55,
+        "column_names": [
+          "record_type",
+          "body_type"
+        ],
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 59
+      },
+      {
+        "candidate_id": "cand_acf913a7c682db9ca7b49363",
+        "canonical_deployment_position": 56,
+        "column_names": [
+          "record_type",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          1,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 60
+      },
+      {
+        "candidate_id": "cand_45c026beebb3d0343a70611b",
+        "canonical_deployment_position": 57,
+        "column_names": [
+          "record_type",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 61
+      },
+      {
+        "candidate_id": "cand_0d8a3deefe16c4b3ca9cb305",
+        "canonical_deployment_position": 58,
+        "column_names": [
+          "record_type",
+          "color"
+        ],
+        "column_ordinals": [
+          1,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 62
+      },
+      {
+        "candidate_id": "cand_7fce61936a7facc780721ef3",
+        "canonical_deployment_position": 59,
+        "column_names": [
+          "record_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 63
+      },
+      {
+        "candidate_id": "cand_6edc7f66ba44fd4bf50ff1ff",
+        "canonical_deployment_position": 60,
+        "column_names": [
+          "record_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 64
+      },
+      {
+        "candidate_id": "cand_3bbd159f864fae5d15f250b7",
+        "canonical_deployment_position": 61,
+        "column_names": [
+          "record_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          1,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 65
+      },
+      {
+        "candidate_id": "cand_e87fe00abf39f2b397ff1bdc",
+        "canonical_deployment_position": 62,
+        "column_names": [
+          "registration_class",
+          "state"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 66
+      },
+      {
+        "candidate_id": "cand_68021bd5eda5efbb74cd6938",
+        "canonical_deployment_position": 63,
+        "column_names": [
+          "registration_class",
+          "county"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 67
+      },
+      {
+        "candidate_id": "cand_19346df19ba74434fa27acd8",
+        "canonical_deployment_position": 64,
+        "column_names": [
+          "registration_class",
+          "body_type"
+        ],
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 68
+      },
+      {
+        "candidate_id": "cand_b78d55db882b6bf067d91270",
+        "canonical_deployment_position": 65,
+        "column_names": [
+          "registration_class",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 69
+      },
+      {
+        "candidate_id": "cand_50369474f743eb1f2a8b3fd9",
+        "canonical_deployment_position": 66,
+        "column_names": [
+          "registration_class",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 70
+      },
+      {
+        "candidate_id": "cand_36e74859cf087af88e3b9684",
+        "canonical_deployment_position": 67,
+        "column_names": [
+          "registration_class",
+          "color"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 71
+      },
+      {
+        "candidate_id": "cand_4e1bf39b179a0a6214e71cbe",
+        "canonical_deployment_position": 68,
+        "column_names": [
+          "registration_class",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 72
+      },
+      {
+        "candidate_id": "cand_0da8eb75b8e1b1835cf0655c",
+        "canonical_deployment_position": 69,
+        "column_names": [
+          "registration_class",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 73
+      },
+      {
+        "candidate_id": "cand_41a814527cb7626291ca8577",
+        "canonical_deployment_position": 70,
+        "column_names": [
+          "registration_class",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 74
+      },
+      {
+        "candidate_id": "cand_6c2da965b36a563b6cbb982b",
+        "canonical_deployment_position": 71,
+        "column_names": [
+          "state",
+          "county"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 75
+      },
+      {
+        "candidate_id": "cand_178e3966a0f99380fe5802f6",
+        "canonical_deployment_position": 72,
+        "column_names": [
+          "state",
+          "body_type"
+        ],
+        "column_ordinals": [
+          3,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 76
+      },
+      {
+        "candidate_id": "cand_1468038c0729e0c99563256c",
+        "canonical_deployment_position": 73,
+        "column_names": [
+          "state",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 77
+      },
+      {
+        "candidate_id": "cand_7cd0b82f79d660feb827a5b8",
+        "canonical_deployment_position": 74,
+        "column_names": [
+          "state",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 78
+      },
+      {
+        "candidate_id": "cand_22adb24ed9c4f8b19d9ed629",
+        "canonical_deployment_position": 75,
+        "column_names": [
+          "state",
+          "color"
+        ],
+        "column_ordinals": [
+          3,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 79
+      },
+      {
+        "candidate_id": "cand_3d5daa3addbbf6b3267c30f5",
+        "canonical_deployment_position": 76,
+        "column_names": [
+          "state",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 80
+      },
+      {
+        "candidate_id": "cand_a8181a7587d4f95a94bc12ee",
+        "canonical_deployment_position": 77,
+        "column_names": [
+          "state",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 81
+      },
+      {
+        "candidate_id": "cand_827a8aed24959d8372a1eac2",
+        "canonical_deployment_position": 78,
+        "column_names": [
+          "state",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          3,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 82
+      },
+      {
+        "candidate_id": "cand_66b028d5b900eded4720e45c",
+        "canonical_deployment_position": 79,
+        "column_names": [
+          "county",
+          "body_type"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 83
+      },
+      {
+        "candidate_id": "cand_ce642bea730d6ecc4a1e330d",
+        "canonical_deployment_position": 80,
+        "column_names": [
+          "county",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          4,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 85
+      },
+      {
+        "candidate_id": "cand_c0eaff710e1905bb782c3d35",
+        "canonical_deployment_position": 81,
+        "column_names": [
+          "county",
+          "color"
+        ],
+        "column_ordinals": [
+          4,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 86
+      },
+      {
+        "candidate_id": "cand_430d615fbaa808ac013841b4",
+        "canonical_deployment_position": 82,
+        "column_names": [
+          "county",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 87
+      },
+      {
+        "candidate_id": "cand_6d8c0bb0069e6744a05a7b37",
+        "canonical_deployment_position": 83,
+        "column_names": [
+          "county",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 88
+      },
+      {
+        "candidate_id": "cand_cfaf2014341bab6d2f165ecf",
+        "canonical_deployment_position": 84,
+        "column_names": [
+          "county",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          4,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 89
+      },
+      {
+        "candidate_id": "cand_29d2a7e632312b1279495926",
+        "canonical_deployment_position": 85,
+        "column_names": [
+          "body_type",
+          "fuel_type"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 90
+      },
+      {
+        "candidate_id": "cand_c16bf4418043779d2162cbc5",
+        "canonical_deployment_position": 86,
+        "column_names": [
+          "body_type",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 91
+      },
+      {
+        "candidate_id": "cand_8554a09775e98951d824713c",
+        "canonical_deployment_position": 87,
+        "column_names": [
+          "body_type",
+          "color"
+        ],
+        "column_ordinals": [
+          5,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 92
+      },
+      {
+        "candidate_id": "cand_92d3663a0809730f2578db2d",
+        "canonical_deployment_position": 88,
+        "column_names": [
+          "body_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 93
+      },
+      {
+        "candidate_id": "cand_48310d09c774230482b197ff",
+        "canonical_deployment_position": 89,
+        "column_names": [
+          "body_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 94
+      },
+      {
+        "candidate_id": "cand_ad178035a14a96db8daa67eb",
+        "canonical_deployment_position": 90,
+        "column_names": [
+          "body_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          5,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 95
+      },
+      {
+        "candidate_id": "cand_9c8089044ca01064f7a22ab6",
+        "canonical_deployment_position": 91,
+        "column_names": [
+          "fuel_type",
+          "reg_valid_date"
+        ],
+        "column_ordinals": [
+          6,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 96
+      },
+      {
+        "candidate_id": "cand_abd5d9534a8679009a017982",
+        "canonical_deployment_position": 92,
+        "column_names": [
+          "fuel_type",
+          "color"
+        ],
+        "column_ordinals": [
+          6,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 97
+      },
+      {
+        "candidate_id": "cand_c097e6360631bc90a93dd900",
+        "canonical_deployment_position": 93,
+        "column_names": [
+          "fuel_type",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 98
+      },
+      {
+        "candidate_id": "cand_39ce3ce1f61cbd2562d35823",
+        "canonical_deployment_position": 94,
+        "column_names": [
+          "fuel_type",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 99
+      },
+      {
+        "candidate_id": "cand_c07def92fa7a8c6fda1184e8",
+        "canonical_deployment_position": 95,
+        "column_names": [
+          "fuel_type",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          6,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 100
+      },
+      {
+        "candidate_id": "cand_c74c134d9346a5502a62c058",
+        "canonical_deployment_position": 96,
+        "column_names": [
+          "reg_valid_date",
+          "color"
+        ],
+        "column_ordinals": [
+          7,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 101
+      },
+      {
+        "candidate_id": "cand_9291e3c2994f0d160e37af33",
+        "canonical_deployment_position": 97,
+        "column_names": [
+          "reg_valid_date",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 102
+      },
+      {
+        "candidate_id": "cand_29cdcb36a5d64b8bb5bca284",
+        "canonical_deployment_position": 98,
+        "column_names": [
+          "reg_valid_date",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 103
+      },
+      {
+        "candidate_id": "cand_053f405c5442a08efa62251f",
+        "canonical_deployment_position": 99,
+        "column_names": [
+          "reg_valid_date",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          7,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 104
+      },
+      {
+        "candidate_id": "cand_6039a01d4be3fd77b8a037c9",
+        "canonical_deployment_position": 100,
+        "column_names": [
+          "color",
+          "scofflaw_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 105
+      },
+      {
+        "candidate_id": "cand_7bf6ea365cb711ff82a02352",
+        "canonical_deployment_position": 101,
+        "column_names": [
+          "color",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 106
+      },
+      {
+        "candidate_id": "cand_20dfa9610644c2eacd40f7da",
+        "canonical_deployment_position": 102,
+        "column_names": [
+          "color",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          8,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 107
+      },
+      {
+        "candidate_id": "cand_36b212ba376a0cacc9589af9",
+        "canonical_deployment_position": 103,
+        "column_names": [
+          "scofflaw_indicator",
+          "suspension_indicator"
+        ],
+        "column_ordinals": [
+          9,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 108
+      },
+      {
+        "candidate_id": "cand_c83d2a7ef084223699f40dab",
+        "canonical_deployment_position": 104,
+        "column_names": [
+          "scofflaw_indicator",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          9,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 109
+      },
+      {
+        "candidate_id": "cand_208c8f61e48f8957550d2b57",
+        "canonical_deployment_position": 105,
+        "column_names": [
+          "suspension_indicator",
+          "revocation_indicator"
+        ],
+        "column_ordinals": [
+          10,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_9ca46508fb91888d1c922f91",
+        "static_precedence_rank": 110
+      }
+    ],
+    "excluded_candidates": [
+      {
+        "candidate": {
+          "candidate_id": "cand_a68a93103783c7d11366345a",
+          "column_names": [
+            "county",
+            "reg_valid_date"
+          ],
+          "column_ordinals": [
+            4,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 30
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_9855d3f83f160bb02d131798",
+          "column_names": [
+            "body_type",
+            "reg_valid_date"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 36
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_8a3159c4a54613ca8c3ff5e1",
+          "column_names": [
+            "reg_valid_date",
+            "color"
+          ],
+          "column_ordinals": [
+            7,
+            8
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 46
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_a3255a337d342483ee6e121b",
+          "column_names": [
+            "record_type",
+            "county"
+          ],
+          "column_ordinals": [
+            1,
+            4
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 58
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      },
+      {
+        "candidate": {
+          "candidate_id": "cand_6375a31c19da74ebb8ac4a9a",
+          "column_names": [
+            "county",
+            "fuel_type"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 84
+        },
+        "reasons": [
+          "sample-built-native-payload-unavailable"
+        ]
+      }
+    ],
+    "format_version": "rq4-eligible-universe-v1",
+    "native_repository_semantic_digest": "fe9df6e4323ecb16a558c0185b1887b581da014d699523e2c338433a15eb1b2e",
+    "semantic_digest": "2e3d78fa2eb8a745463837cd377b07e50aee22172a02775c14298b53f0de74b3",
+    "source_snapshot_semantic_digest": "449ca8dff9b77c0394881c754ad256c94031d2b4a287aa7f6958e73987ccc75c"
+  },
+  "experiment_id": "rq4-design-evaluation-v2",
+  "fixed_k": 4,
+  "formal_confirmatory_experiment": true,
+  "format_version": "rq4-design-evaluation-v2",
+  "implementation": {
+    "formal_scope": "RQ4a-design-and-RQ4b-physical",
+    "greedy": "advisor-incidence-incremental-v1",
+    "selection_evaluator": "exact-merged-estimate-map-weighted-utility"
+  },
+  "method_order": [
+    "random-k-seed-1",
+    "random-k-seed-2",
+    "random-k-seed-3",
+    "random-k-seed-4",
+    "random-k-seed-5",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD"
+  ],
+  "methods": {
+    "greedy-ADD": {
+      "deployment_order": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983"
+      ],
+      "evaluation_order": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "ed2ac784e6189e33842e87d95f992c1a4ad0c6c8c4df024ccb1e6e106e7398a8",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 47.20499958811888,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.918246564997389
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample planner",
+          "GroundTruthSet"
+        ],
+        "forbidden_inputs": [],
+        "ground_truth_during_selection": true
+      },
+      "method_id": "greedy-ADD",
+      "search_result": {
+        "accepted_moves": [
+          {
+            "added_candidate_id": "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "improvement": 259.90254322003796,
+            "objective_after": 85.81118491219823,
+            "objective_before": 345.7137281322362,
+            "ordered_candidate_ids_after": [
+              "cand_7db3fcd2a8cbbdf2c9bfe38d"
+            ],
+            "round_index": 1
+          },
+          {
+            "added_candidate_id": "cand_3ea8776430fffecefaa78983",
+            "improvement": 38.60618532407935,
+            "objective_after": 47.20499958811888,
+            "objective_before": 85.81118491219823,
+            "ordered_candidate_ids_after": [
+              "cand_7db3fcd2a8cbbdf2c9bfe38d",
+              "cand_3ea8776430fffecefaa78983"
+            ],
+            "round_index": 2
+          }
+        ],
+        "baseline_objective": 345.7137281322362,
+        "budget": {
+          "candidate_limit": 105,
+          "contract": "optimization-budget-v1",
+          "max_statistics_count": 4,
+          "wall_clock_seconds": 300.0
+        },
+        "candidate_universe_semantic_digest": "a17b0fb88c64d44f68a89636d9e44c8f8caa4507de5897f5324d720c66bee824",
+        "completed_rounds": [
+          {
+            "evaluations": [
+              {
+                "candidate_id": "cand_a321c061df418caa0b143ac4",
+                "objective": 78.02376083783183,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_a321c061df418caa0b143ac4"
+                ]
+              },
+              {
+                "candidate_id": "cand_446a7fc5aba413d985b7f659",
+                "objective": 80.80578670718134,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_446a7fc5aba413d985b7f659"
+                ]
+              },
+              {
+                "candidate_id": "cand_025ef605b7fda01f7e5a731d",
+                "objective": 81.14225487773594,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_025ef605b7fda01f7e5a731d"
+                ]
+              },
+              {
+                "candidate_id": "cand_39b83032f1022a5ccc5f88c9",
+                "objective": 82.58585294693918,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_39b83032f1022a5ccc5f88c9"
+                ]
+              },
+              {
+                "candidate_id": "cand_19346df19ba74434fa27acd8",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_19346df19ba74434fa27acd8"
+                ]
+              },
+              {
+                "candidate_id": "cand_5d60cd8bc3c6c4df47d3c8f8",
+                "objective": 79.9295879203434,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_5d60cd8bc3c6c4df47d3c8f8"
+                ]
+              },
+              {
+                "candidate_id": "cand_f495ee73455905ddf4da0f95",
+                "objective": 83.54454848293582,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_f495ee73455905ddf4da0f95"
+                ]
+              },
+              {
+                "candidate_id": "cand_3ea8776430fffecefaa78983",
+                "objective": 47.20499958811888,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_3ea8776430fffecefaa78983"
+                ]
+              },
+              {
+                "candidate_id": "cand_61b909d76b855af0afdeb796",
+                "objective": 81.73453786536943,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_61b909d76b855af0afdeb796"
+                ]
+              },
+              {
+                "candidate_id": "cand_180eff25d9d08ae74542467e",
+                "objective": 83.33272688119852,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_180eff25d9d08ae74542467e"
+                ]
+              },
+              {
+                "candidate_id": "cand_29d2a7e632312b1279495926",
+                "objective": 78.98332735414242,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_29d2a7e632312b1279495926"
+                ]
+              },
+              {
+                "candidate_id": "cand_d2fb9059532b7c5acd9bf11c",
+                "objective": 69.70970226248313,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_d2fb9059532b7c5acd9bf11c"
+                ]
+              },
+              {
+                "candidate_id": "cand_b78d55db882b6bf067d91270",
+                "objective": 84.33544361319042,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_b78d55db882b6bf067d91270"
+                ]
+              },
+              {
+                "candidate_id": "cand_acf913a7c682db9ca7b49363",
+                "objective": 62.265590774324465,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_acf913a7c682db9ca7b49363"
+                ]
+              },
+              {
+                "candidate_id": "cand_0d8a3deefe16c4b3ca9cb305",
+                "objective": 74.82940579340067,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_0d8a3deefe16c4b3ca9cb305"
+                ]
+              },
+              {
+                "candidate_id": "cand_36e74859cf087af88e3b9684",
+                "objective": 83.94870725671815,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_36e74859cf087af88e3b9684"
+                ]
+              },
+              {
+                "candidate_id": "cand_8554a09775e98951d824713c",
+                "objective": 84.64325483074083,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_8554a09775e98951d824713c"
+                ]
+              },
+              {
+                "candidate_id": "cand_8610f2372283e1492dd5a908",
+                "objective": 81.66494682495637,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_8610f2372283e1492dd5a908"
+                ]
+              },
+              {
+                "candidate_id": "cand_d63f42386de504161b5b2f9d",
+                "objective": 85.56200717834938,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_d63f42386de504161b5b2f9d"
+                ]
+              },
+              {
+                "candidate_id": "cand_6c2da965b36a563b6cbb982b",
+                "objective": 82.06050212610552,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_6c2da965b36a563b6cbb982b"
+                ]
+              },
+              {
+                "candidate_id": "cand_abd5d9534a8679009a017982",
+                "objective": 85.3741139275461,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_abd5d9534a8679009a017982"
+                ]
+              },
+              {
+                "candidate_id": "cand_0c9de63f88d09047ab1f84c0",
+                "objective": 82.64473481658794,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_0c9de63f88d09047ab1f84c0"
+                ]
+              },
+              {
+                "candidate_id": "cand_e87fe00abf39f2b397ff1bdc",
+                "objective": 85.6387663299376,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_e87fe00abf39f2b397ff1bdc"
+                ]
+              },
+              {
+                "candidate_id": "cand_c41b12c3e1d0549a84df8d23",
+                "objective": 85.83630613138396,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c41b12c3e1d0549a84df8d23"
+                ]
+              },
+              {
+                "candidate_id": "cand_cc896d0038d93135ce1f8814",
+                "objective": 85.6047958583876,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_cc896d0038d93135ce1f8814"
+                ]
+              },
+              {
+                "candidate_id": "cand_cc927188a913d3c18ef5efbb",
+                "objective": 85.16438947507481,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_cc927188a913d3c18ef5efbb"
+                ]
+              },
+              {
+                "candidate_id": "cand_50be312ca41b140ea96628ba",
+                "objective": 85.1209453398123,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_50be312ca41b140ea96628ba"
+                ]
+              },
+              {
+                "candidate_id": "cand_20dfa9610644c2eacd40f7da",
+                "objective": 85.43338004067104,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_20dfa9610644c2eacd40f7da"
+                ]
+              },
+              {
+                "candidate_id": "cand_cfaf2014341bab6d2f165ecf",
+                "objective": 85.59722150115655,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_cfaf2014341bab6d2f165ecf"
+                ]
+              },
+              {
+                "candidate_id": "cand_68021bd5eda5efbb74cd6938",
+                "objective": 85.66718935949149,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_68021bd5eda5efbb74cd6938"
+                ]
+              },
+              {
+                "candidate_id": "cand_7eebfd899c4b78d73f369b5f",
+                "objective": 85.67322441499182,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_7eebfd899c4b78d73f369b5f"
+                ]
+              },
+              {
+                "candidate_id": "cand_9050410cd40b8a36b815d83d",
+                "objective": 85.63770810992594,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_9050410cd40b8a36b815d83d"
+                ]
+              },
+              {
+                "candidate_id": "cand_66b028d5b900eded4720e45c",
+                "objective": 85.79798077562633,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_66b028d5b900eded4720e45c"
+                ]
+              },
+              {
+                "candidate_id": "cand_c0eaff710e1905bb782c3d35",
+                "objective": 85.44627429022232,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c0eaff710e1905bb782c3d35"
+                ]
+              },
+              {
+                "candidate_id": "cand_22adb24ed9c4f8b19d9ed629",
+                "objective": 85.70651419760593,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_22adb24ed9c4f8b19d9ed629"
+                ]
+              },
+              {
+                "candidate_id": "cand_178e3966a0f99380fe5802f6",
+                "objective": 85.82886281312457,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_178e3966a0f99380fe5802f6"
+                ]
+              },
+              {
+                "candidate_id": "cand_bf8adfb27dd03eaf78885e3f",
+                "objective": 85.80444894206099,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_bf8adfb27dd03eaf78885e3f"
+                ]
+              },
+              {
+                "candidate_id": "cand_2c24a59b91e163baa6b04f68",
+                "objective": 85.71260923064098,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_2c24a59b91e163baa6b04f68"
+                ]
+              },
+              {
+                "candidate_id": "cand_92c3ee5c2d9f63a5173e590a",
+                "objective": 85.79658467827751,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_92c3ee5c2d9f63a5173e590a"
+                ]
+              },
+              {
+                "candidate_id": "cand_386be49af6ad39771e0e36ef",
+                "objective": 85.79931690814281,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_386be49af6ad39771e0e36ef"
+                ]
+              },
+              {
+                "candidate_id": "cand_ac9ffdf101674bdfeabc3d5b",
+                "objective": 85.74839149952149,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_ac9ffdf101674bdfeabc3d5b"
+                ]
+              },
+              {
+                "candidate_id": "cand_80001d29d786d9b0403f7a8c",
+                "objective": 85.71075341906752,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_80001d29d786d9b0403f7a8c"
+                ]
+              },
+              {
+                "candidate_id": "cand_be8a50e42b6902218a7513c1",
+                "objective": 85.781323687395,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_be8a50e42b6902218a7513c1"
+                ]
+              },
+              {
+                "candidate_id": "cand_77c30674b97dc0c906422eed",
+                "objective": 85.68883926455699,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_77c30674b97dc0c906422eed"
+                ]
+              },
+              {
+                "candidate_id": "cand_f1a1158e617ed0b52bf232a0",
+                "objective": 85.80288768246007,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_f1a1158e617ed0b52bf232a0"
+                ]
+              },
+              {
+                "candidate_id": "cand_39ce3ce1f61cbd2562d35823",
+                "objective": 85.80401928051893,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_39ce3ce1f61cbd2562d35823"
+                ]
+              },
+              {
+                "candidate_id": "cand_d5cd341aabb733dd3d14006e",
+                "objective": 85.81021509307145,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_d5cd341aabb733dd3d14006e"
+                ]
+              },
+              {
+                "candidate_id": "cand_87c19717fadd6c9fa67b27d0",
+                "objective": 85.810061095439,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_87c19717fadd6c9fa67b27d0"
+                ]
+              },
+              {
+                "candidate_id": "cand_1468038c0729e0c99563256c",
+                "objective": 85.81028479395626,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_1468038c0729e0c99563256c"
+                ]
+              },
+              {
+                "candidate_id": "cand_1b85c6467ace3fd56f43c3c3",
+                "objective": 85.8030041725296,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_1b85c6467ace3fd56f43c3c3"
+                ]
+              },
+              {
+                "candidate_id": "cand_8173ebfcd4fc1962c8404874",
+                "objective": 85.81109638530863,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_8173ebfcd4fc1962c8404874"
+                ]
+              },
+              {
+                "candidate_id": "cand_a8181a7587d4f95a94bc12ee",
+                "objective": 85.8051902084603,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_a8181a7587d4f95a94bc12ee"
+                ]
+              },
+              {
+                "candidate_id": "cand_39ff5ea02aef5da55fce782a",
+                "objective": 85.80426309038523,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_39ff5ea02aef5da55fce782a"
+                ]
+              },
+              {
+                "candidate_id": "cand_63b0438f7281938e19185a73",
+                "objective": 85.81035470246839,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_63b0438f7281938e19185a73"
+                ]
+              },
+              {
+                "candidate_id": "cand_83905d0c78d91e30eae5919f",
+                "objective": 85.81072326422297,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_83905d0c78d91e30eae5919f"
+                ]
+              },
+              {
+                "candidate_id": "cand_eef9f1447e54a5874b807c19",
+                "objective": 85.810825100972,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_eef9f1447e54a5874b807c19"
+                ]
+              },
+              {
+                "candidate_id": "cand_eb2f5e76aee4d2509520eafa",
+                "objective": 85.81113539886606,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_eb2f5e76aee4d2509520eafa"
+                ]
+              },
+              {
+                "candidate_id": "cand_36b212ba376a0cacc9589af9",
+                "objective": 85.81090220998232,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_36b212ba376a0cacc9589af9"
+                ]
+              },
+              {
+                "candidate_id": "cand_8f4ff4e8e0cd5dd097164267",
+                "objective": 85.81495538174185,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_8f4ff4e8e0cd5dd097164267"
+                ]
+              },
+              {
+                "candidate_id": "cand_3bbd159f864fae5d15f250b7",
+                "objective": 85.70843114581001,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_3bbd159f864fae5d15f250b7"
+                ]
+              },
+              {
+                "candidate_id": "cand_c83d2a7ef084223699f40dab",
+                "objective": 85.8111830410824,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c83d2a7ef084223699f40dab"
+                ]
+              },
+              {
+                "candidate_id": "cand_45c026beebb3d0343a70611b",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_45c026beebb3d0343a70611b"
+                ]
+              },
+              {
+                "candidate_id": "cand_50369474f743eb1f2a8b3fd9",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_50369474f743eb1f2a8b3fd9"
+                ]
+              },
+              {
+                "candidate_id": "cand_7cd0b82f79d660feb827a5b8",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_7cd0b82f79d660feb827a5b8"
+                ]
+              },
+              {
+                "candidate_id": "cand_ce642bea730d6ecc4a1e330d",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_ce642bea730d6ecc4a1e330d"
+                ]
+              },
+              {
+                "candidate_id": "cand_c16bf4418043779d2162cbc5",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c16bf4418043779d2162cbc5"
+                ]
+              },
+              {
+                "candidate_id": "cand_9c8089044ca01064f7a22ab6",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_9c8089044ca01064f7a22ab6"
+                ]
+              },
+              {
+                "candidate_id": "cand_c74c134d9346a5502a62c058",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c74c134d9346a5502a62c058"
+                ]
+              },
+              {
+                "candidate_id": "cand_9291e3c2994f0d160e37af33",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_9291e3c2994f0d160e37af33"
+                ]
+              },
+              {
+                "candidate_id": "cand_29cdcb36a5d64b8bb5bca284",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_29cdcb36a5d64b8bb5bca284"
+                ]
+              },
+              {
+                "candidate_id": "cand_053f405c5442a08efa62251f",
+                "objective": 85.81118491219823,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_053f405c5442a08efa62251f"
+                ]
+              },
+              {
+                "candidate_id": "cand_6a91b1525b3fe7a79fd9d5fb",
+                "objective": 85.81118499703956,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_6a91b1525b3fe7a79fd9d5fb"
+                ]
+              },
+              {
+                "candidate_id": "cand_a031457f147af0cc7e36ccc6",
+                "objective": 85.81118585667375,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_a031457f147af0cc7e36ccc6"
+                ]
+              },
+              {
+                "candidate_id": "cand_32dd7b43105520cf3ca2c6a8",
+                "objective": 85.81118574600008,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_32dd7b43105520cf3ca2c6a8"
+                ]
+              },
+              {
+                "candidate_id": "cand_c097e6360631bc90a93dd900",
+                "objective": 85.81132545158096,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c097e6360631bc90a93dd900"
+                ]
+              },
+              {
+                "candidate_id": "cand_208c8f61e48f8957550d2b57",
+                "objective": 85.81139326419732,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_208c8f61e48f8957550d2b57"
+                ]
+              },
+              {
+                "candidate_id": "cand_5fe797defd7d202d60fd13dd",
+                "objective": 85.81116625926923,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_5fe797defd7d202d60fd13dd"
+                ]
+              },
+              {
+                "candidate_id": "cand_acf9e531983db1cd2c7e3da4",
+                "objective": 85.81141194031315,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_acf9e531983db1cd2c7e3da4"
+                ]
+              },
+              {
+                "candidate_id": "cand_a7d6924ed62c20dc9a788eee",
+                "objective": 85.80561101781146,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_a7d6924ed62c20dc9a788eee"
+                ]
+              },
+              {
+                "candidate_id": "cand_be42b3b48f0d3177f8ce1bcf",
+                "objective": 85.78807096734161,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_be42b3b48f0d3177f8ce1bcf"
+                ]
+              },
+              {
+                "candidate_id": "cand_3d5daa3addbbf6b3267c30f5",
+                "objective": 85.81548420671487,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_3d5daa3addbbf6b3267c30f5"
+                ]
+              },
+              {
+                "candidate_id": "cand_c07def92fa7a8c6fda1184e8",
+                "objective": 85.71341091515357,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c07def92fa7a8c6fda1184e8"
+                ]
+              },
+              {
+                "candidate_id": "cand_09a50af185d6aa6f260ecd66",
+                "objective": 85.79817467184223,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_09a50af185d6aa6f260ecd66"
+                ]
+              },
+              {
+                "candidate_id": "cand_827a8aed24959d8372a1eac2",
+                "objective": 85.82356019285554,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_827a8aed24959d8372a1eac2"
+                ]
+              },
+              {
+                "candidate_id": "cand_7fce61936a7facc780721ef3",
+                "objective": 85.82761355616725,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_7fce61936a7facc780721ef3"
+                ]
+              },
+              {
+                "candidate_id": "cand_6d8c0bb0069e6744a05a7b37",
+                "objective": 85.83471475701512,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_6d8c0bb0069e6744a05a7b37"
+                ]
+              },
+              {
+                "candidate_id": "cand_c5c042a714635a3fea6bba79",
+                "objective": 85.73461857133873,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_c5c042a714635a3fea6bba79"
+                ]
+              },
+              {
+                "candidate_id": "cand_b506cef9b855c0ebf42b8ac6",
+                "objective": 85.87375262434915,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_b506cef9b855c0ebf42b8ac6"
+                ]
+              },
+              {
+                "candidate_id": "cand_4e1bf39b179a0a6214e71cbe",
+                "objective": 85.86997567931206,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_4e1bf39b179a0a6214e71cbe"
+                ]
+              },
+              {
+                "candidate_id": "cand_7bf6ea365cb711ff82a02352",
+                "objective": 85.86738721069642,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_7bf6ea365cb711ff82a02352"
+                ]
+              },
+              {
+                "candidate_id": "cand_0da8eb75b8e1b1835cf0655c",
+                "objective": 85.88406574784695,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_0da8eb75b8e1b1835cf0655c"
+                ]
+              },
+              {
+                "candidate_id": "cand_ad178035a14a96db8daa67eb",
+                "objective": 86.16448072372276,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_ad178035a14a96db8daa67eb"
+                ]
+              },
+              {
+                "candidate_id": "cand_6edc7f66ba44fd4bf50ff1ff",
+                "objective": 85.88557961256744,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_6edc7f66ba44fd4bf50ff1ff"
+                ]
+              },
+              {
+                "candidate_id": "cand_430d615fbaa808ac013841b4",
+                "objective": 85.91121716576315,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_430d615fbaa808ac013841b4"
+                ]
+              },
+              {
+                "candidate_id": "cand_48310d09c774230482b197ff",
+                "objective": 85.91613493943039,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_48310d09c774230482b197ff"
+                ]
+              },
+              {
+                "candidate_id": "cand_92d3663a0809730f2578db2d",
+                "objective": 86.00128071861073,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_92d3663a0809730f2578db2d"
+                ]
+              },
+              {
+                "candidate_id": "cand_6039a01d4be3fd77b8a037c9",
+                "objective": 85.99930823597357,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_6039a01d4be3fd77b8a037c9"
+                ]
+              },
+              {
+                "candidate_id": "cand_a6bd8d4b31471c8ae584088b",
+                "objective": 85.64300250483234,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_a6bd8d4b31471c8ae584088b"
+                ]
+              },
+              {
+                "candidate_id": "cand_e7042e504135edc2841ba025",
+                "objective": 86.02734718657489,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_e7042e504135edc2841ba025"
+                ]
+              },
+              {
+                "candidate_id": "cand_e0e325aa177600c7efc65cad",
+                "objective": 85.80689790589706,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_e0e325aa177600c7efc65cad"
+                ]
+              },
+              {
+                "candidate_id": "cand_fa92268555ecda7fb2052aff",
+                "objective": 101.78482291114791,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_fa92268555ecda7fb2052aff"
+                ]
+              },
+              {
+                "candidate_id": "cand_f7d157076db54549cfe529ad",
+                "objective": 101.84003090194507,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_f7d157076db54549cfe529ad"
+                ]
+              },
+              {
+                "candidate_id": "cand_327544363f878105117702d2",
+                "objective": 89.85126703536166,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_327544363f878105117702d2"
+                ]
+              },
+              {
+                "candidate_id": "cand_41a814527cb7626291ca8577",
+                "objective": 95.54890156018133,
+                "ordered_candidate_ids": [
+                  "cand_7db3fcd2a8cbbdf2c9bfe38d",
+                  "cand_41a814527cb7626291ca8577"
+                ]
+              }
+            ],
+            "round_index": 2
+          }
+        ],
+        "final_objective": 47.20499958811888,
+        "final_ordered_candidate_ids": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_3ea8776430fffecefaa78983"
+        ],
+        "first_round_evaluations": [
+          {
+            "candidate_id": "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "objective": 85.81118491219823,
+            "ordered_candidate_ids": [
+              "cand_7db3fcd2a8cbbdf2c9bfe38d"
+            ]
+          },
+          {
+            "candidate_id": "cand_a321c061df418caa0b143ac4",
+            "objective": 110.27193842903378,
+            "ordered_candidate_ids": [
+              "cand_a321c061df418caa0b143ac4"
+            ]
+          },
+          {
+            "candidate_id": "cand_446a7fc5aba413d985b7f659",
+            "objective": 110.44930836224896,
+            "ordered_candidate_ids": [
+              "cand_446a7fc5aba413d985b7f659"
+            ]
+          },
+          {
+            "candidate_id": "cand_025ef605b7fda01f7e5a731d",
+            "objective": 111.08432089633669,
+            "ordered_candidate_ids": [
+              "cand_025ef605b7fda01f7e5a731d"
+            ]
+          },
+          {
+            "candidate_id": "cand_39b83032f1022a5ccc5f88c9",
+            "objective": 125.90888615856447,
+            "ordered_candidate_ids": [
+              "cand_39b83032f1022a5ccc5f88c9"
+            ]
+          },
+          {
+            "candidate_id": "cand_19346df19ba74434fa27acd8",
+            "objective": 166.12181238299937,
+            "ordered_candidate_ids": [
+              "cand_19346df19ba74434fa27acd8"
+            ]
+          },
+          {
+            "candidate_id": "cand_5d60cd8bc3c6c4df47d3c8f8",
+            "objective": 187.4191300472337,
+            "ordered_candidate_ids": [
+              "cand_5d60cd8bc3c6c4df47d3c8f8"
+            ]
+          },
+          {
+            "candidate_id": "cand_f495ee73455905ddf4da0f95",
+            "objective": 190.93294681966276,
+            "ordered_candidate_ids": [
+              "cand_f495ee73455905ddf4da0f95"
+            ]
+          },
+          {
+            "candidate_id": "cand_3ea8776430fffecefaa78983",
+            "objective": 200.5347235161792,
+            "ordered_candidate_ids": [
+              "cand_3ea8776430fffecefaa78983"
+            ]
+          },
+          {
+            "candidate_id": "cand_61b909d76b855af0afdeb796",
+            "objective": 204.1652812550048,
+            "ordered_candidate_ids": [
+              "cand_61b909d76b855af0afdeb796"
+            ]
+          },
+          {
+            "candidate_id": "cand_180eff25d9d08ae74542467e",
+            "objective": 206.95113091107814,
+            "ordered_candidate_ids": [
+              "cand_180eff25d9d08ae74542467e"
+            ]
+          },
+          {
+            "candidate_id": "cand_29d2a7e632312b1279495926",
+            "objective": 212.86951467494433,
+            "ordered_candidate_ids": [
+              "cand_29d2a7e632312b1279495926"
+            ]
+          },
+          {
+            "candidate_id": "cand_d2fb9059532b7c5acd9bf11c",
+            "objective": 216.64154247922488,
+            "ordered_candidate_ids": [
+              "cand_d2fb9059532b7c5acd9bf11c"
+            ]
+          },
+          {
+            "candidate_id": "cand_b78d55db882b6bf067d91270",
+            "objective": 260.79983282196287,
+            "ordered_candidate_ids": [
+              "cand_b78d55db882b6bf067d91270"
+            ]
+          },
+          {
+            "candidate_id": "cand_acf913a7c682db9ca7b49363",
+            "objective": 292.16179912174164,
+            "ordered_candidate_ids": [
+              "cand_acf913a7c682db9ca7b49363"
+            ]
+          },
+          {
+            "candidate_id": "cand_0d8a3deefe16c4b3ca9cb305",
+            "objective": 292.9200363344333,
+            "ordered_candidate_ids": [
+              "cand_0d8a3deefe16c4b3ca9cb305"
+            ]
+          },
+          {
+            "candidate_id": "cand_36e74859cf087af88e3b9684",
+            "objective": 300.13218118423316,
+            "ordered_candidate_ids": [
+              "cand_36e74859cf087af88e3b9684"
+            ]
+          },
+          {
+            "candidate_id": "cand_8554a09775e98951d824713c",
+            "objective": 303.05677935403105,
+            "ordered_candidate_ids": [
+              "cand_8554a09775e98951d824713c"
+            ]
+          },
+          {
+            "candidate_id": "cand_8610f2372283e1492dd5a908",
+            "objective": 303.42732894369965,
+            "ordered_candidate_ids": [
+              "cand_8610f2372283e1492dd5a908"
+            ]
+          },
+          {
+            "candidate_id": "cand_d63f42386de504161b5b2f9d",
+            "objective": 341.3147029416632,
+            "ordered_candidate_ids": [
+              "cand_d63f42386de504161b5b2f9d"
+            ]
+          },
+          {
+            "candidate_id": "cand_6c2da965b36a563b6cbb982b",
+            "objective": 342.08267506118506,
+            "ordered_candidate_ids": [
+              "cand_6c2da965b36a563b6cbb982b"
+            ]
+          },
+          {
+            "candidate_id": "cand_abd5d9534a8679009a017982",
+            "objective": 342.189571539122,
+            "ordered_candidate_ids": [
+              "cand_abd5d9534a8679009a017982"
+            ]
+          },
+          {
+            "candidate_id": "cand_0c9de63f88d09047ab1f84c0",
+            "objective": 342.6348490389785,
+            "ordered_candidate_ids": [
+              "cand_0c9de63f88d09047ab1f84c0"
+            ]
+          },
+          {
+            "candidate_id": "cand_e87fe00abf39f2b397ff1bdc",
+            "objective": 342.71767602040524,
+            "ordered_candidate_ids": [
+              "cand_e87fe00abf39f2b397ff1bdc"
+            ]
+          },
+          {
+            "candidate_id": "cand_c41b12c3e1d0549a84df8d23",
+            "objective": 342.86273336178556,
+            "ordered_candidate_ids": [
+              "cand_c41b12c3e1d0549a84df8d23"
+            ]
+          },
+          {
+            "candidate_id": "cand_cc896d0038d93135ce1f8814",
+            "objective": 344.4303235215038,
+            "ordered_candidate_ids": [
+              "cand_cc896d0038d93135ce1f8814"
+            ]
+          },
+          {
+            "candidate_id": "cand_cc927188a913d3c18ef5efbb",
+            "objective": 344.84951274241513,
+            "ordered_candidate_ids": [
+              "cand_cc927188a913d3c18ef5efbb"
+            ]
+          },
+          {
+            "candidate_id": "cand_50be312ca41b140ea96628ba",
+            "objective": 345.0070735009268,
+            "ordered_candidate_ids": [
+              "cand_50be312ca41b140ea96628ba"
+            ]
+          },
+          {
+            "candidate_id": "cand_20dfa9610644c2eacd40f7da",
+            "objective": 345.1467349481594,
+            "ordered_candidate_ids": [
+              "cand_20dfa9610644c2eacd40f7da"
+            ]
+          },
+          {
+            "candidate_id": "cand_cfaf2014341bab6d2f165ecf",
+            "objective": 345.2405010967932,
+            "ordered_candidate_ids": [
+              "cand_cfaf2014341bab6d2f165ecf"
+            ]
+          },
+          {
+            "candidate_id": "cand_68021bd5eda5efbb74cd6938",
+            "objective": 345.378660766418,
+            "ordered_candidate_ids": [
+              "cand_68021bd5eda5efbb74cd6938"
+            ]
+          },
+          {
+            "candidate_id": "cand_7eebfd899c4b78d73f369b5f",
+            "objective": 345.46171688261626,
+            "ordered_candidate_ids": [
+              "cand_7eebfd899c4b78d73f369b5f"
+            ]
+          },
+          {
+            "candidate_id": "cand_9050410cd40b8a36b815d83d",
+            "objective": 345.47872433827786,
+            "ordered_candidate_ids": [
+              "cand_9050410cd40b8a36b815d83d"
+            ]
+          },
+          {
+            "candidate_id": "cand_66b028d5b900eded4720e45c",
+            "objective": 345.5612955595573,
+            "ordered_candidate_ids": [
+              "cand_66b028d5b900eded4720e45c"
+            ]
+          },
+          {
+            "candidate_id": "cand_c0eaff710e1905bb782c3d35",
+            "objective": 345.57414802547595,
+            "ordered_candidate_ids": [
+              "cand_c0eaff710e1905bb782c3d35"
+            ]
+          },
+          {
+            "candidate_id": "cand_22adb24ed9c4f8b19d9ed629",
+            "objective": 345.5907972766156,
+            "ordered_candidate_ids": [
+              "cand_22adb24ed9c4f8b19d9ed629"
+            ]
+          },
+          {
+            "candidate_id": "cand_178e3966a0f99380fe5802f6",
+            "objective": 345.6126736123726,
+            "ordered_candidate_ids": [
+              "cand_178e3966a0f99380fe5802f6"
+            ]
+          },
+          {
+            "candidate_id": "cand_bf8adfb27dd03eaf78885e3f",
+            "objective": 345.6753386972244,
+            "ordered_candidate_ids": [
+              "cand_bf8adfb27dd03eaf78885e3f"
+            ]
+          },
+          {
+            "candidate_id": "cand_2c24a59b91e163baa6b04f68",
+            "objective": 345.68062175244086,
+            "ordered_candidate_ids": [
+              "cand_2c24a59b91e163baa6b04f68"
+            ]
+          },
+          {
+            "candidate_id": "cand_92c3ee5c2d9f63a5173e590a",
+            "objective": 345.687012040296,
+            "ordered_candidate_ids": [
+              "cand_92c3ee5c2d9f63a5173e590a"
+            ]
+          },
+          {
+            "candidate_id": "cand_386be49af6ad39771e0e36ef",
+            "objective": 345.6895923319987,
+            "ordered_candidate_ids": [
+              "cand_386be49af6ad39771e0e36ef"
+            ]
+          },
+          {
+            "candidate_id": "cand_ac9ffdf101674bdfeabc3d5b",
+            "objective": 345.690391068848,
+            "ordered_candidate_ids": [
+              "cand_ac9ffdf101674bdfeabc3d5b"
+            ]
+          },
+          {
+            "candidate_id": "cand_80001d29d786d9b0403f7a8c",
+            "objective": 345.6989246625336,
+            "ordered_candidate_ids": [
+              "cand_80001d29d786d9b0403f7a8c"
+            ]
+          },
+          {
+            "candidate_id": "cand_be8a50e42b6902218a7513c1",
+            "objective": 345.7051210382582,
+            "ordered_candidate_ids": [
+              "cand_be8a50e42b6902218a7513c1"
+            ]
+          },
+          {
+            "candidate_id": "cand_77c30674b97dc0c906422eed",
+            "objective": 345.7069955054531,
+            "ordered_candidate_ids": [
+              "cand_77c30674b97dc0c906422eed"
+            ]
+          },
+          {
+            "candidate_id": "cand_f1a1158e617ed0b52bf232a0",
+            "objective": 345.70888333696587,
+            "ordered_candidate_ids": [
+              "cand_f1a1158e617ed0b52bf232a0"
+            ]
+          },
+          {
+            "candidate_id": "cand_39ce3ce1f61cbd2562d35823",
+            "objective": 345.70999595798173,
+            "ordered_candidate_ids": [
+              "cand_39ce3ce1f61cbd2562d35823"
+            ]
+          },
+          {
+            "candidate_id": "cand_d5cd341aabb733dd3d14006e",
+            "objective": 345.71000099820645,
+            "ordered_candidate_ids": [
+              "cand_d5cd341aabb733dd3d14006e"
+            ]
+          },
+          {
+            "candidate_id": "cand_87c19717fadd6c9fa67b27d0",
+            "objective": 345.71001387979766,
+            "ordered_candidate_ids": [
+              "cand_87c19717fadd6c9fa67b27d0"
+            ]
+          },
+          {
+            "candidate_id": "cand_1468038c0729e0c99563256c",
+            "objective": 345.71011512426264,
+            "ordered_candidate_ids": [
+              "cand_1468038c0729e0c99563256c"
+            ]
+          },
+          {
+            "candidate_id": "cand_1b85c6467ace3fd56f43c3c3",
+            "objective": 345.7102095828609,
+            "ordered_candidate_ids": [
+              "cand_1b85c6467ace3fd56f43c3c3"
+            ]
+          },
+          {
+            "candidate_id": "cand_8173ebfcd4fc1962c8404874",
+            "objective": 345.7109832643605,
+            "ordered_candidate_ids": [
+              "cand_8173ebfcd4fc1962c8404874"
+            ]
+          },
+          {
+            "candidate_id": "cand_a8181a7587d4f95a94bc12ee",
+            "objective": 345.71130829031637,
+            "ordered_candidate_ids": [
+              "cand_a8181a7587d4f95a94bc12ee"
+            ]
+          },
+          {
+            "candidate_id": "cand_39ff5ea02aef5da55fce782a",
+            "objective": 345.71282495888386,
+            "ordered_candidate_ids": [
+              "cand_39ff5ea02aef5da55fce782a"
+            ]
+          },
+          {
+            "candidate_id": "cand_63b0438f7281938e19185a73",
+            "objective": 345.71290301124753,
+            "ordered_candidate_ids": [
+              "cand_63b0438f7281938e19185a73"
+            ]
+          },
+          {
+            "candidate_id": "cand_83905d0c78d91e30eae5919f",
+            "objective": 345.71326210213306,
+            "ordered_candidate_ids": [
+              "cand_83905d0c78d91e30eae5919f"
+            ]
+          },
+          {
+            "candidate_id": "cand_eef9f1447e54a5874b807c19",
+            "objective": 345.71328210192087,
+            "ordered_candidate_ids": [
+              "cand_eef9f1447e54a5874b807c19"
+            ]
+          },
+          {
+            "candidate_id": "cand_eb2f5e76aee4d2509520eafa",
+            "objective": 345.7132833202948,
+            "ordered_candidate_ids": [
+              "cand_eb2f5e76aee4d2509520eafa"
+            ]
+          },
+          {
+            "candidate_id": "cand_36b212ba376a0cacc9589af9",
+            "objective": 345.7134451641112,
+            "ordered_candidate_ids": [
+              "cand_36b212ba376a0cacc9589af9"
+            ]
+          },
+          {
+            "candidate_id": "cand_8f4ff4e8e0cd5dd097164267",
+            "objective": 345.71346086148606,
+            "ordered_candidate_ids": [
+              "cand_8f4ff4e8e0cd5dd097164267"
+            ]
+          },
+          {
+            "candidate_id": "cand_3bbd159f864fae5d15f250b7",
+            "objective": 345.7135058133144,
+            "ordered_candidate_ids": [
+              "cand_3bbd159f864fae5d15f250b7"
+            ]
+          },
+          {
+            "candidate_id": "cand_c83d2a7ef084223699f40dab",
+            "objective": 345.71372621962786,
+            "ordered_candidate_ids": [
+              "cand_c83d2a7ef084223699f40dab"
+            ]
+          },
+          {
+            "candidate_id": "cand_45c026beebb3d0343a70611b",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_45c026beebb3d0343a70611b"
+            ]
+          },
+          {
+            "candidate_id": "cand_50369474f743eb1f2a8b3fd9",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_50369474f743eb1f2a8b3fd9"
+            ]
+          },
+          {
+            "candidate_id": "cand_7cd0b82f79d660feb827a5b8",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_7cd0b82f79d660feb827a5b8"
+            ]
+          },
+          {
+            "candidate_id": "cand_ce642bea730d6ecc4a1e330d",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_ce642bea730d6ecc4a1e330d"
+            ]
+          },
+          {
+            "candidate_id": "cand_c16bf4418043779d2162cbc5",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_c16bf4418043779d2162cbc5"
+            ]
+          },
+          {
+            "candidate_id": "cand_9c8089044ca01064f7a22ab6",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_9c8089044ca01064f7a22ab6"
+            ]
+          },
+          {
+            "candidate_id": "cand_c74c134d9346a5502a62c058",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_c74c134d9346a5502a62c058"
+            ]
+          },
+          {
+            "candidate_id": "cand_9291e3c2994f0d160e37af33",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_9291e3c2994f0d160e37af33"
+            ]
+          },
+          {
+            "candidate_id": "cand_29cdcb36a5d64b8bb5bca284",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_29cdcb36a5d64b8bb5bca284"
+            ]
+          },
+          {
+            "candidate_id": "cand_053f405c5442a08efa62251f",
+            "objective": 345.7137281322362,
+            "ordered_candidate_ids": [
+              "cand_053f405c5442a08efa62251f"
+            ]
+          },
+          {
+            "candidate_id": "cand_6a91b1525b3fe7a79fd9d5fb",
+            "objective": 345.7137284181029,
+            "ordered_candidate_ids": [
+              "cand_6a91b1525b3fe7a79fd9d5fb"
+            ]
+          },
+          {
+            "candidate_id": "cand_a031457f147af0cc7e36ccc6",
+            "objective": 345.71372917511144,
+            "ordered_candidate_ids": [
+              "cand_a031457f147af0cc7e36ccc6"
+            ]
+          },
+          {
+            "candidate_id": "cand_32dd7b43105520cf3ca2c6a8",
+            "objective": 345.7137293338632,
+            "ordered_candidate_ids": [
+              "cand_32dd7b43105520cf3ca2c6a8"
+            ]
+          },
+          {
+            "candidate_id": "cand_c097e6360631bc90a93dd900",
+            "objective": 345.713844692372,
+            "ordered_candidate_ids": [
+              "cand_c097e6360631bc90a93dd900"
+            ]
+          },
+          {
+            "candidate_id": "cand_208c8f61e48f8957550d2b57",
+            "objective": 345.7139070118043,
+            "ordered_candidate_ids": [
+              "cand_208c8f61e48f8957550d2b57"
+            ]
+          },
+          {
+            "candidate_id": "cand_5fe797defd7d202d60fd13dd",
+            "objective": 345.71395730724305,
+            "ordered_candidate_ids": [
+              "cand_5fe797defd7d202d60fd13dd"
+            ]
+          },
+          {
+            "candidate_id": "cand_acf9e531983db1cd2c7e3da4",
+            "objective": 345.71396070689,
+            "ordered_candidate_ids": [
+              "cand_acf9e531983db1cd2c7e3da4"
+            ]
+          },
+          {
+            "candidate_id": "cand_a7d6924ed62c20dc9a788eee",
+            "objective": 345.7144812856645,
+            "ordered_candidate_ids": [
+              "cand_a7d6924ed62c20dc9a788eee"
+            ]
+          },
+          {
+            "candidate_id": "cand_be42b3b48f0d3177f8ce1bcf",
+            "objective": 345.71592276751727,
+            "ordered_candidate_ids": [
+              "cand_be42b3b48f0d3177f8ce1bcf"
+            ]
+          },
+          {
+            "candidate_id": "cand_3d5daa3addbbf6b3267c30f5",
+            "objective": 345.71800219948466,
+            "ordered_candidate_ids": [
+              "cand_3d5daa3addbbf6b3267c30f5"
+            ]
+          },
+          {
+            "candidate_id": "cand_c07def92fa7a8c6fda1184e8",
+            "objective": 345.7185993089447,
+            "ordered_candidate_ids": [
+              "cand_c07def92fa7a8c6fda1184e8"
+            ]
+          },
+          {
+            "candidate_id": "cand_09a50af185d6aa6f260ecd66",
+            "objective": 345.7214100036026,
+            "ordered_candidate_ids": [
+              "cand_09a50af185d6aa6f260ecd66"
+            ]
+          },
+          {
+            "candidate_id": "cand_827a8aed24959d8372a1eac2",
+            "objective": 345.7260747474371,
+            "ordered_candidate_ids": [
+              "cand_827a8aed24959d8372a1eac2"
+            ]
+          },
+          {
+            "candidate_id": "cand_7fce61936a7facc780721ef3",
+            "objective": 345.7301315023084,
+            "ordered_candidate_ids": [
+              "cand_7fce61936a7facc780721ef3"
+            ]
+          },
+          {
+            "candidate_id": "cand_6d8c0bb0069e6744a05a7b37",
+            "objective": 345.7318306936134,
+            "ordered_candidate_ids": [
+              "cand_6d8c0bb0069e6744a05a7b37"
+            ]
+          },
+          {
+            "candidate_id": "cand_c5c042a714635a3fea6bba79",
+            "objective": 345.7335990247409,
+            "ordered_candidate_ids": [
+              "cand_c5c042a714635a3fea6bba79"
+            ]
+          },
+          {
+            "candidate_id": "cand_b506cef9b855c0ebf42b8ac6",
+            "objective": 345.7504776851668,
+            "ordered_candidate_ids": [
+              "cand_b506cef9b855c0ebf42b8ac6"
+            ]
+          },
+          {
+            "candidate_id": "cand_4e1bf39b179a0a6214e71cbe",
+            "objective": 345.7696539411402,
+            "ordered_candidate_ids": [
+              "cand_4e1bf39b179a0a6214e71cbe"
+            ]
+          },
+          {
+            "candidate_id": "cand_7bf6ea365cb711ff82a02352",
+            "objective": 345.7698174585901,
+            "ordered_candidate_ids": [
+              "cand_7bf6ea365cb711ff82a02352"
+            ]
+          },
+          {
+            "candidate_id": "cand_0da8eb75b8e1b1835cf0655c",
+            "objective": 345.7801041512795,
+            "ordered_candidate_ids": [
+              "cand_0da8eb75b8e1b1835cf0655c"
+            ]
+          },
+          {
+            "candidate_id": "cand_ad178035a14a96db8daa67eb",
+            "objective": 345.78153388877905,
+            "ordered_candidate_ids": [
+              "cand_ad178035a14a96db8daa67eb"
+            ]
+          },
+          {
+            "candidate_id": "cand_6edc7f66ba44fd4bf50ff1ff",
+            "objective": 345.79183280395625,
+            "ordered_candidate_ids": [
+              "cand_6edc7f66ba44fd4bf50ff1ff"
+            ]
+          },
+          {
+            "candidate_id": "cand_430d615fbaa808ac013841b4",
+            "objective": 345.81053588052976,
+            "ordered_candidate_ids": [
+              "cand_430d615fbaa808ac013841b4"
+            ]
+          },
+          {
+            "candidate_id": "cand_48310d09c774230482b197ff",
+            "objective": 345.81395604169126,
+            "ordered_candidate_ids": [
+              "cand_48310d09c774230482b197ff"
+            ]
+          },
+          {
+            "candidate_id": "cand_92d3663a0809730f2578db2d",
+            "objective": 345.9004916927952,
+            "ordered_candidate_ids": [
+              "cand_92d3663a0809730f2578db2d"
+            ]
+          },
+          {
+            "candidate_id": "cand_6039a01d4be3fd77b8a037c9",
+            "objective": 345.9013739504484,
+            "ordered_candidate_ids": [
+              "cand_6039a01d4be3fd77b8a037c9"
+            ]
+          },
+          {
+            "candidate_id": "cand_a6bd8d4b31471c8ae584088b",
+            "objective": 345.96901168556934,
+            "ordered_candidate_ids": [
+              "cand_a6bd8d4b31471c8ae584088b"
+            ]
+          },
+          {
+            "candidate_id": "cand_e7042e504135edc2841ba025",
+            "objective": 346.02740142408504,
+            "ordered_candidate_ids": [
+              "cand_e7042e504135edc2841ba025"
+            ]
+          },
+          {
+            "candidate_id": "cand_e0e325aa177600c7efc65cad",
+            "objective": 346.2401323249797,
+            "ordered_candidate_ids": [
+              "cand_e0e325aa177600c7efc65cad"
+            ]
+          },
+          {
+            "candidate_id": "cand_fa92268555ecda7fb2052aff",
+            "objective": 349.6942042653306,
+            "ordered_candidate_ids": [
+              "cand_fa92268555ecda7fb2052aff"
+            ]
+          },
+          {
+            "candidate_id": "cand_f7d157076db54549cfe529ad",
+            "objective": 349.7534545191686,
+            "ordered_candidate_ids": [
+              "cand_f7d157076db54549cfe529ad"
+            ]
+          },
+          {
+            "candidate_id": "cand_327544363f878105117702d2",
+            "objective": 349.75460789113595,
+            "ordered_candidate_ids": [
+              "cand_327544363f878105117702d2"
+            ]
+          },
+          {
+            "candidate_id": "cand_41a814527cb7626291ca8577",
+            "objective": 354.38422741515546,
+            "ordered_candidate_ids": [
+              "cand_41a814527cb7626291ca8577"
+            ]
+          }
+        ],
+        "first_round_source": "singleton-profile-cache",
+        "format_version": "optimization-search-result-v2",
+        "ground_truth_semantic_digest": "6402ffafbb3ab9a2bd4d8800e99ed21f1e3215126189a4cf38783796517a9af7",
+        "improvement": 298.50872854411733,
+        "native_stats_repository_semantic_digest": "60d453d644d3af65d8f9860efc56caea8e38e457da3e67a08afc8469d02fb8e7",
+        "optimization_plan_semantic_digest": "9f48c0085b9a9d9187ca421ed4f624349336474051482269c2cc08c3ef617fc3",
+        "planner": {
+          "backend_contract": "postgresql-pgextadv-16.14-v1",
+          "ordinary_stats_fingerprint": "d4ea7ab6b4619c0c5360290d93e4883717c53c4977dcbaf7c5d85a2428f59373",
+          "sandbox_contract": "postgresql-planner-sandbox-v1",
+          "server_version": "16.14",
+          "server_version_num": 160014
+        },
+        "runtime_metadata": {
+          "accepted_move_count": 2,
+          "actual_search_planner_calls": 753529,
+          "actual_search_planner_calls_including_audit": 753529,
+          "audit_planner_query_calls": 0,
+          "baseline_materialization_planner_calls": 10000,
+          "cached_singleton_configuration_count": 105,
+          "completed_round_count": 1,
+          "elapsed_search_seconds": 300.03441285600275,
+          "end_to_end_saved_search_planner_calls": 1276471,
+          "end_to_end_search_call_reduction": 1276471,
+          "end_to_end_search_planner_calls": 753529,
+          "evaluation_strategy": "incidence-incremental-greedy-v1",
+          "first_winner_materialization_planner_calls": 3576,
+          "incumbent_estimate_count": 10000,
+          "live_configuration_evaluation_count": 204,
+          "max_statistics_count": 4,
+          "partial_final_round_evaluation_count": 100,
+          "peak_cached_estimate_entries": 377595,
+          "peak_proposal_cache_entries": 104,
+          "planner_query_estimate_count": 753529,
+          "planner_query_estimate_count_including_audit": 753529,
+          "planner_query_reduction_fraction": 0.6288034482758621,
+          "proposal_cache_entry_count": 0,
+          "proposal_configuration_evaluations": 203,
+          "proposal_only_call_reduction": 1290047,
+          "proposal_only_reference_planner_calls": 2030000,
+          "proposal_only_saved_planner_calls": 1290047,
+          "proposal_planner_query_calls": 739953,
+          "reference_full_workload_planner_calls": 2030000,
+          "reference_search_planner_calls": 2030000,
+          "saved_planner_query_calls": 1276471,
+          "saved_search_planner_calls": 1276471,
+          "screening_width": 105,
+          "search_budget_seconds": 300.0,
+          "search_wall_clock_seconds": 300.0,
+          "selected_candidate_count": 2,
+          "termination_reason": "budget-expired-incomplete-round",
+          "winner_cache_entry_count": 0,
+          "winner_materialization_planner_calls": 3576
+        },
+        "search_policy": "greedy-add-incidence-incremental-v1",
+        "semantic_digest": "c58766ecc49483c70333b618ce91b66ec9a75dea1ce4de7bd99cd8269cb0347b",
+        "singleton_profile_semantic_digest": "08db2479e8dd51a9ccb5f3c4293888e71b0304644d00f2af7b4ecc9eb0bb99c4",
+        "source_snapshot_semantic_digest": "449ca8dff9b77c0394881c754ad256c94031d2b4a287aa7f6958e73987ccc75c",
+        "termination_reason": "budget-expired-incomplete-round",
+        "utility": {
+          "loss_contract": "qerror-cardinality-floor-1-v1",
+          "utility_contract": "weighted-workload-mean-v1"
+        }
+      },
+      "selected_membership": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983"
+      ],
+      "selection_accounting": {
+        "actual_search_planner_calls": 753529,
+        "actual_search_planner_calls_including_audit": 753529,
+        "audit_planner_query_calls": 0,
+        "baseline_materialization_planner_calls": 10000,
+        "end_to_end_saved_search_planner_calls": 1276471,
+        "end_to_end_search_call_reduction": 1276471,
+        "end_to_end_search_planner_calls": 753529,
+        "first_winner_materialization_planner_calls": 3576,
+        "incumbent_estimate_count": 10000,
+        "peak_cached_estimate_entries": 377595,
+        "peak_proposal_cache_entries": 104,
+        "planner_query_estimate_count": 753529,
+        "planner_query_estimate_count_including_audit": 753529,
+        "planner_query_reduction_fraction": 0.6288034482758621,
+        "proposal_cache_entry_count": 0,
+        "proposal_configuration_evaluations": 203,
+        "proposal_only_call_reduction": 1290047,
+        "proposal_only_reference_planner_calls": 2030000,
+        "proposal_only_saved_planner_calls": 1290047,
+        "proposal_planner_query_calls": 739953,
+        "reference_full_workload_planner_calls": 2030000,
+        "reference_search_planner_calls": 2030000,
+        "saved_planner_query_calls": 1276471,
+        "saved_search_planner_calls": 1276471,
+        "winner_cache_entry_count": 0,
+        "winner_materialization_planner_calls": 3576
+      },
+      "status": "budget-censored",
+      "termination_reason": "budget-expired-incomplete-round"
+    },
+    "native-payload-size-top-k": {
+      "deployment_order": [
+        "cand_acf9e531983db1cd2c7e3da4",
+        "cand_1b85c6467ace3fd56f43c3c3",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_39ff5ea02aef5da55fce782a"
+      ],
+      "evaluation_order": [
+        "cand_acf9e531983db1cd2c7e3da4",
+        "cand_1b85c6467ace3fd56f43c3c3",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_39ff5ea02aef5da55fce782a"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "ba0fbd340048d76cffb5928bfe81b28db63fd0af856509dafe005dfdee8e7632",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 345.7120017735964,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.9225030339985096
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample-built NativeStatsRepository payload_size",
+          "static candidate precedence"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "native-payload-size-top-k",
+      "selected_membership": [
+        "cand_acf9e531983db1cd2c7e3da4",
+        "cand_1b85c6467ace3fd56f43c3c3",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_39ff5ea02aef5da55fce782a"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-1": {
+      "deployment_order": [
+        "cand_92c3ee5c2d9f63a5173e590a",
+        "cand_1468038c0729e0c99563256c",
+        "cand_29cdcb36a5d64b8bb5bca284",
+        "cand_36b212ba376a0cacc9589af9"
+      ],
+      "evaluation_order": [
+        "cand_92c3ee5c2d9f63a5173e590a",
+        "cand_1468038c0729e0c99563256c",
+        "cand_29cdcb36a5d64b8bb5bca284",
+        "cand_36b212ba376a0cacc9589af9"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "910be14c4be17524a7225a56dc7227677a567d50f827a1a7028599490f6eaa06",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 345.6851814413843,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.867053547000978
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-1",
+      "replicate_seed": 1,
+      "selected_membership": [
+        "cand_92c3ee5c2d9f63a5173e590a",
+        "cand_1468038c0729e0c99563256c",
+        "cand_29cdcb36a5d64b8bb5bca284",
+        "cand_36b212ba376a0cacc9589af9"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-2": {
+      "deployment_order": [
+        "cand_63b0438f7281938e19185a73",
+        "cand_c41b12c3e1d0549a84df8d23",
+        "cand_d63f42386de504161b5b2f9d",
+        "cand_eef9f1447e54a5874b807c19"
+      ],
+      "evaluation_order": [
+        "cand_63b0438f7281938e19185a73",
+        "cand_c41b12c3e1d0549a84df8d23",
+        "cand_d63f42386de504161b5b2f9d",
+        "cand_eef9f1447e54a5874b807c19"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "e079b88bb3dde8af70a1e1c231238c08b6dd913dbd99a336bc9fff8364e936d2",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 342.7643170872239,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.9735505740027293
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-2",
+      "replicate_seed": 2,
+      "selected_membership": [
+        "cand_63b0438f7281938e19185a73",
+        "cand_c41b12c3e1d0549a84df8d23",
+        "cand_d63f42386de504161b5b2f9d",
+        "cand_eef9f1447e54a5874b807c19"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-3": {
+      "deployment_order": [
+        "cand_8173ebfcd4fc1962c8404874",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_41a814527cb7626291ca8577",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "evaluation_order": [
+        "cand_8173ebfcd4fc1962c8404874",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_41a814527cb7626291ca8577",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "7a598fecdc577bfb6cf3d247de96414963f79bca37d633469f701798fed1a681",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 350.3217939851479,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.9121479999994335
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-3",
+      "replicate_seed": 3,
+      "selected_membership": [
+        "cand_8173ebfcd4fc1962c8404874",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_41a814527cb7626291ca8577",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-4": {
+      "deployment_order": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_77c30674b97dc0c906422eed",
+        "cand_c097e6360631bc90a93dd900"
+      ],
+      "evaluation_order": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_77c30674b97dc0c906422eed",
+        "cand_c097e6360631bc90a93dd900"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "f6d40cebc54cd9a37908428f1c421b724c198f5856e8903249e97dd9d16a792d",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 190.9436062776278,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.921251568997832
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-4",
+      "replicate_seed": 4,
+      "selected_membership": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_77c30674b97dc0c906422eed",
+        "cand_c097e6360631bc90a93dd900"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "random-k-seed-5": {
+      "deployment_order": [
+        "cand_be42b3b48f0d3177f8ce1bcf",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_ce642bea730d6ecc4a1e330d",
+        "cand_c07def92fa7a8c6fda1184e8"
+      ],
+      "evaluation_order": [
+        "cand_be42b3b48f0d3177f8ce1bcf",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_ce642bea730d6ecc4a1e330d",
+        "cand_c07def92fa7a8c6fda1184e8"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "b6ecf1ae67ad8fae0caf3b9a20174f47cdbe412257d40d1de4da39f674ba373d",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 345.7162000062741,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.8907920370002103
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "pre-registered random seed"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "random-k-seed-5",
+      "replicate_seed": 5,
+      "selected_membership": [
+        "cand_be42b3b48f0d3177f8ce1bcf",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_ce642bea730d6ecc4a1e330d",
+        "cand_c07def92fa7a8c6fda1184e8"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    },
+    "singleton-utility-top-k": {
+      "deployment_order": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_025ef605b7fda01f7e5a731d"
+      ],
+      "evaluation_order": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_025ef605b7fda01f7e5a731d"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "0079d17e65ef44f991c9ac6607b71527873d5011d4b518e609fb96bd1cdce3d5",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 73.01836263281487,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.920351147000474
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "sample planner",
+          "GroundTruthSet"
+        ],
+        "forbidden_inputs": [],
+        "ground_truth_during_selection": true
+      },
+      "method_id": "singleton-utility-top-k",
+      "selected_membership": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_025ef605b7fda01f7e5a731d"
+      ],
+      "selection_accounting": {
+        "new_selection_configuration_objective_evaluations": 0,
+        "new_selection_postgresql_planner_query_calls": 0,
+        "new_selection_wall_clock_seconds": 0.0,
+        "reuse_policy": "RQ2-v2-singleton-profile-reuse; eligible coverage verified",
+        "source_configuration_objective_evaluations": 106,
+        "source_postgresql_planner_query_calls": 391171,
+        "source_profile_semantic_digest": "08db2479e8dd51a9ccb5f3c4293888e71b0304644d00f2af7b4ecc9eb0bb99c4",
+        "source_wall_clock_seconds": null
+      },
+      "status": "complete"
+    },
+    "workload-frequency-top-k": {
+      "deployment_order": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_b78d55db882b6bf067d91270",
+        "cand_32dd7b43105520cf3ca2c6a8",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "evaluation_order": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_b78d55db882b6bf067d91270",
+        "cand_32dd7b43105520cf3ca2c6a8",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "final_sandbox_evaluation": {
+        "configuration_objective_evaluations": 1,
+        "evaluation_scope": "independent-final-sandbox-evaluation",
+        "planner_estimates_semantic_digest": "4274b87232cf520e00788202255f42668ea36677f835415df9d2fc8bb4bf9688",
+        "postgresql_planner_query_calls": 10000,
+        "sandbox_objective": 190.93294800796005,
+        "selection_budget_charged": false,
+        "status": "complete",
+        "wall_clock_seconds": 2.945957357002044
+      },
+      "information_access_policy": {
+        "allowed_inputs": [
+          "eligible candidate IDs",
+          "workload predicate incidence"
+        ],
+        "forbidden_inputs": [
+          "q-error",
+          "singleton utility",
+          "full-data estimates"
+        ],
+        "ground_truth_during_selection": false
+      },
+      "method_id": "workload-frequency-top-k",
+      "selected_membership": [
+        "cand_f495ee73455905ddf4da0f95",
+        "cand_b78d55db882b6bf067d91270",
+        "cand_32dd7b43105520cf3ca2c6a8",
+        "cand_3d5daa3addbbf6b3267c30f5"
+      ],
+      "selection_accounting": {
+        "configuration_objective_evaluations": 0,
+        "postgresql_planner_query_calls": 0,
+        "wall_clock_seconds": 0.0
+      },
+      "status": "complete"
+    }
+  },
+  "query_count": 10000,
+  "reference_equivalence_gate": {
+    "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+    "format_version": "advisor-greedy-incremental-hardening-v2",
+    "full_workload_search": false,
+    "passed": true,
+    "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+    "tested_budgets": [
+      3,
+      2,
+      1
+    ]
+  },
+  "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+  "selection_budget": {
+    "final_evaluation_excluded": true,
+    "max_configuration_evaluations": 2000,
+    "unit": "configuration-objective-evaluations",
+    "wall_clock_seconds": 300.0
+  },
+  "semantic_digest": "8299cdfd3aa437c2660765e432bc3cbf2f642424f2d33cbefb1dc68f16e1cb03",
+  "singleton_profile_reuse": {
+    "new_selection_configuration_objective_evaluations": 0,
+    "new_selection_postgresql_planner_query_calls": 0,
+    "new_selection_wall_clock_seconds": 0.0,
+    "reuse_policy": "RQ2-v2-singleton-profile-reuse; eligible coverage verified",
+    "source_configuration_objective_evaluations": 106,
+    "source_postgresql_planner_query_calls": 391171,
+    "source_profile_semantic_digest": "08db2479e8dd51a9ccb5f3c4293888e71b0304644d00f2af7b4ecc9eb0bb99c4",
+    "source_wall_clock_seconds": null
+  },
+  "source_artifact_digests": {
+    "candidate_universe": "a17b0fb88c64d44f68a89636d9e44c8f8caa4507de5897f5324d720c66bee824",
+    "ground_truth": "6402ffafbb3ab9a2bd4d8800e99ed21f1e3215126189a4cf38783796517a9af7",
+    "native_repository": "60d453d644d3af65d8f9860efc56caea8e38e457da3e67a08afc8469d02fb8e7",
+    "singleton_profile": "08db2479e8dd51a9ccb5f3c4293888e71b0304644d00f2af7b4ecc9eb0bb99c4",
+    "snapshot": "449ca8dff9b77c0394881c754ad256c94031d2b4a287aa7f6958e73987ccc75c"
+  },
+  "status": "formal-confirmatory",
+  "system_freeze": {
+    "advisor": {
+      "commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "repository": "1951123/extstats-advisor",
+      "role": "canonical v2 Advisor execution identity"
+    },
+    "advisor_algorithm": {
+      "B_semantics": "maximum selected candidate definitions; physical object count is separate",
+      "canonical_parameters": {
+        "B": 8,
+        "K_s": 8,
+        "T_seconds": 300,
+        "sample_rows": 10000,
+        "sample_seed": 42,
+        "statistics_target": 100
+      },
+      "execution_optimizations": [
+        "incidence-indexed incremental singleton profiling",
+        "incidence-indexed incremental Greedy ADD",
+        "baseline/affected-query estimate caching",
+        "bounded proposal cache"
+      ],
+      "new_algorithmic_controls": [
+        "maximum statistics count B",
+        "canonical v2 default B=K_s",
+        "explicit budget termination semantics"
+      ],
+      "partial_round_policy": "discard incomplete round and retain last committed incumbent",
+      "strict_improvement": true,
+      "termination_reasons": [
+        "local-optimum",
+        "max-statistics-count",
+        "all-screened-candidates-selected",
+        "budget-expired-before-round",
+        "budget-expired-incomplete-round"
+      ]
+    },
+    "change_policy": "Any production semantic change to the advisor or either PostgreSQL build requires a new system freeze; historical v1 artifacts retain their v1 provenance.",
+    "compatibility_evidence": {
+      "forest10_singleton": {
+        "artifact": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+        "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+        "scope": "confirmatory Forest10 singleton equivalence"
+      },
+      "incremental_greedy_live": {
+        "artifact": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+        "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+        "scope": "small-live-correctness-validation"
+      },
+      "power7_singleton": {
+        "artifact": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+        "artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+        "scope": "confirmatory Power7 singleton equivalence"
+      },
+      "readiness_review": {
+        "artifact": "paper/system-freeze-v2-readiness-review-v1.json",
+        "artifact_digest": "34973689b5d43d4fe80352690c6bcab88adbdf94e1d96d73ec77396058a29c90"
+      }
+    },
+    "format_version": "system-freeze-v2",
+    "freeze_id": "system-freeze-v2",
+    "patched_postgresql": {
+      "commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-pgextadv",
+      "required_build_contract": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "postgres_lab": {
+      "build_identity_source": "postgres-lab identity.json",
+      "compiler_policy": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "encoding": "UTF8",
+      "fingerprint_requirements": {
+        "build_identity_source": "postgres-lab identity.json",
+        "ordinary_stats_fingerprint_required_per_artifact": true,
+        "runtime_paths_are_not_semantic_identity": true,
+        "source_commit_sha_pinned": true
+      },
+      "identity_format": "postgres-lab-instance-v1",
+      "locale": "C.utf8",
+      "runtime_paths_are_not_semantic_identity": true
+    },
+    "research_provenance": {
+      "freeze_digest_does_not_depend_on_future_freeze_commit": true,
+      "readiness_review_path": "paper/system-freeze-v2-readiness-review-v1.json",
+      "readiness_review_source_sha": "34c188f8c73e47f0bbccf2ea96f2194169d7a607"
+    },
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "status": "frozen",
+    "stock_postgresql": {
+      "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "v1_compatibility": {
+      "explicit_v1_plan_reference_path": "optimization-plan-v1 / greedy-add-v1-full-workload-evaluation",
+      "historical_artifact_rule": "Existing RQ1 and Forest10 RQ4 artifacts retain their embedded system-freeze-v1 provenance and are not retroactively reassigned to v2.",
+      "historical_artifacts_remain_v1": true,
+      "legacy_freeze_format": "system-freeze-v1",
+      "legacy_freeze_path": "paper/system-freeze-v1.json"
+    },
+    "validation_scope": {
+      "census13": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "dmv11": {
+        "equivalence_status": "not-executed",
+        "reason": "scoped-out-by-v2-validation-policy"
+      },
+      "singleton_equivalence_claim": "Power7 and Forest10 confirmatory evidence only; not exhaustive cross-dataset validation"
+    }
+  },
+  "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+  "workload_id": "arecel_dmv11_test_v1"
+}
