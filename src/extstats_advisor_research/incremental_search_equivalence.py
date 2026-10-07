@@ -373,6 +373,8 @@ def run_smoke(
     }
     if not all(comparisons.values()):
         raise ValueError(f"reference/incremental semantic mismatch: {comparisons}")
+    incremental_runtime = dict(incremental.runtime_metadata)
+    incremental_runtime.update(incremental_evaluator.runtime_metadata())
     artifact: dict[str, Any] = {
         "format_version": FORMAT_VERSION,
         "status": "complete",
@@ -410,6 +412,10 @@ def run_smoke(
             "selected_k": incremental.selected_candidate_count,
             "semantic_digest": plan.computed_semantic_digest,
         },
+        "singleton_profile": {
+            "semantic_digest": profile.computed_semantic_digest,
+            "runtime_metadata": dict(profile.runtime_metadata),
+        },
         "sandbox_verification": {"prepared": prepared.metadata.to_dict(), "verified": verified},
         "reference": {
             "search_result_format": reference.format_version,
@@ -424,7 +430,7 @@ def run_smoke(
             "termination_reason": incremental.termination_reason,
             "final_ordered_candidate_ids": list(incremental.final_ordered_candidate_ids),
             "final_objective": incremental.final_objective,
-            "runtime_metadata": dict(incremental.runtime_metadata),
+            "runtime_metadata": incremental_runtime,
             "trace": incremental_trace,
         },
         "nonincident_audits": audits,
