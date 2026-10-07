@@ -342,14 +342,14 @@
       "expected_paper_outputs": ["fig-rq3-plan-rows-agreement", "tab-rq3-mismatch-classification"],
       "artifact_contract": {
         "format": "rq3-fidelity-v1",
-        "required_fields": ["system", "fixture", "configurations", "summary", "semantic_digest"],
+        "required_fields": ["formal_experiment", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
         "configuration_required_fields": ["configuration_id", "settings", "controls", "physical", "hypothetical", "paired_queries", "summary", "cleanup"],
         "configuration_ids": ["mcv-only", "fd-only", "mcv-plus-fd"],
         "primary_metric": "direct exact root Plan Rows agreement",
         "mismatch_categories": ["exact-match", "payload-mismatch", "ordinary-stats-drift", "statistics-order-mismatch", "planner-setting-mismatch", "overlay-resolution-difference", "plan-rows-mismatch-unexplained"],
-        "status_semantics": "A runner result is artifact-created with fidelity_gate pass/fail. Paper status becomes ready-to-run only after a live exact gate; no artifact is complete by itself."
+        "formal_status_semantics": "The formal artifact uses experiment_id rq3-primary-mechanism-fidelity, formal_experiment=true, and system-freeze-v2 with its semantic digest. execution_status=complete is independent of fidelity_gate=pass|fail; mismatches are preserved."
       },
-      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. The small live gate passed on the pinned patched PostgreSQL build; no benchmark result is complete.",
+      "implementation_status": "The three-configuration synthetic runner and rq3-fidelity-v1 cross-field validator are implemented and unit-validated. Formal execution is ready from a clean committed research SHA; the earlier small live gate remains readiness evidence only.",
       "implementation_gate": {
         "status": "passed",
         "artifact_format": "rq3-fidelity-v1",
@@ -362,7 +362,8 @@
       },
       "validation_fixture": "rq3-synthetic-mcv-fd-v1",
       "canonical_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output <artifact.json>",
-      "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity"]
+      "formal_command": "extstats-research validate hypothetical-fidelity run --dsn <patched-dsn> --output experiments/rq3/rq3-primary-mechanism-fidelity-v1.json --formal",
+      "completion_criteria": ["same patched binary verified for both primary arms", "physical and overlay states independently verified", "no binary/build substitution used to claim primary fidelity", "formal artifact records producer research SHA and system-freeze-v2 semantic digest"]
     },
     {
     "experiment_id": "rq3-secondary-build-sanity",
@@ -381,9 +382,10 @@
       "required_raw_artifacts": ["paired EXPLAIN JSON", "stock and patched build identities", "catalog/statistics verification", "ordinary-statistics fingerprints"],
       "required_derived_artifacts": ["build-sanity table", "mismatch report"],
     "expected_paper_outputs": ["tab-rq3-build-sanity"],
-    "artifact_contract": {
-      "format": "rq3-build-sanity-v1",
-      "gate_states": ["pass", "fail", "inconclusive"],
+      "artifact_contract": {
+        "format": "rq3-build-sanity-v1",
+        "required_fields": ["formal_experiment", "system_freeze", "system", "fixture", "configurations", "summary", "semantic_digest"],
+        "gate_states": ["pass", "fail", "inconclusive"],
       "pass_rule": "Only exact paired Plan Rows matches with equivalent state/payload/settings controls pass.",
       "fail_rule": "A Plan Rows mismatch is fail only after every control is satisfied.",
       "inconclusive_rule": "Any data, ordinary-statistics, payload, planner-setting, or overlay-state mismatch is inconclusive."
@@ -402,8 +404,9 @@
       "cleanup_verified": true,
       "scope": "small synthetic readiness evidence; secondary sanity only, not a completed confirmatory result"
     },
-    "implementation_status": "The independent patched-versus-stock physical sanity runner produced a passing small synthetic readiness artifact. This does not complete the confirmatory RQ3 experiment.",
-      "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only"]
+    "implementation_status": "The independent patched-versus-stock physical sanity runner produced a passing small synthetic readiness artifact. Formal secondary execution is ready from a clean committed research SHA and remains separate from primary hypothetical fidelity.",
+      "formal_command": "extstats-research validate build-sanity run --stock-dsn <stock-dsn> --patched-dsn <patched-dsn> --output experiments/rq3/rq3-secondary-build-sanity-v1.json --formal",
+      "completion_criteria": ["overlay inactive verified", "stock and patched physical setup independently verified", "result labeled secondary sanity only", "formal artifact records producer research SHA and system-freeze-v2 semantic digest"]
     },
     {
       "experiment_id": "rq4-fixed-k-ablations",

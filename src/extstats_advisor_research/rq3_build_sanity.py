@@ -12,8 +12,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
-from .pins import verify_frozen_systems, verify_research_repository
+from .pins import verify_research_repository
 from .postgres_lab import (
     _read_identity,
     role_spec,
@@ -29,6 +28,12 @@ from .rq3_fidelity import (
     _physical_payload,
     _plan_rows_and_document,
     _settings,
+)
+from .system_freeze_v2 import (
+    FROZEN_ADVISOR_SHA,
+    FROZEN_PATCHED_POSTGRES_SHA,
+    formal_system_freeze_v2_identity,
+    verify_frozen_systems_v2,
 )
 
 BUILD_SANITY_FORMAT = "rq3-build-sanity-v1"
@@ -84,7 +89,12 @@ def _summary(configurations: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build_build_sanity_artifact(
-    *, system: dict[str, Any], fixture: dict[str, Any], configurations: list[dict[str, Any]]
+    *,
+    system: dict[str, Any],
+    fixture: dict[str, Any],
+    configurations: list[dict[str, Any]],
+    formal_experiment: bool = False,
+    system_freeze: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Normalize paired rows, classify mismatches, and seal the artifact."""
 
@@ -147,12 +157,15 @@ def build_build_sanity_artifact(
     artifact: dict[str, Any] = {
         "format": BUILD_SANITY_FORMAT,
         "experiment_id": EXPERIMENT_ID,
+        "formal_experiment": formal_experiment,
         "paper_specification": {"identity": "paper-experiment-v1", "experiment_id": EXPERIMENT_ID},
         "system": system,
         "fixture": fixture,
         "configurations": normalized,
         "summary": _summary(normalized),
     }
+    if system_freeze is not None:
+        artifact["system_freeze"] = dict(system_freeze)
     artifact["semantic_digest"] = semantic_digest(artifact)
     validate_build_sanity_artifact(artifact)
     return artifact
@@ -185,6 +198,11 @@ def validate_build_sanity_artifact(artifact: Any) -> dict[str, Any]:
         raise ValueError(f"build-sanity artifact is missing fields: {missing}")
     if artifact["format"] != BUILD_SANITY_FORMAT or artifact["experiment_id"] != EXPERIMENT_ID:
         raise ValueError("unsupported build-sanity artifact identity")
+    formal_experiment = artifact.get("formal_experiment")
+    if not isinstance(formal_experiment, bool):
+        raise TypeError("build-sanity formal_experiment must be boolean")
+    if formal_experiment and artifact.get("system_freeze") != formal_system_freeze_v2_identity():
+        raise ValueError("formal build-sanity artifact is not bound to system-freeze-v2")
     if artifact["paper_specification"] != {
         "identity": "paper-experiment-v1",
         "experiment_id": EXPERIMENT_ID,
@@ -212,6 +230,8 @@ def validate_build_sanity_artifact(artifact: Any) -> dict[str, Any]:
         "patched_postgres_commit_sha",
     ):
         _require_sha(system[field], field)
+    if formal_experiment and system["advisor_commit_sha"] != FROZEN_ADVISOR_SHA:
+        raise ValueError("formal build-sanity artifact is not bound to the frozen v2 Advisor")
     configurations = artifact["configurations"]
     if not isinstance(configurations, list) or not configurations:
         raise ValueError("build-sanity artifact needs configurations")
@@ -415,14 +435,19 @@ def run_build_sanity(
     advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
     patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
     research_root: Path | None = None,
+    formal_experiment: bool = False,
 ) -> dict[str, Any]:
     """Run all three small physical-statistics build-sanity configurations."""
 
     research_root = research_root or Path(__file__).resolve().parents[2]
     research_identity = verify_research_repository(research_root)
-    verify_frozen_systems(advisor_root, patched_postgres_root)
     stock_spec = role_spec("stock")
     patched_spec = role_spec("patched")
+    verify_frozen_systems_v2(
+        advisor_root,
+        patched_postgres_root,
+        stock_spec.source,
+    )
     stock_source = source_identity(stock_spec)
     validate_source_identity(stock_source, stock_spec)
     if stock_source["source_commit_sha"] != STOCK_SOURCE_SHA:
@@ -545,7 +570,11 @@ def run_build_sanity(
             "encoding": "UTF8",
         }
         artifact = build_build_sanity_artifact(
-            system=system, fixture=fixture, configurations=configurations
+            system=system,
+            fixture=fixture,
+            configurations=configurations,
+            formal_experiment=formal_experiment,
+            system_freeze=formal_system_freeze_v2_identity() if formal_experiment else None,
         )
         write_json(output, artifact)
         return {

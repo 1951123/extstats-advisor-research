@@ -21,6 +21,7 @@ from extstats_advisor_research.rq3_fidelity import (
     validate_fidelity_artifact,
     write_fidelity_artifact,
 )
+from extstats_advisor_research.system_freeze_v2 import formal_system_freeze_v2_identity
 
 _DIGEST = "a" * 64
 _ORDINARY_DIGEST = "b" * 64
@@ -273,6 +274,28 @@ def test_explain_digest_is_recomputed() -> None:
 def test_fidelity_gate_records_mismatch_as_failure_without_ready_status() -> None:
     assert fidelity_gate({"mismatch_count": 0}) == "pass"
     assert fidelity_gate({"mismatch_count": 1}) == "fail"
+
+
+def test_formal_fidelity_artifact_requires_v2_freeze_identity() -> None:
+    artifact = build_fidelity_artifact(
+        experiment_id="rq3-primary-mechanism-fidelity",
+        system={
+            "research_commit_sha": _RESEARCH_SHA,
+            "advisor_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+            "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
+            "patched_backend_contract": "postgresql-pgextadv-16.14-v1",
+            "patched_server_version": "16.14",
+        },
+        fixture={"fixture_id": "fixture", "workload_digest": _DIGEST},
+        configurations=[_configuration("mcv-only", ["mcv"], [101])],
+        formal_experiment=True,
+        system_freeze=formal_system_freeze_v2_identity(),
+    )
+    assert artifact["formal_experiment"] is True
+    broken = copy.deepcopy(artifact)
+    broken["system_freeze"]["semantic_digest"] = _DIGEST
+    with pytest.raises(ValueError, match="system-freeze-v2"):
+        validate_fidelity_artifact(_resign(broken))
 
 
 def test_runner_result_contract_preserves_a_mismatch_as_an_artifact(tmp_path) -> None:

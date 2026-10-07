@@ -16,9 +16,14 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
-from . import FROZEN_ADVISOR_SHA, FROZEN_PATCHED_POSTGRES_SHA
-from .pins import verify_frozen_systems, verify_research_repository
+from . import FROZEN_PATCHED_POSTGRES_SHA
+from .pins import verify_research_repository
 from .provenance import read_json, reject_credentials, semantic_digest, write_json
+from .system_freeze_v2 import (
+    FROZEN_ADVISOR_SHA,
+    formal_system_freeze_v2_identity,
+    verify_frozen_systems_v2,
+)
 
 FIDELITY_FORMAT = "rq3-fidelity-v1"
 PAPER_SPECIFICATION = "paper-experiment-v1"
@@ -155,6 +160,8 @@ def build_fidelity_artifact(
     system: dict[str, Any],
     fixture: dict[str, Any],
     configurations: list[dict[str, Any]],
+    formal_experiment: bool = False,
+    system_freeze: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Build and validate one immutable multi-configuration RQ3 artifact."""
 
@@ -206,6 +213,7 @@ def build_fidelity_artifact(
     artifact: dict[str, Any] = {
         "format": FIDELITY_FORMAT,
         "experiment_id": experiment_id,
+        "formal_experiment": formal_experiment,
         "paper_specification": {
             "identity": PAPER_SPECIFICATION,
             "experiment_id": PRIMARY_EXPERIMENT_ID,
@@ -215,6 +223,8 @@ def build_fidelity_artifact(
         "configurations": normalized,
         "summary": summary,
     }
+    if system_freeze is not None:
+        artifact["system_freeze"] = dict(system_freeze)
     artifact["semantic_digest"] = semantic_digest(artifact)
     validate_fidelity_artifact(artifact)
     return artifact
@@ -246,6 +256,14 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
         raise ValueError(f"RQ3 fidelity artifact is missing fields: {missing}")
     if artifact["format"] != FIDELITY_FORMAT:
         raise ValueError("unsupported RQ3 fidelity artifact format")
+    formal_experiment = artifact.get("formal_experiment")
+    if not isinstance(formal_experiment, bool):
+        raise TypeError("RQ3 formal_experiment must be boolean")
+    if formal_experiment:
+        if artifact["experiment_id"] != PRIMARY_EXPERIMENT_ID:
+            raise ValueError("formal RQ3 artifact must use the primary experiment ID")
+        if artifact.get("system_freeze") != formal_system_freeze_v2_identity():
+            raise ValueError("formal RQ3 artifact is not bound to system-freeze-v2")
     paper = artifact["paper_specification"]
     if paper != {"identity": PAPER_SPECIFICATION, "experiment_id": PRIMARY_EXPERIMENT_ID}:
         raise ValueError("RQ3 artifact is not bound to paper-experiment-v1 RQ3 primary")
@@ -265,6 +283,8 @@ def validate_fidelity_artifact(artifact: Any) -> dict[str, Any]:
     _require_sha(system["research_commit_sha"], "research_commit_sha", length=40)
     _require_sha(system["advisor_commit_sha"], "advisor_commit_sha", length=40)
     _require_sha(system["patched_postgres_commit_sha"], "patched_postgres_commit_sha", length=40)
+    if formal_experiment and system["advisor_commit_sha"] != FROZEN_ADVISOR_SHA:
+        raise ValueError("formal RQ3 artifact is not bound to the frozen v2 Advisor")
     configurations = artifact["configurations"]
     if not isinstance(configurations, list) or not configurations:
         raise ValueError("RQ3 artifact needs configurations")
@@ -895,6 +915,7 @@ def run_synthetic_fidelity(
     advisor_root: Path = Path("/home/wqts/projects/extstats-advisor"),
     patched_postgres_root: Path = Path("/home/wqts/projects/postgresql-src-pgextadv"),
     research_root: Path | None = None,
+    formal_experiment: bool = False,
 ) -> dict[str, Any]:
     """Run the three small same-patched-binary RQ3 mechanism comparisons."""
 
@@ -909,7 +930,7 @@ def run_synthetic_fidelity(
         "patched_postgres_repository": "1951123/postgresql-pgextadv",
         "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
     }
-    verify_frozen_systems(advisor_root, patched_postgres_root)
+    verify_frozen_systems_v2(advisor_root, patched_postgres_root)
     import psycopg
     from extstats_advisor.dbms.postgres.patch import probe_patched_postgres
 
@@ -948,7 +969,7 @@ def run_synthetic_fidelity(
             for query_id, query in _fixture_queries(first_table)
         ]
         artifact = build_fidelity_artifact(
-            experiment_id=SYNTHETIC_FIXTURE_ID,
+            experiment_id=PRIMARY_EXPERIMENT_ID if formal_experiment else SYNTHETIC_FIXTURE_ID,
             system={
                 **system,
                 "patched_backend_contract": capabilities.backend_contract,
@@ -966,6 +987,8 @@ def run_synthetic_fidelity(
                 "workload_digest": semantic_digest(fixture_workload),
             },
             configurations=configurations,
+            formal_experiment=formal_experiment,
+            system_freeze=formal_system_freeze_v2_identity() if formal_experiment else None,
         )
         write_fidelity_artifact(output, artifact)
         return fidelity_run_result(artifact, output, time.monotonic() - started)

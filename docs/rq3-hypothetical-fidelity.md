@@ -75,17 +75,20 @@ benchmark runs:
 ```bash
 extstats-research validate hypothetical-fidelity run \
   --dsn "$PATCHED_DSN" \
-  --output diagnostics/rq3-synthetic-fidelity.json
+  --output experiments/rq3/rq3-primary-mechanism-fidelity-v1.json \
+  --formal
 
 extstats-research validate hypothetical-fidelity validate \
-  diagnostics/rq3-synthetic-fidelity.json
+  experiments/rq3/rq3-primary-mechanism-fidelity-v1.json
 
 extstats-research validate hypothetical-fidelity inspect \
-  diagnostics/rq3-synthetic-fidelity.json
+  experiments/rq3/rq3-primary-mechanism-fidelity-v1.json
 ```
 
-The runner requires a clean committed research tree and the pinned advisor and
-patched-source revisions. It does not run Census13, Forest10, Power7, or DMV11.
+The formal command requires a clean committed research tree, binds the producer
+SHA and `system-freeze-v2` semantic digest, and verifies the pinned v2 Advisor
+and patched-source revisions. It does not run Census13, Forest10, Power7, or
+DMV11. The non-`--formal` mode remains useful for local readiness fixtures.
 The stock-versus-patched physical sanity check is a separate secondary
 contract and is still `implementation-needed`; it is not substituted for the
 primary same-binary comparison.
@@ -99,6 +102,6 @@ PostgreSQL expressions, statistics kinds, relation shapes, planner settings,
 or workload classes. It also does not establish sample-to-full-data utility;
 that remains RQ2b. A runner result is `artifact-created` with a
 `fidelity_gate` of `pass` or `fail`; mismatches are preserved in the artifact
-rather than hidden. Only a live exact gate across all three configurations
-moves the paper primary status to `ready-to-run`, and that status is still not
-`complete`.
+rather than hidden. A formal run records execution completion separately from
+the exact `fidelity_gate`, which is `pass` only when all paired Plan Rows are
+equal.

@@ -400,6 +400,11 @@ physical-versus-no-extstats estimate changes are recorded but are not asserted
 as a universal `used=true` signal. Per-query q-error/rank correlation is
 retained only as a secondary diagnostic.
 
+**Formal artifact:** `experiments/rq3/rq3-primary-mechanism-fidelity-v1.json`
+with `formal_experiment=true`, producer research SHA, and the
+`system-freeze-v2` semantic digest. The earlier readiness artifact is retained
+separately and is not renamed or promoted.
+
 **Raw artifact:** paired EXPLAIN output, active design records, physical
 catalog/payload verification, ordinary-statistics fingerprints, binary/build
 identities, and transaction/session logs for both primary and secondary paths.
@@ -413,11 +418,12 @@ hypothetical-versus-physical estimate/error agreement plots.
 Plan Rows mismatch and returns `status=artifact-created` with
 `fidelity_gate=pass|fail`. `pass` means mismatch count is exactly zero. The
 small live gate passed for all three configurations on the pinned patched
-build, so the primary protocol is now `ready-to-run`; it is not an official
-benchmark result and is not `complete`. The secondary patched-versus-stock
-build sanity path now has `ready-to-run` readiness evidence in the independent
-`rq3-build-sanity-v1` artifact. Its passing synthetic gate is not a completed
-confirmatory benchmark result.
+build, so the primary protocol is `ready-to-run`; it is not an official
+benchmark result and is not `complete`. A formal run records
+`execution_status=complete` separately from `fidelity_gate=pass|fail`. The
+secondary patched-versus-stock build sanity path likewise remains
+`ready-to-run` until its separate formal artifact is written; its passing
+synthetic gate is not a completed confirmatory benchmark result.
 
 ## RQ4 — Advisor necessity / ablation
 

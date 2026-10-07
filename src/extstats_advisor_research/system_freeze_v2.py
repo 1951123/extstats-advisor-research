@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .pins import verify_git_sha
 from .provenance import read_json, reject_credentials, semantic_digest
 from .system_freeze import BUILD_CONTRACT, CONFIGURE_FEATURES, POSTGRES_VERSION
 
@@ -16,6 +17,7 @@ FROZEN_ADVISOR_SHA = "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
 FROZEN_PATCHED_POSTGRES_SHA = "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
 FROZEN_STOCK_POSTGRES_SHA = "0d1c00c624fa7367d4a895f44381887757289682"
 RESEARCH_REVIEW_SOURCE_SHA = "34c188f8c73e47f0bbccf2ea96f2194169d7a607"
+FROZEN_SYSTEM_FREEZE_V2_DIGEST = "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48"
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_FREEZE_PATH = RESEARCH_ROOT / "paper" / "system-freeze-v2.json"
 DEFAULT_READINESS_PATH = RESEARCH_ROOT / "paper" / "system-freeze-v2-readiness-review-v1.json"
@@ -210,6 +212,43 @@ def load_system_freeze_v2(path: Path = DEFAULT_FREEZE_PATH) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     validate_system_freeze_v2(value)
     return value
+
+
+def formal_system_freeze_v2_identity() -> dict[str, str]:
+    """Return the immutable v2 identity embedded in formal artifacts."""
+
+    return {
+        "format_version": SYSTEM_FREEZE_V2_FORMAT,
+        "path": "paper/system-freeze-v2.json",
+        "semantic_digest": FROZEN_SYSTEM_FREEZE_V2_DIGEST,
+    }
+
+
+def verify_frozen_systems_v2(
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path | None = None,
+) -> dict[str, str]:
+    """Verify v2 source pins without changing any frozen repository."""
+
+    identities = {
+        "advisor_repository": "1951123/extstats-advisor",
+        "advisor_commit_sha": verify_git_sha(advisor_root, FROZEN_ADVISOR_SHA),
+        "patched_postgres_repository": "1951123/postgresql-pgextadv",
+        "patched_postgres_commit_sha": verify_git_sha(
+            patched_postgres_root, FROZEN_PATCHED_POSTGRES_SHA
+        ),
+    }
+    if stock_postgres_root is not None:
+        identities.update(
+            {
+                "stock_postgres_repository": "1951123/postgresql-src",
+                "stock_postgres_commit_sha": verify_git_sha(
+                    stock_postgres_root, FROZEN_STOCK_POSTGRES_SHA
+                ),
+            }
+        )
+    return identities
 
 
 def validate_readiness_review(value: Any) -> dict[str, Any]:
@@ -420,11 +459,14 @@ __all__ = [
     "FROZEN_ADVISOR_SHA",
     "FROZEN_PATCHED_POSTGRES_SHA",
     "FROZEN_STOCK_POSTGRES_SHA",
+    "FROZEN_SYSTEM_FREEZE_V2_DIGEST",
     "READINESS_FORMAT",
     "SYSTEM_FREEZE_V2_FORMAT",
+    "formal_system_freeze_v2_identity",
     "load_readiness_review",
     "load_system_freeze_v2",
     "validate_readiness_evidence",
     "validate_readiness_review",
     "validate_system_freeze_v2",
+    "verify_frozen_systems_v2",
 ]

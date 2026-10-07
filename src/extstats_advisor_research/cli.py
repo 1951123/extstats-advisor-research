@@ -339,6 +339,11 @@ def _parser() -> argparse.ArgumentParser:
     fidelity_run.add_argument("--dsn", required=True)
     fidelity_run.add_argument("--output", type=Path, required=True)
     fidelity_run.add_argument(
+        "--formal",
+        action="store_true",
+        help="write a formal RQ3 result bound to system-freeze-v2",
+    )
+    fidelity_run.add_argument(
         "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
     )
     fidelity_run.add_argument(
@@ -373,6 +378,11 @@ def _parser() -> argparse.ArgumentParser:
     build_sanity_run.add_argument("--stock-dsn", required=True)
     build_sanity_run.add_argument("--patched-dsn", required=True)
     build_sanity_run.add_argument("--output", type=Path, required=True)
+    build_sanity_run.add_argument(
+        "--formal",
+        action="store_true",
+        help="write a formal RQ3 result bound to system-freeze-v2",
+    )
     build_sanity_run.add_argument(
         "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
     )
@@ -946,6 +956,7 @@ def main(argv: list[str] | None = None) -> int:
                     output=args.output,
                     advisor_root=args.advisor_root,
                     patched_postgres_root=args.patched_postgres_root,
+                    formal_experiment=args.formal,
                 )
             elif args.build_sanity_command == "validate":
                 result = validate_build_sanity_file(args.artifact)
@@ -960,6 +971,7 @@ def main(argv: list[str] | None = None) -> int:
                     output=args.output,
                     advisor_root=args.advisor_root,
                     patched_postgres_root=args.patched_postgres_root,
+                    formal_experiment=args.formal,
                 )
             elif args.fidelity_command == "validate":
                 artifact = json.loads(args.artifact.read_text(encoding="utf-8"))
