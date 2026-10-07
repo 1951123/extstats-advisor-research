@@ -155,8 +155,14 @@ def _physical_schema(conn: Any, dataset: Any = forest10) -> dict[str, Any]:
         return validate_dmv11_physical_schema(
             columns, row_count=row_count, extended_statistics_count=extended_statistics_count
         )
+    schema_contract = dataset.schema_contract()
     expected = [
-        {"name": name, "postgres_type": type_, "not_null": False} for name, type_ in dataset.COLUMNS
+        {
+            "name": name,
+            "postgres_type": type_,
+            "not_null": bool(schema_contract.get("not_null", False)),
+        }
+        for name, type_ in dataset.COLUMNS
     ]
     if len(columns) != len(expected) or any(
         observed["name"] != required["name"]
