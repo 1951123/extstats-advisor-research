@@ -232,6 +232,49 @@ def extract_workload(
     }
 
 
+def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+    """Load the audited test queries with their immutable source labels.
+
+    The canonical Census13 workload already contains the same label and query
+    provenance fields used by the other AreCEL adapters.  Exposing the shared
+    ``load_test_records`` contract lets generic baseline and transfer runners
+    use Census13 without a dataset-specific truth or q-error implementation.
+    """
+    _audit(value)
+    csv_workload = canonical_workload_path(value)
+    if not csv_workload.is_file() or sha256_file(csv_workload) != CANONICAL_WORKLOAD_SHA256:
+        raise ValueError("audited census13 canonical workload hash mismatch")
+    records: list[dict[str, Any]] = []
+    with gzip.open(csv_workload, "rt", encoding="utf-8") as stream:
+        for raw in map(json.loads, stream):
+            if raw.get("split") != "test":
+                continue
+            index = int(raw["index"])
+            expected_id = f"arecel:census13:test:{index:06d}"
+            if raw.get("query_id") != expected_id:
+                raise ValueError(f"unexpected Census13 source query identity at index {index}")
+            records.append(
+                {
+                    "source_index": index,
+                    "query_id": f"arecel_census13_test_{index:06d}",
+                    "source_query_id": raw["query_id"],
+                    "original_sql": raw["sql"],
+                    "sql": _advisor_workload_sql(raw["sql"]),
+                    "source_query": raw["source_query"],
+                    "truth": int(raw["source_label"]["cardinality"]),
+                    "source_label": raw["source_label"],
+                    "source_query_sha256": raw["source_query_sha256"],
+                }
+            )
+    if len(records) != EXPECTED_TEST_QUERIES:
+        raise ValueError(
+            f"expected {EXPECTED_TEST_QUERIES} Census13 test queries, got {len(records)}"
+        )
+    if [record["source_index"] for record in records] != list(range(EXPECTED_TEST_QUERIES)):
+        raise ValueError("Census13 test source order is not contiguous and deterministic")
+    return records
+
+
 def write_dataset_manifest(output: Path, value: Path | None = None) -> dict[str, Any]:
     manifest = inspect(value)
     manifest.update(
