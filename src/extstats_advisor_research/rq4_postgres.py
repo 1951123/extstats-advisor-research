@@ -38,6 +38,7 @@ class RQ4ArtifactPaths:
 
 
 REAL_SMOKE_FORMAT = "rq4-real-backend-smoke-v1"
+REAL_SMOKE_V2_FORMAT = "rq4-real-backend-smoke-v2"
 
 
 class FrozenPostgresRQ4Backend(AbstractContextManager["FrozenPostgresRQ4Backend"]):
@@ -209,13 +210,13 @@ class FrozenPostgresRQ4Backend(AbstractContextManager["FrozenPostgresRQ4Backend"
             for item in eligible["eligible_candidates"]
         }
         native_by_id = {item.candidate_id: item for item in self.native_repository.candidate_models}
-        payload_size = {
+        native_payload_size = {
             item["candidate_id"]: float(native_by_id[item["candidate_id"]].payload_size)
             for item in eligible["eligible_candidates"]
         }
         return {
             "workload_frequency": frequency,
-            "dependency_correlation": payload_size,
+            "native_payload_size": native_payload_size,
         }
 
 
@@ -341,7 +342,7 @@ def build_real_backend_smoke_artifact(
             "qerror_source": "frozen-advisor-WeightedWorkloadUtility-QErrorLoss",
         }
     artifact: dict[str, Any] = {
-        "format_version": REAL_SMOKE_FORMAT,
+        "format_version": REAL_SMOKE_V2_FORMAT,
         "experiment_id": "rq4-real-backend-integration-smoke-v1",
         "status": "real-backend-integration-smoke",
         "formal_confirmatory_experiment": False,
@@ -360,7 +361,7 @@ def build_real_backend_smoke_artifact(
         "comparison": comparison,
         "signals": {
             "workload_frequency_source": "frozen-workload-predicate-incidence",
-            "dependency_correlation_source": "fixed-sample-native-payload-size-only",
+            "native_payload_size_source": "fixed-sample-native-payload-size-only",
             "singleton_utility_source": singleton_accounting,
         },
         "physical_deployment_validation": dict(
@@ -380,7 +381,8 @@ def validate_real_backend_smoke(path: Path) -> dict[str, Any]:
     from .provenance import read_json
 
     artifact = read_json(path)
-    if artifact.get("format_version") != REAL_SMOKE_FORMAT:
+    format_version = artifact.get("format_version")
+    if format_version not in {REAL_SMOKE_FORMAT, REAL_SMOKE_V2_FORMAT}:
         raise ValueError("unsupported real-backend smoke format")
     expected = semantic_digest(
         {key: value for key, value in artifact.items() if key != "semantic_digest"}
@@ -390,17 +392,20 @@ def validate_real_backend_smoke(path: Path) -> dict[str, Any]:
     if artifact.get("formal_confirmatory_experiment") is not False:
         raise ValueError("real-backend smoke cannot be formal confirmatory evidence")
     comparison = artifact.get("comparison", {})
-    if comparison.get("method_order") != [
+    expected_methods = [
         "random-k",
         "workload-frequency-top-k",
-        "dependency-correlation-top-k",
+        "native-payload-size-top-k"
+        if format_version == REAL_SMOKE_V2_FORMAT
+        else "dependency-correlation-top-k",
         "singleton-utility-top-k",
         "greedy-ADD",
-    ]:
+    ]
+    if comparison.get("method_order") != expected_methods:
         raise ValueError("real-backend smoke did not use the primary RQ4 methods")
     return {
         "status": "valid",
-        "format_version": REAL_SMOKE_FORMAT,
+        "format_version": format_version,
         "semantic_digest": expected,
         "formal_confirmatory_experiment": False,
     }
@@ -427,6 +432,7 @@ def inspect_real_backend_smoke(path: Path) -> dict[str, Any]:
 
 __all__ = [
     "REAL_SMOKE_FORMAT",
+    "REAL_SMOKE_V2_FORMAT",
     "FrozenPostgresRQ4Backend",
     "RQ4ArtifactPaths",
     "build_real_backend_smoke_artifact",

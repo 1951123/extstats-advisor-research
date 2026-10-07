@@ -26,6 +26,7 @@ from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq1_canary import _ensure_planner_catalog
 from .rq4_ablation import (
     INFORMATION_ACCESS_POLICY,
+    LEGACY_METHOD_IDS,
     METHOD_IDS,
     RANDOM_SEEDS,
     EvaluationBudget,
@@ -49,7 +50,8 @@ from .system_freeze import (
     load_system_freeze,
 )
 
-FORMAL_FORMAT = "rq4-forest10-fixed-k-v1"
+FORMAL_FORMAT = "rq4-forest10-fixed-k-v2"
+LEGACY_FORMAL_FORMAT = "rq4-forest10-fixed-k-v1"
 DESIGN_FORMAT = "rq4-design-evaluation-v1"
 FIXED_K = 4
 QUERY_COUNT = 10_000
@@ -57,8 +59,11 @@ SEED_IDENTIFIER = 123
 SETSEED_SQL = "SELECT setseed(1.0 / 123)"
 SELECTION_MAX_CONFIGURATION_EVALUATIONS = 2_000
 SELECTION_WALL_CLOCK_SECONDS = 3_600.0
-METHOD_ORDER = tuple(f"random-k-seed-{seed}" for seed in RANDOM_SEEDS) + tuple(
+CANONICAL_METHOD_ORDER = tuple(f"random-k-seed-{seed}" for seed in RANDOM_SEEDS) + tuple(
     method for method in METHOD_IDS if method != "random-k"
+)
+METHOD_ORDER = tuple(f"random-k-seed-{seed}" for seed in RANDOM_SEEDS) + tuple(
+    method for method in LEGACY_METHOD_IDS if method != "random-k"
 )
 _RUN_ID = re.compile(r"^[0-9a-f]{24}$")
 
@@ -248,7 +253,7 @@ def _run_selection_bundle(
                 result["method_id"] = f"random-k-seed-{seed}"
                 result["replicate_seed"] = seed
                 merged_methods[f"random-k-seed-{seed}"] = result
-            method_order = list(METHOD_ORDER)
+            method_order = list(CANONICAL_METHOD_ORDER)
         else:
             result = copy.deepcopy(base["methods"]["random-k"])
             result["method_id"] = f"random-k-seed-{base['methods']['random-k']['random_seed']}"
@@ -352,7 +357,14 @@ def _overlap(comparison: Mapping[str, Any]) -> dict[str, Any]:
         "pairwise_jaccard": pairwise,
         "greedy_vs_singleton": lookup("greedy-ADD", "singleton-utility-top-k"),
         "greedy_vs_frequency": lookup("greedy-ADD", "workload-frequency-top-k"),
-        "greedy_vs_correlation": lookup("greedy-ADD", "dependency-correlation-top-k"),
+        "greedy_vs_native_payload_size": lookup("greedy-ADD", "native-payload-size-top-k")
+        if "native-payload-size-top-k" in methods
+        else lookup("greedy-ADD", "dependency-correlation-top-k"),
+        # Preserve the historical derived field as an alias; new reports use
+        # greedy_vs_native_payload_size.
+        "greedy_vs_correlation": lookup("greedy-ADD", "native-payload-size-top-k")
+        if "native-payload-size-top-k" in methods
+        else lookup("greedy-ADD", "dependency-correlation-top-k"),
     }
 
 
@@ -385,7 +397,7 @@ def _write_physical_children(
     common = {
         key: value for key, value in shared.items() if key not in {"methods", "semantic_digest"}
     }
-    for method in METHOD_ORDER:
+    for method in CANONICAL_METHOD_ORDER:
         if method not in shared["methods"]:
             raise RQ4ValidationError(f"shared physical realization lacks {method}")
         child = copy.deepcopy(common)
@@ -573,7 +585,7 @@ def run_forest10_fixed_k(
         "eligible_universe": first["eligible_universe"],
         "selection_signals": {
             "workload_frequency": first["signals"]["workload_frequency"],
-            "dependency_correlation": first["signals"]["dependency_correlation"],
+            "native_payload_size": first["signals"]["native_payload_size"],
             "singleton_utility": first["singleton_scores"],
             "information_access_policy": INFORMATION_ACCESS_POLICY,
             "tie_breaking": "score descending, then canonical static precedence/candidate ID",
@@ -601,7 +613,7 @@ def run_forest10_fixed_k(
 
     selected_by_method = {
         method: first["comparison"]["methods"][method]["selected_membership"]
-        for method in METHOD_ORDER
+        for method in CANONICAL_METHOD_ORDER
     }
     try:
         reinit_role("stock")
@@ -736,8 +748,10 @@ def run_forest10_fixed_k(
 
 def validate_forest10_fixed_k_artifact(path: Path) -> dict[str, Any]:
     artifact = read_json(path)
-    if artifact.get("format_version") != FORMAL_FORMAT:
+    format_version = artifact.get("format_version")
+    if format_version not in {FORMAL_FORMAT, LEGACY_FORMAL_FORMAT}:
         raise RQ4ValidationError("unsupported Forest10 formal RQ4 format")
+    method_order = CANONICAL_METHOD_ORDER if format_version == FORMAL_FORMAT else METHOD_ORDER
     expected = semantic_digest(
         {key: value for key, value in artifact.items() if key != "semantic_digest"}
     )
@@ -774,9 +788,9 @@ def validate_forest10_fixed_k_artifact(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("formal Forest10 RQ4a child is missing")
     if rq4a.get("semantic_digest") != artifact["rq4a"]["semantic_digest"]:
         raise RQ4ValidationError("formal Forest10 RQ4a child digest mismatch")
-    if rq4a.get("comparison", {}).get("method_order") != list(METHOD_ORDER):
+    if rq4a.get("comparison", {}).get("method_order") != list(method_order):
         raise RQ4ValidationError("formal Forest10 RQ4a method order mismatch")
-    for method in METHOD_ORDER:
+    for method in method_order:
         result = rq4a["comparison"]["methods"].get(method)
         if not isinstance(result, Mapping):
             raise RQ4ValidationError(f"formal Forest10 RQ4a lacks {method}")
@@ -790,7 +804,7 @@ def validate_forest10_fixed_k_artifact(path: Path) -> dict[str, Any]:
     if replay.get("checks", {}).get("semantic_projection_stable") is not True:
         raise RQ4ValidationError("formal Forest10 RQ4a replay gate failed")
     children = artifact.get("rq4b", {}).get("children", {})
-    if set(children) != set(METHOD_ORDER):
+    if set(children) != set(method_order):
         raise RQ4ValidationError("formal Forest10 RQ4b child set is incomplete")
     for method, record in children.items():
         child_path = Path(record["logical_path"])
@@ -813,10 +827,10 @@ def validate_forest10_fixed_k_artifact(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("global RQ4 status was incorrectly completed by Forest10 only")
     return {
         "status": "valid",
-        "format_version": FORMAL_FORMAT,
+        "format_version": format_version,
         "semantic_digest": expected,
         "dataset_id": forest10.BENCHMARK_ID,
-        "method_count": len(METHOD_ORDER),
+        "method_count": len(method_order),
         "rq4a_replay": "pass",
         "rq4b_children": len(children),
         "global_rq4_status": progress["rq4_fixed_k_ablations"],
@@ -826,6 +840,7 @@ def validate_forest10_fixed_k_artifact(path: Path) -> dict[str, Any]:
 __all__ = [
     "DESIGN_FORMAT",
     "FORMAL_FORMAT",
+    "LEGACY_FORMAL_FORMAT",
     "METHOD_ORDER",
     "run_forest10_fixed_k",
     "validate_forest10_fixed_k_artifact",

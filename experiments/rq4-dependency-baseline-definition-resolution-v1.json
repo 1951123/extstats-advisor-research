@@ -1,0 +1,50 @@
+{
+  "format_version": "rq4-dependency-baseline-definition-resolution-v1",
+  "status": "resolved",
+  "source_blocker": {
+    "path": "experiments/rq4-dependency-baseline-definition-blocker-v1.json",
+    "digest": "5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba"
+  },
+  "decision": {
+    "canonical_method_id": "native-payload-size-top-k",
+    "score_definition": "score(c) = byte size of the sample-built native PostgreSQL extended-statistics payload",
+    "ranking_direction": "descending payload_size; larger payload first",
+    "tie_breaking": "canonical static candidate precedence, then candidate ID",
+    "information_access": {
+      "ground_truth_during_selection": false,
+      "planner_utility_during_selection": false,
+      "allowed_inputs": [
+        "eligible candidate ID",
+        "NativeStatsRepository payload_size",
+        "static candidate precedence"
+      ],
+      "forbidden_inputs": [
+        "GroundTruthSet",
+        "q-error",
+        "singleton utility",
+        "SearchResult",
+        "Greedy result",
+        "final Recommendation",
+        "full-data outcome",
+        "RQ1/RQ2 outcome"
+      ]
+    }
+  },
+  "historical_alias": {
+    "old_method_id": "dependency-correlation-top-k",
+    "canonical_method_id": "native-payload-size-top-k",
+    "old_artifacts_immutable": true
+  },
+  "post_hoc_metric_selection": false,
+  "explicitly_rejected_alternatives": [
+    "Pearson",
+    "mutual information",
+    "Cramer's V",
+    "unspecified dependency coefficient"
+  ],
+  "reason": "Resolve the semantic naming mismatch without changing the algorithm used by the historical Forest10 experiment or the existing readiness smoke.",
+  "no_prior_formal_results_before_freeze": true,
+  "formal_execution_permitted": true,
+  "research_sha": "c34039ee8aa5b89bbc41574ae1f58b55a542d1b4",
+  "semantic_digest": "d07dee264e407028fc52acea4e724f93deb44e0cd7f82399ab6f604d607e2e0f"
+}

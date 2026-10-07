@@ -118,6 +118,33 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
         if experiment is None or experiment.get("datasets") != list(ARECEL_DATASETS):
             raise ValueError(f"{experiment_id} must list exactly the four AreCEL datasets")
 
+    rq4 = by_id.get("rq4-fixed-k-ablations")
+    if rq4 is not None:
+        if rq4.get("methods") != [
+            "random-k",
+            "workload-frequency-top-k",
+            "native-payload-size-top-k",
+            "singleton-utility-top-k",
+            "greedy-ADD",
+        ]:
+            raise ValueError("RQ4 fixed-k method registry is not canonical")
+        gate = rq4.get("dependency_baseline_definition_gate")
+        if not isinstance(gate, dict):
+            raise ValueError("RQ4 baseline-definition gate is missing")
+        if gate.get("historical_audit") != "blocked":
+            raise ValueError("RQ4 historical blocker status was rewritten")
+        if gate.get("resolution") != "resolved":
+            raise ValueError("RQ4 baseline-definition resolution is missing")
+        if gate.get("formal_execution_allowed") is not True:
+            raise ValueError("RQ4 formal execution is not enabled after resolution")
+        if gate.get("resolution_artifact") != (
+            "experiments/rq4-dependency-baseline-definition-resolution-v1.json"
+        ):
+            raise ValueError("RQ4 resolution artifact path is not canonical")
+        aliases = rq4.get("historical_method_aliases")
+        if aliases != {"dependency-correlation-top-k": "native-payload-size-top-k"}:
+            raise ValueError("RQ4 historical method alias is missing or incorrect")
+
     primary = by_id.get("rq3-primary-mechanism-fidelity")
     if primary is not None:
         fixture = primary.get("execution_fixture")

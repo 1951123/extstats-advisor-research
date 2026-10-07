@@ -18,18 +18,30 @@ from typing import Any, Protocol
 
 from .provenance import read_json, semantic_digest, write_json
 
-RQ4_FORMAT = "rq4-ablation-v1"
+RQ4_FORMAT = "rq4-fixed-k-v2"
+LEGACY_RQ4_FORMAT = "rq4-ablation-v1"
 ELIGIBLE_UNIVERSE_FORMAT = "rq4-eligible-universe-v1"
 FIXED_K = 4
 TINY_EXHAUSTIVE_K = 3
 RANDOM_SEEDS = (1, 2, 3, 4, 5)
-METHOD_IDS = (
+CANONICAL_METHOD_IDS = (
+    "random-k",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD",
+)
+LEGACY_METHOD_IDS = (
     "random-k",
     "workload-frequency-top-k",
     "dependency-correlation-top-k",
     "singleton-utility-top-k",
     "greedy-ADD",
 )
+METHOD_IDS = CANONICAL_METHOD_IDS
+HISTORICAL_METHOD_ALIASES = {
+    "dependency-correlation-top-k": "native-payload-size-top-k",
+}
 EXHAUSTIVE_METHOD_ID = "exhaustive-tiny-universe"
 ALL_METHOD_IDS = METHOD_IDS + (EXHAUSTIVE_METHOD_ID,)
 SUPPORTED_KINDS = ("postgresql.mcv", "postgresql.dependencies")
@@ -52,9 +64,13 @@ INFORMATION_ACCESS_POLICY: dict[str, dict[str, Any]] = {
         "allowed_inputs": ["eligible candidate IDs", "workload predicate incidence"],
         "forbidden_inputs": ["q-error", "singleton utility", "full-data estimates"],
     },
-    "dependency-correlation-top-k": {
+    "native-payload-size-top-k": {
         "ground_truth_during_selection": False,
-        "allowed_inputs": ["eligible candidate IDs", "predeclared sample-side signal"],
+        "allowed_inputs": [
+            "eligible candidate IDs",
+            "sample-built NativeStatsRepository payload_size",
+            "static candidate precedence",
+        ],
         "forbidden_inputs": ["q-error", "singleton utility", "full-data estimates"],
     },
     "singleton-utility-top-k": {
@@ -73,6 +89,28 @@ INFORMATION_ACCESS_POLICY: dict[str, dict[str, Any]] = {
         "forbidden_inputs": [],
     },
 }
+LEGACY_INFORMATION_ACCESS_POLICY = {
+    **INFORMATION_ACCESS_POLICY,
+    "dependency-correlation-top-k": {
+        "ground_truth_during_selection": False,
+        "allowed_inputs": ["eligible candidate IDs", "predeclared sample-side signal"],
+        "forbidden_inputs": ["q-error", "singleton utility", "full-data estimates"],
+    },
+}
+
+
+def canonical_method_id(method_id: str) -> str:
+    """Map an immutable historical method identifier to its semantic name."""
+
+    return HISTORICAL_METHOD_ALIASES.get(method_id, method_id)
+
+
+def canonical_method_alias_record(method_id: str) -> dict[str, str]:
+    canonical = canonical_method_id(method_id)
+    return {
+        "source_method_id": method_id,
+        "canonical_method_id": canonical,
+    }
 
 
 class RQ4ValidationError(ValueError):
@@ -567,7 +605,7 @@ def run_rq4_ablation(
     budget: EvaluationBudget,
     random_seed: int,
     workload_frequency: Mapping[str, float],
-    dependency_correlation: Mapping[str, float],
+    native_payload_size: Mapping[str, float],
     singleton_utility: Mapping[str, float],
     singleton_profile_accounting: Mapping[str, Any] | None = None,
     method_ids: Sequence[str] | None = None,
@@ -591,7 +629,7 @@ def run_rq4_ablation(
     candidate_ids = tuple(candidates)
     required_scores = {
         "workload-frequency-top-k": workload_frequency,
-        "dependency-correlation-top-k": dependency_correlation,
+        "native-payload-size-top-k": native_payload_size,
         "singleton-utility-top-k": singleton_utility,
     }
     for method, scores in required_scores.items():
@@ -626,8 +664,8 @@ def run_rq4_ablation(
                 result = _selection_result(method, selected, candidates)
         elif method == "workload-frequency-top-k":
             result = _top_k(method, workload_frequency, candidate_ids, candidates, fixed_k)
-        elif method == "dependency-correlation-top-k":
-            result = _top_k(method, dependency_correlation, candidate_ids, candidates, fixed_k)
+        elif method == "native-payload-size-top-k":
+            result = _top_k(method, native_payload_size, candidate_ids, candidates, fixed_k)
         elif method == "singleton-utility-top-k":
             result = _top_k(method, singleton_utility, candidate_ids, candidates, fixed_k)
             result["selection_trace"] = [
@@ -750,7 +788,7 @@ def build_synthetic_rq4_artifact(
         "workload_frequency": {
             candidate_id: float(10 - index) for index, candidate_id in enumerate(ids)
         },
-        "dependency_correlation": {
+        "native_payload_size": {
             candidate_id: float((index * 7) % 11) for index, candidate_id in enumerate(ids)
         },
         "singleton_utility": gains,
@@ -862,9 +900,15 @@ def build_synthetic_rq4_artifact(
     return artifact
 
 
-def validate_rq4_artifact(path: Path) -> dict[str, Any]:
+def _validate_rq4_artifact(
+    path: Path,
+    *,
+    expected_format: str,
+    method_ids: Sequence[str],
+    information_access_policy: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
     artifact = read_json(path)
-    if artifact.get("format_version") != RQ4_FORMAT:
+    if artifact.get("format_version") != expected_format:
         raise RQ4ValidationError("unsupported RQ4 artifact format")
     expected = semantic_digest(_payload(artifact))
     if artifact.get("semantic_digest") != expected:
@@ -892,12 +936,12 @@ def validate_rq4_artifact(path: Path) -> dict[str, Any]:
     if comparison.get("fixed_k") != artifact.get("k_policy", {}).get("fixed_k"):
         raise RQ4ValidationError("RQ4 fixed-k policy mismatch")
     methods = comparison.get("methods", {})
-    if comparison.get("method_order") != list(METHOD_IDS) or set(methods) != set(METHOD_IDS):
+    if comparison.get("method_order") != list(method_ids) or set(methods) != set(method_ids):
         raise RQ4ValidationError("RQ4 method order or method set is not declared")
     candidate_set = set(ids)
-    for method in METHOD_IDS:
+    for method in method_ids:
         result = methods[method]
-        if result.get("information_access_policy") != INFORMATION_ACCESS_POLICY[method]:
+        if result.get("information_access_policy") != information_access_policy[method]:
             raise RQ4ValidationError(f"{method} information-access policy mismatch")
         selected = result.get("selected_membership", [])
         if not set(selected).issubset(candidate_set):
@@ -924,12 +968,33 @@ def validate_rq4_artifact(path: Path) -> dict[str, Any]:
         raise RQ4ValidationError("synthetic exhaustive validation gate did not pass")
     return {
         "status": "valid",
-        "format_version": RQ4_FORMAT,
+        "format_version": expected_format,
         "experiment_id": artifact["experiment_id"],
         "semantic_digest": expected,
         "method_count": len(methods),
         "formal_confirmatory_experiment": artifact["formal_confirmatory_experiment"],
     }
+
+
+def validate_rq4_artifact(path: Path) -> dict[str, Any]:
+    """Validate canonical v2 artifacts or immutable historical v1 artifacts."""
+
+    format_version = read_json(path).get("format_version")
+    if format_version == RQ4_FORMAT:
+        return _validate_rq4_artifact(
+            path,
+            expected_format=RQ4_FORMAT,
+            method_ids=METHOD_IDS,
+            information_access_policy=INFORMATION_ACCESS_POLICY,
+        )
+    if format_version == LEGACY_RQ4_FORMAT:
+        return _validate_rq4_artifact(
+            path,
+            expected_format=LEGACY_RQ4_FORMAT,
+            method_ids=LEGACY_METHOD_IDS,
+            information_access_policy=LEGACY_INFORMATION_ACCESS_POLICY,
+        )
+    raise RQ4ValidationError("unsupported RQ4 artifact format")
 
 
 def write_synthetic_rq4_artifact(
@@ -953,9 +1018,13 @@ def current_research_commit(root: Path) -> str:
 
 __all__ = [
     "ALL_METHOD_IDS",
+    "CANONICAL_METHOD_IDS",
     "ELIGIBILITY_METADATA_ALLOWLIST",
     "EXHAUSTIVE_METHOD_ID",
     "FIXED_K",
+    "HISTORICAL_METHOD_ALIASES",
+    "LEGACY_METHOD_IDS",
+    "LEGACY_RQ4_FORMAT",
     "METHOD_IDS",
     "RANDOM_SEEDS",
     "RQ4_FORMAT",
@@ -963,6 +1032,8 @@ __all__ = [
     "EvaluationBudget",
     "build_eligible_universe",
     "build_synthetic_rq4_artifact",
+    "canonical_method_alias_record",
+    "canonical_method_id",
     "current_research_commit",
     "run_rq4_ablation",
     "validate_rq4_artifact",

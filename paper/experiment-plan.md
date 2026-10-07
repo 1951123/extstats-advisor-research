@@ -128,7 +128,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
-| `rq4-fixed-k` | RQ4 | `ready-to-run` | Formal AreCEL execution is blocked by the unresolved dependency/correlation baseline-definition gate. The current backend uses sample-side native `payload_size` bytes, but no legitimate pre-registered dependency/correlation formula was found. Blocker: `experiments/rq4-dependency-baseline-definition-blocker-v1.json` (digest `5780f498...`). Historical Forest10 evidence remains immutable; no v2 Census13, Power7, or DMV11 result exists. |
+| `rq4-fixed-k` | RQ4 | `ready-to-run` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`: the canonical method is native-payload-size top-k, ranking sample-built native payload bytes. Historical Forest10 evidence remains immutable; no v2 Census13, Power7, or DMV11 result exists, so formal execution is allowed but still planned. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -152,7 +152,7 @@ simple selection baselines, but does not improve every query.
    four manifests record target 10000; Census13 records it at baseline level,
    while the newer manifests also expose more column-level verification;
 3. `ExtStats Advisor` recommendation;
-4. workload-frequency top-k, dependency/correlation top-k,
+4. workload-frequency top-k, native-payload-size top-k,
    singleton-utility top-k, random-k, and exhaustive tiny-universe baselines
    are RQ4 ablations, not completed RQ1 three-arm configurations;
 5. learned-CE results from Are We Ready, labeled literature/contextual data
@@ -473,7 +473,7 @@ that are not fully recovered by frequency or singleton-only rules, while the
 gap to exhaustive search on tiny universes quantifies search suboptimality.
 
 **Systems/configurations:** the primary fixed-k methods are random-k,
-workload-frequency top-k, correlation/dependency top-k, singleton-utility
+workload-frequency top-k, native-payload-size top-k, singleton-utility
 top-k, and greedy ADD. Exhaustive search is a separately reported
 tiny-universe optimality diagnostic, never a default AreCEL method.
 
@@ -489,9 +489,12 @@ relation, candidate kinds, attribute keys, and sample-built
 `NativeStatsRepository`; no method may add candidates or change native
 statistics targets. Random-k uses pre-registered seeds and samples only from
 that universe. Workload-frequency uses workload predicate incidence but no
-ground truth. Correlation/dependency top-k uses a predeclared sample-side
-signal but no ground truth. Singleton-utility top-k, greedy ADD, and exhaustive
-search use the same bound `GroundTruthSet` and weighted utility/loss contract.
+ground truth. Native-payload-size top-k ranks each eligible candidate by the
+byte size of its sample-built native PostgreSQL extended-statistics payload;
+it is a truth-free, planner-utility-free sample-side structural heuristic, not
+a statistical correlation estimate. Singleton-utility top-k, greedy ADD, and
+exhaustive search use the same bound `GroundTruthSet` and weighted utility/loss
+contract.
 All selected configurations are evaluated against the same truth after
 selection.
 
@@ -508,6 +511,13 @@ evaluation, and stock full-data deployment/evaluation are reported as separate
 cost stages; the independent stock full-data evaluation is never charged to
 the selection budget. Every method reports both configuration evaluations and
 actual planner query calls, wall time, and censoring reason.
+
+The historical Forest10 v1 artifact stores this method under the identifier
+`dependency-correlation-top-k`; code audit established that its actual score
+was native payload byte size. Derived reports use the canonical label
+`native-payload-size-top-k` without modifying the original artifact, traces,
+memberships, or digests. The alias is recorded in
+`experiments/rq4-dependency-baseline-definition-resolution-v1.json`.
 
 RQ4a is the primary deterministic patched-sandbox design comparison. RQ4b is
 the secondary stock physical consequence comparison. The fixed-k quality

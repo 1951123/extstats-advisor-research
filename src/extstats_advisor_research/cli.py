@@ -77,6 +77,7 @@ from .rq4_ablation import (
     validate_rq4_artifact,
     write_synthetic_rq4_artifact,
 )
+from .rq4_baseline_resolution import validate_resolution_artifact
 from .rq4_determinism import validate_design_determinism_smoke
 from .rq4_formal import run_forest10_fixed_k, validate_forest10_fixed_k_artifact
 from .rq4_physical import validate_shared_stock_realization
@@ -524,6 +525,14 @@ def _parser() -> argparse.ArgumentParser:
     rq4_synthetic.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_PATH)
     rq4_validate = rq4_commands.add_parser("validate")
     rq4_validate.add_argument("artifact", type=Path)
+    rq4_resolution = validate_commands.add_parser(
+        "rq4-baseline-resolution", help="validate the resolved RQ4 baseline-definition contract"
+    )
+    rq4_resolution_commands = rq4_resolution.add_subparsers(
+        dest="rq4_resolution_command", required=True
+    )
+    rq4_resolution_validate = rq4_resolution_commands.add_parser("validate")
+    rq4_resolution_validate.add_argument("artifact", type=Path)
     rq4_smoke = validate_commands.add_parser(
         "rq4-real-backend-smoke", help="validate or inspect a real PostgreSQL RQ4 smoke artifact"
     )
@@ -926,6 +935,10 @@ def main(argv: list[str] | None = None) -> int:
                 }
             else:
                 result = validate_rq4_artifact(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-baseline-resolution":
+            result = validate_resolution_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-real-backend-smoke":

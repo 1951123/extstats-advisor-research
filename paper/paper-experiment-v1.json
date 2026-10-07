@@ -186,7 +186,7 @@
         "strong-conventional-postgresql-baseline",
         "extstats-advisor-recommendation"
       ],
-      "configuration_scope_note": "The matched RQ1 artifact is the fixed three-arm comparison (stock default, stock target10000, and advisor). workload-frequency-top-k, dependency-correlation-top-k, singleton-utility-top-k, random-k, greedy ADD, and exhaustive tiny-universe comparisons belong to RQ4 and are not complete merely because the RQ1 dataset campaign advances.",
+      "configuration_scope_note": "The matched RQ1 artifact is the fixed three-arm comparison (stock default, stock target10000, and advisor). workload-frequency-top-k, native-payload-size-top-k, singleton-utility-top-k, random-k, greedy ADD, and exhaustive tiny-universe comparisons belong to RQ4 and are not complete merely because the RQ1 dataset campaign advances.",
       "canary_protocol": {
         "experiment_id": "rq1-matched-comparison-v1",
         "dataset_scope": ["arecel-census13"],
@@ -465,13 +465,16 @@
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
       "status": "ready-to-run",
-      "implementation_status": "Formal AreCEL execution is blocked at the dependency/correlation baseline-definition gate; no v2 Census13, Power7, or DMV11 child has been run.",
+      "implementation_status": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, but its semantic naming resolution is now resolved; formal v2 execution is permitted and no v2 Census13, Power7, or DMV11 child has been run.",
       "dependency_baseline_definition_gate": {
-        "status": "blocked",
-        "artifact": "experiments/rq4-dependency-baseline-definition-blocker-v1.json",
-        "semantic_digest": "5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba",
+        "historical_audit": "blocked",
+        "resolution": "resolved",
+        "historical_artifact": "experiments/rq4-dependency-baseline-definition-blocker-v1.json",
+        "historical_artifact_digest": "5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba",
+        "resolution_artifact": "experiments/rq4-dependency-baseline-definition-resolution-v1.json",
+        "resolution_semantic_digest": "d07dee264e407028fc52acea4e724f93deb44e0cd7f82399ab6f604d607e2e0f",
         "current_implementation_score": "sample-side native payload_size bytes",
-        "formal_execution_allowed": false
+        "formal_execution_allowed": true
       },
       "evidence_hierarchy": {
         "rq4a": "primary deterministic patched-sandbox design quality",
@@ -479,7 +482,15 @@
         "sandbox_objective_is_headline": false,
         "native_analyze_variability_is_rq4a": false
       },
-      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "methods": ["random-k", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "historical_method_aliases": {
+        "dependency-correlation-top-k": "native-payload-size-top-k"
+      },
+      "baseline_definition_resolution": {
+        "path": "experiments/rq4-dependency-baseline-definition-resolution-v1.json",
+        "status": "resolved",
+        "semantic_digest": "d07dee264e407028fc52acea4e724f93deb44e0cd7f82399ab6f604d607e2e0f"
+      },
       "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_k_quality",
       "fixed_k": 4,
@@ -566,7 +577,7 @@
       "rq": "RQ4",
       "status": "complete",
       "datasets": ["real-artifact-fixture"],
-      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "methods": ["random-k", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
       "fixture": "three-query Census13 artifact-backed smoke; not a formal AreCEL comparison",
       "backend": "frozen Advisor PostgresPlannerSession, NativeStatsRepository, WeightedWorkloadUtility, and QErrorLoss",
       "physical_deployment_probe": "separate one-MCV stock deployment through the frozen Advisor deployment API",
@@ -604,7 +615,7 @@
       "experiment_id": "rq4-fixed-evaluation-budget-ablations",
       "rq": "RQ4",
       "status": "implementation-needed",
-      "methods": ["random-k", "workload-frequency-top-k", "dependency-correlation-top-k", "singleton-utility-top-k", "greedy-ADD"],
+      "methods": ["random-k", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
       "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_evaluation_budget",
       "fixed_k": 4,
@@ -705,7 +716,7 @@
       {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "ready-to-run",
-        "note": "Formal AreCEL execution is blocked by the unresolved dependency/correlation baseline-definition gate recorded in experiments/rq4-dependency-baseline-definition-blocker-v1.json (digest 5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba). The historical Forest10 artifact remains immutable evidence; Census13, Power7, and DMV11 were not run."
+        "note": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, while experiments/rq4-dependency-baseline-definition-resolution-v1.json resolves the semantic name as native-payload-size-top-k and permits formal execution. The historical Forest10 artifact remains immutable evidence; Census13, Power7, and DMV11 were not run."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
