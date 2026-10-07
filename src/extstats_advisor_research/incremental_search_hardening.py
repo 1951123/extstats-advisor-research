@@ -243,10 +243,16 @@ def run_hardening_smoke(
         all_positive_query_ids = tuple(
             query.query_id for query in snapshot.workload.queries if query.weight > 0
         )
-        query_incidence_counts = {
+        present_ids = {
+            candidate.candidate_id
+            for candidate in repository.candidate_models
+            if candidate.state == modules["PRESENT"]
+        }
+        present_query_incidence_counts = {
             query_id: sum(
                 query_id in set(universe.query_ids_for_candidate(candidate.candidate_id))
                 for candidate in universe.candidates
+                if candidate.candidate_id in present_ids
             )
             for query_id in all_positive_query_ids
         }
@@ -255,9 +261,9 @@ def run_hardening_smoke(
                 (
                     query_id
                     for query_id in all_positive_query_ids
-                    if 0 < query_incidence_counts[query_id] < len(universe.candidates)
+                    if 0 < present_query_incidence_counts[query_id] < len(present_ids)
                 ),
-                key=query_incidence_counts.__getitem__,
+                key=present_query_incidence_counts.__getitem__,
             ),
         )
         q1_workload = _subset_workload(snapshot, q1, modules["Workload"], modules["WorkloadQuery"])
