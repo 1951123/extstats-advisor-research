@@ -46,9 +46,10 @@ PostgreSQL, dataset/workload, and experiment-parameter identities.
 
 The machine-readable `paper-experiment-v1.json` records the confirmatory
 protocol, source-identity freeze gates, experiment status ledger, required raw
-and derived artifacts, and expected paper outputs. It is a protocol
-specification, not a declaration that unresolved system SHAs or build
-identities have already been frozen.
+and derived artifacts, and expected paper outputs. Its current freeze gate
+selects `paper/system-freeze-v2.json`; historical artifacts retain their
+embedded `system-freeze-v1` provenance. The v2 readiness evidence is in
+`paper/system-freeze-v2-readiness-review-v1.json`.
 
 `AdvisorSnapshot` remains the portable `(Sigma, S, P, W)` artifact. Exact or
 authoritative cardinality truth is a separately validated `GroundTruthSet`

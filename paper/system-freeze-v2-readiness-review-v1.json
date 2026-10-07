@@ -1,0 +1,194 @@
+{
+  "format_version": "system-freeze-v2-readiness-review-v1",
+  "status": "passed",
+  "review_scope": "Scoped readiness review for the v2 Advisor execution and budget contract; not a new experiment campaign.",
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "research_review_source_sha": "34c188f8c73e47f0bbccf2ea96f2194169d7a607",
+  "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "postgres_version": "16.14",
+  "mandatory_gates": {
+    "power7_singleton": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+          "digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+          "claim": "Reference and incremental singleton outputs, baseline objective, candidate profiles, frozen order, and 42-candidate nonincident Plan Rows audit are equal; planner calls are 430000 to 169042 and runtime evidence is present."
+        }
+      ],
+      "scope_note": "Power7 evidence was produced by the prior incremental implementation; the successor review found no production semantic change through the current Advisor pin."
+    },
+    "forest10_singleton": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+          "digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+          "claim": "Historical singleton semantic digest, candidate profiles, baseline objective, frozen order, runtime call count, and all 57 PRESENT-candidate nonincident audits are equal; planner calls are 580000 to 220640."
+        }
+      ]
+    },
+    "incremental_greedy_live": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+          "digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+          "claim": "The small live patched-PostgreSQL fixture shows equal first-round evaluations, proposal objectives/traces, accepted moves, final membership/objective, and termination for B=3,2,1, with nonincident audits and explicit v1 reference equality."
+        },
+        {
+          "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-equivalence-v1.json",
+          "digest": "a22a9d57213ce940a6b434ac73ca89977fa07f4cf9c171d1a885b0ccab2e3f0e",
+          "claim": "The original v1 small-live equivalence evidence remains available and is not rewritten."
+        }
+      ],
+      "classification": "small-live-correctness-validation, not formal-10k-workload-performance-evaluation"
+    },
+    "B_budget_and_termination": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "paper/incremental-greedy-add-protocol-v1.json",
+          "digest": "06bc8e449e327133a4432bb3532edf569d75fc21255399b711c39a6007815016",
+          "claim": "The canonical API and protocol distinguish K_s, B, k, and T; B is a selected candidate-definition bound, not a physical maintenance-cost bound."
+        },
+        {
+          "path": "advisor repository: src/extstats_advisor/optimization/plan.py and optimization/search.py",
+          "claim": "Omitted max_statistics_count resolves to B=candidate_limit; explicit None retains v1; v2 search uses strict improvement and exposes max-statistics-count, all-screened-candidates-selected, local-optimum, and budget-expired-* termination."
+        }
+      ],
+      "canonical_parameters": {
+        "K_s": 8,
+        "B": 8,
+        "T_seconds": 300
+      }
+    },
+    "deadline_and_cache": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json",
+          "digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
+          "claim": "Deadline coverage includes initial materialization and proposal evaluation; B=1/2/3 runtime accounting records baseline, winner, proposal, audit, elapsed, incumbent, and proposal-cache fields; incomplete rounds do not accept a winner."
+        },
+        {
+          "path": "advisor repository: src/extstats_advisor/dbms/postgres/search.py",
+          "claim": "The evaluator enforces exact first-winner objective equality, clears proposal patches on commit/termination, and checks the monotonic deadline around planner work and cache commits."
+        }
+      ]
+    },
+    "artifact_compatibility": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "paper/system-freeze-v1.json",
+          "digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+          "claim": "The v1 freeze file remains unchanged and validates independently."
+        },
+        {
+          "path": "experiments/arecel-census13/rq1-confirmatory/rq1-matched-comparison-v1.json",
+          "digest": "647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec",
+          "claim": "The canonical RQ1 artifact retains system-freeze-v1 provenance."
+        },
+        {
+          "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+          "digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9",
+          "claim": "The historical Forest10 formal RQ4 artifact retains system-freeze-v1 provenance."
+        },
+        {
+          "path": "advisor repository: OptimizationPlan/SearchResult v1 loaders and validators",
+          "claim": "Explicit v1 plans retain the reference path; v1 SearchResult and historical experiment artifacts remain readable without reassignment to v2."
+        }
+      ],
+      "historical_artifacts_reassigned": false
+    },
+    "code_provenance": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "advisor git diff ff6ec2dceaa95e4491d1f707dda123be6b71dd86..e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+          "claim": "The complete successor diff contains only tests/integration/test_postgres_native_stats.py."
+        },
+        {
+          "path": "advisor git log e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+          "claim": "The successor updates a stale integration accounting assertion; no production execution semantics changed."
+        }
+      ],
+      "producing_hardening_advisor_sha": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
+      "test_only_successor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "production_semantics_changed": false,
+      "changed_paths": [
+        "tests/integration/test_postgres_native_stats.py"
+      ],
+      "test_only_successor_relationship": true
+    },
+    "CI": {
+      "status": "passed",
+      "evidence": [
+        {
+          "path": "https://github.com/1951123/extstats-advisor/actions/runs/37566262424",
+          "claim": "Advisor CI for e0aa1ad completed successfully: test (3.12), postgres-integration, and patched-postgres-integration."
+        },
+        {
+          "path": "https://github.com/1951123/extstats-advisor-research/actions/runs/37566310506",
+          "claim": "Research CI for 34c188f completed successfully: test."
+        }
+      ],
+      "ci_runs": [
+        {
+          "repository": "1951123/extstats-advisor",
+          "run_id": 37566262424,
+          "head_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+          "conclusion": "success",
+          "jobs": [
+            "test (3.12)",
+            "postgres-integration",
+            "patched-postgres-integration"
+          ]
+        },
+        {
+          "repository": "1951123/extstats-advisor-research",
+          "run_id": 37566310506,
+          "head_sha": "34c188f8c73e47f0bbccf2ea96f2194169d7a607",
+          "conclusion": "success",
+          "jobs": [
+            "test"
+          ]
+        }
+      ]
+    }
+  },
+  "out_of_scope_validation": {
+    "census13_singleton": {
+      "equivalence_status": "not-executed",
+      "reason": "scoped-out-by-v2-validation-policy",
+      "preserved_preflight_note": "No auditable immutable historical reference wall-clock is available."
+    },
+    "dmv11_singleton": {
+      "equivalence_status": "not-executed",
+      "reason": "scoped-out-by-v2-validation-policy",
+      "preserved_preflight_note": "The previous combined validation projection exceeded the 300-second gate."
+    },
+    "full_10k_incremental_greedy": {
+      "status": "not-executed",
+      "reason": "readiness-review-scope-excludes-formal-performance-campaign"
+    }
+  },
+  "known_limitations": [
+    "The v2 singleton equivalence claim is supported by confirmatory evidence on Power7 and Forest10, not by exhaustive cross-dataset validation.",
+    "The live Greedy evidence is a small correctness fixture, not a formal 10,000-query performance evaluation or a four-dataset speedup claim.",
+    "B counts candidate definitions selected by the Advisor; physical catalog object count and maintenance cost remain separate measurements.",
+    "Historical RQ1 and Forest10 RQ4 artifacts remain system-freeze-v1 artifacts and are not retroactively reattributed to v2."
+  ],
+  "freeze_decision": "create-system-freeze-v2",
+  "evidence_references": [
+    "paper/incremental-greedy-add-protocol-v1.json",
+    "paper/system-freeze-v1.json",
+    "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+    "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+    "experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json"
+  ],
+  "blockers": [],
+  "artifact_digest": "34973689b5d43d4fe80352690c6bcab88adbdf94e1d96d73ec77396058a29c90"
+}

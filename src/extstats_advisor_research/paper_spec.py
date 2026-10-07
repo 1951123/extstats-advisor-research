@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 PAPER_SPECIFICATION = "paper-experiment-v1"
+CURRENT_SYSTEM_FREEZE_FORMAT = "system-freeze-v2"
 ARECEL_DATASETS = (
     "arecel-census13",
     "arecel-forest10",
@@ -153,15 +154,26 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
     freeze_gate = spec.get("freeze_gate")
     if not isinstance(freeze_gate, dict):
         raise TypeError("paper specification is missing freeze_gate")
+    if freeze_gate.get("status") != "sut-v2-frozen-research-per-experiment":
+        raise ValueError("paper specification freeze gate must select system-freeze-v2")
     system_under_test = freeze_gate.get("system_under_test")
     if not isinstance(system_under_test, dict):
         raise TypeError("paper specification is missing frozen system_under_test")
-    if system_under_test.get("format_version") != "system-freeze-v1":
-        raise ValueError("paper specification must reference system-freeze-v1")
+    if system_under_test.get("format_version") != CURRENT_SYSTEM_FREEZE_FORMAT:
+        raise ValueError("paper specification must reference system-freeze-v2")
     if system_under_test.get("status") != "frozen":
         raise ValueError("paper specification system_under_test must be frozen")
-    if system_under_test.get("path") != "paper/system-freeze-v1.json":
-        raise ValueError("paper specification has the wrong system-freeze-v1 path")
+    if system_under_test.get("path") != "paper/system-freeze-v2.json":
+        raise ValueError("paper specification has the wrong system-freeze-v2 path")
+    historical_policy = freeze_gate.get("historical_artifact_freeze_policy")
+    if not isinstance(historical_policy, dict):
+        raise TypeError("paper specification is missing historical_artifact_freeze_policy")
+    if historical_policy.get("historical_system_freeze") != "system-freeze-v1":
+        raise ValueError("historical artifacts must remain bound to system-freeze-v1")
+    if historical_policy.get("rule") != (
+        "Existing RQ1 and Forest10 RQ4 artifacts retain their embedded system-freeze-v1 provenance and are not retroactively reassigned to v2."
+    ):
+        raise ValueError("historical artifact freeze policy is not explicit")
     research_identity = freeze_gate.get("research_harness_identity")
     if not isinstance(research_identity, dict):
         raise TypeError("paper specification is missing research_harness_identity")

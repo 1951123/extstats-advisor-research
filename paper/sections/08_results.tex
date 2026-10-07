@@ -29,8 +29,9 @@ maximum, and query outcome counts.
 \input{tables/rq1-cross-dataset-summary.tex}
 
 The four-dataset summary is complete for the declared three-arm, in-workload
-comparison. It records paired classifications, tail-error concentration, and
-the largest per-query regressions in addition to the headline aggregates.
+comparison under the system freeze recorded by those artifacts. It records
+paired classifications, tail-error concentration, and the largest per-query
+regressions in addition to the headline aggregates.
 The v2 summary also separates observations-file provenance from the
 snapshot-bound GroundTruthSet provenance; v1 remains retained as immutable
 historical output.
@@ -107,7 +108,8 @@ should be considered alongside accuracy.
 The repository contains historical pilot artifacts for all four datasets and
 validated RQ1 canonical artifacts for Census13, Forest10, Power7, and DMV11
 under \texttt{experiments/}. The historical outputs remain preliminary; the
-new canonical artifacts are bound to the frozen SUT and the audited external
-truth policy. The DMV11 full-data transfer artifact remains separate RQ2
-evidence and is not part of the RQ1 completion claim.
+canonical artifacts retain their embedded system-freeze-v1 provenance and are
+not retroactively reassigned to system-freeze-v2. The DMV11 full-data
+transfer artifact remains separate RQ2 evidence and is not part of the RQ1
+completion claim.
 % TODO(PAPER-PILOT): link each figure/table to a compact derived artifact digest.

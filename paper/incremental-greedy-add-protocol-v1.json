@@ -1,7 +1,7 @@
 {
   "specification_identity": "incremental-greedy-add-protocol-v1",
   "status": "implementation-complete-small-smoke-passed",
-  "readiness_status": "hardening-and-cross-dataset-equivalence-pending",
+  "readiness_status": "v2-freeze-approved-scoped-equivalence",
   "scope": "Production Advisor v2 incremental Greedy ADD and an independent maximum selected-statistics budget; this is compatibility evidence, not a formal RQ4 experiment.",
   "current_advisor_revision": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
   "advisor_semantics": {
@@ -123,8 +123,21 @@
   "protocol_gates": {
     "formal_rq4_execution": false,
     "formal_rq2_rq3_rq5_execution": false,
-    "system_freeze_v2": "not-created; requires all singleton equivalence gates",
+    "system_freeze_v2": "frozen-with-scoped-equivalence",
     "historical_v1_artifacts_modified": false,
     "small_smoke_must_be_live": true
+  },
+  "v2_validation_scope": {
+    "singleton_equivalence_claim": "Power7 and Forest10 confirmatory evidence only; not exhaustive cross-dataset validation",
+    "census13": {
+      "equivalence_status": "not-executed",
+      "reason": "scoped-out-by-v2-validation-policy",
+      "preflight_note": "missing immutable historical reference wall-clock"
+    },
+    "dmv11": {
+      "equivalence_status": "not-executed",
+      "reason": "scoped-out-by-v2-validation-policy",
+      "preflight_note": "projected combined validation exceeded 300 seconds"
+    }
   }
 }

@@ -92,6 +92,17 @@ from .singleton_equivalence import (
     write_preflight as write_singleton_equivalence_preflight,
 )
 from .system_freeze import DEFAULT_SYSTEM_FREEZE_PATH, load_system_freeze, validate_system_freeze
+from .system_freeze_v2 import (
+    DEFAULT_FREEZE_PATH as DEFAULT_SYSTEM_FREEZE_V2_PATH,
+)
+from .system_freeze_v2 import (
+    DEFAULT_READINESS_PATH as DEFAULT_SYSTEM_FREEZE_V2_READINESS_PATH,
+)
+from .system_freeze_v2 import (
+    load_system_freeze_v2,
+    validate_readiness_evidence,
+    validate_system_freeze_v2,
+)
 from .type_coercion import run_type_coercion
 
 
@@ -378,6 +389,19 @@ def _parser() -> argparse.ArgumentParser:
         "system-freeze", help="validate the versioned frozen system-under-test contract"
     )
     system_freeze.add_argument("path", type=Path, nargs="?", default=DEFAULT_SYSTEM_FREEZE_PATH)
+    system_freeze_v2 = validate_commands.add_parser(
+        "system-freeze-v2", help="validate the scoped System Freeze v2 contract"
+    )
+    system_freeze_v2.add_argument(
+        "path", type=Path, nargs="?", default=DEFAULT_SYSTEM_FREEZE_V2_PATH
+    )
+    readiness = validate_commands.add_parser(
+        "system-freeze-v2-readiness",
+        help="validate the committed System Freeze v2 readiness evidence",
+    )
+    readiness.add_argument(
+        "path", type=Path, nargs="?", default=DEFAULT_SYSTEM_FREEZE_V2_READINESS_PATH
+    )
     rq1 = validate_commands.add_parser(
         "rq1-canary", help="run or validate the Census13 RQ1 matched-comparison artifact"
     )
@@ -742,6 +766,14 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "system-freeze":
             result = validate_system_freeze(load_system_freeze(args.path))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "system-freeze-v2":
+            result = validate_system_freeze_v2(load_system_freeze_v2(args.path))
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "system-freeze-v2-readiness":
+            result = validate_readiness_evidence(args.path)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-canary":

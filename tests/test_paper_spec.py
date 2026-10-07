@@ -13,6 +13,13 @@ from extstats_advisor_research.paper_spec import (
 
 def test_current_spec_keeps_confirmatory_datasets_and_separates_fixture() -> None:
     spec = load_paper_spec()
+    assert spec["freeze_gate"]["status"] == "sut-v2-frozen-research-per-experiment"
+    assert spec["freeze_gate"]["system_under_test"]["format_version"] == "system-freeze-v2"
+    assert spec["freeze_gate"]["system_under_test"]["path"] == "paper/system-freeze-v2.json"
+    assert (
+        spec["freeze_gate"]["historical_artifact_freeze_policy"]["historical_system_freeze"]
+        == "system-freeze-v1"
+    )
     experiments = {item["experiment_id"]: item for item in spec["experiments"]}
     for experiment_id in (
         "rq1-confirmatory-matched-baselines",

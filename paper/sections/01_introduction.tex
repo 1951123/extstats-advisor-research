@@ -76,9 +76,12 @@ the evaluated membership, not necessarily the union of that membership with
 arbitrary externally managed production statistics. Existing production
 extended statistics remain outside advisor ownership: the advisor does not
 silently drop, rename, replace, or reconcile them. A DBA decides whether such
-objects remain, are removed, are replaced, or coexist. Likewise, current
-Census13, Forest10, Power7, and DMV11 evidence is pilot or preliminary until
-the corresponding immutable artifacts are regenerated and audited.
+objects remain, are removed, are replaced, or coexist. Historical Census13,
+Forest10, Power7, and DMV11 outputs remain pilot or preliminary; newer
+canonical artifacts are confirmatory only within their declared three-arm,
+in-workload scope and the system freeze recorded in each artifact. The v2
+readiness review does not retroactively reassign those historical artifacts to
+a new freeze.
 
 The rest of the paper defines the design problem, describes the architecture
 and PostgreSQL extension, gives an evaluation protocol for five research

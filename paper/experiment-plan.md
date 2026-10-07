@@ -17,12 +17,13 @@ Census13 equivalence-bound external truth distinct provenance fields.
 
 ## Shared protocol
 
-- **Frozen SUT:** `paper/system-freeze-v1.json` freezes advisor
-  `0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`, patched PostgreSQL
+- **Current frozen SUT:** `paper/system-freeze-v2.json` freezes advisor
+  `e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3`, patched PostgreSQL
   `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6`, and stock PostgreSQL
   `0d1c00c624fa7367d4a895f44381887757289682` at PostgreSQL 16.14.
-  A semantic SUT change requires `system-freeze-v2`; v1 is not silently
-  overwritten.
+  `system-freeze-v1.json` remains unchanged and is the provenance of historical
+  RQ1 and Forest10 RQ4 artifacts; those artifacts are not silently reassigned
+  to v2. A future semantic SUT change requires a new freeze.
 - **Local build provenance:** when the reproducible local lab is used, record
   the role's `.runtime/postgres-lab/{stock,patched}/identity.json` as the
   build identity source. Runtime paths are not semantic identity fields.
@@ -72,6 +73,25 @@ Census13 equivalence-bound external truth distinct provenance fields.
   native `ANALYZE`, whose sampling is a stochastic realization. The exact
   seed statement does not control `ANALYZE` replayability or imply bit-identical
   statistics across fresh runs.
+
+### System Freeze v2 scope
+
+The v2 readiness review is recorded in
+`paper/system-freeze-v2-readiness-review-v1.json`. Its singleton equivalence
+claim is deliberately scoped to the confirmatory Power7 and Forest10 evidence;
+it is not exhaustive cross-dataset validation. Census13 and DMV11 singleton
+equivalence are explicitly `not-executed` under the v2 validation policy, with
+their earlier preflight limitations retained as notes. The live incremental
+Greedy evidence is a small correctness validation, not a formal 10,000-query
+performance evaluation or a four-dataset speedup claim.
+
+The v2 manifest separates semantics-preserving execution optimizations
+(incidence-indexed profiling and Greedy ADD, estimate caching, and bounded
+proposal caching) from the new algorithmic control represented by the maximum
+selected-definition count `B` and its budget termination semantics. `B` is not
+a physical maintenance-cost budget. The canonical v2 parameters are
+`sample_rows=10000`, `sample_seed=42`, `statistics_target=100`, `K_s=8`,
+`B=8`, and `T=300` seconds.
 
 ## Research execution order (not paper section order)
 
@@ -545,7 +565,8 @@ Power7's existing v1 equivalence artifact remains complete evidence for the
 previous incremental implementation. Census13 remains blocked because no
 immutable historical reference wall-clock is available; DMV11 remains blocked
 because the projected validation total is 427.91 seconds. No blocked or
-unmeasured dataset is promoted to complete, and no system-freeze-v2 is created.
+unmeasured dataset is promoted to complete. The scoped v2 freeze now records
+these two datasets as out-of-scope rather than as failed equivalence gates.
 
 ### Incremental Greedy ADD and maximum-statistics-count compatibility protocol
 
