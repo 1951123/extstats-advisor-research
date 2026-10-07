@@ -1,9 +1,9 @@
 {
   "advisor": {
-    "commit_sha": "67206c4e0e30bc0726ca6febaa887e9ae9e7bbbd",
+    "commit_sha": "ff6ec2dceaa95e4491d1f707dda123be6b71dd86",
     "repository": "1951123/extstats-advisor"
   },
-  "artifact_digest": "17c7498cf2b63948d64335031d1c8458e5942c98be2df23e26ebabd6aa003a31",
+  "artifact_digest": "3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743",
   "artifact_notes": {
     "historical_v1_artifact_unchanged": true,
     "no_formal_arecel_rq4_experiment": true
@@ -36,8 +36,9 @@
           "baseline_materialization_planner_calls": 3,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 0,
-          "elapsed_search_seconds": 0.0038987959997029975,
+          "elapsed_search_seconds": 0.003837658000520605,
           "end_to_end_saved_search_planner_calls": -5,
+          "end_to_end_search_call_reduction": -5,
           "end_to_end_search_planner_calls": 5,
           "evaluation_strategy": "incidence-incremental-greedy-v1",
           "first_winner_materialization_planner_calls": 2,
@@ -52,6 +53,7 @@
           "planner_query_reduction_fraction": 0.0,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 0,
+          "proposal_only_call_reduction": 0,
           "proposal_only_reference_planner_calls": 0,
           "proposal_only_saved_planner_calls": 0,
           "proposal_planner_query_calls": 0,
@@ -73,6 +75,7 @@
           "audit_planner_query_calls": 6,
           "baseline_materialization_planner_calls": 3,
           "end_to_end_saved_search_planner_calls": -5,
+          "end_to_end_search_call_reduction": -5,
           "end_to_end_search_planner_calls": 5,
           "first_winner_materialization_planner_calls": 2,
           "incumbent_estimate_count": 3,
@@ -83,6 +86,7 @@
           "planner_query_reduction_fraction": 0.0,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 0,
+          "proposal_only_call_reduction": 0,
           "proposal_only_reference_planner_calls": 0,
           "proposal_only_saved_planner_calls": 0,
           "proposal_planner_query_calls": 0,
@@ -161,7 +165,7 @@
           "accepted_move_count": 1,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 0,
-          "elapsed_search_seconds": 2.650399983394891e-05,
+          "elapsed_search_seconds": 3.188500068063149e-05,
           "live_configuration_evaluation_count": 0,
           "max_statistics_count": 1,
           "partial_final_round_evaluation_count": 0,
@@ -246,8 +250,9 @@
           "baseline_materialization_planner_calls": 3,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 1,
-          "elapsed_search_seconds": 0.006440723999730835,
+          "elapsed_search_seconds": 0.006794887000069139,
           "end_to_end_saved_search_planner_calls": -3,
+          "end_to_end_search_call_reduction": -3,
           "end_to_end_search_planner_calls": 9,
           "evaluation_strategy": "incidence-incremental-greedy-v1",
           "first_winner_materialization_planner_calls": 2,
@@ -262,6 +267,7 @@
           "planner_query_reduction_fraction": -0.5,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 2,
+          "proposal_only_call_reduction": 2,
           "proposal_only_reference_planner_calls": 6,
           "proposal_only_saved_planner_calls": 2,
           "proposal_planner_query_calls": 4,
@@ -283,6 +289,7 @@
           "audit_planner_query_calls": 12,
           "baseline_materialization_planner_calls": 3,
           "end_to_end_saved_search_planner_calls": -3,
+          "end_to_end_search_call_reduction": -3,
           "end_to_end_search_planner_calls": 9,
           "first_winner_materialization_planner_calls": 2,
           "incumbent_estimate_count": 3,
@@ -293,6 +300,7 @@
           "planner_query_reduction_fraction": -0.5,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 2,
+          "proposal_only_call_reduction": 2,
           "proposal_only_reference_planner_calls": 6,
           "proposal_only_saved_planner_calls": 2,
           "proposal_planner_query_calls": 4,
@@ -420,7 +428,7 @@
           "accepted_move_count": 2,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 1,
-          "elapsed_search_seconds": 0.005078449000393448,
+          "elapsed_search_seconds": 0.004008939000414102,
           "live_configuration_evaluation_count": 2,
           "max_statistics_count": 2,
           "partial_final_round_evaluation_count": 0,
@@ -526,8 +534,9 @@
           "baseline_materialization_planner_calls": 3,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 2,
-          "elapsed_search_seconds": 0.008523369000613457,
+          "elapsed_search_seconds": 0.007850951999898825,
           "end_to_end_saved_search_planner_calls": -2,
+          "end_to_end_search_call_reduction": -2,
           "end_to_end_search_planner_calls": 11,
           "evaluation_strategy": "incidence-incremental-greedy-v1",
           "first_winner_materialization_planner_calls": 2,
@@ -542,6 +551,7 @@
           "planner_query_reduction_fraction": -0.2222222222222222,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 3,
+          "proposal_only_call_reduction": 3,
           "proposal_only_reference_planner_calls": 9,
           "proposal_only_saved_planner_calls": 3,
           "proposal_planner_query_calls": 6,
@@ -563,6 +573,7 @@
           "audit_planner_query_calls": 12,
           "baseline_materialization_planner_calls": 3,
           "end_to_end_saved_search_planner_calls": -2,
+          "end_to_end_search_call_reduction": -2,
           "end_to_end_search_planner_calls": 11,
           "first_winner_materialization_planner_calls": 2,
           "incumbent_estimate_count": 3,
@@ -573,6 +584,7 @@
           "planner_query_reduction_fraction": -0.2222222222222222,
           "proposal_cache_entry_count": 0,
           "proposal_configuration_evaluations": 3,
+          "proposal_only_call_reduction": 3,
           "proposal_only_reference_planner_calls": 9,
           "proposal_only_saved_planner_calls": 3,
           "proposal_planner_query_calls": 6,
@@ -714,7 +726,7 @@
           "accepted_move_count": 2,
           "cached_singleton_configuration_count": 3,
           "completed_round_count": 2,
-          "elapsed_search_seconds": 0.005711589999918942,
+          "elapsed_search_seconds": 0.00549787300042226,
           "live_configuration_evaluation_count": 3,
           "max_statistics_count": 3,
           "partial_final_round_evaluation_count": 0,
@@ -922,7 +934,7 @@
     ]
   },
   "research_repository": {
-    "research_commit_sha": "ba390cc0f785013f1b9b45fcd46381db18e2f1a2",
+    "research_commit_sha": "ed176916fe9cf2456bba63eea9e60808ad09457d",
     "research_repository": "1951123/extstats-advisor-research"
   },
   "sandbox_verification": {
@@ -940,7 +952,7 @@
       "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
       "population_quality": "estimate",
       "population_row_count": 48842.0,
-      "prepared_at": "2026-10-07 10:59:40.053062+08:00",
+      "prepared_at": "2026-10-07 11:10:55.389444+08:00",
       "relation_id": "rel_792c9fc7c23cba759b9bab83",
       "relation_name": {
         "catalog": "extstats_stock",
@@ -974,7 +986,7 @@
         "ordinary_stats_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
         "population_quality": "estimate",
         "population_row_count": 48842.0,
-        "prepared_at": "2026-10-07 10:59:40.053062+08:00",
+        "prepared_at": "2026-10-07 11:10:55.389444+08:00",
         "relation_id": "rel_792c9fc7c23cba759b9bab83",
         "relation_name": {
           "catalog": "extstats_stock",
@@ -1001,7 +1013,7 @@
         "semantic_digest": "02e3f05e12ba679ed6f2b45b9c04778fec8b07b4215d78531d26d6670fbfb1b8"
       },
       "sandbox_contract": "postgresql-planner-sandbox-v1",
-      "target_relation_oid": 16687,
+      "target_relation_oid": 16737,
       "target_sample_row_count": 10000
     }
   },
@@ -1011,7 +1023,7 @@
       "evaluation_strategy": "three-query-live-smoke-profile",
       "positive_query_count": 3,
       "present_candidate_count": 136,
-      "selection_preprocessing_wall_clock_seconds": 0.5546435660007774
+      "selection_preprocessing_wall_clock_seconds": 0.5493613580001693
     },
     "semantic_digest": "ad29023e88fa63a11a0bd118647c4411b4cd0ba27f6d1bed5ef8e4a85df782e9"
   },
