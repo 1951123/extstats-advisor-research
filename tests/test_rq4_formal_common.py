@@ -24,6 +24,16 @@ ADVISOR_ROOT = Path("/home/wqts/projects/extstats-advisor")
 
 
 def test_v2_preflight_reuses_all_three_rq2_sources() -> None:
+    source_roots = [
+        ROOT / path
+        for path in (
+            ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f",
+            ".runtime/rq2-formal-v3/power7/canonical/5655242c1002eb76342faae9",
+            ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894",
+        )
+    ]
+    if not all(path.is_dir() for path in source_roots):
+        pytest.skip("local RQ2 immutable source bundles are not part of the CI checkout")
     expected = {
         "arecel-census13": (136, 402),
         "arecel-power7": (42, 120),
@@ -41,6 +51,13 @@ def test_v2_preflight_reuses_all_three_rq2_sources() -> None:
             == 0
         )
         assert result["final_evaluations"]["planner_query_calls"] == 90_000
+
+
+def test_v2_preflight_fails_closed_without_reusable_source(tmp_path: Path) -> None:
+    from extstats_advisor_research.rq4_ablation import RQ4ValidationError
+
+    with pytest.raises(RQ4ValidationError, match="manifest.json"):
+        build_preflight("arecel-census13", tmp_path, ADVISOR_ROOT)
 
 
 def test_v2_method_order_is_nine_methods() -> None:

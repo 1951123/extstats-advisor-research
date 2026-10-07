@@ -148,6 +148,8 @@ def load_reusable_source(
     """Load and validate the committed RQ2 v2 source bundle."""
 
     source = _source_root(research_root, dataset_id)
+    if not source.is_dir() or not (source / "manifest.json").is_file():
+        raise RQ4ValidationError(f"RQ2 source manifest.json is missing: {source}")
     manifest = read_json(source / "manifest.json")
     expected = {
         "benchmark_id": dataset_id,
