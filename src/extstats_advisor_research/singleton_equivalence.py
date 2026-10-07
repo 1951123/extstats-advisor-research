@@ -17,7 +17,15 @@ from .provenance import read_json, semantic_digest, sha256_file, write_json
 
 FORMAT_VERSION = "advisor-singleton-incremental-equivalence-v1"
 INCREMENTAL_ADVISOR_SHA = "9c93925ebbcda0dc3306e8e63d86ccd782ffc539"
+CURRENT_INCREMENTAL_ADVISOR_SHA = "0fdc0eed4b0858a65746191d46ff74cc3e28ae61"
 REFERENCE_ADVISOR_SHA = FROZEN_ADVISOR_SHA
+HISTORICAL_PROFILE_DIGESTS = {
+    "arecel-census13": "0e6330007b46ca57bc456183564c6cf236b5db5654883a3321bb9128f6f17ee9",
+    "arecel-forest10": "80f515d9884e40caec8021dec8894cac2a866aa6901ae519eb5093471d5d9563",
+    "arecel-power7": "d30f46440ba46ca97af815362e029788cc4552a8da4f1ab7d8f54267f485b776",
+    "arecel-dmv11": "07e86d35e04d287814cca184a9bb18637e6346c95640265fbf5754f693d23c6e",
+}
+HISTORICAL_INCREMENTAL_FORMAT_VERSION = "advisor-singleton-incremental-historical-equivalence-v2"
 MAX_VALIDATION_SECONDS = 300.0
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 
@@ -390,6 +398,229 @@ def inspect_artifact(path: Path) -> dict[str, Any]:
         .get("runtime_metadata", {})
         .get("planner_query_estimate_count"),
     }
+
+
+def run_historical_incremental_equivalence(
+    dataset_id: str,
+    source_run: Path,
+    *,
+    patched_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    output: Path,
+) -> dict[str, Any]:
+    """Run only the current incremental profiler against an immutable v1 oracle.
+
+    This is intentionally not the old reference-plus-incremental experiment.
+    The historical profile is loaded and validated as a semantic oracle; the
+    live work only executes the current incidence-incremental profiler once.
+    """
+
+    verify_git_sha(advisor_root, CURRENT_INCREMENTAL_ADVISOR_SHA)
+    verify_git_sha(patched_postgres_root, FROZEN_PATCHED_POSTGRES_SHA)
+    research_identity = verify_research_repository(RESEARCH_ROOT)
+    source = _load_source(source_run, advisor_root)
+    manifest = source["manifest"]
+    source_profile = source["profile"]
+    if dataset_id not in HISTORICAL_PROFILE_DIGESTS:
+        raise ValueError(f"no historical singleton oracle is registered for {dataset_id}")
+    if manifest.get("benchmark_id") != dataset_id:
+        raise ValueError("historical singleton source benchmark identity mismatch")
+    if manifest.get("advisor_commit_sha") != REFERENCE_ADVISOR_SHA:
+        raise ValueError("historical singleton source advisor identity mismatch")
+    if manifest.get("patched_postgres_commit_sha") != FROZEN_PATCHED_POSTGRES_SHA:
+        raise ValueError("historical singleton source PostgreSQL identity mismatch")
+    historical_digest = HISTORICAL_PROFILE_DIGESTS[dataset_id]
+    if source_profile.computed_semantic_digest != historical_digest:
+        raise ValueError("historical singleton profile oracle digest mismatch")
+
+    modules = source["modules"]
+    snapshot = source["snapshot"]
+    universe = source["universe"]
+    repository = source["repository"]
+    truth = source["truth"]
+    truth_semantic_digest = truth_digest(truth)
+    utility = modules["WeightedWorkloadUtility"](
+        snapshot.workload,
+        modules["ArtifactGroundTruthProvider"](truth),
+        modules["QErrorLoss"](),
+    )
+    prepared = modules["prepare_postgres_planner_sandbox"](
+        patched_dsn, snapshot, universe, repository
+    )
+    verification = modules["verify_postgres_planner_sandbox"](
+        patched_dsn, snapshot, universe, repository
+    )
+    incremental_audit: dict[str, Any] = {}
+    try:
+        with modules["PostgresPlannerSession"](
+            patched_dsn, snapshot, universe, repository
+        ) as planner:
+            incremental = modules["profile_postgres_singletons"](
+                planner,
+                snapshot,
+                universe,
+                repository,
+                utility,
+                ground_truth_semantic_digest=truth_semantic_digest,
+                estimate_audit=incremental_audit,
+            )
+    finally:
+        modules["destroy_postgres_planner_sandbox"](patched_dsn)
+
+    query_ids = _positive_query_ids(snapshot)
+    present = [item for item in repository.candidate_models if item.state == "present"]
+    audit_records = []
+    for candidate in present:
+        affected = tuple(
+            query_id
+            for query_id in query_ids
+            if query_id in set(universe.query_ids_for_candidate(candidate.candidate_id))
+        )
+        modules["validate_nonincident_estimates_unchanged"](
+            incremental_audit["baseline"],
+            incremental_audit["singletons"][candidate.candidate_id],
+            affected,
+        )
+        audit_records.append(
+            {
+                "candidate_id": candidate.candidate_id,
+                "affected_query_count": len(affected),
+                "nonincident_estimates_unchanged": True,
+            }
+        )
+
+    runtime = dict(incremental.runtime_metadata)
+    expected_calls = len(query_ids) + sum(
+        record["affected_query_count"] for record in audit_records
+    )
+    equivalence = {
+        "historical_identity_validated": True,
+        "historical_profile_oracle_digest_equal": source_profile.computed_semantic_digest
+        == historical_digest,
+        "semantic_output_equal": incremental.computed_semantic_digest
+        == source_profile.computed_semantic_digest,
+        "candidate_profiles_equal": incremental.candidate_profiles
+        == source_profile.candidate_profiles,
+        "frozen_order_equal": incremental.frozen_ordered_candidate_ids
+        == source_profile.frozen_ordered_candidate_ids,
+        "baseline_objective_equal": incremental.baseline.objective
+        == source_profile.baseline.objective,
+        "runtime_incremental_call_count_equal": runtime.get("planner_query_estimate_count")
+        == expected_calls,
+        "audit": {
+            "all_nonincident_estimates_unchanged": all(
+                record["nonincident_estimates_unchanged"] for record in audit_records
+            ),
+            "records": audit_records,
+        },
+    }
+    complete = (
+        all(
+            equivalence[field]
+            for field in (
+                "historical_identity_validated",
+                "historical_profile_oracle_digest_equal",
+                "semantic_output_equal",
+                "candidate_profiles_equal",
+                "frozen_order_equal",
+                "baseline_objective_equal",
+                "runtime_incremental_call_count_equal",
+            )
+        )
+        and equivalence["audit"]["all_nonincident_estimates_unchanged"]
+    )
+    payload = {
+        "format_version": HISTORICAL_INCREMENTAL_FORMAT_VERSION,
+        "status": "complete" if complete else "failed",
+        "experiment_id": f"{HISTORICAL_INCREMENTAL_FORMAT_VERSION}:{dataset_id}",
+        "dataset_id": dataset_id,
+        "protocol": {
+            "strategy": "incidence-incremental-v1",
+            "historical_profile_role": "immutable-semantic-oracle",
+            "reference_profile_rerun": False,
+            "same_snapshot_universe_native_repository": True,
+            "same_patched_postgresql_binary": True,
+            "nonincident_estimate_invariant": "fail-closed-audited",
+            "validation_wall_clock_gate_seconds": MAX_VALIDATION_SECONDS,
+        },
+        "research_repository": research_identity,
+        "advisor": {
+            "current_incremental_commit_sha": CURRENT_INCREMENTAL_ADVISOR_SHA,
+            "historical_oracle_commit_sha": REFERENCE_ADVISOR_SHA,
+        },
+        "patched_postgresql": {
+            "repository": "1951123/postgresql-pgextadv",
+            "commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
+            "postgres_version": "16.14",
+        },
+        "source_run": {
+            "path": str(source_run),
+            "manifest_sha256": sha256_file(source["paths"]["manifest"]),
+            "historical_singleton_profile_semantic_digest": source_profile.computed_semantic_digest,
+            "snapshot_semantic_digest": snapshot.semantic_digest,
+            "candidate_universe_semantic_digest": universe.semantic_digest,
+            "native_repository_semantic_digest": repository.semantic_digest,
+            "ground_truth_semantic_digest": truth_semantic_digest,
+        },
+        "sandbox_verification": {
+            "prepared": prepared.metadata.to_dict(),
+            "verified": verification,
+        },
+        "historical_oracle": {
+            "profile_semantic_digest": source_profile.computed_semantic_digest,
+            "runtime_metadata": dict(source_profile.runtime_metadata),
+        },
+        "incremental": {
+            "profile_semantic_digest": incremental.computed_semantic_digest,
+            "runtime_metadata": runtime,
+        },
+        "equivalence": equivalence,
+    }
+    payload["artifact_digest"] = semantic_digest(payload)
+    write_json(output, payload)
+    return inspect_historical_incremental_artifact(output)
+
+
+def inspect_historical_incremental_artifact(path: Path) -> dict[str, Any]:
+    value = read_json(path)
+    return {
+        "format_version": value.get("format_version"),
+        "status": value.get("status"),
+        "dataset_id": value.get("dataset_id"),
+        "artifact_digest": value.get("artifact_digest"),
+        "semantic_output_equal": value.get("equivalence", {}).get("semantic_output_equal"),
+        "incremental_planner_query_estimate_count": value.get("incremental", {})
+        .get("runtime_metadata", {})
+        .get("planner_query_estimate_count"),
+    }
+
+
+def validate_historical_incremental_artifact(path: Path) -> dict[str, Any]:
+    value = read_json(path)
+    if value.get("format_version") != HISTORICAL_INCREMENTAL_FORMAT_VERSION:
+        raise ValueError("unsupported historical incremental equivalence artifact")
+    body = dict(value)
+    digest = body.pop("artifact_digest", None)
+    if digest != semantic_digest(body):
+        raise ValueError("historical incremental equivalence artifact digest mismatch")
+    if value.get("status") != "complete":
+        raise ValueError("historical incremental equivalence artifact is not complete")
+    equivalence = value.get("equivalence", {})
+    required = (
+        "historical_identity_validated",
+        "historical_profile_oracle_digest_equal",
+        "semantic_output_equal",
+        "candidate_profiles_equal",
+        "frozen_order_equal",
+        "baseline_objective_equal",
+        "runtime_incremental_call_count_equal",
+    )
+    if not all(equivalence.get(field) is True for field in required):
+        raise ValueError("historical incremental semantic gate failed")
+    if equivalence.get("audit", {}).get("all_nonincident_estimates_unchanged") is not True:
+        raise ValueError("historical incremental nonincident audit failed")
+    return inspect_historical_incremental_artifact(path) | {"status": "valid"}
 
 
 def validate_artifact(path: Path) -> dict[str, Any]:

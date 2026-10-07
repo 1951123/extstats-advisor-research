@@ -70,7 +70,10 @@ from .singleton_equivalence import (
     inspect_artifact as inspect_singleton_equivalence,
 )
 from .singleton_equivalence import (
+    inspect_historical_incremental_artifact,
     run_equivalence,
+    run_historical_incremental_equivalence,
+    validate_historical_incremental_artifact,
 )
 from .singleton_equivalence import (
     validate_artifact as validate_singleton_equivalence,
@@ -509,6 +512,30 @@ def _parser() -> argparse.ArgumentParser:
     singleton_validate.add_argument("artifact", type=Path)
     singleton_inspect = singleton_commands.add_parser("inspect")
     singleton_inspect.add_argument("artifact", type=Path)
+    historical = singleton_commands.add_parser(
+        "historical-incremental",
+        help="run or validate current incremental profiling against historical semantic oracles",
+    )
+    historical_commands = historical.add_subparsers(
+        dest="historical_incremental_command", required=True
+    )
+    historical_run = historical_commands.add_parser("run", aliases=["create"])
+    historical_run.add_argument("--dataset", required=True)
+    historical_run.add_argument("--source-run", type=Path, required=True)
+    historical_run.add_argument("--patched-dsn", required=True)
+    historical_run.add_argument("--output", type=Path, required=True)
+    historical_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    historical_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    historical_validate = historical_commands.add_parser("validate")
+    historical_validate.add_argument("artifact", type=Path)
+    historical_inspect = historical_commands.add_parser("inspect")
+    historical_inspect.add_argument("artifact", type=Path)
     return parser
 
 
@@ -813,6 +840,20 @@ def main(argv: list[str] | None = None) -> int:
                 )
             elif args.singleton_command == "validate":
                 result = validate_singleton_equivalence(args.artifact)
+            elif args.singleton_command == "historical-incremental":
+                if args.historical_incremental_command in {"run", "create"}:
+                    result = run_historical_incremental_equivalence(
+                        args.dataset,
+                        args.source_run,
+                        patched_dsn=args.patched_dsn,
+                        advisor_root=args.advisor_root,
+                        patched_postgres_root=args.patched_postgres_root,
+                        output=args.output,
+                    )
+                elif args.historical_incremental_command == "validate":
+                    result = validate_historical_incremental_artifact(args.artifact)
+                else:
+                    result = inspect_historical_incremental_artifact(args.artifact)
             else:
                 result = inspect_singleton_equivalence(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
