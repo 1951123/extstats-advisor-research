@@ -235,20 +235,53 @@ def load_reusable_source(
     }
 
 
-def _build_full_universe_plan(source: Mapping[str, Any], modules: Mapping[str, Any]) -> Any:
-    """Construct an explicit full-eligible plan without singleton prefix screening."""
+def build_ranked_plan(
+    source: Mapping[str, Any],
+    modules: Mapping[str, Any],
+    *,
+    screening_width: int | str = "all",
+    max_statistics_count: int = FIXED_K,
+    wall_clock_seconds: float = SELECTION_WALL_CLOCK_SECONDS,
+) -> Any:
+    """Construct a plan from the frozen singleton order and an optional prefix.
+
+    This is deliberately a plan-construction helper only.  It does not rank,
+    profile, or otherwise inspect utility signals.  ``all`` is the full
+    eligible order and therefore preserves the historical fixed-k plan when
+    ``max_statistics_count`` is ``FIXED_K``.
+    """
 
     profile = source["singleton_profile"]
     profile_by_id = {item.candidate_id: item for item in profile.candidate_profiles}
     eligible = source["eligible_universe"]["eligible_candidates"]
     eligible_ids = {item["candidate_id"] for item in eligible}
-    ordered_ids = tuple(
+    full_ordered_ids = tuple(
         candidate_id
         for candidate_id in profile.frozen_ordered_candidate_ids
         if candidate_id in eligible_ids
     )
-    if set(ordered_ids) != eligible_ids:
+    if set(full_ordered_ids) != eligible_ids:
         raise RQ4ValidationError("eligible universe does not match singleton frozen order")
+    if isinstance(max_statistics_count, bool) or not isinstance(max_statistics_count, int):
+        raise RQ4ValidationError("max_statistics_count must be an integer")
+    if max_statistics_count < 1 or max_statistics_count > len(full_ordered_ids):
+        raise RQ4ValidationError("max_statistics_count must fit the eligible universe")
+    if isinstance(screening_width, bool) or (
+        not isinstance(screening_width, (int, str))
+        or (isinstance(screening_width, str) and screening_width != "all")
+        or (isinstance(screening_width, int) and screening_width < max_statistics_count)
+    ):
+        raise RQ4ValidationError(
+            "screening_width must be 'all' or an integer >= max_statistics_count"
+        )
+    if not isinstance(wall_clock_seconds, (int, float)) or wall_clock_seconds <= 0:
+        raise RQ4ValidationError("wall_clock_seconds must be positive")
+    prefix_length = (
+        len(full_ordered_ids)
+        if screening_width == "all"
+        else min(int(screening_width), len(full_ordered_ids))
+    )
+    ordered_ids = full_ordered_ids[:prefix_length]
     records = tuple(
         modules["ScreenedCandidate"](
             candidate_id,
@@ -259,13 +292,16 @@ def _build_full_universe_plan(source: Mapping[str, Any], modules: Mapping[str, A
         )
         for position, candidate_id in enumerate(ordered_ids, 1)
     )
-    present = {
-        item.candidate_id for item in profile.candidate_profiles if item.native_state == "present"
-    }
     all_ids = {item.candidate_id for item in profile.candidate_profiles}
-    excluded = tuple(sorted(present - set(ordered_ids)))
+    present_ordered = tuple(profile.frozen_ordered_candidate_ids)
+    excluded = tuple(
+        candidate_id for candidate_id in present_ordered if candidate_id not in set(ordered_ids)
+    )
+    present = set(present_ordered)
     absent = tuple(sorted(all_ids - present))
-    budget = modules["OptimizationBudget"](len(ordered_ids), SELECTION_WALL_CLOCK_SECONDS, FIXED_K)
+    budget = modules["OptimizationBudget"](
+        len(ordered_ids), float(wall_clock_seconds), max_statistics_count
+    )
     return modules["OptimizationPlan"](
         profile.source_snapshot_semantic_digest,
         profile.candidate_universe_semantic_digest,
@@ -282,6 +318,18 @@ def _build_full_universe_plan(source: Mapping[str, Any], modules: Mapping[str, A
         records,
         excluded,
         absent,
+    )
+
+
+def _build_full_universe_plan(source: Mapping[str, Any], modules: Mapping[str, Any]) -> Any:
+    """Construct the historical full-eligible fixed-k plan."""
+
+    return build_ranked_plan(
+        source,
+        modules,
+        screening_width="all",
+        max_statistics_count=FIXED_K,
+        wall_clock_seconds=SELECTION_WALL_CLOCK_SECONDS,
     )
 
 
@@ -982,6 +1030,7 @@ __all__ = [
     "RQ2_SOURCE_RUNS",
     "PREflight_FORMAT",
     "build_preflight",
+    "build_ranked_plan",
     "load_reusable_source",
     "run_formal_rq4_v2",
     "validate_reference_equivalence_gate",

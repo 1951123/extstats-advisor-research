@@ -101,10 +101,10 @@ a physical maintenance-cost budget. The canonical v2 parameters are
 
 ## Research execution order (not paper section order)
 
-1. **Priority 0:** protocol/source freeze, the RQ3 mechanism-fidelity harness,
-   and the RQ4 deterministic replay/shared-realization gates.
-2. **Priority 1:** RQ1 matched baselines, then RQ4 inexpensive heuristic
-   baselines and their RQ4a deterministic evidence.
+1. **Priority 0:** protocol/source freeze and the RQ3 mechanism-fidelity
+   harness.
+2. **Priority 1:** RQ1 matched baselines and RQ4 inexpensive heuristic
+   baselines.
 3. **Priority 2:** RQ2 confirmatory transfer and sample/full utility analysis.
 4. **Priority 3:** RQ5 cost accounting and sensitivity analyses.
 5. **Stretch:** drift/recommendation stability and additional workloads.
@@ -133,6 +133,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
 | `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
+| `rq4-ks-sensitivity` | RQ4a | `implementation-ready` | `paper/top-k-screening-protocol-v2.json` preregisters `K_s={4,8,16,32,all}` at `B=4` and 300 seconds for Census13/Power7/DMV11; no formal sensitivity sweep has been executed. The small smoke is protocol validation only. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -663,6 +664,26 @@ semantics-affecting search hyperparameter, while incidence-incremental
 profiling reduces the profiling cost independently of the prefix width. The
 machine-readable protocol and proposed, not-yet-run grid are in
 `paper/top-k-screening-protocol-v1.json`. No formal K sweep is complete.
+
+The v1 protocol remains immutable historical design documentation. The
+follow-up `paper/top-k-screening-protocol-v2.json` preregisters the distinct
+`rq4-ks-sensitivity-v1` quality--cost experiment for Census13, Power7, and
+DMV11, excluding Forest10. It holds the selected-statistics budget at `B=4`
+and compares `K_s={4,8,16,32,all}` under an independent 300-second search
+cap and a maximum of 2,000 configuration-objective evaluations per point.
+`K_s=8` is only the canonical screening-width reference under fixed `B=4`;
+it is not a new canonical Advisor configuration. Every finite point uses the
+first prefix of the already frozen singleton order, while `all` is reused
+from a fixed-k-v2 child only after an exact digest and semantic gate. No
+formal sensitivity sweep has been executed.
+
+All eligible candidates are profiled before any prefix is applied. The
+sensitivity protocol therefore records zero new singleton-profiling work but
+retains the source profile's measured accounting; it does not treat profile
+reuse as zero algorithmic cost. Each future finite point reports selection
+configuration evaluations, incremental planner calls, committed membership,
+termination/censoring state, and one independent final sandbox evaluation.
+Stock physical RQ4b evaluation is not repeated per screening width.
 
 The immutable preflight predicts that Forest10 and Power7 are within the
 300-second reference-plus-incremental validation gate; DMV11 is not, and

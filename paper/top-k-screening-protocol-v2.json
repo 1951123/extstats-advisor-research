@@ -1,0 +1,94 @@
+{
+  "specification_identity": "top-k-screening-protocol-v2",
+  "experiment_id": "rq4-ks-sensitivity-v1",
+  "status": "preregistered",
+  "formal_sweep_executed": false,
+  "supersedes": "paper/top-k-screening-protocol-v1.json",
+  "reason": "post-RQ4-fixed-k quality-cost protocol refinement",
+  "scope": "RQ4a patched-sandbox sensitivity of singleton-ranked screening width under a fixed selected-statistics budget; this protocol does not retune the canonical Advisor configuration.",
+  "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
+  "excluded_datasets": ["arecel-forest10"],
+  "grid": [4, 8, 16, 32, "all"],
+  "fixed_B": 4,
+  "search_wall_clock_seconds": 300.0,
+  "max_configuration_objective_evaluations": 2000,
+  "screening_semantics": {
+    "eligible_universe": "The same utility-independent eligible universe used by completed rq4-fixed-k-v2.",
+    "singleton_profile": "Reuse the committed RQ2-v2 singleton profile; do not reprofile.",
+    "profile_reuse_accounting": "new singleton profiling work is zero, while source profiling configuration/query/time accounting remains reported.",
+    "finite_width": "C_K is the first K_s eligible candidates in the frozen singleton order after eligibility filtering; no reranking is performed.",
+    "all_width": "C_all is the complete eligible universe.",
+    "search": "Frozen Advisor incidence-incremental Greedy ADD with strict improvement, selected count k <= B, deterministic ties, merged-map utility, proposal caching, empty-incidence and nonincident invariants, and incomplete-round discard semantics.",
+    "budget_censoring": "A budget-censored point preserves the last fully committed incumbent and is valid evidence; it is not relabeled as a completed k=4 optimum.",
+    "selection_budget_excludes": ["singleton profiling", "independent final sandbox evaluation", "stock physical evaluation"]
+  },
+  "point_contract": {
+    "execution_mode_values": ["executed", "reused"],
+    "required_point_fields": [
+      "dataset_id",
+      "K_s",
+      "effective_candidate_count",
+      "candidate_prefix",
+      "candidate_prefix_semantic_digest",
+      "B",
+      "selected_candidate_ids",
+      "selected_k",
+      "status",
+      "termination_reason",
+      "search_result",
+      "selection_configuration_objective_evaluations",
+      "incremental_planner_calls",
+      "selection_wall_clock_seconds",
+      "source_singleton_profiling_accounting",
+      "final_sandbox_evaluation"
+    ],
+    "status_values": ["complete", "budget-censored", "failed-validation"],
+    "all_reuse": {
+      "source_method": "greedy-ADD",
+      "source_format": "rq4-fixed-k-v2",
+      "required_evidence": [
+        "registered fixed-k child digest",
+        "cross-dataset summary digest binding",
+        "system-freeze-v2 digest",
+        "eligible-universe digest",
+        "B=4",
+        "300-second selection wall cap",
+        "2000 configuration-evaluation declaration",
+        "incremental Greedy semantics",
+        "independent final sandbox evaluation"
+      ],
+      "failure_policy": "fail closed; never silently rerun all"
+    }
+  },
+  "interpretation": {
+    "Ks_8_label": "canonical screening-width reference under fixed B=4",
+    "not_canonical_advisor_configuration": true,
+    "power7_all": "completed full-universe k=4 Greedy reference",
+    "census13_all": "300s-bounded full-universe Greedy incumbent",
+    "dmv11_all": "300s-bounded full-universe Greedy incumbent",
+    "finite_width_lower_objective": "A lower objective than Census13/DMV11 all may indicate that a narrower search breadth enabled more committed progress within the same bounded budget; it does not establish a better unrestricted optimum.",
+    "pareto_analysis": "Future descriptive objective-versus-cost nondominated-point analysis must not retroactively change canonical K_s=8."
+  },
+  "required_artifacts": {
+    "preflight": "experiments/<dataset>/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-preflight-v1.json",
+    "formal_child": "experiments/<dataset>/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+    "smoke": "experiments/rq4/integration-smoke/rq4-ks-sensitivity-smoke-v1.json",
+    "raw": ["candidate prefix/order", "SearchResult", "proposal trace", "planner accounting", "source profile provenance", "manifest"],
+    "derived": ["objective-cost table", "planner-call reduction table", "quality-cost curve", "status ledger"]
+  },
+  "execution_policy": {
+    "formal_command_scope": "one dataset per invocation; sandbox/RQ4a only; no stock DSN",
+    "no_formal_run_in_registration_unit": true,
+    "prohibited_in_this_unit": [
+      "formal Census13 sensitivity run",
+      "formal Power7 sensitivity run",
+      "formal DMV11 sensitivity run",
+      "Forest10 sensitivity or rerun",
+      "singleton reprofiling",
+      "new exact COUNT workload",
+      "stock physical RQ4b per K_s",
+      "system-freeze changes",
+      "Advisor or PostgreSQL source changes"
+    ]
+  }
+}

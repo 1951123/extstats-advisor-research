@@ -708,6 +708,25 @@
       "completion_criteria": ["no method receives a silently larger budget", "per-query planner calls are reported separately from configuration evaluations", "preprocessing and final evaluation costs are explicit", "exhaustive is diagnostic-only"]
     },
     {
+      "experiment_id": "rq4-ks-sensitivity",
+      "rq": "RQ4a",
+      "status": "implementation-needed",
+      "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
+      "excluded_datasets": ["arecel-forest10"],
+      "protocol_identity": "paper/top-k-screening-protocol-v2.json",
+      "grid": [4, 8, 16, 32, "all"],
+      "fixed_B": 4,
+      "search_wall_clock_seconds": 300,
+      "max_configuration_objective_evaluations": 2000,
+      "canonical_reference_label": "K_s=8 is the canonical screening-width reference under fixed B=4, not a canonical Advisor configuration.",
+      "all_point_policy": "Reuse completed rq4-fixed-k-v2 evidence only after exact child, summary, identity, budget, semantic, and independent-final-evaluation gates; fail closed otherwise.",
+      "singleton_profile_policy": "Reuse the committed RQ2-v2 profile without reprofiling; report source profiling cost and zero new profiling work.",
+      "formal_arecel_runs": false,
+      "status_after_smoke": "ready-to-run",
+      "expected_paper_outputs": ["fig-rq4-screening-width-quality-cost", "tab-rq4-screening-width-accounting"],
+      "completion_criteria": ["all five preregistered points have valid evidence", "budget-censored points preserve their committed incumbent", "finite prefixes are deterministic", "all-point reuse passed its exact gate", "no stock physical RQ4b per-K_s children are produced"]
+    },
+    {
       "experiment_id": "rq4-native-analyze-stability",
       "rq": "RQ4b",
       "status": "planned",
@@ -791,6 +810,11 @@
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
         "status": "implementation-needed",
         "note": "The 2,000 configuration-evaluation/300-second contract is frozen, but the common budget-comparison allocator is not implemented; the harness fails closed rather than reusing fixed-k logic."
+      },
+      {
+        "experiment_id": "rq4-ks-sensitivity",
+        "status": "implementation-needed",
+        "note": "Protocol v2 and research-side harness are being prepared for K_s={4,8,16,32,all} at B=4; no formal AreCEL sensitivity sweep has been executed. A successful non-formal smoke is required before this becomes ready-to-run."
       },
       {
         "experiment_id": "rq4-native-analyze-stability",

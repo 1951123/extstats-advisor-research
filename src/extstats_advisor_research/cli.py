@@ -92,6 +92,19 @@ from .rq4_formal_common import (
     validate_v2_determinism,
     validate_v2_summary,
 )
+from .rq4_ks_sensitivity import (
+    FORMAL_DATASETS as RQ4_KS_DATASETS,
+)
+from .rq4_ks_sensitivity import (
+    build_preflight as build_rq4_ks_preflight,
+)
+from .rq4_ks_sensitivity import (
+    build_smoke_artifact,
+    validate_smoke_artifact,
+)
+from .rq4_ks_sensitivity import (
+    validate_preflight as validate_rq4_ks_preflight,
+)
 from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
@@ -611,6 +624,24 @@ def _parser() -> argparse.ArgumentParser:
     rq4_v2_run.add_argument("--system-freeze", type=Path, default=DEFAULT_SYSTEM_FREEZE_V2_PATH)
     rq4_v2_validate = rq4_v2_commands.add_parser("validate")
     rq4_v2_validate.add_argument("artifact", type=Path)
+    rq4_ks = validate_commands.add_parser(
+        "rq4-ks-sensitivity", help="preregister and validate RQ4 screening-width sensitivity"
+    )
+    rq4_ks_commands = rq4_ks.add_subparsers(dest="rq4_ks_command", required=True)
+    rq4_ks_preflight = rq4_ks_commands.add_parser("preflight")
+    rq4_ks_preflight.add_argument("--dataset", choices=RQ4_KS_DATASETS, required=True)
+    rq4_ks_preflight.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq4_ks_smoke = rq4_ks_commands.add_parser("smoke")
+    rq4_ks_smoke.add_argument("--output", type=Path, required=True)
+    rq4_ks_smoke.add_argument("--candidate-count", type=int, default=6)
+    rq4_ks_smoke.add_argument(
+        "--patched-dsn",
+        help="optional disposable patched PostgreSQL DSN for the bounded live smoke",
+    )
+    rq4_ks_validate = rq4_ks_commands.add_parser("validate")
+    rq4_ks_validate.add_argument("artifact", type=Path)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -1026,6 +1057,31 @@ def main(argv: list[str] | None = None) -> int:
                     result = validate_v2_determinism(args.artifact)
                 else:
                     result = validate_v2_summary(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq4-ks-sensitivity":
+            root = Path(__file__).resolve().parents[2]
+            if args.rq4_ks_command == "preflight":
+                result = build_rq4_ks_preflight(args.dataset, root, args.advisor_root)
+            elif args.rq4_ks_command == "smoke":
+                result = build_smoke_artifact(
+                    research_root=root,
+                    producer_research_sha=current_research_commit(root),
+                    candidate_count=args.candidate_count,
+                    patched_dsn=args.patched_dsn,
+                )
+                write_json(args.output, result)
+                result = {
+                    "status": "written",
+                    "format_version": result["format_version"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
+            else:
+                if args.artifact.name.endswith("rq4-ks-sensitivity-preflight-v1.json"):
+                    result = validate_rq4_ks_preflight(args.artifact)
+                else:
+                    result = validate_smoke_artifact(args.artifact)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-forest10-fixed-k":

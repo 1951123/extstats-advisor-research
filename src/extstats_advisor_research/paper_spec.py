@@ -145,6 +145,29 @@ def validate_paper_spec(spec: Any) -> dict[str, Any]:
         if aliases != {"dependency-correlation-top-k": "native-payload-size-top-k"}:
             raise ValueError("RQ4 historical method alias is missing or incorrect")
 
+    screening = by_id.get("rq4-ks-sensitivity")
+    if screening is not None:
+        if screening.get("protocol_identity") != "paper/top-k-screening-protocol-v2.json":
+            raise ValueError("RQ4 K_s sensitivity protocol path is not canonical")
+        if screening.get("datasets") != [
+            "arecel-census13",
+            "arecel-power7",
+            "arecel-dmv11",
+        ]:
+            raise ValueError("RQ4 K_s sensitivity datasets are not canonical")
+        if screening.get("excluded_datasets") != ["arecel-forest10"]:
+            raise ValueError("RQ4 K_s sensitivity must exclude Forest10")
+        if screening.get("grid") != [4, 8, 16, 32, "all"]:
+            raise ValueError("RQ4 K_s sensitivity grid drifted")
+        if screening.get("fixed_B") != 4:
+            raise ValueError("RQ4 K_s sensitivity B drifted")
+        if screening.get("search_wall_clock_seconds") != 300:
+            raise ValueError("RQ4 K_s sensitivity wall cap drifted")
+        if screening.get("max_configuration_objective_evaluations") != 2000:
+            raise ValueError("RQ4 K_s sensitivity evaluation cap drifted")
+        if screening.get("formal_arecel_runs") is not False:
+            raise ValueError("RQ4 K_s sensitivity must remain unexecuted")
+
     primary = by_id.get("rq3-primary-mechanism-fidelity")
     if primary is not None:
         fixture = primary.get("execution_fixture")
