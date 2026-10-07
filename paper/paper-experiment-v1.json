@@ -465,7 +465,14 @@
       "experiment_id": "rq4-fixed-k-ablations",
       "rq": "RQ4",
       "status": "ready-to-run",
-      "implementation_status": "Forest10 dataset-scoped formal fixed-k canary complete; global four-dataset RQ4 remains incomplete",
+      "implementation_status": "Formal AreCEL execution is blocked at the dependency/correlation baseline-definition gate; no v2 Census13, Power7, or DMV11 child has been run.",
+      "dependency_baseline_definition_gate": {
+        "status": "blocked",
+        "artifact": "experiments/rq4-dependency-baseline-definition-blocker-v1.json",
+        "semantic_digest": "5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba",
+        "current_implementation_score": "sample-side native payload_size bytes",
+        "formal_execution_allowed": false
+      },
       "evidence_hierarchy": {
         "rq4a": "primary deterministic patched-sandbox design quality",
         "rq4b": "secondary stochastic stock physical consequence",
@@ -698,7 +705,7 @@
       {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "ready-to-run",
-        "note": "Global status remains ready-to-run because only Forest10 is complete. Forest10 formal RQ4a/RQ4b evidence is recorded under experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json (digest 736ba74f...). Census13, Power7, and DMV11 remain planned."
+        "note": "Formal AreCEL execution is blocked by the unresolved dependency/correlation baseline-definition gate recorded in experiments/rq4-dependency-baseline-definition-blocker-v1.json (digest 5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba). The historical Forest10 artifact remains immutable evidence; Census13, Power7, and DMV11 were not run."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",

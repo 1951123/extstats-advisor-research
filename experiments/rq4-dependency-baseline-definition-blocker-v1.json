@@ -1,0 +1,55 @@
+{
+  "format_version": "rq4-dependency-baseline-definition-blocker-v1",
+  "status": "blocked",
+  "formal_execution_permitted": false,
+  "research_head_at_audit": "b41e7d9e4fdb83d96ad4eaba87feceb6f5b10509",
+  "system_freeze": {
+    "path": "paper/system-freeze-v2.json",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "postgres_version": "16.14"
+  },
+  "blocker": {
+    "identifier": "rq4-dependency-baseline-definition-blocker-v1",
+    "protocol_label": "dependency-correlation-top-k",
+    "current_implementation_score": "sample-side native payload_size bytes",
+    "implementation_location": "src/extstats_advisor_research/rq4_postgres.py:211-218",
+    "smoke_provenance_label": "fixed-sample-native-payload-size-only",
+    "required_resolution": "Select and pre-register a legitimate sample-side, truth-free dependency/correlation signal before formal RQ4 execution.",
+    "prohibited_resolution": "The research harness must not choose Pearson correlation, mutual information, Cramer's V, another dependency coefficient, or payload size on its own."
+  },
+  "audit_scope": {
+    "implementation": [
+      "src/extstats_advisor_research/rq4_postgres.py",
+      "src/extstats_advisor_research/rq4_ablation.py"
+    ],
+    "protocol": [
+      "paper/experiment-plan.md",
+      "paper/paper-experiment-v1.json"
+    ],
+    "tests": [
+      "tests/test_rq4_ablation.py"
+    ],
+    "history_commits": [
+      "bf18ae9559bec2f23f2d3ea0d59e796abe3f49e1"
+    ],
+    "historical_artifact": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+      "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9",
+      "system_freeze": "system-freeze-v1",
+      "dependency_signal_definition_present": false,
+      "immutable": true
+    },
+    "real_backend_smoke": {
+      "path": "experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json",
+      "semantic_digest": "f088ddce17968eeb79dde2eb57f3b3b9c3338c417cc19d27e3a60abe0b8b9d9f",
+      "declared_signal": "fixed-sample-native-payload-size-only",
+      "formal_confirmatory_experiment": false
+    }
+  },
+  "audit_conclusion": "No pre-registered legitimate dependency/correlation formula was found. The current implementation uses payload size while the protocol names the method dependency/correlation. Formal AreCEL RQ4 execution is stopped fail-closed.",
+  "next_action": "Researcher must decide and explicitly pre-register the dependency/correlation baseline definition; then update the protocol, implementation contract, validators, and tests before creating the formal producer commit.",
+  "semantic_digest": "5780f498f88df57a8663893228203b26c0a576f87e08d37dc1562a0157f332ba"
+}
