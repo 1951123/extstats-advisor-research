@@ -710,7 +710,7 @@
     {
       "experiment_id": "rq4-ks-sensitivity",
       "rq": "RQ4a",
-      "status": "implementation-needed",
+      "status": "ready-to-run",
       "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
       "excluded_datasets": ["arecel-forest10"],
       "protocol_identity": "paper/top-k-screening-protocol-v2.json",
@@ -723,6 +723,17 @@
       "all_point_policy": "Reuse completed rq4-fixed-k-v2 evidence only after exact child, summary, identity, budget, semantic, and independent-final-evaluation gates; fail closed otherwise.",
       "singleton_profile_policy": "Reuse the committed RQ2-v2 profile without reprofiling; report source profiling cost and zero new profiling work.",
       "formal_arecel_runs": false,
+      "readiness_smoke_artifact": {
+        "path": "experiments/rq4/integration-smoke/rq4-ks-sensitivity-live-smoke-v1.json",
+        "format_version": "rq4-ks-sensitivity-live-smoke-v1",
+        "semantic_digest": "5209293d9ab850b109b54f9b3970035a9ec1424f69d02525c47641e76d2827bc",
+        "producer_research_commit_sha": "17fc6d96f4e9cd615ab733f2add47adf691d4820",
+        "advisor_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+        "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+        "formal_confirmatory_experiment": false,
+        "scope": "small-live-correctness-validation"
+      },
+      "readiness_smoke_note": "A bounded three-query, six-candidate patched-sandbox smoke passed at K_s=4 and K_s=all with exact replay equality. It exercises frozen-v2 K_s/B separation but does not execute any formal AreCEL sensitivity point.",
       "status_after_smoke": "ready-to-run",
       "expected_paper_outputs": ["fig-rq4-screening-width-quality-cost", "tab-rq4-screening-width-accounting"],
       "completion_criteria": ["all five preregistered points have valid evidence", "budget-censored points preserve their committed incumbent", "finite prefixes are deterministic", "all-point reuse passed its exact gate", "no stock physical RQ4b per-K_s children are produced"]
@@ -814,8 +825,8 @@
       },
       {
         "experiment_id": "rq4-ks-sensitivity",
-        "status": "implementation-needed",
-        "note": "Protocol v2 and research-side harness are being prepared for K_s={4,8,16,32,all} at B=4; no formal AreCEL sensitivity sweep has been executed. A successful non-formal smoke is required before this becomes ready-to-run."
+        "status": "ready-to-run",
+        "note": "Protocol v2 and research-side harness are ready for K_s={4,8,16,32,all} at B=4. The non-formal frozen-v2 live smoke is experiments/rq4/integration-smoke/rq4-ks-sensitivity-live-smoke-v1.json (digest 5209293d...), with exact replay equality at K_s=4 and K_s=all; no formal AreCEL sensitivity sweep has been executed."
       },
       {
         "experiment_id": "rq4-native-analyze-stability",
