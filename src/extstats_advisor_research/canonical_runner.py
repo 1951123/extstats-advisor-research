@@ -286,10 +286,15 @@ def _run_external_truth_sanity_check(
     import psycopg
 
     indices = representative_indices(records)
-    if len(indices) != expected_count:
+    if len(indices) < expected_count:
         raise ValueError(
             f"authoritative truth sanity subset expected {expected_count} checks, got {len(indices)}"
         )
+    # The registered truth policy fixes the number of live sanity checks.  A
+    # dataset may expose more representative indices than that count; retain
+    # the deterministic sorted prefix rather than silently expanding the
+    # exact-count workload.
+    indices = indices[:expected_count]
     by_index = {record["source_index"]: record for record in records}
     checks = []
     with psycopg.connect(dsn, autocommit=True) as connection, connection.cursor() as cursor:
