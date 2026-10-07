@@ -342,6 +342,7 @@ def run_smoke(
                 commit_configuration=incremental_evaluator.commit_configuration,
             )
             audits = []
+            audit_started = time.perf_counter()
             selected = list(incremental.final_ordered_candidate_ids)
             if selected:
                 audits.append(
@@ -357,6 +358,7 @@ def run_smoke(
                         modules["SearchDeadline"](plan.budget),
                     )
                 )
+            audit_elapsed_seconds = time.perf_counter() - audit_started
     finally:
         modules["destroy_postgres_planner_sandbox"](patched_dsn)
 
@@ -373,8 +375,15 @@ def run_smoke(
     }
     if not all(comparisons.values()):
         raise ValueError(f"reference/incremental semantic mismatch: {comparisons}")
+    post_audit_runtime = incremental_evaluator.runtime_metadata()
     incremental_runtime = dict(incremental.runtime_metadata)
-    incremental_runtime.update(incremental_evaluator.runtime_metadata())
+    incremental_runtime["audit_planner_query_calls"] = post_audit_runtime[
+        "audit_planner_query_calls"
+    ]
+    incremental_runtime["planner_query_estimate_count_including_audit"] = post_audit_runtime[
+        "planner_query_estimate_count"
+    ]
+    incremental_runtime["audit_wall_clock_seconds"] = audit_elapsed_seconds
     artifact: dict[str, Any] = {
         "format_version": FORMAT_VERSION,
         "status": "complete",
