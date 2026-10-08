@@ -1,0 +1,42 @@
+{
+  "format_version": "rq1-workload-generalization-failed-attempt-v1",
+  "status": "non-evidence-infrastructure-failure",
+  "dataset": "arecel-power7",
+  "attempt_index": 1,
+  "producer_research_sha": "dd0cc78da4a30e8dda5f8bc33fc604ea9718e43a",
+  "preflight": {
+    "archived_path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-001/rq1b-preflight-v1.json",
+    "semantic_digest": "84e398a709f82a3b7e7fd46715c36870d0a3832037c4d944043da6530e5f2152",
+    "byte_sha256": "359e08d725ae1247a124356b2246f55368b40b0a35e4fb6981cb3789017c094f"
+  },
+  "formal_invocation_count": 1,
+  "failure_stage": "design-initial-stock-loader",
+  "failure_class": "managed-postgresql-not-running",
+  "failure_detail": "stock Unix socket absent before initial loader connection",
+  "scientific_execution": {
+    "advisor_started": false,
+    "search_started": false,
+    "planner_started": false,
+    "explain_count": 0,
+    "create_statistics": false,
+    "analyze": false,
+    "production_exact_count": false,
+    "test_workload_accessed": false,
+    "test_truth_accessed": false
+  },
+  "outputs": {
+    "design_v1_exists": false,
+    "deployment_result_exists": false,
+    "per_query_exists": false,
+    "result_v1_exists": false
+  },
+  "cleanup": {
+    "completed": true,
+    "stock_running_after_cleanup": false,
+    "patched_running_after_cleanup": false,
+    "runtime_residue": false
+  },
+  "retry_performed": false,
+  "evidence_eligibility": false,
+  "semantic_digest": "2802214e945c1365559e921d19f4f00670de4b3dc1464dad4fb9fca2266e1917"
+}

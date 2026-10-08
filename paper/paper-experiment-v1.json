@@ -302,7 +302,19 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "not-started",
+      "formal_execution": "power7-attempt-1-infrastructure-failed-before-design",
+      "formal_evidence_status": "not-produced",
+      "next_formal_attempt": "power7-attempt-2-pending",
+      "power7_formal_attempts": [
+        {
+          "attempt_index": 1,
+          "status": "infrastructure-failed-before-design",
+          "evidence_eligible": false,
+          "producer_sha": "dd0cc78da4a30e8dda5f8bc33fc604ea9718e43a",
+          "preflight_semantic_digest": "84e398a709f82a3b7e7fd46715c36870d0a3832037c4d944043da6530e5f2152",
+          "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-001/failure-v1.json"
+        }
+      ],
       "power7_runner_readiness": "implementation-ready",
       "runner_module": "src/extstats_advisor_research/rq1_workload_generalization_live.py",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
@@ -330,7 +342,6 @@
       },
       "strict_unseen_membership": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
       "strict_unseen_membership_semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be",
-      "formal_execution": "not-started",
       "expected_paper_outputs": ["tab-rq1b-held-out-generalization", "fig-rq1b-qerror-generalization"],
       "completion_criteria": ["valid-only design inputs verified", "Recommendation sealed before test access", "fresh stock physical deployment succeeded", "all test queries evaluated", "test truth mapping exact", "metrics reported regardless of direction", "cleanup passed"]
     },
@@ -953,7 +964,7 @@
       {
         "experiment_id": "rq1-held-out-workload-generalization",
         "status": "preregistered",
-        "note": "RQ1b is preregistered as a valid-to-test held-out workload generalization study under the same upstream generator contract; no formal execution has started."
+        "note": "RQ1b remains preregistered. Power7 formal attempt 1 failed as a managed PostgreSQL infrastructure attempt before design evidence existed; it is retained as non-evidence provenance and the next formal attempt is pending lifecycle hardening."
       },
       {
         "experiment_id": "rq1-existing-baselines",
