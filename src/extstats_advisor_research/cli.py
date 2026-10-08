@@ -48,7 +48,7 @@ from .postgres_lab import (
     stop_role,
 )
 from .power_transfer import run_power_data_transfer
-from .provenance import semantic_digest, write_json
+from .provenance import read_json, semantic_digest, write_json
 from .rq1_canary import (
     inspect_rq1_artifact,
     run_census13_canary,
@@ -133,6 +133,34 @@ from .rq5_cost_inventory import (
     validate_inventory,
     write_inventory,
     write_inventory_v2,
+)
+from .rq5_snapshot_footprint import (
+    DATASETS as SNAPSHOT_FOOTPRINT_DATASETS,
+)
+from .rq5_snapshot_footprint import (
+    build_preflight as build_snapshot_footprint_preflight,
+)
+from .rq5_snapshot_footprint import (
+    default_formal_path as default_snapshot_footprint_path,
+)
+from .rq5_snapshot_footprint import (
+    default_preflight_path as default_snapshot_footprint_preflight_path,
+)
+from .rq5_snapshot_footprint import (
+    run_snapshot_footprint,
+    summarize_snapshot_footprint,
+)
+from .rq5_snapshot_footprint import (
+    validate_formal_artifact as validate_snapshot_footprint_artifact,
+)
+from .rq5_snapshot_footprint import (
+    validate_preflight as validate_snapshot_footprint_preflight,
+)
+from .rq5_snapshot_footprint import (
+    validate_protocol as validate_snapshot_footprint_protocol,
+)
+from .rq5_snapshot_footprint import (
+    validate_raw_artifact as validate_snapshot_footprint_raw,
 )
 from .rq5_static_deployment_cost import (
     build_preflight as build_static_deployment_preflight,
@@ -631,6 +659,31 @@ def _parser() -> argparse.ArgumentParser:
     rq5_static_summarize.add_argument("--preflight", type=Path, default=None)
     rq5_static_validate = rq5_static_commands.add_parser("validate")
     rq5_static_validate.add_argument("artifact", type=Path)
+    rq5_snapshot = rq5_cost_commands.add_parser(
+        "snapshot-footprint", help="measure or validate sealed AdvisorSnapshot footprint"
+    )
+    rq5_snapshot_commands = rq5_snapshot.add_subparsers(dest="rq5_snapshot_command", required=True)
+    rq5_snapshot_preflight = rq5_snapshot_commands.add_parser("preflight")
+    rq5_snapshot_preflight.add_argument("--output", type=Path, default=None)
+    rq5_snapshot_preflight.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq5_snapshot_preflight.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    rq5_snapshot_preflight.add_argument("--data-root", type=Path, default=None)
+    rq5_snapshot_run = rq5_snapshot_commands.add_parser("run")
+    rq5_snapshot_run.add_argument("--dataset", choices=SNAPSHOT_FOOTPRINT_DATASETS, required=True)
+    rq5_snapshot_run.add_argument("--stock-dsn", required=True)
+    rq5_snapshot_run.add_argument("--output", type=Path, required=True)
+    rq5_snapshot_run.add_argument("--preflight", type=Path, required=True)
+    rq5_snapshot_run.add_argument("--advisor-command", default="extstats-advisor")
+    rq5_snapshot_run.add_argument("--data-root", type=Path, default=None)
+    rq5_snapshot_summarize = rq5_snapshot_commands.add_parser("summarize")
+    rq5_snapshot_summarize.add_argument("--preflight", type=Path, required=True)
+    rq5_snapshot_summarize.add_argument("--output", type=Path, default=None)
+    rq5_snapshot_validate = rq5_snapshot_commands.add_parser("validate")
+    rq5_snapshot_validate.add_argument("artifact", type=Path)
     rq4 = validate_commands.add_parser(
         "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
     )
@@ -1135,6 +1188,60 @@ def main(argv: list[str] | None = None) -> int:
                 }
             elif args.rq5_cost_command == "validate":
                 result = validate_inventory(args.artifact, root)
+            elif args.rq5_cost_command == "snapshot-footprint":
+                if args.rq5_snapshot_command == "preflight":
+                    output = args.output or default_snapshot_footprint_preflight_path(root)
+                    artifact = build_snapshot_footprint_preflight(
+                        root,
+                        advisor_root=args.advisor_root,
+                        stock_postgres_root=args.stock_postgres_root,
+                        output=output,
+                        data_root=args.data_root,
+                    )
+                    result = {
+                        "status": "written",
+                        "format_version": artifact["format_version"],
+                        "semantic_digest": artifact["semantic_digest"],
+                        "output": str(output),
+                    }
+                elif args.rq5_snapshot_command == "run":
+                    artifact = run_snapshot_footprint(
+                        args.dataset,
+                        research_root=root,
+                        stock_dsn=args.stock_dsn,
+                        output=args.output,
+                        preflight=args.preflight,
+                        advisor_command=args.advisor_command,
+                        data_root=args.data_root,
+                    )
+                    result = {
+                        "status": artifact["status"],
+                        "format_version": artifact["format_version"],
+                        "dataset_id": artifact["dataset_id"],
+                        "semantic_digest": artifact["semantic_digest"],
+                        "output": str(args.output),
+                    }
+                elif args.rq5_snapshot_command == "summarize":
+                    output = args.output or default_snapshot_footprint_path(root)
+                    artifact = summarize_snapshot_footprint(
+                        root, output=output, preflight=args.preflight
+                    )
+                    result = {
+                        "status": "written",
+                        "format_version": artifact["format_version"],
+                        "semantic_digest": artifact["semantic_digest"],
+                        "output": str(output),
+                    }
+                elif args.rq5_snapshot_command == "validate":
+                    value = read_json(args.artifact)
+                    if value.get("format_version") == "rq5-snapshot-footprint-protocol-v1":
+                        result = validate_snapshot_footprint_protocol(args.artifact)
+                    elif value.get("format_version") == "rq5-snapshot-footprint-preflight-v1":
+                        result = validate_snapshot_footprint_preflight(args.artifact, root)
+                    elif value.get("format_version") == "rq5-snapshot-footprint-dataset-v1":
+                        result = validate_snapshot_footprint_raw(value)
+                    else:
+                        result = validate_snapshot_footprint_artifact(args.artifact, root)
             elif args.rq5_static_command == "preflight":
                 output = args.output or default_static_deployment_preflight_path(root)
                 artifact = build_static_deployment_preflight(

@@ -1,0 +1,118 @@
+{
+  "format_version": "rq5-snapshot-footprint-protocol-v1",
+  "experiment_id": "rq5-snapshot-footprint",
+  "status": "preregistered",
+  "research_question": "Under the frozen AdvisorSnapshot v1 representation, how large is the sealed snapshot artifact produced from the canonical 10k-row sample and workload?",
+  "datasets": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "dataset_order": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "system": {
+    "advisor_repository": "1951123/extstats-advisor",
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "stock_postgresql_repository": "1951123/postgresql-src",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "postgresql_version": "16.14",
+    "patched_postgresql_required": false
+  },
+  "snapshot_contract": {
+    "format_version": "advisor-snapshot-v1",
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "fresh_database_per_repetition": true,
+    "capture_command": "extstats-advisor snapshot capture postgres",
+    "validation_command": "extstats-advisor snapshot validate <snapshot>",
+    "ground_truth_output_forbidden": true,
+    "validation_required_before_measurement": true
+  },
+  "repetitions": 3,
+  "stage_hard_cap_seconds": 300,
+  "primary_metric": {
+    "name": "sealed_snapshot_logical_bytes",
+    "definition": "sum of st_size byte lengths of every regular file inside a successfully validated advisor-snapshot-v1 sealed directory",
+    "recursive": true,
+    "root_resolution_required": true,
+    "symlinks_rejected": true,
+    "regular_files_only": true,
+    "component_paths_sorted": true,
+    "forbidden_substitutes": [
+      "du allocated blocks",
+      "filesystem block count",
+      "directory inode size",
+      "JSON object memory size",
+      "Python sys.getsizeof",
+      "compressed archive size",
+      "manifest-only size"
+    ]
+  },
+  "components": {
+    "known_roles": {
+      "manifest.json": "manifest",
+      "schema.json": "schema",
+      "population.json": "population",
+      "workload.json": "workload",
+      "samples/*.arrow": "sample-payload"
+    },
+    "unknown_regular_file_role": "other-validated-component",
+    "sample_payload_metric": "sum of logical bytes for samples/*.arrow",
+    "required_consistency": [
+      "sealed_snapshot_logical_bytes equals sum of per_file.logical_bytes",
+      "sample_payload_bytes_total equals sum of samples/*.arrow logical bytes"
+    ]
+  },
+  "measurement_scope": {
+    "included": [
+      "fresh full-data stock database setup and ordinary baseline loader",
+      "validated AdvisorSnapshot capture",
+      "sealed snapshot logical file footprint"
+    ],
+    "excluded": [
+      "authoritative truth import",
+      "production exact COUNT queries",
+      "candidate derivation",
+      "native statistics materialization",
+      "singleton profiling",
+      "planner evaluation",
+      "optimization plan or Greedy search",
+      "Recommendation",
+      "CREATE STATISTICS"
+    ],
+    "capture_time_is_contemporaneous_not_a_replacement_for_rq2": true
+  },
+  "sensitive_data_policy": {
+    "tracked_snapshot_contents_forbidden": true,
+    "tracked_sql_bearing_workload_copy_forbidden": true,
+    "tracked_fields_allowed": [
+      "semantic digest",
+      "component digest",
+      "file SHA256",
+      "file byte count",
+      "aggregate byte count",
+      "timing",
+      "provenance"
+    ],
+    "temporary_snapshot_deleted_after_repetition": true,
+    "cleanup_must_be_verified": true
+  },
+  "summary_metrics": [
+    "sealed_snapshot_logical_bytes",
+    "sample_payload_bytes_total",
+    "snapshot_capture_elapsed_seconds"
+  ],
+  "completion_criteria": [
+    "three complete repetitions for each dataset",
+    "every snapshot validated before footprint measurement",
+    "all stage caps respected",
+    "all temporary snapshots and generated workload files deleted",
+    "no truth, planner, candidate, native, or optimization work executed"
+  ],
+  "semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9"
+}
