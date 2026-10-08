@@ -163,6 +163,21 @@ def _protocol(root: Path) -> dict[str, Any]:
     return _validate_protocol_value(read_json(root / PROTOCOL_PATH))
 
 
+def _canonical_repo_artifact_path(
+    research_root: Path, path: Path, *, label: str
+) -> tuple[Path, Path]:
+    """Resolve an artifact path and return its absolute and repo-relative forms."""
+    root = research_root.resolve()
+    candidate = path.resolve() if path.is_absolute() else (root / path).resolve()
+    try:
+        relative = candidate.relative_to(root)
+    except ValueError as exc:
+        raise RQ5StaticDeploymentValidationError(
+            f"static deployment {label} must reside inside the research repository"
+        ) from exc
+    return candidate, relative
+
+
 def _deployment_semantic_manifest(value: Mapping[str, Any]) -> dict[str, Any]:
     """Reproduce the frozen Advisor DeploymentResult semantic manifest.
 
@@ -319,6 +334,11 @@ def build_preflight(
 ) -> dict[str, Any]:
     """Build the offline preflight; this performs no database work."""
     root = research_root.resolve()
+    output_path, _ = _canonical_repo_artifact_path(
+        root,
+        output or default_preflight_path(root),
+        label="preflight output",
+    )
     protocol = _protocol(root)
     _require(_research_clean(root), "research working tree must be clean before preflight")
     producer_sha = _git_sha(root)
@@ -350,7 +370,7 @@ def build_preflight(
         "output_collision_check": {"checked": planned, "collisions": []},
     }
     value["semantic_digest"] = semantic_digest(value)
-    write_json(output or default_preflight_path(root), value)
+    write_json(output_path, value)
     return value
 
 
@@ -741,7 +761,12 @@ def run_static_deployment(
 ) -> dict[str, Any]:
     """Run exactly three fresh stock realizations for one dataset."""
     root = research_root.resolve()
-    preflight_path = preflight or default_preflight_path(root)
+    preflight_path, preflight_relative = _canonical_repo_artifact_path(
+        root,
+        preflight or default_preflight_path(root),
+        label="preflight",
+    )
+    output_path, _ = _canonical_repo_artifact_path(root, output, label="raw output")
     preflight_result = validate_preflight(preflight_path, root)
     _require(
         _git_sha(root) == read_json(preflight_path)["research_commit_sha"],
@@ -750,7 +775,7 @@ def run_static_deployment(
     stock_sha = _git_sha(stock_postgres_root.resolve())
     _require(stock_sha == STOCK_POSTGRES_SHA, "stock PostgreSQL source SHA drifted")
     projection = _source_projection(root, dataset_id)
-    _require(not output.exists(), f"raw output already exists: {output}")
+    _require(not output_path.exists(), f"raw output already exists: {output_path}")
     _require(preflight_result["status"] == "valid", "preflight validation failed")
     repetitions = []
     for repetition_id in REPETITIONS:
@@ -772,7 +797,7 @@ def run_static_deployment(
         "stock_postgresql_sha": stock_sha,
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
-        "preflight_path": str(preflight_path.relative_to(root)),
+        "preflight_path": preflight_relative.as_posix(),
         "preflight_semantic_digest": read_json(preflight_path)["semantic_digest"],
         "repetitions": repetitions,
         "no_advisor_selection": True,
@@ -785,7 +810,7 @@ def run_static_deployment(
         {key: item for key, item in value.items() if key != "semantic_digest"}
     )
     reject_credentials(value)
-    write_json(output, value)
+    write_json(output_path, value)
     return value
 
 
@@ -833,7 +858,16 @@ def summarize_static_deployment(
     research_root: Path, *, output: Path | None = None, preflight: Path | None = None
 ) -> dict[str, Any]:
     root = research_root.resolve()
-    preflight_path = preflight or default_preflight_path(root)
+    preflight_path, preflight_relative = _canonical_repo_artifact_path(
+        root,
+        preflight or default_preflight_path(root),
+        label="preflight",
+    )
+    output_path, _ = _canonical_repo_artifact_path(
+        root,
+        output or default_formal_path(root),
+        label="formal output",
+    )
     validate_preflight(preflight_path, root)
     preflight_value = read_json(preflight_path)
     dataset_values = {}
@@ -920,7 +954,7 @@ def summarize_static_deployment(
         "stock_postgresql_version": STOCK_POSTGRES_VERSION,
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
-        "preflight_path": str(preflight_path.relative_to(root)),
+        "preflight_path": preflight_relative.as_posix(),
         "preflight_semantic_digest": preflight_value["semantic_digest"],
         "dataset_order": list(DATASETS),
         "raw_repetition_artifacts": raw_refs,
@@ -944,7 +978,7 @@ def summarize_static_deployment(
         {key: item for key, item in value.items() if key != "semantic_digest"}
     )
     reject_credentials(value)
-    write_json(output or default_formal_path(root), value)
+    write_json(output_path, value)
     return value
 
 

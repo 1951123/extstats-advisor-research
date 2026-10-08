@@ -5,15 +5,21 @@ from pathlib import Path
 
 import pytest
 
+import extstats_advisor_research.rq5_static_deployment_cost as static_cost
 from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.rq5_static_deployment_cost import (
     DATASETS,
     PROTOCOL_DIGEST,
     PROTOCOL_FORMAT,
+    RQ5StaticDeploymentValidationError,
     _baseline_state,
+    _canonical_repo_artifact_path,
     _logical_storage,
     _source_projection,
     _validate_dataset_raw,
+    build_preflight,
+    run_static_deployment,
+    summarize_static_deployment,
     validate_protocol,
 )
 
@@ -23,6 +29,214 @@ PROTOCOL_PATH = ROOT / "paper/rq5-static-deployment-cost-protocol-v1.json"
 
 def _protocol() -> dict:
     return json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
+
+
+def test_artifact_paths_are_canonicalized_relative_to_research_root(tmp_path, monkeypatch) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+    monkeypatch.chdir(other_cwd)
+
+    relative = Path("experiments/rq5-static-deployment-cost-preflight-v1.json")
+    absolute, repo_relative = _canonical_repo_artifact_path(root, relative, label="preflight")
+    assert absolute == root / relative
+    assert repo_relative.as_posix() == str(relative)
+
+    absolute_again, relative_again = _canonical_repo_artifact_path(
+        root, absolute, label="preflight"
+    )
+    assert (absolute_again, relative_again) == (absolute, repo_relative)
+
+
+def test_artifact_paths_reject_outside_repository(tmp_path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    for path in (tmp_path / "outside.json", Path("../outside.json")):
+        with pytest.raises(
+            RQ5StaticDeploymentValidationError, match="must reside inside the research repository"
+        ):
+            _canonical_repo_artifact_path(root, path, label="preflight")
+
+
+def test_preflight_builder_rejects_outside_output_before_repository_work(tmp_path) -> None:
+    with pytest.raises(
+        RQ5StaticDeploymentValidationError, match="must reside inside the research repository"
+    ):
+        build_preflight(
+            ROOT,
+            stock_postgres_root=ROOT,
+            output=tmp_path / "outside-preflight.json",
+        )
+
+
+def test_illegal_run_paths_fail_before_any_live_work(monkeypatch, tmp_path) -> None:
+    calls = {"create": 0, "loader": 0, "repetition": 0}
+
+    def fail_live(*args, **kwargs):
+        calls["create"] += 1
+        raise AssertionError("live work was reached")
+
+    monkeypatch.setattr(static_cost, "_create_database", fail_live)
+    monkeypatch.setattr(
+        static_cost,
+        "_run_repetition",
+        lambda *args, **kwargs: calls.__setitem__("repetition", calls["repetition"] + 1),
+    )
+    monkeypatch.setattr(
+        static_cost,
+        "load_power7",
+        lambda *args, **kwargs: calls.__setitem__("loader", calls["loader"] + 1),
+    )
+
+    with pytest.raises(
+        RQ5StaticDeploymentValidationError, match="must reside inside the research repository"
+    ):
+        run_static_deployment(
+            "arecel-power7",
+            research_root=ROOT,
+            stock_dsn="local",
+            output=Path("experiments/raw.json"),
+            stock_postgres_root=ROOT,
+            preflight=tmp_path / "outside-preflight.json",
+        )
+    assert calls == {"create": 0, "loader": 0, "repetition": 0}
+
+
+def test_runner_assembles_with_repo_relative_paths_without_database(monkeypatch, tmp_path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+    monkeypatch.chdir(other_cwd)
+    stock_root = tmp_path / "stock-source"
+    stock_root.mkdir()
+    preflight = root / "experiments/rq5-static-deployment-cost-preflight-v1.json"
+    preflight.parent.mkdir(parents=True)
+    preflight.write_text(
+        json.dumps({"research_commit_sha": "producer", "semantic_digest": "preflight"}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        static_cost, "validate_preflight", lambda path, research_root: {"status": "valid"}
+    )
+    monkeypatch.setattr(
+        static_cost,
+        "_git_sha",
+        lambda path: (
+            static_cost.STOCK_POSTGRES_SHA
+            if Path(path).resolve() == stock_root.resolve()
+            else "producer"
+        ),
+    )
+    monkeypatch.setattr(
+        static_cost,
+        "_source_projection",
+        lambda research_root, dataset_id: {"dataset_id": dataset_id},
+    )
+    monkeypatch.setattr(
+        static_cost,
+        "_run_repetition",
+        lambda projection, **kwargs: {"repetition_id": kwargs["repetition_id"]},
+    )
+    output = Path("experiments/rq5-static-deployment-cost-v1/raw/arecel-power7.json")
+    result = run_static_deployment(
+        "arecel-power7",
+        research_root=root,
+        stock_dsn="local",
+        output=output,
+        stock_postgres_root=stock_root,
+        preflight=Path("experiments/rq5-static-deployment-cost-preflight-v1.json"),
+    )
+    assert result["preflight_path"] == "experiments/rq5-static-deployment-cost-preflight-v1.json"
+    assert (root / output).is_file()
+    assert not (other_cwd / output).exists()
+
+
+def test_summarizer_assembles_with_repo_relative_paths(monkeypatch, tmp_path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+    monkeypatch.chdir(other_cwd)
+    preflight = root / "experiments/rq5-static-deployment-cost-preflight-v1.json"
+    preflight.parent.mkdir(parents=True)
+    preflight.write_text(
+        json.dumps({"research_commit_sha": "producer", "semantic_digest": "preflight"}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        static_cost, "validate_preflight", lambda path, research_root: {"status": "valid"}
+    )
+    source_paths = {}
+    projections = {}
+    for dataset_id in DATASETS:
+        source_path = root / f"sources/{dataset_id}.json"
+        source_path.parent.mkdir(parents=True, exist_ok=True)
+        source_path.write_text(
+            json.dumps({"full_data": {"runtime": {"deployment_including_final_analyze": 1.0}}}),
+            encoding="utf-8",
+        )
+        source_paths[dataset_id] = {"path": str(source_path.relative_to(root))}
+        projections[dataset_id] = {
+            "dataset_id": dataset_id,
+            "source_rq2_child": source_paths[dataset_id]["path"],
+            "source_rq2_digest": "rq2",
+            "source_deployment_digest": "deployment",
+            "actual_selected_k": 1,
+            "selected_candidate_ids": ["candidate"],
+            "objects": [{"kind": "postgresql.mcv"}],
+        }
+    monkeypatch.setattr(static_cost, "RQ2_CHILDREN", source_paths)
+    monkeypatch.setattr(
+        static_cost, "_source_projection", lambda root, dataset_id: projections[dataset_id]
+    )
+    monkeypatch.setattr(static_cost, "_validate_dataset_raw", lambda value, projection: None)
+
+    for dataset_id in DATASETS:
+        raw_path = root / f"experiments/rq5-static-deployment-cost-v1/raw/{dataset_id}.json"
+        repetition = {
+            "repetition_id": 1,
+            "ddl": {"elapsed_seconds": 1.0},
+            "analyze": {"elapsed_seconds": 2.0, "payload_verification_passed": True},
+            "derived": {"sequential_ddl_plus_analyze_seconds": 3.0},
+            "logical_storage": {"after_ddl": {"total": 10}, "after_analyze": {"total": 20}},
+            "physical_catalog_allocation": {
+                "deltas": {
+                    "after_ddl_minus_baseline": {"combined_catalog_total_relation_bytes": 0},
+                    "after_analyze_minus_baseline": {"combined_catalog_total_relation_bytes": 0},
+                }
+            },
+            "base_relation_total_bytes_context": 100,
+            "cleanup": {"database_dropped": True},
+        }
+        raw = {
+            "status": "complete",
+            "dataset_id": dataset_id,
+            "source_rq2_digest": "rq2",
+            "source_deployment_digest": "deployment",
+            "stock_postgresql_sha": static_cost.STOCK_POSTGRES_SHA,
+            "no_advisor_selection": True,
+            "repetitions": [
+                repetition,
+                {**repetition, "repetition_id": 2},
+                {**repetition, "repetition_id": 3},
+            ],
+        }
+        raw["semantic_digest"] = static_cost.semantic_digest(
+            {key: item for key, item in raw.items() if key != "semantic_digest"}
+        )
+        static_cost.write_json(raw_path, raw)
+
+    output = Path("experiments/rq5-static-deployment-cost-v1.json")
+    result = summarize_static_deployment(
+        root,
+        output=output,
+        preflight=Path("experiments/rq5-static-deployment-cost-preflight-v1.json"),
+    )
+    assert result["preflight_path"] == "experiments/rq5-static-deployment-cost-preflight-v1.json"
+    assert (root / output).is_file()
+    assert not (other_cwd / output).exists()
 
 
 def test_static_protocol_is_preregistered_and_valid() -> None:
