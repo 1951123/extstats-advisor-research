@@ -1,0 +1,109 @@
+{
+  "format_version": "rq5-static-deployment-cost-protocol-v1",
+  "protocol_id": "rq5-static-deployment-cost",
+  "status": "preregistered",
+  "research_question": "Static deployment cost of already-selected native extended statistics",
+  "datasets": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "dataset_order": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "system": {
+    "role": "stock PostgreSQL only",
+    "postgres_version": "16.14",
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "patched_postgres_used": false,
+    "advisor_selection_used": false
+  },
+  "recommendation_source": {
+    "format_version": "rq2-transfer-v1",
+    "source": "immutable RQ2 formal children",
+    "selection_semantics": "canonical K_s=8, B=8 recommendations; actual selected membership is source-derived",
+    "deployment_artifacts_are_authoritative_for": [
+      "candidate IDs",
+      "deployment order",
+      "column ordinals",
+      "statistics kind",
+      "statistics target",
+      "deterministic names",
+      "schema and relation identity"
+    ]
+  },
+  "repetitions": 3,
+  "repetition_order": [1, 2, 3],
+  "fresh_state": {
+    "independent_database_per_repetition": true,
+    "loader_contract": "corresponding RQ2 formal full-data stock loader and ordinary-statistics setup",
+    "pre_deployment_extended_statistics_required": 0,
+    "setup_cost_excluded_from_primary_static_deployment_cost": true
+  },
+  "timer": {
+    "kind": "client-side monotonic wall clock",
+    "implementation": "time.perf_counter",
+    "includes": "SQL round trip, server execution, and transaction completion within the defined stage",
+    "sql_clock_mixed_in": false
+  },
+  "stages": {
+    "ddl": {
+      "definition": "BEGIN; CREATE STATISTICS and ALTER STATISTICS for the source-derived recommendation; COMMIT",
+      "starts": "immediately before deployment transaction",
+      "ends": "after COMMIT succeeds",
+      "excludes": ["DDL verification", "storage queries", "ANALYZE", "EXPLAIN", "cleanup"],
+      "hard_cap_seconds": 300
+    },
+    "ddl_verification": {
+      "charged_to_ddl": false,
+      "checks": ["exact names", "candidate mapping", "column ordinals", "kind", "target", "object count", "no payload before ANALYZE"]
+    },
+    "analyze": {
+      "statement": "ANALYZE schema.relation",
+      "count_per_repetition": 1,
+      "starts": "immediately before ANALYZE",
+      "ends": "after successful ANALYZE completion",
+      "excludes": ["CREATE STATISTICS", "storage queries", "EXPLAIN", "cleanup", "payload verification"],
+      "hard_cap_seconds": 300
+    },
+    "payload_verification": {
+      "charged_to_analyze": false,
+      "checks": ["pg_statistic_ext row", "kind-specific pg_statistic_ext_data payload", "target", "relation identity"]
+    }
+  },
+  "storage": {
+    "states": ["baseline", "after-ddl-before-analyze", "after-analyze"],
+    "logical_fields": [
+      "logical_catalog_row_bytes",
+      "mcv_payload_bytes",
+      "dependencies_payload_bytes",
+      "ndistinct_payload_bytes"
+    ],
+    "physical_fields": [
+      "metadata_catalog_total_relation_bytes",
+      "data_catalog_total_relation_bytes",
+      "combined_catalog_total_relation_bytes"
+    ],
+    "physical_delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+    "logical_and_physical_are_not_additive": true,
+    "object_count_is_not_a_byte_estimator": true,
+    "base_relation_bytes_field": "base_relation_total_bytes_context"
+  },
+  "non_goals": [
+    "Advisor selection",
+    "patched PostgreSQL",
+    "planner evaluation",
+    "EXPLAIN",
+    "Q-error",
+    "GroundTruth acquisition",
+    "snapshot byte measurement",
+    "refresh measurement",
+    "production online latency"
+  ],
+  "summary_statistics": ["median", "min", "max"],
+  "semantic_digest": "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406"
+}

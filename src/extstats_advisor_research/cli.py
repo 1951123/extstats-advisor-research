@@ -132,6 +132,28 @@ from .rq5_cost_inventory import (
     validate_inventory,
     write_inventory,
 )
+from .rq5_static_deployment_cost import (
+    build_preflight as build_static_deployment_preflight,
+)
+from .rq5_static_deployment_cost import (
+    default_formal_path as default_static_deployment_path,
+)
+from .rq5_static_deployment_cost import (
+    default_preflight_path as default_static_deployment_preflight_path,
+)
+from .rq5_static_deployment_cost import (
+    run_static_deployment,
+    summarize_static_deployment,
+)
+from .rq5_static_deployment_cost import (
+    validate_formal_artifact as validate_static_deployment_artifact,
+)
+from .rq5_static_deployment_cost import (
+    validate_preflight as validate_static_deployment_preflight,
+)
+from .rq5_static_deployment_cost import (
+    validate_protocol as validate_static_deployment_protocol,
+)
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -580,6 +602,29 @@ def _parser() -> argparse.ArgumentParser:
     rq5_inventory.add_argument("--output", type=Path, default=None)
     rq5_validate = rq5_cost_commands.add_parser("validate")
     rq5_validate.add_argument("artifact", type=Path)
+    rq5_static = rq5_cost_commands.add_parser(
+        "static-deployment", help="protocol and stock-only RQ5 static deployment cost"
+    )
+    rq5_static_commands = rq5_static.add_subparsers(dest="rq5_static_command", required=True)
+    rq5_static_preflight = rq5_static_commands.add_parser("preflight")
+    rq5_static_preflight.add_argument("--output", type=Path, default=None)
+    rq5_static_preflight.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    rq5_static_run = rq5_static_commands.add_parser("run")
+    rq5_static_run.add_argument("--dataset", choices=RQ2_DATASETS, required=True)
+    rq5_static_run.add_argument("--stock-dsn", required=True)
+    rq5_static_run.add_argument("--output", type=Path, required=True)
+    rq5_static_run.add_argument("--preflight", type=Path, default=None)
+    rq5_static_run.add_argument("--data-root", type=Path, default=None)
+    rq5_static_run.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    rq5_static_summarize = rq5_static_commands.add_parser("summarize")
+    rq5_static_summarize.add_argument("--output", type=Path, default=None)
+    rq5_static_summarize.add_argument("--preflight", type=Path, default=None)
+    rq5_static_validate = rq5_static_commands.add_parser("validate")
+    rq5_static_validate.add_argument("artifact", type=Path)
     rq4 = validate_commands.add_parser(
         "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
     )
@@ -1072,8 +1117,57 @@ def main(argv: list[str] | None = None) -> int:
                     "semantic_digest": artifact["semantic_digest"],
                     "output": str(output),
                 }
-            else:
+            elif args.rq5_cost_command == "validate":
                 result = validate_inventory(args.artifact, root)
+            elif args.rq5_static_command == "preflight":
+                output = args.output or default_static_deployment_preflight_path(root)
+                artifact = build_static_deployment_preflight(
+                    root, stock_postgres_root=args.stock_postgres_root, output=output
+                )
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq5_static_command == "run":
+                result = run_static_deployment(
+                    args.dataset,
+                    research_root=root,
+                    stock_dsn=args.stock_dsn,
+                    output=args.output,
+                    stock_postgres_root=args.stock_postgres_root,
+                    preflight=args.preflight,
+                    data_root=args.data_root,
+                )
+                result = {
+                    "status": result["status"],
+                    "format_version": result["format_version"],
+                    "dataset_id": result["dataset_id"],
+                    "semantic_digest": result["semantic_digest"],
+                    "output": str(args.output),
+                }
+            elif args.rq5_static_command == "summarize":
+                output = args.output or default_static_deployment_path(root)
+                artifact = summarize_static_deployment(
+                    root, output=output, preflight=args.preflight
+                )
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq5_static_command == "validate":
+                name = args.artifact.name
+                if name.endswith("rq5-static-deployment-cost-protocol-v1.json"):
+                    result = validate_static_deployment_protocol(args.artifact)
+                elif name.endswith("rq5-static-deployment-cost-preflight-v1.json"):
+                    result = validate_static_deployment_preflight(args.artifact, root)
+                elif name.endswith("rq5-static-deployment-cost-v1.json"):
+                    result = validate_static_deployment_artifact(args.artifact, root)
+                else:
+                    result = validate_static_deployment_artifact(args.artifact, root)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-ablation":

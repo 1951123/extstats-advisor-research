@@ -804,6 +804,13 @@ stages without directly measured tracked evidence remain explicit gaps.
 External benchmark-label import is not a proxy for production exact truth
 acquisition.
 
+The preregistered `rq5-static-deployment-cost-v1` subexperiment measures only
+the already-selected RQ2 recommendations on stock PostgreSQL: definition DDL,
+one relation-level `ANALYZE`, and logical versus page-granular catalog
+allocation. It uses three independent fresh database realizations per dataset
+and excludes Advisor selection, truth acquisition, planner evaluation, refresh,
+and snapshot-byte measurement. Its completion will not complete RQ5.
+
 ## Provenance and completion criteria
 
 An experiment can be marked `complete` only when its raw and derived artifacts

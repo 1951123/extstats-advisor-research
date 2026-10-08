@@ -821,6 +821,15 @@
           "production online planning latency",
           "refresh cost and quality trend"
         ]
+      },
+      "static_deployment_cost": {
+        "status": "ready-to-run",
+        "protocol": "paper/rq5-static-deployment-cost-protocol-v1.json",
+        "protocol_format_version": "rq5-static-deployment-cost-protocol-v1",
+        "protocol_semantic_digest": "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406",
+        "scope": "stock-only static DDL, ANALYZE, and catalog/storage subexperiment for immutable RQ2 recommendations",
+        "repetitions": 3,
+        "rq5_completion_status": "incomplete"
       }
     }
   ],
