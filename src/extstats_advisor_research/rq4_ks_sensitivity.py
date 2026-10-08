@@ -70,6 +70,20 @@ TOP_K_PROTOCOL_DIGEST = "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383
 FORMAL_WALL_CLOCK_TOLERANCE_SECONDS = 1.0
 
 
+def _canonical_formal_output_paths(research_root: Path, output: Path) -> tuple[Path, Path, Path]:
+    """Canonicalize and contain a formal output before any run work starts."""
+
+    canonical_root = research_root.resolve()
+    output_path = output.resolve() if output.is_absolute() else (canonical_root / output).resolve()
+    try:
+        output_relative = output_path.relative_to(canonical_root)
+    except ValueError as exc:
+        raise RQ4ValidationError(
+            "formal K_s output must reside inside the research repository"
+        ) from exc
+    return canonical_root, output_path, output_relative
+
+
 def _formal_termination_contract() -> tuple[set[str], set[str]]:
     """Load termination vocabulary from the Advisor selected for the run."""
 
@@ -1242,15 +1256,16 @@ def run_formal_ks_sensitivity(
 ) -> dict[str, Any]:
     """Run one formal dataset child, excluding the reused ``all`` point."""
 
+    research_root, output_path, _ = _canonical_formal_output_paths(research_root, output)
     if dataset_id not in FORMAL_DATASETS:
         raise RQ4ValidationError(f"unsupported sensitivity dataset: {dataset_id}")
-    if output.exists():
-        raise FileExistsError(f"formal K_s sensitivity output exists: {output}")
+    if output_path.exists():
+        raise FileExistsError(f"formal K_s sensitivity output exists: {output_path}")
     research_identity = verify_research_repository(research_root)
     systems = verify_frozen_systems_v2(advisor_root, patched_postgres_root)
     source = load_reusable_source(dataset_id, research_root, advisor_root)
     preflight = build_preflight(dataset_id, research_root, advisor_root)
-    preflight_path = output.parent / "rq4-ks-sensitivity-preflight-v1.json"
+    preflight_path = output_path.parent / "rq4-ks-sensitivity-preflight-v1.json"
     from .provenance import write_json
 
     write_json(preflight_path, preflight)
@@ -1311,7 +1326,7 @@ def run_formal_ks_sensitivity(
         "search_wall_clock_seconds": SEARCH_WALL_CLOCK_SECONDS,
         "max_configuration_objective_evaluations": MAX_CONFIGURATION_OBJECTIVE_EVALUATIONS,
         "preflight": {
-            "path": str(preflight_path.relative_to(research_root)),
+            "path": str(preflight_path.relative_to(research_root).as_posix()),
             "semantic_digest": preflight["semantic_digest"],
             "status": preflight["status"],
         },
@@ -1327,7 +1342,7 @@ def run_formal_ks_sensitivity(
         source=source,
         all_reuse_gate=preflight["all_point_reuse_gate"],
     )
-    write_json(output, artifact)
+    write_json(output_path, artifact)
     return {**artifact, "validation": validation}
 
 

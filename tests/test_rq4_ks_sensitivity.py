@@ -17,6 +17,7 @@ TERMINATION_MAX_STATISTICS_COUNT = getattr(
     advisor_optimization, "TERMINATION_MAX_STATISTICS_COUNT", "max-statistics-count"
 )
 
+import extstats_advisor_research.rq4_ks_sensitivity as ks_sensitivity
 from extstats_advisor_research.cli import _parser
 from extstats_advisor_research.provenance import read_json, semantic_digest, write_json
 from extstats_advisor_research.rq4_ablation import RQ4ValidationError
@@ -34,6 +35,7 @@ from extstats_advisor_research.rq4_ks_sensitivity import (
     SCREENING_WIDTHS,
     SEARCH_WALL_CLOCK_SECONDS,
     TOP_K_PROTOCOL_DIGEST,
+    _canonical_formal_output_paths,
     _ConfigurationEvaluationGuard,
     _formal_selection_accounting,
     _reused_all_point,
@@ -111,6 +113,137 @@ def test_formal_cli_is_one_dataset_and_has_no_stock_dsn() -> None:
                 "out.json",
             ]
         )
+
+
+def test_formal_output_path_is_canonicalized_relative_to_research_root(tmp_path: Path) -> None:
+    root, output, relative = _canonical_formal_output_paths(
+        tmp_path, Path("experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json")
+    )
+    assert root == tmp_path.resolve()
+    assert (
+        output
+        == (tmp_path / "experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json").resolve()
+    )
+    assert relative.as_posix() == ("experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json")
+
+
+def test_formal_output_path_accepts_absolute_path_inside_repo(tmp_path: Path) -> None:
+    absolute = tmp_path / "experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json"
+    _, output, relative = _canonical_formal_output_paths(tmp_path, absolute)
+    assert output == absolute.resolve()
+    assert relative.as_posix() == ("experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json")
+
+
+def test_formal_output_path_rejects_path_outside_repo(tmp_path: Path) -> None:
+    with pytest.raises(RQ4ValidationError, match="inside the research repository"):
+        _canonical_formal_output_paths(tmp_path, Path("/tmp/formal.json"))
+
+
+def test_invalid_formal_output_fails_before_search_or_sandbox(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls = {"finite": 0, "sandbox": 0}
+
+    def finite(*_args: object, **_kwargs: object) -> dict[str, object]:
+        calls["finite"] += 1
+        return {}
+
+    def prepare_sandbox(*_args: object, **_kwargs: object) -> None:
+        calls["sandbox"] += 1
+
+    monkeypatch.setattr(ks_sensitivity, "_run_formal_finite_point", finite)
+    monkeypatch.setattr(ks_sensitivity, "_ensure_planner_catalog", lambda dsn, _db: dsn)
+    monkeypatch.setattr(
+        ks_sensitivity,
+        "_advisor_modules",
+        lambda *_args: {
+            "IncrementalPostgresSearchEvaluator": object(),
+            "greedy_add_search_incremental": object(),
+            "prepare_postgres_planner_sandbox": prepare_sandbox,
+        },
+    )
+    with pytest.raises(RQ4ValidationError, match="inside the research repository"):
+        ks_sensitivity.run_formal_ks_sensitivity(
+            dataset_id="arecel-power7",
+            research_root=tmp_path,
+            patched_dsn="unused",
+            output=Path("/tmp/formal.json"),
+        )
+    assert calls == {"finite": 0, "sandbox": 0}
+
+
+def test_runner_relative_output_uses_repo_relative_preflight_path(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path.resolve()
+    output = Path("experiments/arecel-power7/rq4-ks-sensitivity-v1/result.json")
+    profile = SimpleNamespace(
+        computed_semantic_digest="p" * 64,
+        runtime_metadata={},
+    )
+    source = {
+        "snapshot": object(),
+        "candidate_universe": object(),
+        "native_repository": object(),
+        "eligible_universe": {"semantic_digest": "e" * 64},
+        "singleton_profile": profile,
+        "source_artifact_digests": {"singleton_profile": "s" * 64},
+    }
+    preflight = {
+        "status": "ready-to-run",
+        "formal_run_executed": False,
+        "protocol_semantic_digest": TOP_K_PROTOCOL_DIGEST,
+        "semantic_digest": "f" * 64,
+        "all_point_reuse_gate": {"source_path": "fixed.json"},
+    }
+
+    class Prepared:
+        metadata = SimpleNamespace(to_dict=lambda: {"status": "prepared"})
+
+    modules = {
+        "IncrementalPostgresSearchEvaluator": object(),
+        "greedy_add_search_incremental": object(),
+        "prepare_postgres_planner_sandbox": lambda *_args: Prepared(),
+        "verify_postgres_planner_sandbox": lambda *_args: None,
+        "destroy_postgres_planner_sandbox": lambda *_args: None,
+    }
+    monkeypatch.setattr(
+        ks_sensitivity,
+        "verify_research_repository",
+        lambda *_args: {"research_commit_sha": "c" * 40},
+    )
+    monkeypatch.setattr(
+        ks_sensitivity,
+        "verify_frozen_systems_v2",
+        lambda *_args: {
+            "advisor_commit_sha": "a" * 40,
+            "patched_postgres_commit_sha": "p" * 40,
+        },
+    )
+    monkeypatch.setattr(ks_sensitivity, "load_reusable_source", lambda *_args: source)
+    monkeypatch.setattr(ks_sensitivity, "build_preflight", lambda *_args: preflight)
+    monkeypatch.setattr(ks_sensitivity, "_ensure_planner_catalog", lambda dsn, _db: dsn)
+    monkeypatch.setattr(ks_sensitivity, "_advisor_modules", lambda *_args: modules)
+    monkeypatch.setattr(ks_sensitivity, "_run_formal_finite_point", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(ks_sensitivity, "_reused_all_point", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(ks_sensitivity, "validate_preflight", lambda *_args: None)
+    monkeypatch.setattr(
+        ks_sensitivity, "validate_formal_ks_sensitivity", lambda *_args, **_kwargs: {}
+    )
+
+    result = ks_sensitivity.run_formal_ks_sensitivity(
+        dataset_id="arecel-power7",
+        research_root=root,
+        patched_dsn="unused",
+        output=output,
+    )
+    output_path = root / output
+    artifact = read_json(output_path)
+    assert result["preflight"]["path"] == (
+        "experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-preflight-v1.json"
+    )
+    assert artifact["preflight"]["path"] == result["preflight"]["path"]
+    assert output_path.is_file()
 
 
 @pytest.mark.parametrize(
