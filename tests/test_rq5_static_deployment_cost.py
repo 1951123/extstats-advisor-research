@@ -113,8 +113,9 @@ def test_runner_assembles_with_repo_relative_paths_without_database(monkeypatch,
     stock_root.mkdir()
     preflight = root / "experiments/rq5-static-deployment-cost-preflight-v1.json"
     preflight.parent.mkdir(parents=True)
+    producer_sha = "a" * 40
     preflight.write_text(
-        json.dumps({"research_commit_sha": "producer", "semantic_digest": "preflight"}),
+        json.dumps({"research_commit_sha": producer_sha, "semantic_digest": "preflight"}),
         encoding="utf-8",
     )
     monkeypatch.setattr(
@@ -126,18 +127,47 @@ def test_runner_assembles_with_repo_relative_paths_without_database(monkeypatch,
         lambda path: (
             static_cost.STOCK_POSTGRES_SHA
             if Path(path).resolve() == stock_root.resolve()
-            else "producer"
+            else producer_sha
         ),
     )
+    projection = {
+        "dataset_id": "arecel-power7",
+        "source_rq2_child": "experiments/source-rq2.json",
+        "source_rq2_digest": "b" * 64,
+        "source_deployment_artifact": "experiments/source-deployment.json",
+        "source_deployment_digest": "c" * 64,
+        "selected_candidate_ids": ["candidate"],
+        "objects": [{"kind": "postgresql.mcv"}],
+    }
     monkeypatch.setattr(
         static_cost,
         "_source_projection",
-        lambda research_root, dataset_id: {"dataset_id": dataset_id},
+        lambda research_root, dataset_id: projection,
     )
+
+    def fake_repetition(source_projection, **kwargs):
+        return {
+            "repetition_id": kwargs["repetition_id"],
+            "source_rq2_child": source_projection["source_rq2_child"],
+            "source_rq2_digest": source_projection["source_rq2_digest"],
+            "source_deployment_artifact": source_projection["source_deployment_artifact"],
+            "source_deployment_digest": source_projection["source_deployment_digest"],
+            "research_commit_sha": producer_sha,
+            "statistics_target": 100,
+            "ddl": {"elapsed_seconds": 1.0, "committed": True},
+            "analyze": {
+                "elapsed_seconds": 2.0,
+                "completed": True,
+                "payload_verification_passed": True,
+            },
+            "derived": {"direct_combined_wall_clock_measurement": False},
+            "cleanup": {"database_dropped": True},
+        }
+
     monkeypatch.setattr(
         static_cost,
         "_run_repetition",
-        lambda projection, **kwargs: {"repetition_id": kwargs["repetition_id"]},
+        fake_repetition,
     )
     output = Path("experiments/rq5-static-deployment-cost-v1/raw/arecel-power7.json")
     result = run_static_deployment(
@@ -149,8 +179,22 @@ def test_runner_assembles_with_repo_relative_paths_without_database(monkeypatch,
         preflight=Path("experiments/rq5-static-deployment-cost-preflight-v1.json"),
     )
     assert result["preflight_path"] == "experiments/rq5-static-deployment-cost-preflight-v1.json"
+    assert result["source_rq2_child"] == projection["source_rq2_child"]
+    assert result["source_rq2_digest"] == projection["source_rq2_digest"]
+    assert result["source_deployment_artifact"] == projection["source_deployment_artifact"]
+    assert result["source_deployment_digest"] == projection["source_deployment_digest"]
+    assert result["selected_candidate_ids"] == projection["selected_candidate_ids"]
+    assert result["object_count"] == len(projection["objects"])
+    assert result["statistics_kinds"] == [item["kind"] for item in projection["objects"]]
+    assert result["statistics_target"] == 100
+    assert result["research_commit_sha"] == producer_sha
     assert (root / output).is_file()
     assert not (other_cwd / output).exists()
+    static_cost._validate_dataset_raw(
+        json.loads((root / output).read_text(encoding="utf-8")),
+        projection,
+        expected_research_commit_sha=producer_sha,
+    )
 
 
 def test_summarizer_assembles_with_repo_relative_paths(monkeypatch, tmp_path) -> None:
@@ -161,8 +205,9 @@ def test_summarizer_assembles_with_repo_relative_paths(monkeypatch, tmp_path) ->
     monkeypatch.chdir(other_cwd)
     preflight = root / "experiments/rq5-static-deployment-cost-preflight-v1.json"
     preflight.parent.mkdir(parents=True)
+    producer_sha = "a" * 40
     preflight.write_text(
-        json.dumps({"research_commit_sha": "producer", "semantic_digest": "preflight"}),
+        json.dumps({"research_commit_sha": producer_sha, "semantic_digest": "preflight"}),
         encoding="utf-8",
     )
     monkeypatch.setattr(
@@ -182,17 +227,19 @@ def test_summarizer_assembles_with_repo_relative_paths(monkeypatch, tmp_path) ->
             "dataset_id": dataset_id,
             "source_rq2_child": source_paths[dataset_id]["path"],
             "source_rq2_digest": "rq2",
+            "source_deployment_artifact": f"deployments/{dataset_id}.json",
             "source_deployment_digest": "deployment",
-            "actual_selected_k": 1,
             "selected_candidate_ids": ["candidate"],
+            "object_count": 1,
+            "statistics_kinds": ["postgresql.mcv"],
+            "statistics_target": 100,
+            "actual_selected_k": 1,
             "objects": [{"kind": "postgresql.mcv"}],
         }
     monkeypatch.setattr(static_cost, "RQ2_CHILDREN", source_paths)
     monkeypatch.setattr(
         static_cost, "_source_projection", lambda root, dataset_id: projections[dataset_id]
     )
-    monkeypatch.setattr(static_cost, "_validate_dataset_raw", lambda value, projection: None)
-
     for dataset_id in DATASETS:
         raw_path = root / f"experiments/rq5-static-deployment-cost-v1/raw/{dataset_id}.json"
         repetition = {
@@ -212,17 +259,45 @@ def test_summarizer_assembles_with_repo_relative_paths(monkeypatch, tmp_path) ->
         }
         raw = {
             "status": "complete",
+            "format_version": "rq5-static-deployment-cost-dataset-v1",
+            "formal_execution": True,
             "dataset_id": dataset_id,
+            "research_commit_sha": producer_sha,
+            "source_rq2_child": source_paths[dataset_id]["path"],
             "source_rq2_digest": "rq2",
+            "source_deployment_artifact": f"deployments/{dataset_id}.json",
             "source_deployment_digest": "deployment",
+            "selected_candidate_ids": ["candidate"],
+            "object_count": 1,
+            "statistics_kinds": ["postgresql.mcv"],
+            "statistics_target": 100,
             "stock_postgresql_sha": static_cost.STOCK_POSTGRES_SHA,
             "no_advisor_selection": True,
-            "repetitions": [
-                repetition,
-                {**repetition, "repetition_id": 2},
-                {**repetition, "repetition_id": 3},
-            ],
+            "repetitions": [],
         }
+        for repetition_id in (1, 2, 3):
+            raw["repetitions"].append(
+                {
+                    **repetition,
+                    "repetition_id": repetition_id,
+                    "source_rq2_child": source_paths[dataset_id]["path"],
+                    "source_rq2_digest": "rq2",
+                    "source_deployment_artifact": f"deployments/{dataset_id}.json",
+                    "source_deployment_digest": "deployment",
+                    "research_commit_sha": producer_sha,
+                    "statistics_target": 100,
+                    "ddl": {"elapsed_seconds": 1.0, "committed": True},
+                    "analyze": {
+                        "elapsed_seconds": 2.0,
+                        "completed": True,
+                        "payload_verification_passed": True,
+                    },
+                    "derived": {
+                        "sequential_ddl_plus_analyze_seconds": 3.0,
+                        "direct_combined_wall_clock_measurement": False,
+                    },
+                }
+            )
         raw["semantic_digest"] = static_cost.semantic_digest(
             {key: item for key, item in raw.items() if key != "semantic_digest"}
         )
@@ -284,8 +359,14 @@ def test_protocol_keeps_ddl_and_analyze_timers_separate() -> None:
 
 def _raw_fixture(dataset_id: str = "arecel-power7") -> dict:
     projection = _source_projection(ROOT, dataset_id)
+    producer_sha = "a" * 40
     repetition = {
         "repetition_id": 1,
+        "source_rq2_child": projection["source_rq2_child"],
+        "source_rq2_digest": projection["source_rq2_digest"],
+        "source_deployment_artifact": projection["source_deployment_artifact"],
+        "source_deployment_digest": projection["source_deployment_digest"],
+        "research_commit_sha": producer_sha,
         "statistics_target": 100,
         "ddl": {"elapsed_seconds": 1.0, "committed": True},
         "analyze": {"elapsed_seconds": 2.0, "completed": True, "payload_verification_passed": True},
@@ -293,14 +374,80 @@ def _raw_fixture(dataset_id: str = "arecel-power7") -> dict:
         "cleanup": {"database_dropped": True},
     }
     return {
+        "format_version": "rq5-static-deployment-cost-dataset-v1",
         "status": "complete",
         "dataset_id": dataset_id,
+        "formal_execution": True,
+        "research_commit_sha": producer_sha,
+        "source_rq2_child": projection["source_rq2_child"],
         "source_rq2_digest": projection["source_rq2_digest"],
+        "source_deployment_artifact": projection["source_deployment_artifact"],
         "source_deployment_digest": projection["source_deployment_digest"],
+        "selected_candidate_ids": projection["selected_candidate_ids"],
+        "object_count": len(projection["objects"]),
+        "statistics_kinds": [item["kind"] for item in projection["objects"]],
+        "statistics_target": 100,
         "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
         "no_advisor_selection": True,
-        "repetitions": [repetition],
+        "repetitions": [
+            repetition,
+            {**repetition, "repetition_id": 2},
+            {**repetition, "repetition_id": 3},
+        ],
     }
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement", "message"),
+    [
+        ("source_rq2_digest", "0" * 64, "raw RQ2 source drifted"),
+        ("source_deployment_digest", "0" * 64, "raw deployment source drifted"),
+        ("source_rq2_child", "wrong/rq2.json", "raw RQ2 source path drifted"),
+        (
+            "source_deployment_artifact",
+            "wrong/deployment.json",
+            "raw deployment source path drifted",
+        ),
+        ("selected_candidate_ids", ["wrong"], "raw recommendation membership drifted"),
+        ("object_count", 0, "raw recommendation object count drifted"),
+        (
+            "statistics_kinds",
+            ["postgresql.dependencies"],
+            "raw recommendation statistics kinds drifted",
+        ),
+        ("statistics_target", 99, "raw recommendation target drifted"),
+    ],
+)
+def test_raw_provenance_and_recommendation_mutations_are_rejected(
+    field, replacement, message
+) -> None:
+    raw = _raw_fixture()
+    raw[field] = replacement
+    with pytest.raises(ValueError, match=message):
+        _validate_dataset_raw(raw, _source_projection(ROOT, "arecel-power7"))
+
+
+def test_raw_wrong_producer_is_rejected_when_expected_producer_is_bound() -> None:
+    raw = _raw_fixture()
+    raw["research_commit_sha"] = "b" * 40
+    with pytest.raises(ValueError, match="raw research producer SHA drifted"):
+        _validate_dataset_raw(
+            raw,
+            _source_projection(ROOT, "arecel-power7"),
+            expected_research_commit_sha="a" * 40,
+        )
+
+
+def test_mixed_repetition_provenance_is_rejected() -> None:
+    raw = _raw_fixture()
+    raw["repetitions"][1]["source_rq2_digest"] = "d" * 64
+    with pytest.raises(ValueError, match="repetition source_rq2_digest"):
+        _validate_dataset_raw(raw, _source_projection(ROOT, "arecel-power7"))
+
+    raw = _raw_fixture()
+    raw["repetitions"][1]["research_commit_sha"] = "b" * 40
+    with pytest.raises(ValueError, match="repetition research producer SHA"):
+        _validate_dataset_raw(raw, _source_projection(ROOT, "arecel-power7"))
 
 
 class _FakeConnection:

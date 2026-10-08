@@ -768,8 +768,10 @@ def run_static_deployment(
     )
     output_path, _ = _canonical_repo_artifact_path(root, output, label="raw output")
     preflight_result = validate_preflight(preflight_path, root)
+    preflight_value = read_json(preflight_path)
+    producer_sha = _git_sha(root)
     _require(
-        _git_sha(root) == read_json(preflight_path)["research_commit_sha"],
+        producer_sha == preflight_value["research_commit_sha"],
         "implementation changed after preflight",
     )
     stock_sha = _git_sha(stock_postgres_root.resolve())
@@ -793,12 +795,20 @@ def run_static_deployment(
         "status": "complete",
         "dataset_id": dataset_id,
         "formal_execution": True,
-        "research_commit_sha": _git_sha(root),
+        "research_commit_sha": producer_sha,
         "stock_postgresql_sha": stock_sha,
+        "source_rq2_child": projection["source_rq2_child"],
+        "source_rq2_digest": projection["source_rq2_digest"],
+        "source_deployment_artifact": projection["source_deployment_artifact"],
+        "source_deployment_digest": projection["source_deployment_digest"],
+        "selected_candidate_ids": projection["selected_candidate_ids"],
+        "object_count": len(projection["objects"]),
+        "statistics_kinds": [item["kind"] for item in projection["objects"]],
+        "statistics_target": 100,
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
         "preflight_path": preflight_relative.as_posix(),
-        "preflight_semantic_digest": read_json(preflight_path)["semantic_digest"],
+        "preflight_semantic_digest": preflight_value["semantic_digest"],
         "repetitions": repetitions,
         "no_advisor_selection": True,
         "no_patched_postgres": True,
@@ -806,6 +816,11 @@ def run_static_deployment(
         "no_truth_acquisition": True,
         "semantic_digest": "",
     }
+    _validate_dataset_raw(
+        value,
+        projection,
+        expected_research_commit_sha=producer_sha,
+    )
     value["semantic_digest"] = semantic_digest(
         {key: item for key, item in value.items() if key != "semantic_digest"}
     )
@@ -818,19 +833,81 @@ def _summary_stats(values: list[float | int]) -> dict[str, float | int]:
     return {"median": median(values), "min": min(values), "max": max(values)}
 
 
-def _validate_dataset_raw(value: Mapping[str, Any], projection: Mapping[str, Any]) -> None:
+def _validate_dataset_raw(
+    value: Mapping[str, Any],
+    projection: Mapping[str, Any],
+    *,
+    expected_research_commit_sha: str | None = None,
+) -> None:
+    _require(
+        value.get("format_version") == "rq5-static-deployment-cost-dataset-v1",
+        "unsupported static deployment dataset artifact",
+    )
     _require(value.get("status") == "complete", "raw static deployment child is not complete")
+    _require(value.get("formal_execution") is True, "raw child is not formal execution evidence")
     _require(value.get("dataset_id") == projection["dataset_id"], "raw dataset identity drifted")
+    research_commit_sha = value.get("research_commit_sha")
+    _require(
+        isinstance(research_commit_sha, str)
+        and re.fullmatch(r"[0-9a-f]{40}", research_commit_sha) is not None,
+        "raw research producer SHA is invalid",
+    )
+    if expected_research_commit_sha is not None:
+        _require(
+            research_commit_sha == expected_research_commit_sha,
+            "raw research producer SHA drifted",
+        )
+    _require(
+        value.get("source_rq2_child") == projection["source_rq2_child"],
+        "raw RQ2 source path drifted",
+    )
     _require(
         value.get("source_rq2_digest") == projection["source_rq2_digest"], "raw RQ2 source drifted"
+    )
+    _require(
+        value.get("source_deployment_artifact") == projection["source_deployment_artifact"],
+        "raw deployment source path drifted",
     )
     _require(
         value.get("source_deployment_digest") == projection["source_deployment_digest"],
         "raw deployment source drifted",
     )
+    _require(
+        value.get("selected_candidate_ids") == projection["selected_candidate_ids"],
+        "raw recommendation membership drifted",
+    )
+    _require(
+        value.get("object_count") == len(projection["objects"]),
+        "raw recommendation object count drifted",
+    )
+    _require(
+        value.get("statistics_kinds") == [item["kind"] for item in projection["objects"]],
+        "raw recommendation statistics kinds drifted",
+    )
+    _require(value.get("statistics_target") == 100, "raw recommendation target drifted")
     _require(value.get("stock_postgresql_sha") == STOCK_POSTGRES_SHA, "raw stock identity drifted")
     _require(value.get("no_advisor_selection") is True, "raw child claims Advisor selection")
-    for repetition in value.get("repetitions", []):
+    repetitions = value.get("repetitions", [])
+    _require(len(repetitions) == len(REPETITIONS), "raw repetition count drifted")
+    _require(
+        [repetition.get("repetition_id") for repetition in repetitions] == list(REPETITIONS),
+        "raw repetition order drifted",
+    )
+    for repetition in repetitions:
+        for field in (
+            "source_rq2_child",
+            "source_rq2_digest",
+            "source_deployment_artifact",
+            "source_deployment_digest",
+        ):
+            _require(
+                repetition.get(field) == value[field],
+                f"repetition {field} differs from raw child provenance",
+            )
+        _require(
+            repetition.get("research_commit_sha") == research_commit_sha,
+            "repetition research producer SHA differs from raw child provenance",
+        )
         _require(repetition.get("statistics_target") == 100, "raw target drifted")
         _require(repetition.get("ddl", {}).get("committed") is True, "raw DDL was not committed")
         _require(repetition.get("analyze", {}).get("completed") is True, "raw ANALYZE incomplete")
@@ -877,7 +954,11 @@ def summarize_static_deployment(
         _require(raw_path.is_file(), f"missing raw static deployment child: {raw_path}")
         raw = read_json(raw_path)
         projection = _source_projection(root, dataset_id)
-        _validate_dataset_raw(raw, projection)
+        _validate_dataset_raw(
+            raw,
+            projection,
+            expected_research_commit_sha=preflight_value["research_commit_sha"],
+        )
         _require(
             raw.get("semantic_digest")
             == semantic_digest(
