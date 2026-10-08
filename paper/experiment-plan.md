@@ -834,6 +834,12 @@ payload. The metric is the logical byte sum of all regular files in each
 validated sealed snapshot; it does not use filesystem block allocation or
 compressed size. The footprint experiment uses three fresh stock realizations
 per dataset and does not collect truth or execute planner/search work.
+The Census13 production-exact truth-cost canary is preregistered but not yet
+executed. It measures one client-monotonic wall-clock interval around the
+frozen Advisor `_collect_truth()` method inside the real
+`capture_with_ground_truth()` repeatable-read/read-only acquisition transaction.
+This is a feasibility measurement, not a four-dataset cost result or a claim
+about production-wide truth-acquisition feasibility.
 RQ5 remains incomplete because production-exact truth acquisition cost and
 refresh cost/quality trend remain unresolved. The current evidence inventory is
 `experiments/rq5-existing-trace-cost-inventory-v3.json` (digest

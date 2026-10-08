@@ -1,0 +1,68 @@
+{
+  "capture_path": "TimedPostgresSnapshotAcquirer.capture_with_ground_truth",
+  "dataset_id": "arecel-census13",
+  "datasets": [
+    "arecel-census13"
+  ],
+  "exact_truth_scope": "positive-weight supported queries with resolved parameters in the frozen repeatable-read read-only acquisition transaction",
+  "experiment_id": "rq5-production-exact-truth-cost-census13-v1",
+  "format_version": "rq5-production-exact-truth-cost-census13-protocol-v1",
+  "future_artifact_format": "rq5-production-exact-truth-cost-census13-v1",
+  "no_patched_postgres": true,
+  "no_planner_work": true,
+  "no_snapshot_footprint_claim": true,
+  "non_truth_capture_component_semantics": "derived total capture wall minus timed _collect_truth wall; not an independently timed stage",
+  "primary_metric": "production_exact_truth_acquisition_elapsed_seconds",
+  "repetition_semantics": "one feasibility/cost canary repetition; not a stability estimate",
+  "repetitions": 1,
+  "research_question": "What wall-clock cost does the frozen Advisor production-exact truth acquisition path incur for the canonical Census13 10,000-query workload?",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "secondary_metrics": [
+    "eligible_query_count",
+    "truth_record_count",
+    "capture_with_ground_truth_total_elapsed_seconds",
+    "non_truth_capture_component_seconds"
+  ],
+  "sensitive_artifact_policy": "tracked artifact stores aggregate metadata and digests only; no truth records, snapshot payload, SQL workload body, or DSN",
+  "stage_hard_cap_seconds": 300.0,
+  "status": "preregistered",
+  "systems": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "postgres_version": "16.14",
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "timeout": {
+    "implementation": "separate worker process with READY_FOR_TRUTH/TRUTH_STARTED/TRUTH_FINISHED stage signals",
+    "on_timeout": "terminate worker, record timeout, publish no complete artifact",
+    "retry": false,
+    "stage_hard_cap_seconds": 300.0
+  },
+  "timing_boundary": {
+    "clock": "client-monotonic-wall-clock",
+    "excludes": [
+      "fresh database creation",
+      "dataset load",
+      "snapshot schema acquisition",
+      "sample acquisition before _collect_truth()",
+      "snapshot serialization",
+      "truth comparison",
+      "artifact writing",
+      "cleanup"
+    ],
+    "includes": [
+      "workload support analysis",
+      "eligibility validation",
+      "exact COUNT query execution",
+      "CardinalityTruth materialization"
+    ],
+    "method": "PostgresSnapshotAcquirer._collect_truth"
+  },
+  "truth_source": "frozen production-exact count path",
+  "validation_contract": {
+    "authoritative_comparison": "query IDs and cardinality values against canonical Census13 authoritative labels outside the primary timer",
+    "query_count_contract": "use the frozen workload eligibility contract; do not blindly substitute 10,000 if eligibility differs",
+    "success": "truth_record_count equals eligible_exact_truth_query_count and compared mismatch count is zero"
+  },
+  "semantic_digest": "52af2af04363b9642a5720ad2412028228446fc32b22804330399acfba32ecde"
+}

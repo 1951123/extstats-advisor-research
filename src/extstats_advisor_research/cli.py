@@ -136,6 +136,30 @@ from .rq5_cost_inventory import (
     write_inventory_v2,
     write_inventory_v3,
 )
+from .rq5_production_exact_truth_cost import (
+    PREFLIGHT_FORMAT as PRODUCTION_EXACT_TRUTH_PREFLIGHT_FORMAT,
+)
+from .rq5_production_exact_truth_cost import (
+    PROTOCOL_FORMAT as PRODUCTION_EXACT_TRUTH_PROTOCOL_FORMAT,
+)
+from .rq5_production_exact_truth_cost import (
+    build_preflight as build_production_exact_truth_preflight,
+)
+from .rq5_production_exact_truth_cost import (
+    default_preflight_path as default_production_exact_truth_preflight_path,
+)
+from .rq5_production_exact_truth_cost import (
+    run_canary as run_production_exact_truth_canary,
+)
+from .rq5_production_exact_truth_cost import (
+    validate_artifact as validate_production_exact_truth_artifact,
+)
+from .rq5_production_exact_truth_cost import (
+    validate_preflight_file as validate_production_exact_truth_preflight_file,
+)
+from .rq5_production_exact_truth_cost import (
+    validate_protocol as validate_production_exact_truth_protocol,
+)
 from .rq5_snapshot_footprint import (
     DATASETS as SNAPSHOT_FOOTPRINT_DATASETS,
 )
@@ -692,6 +716,29 @@ def _parser() -> argparse.ArgumentParser:
     rq5_snapshot_summarize.add_argument("--output", type=Path, default=None)
     rq5_snapshot_validate = rq5_snapshot_commands.add_parser("validate")
     rq5_snapshot_validate.add_argument("artifact", type=Path)
+    rq5_truth = rq5_cost_commands.add_parser(
+        "production-exact-truth-cost",
+        help="preregister or validate the Census13 production-exact truth-cost canary",
+    )
+    rq5_truth_commands = rq5_truth.add_subparsers(dest="rq5_truth_command", required=True)
+    rq5_truth_preflight = rq5_truth_commands.add_parser("preflight")
+    rq5_truth_preflight.add_argument("--output", type=Path, default=None)
+    rq5_truth_preflight.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq5_truth_preflight.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    rq5_truth_preflight.add_argument("--data-root", type=Path, default=None)
+    rq5_truth_run = rq5_truth_commands.add_parser("run")
+    rq5_truth_run.add_argument("--stock-dsn", required=True)
+    rq5_truth_run.add_argument("--output", type=Path, required=True)
+    rq5_truth_run.add_argument("--preflight", type=Path, required=True)
+    rq5_truth_run.add_argument("--advisor-root", type=Path, required=True)
+    rq5_truth_run.add_argument("--stock-postgres-root", type=Path, required=True)
+    rq5_truth_run.add_argument("--data-root", type=Path, default=None)
+    rq5_truth_validate = rq5_truth_commands.add_parser("validate")
+    rq5_truth_validate.add_argument("artifact", type=Path)
     rq4 = validate_commands.add_parser(
         "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
     )
@@ -1260,8 +1307,48 @@ def main(argv: list[str] | None = None) -> int:
                         result = validate_snapshot_footprint_preflight(args.artifact, root)
                     elif value.get("format_version") == "rq5-snapshot-footprint-dataset-v1":
                         result = validate_snapshot_footprint_raw(value)
+                else:
+                    result = validate_snapshot_footprint_artifact(args.artifact, root)
+            elif args.rq5_cost_command == "production-exact-truth-cost":
+                if args.rq5_truth_command == "preflight":
+                    output = args.output or default_production_exact_truth_preflight_path(root)
+                    artifact = build_production_exact_truth_preflight(
+                        root,
+                        advisor_root=args.advisor_root,
+                        stock_postgres_root=args.stock_postgres_root,
+                        output=output,
+                        data_root=args.data_root,
+                    )
+                    result = {
+                        "status": "written",
+                        "format_version": artifact["format_version"],
+                        "semantic_digest": artifact["semantic_digest"],
+                        "output": str(output),
+                    }
+                elif args.rq5_truth_command == "run":
+                    artifact = run_production_exact_truth_canary(
+                        research_root=root,
+                        stock_dsn=args.stock_dsn,
+                        preflight=args.preflight,
+                        output=args.output,
+                        advisor_root=args.advisor_root,
+                        stock_postgres_root=args.stock_postgres_root,
+                        data_root=args.data_root,
+                    )
+                    result = {
+                        "status": artifact["status"],
+                        "format_version": artifact["format_version"],
+                        "semantic_digest": artifact["semantic_digest"],
+                        "output": str(args.output),
+                    }
+                else:
+                    value = read_json(args.artifact)
+                    if value.get("format_version") == PRODUCTION_EXACT_TRUTH_PROTOCOL_FORMAT:
+                        result = validate_production_exact_truth_protocol(args.artifact)
+                    elif value.get("format_version") == PRODUCTION_EXACT_TRUTH_PREFLIGHT_FORMAT:
+                        result = validate_production_exact_truth_preflight_file(args.artifact, root)
                     else:
-                        result = validate_snapshot_footprint_artifact(args.artifact, root)
+                        result = validate_production_exact_truth_artifact(value)
             elif args.rq5_static_command == "preflight":
                 output = args.output or default_static_deployment_preflight_path(root)
                 artifact = build_static_deployment_preflight(

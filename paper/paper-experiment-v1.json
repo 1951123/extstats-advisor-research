@@ -890,7 +890,19 @@
           }
         },
         "rq5_completion_status": "incomplete",
-        "rq5_registry_status": "planned"
+        "rq5_registry_status": "planned",
+        "production_exact_truth_cost_canary": {
+          "status": "preregistered",
+          "implementation_status": "implementation-ready",
+          "protocol": "paper/rq5-production-exact-truth-cost-census13-protocol-v1.json",
+          "protocol_format_version": "rq5-production-exact-truth-cost-census13-protocol-v1",
+          "protocol_semantic_digest": "52af2af04363b9642a5720ad2412028228446fc32b22804330399acfba32ecde",
+          "scope": "one Census13 feasibility/cost canary for the frozen production-exact truth acquisition path",
+          "datasets": ["arecel-census13"],
+          "repetitions": 1,
+          "rq5_completion_status": "incomplete",
+          "formal_execution": "not-started"
+        }
       }
     }
   ],
