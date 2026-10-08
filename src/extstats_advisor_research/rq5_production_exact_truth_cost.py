@@ -29,6 +29,7 @@ from .rq5_snapshot_footprint import (
     _canonical_repo_path,
     _database_cleanup_verified,
     _dataset_source_spec,
+    _git_status_entries,
 )
 from .rq5_static_deployment_cost import (
     _create_database,
@@ -259,6 +260,10 @@ def build_preflight(
         label="truth-cost preflight output",
     )
     _require(not output_path.exists(), f"truth-cost preflight already exists: {output_path}")
+    _require(
+        not default_artifact_path(root).exists(),
+        "truth-cost formal artifact already exists; refusing to start a new campaign",
+    )
     protocol = _protocol_value(root)
     research = verify_research_repository(root)
     advisor_sha = verify_git_sha(advisor_root.resolve(), FROZEN_ADVISOR_SHA)
@@ -503,35 +508,74 @@ def run_truth_stage_with_timeout(
     *,
     timeout_seconds: float = STAGE_HARD_CAP_SECONDS,
     context: Any | None = None,
+    stock_dsn: str | None = None,
+    database_name: str | None = None,
+    cleanup: Callable[[str], bool] | None = None,
+    post_truth_timeout_seconds: float | None = None,
 ) -> dict[str, Any]:
-    """Run a truth worker and enforce a real process-level stage deadline."""
+    """Run a truth worker with explicit phases and parent-owned cleanup."""
     _require(timeout_seconds > 0, "truth timeout must be positive")
+    post_timeout = (
+        timeout_seconds if post_truth_timeout_seconds is None else post_truth_timeout_seconds
+    )
+    _require(post_timeout > 0, "post-truth timeout must be positive")
     ctx = context or mp.get_context("spawn")
     events = ctx.Queue()
     process = ctx.Process(target=_worker_entry, args=(target, payload, events))
     process.start()
+    phase = "pre_truth"
+    ready_seen = False
+    database_created = False
     truth_started_at: float | None = None
+    post_truth_started_at: float | None = None
     ready_deadline = time.monotonic() + timeout_seconds
     result: dict[str, Any] | None = None
+
+    def terminate_and_cleanup(status: str) -> dict[str, Any]:
+        if process.is_alive():
+            process.terminate()
+        process.join(timeout=5)
+        cleanup_passed = True
+        if database_name is not None:
+            if cleanup is not None:
+                cleanup_passed = bool(cleanup(database_name))
+            else:
+                try:
+                    psycopg = _psycopg()
+                    if not _database_cleanup_verified(stock_dsn or "", database_name, psycopg):
+                        _drop_database(stock_dsn or "", database_name, psycopg)
+                        cleanup_passed = _database_cleanup_verified(
+                            stock_dsn or "", database_name, psycopg
+                        )
+                except Exception:  # noqa: BLE001 - timeout cleanup is fail-closed below
+                    cleanup_passed = False
+        if not cleanup_passed:
+            status = "timeout-cleanup-failed"
+        return {
+            "status": status,
+            "completed_truth_query_count": None,
+            "timeout_seconds": timeout_seconds,
+            "ready_seen": ready_seen,
+            "cleanup_passed": cleanup_passed,
+        }
+
     try:
         while True:
             now = time.monotonic()
-            if truth_started_at is None and now >= ready_deadline:
-                process.terminate()
-                process.join(timeout=5)
-                return {
-                    "status": "timeout-before-truth-stage",
-                    "completed_truth_query_count": None,
-                    "timeout_seconds": timeout_seconds,
-                }
-            if truth_started_at is not None and now - truth_started_at >= timeout_seconds:
-                process.terminate()
-                process.join(timeout=5)
-                return {
-                    "status": "timeout",
-                    "completed_truth_query_count": None,
-                    "timeout_seconds": timeout_seconds,
-                }
+            if phase == "pre_truth" and now >= ready_deadline:
+                return terminate_and_cleanup("timeout-before-truth-stage")
+            if (
+                phase == "truth"
+                and truth_started_at is not None
+                and now - truth_started_at >= timeout_seconds
+            ):
+                return terminate_and_cleanup("timeout")
+            if (
+                phase == "post_truth"
+                and post_truth_started_at is not None
+                and now - post_truth_started_at >= post_timeout
+            ):
+                return terminate_and_cleanup("timeout-after-truth-stage")
             try:
                 event = events.get(timeout=0.05)
             except Empty:
@@ -539,19 +583,62 @@ def run_truth_stage_with_timeout(
                     break
                 continue
             signal = event.get("signal")
-            if signal == "TRUTH_STARTED":
+            if signal == "DATABASE_CREATED":
+                _require(
+                    phase == "pre_truth" and not database_created,
+                    "truth worker database-created signal is out of order",
+                )
+                database_created = True
+            elif signal == "READY_FOR_TRUTH":
+                _require(
+                    phase == "pre_truth" and not ready_seen,
+                    "truth worker READY_FOR_TRUTH signal is out of order",
+                )
+                ready_seen = True
+            elif signal == "TRUTH_STARTED":
+                _require(
+                    phase == "pre_truth" and ready_seen,
+                    "truth worker TRUTH_STARTED signal is out of order",
+                )
+                phase = "truth"
                 truth_started_at = time.monotonic()
             elif signal == "TRUTH_FINISHED":
-                continue
+                _require(
+                    phase == "truth" and truth_started_at is not None,
+                    "truth worker TRUTH_FINISHED signal is out of order",
+                )
+                phase = "post_truth"
+                truth_started_at = None
+                post_truth_started_at = time.monotonic()
             elif signal == "RESULT":
+                _require(phase == "post_truth", "truth worker RESULT signal is out of order")
                 result = dict(event["result"])
+                _require(result.get("status") == "success", "truth worker result is not successful")
+                phase = "finished"
                 break
             elif signal == "ERROR":
                 raise RQ5ProductionExactTruthValidationError(
                     f"truth worker failed: {event.get('error')}"
                 )
+            else:
+                raise RQ5ProductionExactTruthValidationError(
+                    f"unknown truth worker signal: {signal!r}"
+                )
         _require(result is not None, "truth worker exited without a result")
+        result["ready_seen"] = ready_seen
+        result["phase"] = phase
         return result
+    except RQ5ProductionExactTruthValidationError:
+        if process.is_alive():
+            process.terminate()
+        process.join(timeout=5)
+        if database_name is not None:
+            cleanup_result = terminate_and_cleanup("worker-error")
+            if not cleanup_result["cleanup_passed"]:
+                raise RQ5ProductionExactTruthValidationError(
+                    "truth worker failed and cleanup could not be verified"
+                )
+        raise
     finally:
         if process.is_alive():
             process.terminate()
@@ -757,6 +844,38 @@ def default_artifact_path(research_root: Path) -> Path:
     return research_root / "experiments/rq5-production-exact-truth-cost-census13-v1.json"
 
 
+def _verify_canary_formal_tree(
+    root: Path, *, preflight_relative: Path, output_relative: Path
+) -> str:
+    """Allow only the campaign's untracked preflight before live work."""
+    expected_preflight = Path(
+        "experiments/rq5-production-exact-truth-cost-census13-preflight-v1.json"
+    )
+    expected_output = Path("experiments/rq5-production-exact-truth-cost-census13-v1.json")
+    _require(
+        preflight_relative == expected_preflight,
+        "truth-cost preflight path is not the canonical campaign preflight",
+    )
+    _require(
+        output_relative == expected_output,
+        "truth-cost output path is not the canonical campaign artifact",
+    )
+    entries = _git_status_entries(root)
+    _require(
+        all(status == "??" for status, _path in entries),
+        "truth-cost formal run requires no tracked or staged working-tree changes",
+    )
+    _require(
+        [path for _status, path in entries] == [expected_preflight.as_posix()],
+        "truth-cost formal run permits only the canonical untracked preflight",
+    )
+    _require(
+        not (root / expected_output).exists(),
+        "truth-cost formal artifact already exists; refusing to rerun campaign",
+    )
+    return _research_head_sha(root)
+
+
 def _census_truth_worker(events: Any, payload: Mapping[str, Any]) -> None:
     """Future live worker; never called by Phase A tests."""
     from extstats_advisor.dbms.base import AcquisitionRequest, SamplePolicy
@@ -764,7 +883,7 @@ def _census_truth_worker(events: Any, payload: Mapping[str, Any]) -> None:
 
     dataset_module = census13
     psycopg = _psycopg()
-    database_name = f"rq5_truth_census13_{uuid.uuid4().hex[:12]}"
+    database_name = str(payload["database_name"])
     created = False
     cleaned = False
     data_root = Path(payload["data_root"]) if payload.get("data_root") else None
@@ -789,6 +908,7 @@ def _census_truth_worker(events: Any, payload: Mapping[str, Any]) -> None:
         setup_started = time.monotonic()
         target_dsn = _create_database(str(payload["stock_dsn"]), database_name, psycopg)
         created = True
+        events.put({"signal": "DATABASE_CREATED"})
         setup_elapsed = time.monotonic() - setup_started
         _require(
             setup_elapsed <= STAGE_HARD_CAP_SECONDS, "fresh database setup exceeded the hard cap"
@@ -885,16 +1005,14 @@ def run_canary(
     preflight_path, preflight_relative = _canonical_repo_path(
         root, preflight, label="truth-cost preflight"
     )
-    output_path, _output_relative = _canonical_repo_path(root, output, label="truth-cost output")
-    _require(not output_path.exists(), f"truth-cost output already exists: {output_path}")
-    protocol = _protocol_value(root)
-    preflight_value = read_json(preflight_path)
-    validate_preflight(preflight_value, protocol=protocol)
-    _require(
-        preflight_value.get("preflight_path") == preflight_relative.as_posix(),
-        "truth-cost preflight path drifted",
+    output_path, output_relative = _canonical_repo_path(root, output, label="truth-cost output")
+    research_head = _verify_canary_formal_tree(
+        root,
+        preflight_relative=preflight_relative,
+        output_relative=output_relative,
     )
-    research_head = _research_head_sha(root)
+    validate_preflight_file(preflight_path, root)
+    preflight_value = read_json(preflight_path)
     _require(
         research_head == preflight_value["research_commit_sha"], "truth-cost producer SHA drifted"
     )
@@ -918,16 +1036,20 @@ def run_canary(
         "authoritative truth source drifted",
     )
     temporary_root = root / ".runtime" / f"rq5-truth-worker-{uuid.uuid4().hex}"
+    database_name = f"rq5_truth_census13_{uuid.uuid4().hex[:12]}"
     result = run_truth_stage_with_timeout(
         worker,
         {
             "stock_dsn": stock_dsn,
+            "database_name": database_name,
             "data_root": str(data_root.resolve()) if data_root else None,
             "temporary_root": str(temporary_root),
             "source_spec": actual_source,
             "truth_path": str(truth_path),
             "loader": load_census13,
         },
+        stock_dsn=stock_dsn,
+        database_name=database_name,
     )
     _require(timeout_result_is_publishable(result), "truth canary did not complete successfully")
     value = assemble_canary_artifact(

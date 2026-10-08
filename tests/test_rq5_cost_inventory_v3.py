@@ -77,6 +77,33 @@ def test_v1_and_v2_remain_immutable() -> None:
     )
 
 
+def _assert_current_inventory_pointer_matches_registry(registry: dict) -> None:
+    experiment = next(
+        item for item in registry["experiments"] if item["experiment_id"] == "rq5-cost-accounting"
+    )
+    pointer = experiment["existing_trace_inventory"]
+    artifact = json.loads((ROOT / pointer["artifact"]).read_text(encoding="utf-8"))
+    assert pointer["semantic_digest"] == artifact["semantic_digest"]
+    assert pointer["semantic_digest"] == semantic_digest(
+        {key: item for key, item in artifact.items() if key != "semantic_digest"}
+    )
+
+
+def test_current_inventory_registry_pointer_matches_v3_artifact() -> None:
+    registry = json.loads((ROOT / "paper/paper-experiment-v1.json").read_text(encoding="utf-8"))
+    _assert_current_inventory_pointer_matches_registry(registry)
+
+
+def test_current_inventory_registry_wrong_digest_is_rejected() -> None:
+    registry = json.loads((ROOT / "paper/paper-experiment-v1.json").read_text(encoding="utf-8"))
+    experiment = next(
+        item for item in registry["experiments"] if item["experiment_id"] == "rq5-cost-accounting"
+    )
+    experiment["existing_trace_inventory"]["semantic_digest"] = "0" * 64
+    with pytest.raises(AssertionError):
+        _assert_current_inventory_pointer_matches_registry(registry)
+
+
 @pytest.mark.parametrize(
     "mutation",
     [

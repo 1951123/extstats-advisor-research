@@ -809,7 +809,7 @@
         "status": "complete",
         "artifact": "experiments/rq5-existing-trace-cost-inventory-v3.json",
         "format_version": "rq5-existing-trace-cost-inventory-v3",
-        "semantic_digest": "49bd52e3427a9226486f4ab0cba9b6b7a0d6778851f9a994d1fbd089a91d6439",
+        "semantic_digest": "fc879128d2327e4bab8623b6e2ff2f820354d14093e6187c0d00ef2e552a39d2",
         "scope": "offline aggregation of already-measured cost evidence",
         "rq5_completion_status": "incomplete",
         "prior_inventory": {
