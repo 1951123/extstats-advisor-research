@@ -710,7 +710,7 @@
     {
       "experiment_id": "rq4-ks-sensitivity",
       "rq": "RQ4a",
-      "status": "ready-to-run",
+      "status": "complete",
       "datasets": ["arecel-census13", "arecel-power7", "arecel-dmv11"],
       "excluded_datasets": ["arecel-forest10"],
       "protocol_identity": "paper/top-k-screening-protocol-v2.json",
@@ -738,9 +738,9 @@
       "dataset_status": {
         "arecel-census13": "complete",
         "arecel-power7": "complete",
-        "arecel-dmv11": "not-executed",
+        "arecel-dmv11": "complete",
         "arecel-forest10": "excluded",
-        "global": "incomplete"
+        "global": "dataset-scope-complete"
       },
       "completed_dataset_artifacts": {
         "arecel-census13": {
@@ -754,9 +754,19 @@
           "semantic_digest": "85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5",
           "producer_research_sha": "310cd4f6f31ea9a1857790bb9d95b936d0a01f14",
           "execution_mode": "finite-points-executed-all-point-reused"
+        },
+        "arecel-dmv11": {
+          "path": "experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+          "semantic_digest": "569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109",
+          "producer_research_sha": "1c3be334470fe651e714a0d6d1198fcc501a0efa",
+          "execution_mode": "finite-points-executed-all-point-reused"
         }
       },
-      "partial_completion_note": "Power7 and Census13 have validated formal children; DMV11 was not executed, so the global K_s sensitivity remains incomplete and the protocol's formal_arecel_runs gate remains false.",
+      "completion_scope_note": "Power7, Census13, and DMV11 have validated formal children; the dataset scope is complete. No cross-dataset summary has been generated, and global RQ4 remains incomplete. The protocol's formal_arecel_runs gate remains false as the frozen preregistration field.",
+      "cross_dataset_summary": {
+        "status": "not-generated",
+        "reason": "deferred until separate review of all three immutable children"
+      },
       "expected_paper_outputs": ["fig-rq4-screening-width-quality-cost", "tab-rq4-screening-width-accounting"],
       "completion_criteria": ["all five preregistered points have valid evidence", "budget-censored points preserve their committed incumbent", "finite prefixes are deterministic", "all-point reuse passed its exact gate", "no stock physical RQ4b per-K_s children are produced"]
     },
@@ -847,8 +857,8 @@
       },
       {
         "experiment_id": "rq4-ks-sensitivity",
-        "status": "ready-to-run",
-        "note": "Power7 and Census13 are complete as validated formal children at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5) and experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8). DMV11 was not executed, so global K_s sensitivity and global RQ4 remain incomplete. The protocol's formal_arecel_runs gate remains false until the full campaign is complete."
+        "status": "complete",
+        "note": "Power7, Census13, and DMV11 are complete as validated formal children at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5), experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8), and experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109). The dataset scope is complete, no cross-dataset summary was generated, and global RQ4 remains incomplete."
       },
       {
         "experiment_id": "rq4-native-analyze-stability",
