@@ -551,6 +551,147 @@ def test_snapshot_cli_parser_has_offline_preflight_and_summary_commands():
     assert args.preflight == Path("preflight.json")
 
 
+def test_normalized_workload_identity_uses_real_adapter_shape():
+    workload = {
+        "workload_id": "arecel_census13_test_v1",
+        "query_count": 10_000,
+        "sha256": "a" * 64,
+    }
+    assert footprint._normalized_workload_identity(workload) == {
+        "workload_id": "arecel_census13_test_v1",
+        "workload_sha256": "a" * 64,
+        "workload_query_count": 10_000,
+    }
+
+
+def test_dataset_source_spec_normalizes_real_adapter_shape(monkeypatch, tmp_path):
+    module = footprint.DATASET_SPECS["arecel-census13"][0]
+    monkeypatch.setattr(
+        module,
+        "inspect",
+        lambda data_root: {
+            "source_present": True,
+            "dataset_content_identity": "b" * 64,
+            "canonical_workload_sha256": "c" * 64,
+        },
+    )
+    monkeypatch.setattr(
+        module,
+        "extract_workload",
+        lambda path, data_root, split: {
+            "workload_id": "arecel_census13_test_v1",
+            "query_count": 10_000,
+            "sha256": "a" * 64,
+        },
+    )
+    result = footprint._dataset_source_spec("arecel-census13", None, tmp_path)
+    assert result["workload_id"] == "arecel_census13_test_v1"
+    assert result["workload_sha256"] == "a" * 64
+    assert result["workload_query_count"] == 10_000
+
+
+@pytest.mark.parametrize(
+    "workload",
+    [
+        {"workload_id": "workload", "sha256": "a" * 64},
+        {"workload_id": "workload", "query_count": 10_000},
+        {"workload_id": "workload", "query_count": 10_000, "sha256": "abc"},
+        {"query_count": 10_000, "sha256": "a" * 64},
+        {"workload_id": "workload", "query_count": 9_999, "sha256": "a" * 64},
+    ],
+)
+def test_normalized_workload_identity_rejects_invalid_adapter_results(workload):
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError):
+        footprint._normalized_workload_identity(workload)
+
+
+def _run_repetition_source_spec(query_count: int = 10_000) -> dict:
+    return {
+        "dataset_id": "arecel-power7",
+        "benchmark_id": "arecel-power7",
+        "dataset_content_identity": "f" * 64,
+        "relation": "public.power7",
+        "schema_contract_id": "arecel-power7-postgres-schema-v1",
+        "workload_id": "arecel_power7_test_v1",
+        "workload_sha256": "a" * 64,
+        "workload_query_count": query_count,
+        "canonical_workload_sha256": None,
+    }
+
+
+def _exercise_repetition_workload_gate(monkeypatch, query_count: int, source_count: int):
+    module = footprint.DATASET_SPECS["arecel-power7"][0]
+    monkeypatch.setattr(
+        module,
+        "extract_workload",
+        lambda path, data_root, split: {
+            "workload_id": "arecel_power7_test_v1",
+            "query_count": query_count,
+            "sha256": "a" * 64,
+        },
+    )
+    source_spec = _run_repetition_source_spec(source_count)
+    monkeypatch.setattr(
+        footprint,
+        "_dataset_source_spec",
+        lambda dataset_id, data_root, temporary: source_spec,
+    )
+    monkeypatch.setattr(footprint, "_psycopg", lambda: object())
+    created = []
+
+    def fake_create(*args, **kwargs):
+        created.append(True)
+        raise RuntimeError("stop after create")
+
+    monkeypatch.setattr(footprint, "_create_database", fake_create)
+    return source_spec, created
+
+
+def test_run_repetition_reaches_create_database_with_real_adapter_shape(monkeypatch):
+    _, created = _exercise_repetition_workload_gate(monkeypatch, 10_000, 10_000)
+    with pytest.raises(RuntimeError, match="stop after create"):
+        footprint._run_repetition(
+            "arecel-power7",
+            repetition_id=1,
+            stock_dsn="unused",
+            data_root=None,
+            advisor_command="extstats-advisor",
+            research_commit_sha="a" * 40,
+            source_spec=_run_repetition_source_spec(),
+        )
+    assert created == [True]
+
+
+def test_run_repetition_rejects_wrong_query_count_before_create(monkeypatch):
+    _, created = _exercise_repetition_workload_gate(monkeypatch, 9_999, 10_000)
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError):
+        footprint._run_repetition(
+            "arecel-power7",
+            repetition_id=1,
+            stock_dsn="unused",
+            data_root=None,
+            advisor_command="extstats-advisor",
+            research_commit_sha="a" * 40,
+            source_spec=_run_repetition_source_spec(),
+        )
+    assert created == []
+
+
+def test_run_repetition_rejects_source_query_count_mismatch_before_create(monkeypatch):
+    _, created = _exercise_repetition_workload_gate(monkeypatch, 10_000, 9_999)
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError, match="workload source"):
+        footprint._run_repetition(
+            "arecel-power7",
+            repetition_id=1,
+            stock_dsn="unused",
+            data_root=None,
+            advisor_command="extstats-advisor",
+            research_commit_sha="a" * 40,
+            source_spec=_run_repetition_source_spec(9_999),
+        )
+    assert created == []
+
+
 def _campaign_preflight() -> dict:
     value = _structural_preflight_value()
     value["preflight_path"] = "experiments/rq5-snapshot-footprint-preflight-v1.json"

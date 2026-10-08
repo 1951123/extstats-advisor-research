@@ -343,17 +343,44 @@ def _dataset_source_spec(
     _require(metadata.get("source_present") is True, f"{dataset_id} audited source is unavailable")
     workload_path = temporary_root / f"{dataset_id}-workload.json"
     workload = module.extract_workload(workload_path, data_root, "test")
-    _require(workload["query_count"] == 10_000, f"{dataset_id} workload query count drifted")
+    workload_identity = _normalized_workload_identity(workload)
     return {
         "dataset_id": dataset_id,
         "benchmark_id": module.BENCHMARK_ID,
         "dataset_content_identity": metadata["dataset_content_identity"],
         "relation": module.RELATION,
         "schema_contract_id": module.SCHEMA_CONTRACT_ID,
-        "workload_id": workload["workload_id"],
-        "workload_sha256": workload["sha256"],
-        "workload_query_count": workload["query_count"],
+        **workload_identity,
         "canonical_workload_sha256": metadata.get("canonical_workload_sha256"),
+    }
+
+
+def _normalized_workload_identity(workload: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize an adapter workload result into formal provenance fields."""
+    _require(isinstance(workload, Mapping), "adapter workload result is not an object")
+    workload_id = workload.get("workload_id")
+    workload_sha256 = workload.get("sha256")
+    workload_query_count = workload.get("query_count")
+    _require(
+        isinstance(workload_id, str) and bool(workload_id),
+        "adapter workload ID is missing",
+    )
+    _require(
+        isinstance(workload_sha256, str) and len(workload_sha256) == 64,
+        "adapter workload SHA256 is invalid",
+    )
+    _require(
+        isinstance(workload_query_count, int) and not isinstance(workload_query_count, bool),
+        "adapter workload query count is invalid",
+    )
+    _require(
+        workload_query_count == 10_000,
+        "adapter workload query count drifted",
+    )
+    return {
+        "workload_id": workload_id,
+        "workload_sha256": workload_sha256,
+        "workload_query_count": workload_query_count,
     }
 
 
@@ -756,14 +783,14 @@ def _run_repetition(
                 f"{dataset_id} source identity changed before repetition {repetition_id}",
             )
             workload = module.extract_workload(workload_path, data_root, "test")
+            workload_identity = _normalized_workload_identity(workload)
             for field in (
                 "workload_id",
                 "workload_sha256",
                 "workload_query_count",
             ):
                 _require(
-                    workload["sha256" if field == "workload_sha256" else field]
-                    == source_spec[field],
+                    workload_identity[field] == source_spec[field],
                     f"{dataset_id} workload source drifted before repetition {repetition_id}",
                 )
             snapshot_path = temporary_path / "snapshot"
@@ -836,9 +863,7 @@ def _run_repetition(
                 "dataset_content_identity": source_spec["dataset_content_identity"],
                 "schema_contract_id": source_spec["schema_contract_id"],
                 "canonical_workload_sha256": source_spec["canonical_workload_sha256"],
-                "workload_id": workload["workload_id"],
-                "workload_sha256": workload["sha256"],
-                "workload_query_count": workload["query_count"],
+                **workload_identity,
                 "relation": module.RELATION,
                 "dataset_identity": module.BENCHMARK_ID,
                 "setup": {
