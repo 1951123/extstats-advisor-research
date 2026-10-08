@@ -762,10 +762,15 @@
           "execution_mode": "finite-points-executed-all-point-reused"
         }
       },
-      "completion_scope_note": "Power7, Census13, and DMV11 have validated formal children; the dataset scope is complete. No cross-dataset summary has been generated, and global RQ4 remains incomplete. The protocol's formal_arecel_runs gate remains false as the frozen preregistration field.",
+      "completion_scope_note": "Power7, Census13, and DMV11 have validated formal children and the offline cross-dataset aggregation is complete. The aggregation is descriptive only; it does not retune K_s/B, and global RQ4 remains incomplete. The protocol's formal_arecel_runs gate remains false as the frozen preregistration field.",
       "cross_dataset_summary": {
-        "status": "not-generated",
-        "reason": "deferred until separate review of all three immutable children"
+        "status": "complete",
+        "artifact": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json",
+        "format_version": "rq4-ks-sensitivity-cross-dataset-summary-v1",
+        "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed",
+        "scope": "offline aggregation of the three immutable formal children",
+        "new_postgresql_execution": false,
+        "global_rq4_status": "incomplete"
       },
       "expected_paper_outputs": ["fig-rq4-screening-width-quality-cost", "tab-rq4-screening-width-accounting"],
       "completion_criteria": ["all five preregistered points have valid evidence", "budget-censored points preserve their committed incumbent", "finite prefixes are deterministic", "all-point reuse passed its exact gate", "no stock physical RQ4b per-K_s children are produced"]
@@ -858,7 +863,7 @@
       {
         "experiment_id": "rq4-ks-sensitivity",
         "status": "complete",
-        "note": "Power7, Census13, and DMV11 are complete as validated formal children at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5), experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8), and experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109). The dataset scope is complete, no cross-dataset summary was generated, and global RQ4 remains incomplete."
+        "note": "Power7, Census13, and DMV11 are complete as validated formal children at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5), experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8), and experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109). The dataset scope and offline cross-dataset aggregation are complete at experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json (digest 3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed); global RQ4 remains incomplete."
       },
       {
         "experiment_id": "rq4-native-analyze-stability",

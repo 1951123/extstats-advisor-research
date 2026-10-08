@@ -116,6 +116,15 @@ from .rq4_ks_sensitivity import (
 from .rq4_ks_sensitivity import (
     validate_preflight as validate_rq4_ks_preflight,
 )
+from .rq4_ks_summary import (
+    default_summary_path as default_rq4_ks_summary_path,
+)
+from .rq4_ks_summary import (
+    validate_cross_dataset_summary as validate_rq4_ks_summary,
+)
+from .rq4_ks_summary import (
+    write_cross_dataset_summary,
+)
 from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
@@ -684,6 +693,10 @@ def _parser() -> argparse.ArgumentParser:
     )
     rq4_ks_validate = rq4_ks_commands.add_parser("validate")
     rq4_ks_validate.add_argument("artifact", type=Path)
+    rq4_ks_summarize = rq4_ks_commands.add_parser(
+        "summarize", help="aggregate the three completed K_s sensitivity children offline"
+    )
+    rq4_ks_summarize.add_argument("--output", type=Path, default=None)
     rebind = validate_commands.add_parser(
         "rq1-rebind", help="canonicalize the Census13 RQ1 artifact onto audited external truth"
     )
@@ -1109,6 +1122,15 @@ def main(argv: list[str] | None = None) -> int:
             root = Path(__file__).resolve().parents[2]
             if args.rq4_ks_command == "preflight":
                 result = build_rq4_ks_preflight(args.dataset, root, args.advisor_root)
+            elif args.rq4_ks_command == "summarize":
+                output = args.output or default_rq4_ks_summary_path(root)
+                artifact = write_cross_dataset_summary(root, output)
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
             elif args.rq4_ks_command == "smoke":
                 result = build_smoke_artifact(
                     research_root=root,
@@ -1155,7 +1177,9 @@ def main(argv: list[str] | None = None) -> int:
                     "output": str(args.output),
                 }
             else:
-                if args.artifact.name.endswith("rq4-ks-sensitivity-preflight-v1.json"):
+                if args.artifact.name.endswith("rq4-ks-sensitivity-cross-dataset-summary-v1.json"):
+                    result = validate_rq4_ks_summary(args.artifact, research_root=root)
+                elif args.artifact.name.endswith("rq4-ks-sensitivity-preflight-v1.json"):
                     result = validate_rq4_ks_preflight(args.artifact)
                 elif args.artifact.name.endswith("rq4-ks-sensitivity-live-smoke-v1.json"):
                     result = validate_live_smoke_artifact(args.artifact)

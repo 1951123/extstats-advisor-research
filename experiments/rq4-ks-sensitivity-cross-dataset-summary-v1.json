@@ -1,0 +1,1130 @@
+{
+  "aggregation_only": true,
+  "aggregation_scope": "three completed rq4-ks-sensitivity-v1 children",
+  "cross_dataset_findings": {
+    "datasets_where_K16_matches_best_finite_objective": [
+      "arecel-census13",
+      "arecel-power7"
+    ],
+    "datasets_where_K32_matches_best_finite_objective": [
+      "arecel-census13",
+      "arecel-power7",
+      "arecel-dmv11"
+    ],
+    "datasets_where_K8_matches_best_finite_objective": [
+      "arecel-census13"
+    ],
+    "datasets_where_all_is_budget_censored": [
+      "arecel-census13",
+      "arecel-dmv11"
+    ],
+    "datasets_where_all_is_complete": [
+      "arecel-power7"
+    ],
+    "datasets_where_finite_point_beats_all_objective": [
+      "arecel-census13",
+      "arecel-dmv11"
+    ]
+  },
+  "cross_dataset_points": [
+    {
+      "K_s": 4,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-census13",
+      "effective_candidate_count": 4,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.1183541129998957,
+      "final_objective": 2.5212688613359724,
+      "incremental_planner_calls": 35065,
+      "objective_delta_vs_all": -0.4927453826807784,
+      "objective_ratio_vs_all": 0.8365152441933715,
+      "planner_call_reduction_fraction": 0.41558333333333336,
+      "planner_calls_delta_vs_all": -687502,
+      "planner_calls_fraction_of_all": 0.04852837176344892,
+      "planner_calls_reduction_vs_all": 0.9514716282365511,
+      "proposal_configuration_objective_evaluations": 6,
+      "reference_search_planner_calls": 60000,
+      "saved_search_planner_calls": 24935,
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 14.465618764999817,
+      "status": "complete",
+      "termination_reason": "all-screened-candidates-selected",
+      "wall_delta_vs_all": -285.55566531599834,
+      "wall_fraction_of_all": 0.04821530848822868,
+      "wall_reduction_vs_all": 0.9517846915117714
+    },
+    {
+      "K_s": 8,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-census13",
+      "effective_candidate_count": 8,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.209150151999893,
+      "final_objective": 2.483392121853901,
+      "incremental_planner_calls": 77953,
+      "objective_delta_vs_all": -0.5306221221628498,
+      "objective_ratio_vs_all": 0.8239483694490792,
+      "planner_call_reduction_fraction": 0.5669277777777778,
+      "planner_calls_delta_vs_all": -644614,
+      "planner_calls_fraction_of_all": 0.10788342119139124,
+      "planner_calls_reduction_vs_all": 0.8921165788086087,
+      "proposal_configuration_objective_evaluations": 18,
+      "reference_search_planner_calls": 180000,
+      "saved_search_planner_calls": 102047,
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_732acc055f32ca48ff994adf"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 33.33692027400002,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -266.68436380699814,
+      "wall_fraction_of_all": 0.11111518429805765,
+      "wall_reduction_vs_all": 0.8888848157019423
+    },
+    {
+      "K_s": 16,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-census13",
+      "effective_candidate_count": 16,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.179402207000294,
+      "final_objective": 2.483392121853901,
+      "incremental_planner_calls": 163513,
+      "objective_delta_vs_all": -0.5306221221628498,
+      "objective_ratio_vs_all": 0.8239483694490792,
+      "planner_call_reduction_fraction": 0.6106833333333334,
+      "planner_calls_delta_vs_all": -559054,
+      "planner_calls_fraction_of_all": 0.22629458583079493,
+      "planner_calls_reduction_vs_all": 0.773705414169205,
+      "proposal_configuration_objective_evaluations": 42,
+      "reference_search_planner_calls": 420000,
+      "saved_search_planner_calls": 256487,
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_732acc055f32ca48ff994adf"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 71.25806411899976,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -228.7632199619984,
+      "wall_fraction_of_all": 0.23751002978762628,
+      "wall_reduction_vs_all": 0.7624899702123737
+    },
+    {
+      "K_s": 32,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-census13",
+      "effective_candidate_count": 32,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.1832555050000337,
+      "final_objective": 2.483392121853901,
+      "incremental_planner_calls": 335089,
+      "objective_delta_vs_all": -0.5306221221628498,
+      "objective_ratio_vs_all": 0.8239483694490792,
+      "planner_call_reduction_fraction": 0.6276788888888889,
+      "planner_calls_delta_vs_all": -387478,
+      "planner_calls_fraction_of_all": 0.46374799845550657,
+      "planner_calls_reduction_vs_all": 0.5362520015444934,
+      "proposal_configuration_objective_evaluations": 90,
+      "reference_search_planner_calls": 900000,
+      "saved_search_planner_calls": 564911,
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_732acc055f32ca48ff994adf"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 145.89874476800014,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -154.12253931299801,
+      "wall_fraction_of_all": 0.48629464811106926,
+      "wall_reduction_vs_all": 0.5137053518889307
+    },
+    {
+      "K_s": "all",
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-census13",
+      "effective_candidate_count": 136,
+      "execution_mode": "reused",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.1428874480006925,
+      "final_objective": 3.0140142440167508,
+      "incremental_planner_calls": 722567,
+      "planner_call_reduction_fraction": 0.6350671717171718,
+      "proposal_configuration_objective_evaluations": 198,
+      "reference_search_planner_calls": 1980000,
+      "saved_search_planner_calls": 1257433,
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "selected_k": 2,
+      "selection_wall_clock_seconds": 300.02128408099816,
+      "status": "budget-censored",
+      "termination_reason": "budget-expired-incomplete-round"
+    },
+    {
+      "K_s": 4,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "dataset_id": "arecel-power7",
+      "effective_candidate_count": 4,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.9285522870000023,
+      "final_objective": 105.04073854314105,
+      "incremental_planner_calls": 36544,
+      "objective_delta_vs_all": 11.09248856431006,
+      "objective_ratio_vs_all": 1.1180701989319597,
+      "planner_call_reduction_fraction": 0.39093333333333335,
+      "planner_calls_delta_vs_all": -431546,
+      "planner_calls_fraction_of_all": 0.07807045653613622,
+      "planner_calls_reduction_vs_all": 0.9219295434638638,
+      "proposal_configuration_objective_evaluations": 6,
+      "reference_search_planner_calls": 60000,
+      "saved_search_planner_calls": 23456,
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_3506e4367623c6d82ec5746e",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_5e43adaa42103e401a3e3d23"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 0,
+      "selection_wall_clock_seconds": 14.06833643899995,
+      "status": "complete",
+      "termination_reason": "all-screened-candidates-selected",
+      "wall_delta_vs_all": -171.8112910010011,
+      "wall_fraction_of_all": 0.07568519817235475,
+      "wall_reduction_vs_all": 0.9243148018276452
+    },
+    {
+      "K_s": 8,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "dataset_id": "arecel-power7",
+      "effective_candidate_count": 8,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.9557676849999552,
+      "final_objective": 102.53609874329581,
+      "incremental_planner_calls": 82000,
+      "objective_delta_vs_all": 8.587848764464823,
+      "objective_ratio_vs_all": 1.0914104176118224,
+      "planner_call_reduction_fraction": 0.5444444444444444,
+      "planner_calls_delta_vs_all": -386090,
+      "planner_calls_fraction_of_all": 0.17517998675468394,
+      "planner_calls_reduction_vs_all": 0.8248200132453161,
+      "proposal_configuration_objective_evaluations": 18,
+      "reference_search_planner_calls": 180000,
+      "saved_search_planner_calls": 98000,
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_3506e4367623c6d82ec5746e",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_064fc60874bf261d6eb5795b"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 0,
+      "selection_wall_clock_seconds": 32.200876349000055,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -153.678751091001,
+      "wall_fraction_of_all": 0.17323510269781436,
+      "wall_reduction_vs_all": 0.8267648973021856
+    },
+    {
+      "K_s": 16,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "dataset_id": "arecel-power7",
+      "effective_candidate_count": 16,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.108222860999831,
+      "final_objective": 93.94824997883099,
+      "incremental_planner_calls": 173064,
+      "objective_delta_vs_all": 0.0,
+      "objective_ratio_vs_all": 1.0,
+      "planner_call_reduction_fraction": 0.5879428571428571,
+      "planner_calls_delta_vs_all": -295026,
+      "planner_calls_fraction_of_all": 0.3697237710696661,
+      "planner_calls_reduction_vs_all": 0.6302762289303339,
+      "proposal_configuration_objective_evaluations": 42,
+      "reference_search_planner_calls": 420000,
+      "saved_search_planner_calls": 246936,
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_5fd1ebd87813311ef352fc96",
+        "cand_f9dc066542ae6041a1f5fd52"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 0,
+      "selection_wall_clock_seconds": 69.16269976099989,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -116.71692767900117,
+      "wall_fraction_of_all": 0.37208327084324766,
+      "wall_reduction_vs_all": 0.6279167291567523
+    },
+    {
+      "K_s": 32,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "dataset_id": "arecel-power7",
+      "effective_candidate_count": 32,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.202262937000114,
+      "final_objective": 93.94824997883099,
+      "incremental_planner_calls": 354699,
+      "objective_delta_vs_all": 0.0,
+      "objective_ratio_vs_all": 1.0,
+      "planner_call_reduction_fraction": 0.60589,
+      "planner_calls_delta_vs_all": -113391,
+      "planner_calls_fraction_of_all": 0.7577581234378005,
+      "planner_calls_reduction_vs_all": 0.24224187656219953,
+      "proposal_configuration_objective_evaluations": 90,
+      "reference_search_planner_calls": 900000,
+      "saved_search_planner_calls": 545301,
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_5fd1ebd87813311ef352fc96",
+        "cand_f9dc066542ae6041a1f5fd52"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 0,
+      "selection_wall_clock_seconds": 158.63871696499996,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -27.2409104750011,
+      "wall_fraction_of_all": 0.8534486492674189,
+      "wall_reduction_vs_all": 0.14655135073258108
+    },
+    {
+      "K_s": "all",
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "dataset_id": "arecel-power7",
+      "effective_candidate_count": 42,
+      "execution_mode": "reused",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 3.0189653070010536,
+      "final_objective": 93.94824997883099,
+      "incremental_planner_calls": 468090,
+      "planner_call_reduction_fraction": 0.609925,
+      "proposal_configuration_objective_evaluations": 120,
+      "reference_search_planner_calls": 1200000,
+      "saved_search_planner_calls": 731910,
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_5fd1ebd87813311ef352fc96",
+        "cand_f9dc066542ae6041a1f5fd52"
+      ],
+      "selected_k": 4,
+      "selection_wall_clock_seconds": 185.87962744000106,
+      "status": "complete",
+      "termination_reason": "max-statistics-count"
+    },
+    {
+      "K_s": 4,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-dmv11",
+      "effective_candidate_count": 4,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.9699033560000316,
+      "final_objective": 73.01836263281487,
+      "incremental_planner_calls": 35279,
+      "objective_delta_vs_all": 25.81336304469599,
+      "objective_ratio_vs_all": 1.5468353621422974,
+      "planner_call_reduction_fraction": 0.41201666666666664,
+      "planner_calls_delta_vs_all": -718250,
+      "planner_calls_fraction_of_all": 0.04681837062674429,
+      "planner_calls_reduction_vs_all": 0.9531816293732557,
+      "proposal_configuration_objective_evaluations": 6,
+      "reference_search_planner_calls": 60000,
+      "saved_search_planner_calls": 24721,
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659"
+      ],
+      "selected_k": 3,
+      "selected_k_delta_vs_all": 1,
+      "selection_wall_clock_seconds": 13.51139196000031,
+      "status": "complete",
+      "termination_reason": "local-optimum",
+      "wall_delta_vs_all": -286.52302089600244,
+      "wall_fraction_of_all": 0.045032807508267096,
+      "wall_reduction_vs_all": 0.9549671924917329
+    },
+    {
+      "K_s": 8,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-dmv11",
+      "effective_candidate_count": 8,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.920530804000009,
+      "final_objective": 72.69311227985717,
+      "incremental_planner_calls": 78773,
+      "objective_delta_vs_all": 25.488112691738294,
+      "objective_ratio_vs_all": 1.5399451946643687,
+      "planner_call_reduction_fraction": 0.5623722222222223,
+      "planner_calls_delta_vs_all": -674756,
+      "planner_calls_fraction_of_all": 0.10453877687520985,
+      "planner_calls_reduction_vs_all": 0.8954612231247902,
+      "proposal_configuration_objective_evaluations": 18,
+      "reference_search_planner_calls": 180000,
+      "saved_search_planner_calls": 101227,
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_f495ee73455905ddf4da0f95"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 30.9036074630003,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -269.13080539300245,
+      "wall_fraction_of_all": 0.10300020977204387,
+      "wall_reduction_vs_all": 0.8969997902279562
+    },
+    {
+      "K_s": 16,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-dmv11",
+      "effective_candidate_count": 16,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.9304467609999847,
+      "final_objective": 41.9583074764824,
+      "incremental_planner_calls": 165732,
+      "objective_delta_vs_all": -5.246692111636477,
+      "objective_ratio_vs_all": 0.8888530418935322,
+      "planner_call_reduction_fraction": 0.6054,
+      "planner_calls_delta_vs_all": -587797,
+      "planner_calls_fraction_of_all": 0.2199411037929529,
+      "planner_calls_reduction_vs_all": 0.7800588962070472,
+      "proposal_configuration_objective_evaluations": 42,
+      "reference_search_planner_calls": 420000,
+      "saved_search_planner_calls": 254268,
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983",
+        "cand_61b909d76b855af0afdeb796",
+        "cand_180eff25d9d08ae74542467e"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 65.65267417999985,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -234.3817386760029,
+      "wall_fraction_of_all": 0.21881714685678044,
+      "wall_reduction_vs_all": 0.7811828531432196
+    },
+    {
+      "K_s": 32,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-dmv11",
+      "effective_candidate_count": 32,
+      "execution_mode": "executed",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.938364384999659,
+      "final_objective": 40.325278427588316,
+      "incremental_planner_calls": 339848,
+      "objective_delta_vs_all": -6.879721160530565,
+      "objective_ratio_vs_all": 0.8542586331838008,
+      "planner_call_reduction_fraction": 0.6223911111111111,
+      "planner_calls_delta_vs_all": -413681,
+      "planner_calls_fraction_of_all": 0.45100852123806784,
+      "planner_calls_reduction_vs_all": 0.5489914787619321,
+      "proposal_configuration_objective_evaluations": 90,
+      "reference_search_planner_calls": 900000,
+      "saved_search_planner_calls": 560152,
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983",
+        "cand_61b909d76b855af0afdeb796",
+        "cand_6c2da965b36a563b6cbb982b"
+      ],
+      "selected_k": 4,
+      "selected_k_delta_vs_all": 2,
+      "selection_wall_clock_seconds": 137.47222348000014,
+      "status": "complete",
+      "termination_reason": "max-statistics-count",
+      "wall_delta_vs_all": -162.5621893760026,
+      "wall_fraction_of_all": 0.4581881863863995,
+      "wall_reduction_vs_all": 0.5418118136136005
+    },
+    {
+      "K_s": "all",
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "dataset_id": "arecel-dmv11",
+      "effective_candidate_count": 105,
+      "execution_mode": "reused",
+      "final_evaluation_planner_calls": 10000,
+      "final_evaluation_wall_clock_seconds": 2.918246564997389,
+      "final_objective": 47.20499958811888,
+      "incremental_planner_calls": 753529,
+      "planner_call_reduction_fraction": 0.6288034482758621,
+      "proposal_configuration_objective_evaluations": 203,
+      "reference_search_planner_calls": 2030000,
+      "saved_search_planner_calls": 1276471,
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_3ea8776430fffecefaa78983"
+      ],
+      "selected_k": 2,
+      "selection_wall_clock_seconds": 300.03441285600275,
+      "status": "budget-censored",
+      "termination_reason": "budget-expired-incomplete-round"
+    }
+  ],
+  "dataset_count": 3,
+  "datasets": {
+    "arecel-census13": {
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "artifact": "experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+      "artifact_semantic_digest": "119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8",
+      "best_finite_objective": 2.483392121853901,
+      "best_finite_point": {
+        "K_s": 8,
+        "incremental_planner_calls": 77953,
+        "selected_k": 4,
+        "selection_wall_clock_seconds": 33.33692027400002
+      },
+      "comparisons_vs_all": {
+        "16": {
+          "objective_delta_vs_all": -0.5306221221628498,
+          "objective_ratio_vs_all": 0.8239483694490792,
+          "planner_calls_delta_vs_all": -559054,
+          "planner_calls_fraction_of_all": 0.22629458583079493,
+          "planner_calls_reduction_vs_all": 0.773705414169205,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -228.7632199619984,
+          "wall_fraction_of_all": 0.23751002978762628,
+          "wall_reduction_vs_all": 0.7624899702123737
+        },
+        "32": {
+          "objective_delta_vs_all": -0.5306221221628498,
+          "objective_ratio_vs_all": 0.8239483694490792,
+          "planner_calls_delta_vs_all": -387478,
+          "planner_calls_fraction_of_all": 0.46374799845550657,
+          "planner_calls_reduction_vs_all": 0.5362520015444934,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -154.12253931299801,
+          "wall_fraction_of_all": 0.48629464811106926,
+          "wall_reduction_vs_all": 0.5137053518889307
+        },
+        "4": {
+          "objective_delta_vs_all": -0.4927453826807784,
+          "objective_ratio_vs_all": 0.8365152441933715,
+          "planner_calls_delta_vs_all": -687502,
+          "planner_calls_fraction_of_all": 0.04852837176344892,
+          "planner_calls_reduction_vs_all": 0.9514716282365511,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -285.55566531599834,
+          "wall_fraction_of_all": 0.04821530848822868,
+          "wall_reduction_vs_all": 0.9517846915117714
+        },
+        "8": {
+          "objective_delta_vs_all": -0.5306221221628498,
+          "objective_ratio_vs_all": 0.8239483694490792,
+          "planner_calls_delta_vs_all": -644614,
+          "planner_calls_fraction_of_all": 0.10788342119139124,
+          "planner_calls_reduction_vs_all": 0.8921165788086087,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -266.68436380699814,
+          "wall_fraction_of_all": 0.11111518429805765,
+          "wall_reduction_vs_all": 0.8888848157019423
+        }
+      },
+      "finite_point_dominance": {
+        "dominated_by": {
+          "16": [
+            8
+          ],
+          "32": [
+            8,
+            16
+          ],
+          "4": [],
+          "8": []
+        },
+        "dominates": {
+          "16": [
+            32
+          ],
+          "32": [],
+          "4": [],
+          "8": [
+            16,
+            32
+          ]
+        }
+      },
+      "points": [
+        {
+          "K_s": 4,
+          "effective_candidate_count": 4,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.1183541129998957,
+          "final_objective": 2.5212688613359724,
+          "incremental_planner_calls": 35065,
+          "planner_call_reduction_fraction": 0.41558333333333336,
+          "proposal_configuration_objective_evaluations": 6,
+          "reference_search_planner_calls": 60000,
+          "saved_search_planner_calls": 24935,
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_ba355e70a4c2c126688383df"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 14.465618764999817,
+          "status": "complete",
+          "termination_reason": "all-screened-candidates-selected"
+        },
+        {
+          "K_s": 8,
+          "effective_candidate_count": 8,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.209150151999893,
+          "final_objective": 2.483392121853901,
+          "incremental_planner_calls": 77953,
+          "planner_call_reduction_fraction": 0.5669277777777778,
+          "proposal_configuration_objective_evaluations": 18,
+          "reference_search_planner_calls": 180000,
+          "saved_search_planner_calls": 102047,
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_732acc055f32ca48ff994adf"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 33.33692027400002,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 16,
+          "effective_candidate_count": 16,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.179402207000294,
+          "final_objective": 2.483392121853901,
+          "incremental_planner_calls": 163513,
+          "planner_call_reduction_fraction": 0.6106833333333334,
+          "proposal_configuration_objective_evaluations": 42,
+          "reference_search_planner_calls": 420000,
+          "saved_search_planner_calls": 256487,
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_732acc055f32ca48ff994adf"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 71.25806411899976,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 32,
+          "effective_candidate_count": 32,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.1832555050000337,
+          "final_objective": 2.483392121853901,
+          "incremental_planner_calls": 335089,
+          "planner_call_reduction_fraction": 0.6276788888888889,
+          "proposal_configuration_objective_evaluations": 90,
+          "reference_search_planner_calls": 900000,
+          "saved_search_planner_calls": 564911,
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_732acc055f32ca48ff994adf"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 145.89874476800014,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": "all",
+          "effective_candidate_count": 136,
+          "execution_mode": "reused",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.1428874480006925,
+          "final_objective": 3.0140142440167508,
+          "incremental_planner_calls": 722567,
+          "planner_call_reduction_fraction": 0.6350671717171718,
+          "proposal_configuration_objective_evaluations": 198,
+          "reference_search_planner_calls": 1980000,
+          "saved_search_planner_calls": 1257433,
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435"
+          ],
+          "selected_k": 2,
+          "selection_wall_clock_seconds": 300.02128408099816,
+          "status": "budget-censored",
+          "termination_reason": "budget-expired-incomplete-round"
+        }
+      ],
+      "smallest_width_matching_best_finite_objective": 8,
+      "status": "complete"
+    },
+    "arecel-dmv11": {
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "artifact": "experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+      "artifact_semantic_digest": "569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109",
+      "best_finite_objective": 40.325278427588316,
+      "best_finite_point": {
+        "K_s": 32,
+        "incremental_planner_calls": 339848,
+        "selected_k": 4,
+        "selection_wall_clock_seconds": 137.47222348000014
+      },
+      "comparisons_vs_all": {
+        "16": {
+          "objective_delta_vs_all": -5.246692111636477,
+          "objective_ratio_vs_all": 0.8888530418935322,
+          "planner_calls_delta_vs_all": -587797,
+          "planner_calls_fraction_of_all": 0.2199411037929529,
+          "planner_calls_reduction_vs_all": 0.7800588962070472,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -234.3817386760029,
+          "wall_fraction_of_all": 0.21881714685678044,
+          "wall_reduction_vs_all": 0.7811828531432196
+        },
+        "32": {
+          "objective_delta_vs_all": -6.879721160530565,
+          "objective_ratio_vs_all": 0.8542586331838008,
+          "planner_calls_delta_vs_all": -413681,
+          "planner_calls_fraction_of_all": 0.45100852123806784,
+          "planner_calls_reduction_vs_all": 0.5489914787619321,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -162.5621893760026,
+          "wall_fraction_of_all": 0.4581881863863995,
+          "wall_reduction_vs_all": 0.5418118136136005
+        },
+        "4": {
+          "objective_delta_vs_all": 25.81336304469599,
+          "objective_ratio_vs_all": 1.5468353621422974,
+          "planner_calls_delta_vs_all": -718250,
+          "planner_calls_fraction_of_all": 0.04681837062674429,
+          "planner_calls_reduction_vs_all": 0.9531816293732557,
+          "selected_k_delta_vs_all": 1,
+          "wall_delta_vs_all": -286.52302089600244,
+          "wall_fraction_of_all": 0.045032807508267096,
+          "wall_reduction_vs_all": 0.9549671924917329
+        },
+        "8": {
+          "objective_delta_vs_all": 25.488112691738294,
+          "objective_ratio_vs_all": 1.5399451946643687,
+          "planner_calls_delta_vs_all": -674756,
+          "planner_calls_fraction_of_all": 0.10453877687520985,
+          "planner_calls_reduction_vs_all": 0.8954612231247902,
+          "selected_k_delta_vs_all": 2,
+          "wall_delta_vs_all": -269.13080539300245,
+          "wall_fraction_of_all": 0.10300020977204387,
+          "wall_reduction_vs_all": 0.8969997902279562
+        }
+      },
+      "finite_point_dominance": {
+        "dominated_by": {
+          "16": [],
+          "32": [],
+          "4": [],
+          "8": []
+        },
+        "dominates": {
+          "16": [],
+          "32": [],
+          "4": [],
+          "8": []
+        }
+      },
+      "points": [
+        {
+          "K_s": 4,
+          "effective_candidate_count": 4,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.9699033560000316,
+          "final_objective": 73.01836263281487,
+          "incremental_planner_calls": 35279,
+          "planner_call_reduction_fraction": 0.41201666666666664,
+          "proposal_configuration_objective_evaluations": 6,
+          "reference_search_planner_calls": 60000,
+          "saved_search_planner_calls": 24721,
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_a321c061df418caa0b143ac4",
+            "cand_446a7fc5aba413d985b7f659"
+          ],
+          "selected_k": 3,
+          "selection_wall_clock_seconds": 13.51139196000031,
+          "status": "complete",
+          "termination_reason": "local-optimum"
+        },
+        {
+          "K_s": 8,
+          "effective_candidate_count": 8,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.920530804000009,
+          "final_objective": 72.69311227985717,
+          "incremental_planner_calls": 78773,
+          "planner_call_reduction_fraction": 0.5623722222222223,
+          "proposal_configuration_objective_evaluations": 18,
+          "reference_search_planner_calls": 180000,
+          "saved_search_planner_calls": 101227,
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_a321c061df418caa0b143ac4",
+            "cand_446a7fc5aba413d985b7f659",
+            "cand_f495ee73455905ddf4da0f95"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 30.9036074630003,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 16,
+          "effective_candidate_count": 16,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.9304467609999847,
+          "final_objective": 41.9583074764824,
+          "incremental_planner_calls": 165732,
+          "planner_call_reduction_fraction": 0.6054,
+          "proposal_configuration_objective_evaluations": 42,
+          "reference_search_planner_calls": 420000,
+          "saved_search_planner_calls": 254268,
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_3ea8776430fffecefaa78983",
+            "cand_61b909d76b855af0afdeb796",
+            "cand_180eff25d9d08ae74542467e"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 65.65267417999985,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 32,
+          "effective_candidate_count": 32,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.938364384999659,
+          "final_objective": 40.325278427588316,
+          "incremental_planner_calls": 339848,
+          "planner_call_reduction_fraction": 0.6223911111111111,
+          "proposal_configuration_objective_evaluations": 90,
+          "reference_search_planner_calls": 900000,
+          "saved_search_planner_calls": 560152,
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_3ea8776430fffecefaa78983",
+            "cand_61b909d76b855af0afdeb796",
+            "cand_6c2da965b36a563b6cbb982b"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 137.47222348000014,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": "all",
+          "effective_candidate_count": 105,
+          "execution_mode": "reused",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.918246564997389,
+          "final_objective": 47.20499958811888,
+          "incremental_planner_calls": 753529,
+          "planner_call_reduction_fraction": 0.6288034482758621,
+          "proposal_configuration_objective_evaluations": 203,
+          "reference_search_planner_calls": 2030000,
+          "saved_search_planner_calls": 1276471,
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_3ea8776430fffecefaa78983"
+          ],
+          "selected_k": 2,
+          "selection_wall_clock_seconds": 300.03441285600275,
+          "status": "budget-censored",
+          "termination_reason": "budget-expired-incomplete-round"
+        }
+      ],
+      "smallest_width_matching_best_finite_objective": 32,
+      "status": "complete"
+    },
+    "arecel-power7": {
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "artifact": "experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+      "artifact_semantic_digest": "85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5",
+      "best_finite_objective": 93.94824997883099,
+      "best_finite_point": {
+        "K_s": 16,
+        "incremental_planner_calls": 173064,
+        "selected_k": 4,
+        "selection_wall_clock_seconds": 69.16269976099989
+      },
+      "comparisons_vs_all": {
+        "16": {
+          "objective_delta_vs_all": 0.0,
+          "objective_ratio_vs_all": 1.0,
+          "planner_calls_delta_vs_all": -295026,
+          "planner_calls_fraction_of_all": 0.3697237710696661,
+          "planner_calls_reduction_vs_all": 0.6302762289303339,
+          "selected_k_delta_vs_all": 0,
+          "wall_delta_vs_all": -116.71692767900117,
+          "wall_fraction_of_all": 0.37208327084324766,
+          "wall_reduction_vs_all": 0.6279167291567523
+        },
+        "32": {
+          "objective_delta_vs_all": 0.0,
+          "objective_ratio_vs_all": 1.0,
+          "planner_calls_delta_vs_all": -113391,
+          "planner_calls_fraction_of_all": 0.7577581234378005,
+          "planner_calls_reduction_vs_all": 0.24224187656219953,
+          "selected_k_delta_vs_all": 0,
+          "wall_delta_vs_all": -27.2409104750011,
+          "wall_fraction_of_all": 0.8534486492674189,
+          "wall_reduction_vs_all": 0.14655135073258108
+        },
+        "4": {
+          "objective_delta_vs_all": 11.09248856431006,
+          "objective_ratio_vs_all": 1.1180701989319597,
+          "planner_calls_delta_vs_all": -431546,
+          "planner_calls_fraction_of_all": 0.07807045653613622,
+          "planner_calls_reduction_vs_all": 0.9219295434638638,
+          "selected_k_delta_vs_all": 0,
+          "wall_delta_vs_all": -171.8112910010011,
+          "wall_fraction_of_all": 0.07568519817235475,
+          "wall_reduction_vs_all": 0.9243148018276452
+        },
+        "8": {
+          "objective_delta_vs_all": 8.587848764464823,
+          "objective_ratio_vs_all": 1.0914104176118224,
+          "planner_calls_delta_vs_all": -386090,
+          "planner_calls_fraction_of_all": 0.17517998675468394,
+          "planner_calls_reduction_vs_all": 0.8248200132453161,
+          "selected_k_delta_vs_all": 0,
+          "wall_delta_vs_all": -153.678751091001,
+          "wall_fraction_of_all": 0.17323510269781436,
+          "wall_reduction_vs_all": 0.8267648973021856
+        }
+      },
+      "finite_point_dominance": {
+        "dominated_by": {
+          "16": [],
+          "32": [
+            16
+          ],
+          "4": [],
+          "8": []
+        },
+        "dominates": {
+          "16": [
+            32
+          ],
+          "32": [],
+          "4": [],
+          "8": []
+        }
+      },
+      "points": [
+        {
+          "K_s": 4,
+          "effective_candidate_count": 4,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.9285522870000023,
+          "final_objective": 105.04073854314105,
+          "incremental_planner_calls": 36544,
+          "planner_call_reduction_fraction": 0.39093333333333335,
+          "proposal_configuration_objective_evaluations": 6,
+          "reference_search_planner_calls": 60000,
+          "saved_search_planner_calls": 23456,
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_3506e4367623c6d82ec5746e",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5e43adaa42103e401a3e3d23"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 14.06833643899995,
+          "status": "complete",
+          "termination_reason": "all-screened-candidates-selected"
+        },
+        {
+          "K_s": 8,
+          "effective_candidate_count": 8,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 2.9557676849999552,
+          "final_objective": 102.53609874329581,
+          "incremental_planner_calls": 82000,
+          "planner_call_reduction_fraction": 0.5444444444444444,
+          "proposal_configuration_objective_evaluations": 18,
+          "reference_search_planner_calls": 180000,
+          "saved_search_planner_calls": 98000,
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_3506e4367623c6d82ec5746e",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_064fc60874bf261d6eb5795b"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 32.200876349000055,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 16,
+          "effective_candidate_count": 16,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.108222860999831,
+          "final_objective": 93.94824997883099,
+          "incremental_planner_calls": 173064,
+          "planner_call_reduction_fraction": 0.5879428571428571,
+          "proposal_configuration_objective_evaluations": 42,
+          "reference_search_planner_calls": 420000,
+          "saved_search_planner_calls": 246936,
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5fd1ebd87813311ef352fc96",
+            "cand_f9dc066542ae6041a1f5fd52"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 69.16269976099989,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": 32,
+          "effective_candidate_count": 32,
+          "execution_mode": "executed",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.202262937000114,
+          "final_objective": 93.94824997883099,
+          "incremental_planner_calls": 354699,
+          "planner_call_reduction_fraction": 0.60589,
+          "proposal_configuration_objective_evaluations": 90,
+          "reference_search_planner_calls": 900000,
+          "saved_search_planner_calls": 545301,
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5fd1ebd87813311ef352fc96",
+            "cand_f9dc066542ae6041a1f5fd52"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 158.63871696499996,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        },
+        {
+          "K_s": "all",
+          "effective_candidate_count": 42,
+          "execution_mode": "reused",
+          "final_evaluation_planner_calls": 10000,
+          "final_evaluation_wall_clock_seconds": 3.0189653070010536,
+          "final_objective": 93.94824997883099,
+          "incremental_planner_calls": 468090,
+          "planner_call_reduction_fraction": 0.609925,
+          "proposal_configuration_objective_evaluations": 120,
+          "reference_search_planner_calls": 1200000,
+          "saved_search_planner_calls": 731910,
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5fd1ebd87813311ef352fc96",
+            "cand_f9dc066542ae6041a1f5fd52"
+          ],
+          "selected_k": 4,
+          "selection_wall_clock_seconds": 185.87962744000106,
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        }
+      ],
+      "smallest_width_matching_best_finite_objective": 16,
+      "status": "complete"
+    }
+  },
+  "experiment_id": "rq4-ks-sensitivity-cross-dataset-summary",
+  "finite_widths": [
+    4,
+    8,
+    16,
+    32
+  ],
+  "fixed_B": 4,
+  "format_version": "rq4-ks-sensitivity-cross-dataset-summary-v1",
+  "global_rq4_incomplete_reasons": [
+    "rq4-fixed-evaluation-budget is implementation-needed",
+    "rq4-native-analyze-stability remains planned"
+  ],
+  "global_rq4_status": "incomplete",
+  "headline_counts": {
+    "censored_full_universe_reference_count": 2,
+    "completed_full_universe_reference_count": 1
+  },
+  "new_postgresql_execution": false,
+  "production_configuration_note": "This sensitivity fixes B=4. The frozen production configuration remains K_s=8, B=8; the aggregation does not retune or replace that configuration.",
+  "protocol_path": "paper/top-k-screening-protocol-v2.json",
+  "protocol_semantic_digest": "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec",
+  "screening_widths": [
+    4,
+    8,
+    16,
+    32,
+    "all"
+  ],
+  "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed",
+  "smallest_best_finite_widths": {
+    "arecel-census13": 8,
+    "arecel-dmv11": 32,
+    "arecel-power7": 16
+  },
+  "status": "dataset-scope-complete"
+}
