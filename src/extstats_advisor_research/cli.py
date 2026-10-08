@@ -127,6 +127,11 @@ from .rq4_ks_summary import (
 )
 from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
+from .rq5_cost_inventory import (
+    default_inventory_path,
+    validate_inventory,
+    write_inventory,
+)
 from .runner import run_census13, run_dmv11, run_forest10, run_power7
 from .screening_k12 import run_screening_k12
 from .screening_k16 import run_screening_k16
@@ -565,6 +570,16 @@ def _parser() -> argparse.ArgumentParser:
     rq2_summary_create.add_argument("--output", type=Path, required=True)
     rq2_summary_validate = rq2_summary_commands.add_parser("validate")
     rq2_summary_validate.add_argument("artifacts", type=Path, nargs="+")
+    rq5_cost = validate_commands.add_parser(
+        "rq5-cost", help="inventory or validate existing RQ5 cost evidence offline"
+    )
+    rq5_cost_commands = rq5_cost.add_subparsers(dest="rq5_cost_command", required=True)
+    rq5_inventory = rq5_cost_commands.add_parser(
+        "inventory", help="derive the existing-trace RQ5 cost inventory from tracked JSON"
+    )
+    rq5_inventory.add_argument("--output", type=Path, default=None)
+    rq5_validate = rq5_cost_commands.add_parser("validate")
+    rq5_validate.add_argument("artifact", type=Path)
     rq4 = validate_commands.add_parser(
         "rq4-ablation", help="run or validate the RQ4 selection/evaluation harness"
     )
@@ -1043,6 +1058,22 @@ def main(argv: list[str] | None = None) -> int:
                 result["semantic_digest"] = semantic_digest(result)
                 write_json(args.output, result)
                 result = {"status": "written", "output": str(args.output), **result}
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq5-cost":
+            root = Path(__file__).resolve().parents[2]
+            if args.rq5_cost_command == "inventory":
+                output = args.output or default_inventory_path(root)
+                artifact = write_inventory(root, output)
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "experiment_id": artifact["experiment_id"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
+            else:
+                result = validate_inventory(args.artifact, root)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-ablation":

@@ -1,0 +1,1160 @@
+{
+  "candidate_profiling_component_evidence": [
+    {
+      "candidate_count": 42,
+      "canonical_end_to_end_profiling_cost": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "component-microbenchmark / equivalence-validation",
+      "incremental_planner_calls": 169042,
+      "incremental_wall_seconds": 55.839443769000354,
+      "planner_call_reduction": 0.6068790697674419,
+      "query_count": 10000,
+      "reference_planner_calls": 430000,
+      "reference_wall_seconds": 133.55934872200123,
+      "saved_planner_calls": 260958,
+      "source_artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+      "source_path": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json",
+      "unmeasured_metrics": [],
+      "wall_speedup": 2.391845973153257
+    },
+    {
+      "candidate_count": 57,
+      "canonical_end_to_end_profiling_cost": false,
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "component-microbenchmark / equivalence-validation",
+      "incremental_planner_calls": 220640,
+      "incremental_wall_seconds": 86.4010922970001,
+      "planner_call_reduction": 0.6195862068965517,
+      "query_count": 10000,
+      "reference_planner_calls": 580000,
+      "reference_wall_seconds": null,
+      "saved_planner_calls": 359360,
+      "source_artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+      "source_path": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json",
+      "unmeasured_metrics": [
+        "reference_wall_clock_seconds",
+        "wall_speedup"
+      ],
+      "wall_speedup": null
+    }
+  ],
+  "claim_readiness": {
+    "can_claim_catalog_storage_cost": false,
+    "can_claim_combined_deployment_analyze_cost": true,
+    "can_claim_end_to_end_advisor_cost": false,
+    "can_claim_external_truth_import_cost": true,
+    "can_claim_incremental_singleton_savings": true,
+    "can_claim_production_exact_truth_cost": false,
+    "can_claim_refresh_cost": false,
+    "can_claim_search_scaling_cost": true
+  },
+  "coverage_matrix": {
+    "authoritative external truth import/validation": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    },
+    "candidate profiling": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    },
+    "catalog/storage": {
+      "arecel-census13": "evidence-exists-timing-missing",
+      "arecel-dmv11": "evidence-exists-timing-missing",
+      "arecel-forest10": "evidence-exists-timing-missing",
+      "arecel-power7": "evidence-exists-timing-missing"
+    },
+    "deployment ANALYZE": {
+      "arecel-census13": "evidence-exists-timing-missing",
+      "arecel-dmv11": "evidence-exists-timing-missing",
+      "arecel-forest10": "evidence-exists-timing-missing",
+      "arecel-power7": "evidence-exists-timing-missing"
+    },
+    "deployment DDL": {
+      "arecel-census13": "evidence-exists-timing-missing",
+      "arecel-dmv11": "evidence-exists-timing-missing",
+      "arecel-forest10": "evidence-exists-timing-missing",
+      "arecel-power7": "evidence-exists-timing-missing"
+    },
+    "planner search": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    },
+    "post-deployment planning": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    },
+    "production exact truth acquisition": {
+      "arecel-census13": "evidence-exists-timing-missing",
+      "arecel-dmv11": "missing",
+      "arecel-forest10": "missing",
+      "arecel-power7": "missing"
+    },
+    "refresh": {
+      "arecel-census13": "missing",
+      "arecel-dmv11": "missing",
+      "arecel-forest10": "missing",
+      "arecel-power7": "missing"
+    },
+    "sample/native statistics construction": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    },
+    "snapshot capture": {
+      "arecel-census13": "formal-measured",
+      "arecel-dmv11": "formal-measured",
+      "arecel-forest10": "formal-measured",
+      "arecel-power7": "formal-measured"
+    }
+  },
+  "experiment_id": "rq5-existing-trace-cost-inventory",
+  "formal_operational_costs": [
+    {
+      "authoritative_truth_import_seconds": 0.155349,
+      "dataset_id": "arecel-census13",
+      "deployment_plus_analyze_seconds": 19.749477,
+      "full_workload_planner_evaluation_delta_seconds": 0.2440310000000001,
+      "full_workload_planner_evaluation_ratio": 1.1356672172351088,
+      "live_experiment_elapsed_seconds": 360.649325,
+      "p0_explain_seconds": 1.798747,
+      "p1_explain_seconds": 2.042778,
+      "p2_transaction_eval_rollback_seconds": 1.72262,
+      "restoration_verification_seconds": 0.00879,
+      "sample_baseline_eval_seconds": 7.450242,
+      "sample_baseline_planner_calls": 10000,
+      "sample_final_eval_seconds": 7.669412,
+      "sample_final_planner_calls": 10000,
+      "sample_pair_total_planner_calls": 20000,
+      "sample_pair_total_seconds": 20.09979,
+      "selected_k": 7,
+      "stock_load_seconds": 0.539163
+    },
+    {
+      "authoritative_truth_import_seconds": 0.144467,
+      "dataset_id": "arecel-forest10",
+      "deployment_plus_analyze_seconds": 12.334194,
+      "full_workload_planner_evaluation_delta_seconds": 0.16587400000000008,
+      "full_workload_planner_evaluation_ratio": 1.078159095417576,
+      "live_experiment_elapsed_seconds": 244.162933,
+      "p0_explain_seconds": 2.122261,
+      "p1_explain_seconds": 2.288135,
+      "p2_transaction_eval_rollback_seconds": 2.088296,
+      "restoration_verification_seconds": 0.008381,
+      "sample_baseline_eval_seconds": 6.265186,
+      "sample_baseline_planner_calls": 10000,
+      "sample_final_eval_seconds": 6.339584,
+      "sample_final_planner_calls": 10000,
+      "sample_pair_total_planner_calls": 20000,
+      "sample_pair_total_seconds": 15.823769,
+      "selected_k": 8,
+      "stock_load_seconds": 1.527492
+    },
+    {
+      "authoritative_truth_import_seconds": 0.14307,
+      "dataset_id": "arecel-power7",
+      "deployment_plus_analyze_seconds": 6.828308,
+      "full_workload_planner_evaluation_delta_seconds": 0.01630100000000012,
+      "full_workload_planner_evaluation_ratio": 1.0092268488225453,
+      "live_experiment_elapsed_seconds": 181.639059,
+      "p0_explain_seconds": 1.766692,
+      "p1_explain_seconds": 1.782993,
+      "p2_transaction_eval_rollback_seconds": 1.800957,
+      "restoration_verification_seconds": 0.009234,
+      "sample_baseline_eval_seconds": 4.552554,
+      "sample_baseline_planner_calls": 10000,
+      "sample_final_eval_seconds": 4.847678,
+      "sample_final_planner_calls": 10000,
+      "sample_pair_total_planner_calls": 20000,
+      "sample_pair_total_seconds": 11.228308,
+      "selected_k": 7,
+      "stock_load_seconds": 4.149217
+    },
+    {
+      "authoritative_truth_import_seconds": 0.146357,
+      "dataset_id": "arecel-dmv11",
+      "deployment_plus_analyze_seconds": 14.736146,
+      "full_workload_planner_evaluation_delta_seconds": 0.04598100000000005,
+      "full_workload_planner_evaluation_ratio": 1.0275527703774012,
+      "live_experiment_elapsed_seconds": 408.036643,
+      "p0_explain_seconds": 1.668834,
+      "p1_explain_seconds": 1.714815,
+      "p2_transaction_eval_rollback_seconds": 1.609468,
+      "restoration_verification_seconds": 0.007617,
+      "sample_baseline_eval_seconds": 6.261961,
+      "sample_baseline_planner_calls": 10000,
+      "sample_final_eval_seconds": 6.437597,
+      "sample_final_planner_calls": 10000,
+      "sample_pair_total_planner_calls": 20000,
+      "sample_pair_total_seconds": 16.485485,
+      "selected_k": 5,
+      "stock_load_seconds": 29.329676
+    }
+  ],
+  "format_version": "rq5-existing-trace-cost-inventory-v1",
+  "generated_from_tracked_json_only": true,
+  "historical_preflight_timings": [
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 0.608794,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "snapshot/sample preparation"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 209.797084,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "singleton profiling"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 134.334475,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "greedy search"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 0.608794,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "stock data load"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.660966,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P0 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 11.00535,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "deployment + ANALYZE"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.630934,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P1 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.617017,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "snapshot/sample preparation"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 129.339857,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "singleton profiling"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 115.437173,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "greedy search"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.617017,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "stock data load"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.455172,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P0 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 6.02784,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "deployment + ANALYZE"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.370193,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P1 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 30.549814,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "snapshot/sample preparation"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 30.549814,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "stock data load"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.468786,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P0 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 13.022475,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "deployment + ANALYZE"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 1.446874,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "P1 EXPLAIN"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "historical-preflight-estimate",
+      "historical_seconds": 0.044764,
+      "included_in_primary_cost_table": false,
+      "source_path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+      "stage": "artifact analysis/write"
+    }
+  ],
+  "interpretation": {
+    "canonical_production_configuration": {
+      "B": 8,
+      "K_s": 8
+    },
+    "component_timings_must_not_be_summed": true,
+    "deployment_including_final_analyze_is_combined": true,
+    "external_truth_import_is_not_production_exact_cost": true,
+    "ks_sensitivity_is_B4_not_canonical_B8": true,
+    "p0_p1_are_offline_explain_workload_timings": true
+  },
+  "new_benchmark_run": false,
+  "new_planner_execution": false,
+  "new_postgresql_execution": false,
+  "no_synthetic_total": true,
+  "remaining_measurement_gaps": [
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "snapshot_bytes",
+      "priority": "appendix-useful",
+      "stage": "snapshot capture",
+      "why_existing_trace_is_insufficient": "RQ2 records elapsed capture time but no tracked snapshot byte measurement",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13"
+      ],
+      "missing_metric": "exact_count_elapsed_seconds",
+      "priority": "main-text-critical",
+      "stage": "production exact truth acquisition",
+      "why_existing_trace_is_insufficient": "The tracked equivalence evidence proves labels existed and matched, but records no exact-count timing",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "DDL_only_seconds",
+      "priority": "appendix-useful",
+      "stage": "deployment DDL",
+      "why_existing_trace_is_insufficient": "Only combined deployment plus final ANALYZE wall time is measured",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "ANALYZE_only_seconds",
+      "priority": "main-text-critical",
+      "stage": "deployment ANALYZE",
+      "why_existing_trace_is_insufficient": "Only combined deployment plus final ANALYZE wall time is measured",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "catalog_bytes and storage_bytes",
+      "priority": "main-text-critical",
+      "stage": "catalog/storage",
+      "why_existing_trace_is_insufficient": "Object metadata and payload presence are not byte measurements",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "production_online_query_latency",
+      "priority": "main-text-critical",
+      "stage": "post-deployment planning",
+      "why_existing_trace_is_insufficient": "P0/P1 are offline 10,000-query EXPLAIN wall times, not online latency",
+      "would_require_new_live_measurement": true
+    },
+    {
+      "datasets": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "missing_metric": "refresh cost and quality trend",
+      "priority": "main-text-critical",
+      "stage": "refresh",
+      "why_existing_trace_is_insufficient": "No tracked refresh experiment exists",
+      "would_require_new_live_measurement": true
+    }
+  ],
+  "rq5_completion_status": "incomplete",
+  "rq5_registry_status": "planned",
+  "search_scaling_evidence": [
+    {
+      "B": 4,
+      "K_s": 4,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-census13",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 2.5212688613359724,
+      "planner_calls": 35065,
+      "proposal_configuration_evaluations": 6,
+      "selected_k": 4,
+      "selection_wall_seconds": 14.465618764999817,
+      "termination": "all-screened-candidates-selected"
+    },
+    {
+      "B": 4,
+      "K_s": 8,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-census13",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 2.483392121853901,
+      "planner_calls": 77953,
+      "proposal_configuration_evaluations": 18,
+      "selected_k": 4,
+      "selection_wall_seconds": 33.33692027400002,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 16,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-census13",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 2.483392121853901,
+      "planner_calls": 163513,
+      "proposal_configuration_evaluations": 42,
+      "selected_k": 4,
+      "selection_wall_seconds": 71.25806411899976,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 32,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-census13",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 2.483392121853901,
+      "planner_calls": 335089,
+      "proposal_configuration_evaluations": 90,
+      "selected_k": 4,
+      "selection_wall_seconds": 145.89874476800014,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": "all",
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-census13",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 3.0140142440167508,
+      "planner_calls": 722567,
+      "proposal_configuration_evaluations": 198,
+      "selected_k": 2,
+      "selection_wall_seconds": 300.02128408099816,
+      "termination": "budget-expired-incomplete-round"
+    },
+    {
+      "B": 4,
+      "K_s": 4,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 73.01836263281487,
+      "planner_calls": 35279,
+      "proposal_configuration_evaluations": 6,
+      "selected_k": 3,
+      "selection_wall_seconds": 13.51139196000031,
+      "termination": "local-optimum"
+    },
+    {
+      "B": 4,
+      "K_s": 8,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 72.69311227985717,
+      "planner_calls": 78773,
+      "proposal_configuration_evaluations": 18,
+      "selected_k": 4,
+      "selection_wall_seconds": 30.9036074630003,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 16,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 41.9583074764824,
+      "planner_calls": 165732,
+      "proposal_configuration_evaluations": 42,
+      "selected_k": 4,
+      "selection_wall_seconds": 65.65267417999985,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 32,
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 40.325278427588316,
+      "planner_calls": 339848,
+      "proposal_configuration_evaluations": 90,
+      "selected_k": 4,
+      "selection_wall_seconds": 137.47222348000014,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": "all",
+      "all_reference_semantics": "bounded-full-universe-incumbent",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-dmv11",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 47.20499958811888,
+      "planner_calls": 753529,
+      "proposal_configuration_evaluations": 203,
+      "selected_k": 2,
+      "selection_wall_seconds": 300.03441285600275,
+      "termination": "budget-expired-incomplete-round"
+    },
+    {
+      "B": 4,
+      "K_s": 4,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 105.04073854314105,
+      "planner_calls": 36544,
+      "proposal_configuration_evaluations": 6,
+      "selected_k": 4,
+      "selection_wall_seconds": 14.06833643899995,
+      "termination": "all-screened-candidates-selected"
+    },
+    {
+      "B": 4,
+      "K_s": 8,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 102.53609874329581,
+      "planner_calls": 82000,
+      "proposal_configuration_evaluations": 18,
+      "selected_k": 4,
+      "selection_wall_seconds": 32.200876349000055,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 16,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 93.94824997883099,
+      "planner_calls": 173064,
+      "proposal_configuration_evaluations": 42,
+      "selected_k": 4,
+      "selection_wall_seconds": 69.16269976099989,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": 32,
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 93.94824997883099,
+      "planner_calls": 354699,
+      "proposal_configuration_evaluations": 90,
+      "selected_k": 4,
+      "selection_wall_seconds": 158.63871696499996,
+      "termination": "max-statistics-count"
+    },
+    {
+      "B": 4,
+      "K_s": "all",
+      "all_reference_semantics": "completed-full-universe-greedy-reference",
+      "canonical_production_cost_measurement": false,
+      "dataset_id": "arecel-power7",
+      "evidence_class": "formal-search-sensitivity-B4",
+      "objective": 93.94824997883099,
+      "planner_calls": 468090,
+      "proposal_configuration_evaluations": 120,
+      "selected_k": 4,
+      "selection_wall_seconds": 185.87962744000106,
+      "termination": "max-statistics-count"
+    }
+  ],
+  "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+  "source_evidence": {
+    "rq2_children": [
+      {
+        "dataset_id": "arecel-census13",
+        "path": "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "semantic_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790"
+      },
+      {
+        "dataset_id": "arecel-forest10",
+        "path": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "semantic_digest": "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4"
+      },
+      {
+        "dataset_id": "arecel-power7",
+        "path": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "semantic_digest": "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600"
+      },
+      {
+        "dataset_id": "arecel-dmv11",
+        "path": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+        "semantic_digest": "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      }
+    ],
+    "rq2_cross_dataset_summary": {
+      "path": "experiments/rq2-cross-dataset-transfer-summary-v1.json",
+      "semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7"
+    },
+    "rq4_ks_cross_dataset_summary": {
+      "path": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json",
+      "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed"
+    },
+    "singleton_equivalence": [
+      {
+        "artifact_digest": "a735add5b4c5eaff5a9c61964a5f629ba20d3872eb9708d33047eb9693bb712c",
+        "dataset_id": "arecel-power7",
+        "path": "experiments/arecel-power7/singleton-equivalence/advisor-singleton-incremental-equivalence-v1.json"
+      },
+      {
+        "artifact_digest": "c523c8617d2169e1886874d8fd31359320f0c8cec00817030b4afac0f60b0e41",
+        "dataset_id": "arecel-forest10",
+        "path": "experiments/arecel-forest10/singleton-equivalence/advisor-singleton-incremental-historical-equivalence-v2.json"
+      }
+    ],
+    "top_k_protocol_semantic_digest": "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec"
+  },
+  "stage_taxonomy": [
+    "snapshot capture",
+    "authoritative external truth import/validation",
+    "production exact truth acquisition",
+    "sample/native statistics construction",
+    "candidate profiling",
+    "planner search",
+    "deployment DDL",
+    "deployment ANALYZE",
+    "catalog/storage",
+    "post-deployment planning",
+    "refresh"
+  ],
+  "stages": {
+    "authoritative external truth import/validation": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 formal truth binding",
+      "limitations": [
+        "This is not production exact truth acquisition"
+      ],
+      "measured_metrics": {
+        "observations_and_import_elapsed_seconds": {
+          "arecel-census13": 0.155349,
+          "arecel-dmv11": 0.146357,
+          "arecel-forest10": 0.144467,
+          "arecel-power7": 0.14307
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "authoritative external truth import/validation",
+      "scope": "external observation import plus validation/binding",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "authoritative-external-truth-import",
+      "unmeasured_required_metrics": []
+    },
+    "candidate profiling": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 formal stage timing",
+      "limitations": [
+        "Separate singleton equivalence artifacts are component microbenchmarks, not canonical end-to-end cost"
+      ],
+      "measured_metrics": {
+        "singleton_profiling_seconds": {
+          "arecel-census13": 181.831876,
+          "arecel-dmv11": 136.799564,
+          "arecel-forest10": 91.076938,
+          "arecel-power7": 57.460055
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "candidate profiling",
+      "scope": "canonical RQ2 source-run singleton profiling",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "candidate-profiling",
+      "unmeasured_required_metrics": []
+    },
+    "catalog/storage": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": false,
+      "evidence_class": "RQ2 deployment structural verification",
+      "limitations": [
+        "OID, object count, and nonempty payload do not measure catalog/storage bytes"
+      ],
+      "measured_metrics": {
+        "payload_present_object_count": {
+          "arecel-census13": 7,
+          "arecel-dmv11": 5,
+          "arecel-forest10": 8,
+          "arecel-power7": 7
+        },
+        "physical_statistics_object_count": {
+          "arecel-census13": 7,
+          "arecel-dmv11": 5,
+          "arecel-forest10": 8,
+          "arecel-power7": 7
+        }
+      },
+      "measurement_status": "evidence-exists-timing-missing",
+      "protocol_stage_name": "catalog/storage",
+      "scope": "Tracked deployment artifacts expose object/kind/target/payload metadata",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "catalog-storage",
+      "unmeasured_required_metrics": [
+        "catalog_bytes",
+        "storage_bytes"
+      ]
+    },
+    "deployment ANALYZE": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": false,
+      "evidence_class": "RQ2 combined deployment trace",
+      "limitations": [
+        "No arbitrary decomposition of the combined wall time"
+      ],
+      "measured_metrics": {},
+      "measurement_status": "evidence-exists-timing-missing",
+      "protocol_stage_name": "deployment ANALYZE",
+      "scope": "ANALYZE is included in deployment_including_final_analyze",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "deployment-analyze",
+      "unmeasured_required_metrics": [
+        "ANALYZE_only_seconds"
+      ]
+    },
+    "deployment DDL": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": false,
+      "evidence_class": "RQ2 combined deployment trace",
+      "limitations": [
+        "No arbitrary decomposition of the combined wall time"
+      ],
+      "measured_metrics": {},
+      "measurement_status": "evidence-exists-timing-missing",
+      "protocol_stage_name": "deployment DDL",
+      "scope": "DDL is included in deployment_including_final_analyze",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "deployment-ddl",
+      "unmeasured_required_metrics": [
+        "DDL_only_seconds"
+      ]
+    },
+    "planner search": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 formal stage timing",
+      "limitations": [
+        "The separate K_s scaling evidence below uses B=4 and is not canonical production cost"
+      ],
+      "measured_metrics": {
+        "optimization_search_seconds": {
+          "arecel-census13": 56.520813,
+          "arecel-dmv11": 47.26726,
+          "arecel-forest10": 59.684454,
+          "arecel-power7": 52.920813
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "planner search",
+      "scope": "canonical RQ2 B=8/K_s=8 source-run search",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "planner-search",
+      "unmeasured_required_metrics": []
+    },
+    "post-deployment planning": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 full-data EXPLAIN trace",
+      "limitations": [
+        "Not a production online latency benchmark"
+      ],
+      "measured_metrics": {
+        "p0_explain_seconds": {
+          "arecel-census13": 1.798747,
+          "arecel-dmv11": 1.668834,
+          "arecel-forest10": 2.122261,
+          "arecel-power7": 1.766692
+        },
+        "p1_explain_seconds": {
+          "arecel-census13": 2.042778,
+          "arecel-dmv11": 1.714815,
+          "arecel-forest10": 2.288135,
+          "arecel-power7": 1.782993
+        },
+        "p2_transaction_evaluation_rollback_seconds": {
+          "arecel-census13": 1.72262,
+          "arecel-dmv11": 1.609468,
+          "arecel-forest10": 2.088296,
+          "arecel-power7": 1.800957
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "post-deployment planning",
+      "scope": "offline 10,000-query PostgreSQL planner/EXPLAIN workload",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "post-deployment-planning",
+      "unmeasured_required_metrics": [
+        "production_online_query_latency"
+      ]
+    },
+    "production exact truth acquisition": {
+      "datasets_covered": [
+        "arecel-census13"
+      ],
+      "eligible_for_primary_rq5_table": false,
+      "evidence_class": "historical production-exact truth/equivalence evidence",
+      "limitations": [
+        "No exact-count timing is inferred from an RQ1 total or external-label import"
+      ],
+      "measured_metrics": {},
+      "measurement_status": "evidence-exists-timing-missing",
+      "protocol_stage_name": "production exact truth acquisition",
+      "scope": "Census13 production-exact truth existed and was used for equivalence auditing",
+      "source_paths": [
+        "experiments/arecel-census13/rq1-canary/rq1-matched-comparison-v1.json",
+        "experiments/arecel-census13/arecel-truth-equivalence-v1.json"
+      ],
+      "source_semantic_digests": [
+        "45f74eb6470180905190af937c0a7fe6eaec9a71790fc87e2696ed2ddfef84a2",
+        "8d69f7cc3cfb023e122cbcb12e79237402b6a0da45eed7cf63300b940e589fd4"
+      ],
+      "stage_id": "production-exact-truth-acquisition",
+      "unmeasured_required_metrics": [
+        "exact_count_elapsed_seconds",
+        "exact_count_planner_or_executor_calls"
+      ]
+    },
+    "refresh": {
+      "datasets_covered": [],
+      "eligible_for_primary_rq5_table": false,
+      "evidence_class": "none",
+      "limitations": [
+        "Initial deployment plus ANALYZE is not a refresh experiment"
+      ],
+      "measured_metrics": {},
+      "measurement_status": "missing",
+      "protocol_stage_name": "refresh",
+      "scope": "No tracked refresh experiment",
+      "source_paths": [],
+      "source_semantic_digests": [],
+      "stage_id": "refresh",
+      "unmeasured_required_metrics": [
+        "refresh_elapsed_seconds",
+        "refresh_storage_change",
+        "refresh_quality_change"
+      ]
+    },
+    "sample/native statistics construction": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 formal stage timing",
+      "limitations": [
+        "sample payload bytes are not deployed catalog/storage bytes"
+      ],
+      "measured_metrics": {
+        "candidate_derivation_seconds": {
+          "arecel-census13": 3.865545,
+          "arecel-dmv11": 3.50748,
+          "arecel-forest10": 2.885194,
+          "arecel-power7": 1.977632
+        },
+        "native_materialization_seconds": {
+          "arecel-census13": 4.745397,
+          "arecel-dmv11": 5.531005,
+          "arecel-forest10": 3.099421,
+          "arecel-power7": 1.544863
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "sample/native statistics construction",
+      "scope": "sample-side native materialization and candidate derivation",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "sample-native-statistics-construction",
+      "unmeasured_required_metrics": [
+        "sample_native_payload_bytes",
+        "sample_construction_bytes"
+      ]
+    },
+    "snapshot capture": {
+      "datasets_covered": [
+        "arecel-census13",
+        "arecel-forest10",
+        "arecel-power7",
+        "arecel-dmv11"
+      ],
+      "eligible_for_primary_rq5_table": true,
+      "evidence_class": "RQ2 formal stage timing",
+      "limitations": [
+        "sample_rows=10000 is a protocol quantity, not a measured snapshot size"
+      ],
+      "measured_metrics": {
+        "snapshot_capture_elapsed_seconds": {
+          "arecel-census13": 1.283194,
+          "arecel-dmv11": 1.652631,
+          "arecel-forest10": 1.605879,
+          "arecel-power7": 1.350377
+        }
+      },
+      "measurement_status": "formal-measured",
+      "protocol_stage_name": "snapshot capture",
+      "scope": "RQ2 canonical source run snapshot capture elapsed time",
+      "source_paths": [
+        "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+        "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json"
+      ],
+      "source_semantic_digests": [
+        "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+        "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+        "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+        "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc"
+      ],
+      "stage_id": "snapshot-capture",
+      "unmeasured_required_metrics": [
+        "snapshot_bytes"
+      ]
+    }
+  },
+  "status": "existing-trace-inventory-complete"
+}

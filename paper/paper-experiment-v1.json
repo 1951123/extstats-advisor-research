@@ -804,7 +804,24 @@
       "required_raw_artifacts": ["stage timings", "sizes", "planner counters", "deployment logs", "catalog measurements", "RunManifest"],
       "required_derived_artifacts": ["cost breakdown", "accuracy-cost table", "refresh trend"],
       "expected_paper_outputs": ["tab-rq5-cost-breakdown", "fig-rq5-accuracy-cost"],
-      "completion_criteria": ["all measured stages have provenance", "no zero-online-overhead claim is substituted for measured costs"]
+      "completion_criteria": ["all measured stages have provenance", "no zero-online-overhead claim is substituted for measured costs"],
+      "existing_trace_inventory": {
+        "status": "complete",
+        "artifact": "experiments/rq5-existing-trace-cost-inventory-v1.json",
+        "format_version": "rq5-existing-trace-cost-inventory-v1",
+        "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+        "scope": "offline aggregation of already-measured cost evidence",
+        "rq5_completion_status": "incomplete",
+        "remaining_measurement_gaps": [
+          "snapshot bytes",
+          "production exact truth timing",
+          "DDL-only timing",
+          "ANALYZE-only timing",
+          "catalog/storage bytes",
+          "production online planning latency",
+          "refresh cost and quality trend"
+        ]
+      }
     }
   ],
   "status_ledger": {
