@@ -133,7 +133,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
 | `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
-| `rq4-ks-sensitivity` | RQ4a | `ready-to-run` | `paper/top-k-screening-protocol-v2.json` (semantic digest `55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec`) preregisters `K_s={4,8,16,32,all}` at `B=4` and 300 seconds for Census13/Power7/DMV11. Power7 is complete as a validated formal child in `experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5`); Census13 and DMV11 were not executed, so global K_s sensitivity remains incomplete. The frozen-v2 live readiness smoke is `experiments/rq4/integration-smoke/rq4-ks-sensitivity-live-smoke-v1.json` (digest `5209293d...`), covering `K_s=4` and `K_s=all` on a bounded three-query/six-candidate patched sandbox with exact replay equality. |
+| `rq4-ks-sensitivity` | RQ4a | `ready-to-run` | `paper/top-k-screening-protocol-v2.json` (semantic digest `55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec`) preregisters `K_s={4,8,16,32,all}` at `B=4` and 300 seconds for Census13/Power7/DMV11. Power7 and Census13 are complete as validated formal children in `experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `85b832eae...`) and `experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8`); DMV11 was not executed, so global K_s sensitivity remains incomplete. The Census13 `all` point is a reused 300-second-bounded k=2 incumbent, not an optimum reference. The frozen-v2 live readiness smoke is `experiments/rq4/integration-smoke/rq4-ks-sensitivity-live-smoke-v1.json` (digest `5209293d...`), covering `K_s=4` and `K_s=all` on a bounded three-query/six-candidate patched sandbox with exact replay equality. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
 | `rq5-cost-accounting` | RQ5 | `planned` | Requires stage timing and truth-acquisition cost artifacts. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -674,11 +674,13 @@ cap and a maximum of 2,000 configuration-objective evaluations per point.
 `K_s=8` is only the canonical screening-width reference under fixed `B=4`;
 it is not a new canonical Advisor configuration. Every finite point uses the
 first prefix of the already frozen singleton order, while `all` is reused
-from a fixed-k-v2 child only after an exact digest and semantic gate. A formal
-Power7 child has now completed all finite points and reused the gated `all`
-point; its artifact is
-`experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json`.
-Census13 and DMV11 remain unexecuted, so the global
+from a fixed-k-v2 child only after an exact digest and semantic gate. Formal
+Power7 and Census13 children have now completed their finite points and reused
+their gated `all` points. Census13's `all` point is a 300-second-bounded
+full-universe incumbent at `k=2`, not an optimum reference. Their artifacts are
+`experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json`
+and `experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json`.
+DMV11 remains unexecuted, so the global
 sensitivity experiment is still incomplete. A separate non-formal frozen-v2
 live smoke has passed at `K_s=4` and `K_s=all` on a bounded Census13 fixture;
 its artifact remains readiness evidence only.

@@ -736,13 +736,19 @@
       "readiness_smoke_note": "A bounded three-query, six-candidate patched-sandbox smoke passed at K_s=4 and K_s=all with exact replay equality. It exercises frozen-v2 K_s/B separation but does not execute any formal AreCEL sensitivity point.",
       "status_after_smoke": "ready-to-run",
       "dataset_status": {
-        "arecel-census13": "not-executed",
+        "arecel-census13": "complete",
         "arecel-power7": "complete",
         "arecel-dmv11": "not-executed",
         "arecel-forest10": "excluded",
         "global": "incomplete"
       },
       "completed_dataset_artifacts": {
+        "arecel-census13": {
+          "path": "experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
+          "semantic_digest": "119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8",
+          "producer_research_sha": "3430f1ec5cd702c08c82d12d3202c4ba0203f322",
+          "execution_mode": "finite-points-executed-all-point-reused"
+        },
         "arecel-power7": {
           "path": "experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json",
           "semantic_digest": "85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5",
@@ -750,7 +756,7 @@
           "execution_mode": "finite-points-executed-all-point-reused"
         }
       },
-      "partial_completion_note": "Power7 has a validated formal child; Census13 and DMV11 were not executed, so the global K_s sensitivity remains incomplete and the protocol's formal_arecel_runs gate remains false.",
+      "partial_completion_note": "Power7 and Census13 have validated formal children; DMV11 was not executed, so the global K_s sensitivity remains incomplete and the protocol's formal_arecel_runs gate remains false.",
       "expected_paper_outputs": ["fig-rq4-screening-width-quality-cost", "tab-rq4-screening-width-accounting"],
       "completion_criteria": ["all five preregistered points have valid evidence", "budget-censored points preserve their committed incumbent", "finite prefixes are deterministic", "all-point reuse passed its exact gate", "no stock physical RQ4b per-K_s children are produced"]
     },
@@ -842,7 +848,7 @@
       {
         "experiment_id": "rq4-ks-sensitivity",
         "status": "ready-to-run",
-        "note": "Power7 is complete as a validated formal child at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5); Census13 and DMV11 were not executed, so global K_s sensitivity and global RQ4 remain incomplete. The protocol's formal_arecel_runs gate remains false until the full campaign is complete."
+        "note": "Power7 and Census13 are complete as validated formal children at experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5) and experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json (digest 119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8). DMV11 was not executed, so global K_s sensitivity and global RQ4 remain incomplete. The protocol's formal_arecel_runs gate remains false until the full campaign is complete."
       },
       {
         "experiment_id": "rq4-native-analyze-stability",
