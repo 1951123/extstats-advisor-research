@@ -12,6 +12,9 @@ ATTEMPT_ROOT = ROOT / (
 EXPECTED_PREFLIGHT_DIGEST = "84e398a709f82a3b7e7fd46715c36870d0a3832037c4d944043da6530e5f2152"
 EXPECTED_PREFLIGHT_SHA256 = "359e08d725ae1247a124356b2246f55368b40b0a35e4fb6981cb3789017c094f"
 EXPECTED_FAILURE_DIGEST = "2802214e945c1365559e921d19f4f00670de4b3dc1464dad4fb9fca2266e1917"
+ATTEMPT_002_FAILURE_DIGEST = "898159a74c5339d789a3c93aa22e546e9a6b91a7def137461d748ef32e24d284"
+ATTEMPT_002_PREFLIGHT_DIGEST = "7870735375944c200b19bc1805481232d80e24cd694e4cba6f01c6b6819df662"
+ATTEMPT_002_PREFLIGHT_SHA256 = "d5aaca47830af7c8c14fa22e9b3006b79ce3ca35b6f23edf48d81f8398b1108e"
 
 
 def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> None:
@@ -40,4 +43,28 @@ def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> N
     assert (
         semantic_digest({key: value for key, value in failure.items() if key != "semantic_digest"})
         == EXPECTED_FAILURE_DIGEST
+    )
+
+
+def test_attempt_002_archive_is_byte_identical_and_pre_execution_non_evidence() -> None:
+    archived = ATTEMPT_ROOT.parent / "attempt-002/rq1b-preflight-v1.json"
+    failure_path = ATTEMPT_ROOT.parent / "attempt-002/failure-v1.json"
+    assert sha256_file(archived) == ATTEMPT_002_PREFLIGHT_SHA256
+    preflight = json.loads(archived.read_text(encoding="utf-8"))
+    assert (
+        semantic_digest(
+            {key: value for key, value in preflight.items() if key != "semantic_digest"}
+        )
+        == ATTEMPT_002_PREFLIGHT_DIGEST
+    )
+    failure = json.loads(failure_path.read_text(encoding="utf-8"))
+    assert failure["attempt_index"] == 2
+    assert failure["status"] == "non-evidence-pre-execution-invocation-failure"
+    assert failure["failure_stage"] == "managed-dsn-endpoint-validation"
+    assert failure["evidence_eligibility"] is False
+    assert failure["scientific_execution"]["explain_count"] == 0
+    assert (
+        semantic_digest({key: value for key, value in failure.items() if key != "semantic_digest"})
+        == failure["semantic_digest"]
+        == ATTEMPT_002_FAILURE_DIGEST
     )

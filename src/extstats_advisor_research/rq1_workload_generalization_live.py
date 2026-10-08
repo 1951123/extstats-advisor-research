@@ -67,12 +67,14 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
-CAMPAIGN_ATTEMPT_INDEX = 2
+CAMPAIGN_ATTEMPT_INDEX = 3
 PRIOR_FAILED_ATTEMPT_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
-    "failed-attempts/attempt-001/failure-v1.json"
+    "failed-attempts/attempt-002/failure-v1.json"
 )
-PRIOR_FAILED_ATTEMPT_DIGEST = "2802214e945c1365559e921d19f4f00670de4b3dc1464dad4fb9fca2266e1917"
+PRIOR_FAILED_ATTEMPT_DIGEST = "898159a74c5339d789a3c93aa22e546e9a6b91a7def137461d748ef32e24d284"
+PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-invocation-failure"
+PRIOR_FAILED_ATTEMPT_CLASS = "empty-managed-dsn-from-shell-invocation"
 DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
 PER_QUERY_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
@@ -757,8 +759,8 @@ def build_power7_rq1b_preflight(
         "campaign_attempt_index": CAMPAIGN_ATTEMPT_INDEX,
         "prior_failed_attempt": {
             **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
-            "status": "non-evidence-infrastructure-failure",
-            "failure_class": "managed-postgresql-not-running",
+            "status": PRIOR_FAILED_ATTEMPT_STATUS,
+            "failure_class": PRIOR_FAILED_ATTEMPT_CLASS,
             "evidence_eligible": False,
         },
         "status": "ready-to-run",
@@ -804,8 +806,8 @@ def validate_power7_rq1b_preflight(
         value.get("prior_failed_attempt")
         == {
             **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
-            "status": "non-evidence-infrastructure-failure",
-            "failure_class": "managed-postgresql-not-running",
+            "status": PRIOR_FAILED_ATTEMPT_STATUS,
+            "failure_class": PRIOR_FAILED_ATTEMPT_CLASS,
             "evidence_eligible": False,
         },
         "RQ1b prior failed-attempt binding drift",

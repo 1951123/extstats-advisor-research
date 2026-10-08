@@ -482,12 +482,12 @@ def test_preflight_contains_only_opaque_evaluation_bindings(
         research_root=tmp_path,
         producer_sha=producer,
     )
-    assert value["campaign_attempt_index"] == 2
+    assert value["campaign_attempt_index"] == 3
     assert value["prior_failed_attempt"] == {
         "path": live.PRIOR_FAILED_ATTEMPT_PATH.as_posix(),
         "semantic_digest": live.PRIOR_FAILED_ATTEMPT_DIGEST,
-        "status": "non-evidence-infrastructure-failure",
-        "failure_class": "managed-postgresql-not-running",
+        "status": live.PRIOR_FAILED_ATTEMPT_STATUS,
+        "failure_class": live.PRIOR_FAILED_ATTEMPT_CLASS,
         "evidence_eligible": False,
     }
     serialized = json.dumps(value, sort_keys=True)

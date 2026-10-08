@@ -186,9 +186,20 @@ observed, and the attempt is retained as non-evidence infrastructure
 provenance. A second invocation then failed before lab preparation because
 the shell supplied an empty managed DSN; it is also non-evidence. A future
 attempt must evaluate managed DSNs in the same shell process before invoking
-the formal command, using `eval "$(extstats-research postgres-lab env --role all)"`
-and explicit non-empty checks. A subsequent campaign must use a new committed
-producer and preflight.
+the formal command. The required shell sequence is:
+
+```bash
+eval "$(extstats-research postgres-lab env --role all)"
+test -n "$SIMULATED_PRODUCTION_DSN"
+test -n "$ADVISOR_PATCHED_POSTGRES_DSN"
+extstats-research rq1-generalization power7 run \
+  --stock-dsn "$SIMULATED_PRODUCTION_DSN" \
+  --planner-dsn "$ADVISOR_PATCHED_POSTGRES_DSN" \
+  --preflight experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json
+```
+
+These commands must run in one shell process. A subsequent campaign must use
+a new committed producer and preflight.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact
 ground truth and an explicit dataset inclusion table.

@@ -268,9 +268,9 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "power7-attempt-1-infrastructure-failed-before-design"
+    assert rq1b["formal_execution"] == "power7-attempt-2-pre-execution-failed"
     assert rq1b["formal_evidence_status"] == "not-produced"
-    assert rq1b["next_formal_attempt"] == "power7-attempt-2-pending"
+    assert rq1b["next_formal_attempt"] == "power7-attempt-3-pending"
     assert rq1b["protocol"] == "paper/rq1-workload-generalization-protocol-v2.json"
     assert rq1b["source_audit"] == "experiments/rq1-workload-generalization-source-audit-v2.json"
     assert (
