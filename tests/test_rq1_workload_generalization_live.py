@@ -428,3 +428,247 @@ def test_formal_tree_gate_allows_only_canonical_preflight(
             preflight_path=live.PREFLIGHT_PATH,
             preflight=preflight,
         )
+
+
+def _fake_design_source_spec() -> dict[str, object]:
+    return {
+        "dataset_id": live.POWER7,
+        "benchmark_id": live.POWER7,
+        "dataset_content_identity": "a" * 64,
+        "relation": "public.power7",
+        "schema_contract_id": "arecel-power7-postgres-schema-v1",
+        "rows": 2_075_259,
+        "design_workload": {
+            "source_split": "valid",
+            "workload_id": "arecel_power7_valid_v1",
+            "sha256": "b" * 64,
+            "query_count": 10_000,
+            "canonical_source_sha256": "c" * 64,
+        },
+        "design_truth": {
+            "source_split": "valid",
+            "path": live.VALID_OBSERVATIONS_PATH.as_posix(),
+            "observations_sha256": "d" * 64,
+            "workload_id": "arecel_power7_valid_v1",
+            "query_count": 10_000,
+            "dataset_identity": "a" * 64,
+        },
+    }
+
+
+def test_preflight_contains_only_opaque_evaluation_bindings(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+
+    class Completed:
+        def __init__(self, stdout: str) -> None:
+            self.stdout = stdout
+
+    monkeypatch.setattr(
+        live.subprocess,
+        "run",
+        lambda command, **kwargs: Completed("" if "status" in command else producer),
+    )
+    monkeypatch.setattr(
+        live, "_design_source_spec", lambda *args, **kwargs: _fake_design_source_spec()
+    )
+    monkeypatch.setattr(
+        live,
+        "_system_binding",
+        lambda root: {"semantic_digest": live.FROZEN_SYSTEM_FREEZE_V2_DIGEST},
+    )
+    value = live.build_power7_rq1b_preflight(
+        research_root=tmp_path,
+        producer_sha=producer,
+    )
+    serialized = json.dumps(value, sort_keys=True)
+    assert "evaluation_bindings" in value
+    assert value["evaluation_bindings"] == live._opaque_evaluation_bindings()
+    for forbidden in (
+        "arecel_power7_test_",
+        "s_test_candidate_ids",
+        "strict_unseen_test_query_ids",
+        "seen_in_valid_count",
+        "strict_unseen_count",
+        "pg16-default-per-query",
+        "pg16-target10000-per-query",
+    ):
+        assert forbidden not in serialized
+    assert "baseline_reuse" not in value
+
+
+def test_design_safe_preflight_never_calls_evaluation_resolvers(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+
+    class Completed:
+        def __init__(self, stdout: str) -> None:
+            self.stdout = stdout
+
+    monkeypatch.setattr(
+        live.subprocess,
+        "run",
+        lambda command, **kwargs: Completed("" if "status" in command else producer),
+    )
+    monkeypatch.setattr(
+        live, "_design_source_spec", lambda *args, **kwargs: _fake_design_source_spec()
+    )
+    monkeypatch.setattr(
+        live,
+        "_system_binding",
+        lambda root: {"semantic_digest": live.FROZEN_SYSTEM_FREEZE_V2_DIGEST},
+    )
+    for name in ("_validate_immutable_inputs", "_source_spec", "_baseline_binding"):
+        monkeypatch.setattr(
+            live,
+            name,
+            lambda *args, _name=name, **kwargs: pytest.fail(f"pre-seal resolver called: {_name}"),
+        )
+    value = live.build_power7_rq1b_preflight(
+        research_root=tmp_path,
+        producer_sha=producer,
+    )
+    assert live.validate_power7_rq1b_preflight(value, research_root=tmp_path)["status"] == "valid"
+
+
+def test_valid_truth_design_resolver_does_not_open_mixed_evaluation_policy(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    original_read_json = live.read_json
+    forbidden = {
+        (ROOT / live.SOURCE_AUDIT_V2_PATH).resolve(),
+        (ROOT / live.TRUTH_POLICY_PATH).resolve(),
+        (ROOT / live.STRICT_UNSEEN_PATH).resolve(),
+        (ROOT / live.BASELINE_PATH).resolve(),
+    }
+
+    def guarded_read_json(path: Path) -> object:
+        if Path(path).resolve() in forbidden:
+            pytest.fail(f"pre-seal evaluation artifact opened: {path}")
+        return original_read_json(path)
+
+    monkeypatch.setattr(live, "read_json", guarded_read_json)
+    monkeypatch.setattr(
+        live,
+        "authoritative_truth_spec_for_split",
+        lambda *args, **kwargs: pytest.fail("mixed truth-policy resolver called"),
+    )
+    identity = live._valid_truth_identity(ROOT)
+    assert identity["workload_id"] == live.VALID_WORKLOAD_ID
+
+
+def test_postseal_evaluation_resolver_reads_content_after_design_validation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    artifact = _sealed_design(monkeypatch)
+    events: list[str] = []
+    original_validate = live.validate_design_artifact
+
+    def validating(value: object, **kwargs: object) -> dict[str, object]:
+        events.append("design-artifact-validated")
+        return original_validate(value, **kwargs)
+
+    monkeypatch.setattr(live, "validate_design_artifact", validating)
+    monkeypatch.setattr(
+        live,
+        "_baseline_binding",
+        lambda root: events.append("baseline-opened") or {"arms": {}, "s_test_candidate_ids": []},
+    )
+    monkeypatch.setattr(
+        live,
+        "_source_spec",
+        lambda root: (
+            events.append("source-audit-opened")
+            or {
+                "test_workload_id": "arecel_power7_test_v1",
+                "test_workload_sha256": "a" * 64,
+                "test_observations_sha256": "b" * 64,
+            }
+        ),
+    )
+    monkeypatch.setattr(
+        live,
+        "authoritative_truth_spec_for_split",
+        lambda *args, **kwargs: (
+            events.append("test-truth-opened")
+            or {
+                "observations_path": tmp_path / "test-truth.json",
+                "observations_sha256": "b" * 64,
+            }
+        ),
+    )
+    (tmp_path / "test-truth.json").write_text(
+        json.dumps({"workload_id": "arecel_power7_test_v1", "truths": []}), encoding="utf-8"
+    )
+    from extstats_advisor_research.datasets import power7
+
+    def fake_extract(path: Path, data_root: Path | None, *, split: str) -> dict[str, object]:
+        events.append("test-workload-opened")
+        path.write_text(json.dumps({"queries": []}), encoding="utf-8")
+        return {
+            "workload_id": "arecel_power7_test_v1",
+            "sha256": "a" * 64,
+            "query_count": 10_000,
+        }
+
+    monkeypatch.setattr(power7, "extract_workload", fake_extract)
+    monkeypatch.setattr(
+        live,
+        "_load_exact",
+        lambda *args, **kwargs: events.append("strict-unseen-opened") or {},
+    )
+    result = live.resolve_power7_rq1b_evaluation_inputs_after_seal(
+        research_root=ROOT,
+        producer_sha="a49b279c50f59b9fe243d1c30e2ca1bf0606dfea",
+        design_artifact=artifact,
+        design_runtime_directory=tmp_path,
+    )
+    assert result["evaluation_split"] == "test"
+    assert events[0] == "design-artifact-validated"
+    assert events.index("baseline-opened") > events.index("design-artifact-validated")
+    assert events.index("strict-unseen-opened") > events.index("design-artifact-validated")
+
+
+def test_formal_runner_reloads_canonical_design_before_evaluation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+    preflight_path = tmp_path / live.PREFLIGHT_PATH
+    preflight_path.parent.mkdir(parents=True)
+    preflight_path.write_text(json.dumps({"research_commit_sha": producer}), encoding="utf-8")
+    sealed = _sealed_design(monkeypatch)
+    observed: dict[str, object] = {}
+
+    monkeypatch.setattr(live, "validate_power7_rq1b_preflight", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "verify_power7_formal_tree", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "_stop_formal_roles", lambda: True)
+
+    def fake_design(**kwargs: object) -> dict[str, object]:
+        destination = tmp_path / live.DESIGN_PATH
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(json.dumps(sealed), encoding="utf-8")
+        return {
+            "design_artifact": {"wrong": "in-memory placeholder"},
+            "runtime_directory": tmp_path / "runtime",
+        }
+
+    def fake_evaluation(**kwargs: object) -> dict[str, object]:
+        observed["design_artifact"] = kwargs["design_artifact"]
+        return {"status": "mock-success"}
+
+    monkeypatch.setattr(live, "execute_power7_rq1b_design_live", fake_design)
+    monkeypatch.setattr(live, "execute_power7_rq1b_evaluation_live", fake_evaluation)
+    result = live.run_power7_rq1b_formal(
+        research_root=tmp_path,
+        preflight_path=live.PREFLIGHT_PATH,
+        stock_dsn="unused",
+        planner_dsn="unused",
+        advisor_root=tmp_path / "advisor",
+        patched_postgres_root=tmp_path / "patched",
+        stock_postgres_root=tmp_path / "stock",
+    )
+    assert result["status"] == "mock-success"
+    assert observed["design_artifact"] == sealed
+    assert observed["design_artifact"] is not sealed

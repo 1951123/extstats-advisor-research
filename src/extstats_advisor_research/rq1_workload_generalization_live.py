@@ -15,7 +15,7 @@ from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from .arecel_truth import authoritative_truth_spec_for_split
+from .arecel_truth import authoritative_truth_spec_for_split, validate_observation_wire
 from .datasets import DATASETS
 from .paper_baseline import percentile, qerror
 from .pins import verify_git_sha
@@ -53,6 +53,16 @@ TRUTH_POLICY_DIGEST = "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4f
 SOURCE_AUDIT_DIGEST = "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
 STRICT_UNSEEN_DIGEST = "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
 RQ1A_POWER7_DIGEST = "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124"
+VALID_WORKLOAD_ID = "arecel_power7_valid_v1"
+VALID_WORKLOAD_SHA256 = "6a4658fee7d4f022a7886700c780a49dd3c2f81f4c6e2502163cabd19096113c"
+VALID_OBSERVATIONS_PATH = Path(
+    "truth/arecel/power7/authoritative-cardinality-observations-valid-v1.json"
+)
+VALID_AUDIT_PATH = Path("truth/arecel/power7/audit-valid-v1.json")
+VALID_OBSERVATIONS_SHA256 = "2cf8e81f4ce7143c7085780deab1b6547e518ce7b34b2cfbfb69ebcc882e461c"
+VALID_DATASET_CONTENT_IDENTITY = "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4"
+ARECEL_UPSTREAM_COMMIT = "aa52da7768023270bad884232972e0b77ec6534a"
+VALID_CANONICAL_WORKLOAD_SHA256 = "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327"
 SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
@@ -141,23 +151,61 @@ def _power7_row(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _valid_truth_identity(root: Path) -> dict[str, Any]:
-    spec = authoritative_truth_spec_for_split(POWER7, DESIGN_SPLIT, root)
-    _require(spec.get("query_count") == SAMPLE_ROWS, "Power7 valid truth count is not 10000")
-    truth_path = Path(spec["observations_path"])
-    wire = read_json(truth_path)
-    _require(wire.get("workload_id") == "arecel_power7_valid_v1", "Power7 valid truth ID drift")
+    """Resolve only the valid truth files needed by the design stage.
+
+    The general split-aware truth-policy resolver is deliberately not used
+    here: that policy also contains test-side metadata.  Reading the compact
+    valid wire and its valid-only audit keeps the pre-seal path literal.
+    """
+
+    truth_path = root / VALID_OBSERVATIONS_PATH
+    audit_path = root / VALID_AUDIT_PATH
+    _require(truth_path.is_file(), f"missing valid Power7 truth wire: {VALID_OBSERVATIONS_PATH}")
+    _require(audit_path.is_file(), f"missing valid Power7 truth audit: {VALID_AUDIT_PATH}")
+    try:
+        wire = read_json(truth_path)
+        validate_observation_wire(wire, workload_id=VALID_WORKLOAD_ID)
+        audit = read_json(audit_path)
+    except (KeyError, TypeError, ValueError) as error:
+        raise RQ1BValidationError(f"Power7 valid truth is malformed: {error}") from error
+    _require(isinstance(audit, Mapping), "Power7 valid truth audit must be an object")
+    _require(audit.get("source_split") == DESIGN_SPLIT, "Power7 valid truth audit split drift")
+    _require(audit.get("benchmark_id") == POWER7, "Power7 valid truth benchmark drift")
+    _require(audit.get("workload_id") == VALID_WORKLOAD_ID, "Power7 valid truth ID drift")
+    _require(audit.get("query_count") == SAMPLE_ROWS, "Power7 valid truth count is not 10000")
+    _require(
+        audit.get("dataset_content_identity") == VALID_DATASET_CONTENT_IDENTITY,
+        "Power7 valid truth dataset identity drift",
+    )
+    _require(
+        audit.get("upstream_commit") == ARECEL_UPSTREAM_COMMIT,
+        "Power7 valid truth upstream commit drift",
+    )
+    _require(
+        audit.get("authority") == "sfu-db/AreCELearnedYet",
+        "Power7 valid truth authority drift",
+    )
+    _require(
+        audit.get("canonical_workload_sha256") == VALID_CANONICAL_WORKLOAD_SHA256,
+        "Power7 valid truth canonical workload drift",
+    )
+    _require(
+        audit.get("observation_sha256") == VALID_OBSERVATIONS_SHA256
+        and sha256_file(truth_path) == VALID_OBSERVATIONS_SHA256,
+        "Power7 valid truth observation digest drift",
+    )
     return {
-        "source_kind": spec["kind"],
-        "collection_contract": spec["collection_contract"],
-        "dataset_identity": spec["dataset_identity"],
-        "source_revision": spec["source_revision"],
-        "observations_sha256": spec["observations_sha256"],
+        "source_kind": "authoritative-external-exact",
+        "collection_contract": "authoritative-external-exact-cardinality-v1",
+        "dataset_identity": VALID_DATASET_CONTENT_IDENTITY,
+        "source_revision": ARECEL_UPSTREAM_COMMIT,
+        "observations_sha256": VALID_OBSERVATIONS_SHA256,
         "observations_semantic_digest": semantic_digest(
             {key: item for key, item in wire.items() if key != "semantic_digest"}
         ),
-        "workload_id": wire["workload_id"],
-        "query_count": spec["query_count"],
-        "policy_status": spec["policy_status"],
+        "workload_id": VALID_WORKLOAD_ID,
+        "query_count": SAMPLE_ROWS,
+        "policy_status": "preregistered",
     }
 
 
@@ -173,8 +221,18 @@ def _valid_design_inputs(root: Path, data_root: Path | None = None) -> dict[str,
         workload_path = Path(directory) / "valid-workload.json"
         identity = dataset.extract_workload(workload_path, data_root, split=DESIGN_SPLIT)
         workload = read_json(workload_path)
-    _require(identity["workload_id"] == "arecel_power7_valid_v1", "Power7 valid workload ID drift")
+    _require(identity["workload_id"] == VALID_WORKLOAD_ID, "Power7 valid workload ID drift")
     _require(identity["query_count"] == SAMPLE_ROWS, "Power7 valid workload count is not 10000")
+    _require(identity["sha256"] == VALID_WORKLOAD_SHA256, "Power7 valid workload SHA drift")
+    _require(
+        metadata["dataset_content_identity"] == VALID_DATASET_CONTENT_IDENTITY,
+        "Power7 dataset content identity drift",
+    )
+    _require(metadata["relation"] == "public.power7", "Power7 relation identity drift")
+    _require(
+        metadata["schema_contract"]["id"] == "arecel-power7-postgres-schema-v1",
+        "Power7 schema contract drift",
+    )
     return {
         "dataset": {
             "dataset_id": POWER7,
@@ -188,10 +246,29 @@ def _valid_design_inputs(root: Path, data_root: Path | None = None) -> dict[str,
             "workload_id": identity["workload_id"],
             "sha256": identity["sha256"],
             "query_count": identity["query_count"],
-            "canonical_source_sha256": dataset.CANONICAL_WORKLOAD_SHA256,
+            "canonical_source_sha256": VALID_CANONICAL_WORKLOAD_SHA256,
         },
         "truth": truth,
         "workload_queries": workload["queries"],
+    }
+
+
+def _valid_truth_spec_design_safe(root: Path) -> dict[str, Any]:
+    """Build the frozen Advisor truth-spec shape from valid-only files."""
+
+    identity = _valid_truth_identity(root)
+    return {
+        "kind": identity["source_kind"],
+        "collection_contract": identity["collection_contract"],
+        "authority": "sfu-db/AreCELearnedYet",
+        "dataset_identity": identity["dataset_identity"],
+        "source_revision": identity["source_revision"],
+        "observations_path": root / VALID_OBSERVATIONS_PATH,
+        "observations_sha256": identity["observations_sha256"],
+        "query_count": identity["query_count"],
+        "sanity_check_count": 10,
+        "policy_status": identity["policy_status"],
+        "source_split": DESIGN_SPLIT,
     }
 
 
@@ -209,6 +286,53 @@ def _system_binding(root: Path) -> dict[str, Any]:
         "patched_postgresql_sha": FROZEN_PATCHED_POSTGRES_SHA,
         "stock_postgresql_sha": FROZEN_STOCK_POSTGRES_SHA,
         "postgres_version": "16.14",
+    }
+
+
+def _design_source_spec(root: Path, data_root: Path | None = None) -> dict[str, Any]:
+    """Return the compact Power7 valid-only source contract.
+
+    This helper is intentionally independent of the mixed valid/test source
+    audit and the RQ1a baseline.  It may run before the Recommendation seal.
+    """
+
+    inputs = _valid_design_inputs(root, data_root)
+    dataset = inputs["dataset"]
+    workload = inputs["workload"]
+    truth = inputs["truth"]
+    return {
+        "dataset_id": POWER7,
+        "benchmark_id": dataset["benchmark_id"],
+        "dataset_content_identity": dataset["content_identity"],
+        "relation": dataset["relation"],
+        "schema_contract_id": dataset["schema_contract_id"],
+        "rows": dataset["rows"],
+        "design_workload": {
+            "source_split": DESIGN_SPLIT,
+            "workload_id": workload["workload_id"],
+            "sha256": workload["sha256"],
+            "query_count": workload["query_count"],
+            "canonical_source_sha256": workload["canonical_source_sha256"],
+        },
+        "design_truth": {
+            "source_split": DESIGN_SPLIT,
+            "path": VALID_OBSERVATIONS_PATH.as_posix(),
+            "observations_sha256": truth["observations_sha256"],
+            "workload_id": truth["workload_id"],
+            "query_count": truth["query_count"],
+            "dataset_identity": truth["dataset_identity"],
+        },
+    }
+
+
+def _opaque_evaluation_bindings() -> dict[str, dict[str, str]]:
+    """Return evaluation references without opening evaluation artifacts."""
+
+    return {
+        "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "truth_policy": _binding(TRUTH_POLICY_PATH, TRUTH_POLICY_DIGEST),
+        "strict_unseen": _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
+        "rq1a_baseline": _binding(BASELINE_PATH, RQ1A_POWER7_DIGEST),
     }
 
 
@@ -621,9 +745,7 @@ def build_power7_rq1b_preflight(
         _require(
             destination == root / PREFLIGHT_PATH, "RQ1b preflight output path is not canonical"
         )
-    _validate_immutable_inputs(root, include_evaluation=True)
-    source = _source_spec(root)
-    baseline = _baseline_binding(root)
+    design_source = _design_source_spec(root)
     body: dict[str, Any] = {
         "format_version": PREFLIGHT_FORMAT,
         "status": "ready-to-run",
@@ -634,8 +756,8 @@ def build_power7_rq1b_preflight(
         "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
         "strict_unseen_membership": _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
         "system_freeze": _system_binding(root),
-        "dataset": source,
-        "baseline_reuse": baseline,
+        "dataset": design_source,
+        "evaluation_bindings": _opaque_evaluation_bindings(),
         "design_output": {
             "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json"
         },
@@ -649,6 +771,7 @@ def build_power7_rq1b_preflight(
             "T_seconds": SEARCH_BUDGET_SECONDS,
         },
         "no_formal_execution_started": True,
+        "preseal_evaluation_content_unread": True,
     }
     body["semantic_digest"] = semantic_digest(body)
     return body
@@ -684,12 +807,12 @@ def validate_power7_rq1b_preflight(
         "preflight system freeze drift",
     )
     _require(
-        value.get("dataset") == _source_spec(research_root.resolve()),
-        "preflight Power7 source spec drift",
+        value.get("dataset") == _design_source_spec(research_root.resolve()),
+        "preflight Power7 design source spec drift",
     )
     _require(
-        value.get("baseline_reuse") == _baseline_binding(research_root.resolve()),
-        "preflight baseline binding drift",
+        value.get("evaluation_bindings") == _opaque_evaluation_bindings(),
+        "preflight evaluation binding drift",
     )
     _require(
         value.get("parameters")
@@ -706,6 +829,24 @@ def validate_power7_rq1b_preflight(
     _require(
         value.get("no_formal_execution_started") is True, "preflight formal execution marker drift"
     )
+    _require(
+        value.get("preseal_evaluation_content_unread") is True,
+        "preflight pre-seal evaluation access marker drift",
+    )
+    serialized = json.dumps(value, sort_keys=True)
+    for forbidden in (
+        "arecel_power7_test_",
+        "s_test_candidate_ids",
+        "strict_unseen_test_query_ids",
+        "seen_in_valid_count",
+        "strict_unseen_count",
+        "pg16-default-per-query",
+        "pg16-target10000-per-query",
+    ):
+        _require(
+            forbidden not in serialized,
+            f"preflight contains evaluation-only content: {forbidden}",
+        )
     if "semantic_digest" in value:
         _require(
             value["semantic_digest"] == _digest_body(value), "preflight semantic digest mismatch"
@@ -1207,12 +1348,11 @@ def execute_power7_rq1b_design_live(
         "live stock PostgreSQL SHA drift",
     )
 
-    from .arecel_truth import authoritative_truth_spec_for_split
     from .canonical_runner import _run_canonical
     from .datasets import power7
     from .postgres.loader import load_power7
 
-    truth = authoritative_truth_spec_for_split(POWER7, DESIGN_SPLIT, root)
+    truth = _valid_truth_spec_design_safe(root)
     result = _run_canonical(
         dataset=power7,
         loader=load_power7,
@@ -1325,6 +1465,79 @@ def _cleanup_live_runtime(root: Path, target: Path | None, cleanup_result: bool)
     return cleanup_result
 
 
+def resolve_power7_rq1b_evaluation_inputs_after_seal(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    design_artifact: Mapping[str, Any],
+    design_runtime_directory: Path,
+    data_root: Path | None = None,
+) -> dict[str, Any]:
+    """Resolve test-side inputs only after re-validating a persisted seal."""
+
+    # This must remain the first operation: all evaluation content is behind
+    # the canonical design-artifact boundary.
+    validate_design_artifact(design_artifact, expected_producer=producer_sha)
+    root = research_root.resolve()
+    from .datasets import power7
+
+    baseline = _baseline_binding(root)
+    source = _source_spec(root)
+    test_spec = authoritative_truth_spec_for_split(POWER7, EVALUATION_SPLIT, root)
+    test_workload_path = design_runtime_directory.resolve() / "rq1b-test-workload.json"
+    identity = power7.extract_workload(test_workload_path, data_root, split=EVALUATION_SPLIT)
+    _require(identity["workload_id"] == source["test_workload_id"], "test workload ID drift")
+    _require(identity["sha256"] == source["test_workload_sha256"], "test workload hash drift")
+    workload = read_json(test_workload_path)
+    truth_wire = read_json(Path(test_spec["observations_path"]))
+    _require(
+        truth_wire.get("workload_id") == source["test_workload_id"], "test truth workload drift"
+    )
+    _require(
+        test_spec["observations_sha256"] == source["test_observations_sha256"],
+        "test truth SHA drift",
+    )
+    truths = {row["query_id"]: int(row["cardinality"]) for row in truth_wire["truths"]}
+    membership = _load_exact(root, STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST)
+    baseline_records = {
+        arm_id: _load_jsonl(root / binding["per_query_path"])
+        for arm_id, binding in baseline["arms"].items()
+    }
+    return {
+        "baseline": baseline,
+        "source": source,
+        "membership": membership,
+        "baseline_records": baseline_records,
+        "dataset_id": POWER7,
+        "evaluation_split": EVALUATION_SPLIT,
+        "strict_unseen_membership_digest": STRICT_UNSEEN_DIGEST,
+        "strict_unseen_membership": membership,
+        "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "test_workload": {
+            "workload_id": identity["workload_id"],
+            "sha256": identity["sha256"],
+            "query_count": identity["query_count"],
+        },
+        "test_truth": {
+            "observations_sha256": test_spec["observations_sha256"],
+            "workload_id": truth_wire["workload_id"],
+            "query_count": len(truth_wire["truths"]),
+        },
+        "stock_postgresql": {
+            "source_commit_sha": FROZEN_STOCK_POSTGRES_SHA,
+            "postgres_version": "16.14",
+            "evaluation_mode": "stock-full-data-deployment",
+            "ordinary_statistics_target": STATISTICS_TARGET,
+        },
+        "advisor": {
+            "source_commit_sha": FROZEN_ADVISOR_SHA,
+        },
+        "s_test_candidate_ids": baseline.get("s_test_candidate_ids", []),
+        "workload": workload["queries"],
+        "truths": truths,
+    }
+
+
 def execute_power7_rq1b_evaluation_live(
     *,
     research_root: Path,
@@ -1370,32 +1583,16 @@ def execute_power7_rq1b_evaluation_live(
     for name, path in required.items():
         _require(path.exists(), f"sealed design runtime artifact is missing: {name}")
 
-    from .arecel_truth import authoritative_truth_spec_for_split
-    from .datasets import power7
     from .postgres.loader import load_power7
 
-    baseline = _baseline_binding(root)
-    source = _source_spec(root)
-    test_spec = authoritative_truth_spec_for_split(POWER7, EVALUATION_SPLIT, root)
-    test_workload_path = design_runtime / "rq1b-test-workload.json"
-    identity = power7.extract_workload(test_workload_path, data_root, split=EVALUATION_SPLIT)
-    _require(identity["workload_id"] == source["test_workload_id"], "test workload ID drift")
-    _require(identity["sha256"] == source["test_workload_sha256"], "test workload hash drift")
-    workload = read_json(test_workload_path)
-    truth_wire = read_json(Path(test_spec["observations_path"]))
-    _require(
-        truth_wire.get("workload_id") == source["test_workload_id"], "test truth workload drift"
+    evaluation_inputs = resolve_power7_rq1b_evaluation_inputs_after_seal(
+        research_root=root,
+        producer_sha=producer_sha,
+        design_artifact=design_artifact,
+        design_runtime_directory=design_runtime,
+        data_root=data_root,
     )
-    _require(
-        test_spec["observations_sha256"] == source["test_observations_sha256"],
-        "test truth SHA drift",
-    )
-    truths = {row["query_id"]: int(row["cardinality"]) for row in truth_wire["truths"]}
-    membership = _load_exact(root, STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST)
-    baseline_records = {
-        arm_id: _load_jsonl(root / binding["per_query_path"])
-        for arm_id, binding in baseline["arms"].items()
-    }
+    baseline_records = evaluation_inputs["baseline_records"]
     per_query_destination = _path(root, per_query_output or PER_QUERY_PATH)
     deployment_destination = _path(root, deployment_output or DEPLOYMENT_PATH)
     result_destination = _path(root, result_output or RESULT_PATH)
@@ -1403,38 +1600,14 @@ def execute_power7_rq1b_evaluation_live(
         _require(not destination.exists(), f"RQ1b evaluation output already exists: {destination}")
 
     def resolver() -> dict[str, Any]:
-        return {
-            "dataset_id": POWER7,
-            "evaluation_split": EVALUATION_SPLIT,
-            "strict_unseen_membership_digest": STRICT_UNSEEN_DIGEST,
-            "strict_unseen_membership": membership,
-            "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
-            "test_workload": {
-                "workload_id": identity["workload_id"],
-                "sha256": identity["sha256"],
-                "query_count": identity["query_count"],
-            },
-            "test_truth": {
-                "observations_sha256": test_spec["observations_sha256"],
-                "workload_id": truth_wire["workload_id"],
-                "query_count": len(truth_wire["truths"]),
-            },
-            "stock_postgresql": {
-                "source_commit_sha": FROZEN_STOCK_POSTGRES_SHA,
-                "postgres_version": "16.14",
-                "evaluation_mode": "stock-full-data-deployment",
-                "ordinary_statistics_target": STATISTICS_TARGET,
-            },
-            "advisor": {
-                "source_commit_sha": FROZEN_ADVISOR_SHA,
-                "command": advisor_command,
-                "source_checkout_verified": True,
-            },
-            "s_test_candidate_ids": baseline.get("s_test_candidate_ids", []),
-            "workload": workload["queries"],
-            "truths": truths,
-            "baseline_records": baseline_records,
+        value = dict(evaluation_inputs)
+        value["advisor"] = {
+            "source_commit_sha": FROZEN_ADVISOR_SHA,
+            "command": advisor_command,
+            "source_checkout_verified": True,
         }
+        value["baseline_records"] = baseline_records
+        return value
 
     def evaluator(inputs: dict[str, Any], sealed: Mapping[str, Any]) -> Sequence[Mapping[str, Any]]:
         from .postgres_lab import reinit_role
@@ -1576,10 +1749,12 @@ def run_power7_rq1b_formal(
             data_root=data_root,
             advisor_command=advisor_command,
         )
+        sealed_design = read_json(root / DESIGN_PATH)
+        validate_design_artifact(sealed_design, expected_producer=producer)
         return execute_power7_rq1b_evaluation_live(
             research_root=root,
             producer_sha=producer,
-            design_artifact=design["design_artifact"],
+            design_artifact=sealed_design,
             design_runtime_directory=design["runtime_directory"],
             stock_dsn=stock_dsn,
             advisor_root=advisor_root,
@@ -1629,6 +1804,7 @@ __all__ = [
     "paired_outcomes",
     "prepare_evaluation_stage",
     "publish_result",
+    "resolve_power7_rq1b_evaluation_inputs_after_seal",
     "run_power7_rq1b_design",
     "run_power7_rq1b_evaluation",
     "run_power7_rq1b_formal",
