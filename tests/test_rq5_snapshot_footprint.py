@@ -284,6 +284,7 @@ def _preflight_fixture(root: Path, source_spec: dict) -> Path:
         "no_truth_or_planner_work": True,
         "patched_postgres_required": False,
         "sensitive_snapshot_not_tracked": True,
+        "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
         "semantic_digest": "p" * 64,
     }
     path.write_text(json.dumps(value), encoding="utf-8")
@@ -324,6 +325,7 @@ def _structural_preflight_value() -> dict:
         "no_truth_or_planner_work": True,
         "patched_postgres_required": False,
         "sensitive_snapshot_not_tracked": True,
+        "preflight_path": "preflight.json",
     }
     value["semantic_digest"] = footprint.semantic_digest(footprint._without_digest(value))
     return value
@@ -375,6 +377,11 @@ def test_runner_output_self_validates_and_binds_source(monkeypatch, tmp_path):
     monkeypatch.setattr(
         footprint, "verify_research_repository", lambda root: {"research_commit_sha": "a" * 40}
     )
+    monkeypatch.setattr(
+        footprint,
+        "_verify_formal_campaign_tree",
+        lambda *args, **kwargs: "a" * 40,
+    )
     monkeypatch.setattr(footprint, "verify_git_sha", lambda path, expected: expected)
     monkeypatch.setattr(
         footprint, "_dataset_source_spec", lambda dataset_id, data_root, temporary: source_spec
@@ -388,7 +395,7 @@ def test_runner_output_self_validates_and_binds_source(monkeypatch, tmp_path):
         return repetition
 
     monkeypatch.setattr(footprint, "_run_repetition", fake_repetition)
-    output = Path("experiments/raw/arecel-power7.json")
+    output = Path("experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json")
     result = footprint.run_snapshot_footprint(
         "arecel-power7",
         research_root=root,
@@ -434,6 +441,11 @@ def test_source_or_checkout_drift_is_rejected_before_database(monkeypatch, tmp_p
     monkeypatch.setattr(
         footprint, "verify_research_repository", lambda root: {"research_commit_sha": "a" * 40}
     )
+    monkeypatch.setattr(
+        footprint,
+        "_verify_formal_campaign_tree",
+        lambda *args, **kwargs: "a" * 40,
+    )
     monkeypatch.setattr(footprint, "verify_git_sha", lambda path, expected: expected)
     drifted = {**source_spec, "dataset_content_identity": "0" * 64}
     monkeypatch.setattr(
@@ -455,7 +467,7 @@ def test_source_or_checkout_drift_is_rejected_before_database(monkeypatch, tmp_p
             "arecel-power7",
             research_root=root,
             stock_dsn="unused",
-            output=Path("experiments/raw/arecel-power7.json"),
+            output=Path("experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json"),
             preflight=preflight,
             advisor_root=tmp_path / "advisor",
             stock_postgres_root=tmp_path / "stock",
@@ -491,6 +503,11 @@ def test_live_checkout_drift_is_rejected_before_database(monkeypatch, tmp_path, 
     monkeypatch.setattr(
         footprint, "verify_research_repository", lambda root: {"research_commit_sha": "a" * 40}
     )
+    monkeypatch.setattr(
+        footprint,
+        "_verify_formal_campaign_tree",
+        lambda *args, **kwargs: "a" * 40,
+    )
 
     def verify(path, expected):
         return (
@@ -514,7 +531,7 @@ def test_live_checkout_drift_is_rejected_before_database(monkeypatch, tmp_path, 
             "arecel-power7",
             research_root=root,
             stock_dsn="unused",
-            output=Path("experiments/raw/arecel-power7.json"),
+            output=Path("experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json"),
             preflight=preflight,
             advisor_root=tmp_path / "advisor",
             stock_postgres_root=tmp_path / "stock",
@@ -532,3 +549,213 @@ def test_snapshot_cli_parser_has_offline_preflight_and_summary_commands():
     )
     assert args.rq5_snapshot_command == "summarize"
     assert args.preflight == Path("preflight.json")
+
+
+def _campaign_preflight() -> dict:
+    value = _structural_preflight_value()
+    value["preflight_path"] = "experiments/rq5-snapshot-footprint-preflight-v1.json"
+    return value
+
+
+def _campaign_status(preflight: dict, *datasets: str) -> list[tuple[str, str]]:
+    return [
+        ("??", preflight["preflight_path"]),
+        *[("??", footprint._raw_relative_path(dataset_id)) for dataset_id in datasets],
+    ]
+
+
+def _patch_campaign_git(monkeypatch, preflight: dict, statuses: list[tuple[str, str]]):
+    monkeypatch.setattr(footprint, "_git_head_sha", lambda root: preflight["research_commit_sha"])
+    monkeypatch.setattr(footprint, "_git_status_entries", lambda root: statuses)
+
+
+def test_campaign_gate_census_accepts_preflight_only_and_rejects_unrelated_or_tracked(
+    monkeypatch, tmp_path
+):
+    root = tmp_path / "repo"
+    root.mkdir()
+    preflight = _campaign_preflight()
+    expected = _campaign_status(preflight)
+    _patch_campaign_git(monkeypatch, preflight, expected)
+    assert (
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id="arecel-census13",
+            output_relative=footprint._raw_relative_path("arecel-census13"),
+        )
+        == preflight["research_commit_sha"]
+    )
+
+    _patch_campaign_git(monkeypatch, preflight, [*expected, ("??", "debug.json")])
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError, match="unexpected dirty"):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id="arecel-census13",
+            output_relative=footprint._raw_relative_path("arecel-census13"),
+        )
+
+    _patch_campaign_git(
+        monkeypatch, preflight, [("??", preflight["preflight_path"]), (" M", "src/x.py")]
+    )
+    with pytest.raises(
+        footprint.RQ5SnapshotFootprintValidationError, match="tracked modifications"
+    ):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id="arecel-census13",
+            output_relative=footprint._raw_relative_path("arecel-census13"),
+        )
+
+
+@pytest.mark.parametrize(
+    ("dataset_id", "prior"),
+    [
+        ("arecel-forest10", ("arecel-census13",)),
+        ("arecel-power7", ("arecel-census13", "arecel-forest10")),
+        ("arecel-dmv11", ("arecel-census13", "arecel-forest10", "arecel-power7")),
+    ],
+)
+def test_campaign_gate_accepts_only_valid_prior_progression(
+    monkeypatch, tmp_path, dataset_id, prior
+):
+    root = tmp_path / "repo"
+    root.mkdir()
+    preflight = _campaign_preflight()
+    statuses = _campaign_status(preflight, *prior)
+    _patch_campaign_git(monkeypatch, preflight, statuses)
+    validated = []
+    monkeypatch.setattr(
+        footprint,
+        "_validate_raw_child_reference",
+        lambda root, **kwargs: validated.append(kwargs["dataset_id"]) or {},
+    )
+    assert (
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id=dataset_id,
+            output_relative=footprint._raw_relative_path(dataset_id),
+        )
+        == preflight["research_commit_sha"]
+    )
+    assert validated == list(prior)
+
+
+def test_campaign_gate_rejects_future_child_before_live_work(monkeypatch, tmp_path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    future = root / footprint._raw_relative_path("arecel-power7")
+    future.parent.mkdir(parents=True)
+    future.write_text("future", encoding="utf-8")
+    preflight = _campaign_preflight()
+    _patch_campaign_git(
+        monkeypatch,
+        preflight,
+        _campaign_status(preflight, "arecel-census13", "arecel-power7"),
+    )
+    monkeypatch.setattr(footprint, "_validate_raw_child_reference", lambda *args, **kwargs: {})
+    with pytest.raises(
+        footprint.RQ5SnapshotFootprintValidationError, match="future formal raw child"
+    ):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id="arecel-forest10",
+            output_relative=footprint._raw_relative_path("arecel-forest10"),
+        )
+
+
+def test_campaign_gate_rejects_invalid_prior_child(monkeypatch, tmp_path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    preflight = _campaign_preflight()
+    _patch_campaign_git(monkeypatch, preflight, _campaign_status(preflight, "arecel-census13"))
+    monkeypatch.setattr(
+        footprint,
+        "_validate_raw_child_reference",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            footprint.RQ5SnapshotFootprintValidationError("raw digest mismatch")
+        ),
+    )
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError, match="raw digest"):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="run",
+            dataset_id="arecel-forest10",
+            output_relative=footprint._raw_relative_path("arecel-forest10"),
+        )
+
+
+def test_campaign_gate_summarize_accepts_exact_accumulated_set(monkeypatch, tmp_path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    preflight = _campaign_preflight()
+    statuses = _campaign_status(preflight, *footprint.DATASETS)
+    _patch_campaign_git(monkeypatch, preflight, statuses)
+    validated = []
+    monkeypatch.setattr(
+        footprint,
+        "_validate_raw_child_reference",
+        lambda root, **kwargs: validated.append(kwargs["dataset_id"]) or {},
+    )
+    assert (
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="summarize",
+            output_relative="experiments/rq5-snapshot-footprint-v1.json",
+        )
+        == preflight["research_commit_sha"]
+    )
+    assert validated == list(footprint.DATASETS)
+
+
+def test_campaign_gate_summarize_rejects_missing_child_or_existing_summary(monkeypatch, tmp_path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    preflight = _campaign_preflight()
+    statuses = _campaign_status(preflight, *footprint.DATASETS[:-1])
+    _patch_campaign_git(monkeypatch, preflight, statuses)
+    monkeypatch.setattr(footprint, "_validate_raw_child_reference", lambda *args, **kwargs: {})
+    with pytest.raises(footprint.RQ5SnapshotFootprintValidationError, match="unexpected dirty"):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="summarize",
+            output_relative="experiments/rq5-snapshot-footprint-v1.json",
+        )
+
+    summary = root / "experiments/rq5-snapshot-footprint-v1.json"
+    summary.parent.mkdir(parents=True, exist_ok=True)
+    summary.write_text("existing", encoding="utf-8")
+    statuses = _campaign_status(preflight, *footprint.DATASETS) + [
+        ("??", summary.relative_to(root).as_posix())
+    ]
+    _patch_campaign_git(monkeypatch, preflight, statuses)
+    with pytest.raises(
+        footprint.RQ5SnapshotFootprintValidationError, match="summary already exists"
+    ):
+        footprint._verify_formal_campaign_tree(
+            root,
+            preflight=preflight,
+            preflight_relative=preflight["preflight_path"],
+            phase="summarize",
+            output_relative="experiments/rq5-snapshot-footprint-v1.json",
+        )

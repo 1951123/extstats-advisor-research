@@ -96,6 +96,167 @@ def _canonical_repo_path(root: Path, path: Path, *, label: str) -> tuple[Path, P
     return candidate, relative
 
 
+def _git_head_sha(root: Path) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise RQ5SnapshotFootprintValidationError(
+            f"could not resolve formal campaign HEAD for {root}"
+        ) from exc
+    head = completed.stdout.strip()
+    _require(len(head) == 40, "formal campaign HEAD is not a full commit SHA")
+    return head
+
+
+def _git_status_entries(root: Path) -> list[tuple[str, str]]:
+    """Return porcelain entries, rejecting anything except untracked files."""
+    try:
+        completed = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(root),
+                "status",
+                "--porcelain=v1",
+                "--untracked-files=all",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise RQ5SnapshotFootprintValidationError(
+            f"could not inspect formal campaign working tree for {root}"
+        ) from exc
+    entries: list[tuple[str, str]] = []
+    for line in completed.stdout.splitlines():
+        _require(len(line) >= 4 and line[2] == " ", "malformed Git status entry")
+        status, path = line[:2], line[3:]
+        _require(path != "", "Git status entry has no path")
+        entries.append((status, path))
+    return entries
+
+
+def _raw_relative_path(dataset_id: str) -> str:
+    return f"experiments/rq5-snapshot-footprint-v1/raw/{dataset_id}.json"
+
+
+def _preflight_relative_path(value: Mapping[str, Any], actual: Path) -> str:
+    expected = actual.as_posix()
+    _require(
+        value.get("preflight_path") == expected,
+        "snapshot footprint preflight path does not match its actual repository path",
+    )
+    return expected
+
+
+def _validate_raw_child_reference(
+    root: Path,
+    *,
+    dataset_id: str,
+    preflight: Mapping[str, Any],
+    preflight_relative: str,
+) -> dict[str, Any]:
+    path = root / _raw_relative_path(dataset_id)
+    _require(path.is_file(), f"missing snapshot footprint raw child: {path}")
+    value = read_json(path)
+    source_specs = {item["dataset_id"]: item for item in preflight["datasets"]}
+    validate_raw_artifact(
+        value,
+        expected_producer_sha=preflight["research_commit_sha"],
+        expected_source_spec=source_specs[dataset_id],
+    )
+    _require(
+        value.get("semantic_digest") == semantic_digest(_without_digest(value)),
+        f"raw digest mismatch: {dataset_id}",
+    )
+    _require(
+        value.get("preflight_path") == preflight_relative
+        and value.get("preflight_semantic_digest") == preflight["semantic_digest"],
+        f"raw preflight provenance drifted: {dataset_id}",
+    )
+    return value
+
+
+def _verify_formal_campaign_tree(
+    root: Path,
+    *,
+    preflight: Mapping[str, Any],
+    preflight_relative: str,
+    phase: str,
+    dataset_id: str | None = None,
+    output_relative: str | None = None,
+) -> str:
+    """Validate the intentionally accumulating untracked formal evidence set."""
+    _require(phase in {"run", "summarize"}, "unsupported snapshot campaign phase")
+    head = _git_head_sha(root)
+    _require(
+        head == preflight.get("research_commit_sha"),
+        "formal campaign HEAD differs from preflight producer SHA",
+    )
+    entries = _git_status_entries(root)
+    _require(
+        all(status == "??" for status, _ in entries),
+        "formal campaign tree contains tracked modifications or staged changes",
+    )
+    actual_paths = {path for _, path in entries}
+    expected_preflight = preflight_relative
+    _require(
+        expected_preflight in actual_paths,
+        "formal campaign preflight must be an untracked artifact",
+    )
+
+    if phase == "run":
+        _require(dataset_id in DATASETS, "formal campaign dataset is unsupported")
+        index = DATASETS.index(dataset_id)
+        allowed = {expected_preflight, *(_raw_relative_path(item) for item in DATASETS[:index])}
+        expected_output = _raw_relative_path(dataset_id)
+        _require(output_relative == expected_output, "formal raw output path/order is invalid")
+        _require(
+            expected_output not in actual_paths,
+            "current formal raw child already exists before its run",
+        )
+        for future_dataset in DATASETS[index:]:
+            _require(
+                not (root / _raw_relative_path(future_dataset)).exists(),
+                f"future formal raw child already exists: {future_dataset}",
+            )
+        _require(
+            not (root / "experiments/rq5-snapshot-footprint-v1.json").exists(),
+            "formal snapshot summary already exists before dataset run",
+        )
+        _require(actual_paths == allowed, "formal campaign tree has unexpected dirty artifacts")
+        for prior_dataset in DATASETS[:index]:
+            _validate_raw_child_reference(
+                root,
+                dataset_id=prior_dataset,
+                preflight=preflight,
+                preflight_relative=preflight_relative,
+            )
+    else:
+        expected_output = "experiments/rq5-snapshot-footprint-v1.json"
+        _require(output_relative == expected_output, "formal summary output path is invalid")
+        _require(
+            expected_output not in actual_paths and not (root / expected_output).exists(),
+            "formal snapshot summary already exists",
+        )
+        allowed = {expected_preflight, *(_raw_relative_path(item) for item in DATASETS)}
+        _require(actual_paths == allowed, "formal summary tree has unexpected dirty artifacts")
+        for child_dataset in DATASETS:
+            _validate_raw_child_reference(
+                root,
+                dataset_id=child_dataset,
+                preflight=preflight,
+                preflight_relative=preflight_relative,
+            )
+    return head
+
+
 def _protocol(root: Path) -> dict[str, Any]:
     value = read_json(root / PROTOCOL_PATH)
     _require(
@@ -263,7 +424,9 @@ def build_preflight(
 
 
 def validate_preflight(path: Path, research_root: Path) -> dict[str, Any]:
-    canonical_path, _ = _canonical_repo_path(research_root.resolve(), path, label="preflight")
+    canonical_path, relative_path = _canonical_repo_path(
+        research_root.resolve(), path, label="preflight"
+    )
     value = read_json(canonical_path)
     _require(
         value.get("format_version") == PREFLIGHT_FORMAT, "unsupported snapshot footprint preflight"
@@ -324,6 +487,10 @@ def validate_preflight(path: Path, research_root: Path) -> dict[str, Any]:
     _require(
         value.get("sensitive_snapshot_not_tracked") is True,
         "snapshot footprint preflight permits tracked snapshot data",
+    )
+    _require(
+        value.get("preflight_path") == relative_path.as_posix(),
+        "snapshot footprint preflight path does not match its actual repository path",
     )
     datasets = value.get("datasets")
     _require(
@@ -987,7 +1154,12 @@ def _stats(values: list[float | int]) -> dict[str, float | int]:
     return {"raw": values, "median": median(values), "min": min(values), "max": max(values)}
 
 
-def _read_raw_children(root: Path, preflight: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+def _read_raw_children(
+    root: Path,
+    preflight: Mapping[str, Any],
+    *,
+    preflight_relative: str | None = None,
+) -> dict[str, dict[str, Any]]:
     producer = preflight["research_commit_sha"]
     source_specs = {item["dataset_id"]: item for item in preflight["datasets"]}
     raw_children: dict[str, dict[str, Any]] = {}
@@ -1007,23 +1179,30 @@ def _read_raw_children(root: Path, preflight: Mapping[str, Any]) -> dict[str, di
         _require(
             value.get("dataset_id") == dataset_id, f"raw dataset identity drifted: {dataset_id}"
         )
+        if preflight_relative is not None:
+            _require(
+                value.get("preflight_path") == preflight_relative
+                and value.get("preflight_semantic_digest") == preflight["semantic_digest"],
+                f"raw preflight provenance drifted: {dataset_id}",
+            )
         raw_children[dataset_id] = value
     return raw_children
 
 
 def build_formal_summary(research_root: Path, *, preflight: Path) -> dict[str, Any]:
     root = research_root.resolve()
-    preflight_path = (
-        preflight.resolve() if preflight.is_absolute() else (root / preflight).resolve()
+    preflight_path, preflight_relative_path = _canonical_repo_path(
+        root, preflight, label="preflight"
     )
     validate_preflight(preflight_path, root)
     preflight_value = read_json(preflight_path)
-    raw_children = _read_raw_children(root, preflight_value)
+    preflight_relative = _preflight_relative_path(preflight_value, preflight_relative_path)
+    raw_children = _read_raw_children(root, preflight_value, preflight_relative=preflight_relative)
     datasets: dict[str, Any] = {}
     raw_refs = []
     for dataset_id in DATASETS:
         raw = raw_children[dataset_id]
-        path = f"experiments/rq5-snapshot-footprint-v1/raw/{dataset_id}.json"
+        path = _raw_relative_path(dataset_id)
         raw_refs.append(
             {"dataset_id": dataset_id, "path": path, "semantic_digest": raw["semantic_digest"]}
         )
@@ -1064,7 +1243,7 @@ def build_formal_summary(research_root: Path, *, preflight: Path) -> dict[str, A
         "postgres_version": STOCK_POSTGRES_VERSION,
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
-        "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+        "preflight_path": preflight_relative,
         "preflight_semantic_digest": preflight_value["semantic_digest"],
         "dataset_order": list(DATASETS),
         "repetitions": len(REPETITIONS),
@@ -1095,14 +1274,22 @@ def run_snapshot_footprint(
 ) -> dict[str, Any]:
     """Run exactly three fresh stock realizations for one dataset."""
     root = research_root.resolve()
-    output_path, _ = _canonical_repo_path(root, output, label="raw output")
+    output_path, output_relative_path = _canonical_repo_path(root, output, label="raw output")
     _require(not output_path.exists(), f"raw output already exists: {output_path}")
-    preflight_path = (
-        preflight.resolve() if preflight.is_absolute() else (root / preflight).resolve()
+    preflight_path, preflight_relative_path = _canonical_repo_path(
+        root, preflight, label="preflight"
     )
     validate_preflight(preflight_path, root)
     preflight_value = read_json(preflight_path)
-    producer = verify_research_repository(root)["research_commit_sha"]
+    preflight_relative = _preflight_relative_path(preflight_value, preflight_relative_path)
+    producer = _verify_formal_campaign_tree(
+        root,
+        preflight=preflight_value,
+        preflight_relative=preflight_relative,
+        phase="run",
+        dataset_id=dataset_id,
+        output_relative=output_relative_path.as_posix(),
+    )
     _require(
         producer == preflight_value["research_commit_sha"], "implementation changed after preflight"
     )
@@ -1155,7 +1342,7 @@ def run_snapshot_footprint(
         "canonical_workload_sha256": source_spec["canonical_workload_sha256"],
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
-        "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+        "preflight_path": preflight_relative,
         "preflight_semantic_digest": preflight_value["semantic_digest"],
         "workload_id": source_spec["workload_id"],
         "workload_sha256": source_spec["workload_sha256"],
@@ -1186,7 +1373,20 @@ def summarize_snapshot_footprint(
     root = research_root.resolve()
     output_path, _ = _canonical_repo_path(root, output, label="formal output")
     _require(not output_path.exists(), f"formal output already exists: {output_path}")
-    value = build_formal_summary(root, preflight=preflight)
+    preflight_path, preflight_relative_path = _canonical_repo_path(
+        root, preflight, label="preflight"
+    )
+    validate_preflight(preflight_path, root)
+    preflight_value = read_json(preflight_path)
+    preflight_relative = _preflight_relative_path(preflight_value, preflight_relative_path)
+    _verify_formal_campaign_tree(
+        root,
+        preflight=preflight_value,
+        preflight_relative=preflight_relative,
+        phase="summarize",
+        output_relative=output_path.relative_to(root).as_posix(),
+    )
+    value = build_formal_summary(root, preflight=preflight_path)
     write_json(output_path, value)
     return value
 
@@ -1228,7 +1428,7 @@ def validate_formal_artifact(path: Path, research_root: Path) -> dict[str, Any]:
     )
     _require(value.get("dataset_order") == list(DATASETS), "snapshot formal dataset order drifted")
     root = research_root.resolve()
-    preflight_path, _ = _canonical_repo_path(
+    preflight_path, preflight_relative_path = _canonical_repo_path(
         root, Path(value["preflight_path"]), label="formal preflight"
     )
     preflight_validation = validate_preflight(preflight_path, root)
@@ -1246,7 +1446,11 @@ def validate_formal_artifact(path: Path, research_root: Path) -> dict[str, Any]:
         isinstance(raw_children, list) and len(raw_children) == len(DATASETS),
         "snapshot formal raw child references drifted",
     )
-    validated_raw_children = _read_raw_children(root, preflight_value)
+    validated_raw_children = _read_raw_children(
+        root,
+        preflight_value,
+        preflight_relative=_preflight_relative_path(preflight_value, preflight_relative_path),
+    )
     for reference, dataset_id in zip(raw_children, DATASETS, strict=True):
         expected_path = f"experiments/rq5-snapshot-footprint-v1/raw/{dataset_id}.json"
         _require(
