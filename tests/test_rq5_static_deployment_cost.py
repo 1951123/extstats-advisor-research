@@ -10,6 +10,8 @@ from extstats_advisor_research.rq5_static_deployment_cost import (
     DATASETS,
     PROTOCOL_DIGEST,
     PROTOCOL_FORMAT,
+    _baseline_state,
+    _logical_storage,
     _source_projection,
     _validate_dataset_raw,
     validate_protocol,
@@ -85,6 +87,114 @@ def _raw_fixture(dataset_id: str = "arecel-power7") -> dict:
         "no_advisor_selection": True,
         "repetitions": [repetition],
     }
+
+
+class _FakeConnection:
+    def __init__(self, responses: list[object]) -> None:
+        self.responses = iter(responses)
+        self.executed: list[tuple[str, object]] = []
+        self.current: object = None
+
+    def execute(self, statement: str, parameters: object = None) -> _FakeConnection:
+        self.executed.append((statement, parameters))
+        self.current = next(self.responses)
+        return self
+
+    def fetchone(self) -> object:
+        return self.current
+
+    def fetchall(self) -> object:
+        return self.current
+
+
+def _relation_size_rows() -> list[object]:
+    return [(8192, 8192), (16384,)]
+
+
+def _catalog_row(item: dict, *, payload: bool = False, oid: int = 1) -> tuple:
+    kind_code = {"postgresql.mcv": "{m}", "postgresql.dependencies": "{f}"}[item["kind"]]
+    return (
+        oid,
+        item["name"],
+        kind_code,
+        " ".join(str(value) for value in item["column_ordinals"]),
+        item["statistics_target"],
+        32,
+        64 if payload else None,
+        16 if payload and item["kind"] == "postgresql.mcv" else None,
+        16 if payload and item["kind"] == "postgresql.dependencies" else None,
+        None,
+        payload,
+        payload,
+        False,
+    )
+
+
+def test_empty_baseline_has_zero_selected_object_bytes_and_real_physical_sizes() -> None:
+    projection = _source_projection(ROOT, "arecel-power7")
+    connection = _FakeConnection([(0,), *_relation_size_rows()])
+    state = _baseline_state(connection, projection)
+    assert state["logical_catalog_row_bytes"] == {
+        "pg_statistic_ext": 0,
+        "pg_statistic_ext_data": 0,
+        "total": 0,
+    }
+    assert state["mcv_payload_bytes"] == 0
+    assert state["dependencies_payload_bytes"] == 0
+    assert state["ndistinct_payload_bytes"] == 0
+    assert state["objects"] == []
+    assert (
+        state["physical_catalog_relation_allocation"]["combined_catalog_total_relation_bytes"]
+        == 16384
+    )
+
+
+def test_dirty_baseline_is_rejected_even_if_recommendation_names_differ() -> None:
+    projection = _source_projection(ROOT, "arecel-power7")
+    connection = _FakeConnection([(1,)])
+    with pytest.raises(ValueError, match="fresh baseline"):
+        _baseline_state(connection, projection)
+
+
+def test_after_ddl_requires_all_exact_definitions_and_rejects_extra() -> None:
+    projection = _source_projection(ROOT, "arecel-power7")
+    with pytest.raises(ValueError, match="catalog logical row count"):
+        _logical_storage(_FakeConnection([[]]), projection, require_payload=False)
+
+    partial_rows = [
+        _catalog_row(item, oid=index)
+        for index, item in enumerate(projection["objects"][:-1], start=1)
+    ]
+    with pytest.raises(ValueError, match="catalog logical row count"):
+        _logical_storage(_FakeConnection([partial_rows]), projection, require_payload=False)
+
+    extra = _catalog_row(projection["objects"][0], oid=999)
+    extra = (extra[0], "unexpected_extra", *extra[2:])
+    complete_rows = [
+        _catalog_row(item, oid=index) for index, item in enumerate(projection["objects"], start=1)
+    ]
+    with pytest.raises(ValueError, match="catalog logical row count"):
+        _logical_storage(
+            _FakeConnection([[*complete_rows, extra]]), projection, require_payload=False
+        )
+
+
+def test_payload_state_remains_kind_specific_before_and_after_analyze() -> None:
+    projection = _source_projection(ROOT, "arecel-power7")
+    rows_without_payload = [
+        _catalog_row(item, oid=index) for index, item in enumerate(projection["objects"], start=1)
+    ]
+    _logical_storage(_FakeConnection([rows_without_payload]), projection, require_payload=False)
+    with pytest.raises(ValueError, match="required"):
+        _logical_storage(_FakeConnection([rows_without_payload]), projection, require_payload=True)
+
+    rows_with_payload = [
+        _catalog_row(item, payload=True, oid=index)
+        for index, item in enumerate(projection["objects"], start=1)
+    ]
+    with pytest.raises(ValueError, match="payload appeared before"):
+        _logical_storage(_FakeConnection([rows_with_payload]), projection, require_payload=False)
+    _logical_storage(_FakeConnection([rows_with_payload]), projection, require_payload=True)
 
 
 def test_zero_physical_delta_is_valid_and_storage_views_are_not_summed() -> None:

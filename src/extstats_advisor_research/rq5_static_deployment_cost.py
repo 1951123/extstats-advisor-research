@@ -429,7 +429,6 @@ def _relation_sizes(connection: Any, relation: str) -> dict[str, int]:
 def _logical_storage(
     connection: Any, projection: Mapping[str, Any], *, require_payload: bool
 ) -> dict[str, Any]:
-    names = [item["name"] for item in projection["objects"]]
     rows = connection.execute(
         "SELECT e.oid::bigint, e.stxname, e.stxkind::text, e.stxkeys::text, e.stxstattarget, "
         "pg_catalog.pg_column_size(e), pg_catalog.pg_column_size(d), "
@@ -440,9 +439,9 @@ def _logical_storage(
         "LEFT JOIN pg_catalog.pg_statistic_ext_data AS d ON d.stxoid=e.oid "
         "WHERE e.stxrelid = (SELECT c.oid FROM pg_catalog.pg_class c "
         "JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace "
-        "WHERE n.nspname=%s AND c.relname=%s) AND e.stxname = ANY(%s) "
+        "WHERE n.nspname=%s AND c.relname=%s) "
         "ORDER BY e.oid",
-        (projection["schema"], projection["relation"], names),
+        (projection["schema"], projection["relation"]),
     ).fetchall()
     expected = {item["name"]: item for item in projection["objects"]}
     _require(len(rows) == len(expected), "catalog logical row count differs from recommendation")
@@ -485,6 +484,32 @@ def _logical_storage(
         },
         **payload_bytes,
         "objects": observed,
+    }
+
+
+def _baseline_state(connection: Any, projection: Mapping[str, Any]) -> dict[str, Any]:
+    """Measure the pre-deployment state without expecting recommendation rows."""
+    row = connection.execute(
+        "SELECT count(*) FROM pg_catalog.pg_statistic_ext AS e "
+        "WHERE e.stxrelid = (SELECT c.oid FROM pg_catalog.pg_class c "
+        "JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace "
+        "WHERE n.nspname=%s AND c.relname=%s)",
+        (projection["schema"], projection["relation"]),
+    ).fetchone()
+    _require(row is not None and int(row[0]) == 0, "fresh baseline has extended statistics")
+    return {
+        "logical_catalog_row_bytes": {
+            "pg_statistic_ext": 0,
+            "pg_statistic_ext_data": 0,
+            "total": 0,
+        },
+        "mcv_payload_bytes": 0,
+        "dependencies_payload_bytes": 0,
+        "ndistinct_payload_bytes": 0,
+        "objects": [],
+        "physical_catalog_relation_allocation": _relation_sizes(
+            connection, f"{projection['schema']}.{projection['relation']}"
+        ),
     }
 
 
@@ -606,7 +631,7 @@ def _run_repetition(
         )
         with psycopg.connect(target_dsn, autocommit=True) as connection:
             identity = _verify_stock(connection)
-            baseline = _state(connection, projection, require_payload=False)
+            baseline = _baseline_state(connection, projection)
             base_relation_bytes = baseline["physical_catalog_relation_allocation"][
                 "base_relation_total_bytes_context"
             ]
