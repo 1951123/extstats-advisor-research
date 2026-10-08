@@ -271,8 +271,7 @@ def validate_truth_policy(path: Path, research_root: Path | None = None) -> dict
             "truth policy dataset identity drift",
         )
         _require(
-            row.get("source_workload_pickle_sha256")
-            == dataset.WORKLOAD_PICKLE_SHA256,
+            row.get("source_workload_pickle_sha256") == dataset.WORKLOAD_PICKLE_SHA256,
             "truth policy workload source hash drift",
         )
         _require(
