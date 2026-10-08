@@ -185,6 +185,7 @@ def _dataset_source_spec(
     _require(workload["query_count"] == 10_000, f"{dataset_id} workload query count drifted")
     return {
         "dataset_id": dataset_id,
+        "benchmark_id": module.BENCHMARK_ID,
         "dataset_content_identity": metadata["dataset_content_identity"],
         "relation": module.RELATION,
         "schema_contract_id": module.SCHEMA_CONTRACT_ID,
@@ -324,10 +325,64 @@ def validate_preflight(path: Path, research_root: Path) -> dict[str, Any]:
         value.get("sensitive_snapshot_not_tracked") is True,
         "snapshot footprint preflight permits tracked snapshot data",
     )
+    datasets = value.get("datasets")
     _require(
-        len(value.get("datasets", [])) == len(DATASETS),
+        isinstance(datasets, list) and len(datasets) == len(DATASETS),
         "snapshot footprint preflight dataset count drifted",
     )
+    _require(
+        [item.get("dataset_id") for item in datasets] == list(DATASETS),
+        "snapshot footprint preflight dataset order or identity drifted",
+    )
+    required_source_fields = {
+        "dataset_id",
+        "benchmark_id",
+        "dataset_content_identity",
+        "relation",
+        "schema_contract_id",
+        "workload_id",
+        "workload_sha256",
+        "workload_query_count",
+        "canonical_workload_sha256",
+    }
+    for item in datasets:
+        _require(
+            isinstance(item, Mapping) and required_source_fields <= set(item),
+            "snapshot footprint preflight source specification is incomplete",
+        )
+        _require(
+            item["benchmark_id"] == item["dataset_id"],
+            "snapshot footprint preflight benchmark identity drifted",
+        )
+        for field in ("dataset_content_identity", "workload_sha256"):
+            _require(
+                isinstance(item[field], str) and len(item[field]) == 64,
+                f"snapshot footprint preflight {field} is invalid",
+            )
+        canonical_workload_sha256 = item["canonical_workload_sha256"]
+        _require(
+            canonical_workload_sha256 is None
+            or (
+                isinstance(canonical_workload_sha256, str) and len(canonical_workload_sha256) == 64
+            ),
+            "snapshot footprint preflight canonical workload SHA is invalid",
+        )
+        _require(
+            isinstance(item["relation"], str) and item["relation"],
+            "snapshot footprint preflight relation is missing",
+        )
+        _require(
+            isinstance(item["schema_contract_id"], str) and item["schema_contract_id"],
+            "snapshot footprint preflight schema contract is missing",
+        )
+        _require(
+            isinstance(item["workload_id"], str) and item["workload_id"],
+            "snapshot footprint preflight workload identity is missing",
+        )
+        _require(
+            item["workload_query_count"] == 10_000,
+            "snapshot footprint preflight workload query count drifted",
+        )
     return {
         "status": "valid",
         "format_version": PREFLIGHT_FORMAT,
@@ -512,6 +567,7 @@ def _run_repetition(
     data_root: Path | None,
     advisor_command: str,
     research_commit_sha: str,
+    source_spec: Mapping[str, Any],
 ) -> dict[str, Any]:
     module, loader = DATASET_SPECS[dataset_id]
     psycopg = _psycopg()
@@ -525,7 +581,24 @@ def _run_repetition(
         with tempfile.TemporaryDirectory(prefix=f"rq5-snapshot-{dataset_id}-") as temporary:
             temporary_path = Path(temporary)
             workload_path = temporary_path / "workload.json"
+            source_check_path = temporary_path / "source-check"
+            source_check_path.mkdir()
+            current_source_spec = _dataset_source_spec(dataset_id, data_root, source_check_path)
+            _require(
+                current_source_spec == dict(source_spec),
+                f"{dataset_id} source identity changed before repetition {repetition_id}",
+            )
             workload = module.extract_workload(workload_path, data_root, "test")
+            for field in (
+                "workload_id",
+                "workload_sha256",
+                "workload_query_count",
+            ):
+                _require(
+                    workload["sha256" if field == "workload_sha256" else field]
+                    == source_spec[field],
+                    f"{dataset_id} workload source drifted before repetition {repetition_id}",
+                )
             snapshot_path = temporary_path / "snapshot"
             setup_started = time.monotonic()
             target_dsn = _create_database(stock_dsn, database_name, psycopg)
@@ -586,11 +659,16 @@ def _run_repetition(
                 "dataset_id": dataset_id,
                 "repetition_id": repetition_id,
                 "research_commit_sha": research_commit_sha,
+                "advisor_command": advisor_command,
                 "advisor_sha": FROZEN_ADVISOR_SHA,
                 "stock_postgres_sha": FROZEN_STOCK_POSTGRES_SHA,
                 "postgres_version": STOCK_POSTGRES_VERSION,
                 "sample_rows": SAMPLE_ROWS,
                 "sample_seed": SAMPLE_SEED,
+                "benchmark_id": source_spec["benchmark_id"],
+                "dataset_content_identity": source_spec["dataset_content_identity"],
+                "schema_contract_id": source_spec["schema_contract_id"],
+                "canonical_workload_sha256": source_spec["canonical_workload_sha256"],
                 "workload_id": workload["workload_id"],
                 "workload_sha256": workload["sha256"],
                 "workload_query_count": workload["query_count"],
@@ -651,7 +729,10 @@ def _validate_per_file_inventory(value: Mapping[str, Any]) -> None:
 
 
 def _validate_repetition_artifact(
-    value: Mapping[str, Any], *, expected_producer_sha: str | None = None
+    value: Mapping[str, Any],
+    *,
+    expected_producer_sha: str | None = None,
+    expected_source_spec: Mapping[str, Any] | None = None,
 ) -> None:
     _require(
         value.get("format_version") == "rq5-snapshot-footprint-repetition-v1",
@@ -671,6 +752,10 @@ def _validate_repetition_artifact(
         "repetition PostgreSQL version drifted",
     )
     _require(
+        isinstance(value.get("advisor_command"), str) and value["advisor_command"],
+        "repetition Advisor command identity is missing",
+    )
+    _require(
         expected_producer_sha is None or value.get("research_commit_sha") == expected_producer_sha,
         "repetition producer SHA drifted",
     )
@@ -682,6 +767,26 @@ def _validate_repetition_artifact(
         and value.get("no_candidate_or_native_work") is True,
         "repetition claims forbidden work",
     )
+    if expected_source_spec is not None:
+        for field in (
+            "dataset_id",
+            "benchmark_id",
+            "dataset_content_identity",
+            "schema_contract_id",
+            "relation",
+            "workload_id",
+            "workload_sha256",
+            "workload_query_count",
+            "canonical_workload_sha256",
+        ):
+            _require(
+                value.get(field) == expected_source_spec[field],
+                f"repetition {field} differs from bound source specification",
+            )
+        _require(
+            value.get("dataset_identity") == expected_source_spec["benchmark_id"],
+            "repetition dataset benchmark identity differs from bound source specification",
+        )
     _finite(value.get("snapshot_capture_elapsed_seconds"), "snapshot capture elapsed seconds")
     _require(
         value["snapshot_capture_elapsed_seconds"] <= STAGE_HARD_CAP_SECONDS,
@@ -745,7 +850,10 @@ def _validate_repetition_artifact(
 
 
 def validate_raw_artifact(
-    value: Mapping[str, Any], *, expected_producer_sha: str | None = None
+    value: Mapping[str, Any],
+    *,
+    expected_producer_sha: str | None = None,
+    expected_source_spec: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Validate a tracked dataset child and every repetition it contains."""
     _require(
@@ -761,6 +869,10 @@ def validate_raw_artifact(
     _require(value.get("stock_postgres_sha") == FROZEN_STOCK_POSTGRES_SHA, "raw stock SHA drifted")
     _require(
         value.get("postgres_version") == STOCK_POSTGRES_VERSION, "raw PostgreSQL version drifted"
+    )
+    _require(
+        isinstance(value.get("advisor_command"), str) and value["advisor_command"],
+        "raw Advisor command identity is missing",
     )
     producer = value.get("research_commit_sha")
     _require(isinstance(producer, str) and len(producer) == 40, "raw producer SHA is missing")
@@ -781,6 +893,46 @@ def validate_raw_artifact(
         value.get("protocol_semantic_digest") == PROTOCOL_DIGEST,
         "raw protocol digest drifted",
     )
+    source_fields = (
+        "benchmark_id",
+        "dataset_content_identity",
+        "schema_contract_id",
+        "canonical_workload_sha256",
+        "relation",
+        "workload_id",
+        "workload_sha256",
+        "workload_query_count",
+    )
+    _require(
+        all(field in value for field in source_fields),
+        "raw source specification is incomplete",
+    )
+    _require(
+        value["benchmark_id"] == value.get("dataset_id") == value.get("dataset_identity"),
+        "raw benchmark identity drifted",
+    )
+    for field in ("dataset_content_identity", "workload_sha256"):
+        _require(
+            isinstance(value[field], str) and len(value[field]) == 64,
+            f"raw {field} is invalid",
+        )
+    if expected_source_spec is not None:
+        for field in (
+            "dataset_id",
+            "benchmark_id",
+            "dataset_content_identity",
+            "schema_contract_id",
+            "relation",
+            "workload_id",
+            "workload_sha256",
+            "workload_query_count",
+            "canonical_workload_sha256",
+        ):
+            actual_field = "dataset_identity" if field == "benchmark_id" else field
+            _require(
+                value.get(actual_field) == expected_source_spec[field],
+                f"raw {field} differs from bound source specification",
+            )
     _require(isinstance(value.get("preflight_path"), str), "raw preflight path is missing")
     _require(
         isinstance(value.get("preflight_semantic_digest"), str),
@@ -793,9 +945,17 @@ def validate_raw_artifact(
         "raw repetition schema/order drifted",
     )
     for repetition in repetitions:
-        _validate_repetition_artifact(repetition, expected_producer_sha=producer)
+        _validate_repetition_artifact(
+            repetition,
+            expected_producer_sha=producer,
+            expected_source_spec=expected_source_spec or value,
+        )
         for field in (
             "dataset_id",
+            "benchmark_id",
+            "dataset_content_identity",
+            "schema_contract_id",
+            "canonical_workload_sha256",
             "workload_id",
             "workload_sha256",
             "workload_query_count",
@@ -806,6 +966,10 @@ def validate_raw_artifact(
                 repetition.get(field) == value.get(field),
                 f"raw repetition {field} differs from dataset provenance",
             )
+        _require(
+            repetition.get("advisor_command") == value.get("advisor_command"),
+            "raw repetition Advisor command differs from dataset provenance",
+        )
     _require(value.get("dataset_id") in DATASETS, "raw dataset identity is unsupported")
     _require(
         "snapshot_path" not in value and "workload_path" not in value,
@@ -825,12 +989,17 @@ def _stats(values: list[float | int]) -> dict[str, float | int]:
 
 def _read_raw_children(root: Path, preflight: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     producer = preflight["research_commit_sha"]
+    source_specs = {item["dataset_id"]: item for item in preflight["datasets"]}
     raw_children: dict[str, dict[str, Any]] = {}
     for dataset_id in DATASETS:
         path = root / f"experiments/rq5-snapshot-footprint-v1/raw/{dataset_id}.json"
         _require(path.is_file(), f"missing snapshot footprint raw child: {path}")
         value = read_json(path)
-        validate_raw_artifact(value, expected_producer_sha=producer)
+        validate_raw_artifact(
+            value,
+            expected_producer_sha=producer,
+            expected_source_spec=source_specs[dataset_id],
+        )
         _require(
             value.get("semantic_digest") == semantic_digest(_without_digest(value)),
             f"raw digest mismatch: {dataset_id}",
@@ -919,6 +1088,8 @@ def run_snapshot_footprint(
     stock_dsn: str,
     output: Path,
     preflight: Path,
+    advisor_root: Path,
+    stock_postgres_root: Path,
     advisor_command: str = "extstats-advisor",
     data_root: Path | None = None,
 ) -> dict[str, Any]:
@@ -936,6 +1107,25 @@ def run_snapshot_footprint(
         producer == preflight_value["research_commit_sha"], "implementation changed after preflight"
     )
     _require(dataset_id in DATASETS, f"unsupported snapshot footprint dataset: {dataset_id}")
+    advisor_sha = verify_git_sha(advisor_root.resolve(), FROZEN_ADVISOR_SHA)
+    stock_sha = verify_git_sha(stock_postgres_root.resolve(), FROZEN_STOCK_POSTGRES_SHA)
+    _require(
+        advisor_sha == preflight_value["advisor_sha"],
+        "live Advisor source differs from preflight",
+    )
+    _require(
+        stock_sha == preflight_value["stock_postgres_sha"],
+        "live stock PostgreSQL source differs from preflight",
+    )
+    source_spec = next(
+        item for item in preflight_value["datasets"] if item["dataset_id"] == dataset_id
+    )
+    with tempfile.TemporaryDirectory(prefix="rq5-snapshot-source-gate-") as temporary:
+        current_source_spec = _dataset_source_spec(dataset_id, data_root, Path(temporary))
+    _require(
+        current_source_spec == source_spec,
+        f"{dataset_id} source identity differs from preflight",
+    )
     repetitions = []
     for repetition_id in REPETITIONS:
         repetition = _run_repetition(
@@ -945,6 +1135,7 @@ def run_snapshot_footprint(
             data_root=data_root,
             advisor_command=advisor_command,
             research_commit_sha=producer,
+            source_spec=source_spec,
         )
         repetitions.append(repetition)
     value = {
@@ -952,18 +1143,25 @@ def run_snapshot_footprint(
         "status": "complete",
         "dataset_id": dataset_id,
         "research_commit_sha": producer,
+        "advisor_command": advisor_command,
         "advisor_sha": FROZEN_ADVISOR_SHA,
         "stock_postgres_sha": FROZEN_STOCK_POSTGRES_SHA,
         "postgres_version": STOCK_POSTGRES_VERSION,
+        "sample_rows": SAMPLE_ROWS,
+        "sample_seed": SAMPLE_SEED,
+        "benchmark_id": source_spec["benchmark_id"],
+        "dataset_content_identity": source_spec["dataset_content_identity"],
+        "schema_contract_id": source_spec["schema_contract_id"],
+        "canonical_workload_sha256": source_spec["canonical_workload_sha256"],
         "protocol_path": PROTOCOL_PATH,
         "protocol_semantic_digest": PROTOCOL_DIGEST,
         "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
         "preflight_semantic_digest": preflight_value["semantic_digest"],
-        "workload_id": repetitions[0]["workload_id"],
-        "workload_sha256": repetitions[0]["workload_sha256"],
-        "workload_query_count": repetitions[0]["workload_query_count"],
-        "relation": repetitions[0]["relation"],
-        "dataset_identity": repetitions[0]["dataset_identity"],
+        "workload_id": source_spec["workload_id"],
+        "workload_sha256": source_spec["workload_sha256"],
+        "workload_query_count": source_spec["workload_query_count"],
+        "relation": source_spec["relation"],
+        "dataset_identity": source_spec["benchmark_id"],
         "repetitions": repetitions,
         "validation_passed": True,
         "cleanup_passed": all(rep["cleanup_passed"] for rep in repetitions),
@@ -973,7 +1171,11 @@ def run_snapshot_footprint(
         "semantic_digest": "",
     }
     value["semantic_digest"] = semantic_digest(_without_digest(value))
-    validate_raw_artifact(value, expected_producer_sha=producer)
+    validate_raw_artifact(
+        value,
+        expected_producer_sha=producer,
+        expected_source_spec=source_spec,
+    )
     write_json(output_path, value)
     return value
 
@@ -1026,7 +1228,9 @@ def validate_formal_artifact(path: Path, research_root: Path) -> dict[str, Any]:
     )
     _require(value.get("dataset_order") == list(DATASETS), "snapshot formal dataset order drifted")
     root = research_root.resolve()
-    preflight_path = root / value["preflight_path"]
+    preflight_path, _ = _canonical_repo_path(
+        root, Path(value["preflight_path"]), label="formal preflight"
+    )
     preflight_validation = validate_preflight(preflight_path, root)
     _require(
         preflight_validation["semantic_digest"] == value.get("preflight_semantic_digest"),
@@ -1042,15 +1246,14 @@ def validate_formal_artifact(path: Path, research_root: Path) -> dict[str, Any]:
         isinstance(raw_children, list) and len(raw_children) == len(DATASETS),
         "snapshot formal raw child references drifted",
     )
+    validated_raw_children = _read_raw_children(root, preflight_value)
     for reference, dataset_id in zip(raw_children, DATASETS, strict=True):
         expected_path = f"experiments/rq5-snapshot-footprint-v1/raw/{dataset_id}.json"
         _require(
             reference.get("dataset_id") == dataset_id and reference.get("path") == expected_path,
             "snapshot formal raw child path drifted",
         )
-        raw_path = root / expected_path
-        raw = read_json(raw_path)
-        validate_raw_artifact(raw, expected_producer_sha=value["research_commit_sha"])
+        raw = validated_raw_children[dataset_id]
         _require(
             reference.get("semantic_digest") == raw.get("semantic_digest"),
             "snapshot formal raw child digest drifted",

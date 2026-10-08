@@ -677,6 +677,8 @@ def _parser() -> argparse.ArgumentParser:
     rq5_snapshot_run.add_argument("--stock-dsn", required=True)
     rq5_snapshot_run.add_argument("--output", type=Path, required=True)
     rq5_snapshot_run.add_argument("--preflight", type=Path, required=True)
+    rq5_snapshot_run.add_argument("--advisor-root", type=Path, required=True)
+    rq5_snapshot_run.add_argument("--stock-postgres-root", type=Path, required=True)
     rq5_snapshot_run.add_argument("--advisor-command", default="extstats-advisor")
     rq5_snapshot_run.add_argument("--data-root", type=Path, default=None)
     rq5_snapshot_summarize = rq5_snapshot_commands.add_parser("summarize")
@@ -1211,6 +1213,8 @@ def main(argv: list[str] | None = None) -> int:
                         stock_dsn=args.stock_dsn,
                         output=args.output,
                         preflight=args.preflight,
+                        advisor_root=args.advisor_root,
+                        stock_postgres_root=args.stock_postgres_root,
                         advisor_command=args.advisor_command,
                         data_root=args.data_root,
                     )
