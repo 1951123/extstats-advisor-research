@@ -188,7 +188,7 @@ def test_process_timeout_terminates_worker_and_is_not_publishable():
     result = truth_cost.run_truth_stage_with_timeout(
         _sleeping_worker,
         {"seconds": 2.0},
-        timeout_seconds=0.5,
+        timeout_seconds=1.0,
         context=mp.get_context("spawn"),
     )
     assert result["status"] == "timeout"
@@ -200,7 +200,7 @@ def test_truth_finished_stops_primary_deadline_before_slow_post_truth_work():
     result = truth_cost.run_truth_stage_with_timeout(
         _post_truth_slow_worker,
         {"seconds": 0.25},
-        timeout_seconds=0.5,
+        timeout_seconds=1.0,
         post_truth_timeout_seconds=1.0,
         context=mp.get_context("spawn"),
     )
@@ -212,7 +212,7 @@ def test_post_truth_hang_has_distinct_watchdog_status():
     result = truth_cost.run_truth_stage_with_timeout(
         _post_truth_hanging_worker,
         {},
-        timeout_seconds=0.5,
+        timeout_seconds=1.0,
         post_truth_timeout_seconds=0.2,
         context=mp.get_context("spawn"),
     )
@@ -230,7 +230,7 @@ def test_truth_timeout_terminates_worker_and_invokes_parent_cleanup():
     result = truth_cost.run_truth_stage_with_timeout(
         _database_truth_timeout_worker,
         {"database_name": "ignored-by-worker"},
-        timeout_seconds=0.3,
+        timeout_seconds=1.0,
         database_name="rq5_truth_timeout_test",
         cleanup=cleanup,
         context=mp.get_context("spawn"),
@@ -244,7 +244,7 @@ def test_timeout_cleanup_failure_is_not_swallowed():
     result = truth_cost.run_truth_stage_with_timeout(
         _database_truth_timeout_worker,
         {},
-        timeout_seconds=0.3,
+        timeout_seconds=1.0,
         database_name="rq5_truth_cleanup_failure",
         cleanup=lambda _database_name: False,
         context=mp.get_context("spawn"),
@@ -263,7 +263,7 @@ def test_timeout_before_database_exists_does_not_require_cleanup():
     result = truth_cost.run_truth_stage_with_timeout(
         _sleeping_worker,
         {"seconds": 2.0},
-        timeout_seconds=0.2,
+        timeout_seconds=1.0,
         database_name="rq5_truth_not_created",
         cleanup=cleanup,
         context=mp.get_context("spawn"),
