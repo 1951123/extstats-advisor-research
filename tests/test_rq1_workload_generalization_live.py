@@ -257,12 +257,27 @@ def test_publish_requires_success_and_cleanup(tmp_path: Path) -> None:
         )
 
 
-def test_preflight_output_collision_is_rejected() -> None:
-    output = ROOT / live.PREFLIGHT_PATH
-    with pytest.raises(live.RQ1BValidationError, match="clean committed tree"):
+def test_preflight_output_collision_is_rejected(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+    output = tmp_path / live.PREFLIGHT_PATH
+    output.parent.mkdir(parents=True)
+    output.write_text("{}", encoding="utf-8")
+
+    class Completed:
+        def __init__(self, stdout: str) -> None:
+            self.stdout = stdout
+
+    monkeypatch.setattr(
+        live.subprocess,
+        "run",
+        lambda command, **kwargs: Completed("" if "status" in command else producer),
+    )
+    with pytest.raises(live.RQ1BValidationError, match="output already exists"):
         live.build_power7_rq1b_preflight(
-            research_root=ROOT,
-            producer_sha="a49b279c50f59b9fe243d1c30e2ca1bf0606dfea",
+            research_root=tmp_path,
+            producer_sha=producer,
             output=output,
         )
 
