@@ -1,0 +1,48 @@
+{
+  "format_version": "rq1-workload-generalization-failed-attempt-v1",
+  "status": "non-evidence-pre-execution-invocation-failure",
+  "dataset": "arecel-power7",
+  "attempt_index": 2,
+  "producer_research_sha": "252e87b27aeb46639b83d519eed18eac67e4bfb2",
+  "formal_invocation_count": 1,
+  "failure_stage": "managed-dsn-endpoint-validation",
+  "failure_class": "empty-managed-dsn-from-shell-invocation",
+  "failure_detail": "stock DSN was empty before managed PostgreSQL lab preparation",
+  "prior_attempt": {
+    "attempt_index": 1,
+    "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-001/failure-v1.json",
+    "semantic_digest": "2802214e945c1365559e921d19f4f00670de4b3dc1464dad4fb9fca2266e1917"
+  },
+  "preflight": {
+    "archived_path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-002/rq1b-preflight-v1.json",
+    "semantic_digest": "7870735375944c200b19bc1805481232d80e24cd694e4cba6f01c6b6819df662",
+    "byte_sha256": "d5aaca47830af7c8c14fa22e9b3006b79ce3ca35b6f23edf48d81f8398b1108e"
+  },
+  "scientific_execution": {
+    "postgres_started": false,
+    "advisor_started": false,
+    "search_started": false,
+    "planner_started": false,
+    "explain_count": 0,
+    "analyze": false,
+    "create_statistics": false,
+    "production_exact_count": false,
+    "test_workload_accessed": false,
+    "test_truth_accessed": false,
+    "baseline_rerun": false
+  },
+  "outputs": {
+    "design_v1_exists": false,
+    "deployment_result_exists": false,
+    "per_query_exists": false,
+    "result_v1_exists": false
+  },
+  "cleanup": {
+    "stock_running_after_cleanup": false,
+    "patched_running_after_cleanup": false,
+    "runtime_residue": false
+  },
+  "retry_performed": false,
+  "evidence_eligibility": false,
+  "semantic_digest": "898159a74c5339d789a3c93aa22e546e9a6b91a7def137461d748ef32e24d284"
+}

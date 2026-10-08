@@ -302,9 +302,9 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "power7-attempt-1-infrastructure-failed-before-design",
+      "formal_execution": "power7-attempt-2-pre-execution-failed",
       "formal_evidence_status": "not-produced",
-      "next_formal_attempt": "power7-attempt-2-pending",
+      "next_formal_attempt": "power7-attempt-3-pending",
       "power7_formal_attempts": [
         {
           "attempt_index": 1,
@@ -313,6 +313,14 @@
           "producer_sha": "dd0cc78da4a30e8dda5f8bc33fc604ea9718e43a",
           "preflight_semantic_digest": "84e398a709f82a3b7e7fd46715c36870d0a3832037c4d944043da6530e5f2152",
           "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-001/failure-v1.json"
+        },
+        {
+          "attempt_index": 2,
+          "status": "pre-execution-invocation-failed",
+          "evidence_eligible": false,
+          "producer_sha": "252e87b27aeb46639b83d519eed18eac67e4bfb2",
+          "preflight_semantic_digest": "7870735375944c200b19bc1805481232d80e24cd694e4cba6f01c6b6819df662",
+          "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-002/failure-v1.json"
         }
       ],
       "power7_runner_readiness": "implementation-ready",
@@ -964,7 +972,7 @@
       {
         "experiment_id": "rq1-held-out-workload-generalization",
         "status": "preregistered",
-        "note": "RQ1b remains preregistered. Power7 formal attempt 1 failed as a managed PostgreSQL infrastructure attempt before design evidence existed; it is retained as non-evidence provenance and the next formal attempt is pending lifecycle hardening."
+        "note": "RQ1b remains preregistered. Power7 attempt 1 failed before design because managed PostgreSQL was not running; attempt 2 failed before lab preparation because the shell supplied an empty managed DSN. Both are retained as non-evidence provenance; attempt 3 is pending."
       },
       {
         "experiment_id": "rq1-existing-baselines",
