@@ -176,7 +176,9 @@ source query hash does not occur in any valid record. Valid/test records are
 independent benchmark groups, but exact query identities may repeat across
 groups. This is same-distribution held-out generalization, not a workload-drift
 or OOD-robustness claim. RQ1a is complete, RQ1b is preregistered, and the
-expanded RQ1 program is not yet complete.
+expanded RQ1 program is not yet complete. The Power7 two-stage formal runner
+and its provenance/leakage gates are implementation-ready, but RQ1b formal
+execution remains not-started.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact
 ground truth and an explicit dataset inclusion table.

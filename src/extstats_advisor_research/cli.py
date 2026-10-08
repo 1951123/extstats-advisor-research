@@ -106,6 +106,13 @@ from .rq1_workload_generalization import (
 from .rq1_workload_generalization import (
     write_source_audit as write_rq1b_source_audit,
 )
+from .rq1_workload_generalization_live import (
+    validate_design_artifact as validate_rq1b_design_artifact,
+)
+from .rq1_workload_generalization_live import (
+    validate_power7_rq1b_preflight,
+    validate_power7_rq1b_result,
+)
 from .rq2_transfer import (
     RQ2_DATASETS,
     inspect_rq2_artifact,
@@ -693,6 +700,17 @@ def _parser() -> argparse.ArgumentParser:
     rq1b_strict_validate.add_argument(
         "artifact", type=Path, default=RQ1B_STRICT_UNSEEN_PATH, nargs="?"
     )
+    rq1g = validate_commands.add_parser(
+        "rq1-generalization",
+        help="validate offline Power7 RQ1b design/preflight readiness artifacts",
+    )
+    rq1g_commands = rq1g.add_subparsers(dest="rq1g_command", required=True)
+    rq1g_design = rq1g_commands.add_parser("design")
+    rq1g_design.add_argument("artifact", type=Path)
+    rq1g_preflight = rq1g_commands.add_parser("preflight")
+    rq1g_preflight.add_argument("artifact", type=Path)
+    rq1g_result = rq1g_commands.add_parser("result")
+    rq1g_result.add_argument("artifact", type=Path)
     rq2 = validate_commands.add_parser(
         "rq2-transfer", help="run or validate one formal RQ2 transfer child"
     )
@@ -1316,6 +1334,18 @@ def main(argv: list[str] | None = None) -> int:
                 result = validate_rq1b_strict_unseen(args.artifact, root)
             else:
                 result = validate_rq1b_source_audit(args.artifact, root)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-generalization":
+            root = Path(__file__).resolve().parents[2]
+            if args.rq1g_command == "design":
+                result = validate_rq1b_design_artifact(read_json(args.artifact))
+            elif args.rq1g_command == "preflight":
+                result = validate_power7_rq1b_preflight(
+                    read_json(args.artifact), research_root=root
+                )
+            else:
+                result = validate_power7_rq1b_result(read_json(args.artifact))
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq2-transfer":
