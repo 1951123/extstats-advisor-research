@@ -709,9 +709,7 @@ def test_formal_labs_reinitialize_and_verify_both_roles_before_design(
         events.append(f"status:{role}")
         spec = postgres_lab.role_spec(role)
         sha = (
-            live.FROZEN_STOCK_POSTGRES_SHA
-            if role == "stock"
-            else live.FROZEN_PATCHED_POSTGRES_SHA
+            live.FROZEN_STOCK_POSTGRES_SHA if role == "stock" else live.FROZEN_PATCHED_POSTGRES_SHA
         )
         return {
             "running": True,
@@ -821,9 +819,9 @@ def test_managed_lab_dsns_reject_wrong_endpoints() -> None:
     patched = postgres_lab.role_spec("patched")
     good_stock = f"host={stock.socket} port={stock.port} dbname={stock.database}"
     good_patched = f"host={patched.socket} port={patched.port} dbname={patched.database}"
-    assert live._validate_managed_lab_dsns(
-        stock_dsn=good_stock, planner_dsn=good_patched
-    )["actual"]["stock"]["port"] == str(stock.port)
+    assert live._validate_managed_lab_dsns(stock_dsn=good_stock, planner_dsn=good_patched)[
+        "actual"
+    ]["stock"]["port"] == str(stock.port)
     with pytest.raises(live.RQ1BValidationError, match="stock DSN"):
         live._validate_managed_lab_dsns(
             stock_dsn="host=/tmp/other port=55432 dbname=extstats_stock",

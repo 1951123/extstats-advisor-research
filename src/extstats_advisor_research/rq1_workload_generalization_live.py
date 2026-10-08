@@ -1342,16 +1342,14 @@ def _managed_dsn_endpoint(dsn: str, *, role: str) -> dict[str, str]:
         from psycopg.conninfo import conninfo_to_dict
 
         fields = conninfo_to_dict(dsn)
-    except Exception as exc:  # noqa: BLE001  # convert parser failures to controlled validation
+    except Exception as exc:  # convert parser failures to controlled validation
         raise RQ1BValidationError(f"invalid {role} managed-lab DSN") from exc
     endpoint = {
         "host": str(fields.get("host", "")),
         "port": str(fields.get("port", "")),
         "dbname": str(fields.get("dbname", "")),
     }
-    _require(
-        all(endpoint.values()), f"{role} DSN must specify managed host, port, and database"
-    )
+    _require(all(endpoint.values()), f"{role} DSN must specify managed host, port, and database")
     return endpoint
 
 
@@ -1952,9 +1950,9 @@ __all__ = [
     "build_power7_rq1b_result",
     "execute_power7_rq1b_design_live",
     "execute_power7_rq1b_evaluation_live",
-    "prepare_power7_rq1b_formal_labs",
     "paired_outcomes",
     "prepare_evaluation_stage",
+    "prepare_power7_rq1b_formal_labs",
     "publish_result",
     "resolve_power7_rq1b_evaluation_inputs_after_seal",
     "run_power7_rq1b_design",
