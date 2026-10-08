@@ -1,0 +1,261 @@
+{
+  "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "benchmark_id": "arecel-census13",
+  "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+  "cleanup_passed": true,
+  "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+  "dataset_id": "arecel-census13",
+  "dataset_identity": "arecel-census13",
+  "format_version": "rq5-snapshot-footprint-dataset-v1",
+  "no_candidate_or_native_work": true,
+  "no_planner_evaluation": true,
+  "no_truth_acquisition": true,
+  "postgres_version": "16.14",
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "relation": "public.census13",
+  "repetitions": [
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-census13",
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1770,
+        "population_json_bytes": 165,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 1467434,
+        "schema_json_bytes": 1947,
+        "sealed_snapshot_logical_bytes": 5965706,
+        "workload_json_bytes": 4494390
+      },
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "dataset_id": "arecel-census13",
+      "dataset_identity": "arecel-census13",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1770,
+          "relative_path": "manifest.json",
+          "sha256": "c8c193ae34c60b25beb70a6bf75f46533a6a4f3f2466f8decf787af526750ed3"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 165,
+          "relative_path": "population.json",
+          "sha256": "d5a184c6e132b6eb899f4c9c34f73ffcc2712ccd7f97100284375e8f61240019"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 1467434,
+          "relative_path": "samples/106d18a1e170bdd30baed832.arrow",
+          "sha256": "4b4371a2b2a69e6f14605d4bc06af01c175ce9aeb57cec0ff727fe98ac907a84"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1947,
+          "relative_path": "schema.json",
+          "sha256": "3d11efa4803a74e09836742d32ca6e4082e652a3fdc3b90405c40c586c8ebcf9"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4494390,
+          "relative_path": "workload.json",
+          "sha256": "a66bf0c25add640133b757af690ae017e9724a8926a3657b214ca2c5abd80d3b"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.census13",
+      "repetition_id": 1,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-census13-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 0.5059391049999249,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.031831145999603905
+      },
+      "snapshot_capture_elapsed_seconds": 0.37912645200049155,
+      "snapshot_semantic_digest": "f33444cc79c54e84d2e1e60c00cbf28e1df812a38af82411adc03c9fef05a13f",
+      "snapshot_validation_elapsed_seconds": 0.14364668300004269,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_census13_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-census13",
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1769,
+        "population_json_bytes": 165,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 1467434,
+        "schema_json_bytes": 1947,
+        "sealed_snapshot_logical_bytes": 5965705,
+        "workload_json_bytes": 4494390
+      },
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "dataset_id": "arecel-census13",
+      "dataset_identity": "arecel-census13",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1769,
+          "relative_path": "manifest.json",
+          "sha256": "422619a5b4fcac12c061cb61829d87ec54716e303a8c4f2d8691a2b1d75f1915"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 165,
+          "relative_path": "population.json",
+          "sha256": "d7085712d9cc862cce08ff6f6f74bf3fb2712771c11cc48e116aefadd52a4e78"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 1467434,
+          "relative_path": "samples/0129d4959546d0f35078ddac.arrow",
+          "sha256": "4b4371a2b2a69e6f14605d4bc06af01c175ce9aeb57cec0ff727fe98ac907a84"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1947,
+          "relative_path": "schema.json",
+          "sha256": "bf7588e674c8767616b9036813123938c603ee9c933622e16a902ee194f43baf"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4494390,
+          "relative_path": "workload.json",
+          "sha256": "a66bf0c25add640133b757af690ae017e9724a8926a3657b214ca2c5abd80d3b"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.census13",
+      "repetition_id": 2,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-census13-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 0.4881649609997112,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.02620938899963221
+      },
+      "snapshot_capture_elapsed_seconds": 0.35291588199834223,
+      "snapshot_semantic_digest": "60a14dbc29012e24978d8e3a2158e5b6d664a53eb2843ec57d7e2b09b36f8dfc",
+      "snapshot_validation_elapsed_seconds": 0.14382294099959836,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_census13_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-census13",
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1770,
+        "population_json_bytes": 165,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 1467434,
+        "schema_json_bytes": 1947,
+        "sealed_snapshot_logical_bytes": 5965706,
+        "workload_json_bytes": 4494390
+      },
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "dataset_id": "arecel-census13",
+      "dataset_identity": "arecel-census13",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1770,
+          "relative_path": "manifest.json",
+          "sha256": "8219ec41ca2c07af6a5e7c01dbdfacd0e689f1ead150a612e75f442e3ad620da"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 165,
+          "relative_path": "population.json",
+          "sha256": "58b6b6a4b2f33367b288e9aa6eab3d326c1080c9de0703994e315635c7c497f4"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 1467434,
+          "relative_path": "samples/353de9c6d494991344d86dbf.arrow",
+          "sha256": "4b4371a2b2a69e6f14605d4bc06af01c175ce9aeb57cec0ff727fe98ac907a84"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1947,
+          "relative_path": "schema.json",
+          "sha256": "caf92e9a22b42ebe2a125b3ec13d53f753cd037f79b0f023b693125e7f75b38b"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4494390,
+          "relative_path": "workload.json",
+          "sha256": "a66bf0c25add640133b757af690ae017e9724a8926a3657b214ca2c5abd80d3b"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.census13",
+      "repetition_id": 3,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-census13-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 0.4983055710017652,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.026205444000879652
+      },
+      "snapshot_capture_elapsed_seconds": 0.3655675159989187,
+      "snapshot_semantic_digest": "48cac787f7a3133562bd50d244b0a4c950a543a7634ee9857cb37abbb0d95416",
+      "snapshot_validation_elapsed_seconds": 0.16144471500047075,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_census13_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+    }
+  ],
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "schema_contract_id": "arecel-census13-postgres-schema-v1",
+  "semantic_digest": "13d915ef82bf6fa077dce46b86e7bc4d34c66e095b39712f0ca48b65813bd2d5",
+  "status": "complete",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "validation_passed": true,
+  "workload_id": "arecel_census13_test_v1",
+  "workload_query_count": 10000,
+  "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+}

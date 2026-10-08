@@ -1,0 +1,95 @@
+{
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "dataset_order": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "datasets": [
+    {
+      "benchmark_id": "arecel-census13",
+      "canonical_workload_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "dataset_id": "arecel-census13",
+      "relation": "public.census13",
+      "schema_contract_id": "arecel-census13-postgres-schema-v1",
+      "workload_id": "arecel_census13_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9"
+    },
+    {
+      "benchmark_id": "arecel-forest10",
+      "canonical_workload_sha256": null,
+      "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "dataset_id": "arecel-forest10",
+      "relation": "public.forest10",
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "workload_id": "arecel_forest10_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    },
+    {
+      "benchmark_id": "arecel-power7",
+      "canonical_workload_sha256": null,
+      "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "dataset_id": "arecel-power7",
+      "relation": "public.power7",
+      "schema_contract_id": "arecel-power7-postgres-schema-v1",
+      "workload_id": "arecel_power7_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+    },
+    {
+      "benchmark_id": "arecel-dmv11",
+      "canonical_workload_sha256": null,
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "dataset_id": "arecel-dmv11",
+      "relation": "public.dmv11",
+      "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+      "workload_id": "arecel_dmv11_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+    }
+  ],
+  "experiment_id": "rq5-snapshot-footprint",
+  "formal_execution_started": false,
+  "format_version": "rq5-snapshot-footprint-preflight-v1",
+  "no_truth_or_planner_work": true,
+  "output_collision_check": {
+    "checked": [
+      "experiments/rq5-snapshot-footprint-v1.json",
+      "experiments/rq5-snapshot-footprint-v1/raw/arecel-census13.json",
+      "experiments/rq5-snapshot-footprint-v1/raw/arecel-forest10.json",
+      "experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json",
+      "experiments/rq5-snapshot-footprint-v1/raw/arecel-dmv11.json"
+    ],
+    "collisions": []
+  },
+  "patched_postgres_required": false,
+  "planned_outputs": [
+    "experiments/rq5-snapshot-footprint-v1.json",
+    "experiments/rq5-snapshot-footprint-v1/raw/arecel-census13.json",
+    "experiments/rq5-snapshot-footprint-v1/raw/arecel-forest10.json",
+    "experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json",
+    "experiments/rq5-snapshot-footprint-v1/raw/arecel-dmv11.json"
+  ],
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "repetition_order": [
+    1,
+    2,
+    3
+  ],
+  "repetitions": 3,
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "sensitive_snapshot_not_tracked": true,
+  "stage_hard_cap_seconds": 300.0,
+  "status": "ready-to-run",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "stock_postgres_version": "16.14"
+}

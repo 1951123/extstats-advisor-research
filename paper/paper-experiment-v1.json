@@ -857,6 +857,41 @@
           }
         },
         "rq5_completion_status": "incomplete"
+      },
+      "snapshot_footprint": {
+        "status": "complete",
+        "protocol": "paper/rq5-snapshot-footprint-protocol-v1.json",
+        "protocol_format_version": "rq5-snapshot-footprint-protocol-v1",
+        "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+        "scope": "logical byte footprint of validated sealed advisor-snapshot-v1 files from fresh stock realizations",
+        "repetitions": 3,
+        "artifact": "experiments/rq5-snapshot-footprint-v1.json",
+        "semantic_digest": "1b8a4279f668d9c5468bf68748d14ebe0b3f702b2aa2142a1a99a37ada23e4e4",
+        "producer_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+        "preflight": {
+          "path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+          "semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a"
+        },
+        "raw_children": {
+          "arecel-census13": {
+            "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-census13.json",
+            "semantic_digest": "13d915ef82bf6fa077dce46b86e7bc4d34c66e095b39712f0ca48b65813bd2d"
+          },
+          "arecel-forest10": {
+            "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-forest10.json",
+            "semantic_digest": "20f818a9c102228c2cfaeeeae29f190e92023d86572d5bd54ae153f517fe188d"
+          },
+          "arecel-power7": {
+            "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json",
+            "semantic_digest": "f1a649a71546a6a2b18d4141b703d403f102e68a56a594c983349dc8ddf2b553"
+          },
+          "arecel-dmv11": {
+            "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-dmv11.json",
+            "semantic_digest": "b38a176b394a7ea99add341e3c49c2b1d7c0fabb56918af7b81bee0bd6b0e817"
+          }
+        },
+        "rq5_completion_status": "incomplete",
+        "rq5_registry_status": "planned"
       }
     }
   ],

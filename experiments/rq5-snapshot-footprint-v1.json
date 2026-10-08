@@ -1,0 +1,225 @@
+{
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "dataset_order": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "datasets": {
+    "arecel-census13": {
+      "cleanup_passed": true,
+      "relation": "public.census13",
+      "repetition_count": 3,
+      "sample_payload_bytes_total": {
+        "max": 1467434,
+        "median": 1467434,
+        "min": 1467434,
+        "raw": [
+          1467434,
+          1467434,
+          1467434
+        ]
+      },
+      "sealed_snapshot_logical_bytes": {
+        "max": 5965706,
+        "median": 5965706,
+        "min": 5965705,
+        "raw": [
+          5965706,
+          5965705,
+          5965706
+        ]
+      },
+      "snapshot_capture_elapsed_seconds": {
+        "max": 0.37912645200049155,
+        "median": 0.3655675159989187,
+        "min": 0.35291588199834223,
+        "raw": [
+          0.37912645200049155,
+          0.35291588199834223,
+          0.3655675159989187
+        ]
+      },
+      "snapshot_semantic_digests": [
+        "f33444cc79c54e84d2e1e60c00cbf28e1df812a38af82411adc03c9fef05a13f",
+        "60a14dbc29012e24978d8e3a2158e5b6d664a53eb2843ec57d7e2b09b36f8dfc",
+        "48cac787f7a3133562bd50d244b0a4c950a543a7634ee9857cb37abbb0d95416"
+      ],
+      "snapshot_semantic_digests_equal": false,
+      "validation_passed": true,
+      "workload_id": "arecel_census13_test_v1"
+    },
+    "arecel-dmv11": {
+      "cleanup_passed": true,
+      "relation": "public.dmv11",
+      "repetition_count": 3,
+      "sample_payload_bytes_total": {
+        "max": 891890,
+        "median": 891890,
+        "min": 891890,
+        "raw": [
+          891890,
+          891890,
+          891890
+        ]
+      },
+      "sealed_snapshot_logical_bytes": {
+        "max": 3735677,
+        "median": 3735677,
+        "min": 3735677,
+        "raw": [
+          3735677,
+          3735677,
+          3735677
+        ]
+      },
+      "snapshot_capture_elapsed_seconds": {
+        "max": 0.45903203200214193,
+        "median": 0.440330917997926,
+        "min": 0.3122344660005183,
+        "raw": [
+          0.45903203200214193,
+          0.3122344660005183,
+          0.440330917997926
+        ]
+      },
+      "snapshot_semantic_digests": [
+        "b08139d94a77458eccc77d3a944f02db1a87290b80f0b364d3b409bbb6b8add5",
+        "138a0858bf23c7c9e9bbff24e707aed6e91d841bc4a88b5d6dd4ffcc5da9c445",
+        "5226b39979145379f3c792280ab81c939da8c3055a07d20f5b1ba75971ad41d0"
+      ],
+      "snapshot_semantic_digests_equal": false,
+      "validation_passed": true,
+      "workload_id": "arecel_dmv11_test_v1"
+    },
+    "arecel-forest10": {
+      "cleanup_passed": true,
+      "relation": "public.forest10",
+      "repetition_count": 3,
+      "sample_payload_bytes_total": {
+        "max": 802010,
+        "median": 802010,
+        "min": 802010,
+        "raw": [
+          802010,
+          802010,
+          802010
+        ]
+      },
+      "sealed_snapshot_logical_bytes": {
+        "max": 5571196,
+        "median": 5571196,
+        "min": 5571195,
+        "raw": [
+          5571196,
+          5571195,
+          5571196
+        ]
+      },
+      "snapshot_capture_elapsed_seconds": {
+        "max": 0.32077701600064756,
+        "median": 0.3186818409994885,
+        "min": 0.31730705999871134,
+        "raw": [
+          0.32077701600064756,
+          0.31730705999871134,
+          0.3186818409994885
+        ]
+      },
+      "snapshot_semantic_digests": [
+        "f24c1f9af10388dd1cd6b2c0ae30fa75ffeda730bc868f3fcac35e3d2b3e4937",
+        "92da38d8d8d69a47a8686a9d976d421987075a9373c537d5f0c9c689b27e3364",
+        "b69fcf5d3e287da647e2578caf3801f0fad09ee8bf73c90af3d4062891768b10"
+      ],
+      "snapshot_semantic_digests_equal": false,
+      "validation_passed": true,
+      "workload_id": "arecel_forest10_test_v1"
+    },
+    "arecel-power7": {
+      "cleanup_passed": true,
+      "relation": "public.power7",
+      "repetition_count": 3,
+      "sample_payload_bytes_total": {
+        "max": 561450,
+        "median": 561450,
+        "min": 561450,
+        "raw": [
+          561450,
+          561450,
+          561450
+        ]
+      },
+      "sealed_snapshot_logical_bytes": {
+        "max": 3860460,
+        "median": 3860460,
+        "min": 3860460,
+        "raw": [
+          3860460,
+          3860460,
+          3860460
+        ]
+      },
+      "snapshot_capture_elapsed_seconds": {
+        "max": 0.3079808830007096,
+        "median": 0.29528635799943004,
+        "min": 0.29211417300030007,
+        "raw": [
+          0.29211417300030007,
+          0.29528635799943004,
+          0.3079808830007096
+        ]
+      },
+      "snapshot_semantic_digests": [
+        "e8f0cbc6ffcc1c43c57774fa63ac64258a4b7e5dc55434337805765c34fab5a8",
+        "eced760c40bd6f3ac45d25b5f2df480a0d9dbd50a7dc7ba695b731fa1226d52e",
+        "24db86035bf4901f2b642eaa73ccca91aac08547c10aa567c170e2fd8323a7e8"
+      ],
+      "snapshot_semantic_digests_equal": false,
+      "validation_passed": true,
+      "workload_id": "arecel_power7_test_v1"
+    }
+  },
+  "experiment_id": "rq5-snapshot-footprint",
+  "format_version": "rq5-snapshot-footprint-v1",
+  "no_candidate_or_native_work": true,
+  "no_planner_evaluation": true,
+  "no_snapshot_contents_tracked": true,
+  "no_truth_acquisition": true,
+  "not_refresh": true,
+  "postgres_version": "16.14",
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "raw_children": [
+    {
+      "dataset_id": "arecel-census13",
+      "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-census13.json",
+      "semantic_digest": "13d915ef82bf6fa077dce46b86e7bc4d34c66e095b39712f0ca48b65813bd2d5"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-forest10.json",
+      "semantic_digest": "20f818a9c102228c2cfaeeeae29f190e92023d86572d5bd54ae153f517fe188d"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json",
+      "semantic_digest": "f1a649a71546a6a2b18d4141b703d403f102e68a56a594c983349dc8ddf2b553"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-dmv11.json",
+      "semantic_digest": "b38a176b394a7ea99add341e3c49c2b1d7c0fabb56918af7b81bee0bd6b0e817"
+    }
+  ],
+  "repetitions": 3,
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "rq5_completion_status": "incomplete",
+  "rq5_registry_status": "planned",
+  "semantic_digest": "1b8a4279f668d9c5468bf68748d14ebe0b3f702b2aa2142a1a99a37ada23e4e4",
+  "snapshot_footprint_subexperiment": true,
+  "status": "complete",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+}

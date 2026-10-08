@@ -1,0 +1,261 @@
+{
+  "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "benchmark_id": "arecel-power7",
+  "canonical_workload_sha256": null,
+  "cleanup_passed": true,
+  "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+  "dataset_id": "arecel-power7",
+  "dataset_identity": "arecel-power7",
+  "format_version": "rq5-snapshot-footprint-dataset-v1",
+  "no_candidate_or_native_work": true,
+  "no_planner_evaluation": true,
+  "no_truth_acquisition": true,
+  "postgres_version": "16.14",
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "relation": "public.power7",
+  "repetitions": [
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-power7",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 167,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 561450,
+        "schema_json_bytes": 940,
+        "sealed_snapshot_logical_bytes": 3860460,
+        "workload_json_bytes": 3296131
+      },
+      "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "dataset_id": "arecel-power7",
+      "dataset_identity": "arecel-power7",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "d68d389532ceae05dee63dcc59489ef42bd085ef8327e260e27c4cacfa5d80b0"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 167,
+          "relative_path": "population.json",
+          "sha256": "aad8644aee7cfd2c584cebf89536547ddec8c3ac2f13c31168fa513787c57e5e"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 561450,
+          "relative_path": "samples/b73286547de9cb424c789124.arrow",
+          "sha256": "8e4a1c7d91a8d65dcfacd564fcc70304307fed593f52683dacbe9bb42b63658b"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 940,
+          "relative_path": "schema.json",
+          "sha256": "1cada5e9263271c691c698ddb4117d3483f423fc9ae4c1f146dba4118234e71b"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 3296131,
+          "relative_path": "workload.json",
+          "sha256": "e766b5ecfef8d903b3b6edcf3972226b8b12d2d990f53d1581e56b9acc0e1902"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.power7",
+      "repetition_id": 1,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-power7-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 3.585569247999956,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.025371323001309065
+      },
+      "snapshot_capture_elapsed_seconds": 0.29211417300030007,
+      "snapshot_semantic_digest": "e8f0cbc6ffcc1c43c57774fa63ac64258a4b7e5dc55434337805765c34fab5a8",
+      "snapshot_validation_elapsed_seconds": 0.1367833479998808,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_power7_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-power7",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 167,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 561450,
+        "schema_json_bytes": 940,
+        "sealed_snapshot_logical_bytes": 3860460,
+        "workload_json_bytes": 3296131
+      },
+      "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "dataset_id": "arecel-power7",
+      "dataset_identity": "arecel-power7",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "cc2d6ffb2b49618d559444773d468c2759d5c008c019ccbb84112647049ddb1d"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 167,
+          "relative_path": "population.json",
+          "sha256": "30999deecb17b42a1ab37449580ecbbff871a4594c56e4bfae7089224685ac47"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 561450,
+          "relative_path": "samples/a01603c2a7dd1eb323e20f4f.arrow",
+          "sha256": "8e4a1c7d91a8d65dcfacd564fcc70304307fed593f52683dacbe9bb42b63658b"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 940,
+          "relative_path": "schema.json",
+          "sha256": "48bf87ff6c048a5548182775a1b6d8b78b4fc64d59c04a811d6ebadc7496e1c5"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 3296131,
+          "relative_path": "workload.json",
+          "sha256": "e766b5ecfef8d903b3b6edcf3972226b8b12d2d990f53d1581e56b9acc0e1902"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.power7",
+      "repetition_id": 2,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-power7-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 3.7129650079987186,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.024711623998882715
+      },
+      "snapshot_capture_elapsed_seconds": 0.29528635799943004,
+      "snapshot_semantic_digest": "eced760c40bd6f3ac45d25b5f2df480a0d9dbd50a7dc7ba695b731fa1226d52e",
+      "snapshot_validation_elapsed_seconds": 0.13583140800255933,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_power7_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-power7",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 167,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 561450,
+        "schema_json_bytes": 940,
+        "sealed_snapshot_logical_bytes": 3860460,
+        "workload_json_bytes": 3296131
+      },
+      "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "dataset_id": "arecel-power7",
+      "dataset_identity": "arecel-power7",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "5c7d7363ac7def121a0048fe183e894252620c29dadd9cc5b581d5fe8f2ff6ff"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 167,
+          "relative_path": "population.json",
+          "sha256": "89b9e953e1af874c6775ad7be41997003ea19d9395a0c6c04d5f262919e053da"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 561450,
+          "relative_path": "samples/c8cbe1848e51a7d5f37cbb50.arrow",
+          "sha256": "8e4a1c7d91a8d65dcfacd564fcc70304307fed593f52683dacbe9bb42b63658b"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 940,
+          "relative_path": "schema.json",
+          "sha256": "ffbd407e21f0ca499905d7eacf135af553a6d0e01b5a714904c4ed2614f57146"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 3296131,
+          "relative_path": "workload.json",
+          "sha256": "e766b5ecfef8d903b3b6edcf3972226b8b12d2d990f53d1581e56b9acc0e1902"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.power7",
+      "repetition_id": 3,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-power7-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 3.6160490549991664,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.023973616000148468
+      },
+      "snapshot_capture_elapsed_seconds": 0.3079808830007096,
+      "snapshot_semantic_digest": "24db86035bf4901f2b642eaa73ccca91aac08547c10aa567c170e2fd8323a7e8",
+      "snapshot_validation_elapsed_seconds": 0.13115367800128297,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_power7_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+    }
+  ],
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "schema_contract_id": "arecel-power7-postgres-schema-v1",
+  "semantic_digest": "f1a649a71546a6a2b18d4141b703d403f102e68a56a594c983349dc8ddf2b553",
+  "status": "complete",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "validation_passed": true,
+  "workload_id": "arecel_power7_test_v1",
+  "workload_query_count": 10000,
+  "workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb"
+}

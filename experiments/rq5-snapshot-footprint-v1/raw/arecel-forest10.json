@@ -1,0 +1,261 @@
+{
+  "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "benchmark_id": "arecel-forest10",
+  "canonical_workload_sha256": null,
+  "cleanup_passed": true,
+  "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+  "dataset_id": "arecel-forest10",
+  "dataset_identity": "arecel-forest10",
+  "format_version": "rq5-snapshot-footprint-dataset-v1",
+  "no_candidate_or_native_work": true,
+  "no_planner_evaluation": true,
+  "no_truth_acquisition": true,
+  "postgres_version": "16.14",
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "relation": "public.forest10",
+  "repetitions": [
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-forest10",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 166,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 802010,
+        "schema_json_bytes": 1312,
+        "sealed_snapshot_logical_bytes": 5571196,
+        "workload_json_bytes": 4765936
+      },
+      "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "dataset_id": "arecel-forest10",
+      "dataset_identity": "arecel-forest10",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "65f66573317834cadbd9b507eb956f240cfceccd6874fa3bcd1ed5b281dc0082"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 166,
+          "relative_path": "population.json",
+          "sha256": "f7a40bb9285501c8618138372fed74959e97e815e1297988de6a3ff520691144"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 802010,
+          "relative_path": "samples/69af099a785f82d9e7f63c84.arrow",
+          "sha256": "6a5e9b83dd46947a15a210999558ce6045e9fb809c85d73e114a08dce533b752"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1312,
+          "relative_path": "schema.json",
+          "sha256": "90687e1bd2d1e24136a30101ee372ba05897964027f7c6944262587f78b60cf8"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4765936,
+          "relative_path": "workload.json",
+          "sha256": "fd730a4616c16d50d44203049103ec6166e64bc073eaefaa2ee3f7ff6cb49f4e"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.forest10",
+      "repetition_id": 1,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 1.3073820909994538,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.023970515001565218
+      },
+      "snapshot_capture_elapsed_seconds": 0.32077701600064756,
+      "snapshot_semantic_digest": "f24c1f9af10388dd1cd6b2c0ae30fa75ffeda730bc868f3fcac35e3d2b3e4937",
+      "snapshot_validation_elapsed_seconds": 0.14129439099997398,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_forest10_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-forest10",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1771,
+        "population_json_bytes": 166,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 802010,
+        "schema_json_bytes": 1312,
+        "sealed_snapshot_logical_bytes": 5571195,
+        "workload_json_bytes": 4765936
+      },
+      "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "dataset_id": "arecel-forest10",
+      "dataset_identity": "arecel-forest10",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1771,
+          "relative_path": "manifest.json",
+          "sha256": "51d18a4216118d14fbf243602c41b1930aa68cfdabf38aeb0f7847000916819a"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 166,
+          "relative_path": "population.json",
+          "sha256": "883adb6bad036f47e50ef7d447e91bb016992c0aacf71c639a185f1cb7408aa4"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 802010,
+          "relative_path": "samples/fe504d5c0e599a8cc492a292.arrow",
+          "sha256": "6a5e9b83dd46947a15a210999558ce6045e9fb809c85d73e114a08dce533b752"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1312,
+          "relative_path": "schema.json",
+          "sha256": "77a629155ac6ec7c46a550f992512e120be1c4e487d056d4d435b9524a487338"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4765936,
+          "relative_path": "workload.json",
+          "sha256": "fd730a4616c16d50d44203049103ec6166e64bc073eaefaa2ee3f7ff6cb49f4e"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.forest10",
+      "repetition_id": 2,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 1.3166435480015934,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.02666438000233029
+      },
+      "snapshot_capture_elapsed_seconds": 0.31730705999871134,
+      "snapshot_semantic_digest": "92da38d8d8d69a47a8686a9d976d421987075a9373c537d5f0c9c689b27e3364",
+      "snapshot_validation_elapsed_seconds": 0.14399769499868853,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_forest10_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-forest10",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 166,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 802010,
+        "schema_json_bytes": 1312,
+        "sealed_snapshot_logical_bytes": 5571196,
+        "workload_json_bytes": 4765936
+      },
+      "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "dataset_id": "arecel-forest10",
+      "dataset_identity": "arecel-forest10",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "7990acf8938b90e658e3935d4c27b55fe730d212c9ac7424a06398c9ac1c5171"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 166,
+          "relative_path": "population.json",
+          "sha256": "2027144ba05c14e80ef4065bdd600317b6918b88db696fa7274f7491e6a4a05d"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 802010,
+          "relative_path": "samples/622952fe2ee8cea47592df57.arrow",
+          "sha256": "6a5e9b83dd46947a15a210999558ce6045e9fb809c85d73e114a08dce533b752"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1312,
+          "relative_path": "schema.json",
+          "sha256": "0591621518343d2f22c45eea023fb69d6abaabae69c1624d147b020450730c48"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 4765936,
+          "relative_path": "workload.json",
+          "sha256": "fd730a4616c16d50d44203049103ec6166e64bc073eaefaa2ee3f7ff6cb49f4e"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.forest10",
+      "repetition_id": 3,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 1.3469128739998268,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.023718670003290754
+      },
+      "snapshot_capture_elapsed_seconds": 0.3186818409994885,
+      "snapshot_semantic_digest": "b69fcf5d3e287da647e2578caf3801f0fad09ee8bf73c90af3d4062891768b10",
+      "snapshot_validation_elapsed_seconds": 0.14412065100259497,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_forest10_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    }
+  ],
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+  "semantic_digest": "20f818a9c102228c2cfaeeeae29f190e92023d86572d5bd54ae153f517fe188d",
+  "status": "complete",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "validation_passed": true,
+  "workload_id": "arecel_forest10_test_v1",
+  "workload_query_count": 10000,
+  "workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+}

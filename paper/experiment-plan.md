@@ -825,9 +825,14 @@ additive.
 Post-deployment planning is already covered by the formal 10,000-query
 `EXPLAIN` measurements; production online query latency remains an optional
 external-validity measurement rather than a substitute for planner-only cost.
+The snapshot-size gap is measured under the frozen `advisor-snapshot-v1`
+representation as the logical byte sum of all regular files in each validated
+sealed snapshot. The metric includes the canonical JSON components and Arrow
+IPC sample payloads and does not use filesystem block allocation or compressed
+size. The footprint experiment uses three fresh stock realizations per
+dataset and does not collect truth or execute planner/search work.
 RQ5 remains incomplete because production-exact truth acquisition cost and
-refresh cost/quality trend are not yet measured, and snapshot-size semantics
-remain unresolved. The current evidence inventory is
+refresh cost/quality trend remain unresolved. The current evidence inventory is
 `experiments/rq5-existing-trace-cost-inventory-v2.json` (digest
 `de6d4f3291735dfdf03007adfc92678cfc31f11c8ef3f813b25b3b0ac271230b`).
 

@@ -1,0 +1,261 @@
+{
+  "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+  "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "benchmark_id": "arecel-dmv11",
+  "canonical_workload_sha256": null,
+  "cleanup_passed": true,
+  "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+  "dataset_id": "arecel-dmv11",
+  "dataset_identity": "arecel-dmv11",
+  "format_version": "rq5-snapshot-footprint-dataset-v1",
+  "no_candidate_or_native_work": true,
+  "no_planner_evaluation": true,
+  "no_truth_acquisition": true,
+  "postgres_version": "16.14",
+  "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+  "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+  "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+  "protocol_semantic_digest": "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9",
+  "relation": "public.dmv11",
+  "repetitions": [
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-dmv11",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 168,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 891890,
+        "schema_json_bytes": 1840,
+        "sealed_snapshot_logical_bytes": 3735677,
+        "workload_json_bytes": 2840007
+      },
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "dataset_id": "arecel-dmv11",
+      "dataset_identity": "arecel-dmv11",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "a7db26b550a612d31c661bc61da19212fdc34360e5aeb52e7d20fc3f0f7d6abb"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 168,
+          "relative_path": "population.json",
+          "sha256": "eb6eff29f86951434c449cbe9e00623c9ddedc637e6f55694f51729341bcaecc"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 891890,
+          "relative_path": "samples/0faba0ed28491e359d8baed9.arrow",
+          "sha256": "a5046404c6b880514e07a0dcd94099cc6d2acff378d081443ae838356145ab85"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1840,
+          "relative_path": "schema.json",
+          "sha256": "37900849d863f6679dc5d77e38ed517533bdf6bc85b9a433bf3be79c5b814acb"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 2840007,
+          "relative_path": "workload.json",
+          "sha256": "dcb13edb3fabb254ad1cca1a7727804c7ebfc0318a924b67b3dd185ebfe84fa9"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.dmv11",
+      "repetition_id": 1,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 27.643026173002,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.024206525999034056
+      },
+      "snapshot_capture_elapsed_seconds": 0.45903203200214193,
+      "snapshot_semantic_digest": "b08139d94a77458eccc77d3a944f02db1a87290b80f0b364d3b409bbb6b8add5",
+      "snapshot_validation_elapsed_seconds": 0.15710891499838908,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_dmv11_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-dmv11",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 168,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 891890,
+        "schema_json_bytes": 1840,
+        "sealed_snapshot_logical_bytes": 3735677,
+        "workload_json_bytes": 2840007
+      },
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "dataset_id": "arecel-dmv11",
+      "dataset_identity": "arecel-dmv11",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "3a2e8029c192b720bc07418e140211e14347d21e5b510c2a490398459370e3f4"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 168,
+          "relative_path": "population.json",
+          "sha256": "8c2c052e622f93e4125e49cf25b1f35bdfd61d6c4b86a78219ec30a03b3cd8ef"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 891890,
+          "relative_path": "samples/e808487205ad464a8ed4486e.arrow",
+          "sha256": "a5046404c6b880514e07a0dcd94099cc6d2acff378d081443ae838356145ab85"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1840,
+          "relative_path": "schema.json",
+          "sha256": "f72db325d11057adca07d8d0a7f157a8fc893b32c6b0cdd04b2d93cdad1fe44a"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 2840007,
+          "relative_path": "workload.json",
+          "sha256": "dcb13edb3fabb254ad1cca1a7727804c7ebfc0318a924b67b3dd185ebfe84fa9"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.dmv11",
+      "repetition_id": 2,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 24.81630816800316,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.02404342999943765
+      },
+      "snapshot_capture_elapsed_seconds": 0.3122344660005183,
+      "snapshot_semantic_digest": "138a0858bf23c7c9e9bbff24e707aed6e91d841bc4a88b5d6dd4ffcc5da9c445",
+      "snapshot_validation_elapsed_seconds": 0.13712019200102077,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_dmv11_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+    },
+    {
+      "advisor_command": "/home/wqts/projects/extstats-advisor/.venv/bin/extstats-advisor",
+      "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+      "benchmark_id": "arecel-dmv11",
+      "canonical_workload_sha256": null,
+      "cleanup_passed": true,
+      "component_bytes": {
+        "manifest_json_bytes": 1772,
+        "population_json_bytes": 168,
+        "regular_file_count": 5,
+        "sample_payload_bytes_total": 891890,
+        "schema_json_bytes": 1840,
+        "sealed_snapshot_logical_bytes": 3735677,
+        "workload_json_bytes": 2840007
+      },
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "dataset_id": "arecel-dmv11",
+      "dataset_identity": "arecel-dmv11",
+      "format_version": "rq5-snapshot-footprint-repetition-v1",
+      "no_candidate_or_native_work": true,
+      "no_planner_evaluation": true,
+      "no_truth_acquisition": true,
+      "per_file_inventory": [
+        {
+          "component_role": "manifest",
+          "logical_bytes": 1772,
+          "relative_path": "manifest.json",
+          "sha256": "addb37009df7f2ff9121f76718f90525e3840022f241b0fb8fa848785444b3c9"
+        },
+        {
+          "component_role": "population",
+          "logical_bytes": 168,
+          "relative_path": "population.json",
+          "sha256": "2a8f33845d26dbc99fc0d198b1ae1697be0b8011fe65da46725d65742de7a932"
+        },
+        {
+          "component_role": "sample-payload",
+          "logical_bytes": 891890,
+          "relative_path": "samples/69f73f935ee022828f8b3b2e.arrow",
+          "sha256": "a5046404c6b880514e07a0dcd94099cc6d2acff378d081443ae838356145ab85"
+        },
+        {
+          "component_role": "schema",
+          "logical_bytes": 1840,
+          "relative_path": "schema.json",
+          "sha256": "ba426f965d80aaa73a8b76b8ec1f8ea622a15d2cdb357abfd8027903cfb6dbfe"
+        },
+        {
+          "component_role": "workload",
+          "logical_bytes": 2840007,
+          "relative_path": "workload.json",
+          "sha256": "dcb13edb3fabb254ad1cca1a7727804c7ebfc0318a924b67b3dd185ebfe84fa9"
+        }
+      ],
+      "postgres_version": "16.14",
+      "relation": "public.dmv11",
+      "repetition_id": 3,
+      "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+      "setup": {
+        "data_load_elapsed_seconds": 24.90561874099876,
+        "excluded_from_snapshot_footprint_primary_metric": true,
+        "fresh_database_setup_elapsed_seconds": 0.023398717999953078
+      },
+      "snapshot_capture_elapsed_seconds": 0.440330917997926,
+      "snapshot_semantic_digest": "5226b39979145379f3c792280ab81c939da8c3055a07d20f5b1ba75971ad41d0",
+      "snapshot_validation_elapsed_seconds": 0.13539994099846808,
+      "status": "complete",
+      "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "validation_passed": true,
+      "workload_id": "arecel_dmv11_test_v1",
+      "workload_query_count": 10000,
+      "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+    }
+  ],
+  "research_commit_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+  "semantic_digest": "b38a176b394a7ea99add341e3c49c2b1d7c0fabb56918af7b81bee0bd6b0e817",
+  "status": "complete",
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "validation_passed": true,
+  "workload_id": "arecel_dmv11_test_v1",
+  "workload_query_count": 10000,
+  "workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d"
+}
