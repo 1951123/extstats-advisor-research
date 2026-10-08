@@ -17,9 +17,11 @@ retained as non-evidence provenance. RQ4 heuristic ablations, RQ3, and RQ5 remai
 retained as non-evidence provenance. A fourth invocation failed at the frozen
 Advisor launcher probe because `pyarrow` was missing; it is retained as
 non-evidence environment provenance. RQ4 heuristic ablations, RQ3, and RQ5 remain separate
-incomplete work. The frozen Advisor runtime dependency environment is now
-ready for a future Power7 attempt 5; no attempt-5 preflight or formal run has
-started. The formal four-child RQ2 transfer
+incomplete work. A fifth invocation reached the fresh valid-side Power7 load
+and initial `ANALYZE`, but its frozen Advisor snapshot command returned code 2
+before snapshot publication; it is retained as non-evidence pre-search
+provenance. No attempt 6 is pending while the snapshot cause is diagnosed. The
+formal four-child RQ2 transfer
 campaign is complete under the frozen v2 protocol; historical transfer
 directories remain pilot evidence.
 
@@ -136,7 +138,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–4 failed before scientific execution as non-evidence provenance, the frozen Advisor runtime environment is ready, and attempt 5 is pending. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–4 are retained as pre-execution non-evidence provenance, and attempt 5 reached the valid-side snapshot stage but failed before search. No attempt 6 is pending during diagnosis. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -197,7 +199,11 @@ invocation prepared both labs but failed before Advisor execution because the
 bare frozen `extstats-advisor` console script was not resolvable in `PATH`; it
 is also non-evidence. A fourth invocation then failed at the frozen Advisor
 launcher probe because `pyarrow` was missing; it is also non-evidence
-environment provenance. A future attempt must evaluate managed DSNs in the same
+environment provenance. A fifth invocation then reached the fresh valid-side
+Power7 load and initial `ANALYZE` but failed when the frozen Advisor snapshot
+command returned code 2; it is retained as non-evidence pre-search provenance.
+No attempt 6 is pending while the snapshot cause is diagnosed. A future attempt
+must evaluate managed DSNs in the same
 shell process before invoking the formal command, and must launch Advisor from
 the verified frozen checkout through a runtime-local launcher rather than a
 bare `PATH` command. The required shell sequence is:

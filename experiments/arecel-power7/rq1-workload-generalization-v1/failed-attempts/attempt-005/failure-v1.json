@@ -1,0 +1,55 @@
+{
+  "format_version": "rq1-workload-generalization-failed-attempt-v1",
+  "status": "non-evidence-pre-search-snapshot-failure",
+  "dataset": "arecel-power7",
+  "attempt_index": 5,
+  "producer_research_sha": "d31857485acec1ca06b4cab6ee813149c6b8e29b",
+  "formal_invocation_count": 1,
+  "failure_stage": "design-stage-snapshot-command-launch",
+  "failure_class": "advisor-snapshot-command-returned-code-2",
+  "failure_detail": "frozen Advisor snapshot capture command started but returned exit code 2 before snapshot publication",
+  "prior_attempt": {
+    "attempt_index": 4,
+    "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-004/failure-v1.json",
+    "semantic_digest": "d809f9e15f4eb2bb33aa8a421b8e8c2ff690ad372eb245b0b555495d30ac638d"
+  },
+  "preflight": {
+    "archived_path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-005/rq1b-preflight-v1.json",
+    "semantic_digest": "93f6bb6d7c20eef42d9acbfad768d7c148ca8c80ad1202006dcf5803a6cf9c8a",
+    "byte_sha256": "b8cc0d1e6a82f38cc43b93ad913e5baedab33a2b694a190cb5faf79c79a5640e"
+  },
+  "infrastructure": {
+    "frozen_launcher_probe_passed": true,
+    "stock_lab_prepared": true,
+    "patched_lab_prepared": true,
+    "lifecycle_verification_passed": true,
+    "fresh_stock_load_reached": true
+  },
+  "scientific_execution": {
+    "snapshot_command_started": true,
+    "snapshot_published": false,
+    "candidate_generation_started": false,
+    "singleton_profiling_started": false,
+    "search_started": false,
+    "recommendation_sealed": false,
+    "test_side_accessed": false,
+    "deployment_started": false,
+    "explain_count": 0,
+    "production_exact_count": false
+  },
+  "outputs": {
+    "design_v1_exists": false,
+    "deployment_result_exists": false,
+    "per_query_exists": false,
+    "result_v1_exists": false
+  },
+  "cleanup": {
+    "completed": true,
+    "stock_running_after_cleanup": false,
+    "patched_running_after_cleanup": false,
+    "runtime_residue": false
+  },
+  "retry_performed": false,
+  "evidence_eligibility": false,
+  "semantic_digest": "4c5aeef9248d1073538d091ba74f32b8330c065f0bd858028f841e59d3b08931"
+}
