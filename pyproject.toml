@@ -15,7 +15,7 @@ advisor = [
   "extstats-advisor @ git+https://github.com/1951123/extstats-advisor.git@0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
 ]
 advisor-v2 = [
-  "extstats-advisor @ git+https://github.com/1951123/extstats-advisor.git@e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+  "extstats-advisor[postgres] @ git+https://github.com/1951123/extstats-advisor.git@e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
 ]
 
 [project.scripts]
