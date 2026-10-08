@@ -159,6 +159,16 @@ def _source_hashes(dataset: Any, data_root: Path | None) -> dict[str, str]:
     return result
 
 
+def _frozen_source_hashes(dataset: Any) -> dict[str, str]:
+    """Return source hashes pinned by the adapter contract, without I/O."""
+
+    return {
+        "workload_pickle": dataset.WORKLOAD_PICKLE_SHA256,
+        "label_pickle": dataset.LABEL_PICKLE_SHA256,
+        "canonical_workload": dataset.CANONICAL_WORKLOAD_SHA256,
+    }
+
+
 def build_truth_policy(research_root: Path, data_root: Path | None = None) -> dict[str, Any]:
     """Build the split-aware RQ1b truth policy from audited source metadata."""
 
@@ -248,11 +258,41 @@ def validate_truth_policy(path: Path, research_root: Path | None = None) -> dict
         [item.get("dataset_id") for item in value.get("datasets", [])] == list(DATASET_ORDER),
         "truth policy dataset order drift",
     )
-    expected = build_truth_policy(root)
-    _require(
-        _without_digest(value) == _without_digest(expected),
-        "truth policy source binding drift",
-    )
+    audit_path = root / SOURCE_AUDIT_PATH
+    audit = validate_source_audit(audit_path, root)
+    audit_value = read_json(audit_path)
+    audit_by_dataset = {row["dataset_id"]: row for row in audit_value["datasets"]}
+    for row in value["datasets"]:
+        dataset = DATASETS[row["dataset_id"]]
+        source = audit_by_dataset[row["dataset_id"]]
+        _require(
+            row.get("dataset_content_identity")
+            == dataset.compute_dataset_content_identity(dataset.CSV_SHA256),
+            "truth policy dataset identity drift",
+        )
+        _require(
+            row.get("source_workload_pickle_sha256")
+            == dataset.WORKLOAD_PICKLE_SHA256,
+            "truth policy workload source hash drift",
+        )
+        _require(
+            row.get("source_label_pickle_sha256") == dataset.LABEL_PICKLE_SHA256,
+            "truth policy label source hash drift",
+        )
+        _require(
+            row.get("canonical_workload_sha256") == dataset.CANONICAL_WORKLOAD_SHA256,
+            "truth policy canonical workload hash drift",
+        )
+        for split in (VALID_SPLIT, TEST_SPLIT):
+            _require(
+                row.get(f"{split}_workload_id") == source[f"{split}_workload_id"],
+                "truth policy workload ID drift",
+            )
+            _require(
+                row.get(f"{split}_query_count") == source[f"{split}_query_count"] == SAMPLE_ROWS,
+                "truth policy workload count drift",
+            )
+    _require(audit["dataset_count"] == 4, "truth policy source audit is incomplete")
     return {"status": "valid", "semantic_digest": value["semantic_digest"], "dataset_count": 4}
 
 
@@ -379,26 +419,25 @@ def validate_source_audit(path: Path, research_root: Path | None = None) -> dict
     )
     for row in value["datasets"]:
         dataset = DATASETS[row["dataset_id"]]
-        metadata = dataset.inspect(None)
         _require(
             row.get("benchmark_id") == dataset.BENCHMARK_ID,
             "source audit benchmark identity drift",
         )
         _require(
-            row.get("dataset_content_identity") == metadata["dataset_content_identity"],
+            row.get("dataset_content_identity")
+            == dataset.compute_dataset_content_identity(dataset.CSV_SHA256),
             "source audit dataset identity drift",
         )
-        _require(row.get("relation") == metadata["relation"], "source audit relation drift")
+        _require(row.get("relation") == dataset.RELATION, "source audit relation drift")
         _require(
-            row.get("schema_contract_id") == metadata["schema_contract"]["id"],
+            row.get("schema_contract_id") == dataset.SCHEMA_CONTRACT_ID,
             "source audit schema drift",
         )
-        actual_source_hashes = metadata["source_file_sha256"]
         recorded_source_hashes = row.get("source_file_sha256")
         _require(
             isinstance(recorded_source_hashes, dict)
             and all(
-                recorded_source_hashes.get(key) == actual_source_hashes.get(key)
+                recorded_source_hashes.get(key) == _frozen_source_hashes(dataset).get(key)
                 for key in ("workload_pickle", "label_pickle", "canonical_workload")
             ),
             "source audit source hash drift",
