@@ -130,9 +130,11 @@ from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smok
 from .rq5_cost_inventory import (
     default_inventory_path,
     default_inventory_v2_path,
+    default_inventory_v3_path,
     validate_inventory,
     write_inventory,
     write_inventory_v2,
+    write_inventory_v3,
 )
 from .rq5_snapshot_footprint import (
     DATASETS as SNAPSHOT_FOOTPRINT_DATASETS,
@@ -634,6 +636,10 @@ def _parser() -> argparse.ArgumentParser:
         "inventory-v2", help="derive the static-deployment-aware RQ5 cost inventory offline"
     )
     rq5_inventory_v2.add_argument("--output", type=Path, default=None)
+    rq5_inventory_v3 = rq5_cost_commands.add_parser(
+        "inventory-v3", help="derive the snapshot-footprint-aware RQ5 cost inventory offline"
+    )
+    rq5_inventory_v3.add_argument("--output", type=Path, default=None)
     rq5_validate = rq5_cost_commands.add_parser("validate")
     rq5_validate.add_argument("artifact", type=Path)
     rq5_static = rq5_cost_commands.add_parser(
@@ -1181,6 +1187,16 @@ def main(argv: list[str] | None = None) -> int:
             elif args.rq5_cost_command == "inventory-v2":
                 output = args.output or default_inventory_v2_path(root)
                 artifact = write_inventory_v2(root, output)
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "experiment_id": artifact["experiment_id"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq5_cost_command == "inventory-v3":
+                output = args.output or default_inventory_v3_path(root)
+                artifact = write_inventory_v3(root, output)
                 result = {
                     "status": "written",
                     "format_version": artifact["format_version"],

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
+from copy import deepcopy
 from pathlib import Path
 from statistics import median
 from typing import Any
@@ -18,6 +19,7 @@ from .provenance import read_json, reject_credentials, semantic_digest, write_js
 
 FORMAT_VERSION = "rq5-existing-trace-cost-inventory-v1"
 FORMAT_VERSION_V2 = "rq5-existing-trace-cost-inventory-v2"
+FORMAT_VERSION_V3 = "rq5-existing-trace-cost-inventory-v3"
 EXPERIMENT_ID = "rq5-existing-trace-cost-inventory"
 RQ5_STATUS = "planned"
 DATASETS = ("arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11")
@@ -137,6 +139,40 @@ STATIC_DEPLOYMENT_RQ2_SOURCES = {
     },
 }
 STATIC_PROTOCOL_DIGEST = "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406"
+V2_INVENTORY = {
+    "path": "experiments/rq5-existing-trace-cost-inventory-v2.json",
+    "semantic_digest": "de6d4f3291735dfdf03007adfc92678cfc31f11c8ef3f813b25b3b0ac271230b",
+}
+SNAPSHOT_PROTOCOL_DIGEST = "e339986dc8960b4632da504d563de9d32a8e08e22762c54033d41a5ce3eb12c9"
+SNAPSHOT_FORMAL = {
+    "path": "experiments/rq5-snapshot-footprint-v1.json",
+    "semantic_digest": "1b8a4279f668d9c5468bf68748d14ebe0b3f702b2aa2142a1a99a37ada23e4e4",
+    "producer_sha": "a5e0577451df833a39698fbadd219ed404baa7a7",
+    "preflight_path": "experiments/rq5-snapshot-footprint-preflight-v1.json",
+    "preflight_semantic_digest": "ed300226bfcff3c2804500b526e1a3d9b36c817e1b2972f99c8ce96242f8759a",
+}
+SNAPSHOT_RAW = {
+    "arecel-census13": {
+        "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-census13.json",
+        "semantic_digest": "13d915ef82bf6fa077dce46b86e7bc4d34c66e095b39712f0ca48b65813bd2d5",
+    },
+    "arecel-forest10": {
+        "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-forest10.json",
+        "semantic_digest": "20f818a9c102228c2cfaeeeae29f190e92023d86572d5bd54ae153f517fe188d",
+    },
+    "arecel-power7": {
+        "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-power7.json",
+        "semantic_digest": "f1a649a71546a6a2b18d4141b703d403f102e68a56a594c983349dc8ddf2b553",
+    },
+    "arecel-dmv11": {
+        "path": "experiments/rq5-snapshot-footprint-v1/raw/arecel-dmv11.json",
+        "semantic_digest": "b38a176b394a7ea99add341e3c49c2b1d7c0fabb56918af7b81bee0bd6b0e817",
+    },
+}
+SNAPSHOT_SIZE_DEFINITION = (
+    "sealed_snapshot_logical_bytes is the sum of st_size of all regular files "
+    "recursively inside a validated sealed advisor-snapshot-v1 directory"
+)
 
 
 class RQ5CostInventoryValidationError(ValueError):
@@ -149,6 +185,10 @@ def default_inventory_path(research_root: Path) -> Path:
 
 def default_inventory_v2_path(research_root: Path) -> Path:
     return research_root / "experiments/rq5-existing-trace-cost-inventory-v2.json"
+
+
+def default_inventory_v3_path(research_root: Path) -> Path:
+    return research_root / "experiments/rq5-existing-trace-cost-inventory-v3.json"
 
 
 def _require(condition: bool, message: str) -> None:
@@ -793,6 +833,8 @@ def write_inventory(research_root: Path, output: Path | None = None) -> dict[str
 
 def validate_inventory(path: Path, research_root: Path) -> dict[str, Any]:
     value = read_json(path)
+    if value.get("format_version") == FORMAT_VERSION_V3:
+        return validate_inventory_v3(path, research_root)
     if value.get("format_version") == FORMAT_VERSION_V2:
         return validate_inventory_v2(path, research_root)
     _require(value.get("format_version") == FORMAT_VERSION, "unsupported RQ5 inventory format")
@@ -1502,6 +1544,575 @@ def validate_inventory_v2(path: Path, research_root: Path) -> dict[str, Any]:
     return {
         "status": "valid",
         "format_version": FORMAT_VERSION_V2,
+        "experiment_id": EXPERIMENT_ID,
+        "semantic_digest": digest,
+        "rq5_completion_status": value["rq5_completion_status"],
+        "dataset_count": len(DATASETS),
+        "remaining_measurement_gap_count": len(value["remaining_measurement_gaps"]),
+    }
+
+
+def _snapshot_stats(values: list[float | int]) -> dict[str, Any]:
+    return _stats(values)
+
+
+def _snapshot_component_projection(
+    raw_by_dataset: Mapping[str, Mapping[str, Any]],
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    component_keys = (
+        "manifest_json_bytes",
+        "schema_json_bytes",
+        "population_json_bytes",
+        "workload_json_bytes",
+        "sample_payload_bytes_total",
+        "sealed_snapshot_logical_bytes",
+        "regular_file_count",
+    )
+    per_dataset: dict[str, Any] = {}
+    headline_rows: list[dict[str, Any]] = []
+    for dataset_id in DATASETS:
+        raw = raw_by_dataset[dataset_id]
+        repetitions = raw["repetitions"]
+        component_values = {
+            key: [rep["component_bytes"][key] for rep in repetitions] for key in component_keys
+        }
+        capture_values = [rep["snapshot_capture_elapsed_seconds"] for rep in repetitions]
+        semantic_digests = [rep["snapshot_semantic_digest"] for rep in repetitions]
+        sample_hashes = [
+            next(
+                item["sha256"]
+                for item in rep["per_file_inventory"]
+                if item["component_role"] == "sample-payload"
+            )
+            for rep in repetitions
+        ]
+        workload_hashes = [
+            next(
+                item["sha256"]
+                for item in rep["per_file_inventory"]
+                if item["component_role"] == "workload"
+            )
+            for rep in repetitions
+        ]
+        sample_fractions = [
+            sample / total
+            for sample, total in zip(
+                component_values["sample_payload_bytes_total"],
+                component_values["sealed_snapshot_logical_bytes"],
+                strict=True,
+            )
+        ]
+        workload_fractions = [
+            workload / total
+            for workload, total in zip(
+                component_values["workload_json_bytes"],
+                component_values["sealed_snapshot_logical_bytes"],
+                strict=True,
+            )
+        ]
+        component_summary = {
+            key: {
+                "raw": values,
+                **_snapshot_stats(values),
+            }
+            for key, values in component_values.items()
+        }
+        per_dataset[dataset_id] = {
+            "relation": raw["relation"],
+            "workload_id": raw["workload_id"],
+            "sealed_snapshot_logical_bytes": component_summary["sealed_snapshot_logical_bytes"],
+            "sample_payload_bytes_total": component_summary["sample_payload_bytes_total"],
+            "snapshot_capture_elapsed_seconds": {
+                "raw": capture_values,
+                **_snapshot_stats(capture_values),
+            },
+            "component_bytes": component_summary,
+            "snapshot_semantic_digests": semantic_digests,
+            "snapshot_semantic_digests_equal": len(set(semantic_digests)) == 1,
+            "sample_payload_sha256": sample_hashes,
+            "sample_payload_sha256_stable": len(set(sample_hashes)) == 1,
+            "workload_sha256": workload_hashes,
+            "workload_sha256_stable": len(set(workload_hashes)) == 1,
+            "composition": {
+                "sample_payload_fraction_of_snapshot": {
+                    "raw": sample_fractions,
+                    **_snapshot_stats(sample_fractions),
+                },
+                "workload_json_fraction_of_snapshot": {
+                    "raw": workload_fractions,
+                    **_snapshot_stats(workload_fractions),
+                },
+            },
+            "validation_passed": all(rep["validation_passed"] for rep in repetitions),
+            "cleanup_passed": all(rep["cleanup_passed"] for rep in repetitions),
+        }
+        headline_rows.append(
+            {
+                "dataset_id": dataset_id,
+                "sealed_snapshot_logical_bytes": component_summary["sealed_snapshot_logical_bytes"],
+                "sample_payload_bytes_total": component_summary["sample_payload_bytes_total"],
+                "snapshot_capture_elapsed_seconds": {
+                    "raw": capture_values,
+                    **_snapshot_stats(capture_values),
+                },
+                "sample_payload_fraction_median": median(sample_fractions),
+                "workload_json_fraction_median": median(workload_fractions),
+            }
+        )
+    return per_dataset, headline_rows
+
+
+def _read_snapshot_sources(
+    research_root: Path,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[str, Any]], dict[str, Any]]:
+    summary = _read_pinned(research_root, SNAPSHOT_FORMAL, "RQ5 snapshot footprint summary")
+    _require(
+        summary.get("format_version") == "rq5-snapshot-footprint-v1",
+        "snapshot footprint summary format drifted",
+    )
+    _require(summary.get("status") == "complete", "snapshot footprint summary is not complete")
+    _require(
+        summary.get("research_commit_sha") == SNAPSHOT_FORMAL["producer_sha"],
+        "snapshot footprint producer drifted",
+    )
+    _require(
+        summary.get("protocol_semantic_digest") == SNAPSHOT_PROTOCOL_DIGEST,
+        "snapshot footprint protocol digest drifted",
+    )
+    _require(
+        summary.get("preflight_path") == SNAPSHOT_FORMAL["preflight_path"],
+        "snapshot footprint preflight path drifted",
+    )
+    _require(
+        summary.get("preflight_semantic_digest") == SNAPSHOT_FORMAL["preflight_semantic_digest"],
+        "snapshot footprint preflight digest drifted",
+    )
+    _require(summary.get("dataset_order") == list(DATASETS), "snapshot dataset order drifted")
+    _require(summary.get("repetitions") == 3, "snapshot repetition count drifted")
+    _require(summary.get("no_snapshot_contents_tracked") is True, "snapshot contents are tracked")
+    _require(summary.get("not_refresh") is True, "snapshot evidence was relabeled as refresh")
+    expected_raw_refs = [{"dataset_id": d, **SNAPSHOT_RAW[d]} for d in DATASETS]
+    _require(
+        summary.get("raw_children") == expected_raw_refs,
+        "snapshot raw child references drifted",
+    )
+
+    preflight = _read_pinned(
+        research_root,
+        {
+            "path": SNAPSHOT_FORMAL["preflight_path"],
+            "semantic_digest": SNAPSHOT_FORMAL["preflight_semantic_digest"],
+        },
+        "RQ5 snapshot footprint preflight",
+    )
+    _require(
+        preflight.get("research_commit_sha") == SNAPSHOT_FORMAL["producer_sha"],
+        "snapshot preflight producer drifted",
+    )
+    _require(
+        preflight.get("advisor_sha") == "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+        "snapshot preflight Advisor identity drifted",
+    )
+    _require(
+        preflight.get("stock_postgres_sha") == "0d1c00c624fa7367d4a895f44381887757289682",
+        "snapshot preflight stock identity drifted",
+    )
+    _require(preflight.get("sample_rows") == 10_000, "snapshot sample row count drifted")
+    _require(preflight.get("sample_seed") == 42, "snapshot sample seed drifted")
+    _require(preflight.get("repetitions") == 3, "snapshot preflight repetitions drifted")
+    _require(
+        preflight.get("dataset_order") == list(DATASETS),
+        "snapshot preflight dataset order drifted",
+    )
+    source_specs = preflight.get("datasets")
+    _require(isinstance(source_specs, list), "snapshot preflight dataset specs are missing")
+    _require(
+        [item.get("dataset_id") for item in source_specs] == list(DATASETS),
+        "snapshot preflight source dataset order drifted",
+    )
+    source_by_dataset = {item["dataset_id"]: item for item in source_specs}
+
+    raw_by_dataset: dict[str, dict[str, Any]] = {}
+    source_keys = (
+        "benchmark_id",
+        "dataset_content_identity",
+        "relation",
+        "schema_contract_id",
+        "workload_id",
+        "workload_sha256",
+        "workload_query_count",
+        "canonical_workload_sha256",
+    )
+    for dataset_id in DATASETS:
+        raw = _read_pinned(research_root, SNAPSHOT_RAW[dataset_id], f"snapshot raw {dataset_id}")
+        raw_by_dataset[dataset_id] = raw
+        _require(
+            raw.get("format_version") == "rq5-snapshot-footprint-dataset-v1",
+            f"{dataset_id} snapshot raw format drifted",
+        )
+        _require(raw.get("status") == "complete", f"{dataset_id} snapshot raw is not complete")
+        _require(raw.get("dataset_id") == dataset_id, f"{dataset_id} snapshot identity drifted")
+        _require(
+            raw.get("research_commit_sha") == SNAPSHOT_FORMAL["producer_sha"],
+            f"{dataset_id} snapshot producer drifted",
+        )
+        _require(
+            raw.get("advisor_sha") == preflight["advisor_sha"],
+            f"{dataset_id} snapshot Advisor identity drifted",
+        )
+        _require(
+            raw.get("stock_postgres_sha") == preflight["stock_postgres_sha"],
+            f"{dataset_id} snapshot stock identity drifted",
+        )
+        _require(
+            raw.get("protocol_semantic_digest") == SNAPSHOT_PROTOCOL_DIGEST,
+            f"{dataset_id} snapshot protocol digest drifted",
+        )
+        _require(
+            raw.get("preflight_path") == SNAPSHOT_FORMAL["preflight_path"]
+            and raw.get("preflight_semantic_digest")
+            == SNAPSHOT_FORMAL["preflight_semantic_digest"],
+            f"{dataset_id} snapshot preflight provenance drifted",
+        )
+        source = source_by_dataset[dataset_id]
+        for key in source_keys:
+            _require(
+                raw.get(key) == source.get(key),
+                f"{dataset_id} snapshot source field drifted: {key}",
+            )
+        repetitions = raw.get("repetitions")
+        _require(
+            isinstance(repetitions, list) and len(repetitions) == 3,
+            f"{dataset_id} snapshot repetition count drifted",
+        )
+        for expected_id, repetition in enumerate(repetitions, 1):
+            _require(
+                repetition.get("repetition_id") == expected_id,
+                f"{dataset_id} snapshot repetition order drifted",
+            )
+            for key in (
+                "research_commit_sha",
+                "advisor_sha",
+                "stock_postgres_sha",
+                "benchmark_id",
+                "dataset_content_identity",
+                "relation",
+                "schema_contract_id",
+                "workload_id",
+                "workload_sha256",
+                "workload_query_count",
+                "canonical_workload_sha256",
+                "sample_rows",
+                "sample_seed",
+            ):
+                _require(
+                    repetition.get(key) == raw.get(key),
+                    f"{dataset_id} snapshot repetition provenance drifted: {key}",
+                )
+            _require(repetition.get("status") == "complete", f"{dataset_id} repetition incomplete")
+            _require(
+                repetition.get("validation_passed") is True,
+                f"{dataset_id} snapshot validation failed",
+            )
+            _require(
+                repetition.get("cleanup_passed") is True,
+                f"{dataset_id} snapshot cleanup failed",
+            )
+            components = repetition.get("component_bytes")
+            files = repetition.get("per_file_inventory")
+            _require(isinstance(components, Mapping), f"{dataset_id} component bytes missing")
+            _require(isinstance(files, list), f"{dataset_id} file inventory missing")
+            _require(
+                components.get("regular_file_count") == len(files),
+                f"{dataset_id} regular file count drifted",
+            )
+            _require(
+                components.get("sealed_snapshot_logical_bytes")
+                == sum(item.get("logical_bytes", -1) for item in files),
+                f"{dataset_id} sealed snapshot byte sum drifted",
+            )
+            sample_files = [
+                item for item in files if item.get("component_role") == "sample-payload"
+            ]
+            workload_files = [item for item in files if item.get("component_role") == "workload"]
+            _require(sample_files, f"{dataset_id} sample payload file is missing")
+            _require(workload_files, f"{dataset_id} workload file is missing")
+            _require(
+                components.get("sample_payload_bytes_total")
+                == sum(item.get("logical_bytes", -1) for item in sample_files),
+                f"{dataset_id} sample payload subtotal drifted",
+            )
+        per_file_roles = [
+            item.get("component_role") for item in repetitions[0]["per_file_inventory"]
+        ]
+        _require("manifest" in per_file_roles, f"{dataset_id} manifest component is missing")
+        _require("schema" in per_file_roles, f"{dataset_id} schema component is missing")
+        _require("population" in per_file_roles, f"{dataset_id} population component is missing")
+    per_dataset, headline_rows = _snapshot_component_projection(raw_by_dataset)
+    for dataset_id in DATASETS:
+        expected = summary["datasets"][dataset_id]
+        projected = per_dataset[dataset_id]
+        for key in (
+            "relation",
+            "workload_id",
+            "sealed_snapshot_logical_bytes",
+            "sample_payload_bytes_total",
+            "snapshot_capture_elapsed_seconds",
+            "snapshot_semantic_digests",
+            "snapshot_semantic_digests_equal",
+            "validation_passed",
+            "cleanup_passed",
+        ):
+            _require(
+                expected.get(key) == projected.get(key),
+                f"snapshot summary projection drifted for {dataset_id}: {key}",
+            )
+    return (
+        summary,
+        preflight,
+        raw_by_dataset,
+        {
+            "per_dataset": per_dataset,
+            "headline_rows": headline_rows,
+        },
+    )
+
+
+def _build_inventory_v3_without_digest(research_root: Path) -> dict[str, Any]:
+    v2 = _read_pinned(research_root, V2_INVENTORY, "RQ5 inventory v2")
+    _require(v2.get("format_version") == FORMAT_VERSION_V2, "pinned RQ5 inventory is not v2")
+    _require(
+        v2 == build_inventory_v2(research_root),
+        "RQ5 inventory v2 source-derived content drifted",
+    )
+    _, _, _, snapshot_projection = _read_snapshot_sources(research_root)
+    body = deepcopy(v2)
+    body.pop("semantic_digest", None)
+    body["format_version"] = FORMAT_VERSION_V3
+    body["supersedes_inventory"] = dict(V2_INVENTORY)
+
+    snapshot_paths = [SNAPSHOT_FORMAL["path"], SNAPSHOT_FORMAL["preflight_path"]]
+    snapshot_paths.extend(SNAPSHOT_RAW[d]["path"] for d in DATASETS)
+    snapshot_digests = [
+        SNAPSHOT_FORMAL["semantic_digest"],
+        SNAPSHOT_FORMAL["preflight_semantic_digest"],
+    ]
+    snapshot_digests.extend(SNAPSHOT_RAW[d]["semantic_digest"] for d in DATASETS)
+    body["source_evidence"] = deepcopy(body["source_evidence"])
+    body["source_evidence"]["snapshot_footprint"] = {
+        "summary": dict(SNAPSHOT_FORMAL),
+        "preflight": {
+            "path": SNAPSHOT_FORMAL["preflight_path"],
+            "semantic_digest": SNAPSHOT_FORMAL["preflight_semantic_digest"],
+        },
+        "raw_children": [{"dataset_id": d, **SNAPSHOT_RAW[d]} for d in DATASETS],
+        "producer_sha": SNAPSHOT_FORMAL["producer_sha"],
+        "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+        "protocol_semantic_digest": SNAPSHOT_PROTOCOL_DIGEST,
+        "size_definition": SNAPSHOT_SIZE_DEFINITION,
+        "logical_size_excludes": [
+            "filesystem allocation",
+            "du allocated blocks",
+            "compressed archive size",
+            "manifest-only size",
+            "Python object memory size",
+        ],
+    }
+    stages = deepcopy(body["stages"])
+    stages["snapshot capture"] = _stage(
+        "snapshot-capture",
+        "snapshot capture",
+        "formal-measured",
+        "formal-snapshot-footprint-stock",
+        snapshot_paths,
+        snapshot_digests,
+        list(DATASETS),
+        {
+            "snapshot_capture_elapsed_seconds": {
+                d: snapshot_projection["per_dataset"][d]["snapshot_capture_elapsed_seconds"]
+                for d in DATASETS
+            },
+            "sealed_snapshot_logical_bytes": {
+                d: snapshot_projection["per_dataset"][d]["sealed_snapshot_logical_bytes"]
+                for d in DATASETS
+            },
+            "sample_payload_bytes_total": {
+                d: snapshot_projection["per_dataset"][d]["sample_payload_bytes_total"]
+                for d in DATASETS
+            },
+            "snapshot_size_semantics": SNAPSHOT_SIZE_DEFINITION,
+        },
+        [],
+        "Validated sealed advisor-snapshot-v1 logical regular-file footprint and capture timing",
+        [
+            "Logical file bytes are not filesystem allocation bytes",
+            "Snapshot semantic digest variation is retained; equality is not required",
+            "Snapshot contents are not tracked in this inventory",
+        ],
+        True,
+    )
+    body["stages"] = stages
+    body["coverage_matrix"] = _coverage(stages)
+    body["snapshot_footprint"] = {
+        "summary": dict(SNAPSHOT_FORMAL),
+        "preflight": {
+            "path": SNAPSHOT_FORMAL["preflight_path"],
+            "semantic_digest": SNAPSHOT_FORMAL["preflight_semantic_digest"],
+        },
+        "producer_sha": SNAPSHOT_FORMAL["producer_sha"],
+        "protocol_path": "paper/rq5-snapshot-footprint-protocol-v1.json",
+        "protocol_semantic_digest": SNAPSHOT_PROTOCOL_DIGEST,
+        "size_definition": SNAPSHOT_SIZE_DEFINITION,
+        "logical_size_is_not_filesystem_allocation": True,
+        "logical_size_is_not_compressed_size": True,
+        "logical_size_is_not_manifest_only": True,
+        "per_dataset": snapshot_projection["per_dataset"],
+        "headline_rows": snapshot_projection["headline_rows"],
+    }
+    body["protocol_required_unresolved"] = [
+        {
+            "stage": "production exact truth acquisition",
+            "missing_metric": "exact_count_elapsed_seconds",
+            "datasets": list(DATASETS),
+            "reason": "Tracked evidence does not contain production exact-count acquisition timing",
+            "would_require_new_live_measurement": True,
+            "priority": "main-text-critical",
+        },
+        {
+            "stage": "refresh",
+            "missing_metric": "refresh_elapsed_seconds",
+            "datasets": list(DATASETS),
+            "reason": "No tracked refresh protocol or execution exists",
+            "would_require_new_live_measurement": True,
+            "priority": "main-text-critical",
+        },
+        {
+            "stage": "refresh",
+            "missing_metric": "refresh_quality_trend",
+            "datasets": list(DATASETS),
+            "reason": "No tracked refresh quality trend exists",
+            "would_require_new_live_measurement": True,
+            "priority": "main-text-critical",
+        },
+    ]
+    body["remaining_measurement_gaps"] = deepcopy(body["protocol_required_unresolved"])
+    body["claim_readiness"] = dict(body["claim_readiness"])
+    body["claim_readiness"].update(
+        {
+            "can_claim_snapshot_capture_cost": True,
+            "can_claim_snapshot_size": True,
+            "can_claim_production_exact_truth_cost": False,
+            "can_claim_refresh_cost": False,
+            "can_claim_refresh_quality_trend": False,
+            "can_claim_end_to_end_advisor_cost": False,
+        }
+    )
+    body["optional_external_validity_gaps"] = [
+        {
+            "stage": "post-deployment planning",
+            "missing_metric": "production_online_query_latency",
+            "reason": "Offline EXPLAIN timing is not online latency",
+            "completion_blocker": False,
+        }
+    ]
+    body["interpretation"] = dict(body["interpretation"])
+    body["interpretation"].update(
+        {
+            "snapshot_capture_cost_is_formally_measured": True,
+            "snapshot_size_is_formally_measured": True,
+            "snapshot_size_is_logical_regular_file_sum": True,
+            "snapshot_semantic_digest_equality_is_not_required": True,
+            "sample_payload_sha256_stable_within_dataset": all(
+                item["sample_payload_sha256_stable"]
+                for item in snapshot_projection["per_dataset"].values()
+            ),
+            "workload_sha256_stable_within_dataset": all(
+                item["workload_sha256_stable"]
+                for item in snapshot_projection["per_dataset"].values()
+            ),
+            "snapshot_repetitions_are_not_refresh": True,
+            "external_truth_import_is_not_production_exact_cost": True,
+            "no_canonical_end_to_end_elapsed": True,
+        }
+    )
+    return body
+
+
+def build_inventory_v3(research_root: Path) -> dict[str, Any]:
+    body = _build_inventory_v3_without_digest(research_root)
+    body["semantic_digest"] = semantic_digest(body)
+    return body
+
+
+def write_inventory_v3(research_root: Path, output: Path | None = None) -> dict[str, Any]:
+    output_path = output or default_inventory_v3_path(research_root)
+    value = build_inventory_v3(research_root)
+    write_json(output_path, value)
+    return value
+
+
+def validate_inventory_v3(path: Path, research_root: Path) -> dict[str, Any]:
+    value = read_json(path)
+    _require(
+        value.get("format_version") == FORMAT_VERSION_V3,
+        "unsupported RQ5 inventory v3 format",
+    )
+    digest = value.get("semantic_digest")
+    _require(isinstance(digest, str), "RQ5 inventory v3 lacks semantic_digest")
+    _require(
+        digest == semantic_digest(_without_digest(value, "semantic_digest")),
+        "RQ5 inventory v3 digest mismatch",
+    )
+    _require(value.get("rq5_completion_status") == "incomplete", "RQ5 must remain incomplete")
+    _require(
+        value.get("rq5_registry_status") == RQ5_STATUS,
+        "RQ5 registry status must remain planned",
+    )
+    _require(
+        value.get("generated_from_tracked_json_only") is True, "v3 inventory is not offline-only"
+    )
+    _require(
+        value.get("new_postgresql_execution") is False, "v3 inventory claims PostgreSQL execution"
+    )
+    _require(value.get("new_planner_execution") is False, "v3 inventory claims planner execution")
+    _require(value.get("new_benchmark_run") is False, "v3 inventory claims a benchmark run")
+    _require(value.get("no_synthetic_total") is True, "v3 inventory must forbid synthetic totals")
+    _require("total_advisor_seconds" not in value, "synthetic end-to-end total is forbidden")
+    _require(value.get("supersedes_inventory") == V2_INVENTORY, "v2 supersession gate drifted")
+    expected = build_inventory_v3(research_root)
+    _require(value == expected, "RQ5 inventory v3 does not match source-derived evidence")
+    snapshot_stage = value["stages"]["snapshot capture"]
+    _require(
+        snapshot_stage["measurement_status"] == "formal-measured",
+        "snapshot time/size is not formal",
+    )
+    _require(snapshot_stage["unmeasured_required_metrics"] == [], "snapshot gap remains unresolved")
+    _require(
+        value["snapshot_footprint"]["size_definition"] == SNAPSHOT_SIZE_DEFINITION,
+        "snapshot size semantics drifted",
+    )
+    _require(
+        value["claim_readiness"]["can_claim_snapshot_size"] is True,
+        "snapshot size claim is not ready",
+    )
+    _require(
+        all(
+            item["completion_blocker"] is False for item in value["optional_external_validity_gaps"]
+        ),
+        "optional external gap became a completion blocker",
+    )
+    _require(
+        all(item["stage"] != "snapshot capture" for item in value["protocol_required_unresolved"]),
+        "snapshot capture remains a required unresolved gap",
+    )
+    _require(
+        value["claim_readiness"]["can_claim_end_to_end_advisor_cost"] is False,
+        "v3 inventory claims an end-to-end Advisor total",
+    )
+    reject_credentials(value)
+    return {
+        "status": "valid",
+        "format_version": FORMAT_VERSION_V3,
         "experiment_id": EXPERIMENT_ID,
         "semantic_digest": digest,
         "rq5_completion_status": value["rq5_completion_status"],

@@ -807,19 +807,18 @@
       "completion_criteria": ["all measured stages have provenance", "no zero-online-overhead claim is substituted for measured costs"],
       "existing_trace_inventory": {
         "status": "complete",
-        "artifact": "experiments/rq5-existing-trace-cost-inventory-v2.json",
-        "format_version": "rq5-existing-trace-cost-inventory-v2",
-        "semantic_digest": "de6d4f3291735dfdf03007adfc92678cfc31f11c8ef3f813b25b3b0ac271230b",
+        "artifact": "experiments/rq5-existing-trace-cost-inventory-v3.json",
+        "format_version": "rq5-existing-trace-cost-inventory-v3",
+        "semantic_digest": "49bd52e3427a9226486f4ab0cba9b6b7a0d6778851f9a994d1fbd089a91d6439",
         "scope": "offline aggregation of already-measured cost evidence",
         "rq5_completion_status": "incomplete",
         "prior_inventory": {
-          "artifact": "experiments/rq5-existing-trace-cost-inventory-v1.json",
-          "format_version": "rq5-existing-trace-cost-inventory-v1",
-          "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+          "artifact": "experiments/rq5-existing-trace-cost-inventory-v2.json",
+          "format_version": "rq5-existing-trace-cost-inventory-v2",
+          "semantic_digest": "de6d4f3291735dfdf03007adfc92678cfc31f11c8ef3f813b25b3b0ac271230b",
           "status": "superseded-for-current-pointer"
         },
         "remaining_measurement_gaps": [
-          "snapshot bytes",
           "production exact truth timing",
           "refresh cost and quality trend"
         ]
