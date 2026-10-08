@@ -1,0 +1,55 @@
+{
+  "format_version": "rq1-workload-generalization-failed-attempt-v1",
+  "status": "non-evidence-pre-execution-environment-failure",
+  "dataset": "arecel-power7",
+  "attempt_index": 4,
+  "producer_research_sha": "3c7a23beffd3a09e69900ab75cdba30c296635da",
+  "formal_invocation_count": 1,
+  "failure_stage": "launcher-probe",
+  "failure_class": "frozen-advisor-runtime-dependency-missing",
+  "missing_dependency": "pyarrow",
+  "failure_detail": "frozen Advisor import probe failed because the formal launcher interpreter could not import pyarrow",
+  "prior_attempt": {
+    "attempt_index": 3,
+    "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-003/failure-v1.json",
+    "semantic_digest": "7ead61187975a9406f42348cc23b95b6bac2d4131f551cbc3793bb4989ee3875"
+  },
+  "preflight": {
+    "archived_path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-004/rq1b-preflight-v1.json",
+    "semantic_digest": "a4952db2ffc6ff22ebeb7535c8990536b2c9e1f41144fca0741d8f26d84a300e",
+    "byte_sha256": "84807c59e11ae09f3866b1fb2092537499c8d12135ce87123890f207c1c1bb2f"
+  },
+  "infrastructure": {
+    "stock_postgresql_started": false,
+    "patched_postgresql_started": false,
+    "managed_lifecycle_preparation_started": false,
+    "runtime_launcher_created": true,
+    "runtime_launcher_probe_completed": false
+  },
+  "scientific_execution": {
+    "advisor_imported_or_executed": false,
+    "search_started": false,
+    "planner_started": false,
+    "explain_count": 0,
+    "analyze": false,
+    "create_statistics": false,
+    "production_exact_count": false,
+    "test_side_accessed": false,
+    "baseline_rerun": false
+  },
+  "outputs": {
+    "design_v1_exists": false,
+    "deployment_result_exists": false,
+    "per_query_exists": false,
+    "result_v1_exists": false
+  },
+  "cleanup": {
+    "completed": true,
+    "stock_running_after_cleanup": false,
+    "patched_running_after_cleanup": false,
+    "runtime_residue": false
+  },
+  "retry_performed": false,
+  "evidence_eligibility": false,
+  "semantic_digest": "d809f9e15f4eb2bb33aa8a421b8e8c2ff690ad372eb245b0b555495d30ac638d"
+}

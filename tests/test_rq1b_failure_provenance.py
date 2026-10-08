@@ -18,6 +18,9 @@ ATTEMPT_002_PREFLIGHT_SHA256 = "d5aaca47830af7c8c14fa22e9b3006b79ce3ca35b6f23edf
 ATTEMPT_003_FAILURE_DIGEST = "7ead61187975a9406f42348cc23b95b6bac2d4131f551cbc3793bb4989ee3875"
 ATTEMPT_003_PREFLIGHT_DIGEST = "93b5b10ee65ded47daaadf7aacc6dfd1922b2e5cf7b2270ca10360bf51616efe"
 ATTEMPT_003_PREFLIGHT_SHA256 = "39cf669f84818e6c4287e1e470a9a5f0b4884c2bac34a66208db84f26fb4474f"
+ATTEMPT_004_FAILURE_DIGEST = "d809f9e15f4eb2bb33aa8a421b8e8c2ff690ad372eb245b0b555495d30ac638d"
+ATTEMPT_004_PREFLIGHT_DIGEST = "a4952db2ffc6ff22ebeb7535c8990536b2c9e1f41144fca0741d8f26d84a300e"
+ATTEMPT_004_PREFLIGHT_SHA256 = "84807c59e11ae09f3866b1fb2092537499c8d12135ce87123890f207c1c1bb2f"
 
 
 def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> None:
@@ -101,4 +104,36 @@ def test_attempt_003_archive_is_byte_identical_and_tool_resolution_non_evidence(
         semantic_digest({key: value for key, value in failure.items() if key != "semantic_digest"})
         == failure["semantic_digest"]
         == ATTEMPT_003_FAILURE_DIGEST
+    )
+
+
+def test_attempt_004_archive_is_byte_identical_and_environment_non_evidence() -> None:
+    archived = ATTEMPT_ROOT.parent / "attempt-004/rq1b-preflight-v1.json"
+    failure_path = ATTEMPT_ROOT.parent / "attempt-004/failure-v1.json"
+    assert sha256_file(archived) == ATTEMPT_004_PREFLIGHT_SHA256
+    preflight = json.loads(archived.read_text(encoding="utf-8"))
+    assert (
+        semantic_digest(
+            {key: value for key, value in preflight.items() if key != "semantic_digest"}
+        )
+        == ATTEMPT_004_PREFLIGHT_DIGEST
+    )
+    failure = json.loads(failure_path.read_text(encoding="utf-8"))
+    assert failure["attempt_index"] == 4
+    assert failure["status"] == "non-evidence-pre-execution-environment-failure"
+    assert failure["failure_stage"] == "launcher-probe"
+    assert failure["failure_class"] == "frozen-advisor-runtime-dependency-missing"
+    assert failure["missing_dependency"] == "pyarrow"
+    assert failure["evidence_eligibility"] is False
+    assert failure["retry_performed"] is False
+    assert failure["scientific_execution"]["explain_count"] == 0
+    assert all(
+        value is False
+        for key, value in failure["scientific_execution"].items()
+        if key != "explain_count"
+    )
+    assert (
+        semantic_digest({key: value for key, value in failure.items() if key != "semantic_digest"})
+        == failure["semantic_digest"]
+        == ATTEMPT_004_FAILURE_DIGEST
     )

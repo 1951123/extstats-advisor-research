@@ -1,0 +1,102 @@
+{
+  "advisor_execution_policy": {
+    "launcher_source": "verified advisor_root/src",
+    "mode": "frozen-checkout-runtime-launcher",
+    "path_lookup_allowed": false,
+    "source_checkout_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+  },
+  "campaign_attempt_index": 4,
+  "dataset": {
+    "benchmark_id": "arecel-power7",
+    "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+    "dataset_id": "arecel-power7",
+    "design_truth": {
+      "dataset_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "observations_sha256": "2cf8e81f4ce7143c7085780deab1b6547e518ce7b34b2cfbfb69ebcc882e461c",
+      "path": "truth/arecel/power7/authoritative-cardinality-observations-valid-v1.json",
+      "query_count": 10000,
+      "source_split": "valid",
+      "workload_id": "arecel_power7_valid_v1"
+    },
+    "design_workload": {
+      "canonical_source_sha256": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+      "query_count": 10000,
+      "sha256": "6a4658fee7d4f022a7886700c780a49dd3c2f81f4c6e2502163cabd19096113c",
+      "source_split": "valid",
+      "workload_id": "arecel_power7_valid_v1"
+    },
+    "relation": "public.power7",
+    "rows": 2075259,
+    "schema_contract_id": "arecel-power7-postgres-schema-v1"
+  },
+  "design_output": {
+    "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json"
+  },
+  "evaluation_bindings": {
+    "rq1a_baseline": {
+      "path": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+      "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124"
+    },
+    "source_audit": {
+      "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+      "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+    },
+    "strict_unseen": {
+      "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+      "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+    },
+    "truth_policy": {
+      "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+      "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+    }
+  },
+  "evaluation_output": {
+    "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json"
+  },
+  "formal_execution": "not-started",
+  "format_version": "rq1-workload-generalization-power7-preflight-v1",
+  "no_formal_execution_started": true,
+  "parameters": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100
+  },
+  "preseal_evaluation_content_unread": true,
+  "prior_failed_attempt": {
+    "evidence_eligible": false,
+    "failure_class": "frozen-advisor-console-script-not-resolvable",
+    "path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-003/failure-v1.json",
+    "semantic_digest": "7ead61187975a9406f42348cc23b95b6bac2d4131f551cbc3793bb4989ee3875",
+    "status": "non-evidence-pre-execution-tool-resolution-failure"
+  },
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "research_commit_sha": "3c7a23beffd3a09e69900ab75cdba30c296635da",
+  "semantic_digest": "a4952db2ffc6ff22ebeb7535c8990536b2c9e1f41144fca0741d8f26d84a300e",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "ready-to-run",
+  "strict_unseen_membership": {
+    "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+    "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+  },
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}

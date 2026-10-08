@@ -302,9 +302,9 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "power7-attempt-3-pre-execution-failed",
+      "formal_execution": "power7-attempt-4-pre-execution-environment-failed",
       "formal_evidence_status": "not-produced",
-      "next_formal_attempt": "power7-attempt-4-pending",
+      "next_formal_attempt": "none-pending-until-environment-ready",
       "power7_formal_attempts": [
         {
           "attempt_index": 1,
@@ -329,6 +329,14 @@
           "producer_sha": "a056d4c5c8f59131e220af5853980ee07e1d9920",
           "preflight_semantic_digest": "93b5b10ee65ded47daaadf7aacc6dfd1922b2e5cf7b2270ca10360bf51616efe",
           "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-003/failure-v1.json"
+        },
+        {
+          "attempt_index": 4,
+          "status": "pre-execution-environment-failed",
+          "evidence_eligible": false,
+          "producer_sha": "3c7a23beffd3a09e69900ab75cdba30c296635da",
+          "preflight_semantic_digest": "a4952db2ffc6ff22ebeb7535c8990536b2c9e1f41144fca0741d8f26d84a300e",
+          "failure_artifact": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-004/failure-v1.json"
         }
       ],
       "power7_runner_readiness": "implementation-ready",
