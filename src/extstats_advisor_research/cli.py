@@ -65,16 +65,40 @@ from .rq1_workload_generalization import (
     PROTOCOL_PATH as RQ1B_PROTOCOL_PATH,
 )
 from .rq1_workload_generalization import (
+    PROTOCOL_V2_PATH as RQ1B_PROTOCOL_V2_PATH,
+)
+from .rq1_workload_generalization import (
     SOURCE_AUDIT_PATH as RQ1B_SOURCE_AUDIT_PATH,
+)
+from .rq1_workload_generalization import (
+    SOURCE_AUDIT_V2_PATH as RQ1B_SOURCE_AUDIT_V2_PATH,
+)
+from .rq1_workload_generalization import (
+    STRICT_UNSEEN_PATH as RQ1B_STRICT_UNSEEN_PATH,
 )
 from .rq1_workload_generalization import (
     TRUTH_POLICY_PATH as RQ1B_TRUTH_POLICY_PATH,
 )
 from .rq1_workload_generalization import (
+    build_source_audit_v2 as build_rq1b_source_audit_v2,
+)
+from .rq1_workload_generalization import (
+    build_strict_unseen_membership as build_rq1b_strict_unseen,
+)
+from .rq1_workload_generalization import (
     validate_protocol as validate_rq1b_protocol,
 )
 from .rq1_workload_generalization import (
+    validate_protocol_v2 as validate_rq1b_protocol_v2,
+)
+from .rq1_workload_generalization import (
     validate_source_audit as validate_rq1b_source_audit,
+)
+from .rq1_workload_generalization import (
+    validate_source_audit_v2 as validate_rq1b_source_audit_v2,
+)
+from .rq1_workload_generalization import (
+    validate_strict_unseen_membership as validate_rq1b_strict_unseen,
 )
 from .rq1_workload_generalization import (
     validate_truth_policy as validate_rq1b_truth_policy,
@@ -636,6 +660,8 @@ def _parser() -> argparse.ArgumentParser:
     rq1b_commands = rq1b.add_subparsers(dest="rq1b_command", required=True)
     rq1b_protocol = rq1b_commands.add_parser("protocol")
     rq1b_protocol.add_argument("path", type=Path, nargs="?", default=RQ1B_PROTOCOL_PATH)
+    rq1b_protocol_v2 = rq1b_commands.add_parser("protocol-v2")
+    rq1b_protocol_v2.add_argument("path", type=Path, nargs="?", default=RQ1B_PROTOCOL_V2_PATH)
     rq1b_truth = rq1b_commands.add_parser("truth-policy")
     rq1b_truth.add_argument("path", type=Path, nargs="?", default=RQ1B_TRUTH_POLICY_PATH)
     rq1b_source = rq1b_commands.add_parser("source-audit")
@@ -646,6 +672,26 @@ def _parser() -> argparse.ArgumentParser:
     rq1b_source_validate = rq1b_source_commands.add_parser("validate")
     rq1b_source_validate.add_argument(
         "artifact", type=Path, default=RQ1B_SOURCE_AUDIT_PATH, nargs="?"
+    )
+    rq1b_source_v2 = rq1b_commands.add_parser("source-audit-v2")
+    rq1b_source_v2_commands = rq1b_source_v2.add_subparsers(
+        dest="rq1b_source_v2_command", required=True
+    )
+    rq1b_source_v2_create = rq1b_source_v2_commands.add_parser("create")
+    rq1b_source_v2_create.add_argument("--output", type=Path, default=None)
+    rq1b_source_v2_create.add_argument("--data-root", type=Path, default=None)
+    rq1b_source_v2_validate = rq1b_source_v2_commands.add_parser("validate")
+    rq1b_source_v2_validate.add_argument(
+        "artifact", type=Path, default=RQ1B_SOURCE_AUDIT_V2_PATH, nargs="?"
+    )
+    rq1b_strict = rq1b_commands.add_parser("strict-unseen")
+    rq1b_strict_commands = rq1b_strict.add_subparsers(dest="rq1b_strict_command", required=True)
+    rq1b_strict_create = rq1b_strict_commands.add_parser("create")
+    rq1b_strict_create.add_argument("--output", type=Path, default=None)
+    rq1b_strict_create.add_argument("--data-root", type=Path, default=None)
+    rq1b_strict_validate = rq1b_strict_commands.add_parser("validate")
+    rq1b_strict_validate.add_argument(
+        "artifact", type=Path, default=RQ1B_STRICT_UNSEEN_PATH, nargs="?"
     )
     rq2 = validate_commands.add_parser(
         "rq2-transfer", help="run or validate one formal RQ2 transfer child"
@@ -1232,9 +1278,11 @@ def main(argv: list[str] | None = None) -> int:
             root = Path(__file__).resolve().parents[2]
             if args.rq1b_command == "protocol":
                 result = validate_rq1b_protocol(args.path)
+            elif args.rq1b_command == "protocol-v2":
+                result = validate_rq1b_protocol_v2(args.path)
             elif args.rq1b_command == "truth-policy":
                 result = validate_rq1b_truth_policy(args.path, root)
-            elif args.rq1b_source_command == "create":
+            elif getattr(args, "rq1b_source_command", None) == "create":
                 value = write_rq1b_source_audit(root, output=args.output, data_root=args.data_root)
                 result = {
                     "status": "written",
@@ -1242,6 +1290,30 @@ def main(argv: list[str] | None = None) -> int:
                     "semantic_digest": value["semantic_digest"],
                     "output": str(args.output or (root / RQ1B_SOURCE_AUDIT_PATH)),
                 }
+            elif args.rq1b_command == "source-audit-v2" and args.rq1b_source_v2_command == "create":
+                output = args.output or (root / RQ1B_SOURCE_AUDIT_V2_PATH)
+                value = build_rq1b_source_audit_v2(root, data_root=args.data_root)
+                write_json(output, value)
+                result = {
+                    "status": "written",
+                    "format_version": value["format_version"],
+                    "semantic_digest": value["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq1b_command == "source-audit-v2":
+                result = validate_rq1b_source_audit_v2(args.artifact, root)
+            elif args.rq1b_command == "strict-unseen" and args.rq1b_strict_command == "create":
+                output = args.output or (root / RQ1B_STRICT_UNSEEN_PATH)
+                value = build_rq1b_strict_unseen(root, data_root=args.data_root)
+                write_json(output, value)
+                result = {
+                    "status": "written",
+                    "format_version": value["format_version"],
+                    "semantic_digest": value["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq1b_command == "strict-unseen":
+                result = validate_rq1b_strict_unseen(args.artifact, root)
             else:
                 result = validate_rq1b_source_audit(args.artifact, root)
             print(json.dumps(result, sort_keys=True, indent=2))

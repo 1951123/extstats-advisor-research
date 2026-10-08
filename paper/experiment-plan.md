@@ -125,7 +125,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Validation-to-test held-out generalization under the same audited AreCEL generator contract; no formal execution has started. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; no formal execution has started. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -168,11 +168,15 @@ simple selection baselines, but does not improve every query.
 RQ1a is explicitly in-workload: the evaluation workload is the workload used by
 the advisor objective. Its three-arm matched-comparison artifacts do not
 establish held-out query generalization. RQ1b is preregistered separately: the
-upstream `valid` split is the design workload and the upstream `test` split is
-the held-out evaluation workload, both generated under the same contract on the
-same underlying dataset. This is same-distribution held-out generalization, not
-a workload-drift or OOD-robustness claim. RQ1a is complete, RQ1b is
-preregistered, and the expanded RQ1 program is not yet complete.
+upstream `valid` split is the design workload and the full upstream `test` split
+is the primary held-out evaluation workload, both generated under the same
+contract on the same underlying dataset. A secondary diagnostic filters that
+same test evaluation to the strict-unseen query subset whose exact audited
+source query hash does not occur in any valid record. Valid/test records are
+independent benchmark groups, but exact query identities may repeat across
+groups. This is same-distribution held-out generalization, not a workload-drift
+or OOD-robustness claim. RQ1a is complete, RQ1b is preregistered, and the
+expanded RQ1 program is not yet complete.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact
 ground truth and an explicit dataset inclusion table.

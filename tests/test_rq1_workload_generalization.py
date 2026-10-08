@@ -15,9 +15,16 @@ from extstats_advisor_research.provenance import semantic_digest
 from extstats_advisor_research.rq1_workload_generalization import (
     DATASET_ORDER,
     PROTOCOL_FORMAT,
+    PROTOCOL_V2_FORMAT,
     SOURCE_AUDIT_FORMAT,
+    SOURCE_AUDIT_V1_DIGEST,
+    SOURCE_AUDIT_V2_FORMAT,
+    STRICT_UNSEEN_FORMAT,
     validate_protocol,
+    validate_protocol_v2,
     validate_source_audit,
+    validate_source_audit_v2,
+    validate_strict_unseen_membership,
     validate_truth_policy,
 )
 
@@ -25,6 +32,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "paper/rq1-workload-generalization-protocol-v1.json"
 TRUTH_POLICY = ROOT / "paper/rq1-workload-generalization-truth-policy-v1.json"
 SOURCE_AUDIT = ROOT / "experiments/rq1-workload-generalization-source-audit-v1.json"
+PROTOCOL_V2 = ROOT / "paper/rq1-workload-generalization-protocol-v2.json"
+SOURCE_AUDIT_V2 = ROOT / "experiments/rq1-workload-generalization-source-audit-v2.json"
+STRICT_UNSEEN = ROOT / "experiments/rq1-workload-generalization-strict-unseen-v1.json"
 
 
 def test_all_audited_splits_have_exact_counts_and_namespaces() -> None:
@@ -117,6 +127,100 @@ def test_source_audit_records_real_counts_and_overlap() -> None:
     }
 
 
+def test_v1_artifacts_remain_immutable_and_v2_binds_them() -> None:
+    assert json.loads(PROTOCOL.read_text(encoding="utf-8"))["semantic_digest"] == (
+        "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d"
+    )
+    assert json.loads(TRUTH_POLICY.read_text(encoding="utf-8"))["semantic_digest"] == (
+        "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+    )
+    assert json.loads(SOURCE_AUDIT.read_text(encoding="utf-8"))["semantic_digest"] == (
+        SOURCE_AUDIT_V1_DIGEST
+    )
+    assert validate_source_audit_v2(SOURCE_AUDIT_V2, ROOT)["status"] == "valid"
+    v2 = json.loads(SOURCE_AUDIT_V2.read_text(encoding="utf-8"))
+    assert v2["format_version"] == SOURCE_AUDIT_V2_FORMAT
+    assert v2["supersedes"] == {
+        "path": "experiments/rq1-workload-generalization-source-audit-v1.json",
+        "semantic_digest": SOURCE_AUDIT_V1_DIGEST,
+    }
+
+
+def test_v2_instance_accounting_distinguishes_hashes_and_instances() -> None:
+    audit = json.loads(SOURCE_AUDIT_V2.read_text(encoding="utf-8"))
+    observed = {row["dataset_id"]: row for row in audit["datasets"]}
+    for row in observed.values():
+        assert (
+            row["test_instance_count_with_hash_seen_in_valid"]
+            + row["strict_unseen_test_instance_count"]
+            == 10_000
+        )
+        assert (
+            row["valid_duplicate_instance_count"] == 10_000 - row["valid_unique_query_hash_count"]
+        )
+        assert row["test_duplicate_instance_count"] == 10_000 - row["test_unique_query_hash_count"]
+    assert observed["arecel-forest10"]["strict_unseen_test_instance_count"] == 10_000
+    assert observed["arecel-power7"]["strict_unseen_test_instance_count"] == 10_000
+    assert observed["arecel-census13"]["test_instance_count_with_hash_seen_in_valid"] > 137
+    assert observed["arecel-dmv11"]["test_instance_count_with_hash_seen_in_valid"] > 497
+
+
+def test_strict_unseen_membership_is_canonical_and_evaluation_only() -> None:
+    assert validate_strict_unseen_membership(STRICT_UNSEEN, ROOT)["status"] == "valid"
+    value = json.loads(STRICT_UNSEEN.read_text(encoding="utf-8"))
+    assert value["format_version"] == STRICT_UNSEEN_FORMAT
+    for row in value["datasets"]:
+        all_ids = [
+            f"{row['test_workload_id'].removesuffix('_v1')}_{index:06d}" for index in range(10_000)
+        ]
+        seen = row["seen_in_valid_test_query_ids"]
+        strict = row["strict_unseen_test_query_ids"]
+        assert [int(item.rsplit("_", 1)[1]) for item in seen] == sorted(
+            int(item.rsplit("_", 1)[1]) for item in seen
+        )
+        assert [int(item.rsplit("_", 1)[1]) for item in strict] == sorted(
+            int(item.rsplit("_", 1)[1]) for item in strict
+        )
+        assert set(seen).isdisjoint(strict)
+        assert set(seen) | set(strict) == set(all_ids)
+        assert all("SELECT" not in item for item in seen + strict)
+
+
+def test_protocol_v2_freezes_full_test_primary_and_strict_unseen_secondary() -> None:
+    assert validate_protocol_v2(PROTOCOL_V2)["status"] == "valid"
+    value = json.loads(PROTOCOL_V2.read_text(encoding="utf-8"))
+    assert value["format_version"] == PROTOCOL_V2_FORMAT
+    assert value["primary_evaluation_population"]["query_count"] == 10_000
+    assert value["secondary_evaluation_population"]["evaluation_only"] is True
+    forbidden = set(value["leakage_contract"]["forbidden"])
+    assert "strict-unseen membership before Recommendation is sealed" in forbidden
+    assert value["future_evaluation_efficiency"].startswith(
+        "evaluate the full test split exactly once"
+    )
+
+
+def test_v2_mutations_fail_closed(tmp_path: Path) -> None:
+    value = json.loads(SOURCE_AUDIT_V2.read_text(encoding="utf-8"))
+    value["datasets"][0]["strict_unseen_test_instance_count"] += 1
+    value["semantic_digest"] = semantic_digest(
+        {key: item for key, item in value.items() if key != "semantic_digest"}
+    )
+    path = tmp_path / "mutated-audit-v2.json"
+    path.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ValueError):
+        validate_source_audit_v2(path, ROOT)
+
+    membership = json.loads(STRICT_UNSEEN.read_text(encoding="utf-8"))
+    membership["membership_key"] = "adapted PostgreSQL SQL"
+    membership["semantic_digest"] = semantic_digest(
+        {key: item for key, item in membership.items() if key != "semantic_digest"}
+    )
+    path = tmp_path / "mutated-membership.json"
+    path.write_text(json.dumps(membership), encoding="utf-8")
+    with pytest.raises(ValueError):
+        validate_strict_unseen_membership(path, ROOT)
+
+
 def test_protocol_forbids_train_and_workload_leakage() -> None:
     result = validate_protocol(PROTOCOL)
     assert result["status"] == "valid"
@@ -165,5 +269,14 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
     assert rq1b["formal_execution"] == "not-started"
+    assert rq1b["protocol"] == "paper/rq1-workload-generalization-protocol-v2.json"
+    assert rq1b["source_audit"] == "experiments/rq1-workload-generalization-source-audit-v2.json"
+    assert (
+        rq1b["strict_unseen_membership"]
+        == "experiments/rq1-workload-generalization-strict-unseen-v1.json"
+    )
+    assert rq1b["protocol_v1_historical"]["semantic_digest"] == (
+        "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d"
+    )
     assert spec["status_ledger"]["allowed_statuses"]
     assert "preregistered" in spec["status_ledger"]["allowed_statuses"]

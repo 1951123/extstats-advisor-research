@@ -40,11 +40,19 @@ STATISTICS_TARGET = 100
 SCREENING_WIDTH = 8
 SEARCH_BUDGET_SECONDS = 300
 SOURCE_AUDIT_FORMAT = "rq1-workload-generalization-source-audit-v1"
+SOURCE_AUDIT_V2_FORMAT = "rq1-workload-generalization-source-audit-v2"
 PROTOCOL_FORMAT = "rq1-workload-generalization-protocol-v1"
+PROTOCOL_V2_FORMAT = "rq1-workload-generalization-protocol-v2"
 TRUTH_POLICY_FORMAT = "rq1-workload-generalization-truth-policy-v1"
+STRICT_UNSEEN_FORMAT = "rq1-workload-generalization-strict-unseen-v1"
 PROTOCOL_PATH = Path("paper/rq1-workload-generalization-protocol-v1.json")
+PROTOCOL_V2_PATH = Path("paper/rq1-workload-generalization-protocol-v2.json")
 TRUTH_POLICY_PATH = Path("paper/rq1-workload-generalization-truth-policy-v1.json")
 SOURCE_AUDIT_PATH = Path("experiments/rq1-workload-generalization-source-audit-v1.json")
+SOURCE_AUDIT_V2_PATH = Path("experiments/rq1-workload-generalization-source-audit-v2.json")
+STRICT_UNSEEN_PATH = Path("experiments/rq1-workload-generalization-strict-unseen-v1.json")
+SOURCE_AUDIT_V1_DIGEST = "36345c562b97d07b05e3d96c4218634b5e15b9a977f2b55deb2fc0c4b6ebcda6"
+PROTOCOL_V1_DIGEST = "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d"
 
 
 def _require(condition: bool, message: str) -> None:
@@ -467,6 +475,251 @@ def validate_source_audit(path: Path, research_root: Path | None = None) -> dict
     return {"status": "valid", "semantic_digest": value["semantic_digest"], "dataset_count": 4}
 
 
+def build_source_audit_v2(research_root: Path, data_root: Path | None = None) -> dict[str, Any]:
+    """Build instance-level overlap accounting from the audited source records."""
+
+    base = build_source_audit(research_root, data_root)
+    _require(
+        base["semantic_digest"] == SOURCE_AUDIT_V1_DIGEST,
+        "recomputed v1 source audit does not match the immutable audit",
+    )
+    for dataset_id, row in zip(DATASET_ORDER, base["datasets"], strict=True):
+        dataset = DATASETS[dataset_id]
+        records = _source_record_summary(dataset, data_root)
+        valid_hashes = {record["source_query_sha256"] for record in records[VALID_SPLIT]}
+        test_hashes = {record["source_query_sha256"] for record in records[TEST_SPLIT]}
+        seen_count = sum(
+            record["source_query_sha256"] in valid_hashes for record in records[TEST_SPLIT]
+        )
+        strict_count = len(records[TEST_SPLIT]) - seen_count
+        row.update(
+            {
+                "valid_instance_count": len(records[VALID_SPLIT]),
+                "test_instance_count": len(records[TEST_SPLIT]),
+                "valid_unique_query_hash_count": len(valid_hashes),
+                "test_unique_query_hash_count": len(test_hashes),
+                "valid_test_unique_hash_overlap_count": len(valid_hashes & test_hashes),
+                "test_instance_count_with_hash_seen_in_valid": seen_count,
+                "strict_unseen_test_instance_count": strict_count,
+                "strict_unseen_test_fraction": strict_count / len(records[TEST_SPLIT]),
+                "valid_duplicate_instance_count": len(records[VALID_SPLIT]) - len(valid_hashes),
+                "test_duplicate_instance_count": len(records[TEST_SPLIT]) - len(test_hashes),
+            }
+        )
+    body = {
+        **{key: item for key, item in base.items() if key != "semantic_digest"},
+        "format_version": SOURCE_AUDIT_V2_FORMAT,
+        "supersedes": {
+            "path": SOURCE_AUDIT_PATH.as_posix(),
+            "semantic_digest": SOURCE_AUDIT_V1_DIGEST,
+        },
+    }
+    body["semantic_digest"] = semantic_digest(body)
+    return body
+
+
+def validate_source_audit_v2(path: Path, research_root: Path | None = None) -> dict[str, Any]:
+    root = (research_root or Path(__file__).resolve().parents[2]).resolve()
+    value = read_json(path)
+    _require(
+        value.get("format_version") == SOURCE_AUDIT_V2_FORMAT, "unsupported RQ1b source audit v2"
+    )
+    _require(value.get("status") == "source-audit-complete", "source audit v2 is not complete")
+    _require(
+        value.get("semantic_digest") == semantic_digest(_without_digest(value)),
+        "source audit v2 digest mismatch",
+    )
+    _require(
+        value.get("supersedes")
+        == {"path": SOURCE_AUDIT_PATH.as_posix(), "semantic_digest": SOURCE_AUDIT_V1_DIGEST},
+        "source audit v2 supersession drift",
+    )
+    validate_source_audit(root / SOURCE_AUDIT_PATH, root)
+    v1 = read_json(root / SOURCE_AUDIT_PATH)
+    for v1_row, v2_row in zip(v1["datasets"], value.get("datasets", []), strict=True):
+        for key, item in v1_row.items():
+            _require(v2_row.get(key) == item, f"source audit v2 dropped or changed v1 field: {key}")
+        valid_count = v2_row.get("valid_instance_count")
+        test_count = v2_row.get("test_instance_count")
+        valid_unique = v2_row.get("valid_unique_query_hash_count")
+        test_unique = v2_row.get("test_unique_query_hash_count")
+        seen = v2_row.get("test_instance_count_with_hash_seen_in_valid")
+        strict = v2_row.get("strict_unseen_test_instance_count")
+        for name, item in (
+            ("valid_instance_count", valid_count),
+            ("test_instance_count", test_count),
+            ("valid_unique_query_hash_count", valid_unique),
+            ("test_unique_query_hash_count", test_unique),
+            (
+                "valid_test_unique_hash_overlap_count",
+                v2_row.get("valid_test_unique_hash_overlap_count"),
+            ),
+            ("test_instance_count_with_hash_seen_in_valid", seen),
+            ("strict_unseen_test_instance_count", strict),
+            ("valid_duplicate_instance_count", v2_row.get("valid_duplicate_instance_count")),
+            ("test_duplicate_instance_count", v2_row.get("test_duplicate_instance_count")),
+        ):
+            _require(
+                isinstance(item, int) and not isinstance(item, bool) and item >= 0,
+                f"invalid {name}",
+            )
+        _require(valid_count == EXPECTED_SPLIT_COUNTS[VALID_SPLIT], "valid instance count drift")
+        _require(test_count == EXPECTED_SPLIT_COUNTS[TEST_SPLIT], "test instance count drift")
+        _require(
+            valid_unique == v2_row["valid_exact_source_query_hash_set_size"],
+            "valid unique count drift",
+        )
+        _require(
+            test_unique == v2_row["test_exact_source_query_hash_set_size"],
+            "test unique count drift",
+        )
+        _require(
+            v2_row["valid_test_unique_hash_overlap_count"]
+            == v2_row["valid_test_exact_query_hash_overlap_count"],
+            "unique overlap count drift",
+        )
+        _require(
+            seen + strict == test_count, "test instance partition does not cover 10000 records"
+        )
+        _require(
+            v2_row["valid_duplicate_instance_count"] == valid_count - valid_unique,
+            "valid duplicate count drift",
+        )
+        _require(
+            v2_row["test_duplicate_instance_count"] == test_count - test_unique,
+            "test duplicate count drift",
+        )
+        _require(
+            v2_row["strict_unseen_test_fraction"] == strict / test_count,
+            "strict-unseen fraction drift",
+        )
+    return {"status": "valid", "semantic_digest": value["semantic_digest"], "dataset_count": 4}
+
+
+def build_strict_unseen_membership(
+    research_root: Path, data_root: Path | None = None
+) -> dict[str, Any]:
+    """Build evaluation-only membership using exact audited source query hashes."""
+
+    root = research_root.resolve()
+    audit_path = root / SOURCE_AUDIT_V2_PATH
+    validate_source_audit_v2(audit_path, root)
+    audit = read_json(audit_path)
+    datasets: list[dict[str, Any]] = []
+    for dataset_id in DATASET_ORDER:
+        dataset = DATASETS[dataset_id]
+        records = _source_record_summary(dataset, data_root)
+        valid_hashes = {record["source_query_sha256"] for record in records[VALID_SPLIT]}
+        seen_ids = [
+            f"arecel_{_slug(dataset_id)}_test_{record['index']:06d}"
+            for record in records[TEST_SPLIT]
+            if record["source_query_sha256"] in valid_hashes
+        ]
+        strict_ids = [
+            f"arecel_{_slug(dataset_id)}_test_{record['index']:06d}"
+            for record in records[TEST_SPLIT]
+            if record["source_query_sha256"] not in valid_hashes
+        ]
+        row = next(item for item in audit["datasets"] if item["dataset_id"] == dataset_id)
+        datasets.append(
+            {
+                "dataset_id": dataset_id,
+                "valid_workload_id": row["valid_workload_id"],
+                "test_workload_id": row["test_workload_id"],
+                "strict_unseen_test_query_ids": strict_ids,
+                "seen_in_valid_test_query_ids": seen_ids,
+                "strict_unseen_count": len(strict_ids),
+                "seen_in_valid_count": len(seen_ids),
+            }
+        )
+    body = {
+        "format_version": STRICT_UNSEEN_FORMAT,
+        "experiment_id": "rq1-held-out-workload-generalization",
+        "status": "source-membership-complete",
+        "source_audit": {
+            "path": SOURCE_AUDIT_V2_PATH.as_posix(),
+            "semantic_digest": audit["semantic_digest"],
+        },
+        "membership_key": "exact source_query_sha256",
+        "adapted_sql_not_used": True,
+        "truth_not_included": True,
+        "datasets": datasets,
+    }
+    body["semantic_digest"] = semantic_digest(body)
+    return body
+
+
+def validate_strict_unseen_membership(
+    path: Path, research_root: Path | None = None
+) -> dict[str, Any]:
+    root = (research_root or Path(__file__).resolve().parents[2]).resolve()
+    value = read_json(path)
+    _require(
+        value.get("format_version") == STRICT_UNSEEN_FORMAT, "unsupported strict-unseen artifact"
+    )
+    _require(
+        value.get("status") == "source-membership-complete", "strict-unseen artifact is incomplete"
+    )
+    _require(
+        value.get("semantic_digest") == semantic_digest(_without_digest(value)),
+        "strict-unseen artifact digest mismatch",
+    )
+    validate_source_audit_v2(root / SOURCE_AUDIT_V2_PATH, root)
+    audit = read_json(root / SOURCE_AUDIT_V2_PATH)
+    _require(
+        value.get("source_audit")
+        == {"path": SOURCE_AUDIT_V2_PATH.as_posix(), "semantic_digest": audit["semantic_digest"]},
+        "strict-unseen source audit binding drift",
+    )
+    _require(value.get("membership_key") == "exact source_query_sha256", "strict-unseen key drift")
+    _require(value.get("adapted_sql_not_used") is True, "adapted SQL membership is forbidden")
+    _require(value.get("truth_not_included") is True, "truth must not be included in membership")
+    _require(
+        [item.get("dataset_id") for item in value.get("datasets", [])] == list(DATASET_ORDER),
+        "strict-unseen dataset order drift",
+    )
+    for row, audit_row in zip(value["datasets"], audit["datasets"], strict=True):
+        expected_ids = [
+            f"arecel_{_slug(row['dataset_id'])}_test_{index:06d}" for index in range(SAMPLE_ROWS)
+        ]
+        seen = row.get("seen_in_valid_test_query_ids")
+        strict = row.get("strict_unseen_test_query_ids")
+        _require(
+            row.get("valid_workload_id") == audit_row["valid_workload_id"],
+            "valid workload binding drift",
+        )
+        _require(
+            row.get("test_workload_id") == audit_row["test_workload_id"],
+            "test workload binding drift",
+        )
+        _require(
+            isinstance(seen, list) and isinstance(strict, list), "membership lists are missing"
+        )
+        _require(
+            seen == [item for item in expected_ids if item in set(seen)],
+            "seen IDs are not canonical",
+        )
+        _require(
+            strict == [item for item in expected_ids if item in set(strict)],
+            "strict IDs are not canonical",
+        )
+        _require(set(seen).isdisjoint(strict), "membership sets overlap")
+        _require(
+            set(seen) | set(strict) == set(expected_ids), "membership does not cover test split"
+        )
+        _require(row.get("seen_in_valid_count") == len(seen), "seen count drift")
+        _require(row.get("strict_unseen_count") == len(strict), "strict count drift")
+        _require(
+            row["seen_in_valid_count"] == audit_row["test_instance_count_with_hash_seen_in_valid"],
+            "seen instance count does not match source audit",
+        )
+        _require(
+            row["strict_unseen_count"] == audit_row["strict_unseen_test_instance_count"],
+            "strict-unseen count does not match source audit",
+        )
+    return {"status": "valid", "semantic_digest": value["semantic_digest"], "dataset_count": 4}
+
+
 def protocol_value() -> dict[str, Any]:
     body = {
         "format_version": PROTOCOL_FORMAT,
@@ -585,6 +838,84 @@ def validate_protocol(path: Path) -> dict[str, Any]:
     expected = protocol_value()
     _require(value == expected, "RQ1b protocol drifted from the preregistered contract")
     return {"status": "valid", "semantic_digest": value["semantic_digest"]}
+
+
+def protocol_v2_value() -> dict[str, Any]:
+    base = protocol_value()
+    body = _without_digest(base)
+    body["format_version"] = PROTOCOL_V2_FORMAT
+    body["supersedes"] = {
+        "path": PROTOCOL_PATH.as_posix(),
+        "semantic_digest": PROTOCOL_V1_DIGEST,
+    }
+    body["research_question"] = (
+        "How well do native extended-statistics definitions selected from the AreCEL "
+        "validation workload generalize to the benchmark's held-out test workload, "
+        "and how much of that benefit remains on test queries whose exact query "
+        "identity never appeared in the design workload?"
+    )
+    body["primary_evaluation_population"] = {
+        "source_split": TEST_SPLIT,
+        "upstream_split_name": "test",
+        "query_count": SAMPLE_ROWS,
+        "scope": "full upstream base:test split",
+    }
+    body["secondary_evaluation_population"] = {
+        "source": STRICT_UNSEEN_PATH.as_posix(),
+        "definition": (
+            "test records whose exact source_query_sha256 does not occur in any valid record"
+        ),
+        "scope": "strict-unseen test query subset",
+        "evaluation_only": True,
+    }
+    body["evaluation_stage"] = {
+        "design_stage": {
+            "inputs": ["valid workload", "valid truth", "database snapshot/sample"],
+            "output": "sealed Recommendation S_valid",
+        },
+        "evaluation_stage": {
+            "inputs": [
+                "full test workload",
+                "test truth",
+                "sealed S_valid",
+                "strict-unseen membership",
+            ],
+            "rule": "evaluate all 10000 test queries once, then filter strict-unseen metrics offline",
+        },
+    }
+    body["leakage_contract"]["forbidden"] = [
+        *body["leakage_contract"]["forbidden"],
+        "strict-unseen membership before Recommendation is sealed",
+        "valid/test overlap counts before Recommendation is sealed",
+    ]
+    body["secondary_metrics"] = [
+        *body["secondary_metrics"],
+        "strict-unseen test q-error metrics",
+        "strict-unseen versus full-test metric comparison",
+    ]
+    body["future_evaluation_efficiency"] = (
+        "evaluate the full test split exactly once and derive strict-unseen metrics by offline filtering"
+    )
+    body["no_workload_drift_claim"] = True
+    body["no_acceptance_target"] = True
+    body["semantic_digest"] = semantic_digest(body)
+    return body
+
+
+def validate_protocol_v2(path: Path) -> dict[str, Any]:
+    value = read_json(path)
+    _require(
+        value == protocol_v2_value(), "RQ1b protocol v2 drifted from the preregistered contract"
+    )
+    return {"status": "valid", "semantic_digest": value["semantic_digest"]}
+
+
+def write_protocol_v2(research_root: Path, output: Path | None = None) -> dict[str, Any]:
+    destination = output or research_root.resolve() / PROTOCOL_V2_PATH
+    _require(not destination.exists(), f"RQ1b protocol v2 already exists: {destination}")
+    value = protocol_v2_value()
+    write_json(destination, value)
+    return value
 
 
 def write_protocol(research_root: Path, output: Path | None = None) -> dict[str, Any]:

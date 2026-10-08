@@ -1,0 +1,162 @@
+{
+  "completion_semantics": [
+    "valid-only design inputs verified",
+    "S_valid sealed before test access",
+    "fresh stock physical deployment succeeded",
+    "all 10,000 test queries evaluated",
+    "test truth mapping exact",
+    "metrics reported regardless of direction",
+    "cleanup passed"
+  ],
+  "datasets": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "design_parameters": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100
+  },
+  "design_workload": {
+    "query_count": 10000,
+    "role": "design workload",
+    "source_split": "valid",
+    "upstream_split_name": "valid"
+  },
+  "evaluation_stage": {
+    "design_stage": {
+      "inputs": [
+        "valid workload",
+        "valid truth",
+        "database snapshot/sample"
+      ],
+      "output": "sealed Recommendation S_valid"
+    },
+    "evaluation_stage": {
+      "inputs": [
+        "full test workload",
+        "test truth",
+        "sealed S_valid",
+        "strict-unseen membership"
+      ],
+      "rule": "evaluate all 10000 test queries once, then filter strict-unseen metrics offline"
+    }
+  },
+  "evaluation_workload": {
+    "query_count": 10000,
+    "role": "held-out evaluation workload",
+    "source_split": "test",
+    "upstream_split_name": "test"
+  },
+  "experiment_id": "rq1-held-out-workload-generalization",
+  "forbidden_work": [
+    "train workload as Advisor input",
+    "new workload generation",
+    "workload random split",
+    "production exact COUNT",
+    "RQ5 work"
+  ],
+  "formal_execution_status": "not-started",
+  "format_version": "rq1-workload-generalization-protocol-v2",
+  "future_evaluation_efficiency": "evaluate the full test split exactly once and derive strict-unseen metrics by offline filtering",
+  "leakage_contract": {
+    "before_recommendation_sealed": [
+      "valid workload",
+      "valid truth",
+      "database snapshot/sample",
+      "schema/native candidate information"
+    ],
+    "forbidden": [
+      "test workload SQL",
+      "test truth",
+      "test planner estimates",
+      "test q-errors",
+      "existing test recommendation",
+      "test overlap for selection or tuning",
+      "strict-unseen membership before Recommendation is sealed",
+      "valid/test overlap counts before Recommendation is sealed"
+    ],
+    "stage_boundary": "seal S_valid before any test workload or test truth access"
+  },
+  "no_acceptance_target": true,
+  "no_workload_drift_claim": true,
+  "primary_comparison": [
+    "PG16-default vs S_valid on W_test",
+    "PG16-target10000 vs S_valid on W_test"
+  ],
+  "primary_evaluation_population": {
+    "query_count": 10000,
+    "scope": "full upstream base:test split",
+    "source_split": "test",
+    "upstream_split_name": "test"
+  },
+  "primary_metrics": [
+    "aggregate q-error",
+    "p50",
+    "mean",
+    "tail metrics consistent with RQ1a",
+    "paired improved",
+    "paired unchanged",
+    "paired worsened",
+    "absolute change versus each baseline"
+  ],
+  "research_question": "How well do native extended-statistics definitions selected from the AreCEL validation workload generalize to the benchmark's held-out test workload, and how much of that benefit remains on test queries whose exact query identity never appeared in the design workload?",
+  "rq": "RQ1b",
+  "same_generator_contract": true,
+  "secondary_evaluation_population": {
+    "definition": "test records whose exact source_query_sha256 does not occur in any valid record",
+    "evaluation_only": true,
+    "scope": "strict-unseen test query subset",
+    "source": "experiments/rq1-workload-generalization-strict-unseen-v1.json"
+  },
+  "secondary_metrics": [
+    "S_valid definition count",
+    "S_valid versus S_test intersection",
+    "S_valid versus S_test union",
+    "S_valid versus S_test Jaccard",
+    "J_test(S_valid)",
+    "J_test(S_test) when identity-compatible",
+    "strict-unseen test q-error metrics",
+    "strict-unseen versus full-test metric comparison"
+  ],
+  "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602",
+  "status": "preregistered",
+  "supersedes": {
+    "path": "paper/rq1-workload-generalization-protocol-v1.json",
+    "semantic_digest": "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d"
+  },
+  "system": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "underlying_data_fixed": true,
+  "upstream": {
+    "commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "generator_contract": {
+      "attribute_selection": {
+        "pred_number": 1.0
+      },
+      "center": {
+        "distribution": 0.9,
+        "vocab_ood": 0.1
+      },
+      "counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "width": {
+        "exponential": 0.5,
+        "uniform": 0.5
+      }
+    },
+    "repository": "sfu-db/AreCELearnedYet"
+  }
+}

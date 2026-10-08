@@ -303,8 +303,13 @@
       "rq": "RQ1b",
       "status": "preregistered",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
-      "protocol": "paper/rq1-workload-generalization-protocol-v1.json",
-      "protocol_semantic_digest": "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d",
+      "protocol": "paper/rq1-workload-generalization-protocol-v2.json",
+      "protocol_semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602",
+      "protocol_v1_historical": {
+        "path": "paper/rq1-workload-generalization-protocol-v1.json",
+        "semantic_digest": "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d",
+        "status": "superseded-for-current-pointer"
+      },
       "truth_policy": "paper/rq1-workload-generalization-truth-policy-v1.json",
       "design_split": "valid",
       "evaluation_split": "test",
@@ -313,7 +318,15 @@
       "underlying_data_fixed": true,
       "same_generator_contract": true,
       "workload_drift_claim": false,
-      "source_audit": "experiments/rq1-workload-generalization-source-audit-v1.json",
+      "source_audit": "experiments/rq1-workload-generalization-source-audit-v2.json",
+      "source_audit_semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e",
+      "source_audit_v1_historical": {
+        "path": "experiments/rq1-workload-generalization-source-audit-v1.json",
+        "semantic_digest": "36345c562b97d07b05e3d96c4218634b5e15b9a977f2b55deb2fc0c4b6ebcda6",
+        "status": "superseded-for-current-pointer"
+      },
+      "strict_unseen_membership": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+      "strict_unseen_membership_semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be",
       "formal_execution": "not-started",
       "expected_paper_outputs": ["tab-rq1b-held-out-generalization", "fig-rq1b-qerror-generalization"],
       "completion_criteria": ["valid-only design inputs verified", "Recommendation sealed before test access", "fresh stock physical deployment succeeded", "all test queries evaluated", "test truth mapping exact", "metrics reported regardless of direction", "cleanup passed"]
