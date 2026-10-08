@@ -1,0 +1,72 @@
+{
+  "candidate_generation_started": false,
+  "cleanup": {
+    "patched_touched": false,
+    "runtime_residue": false,
+    "stock_stopped": true
+  },
+  "command": [
+    "/tmp/rq1b-power7-snapshot-diagnostic-c1k884aw/launcher/frozen-extstats-advisor",
+    "snapshot",
+    "capture",
+    "postgres",
+    "--dsn",
+    "<REDACTED_STOCK_DSN>",
+    "--relation",
+    "public.power7",
+    "--sample-rows",
+    "10000",
+    "--sample-seed",
+    "42",
+    "--workload",
+    "/tmp/rq1b-power7-snapshot-diagnostic-c1k884aw/power7-valid-workload.json",
+    "--output",
+    "/tmp/rq1b-power7-snapshot-diagnostic-c1k884aw/advisor-snapshot"
+  ],
+  "dataset": "arecel-power7",
+  "deployment_started": false,
+  "elapsed_seconds": 0.292987,
+  "evidence_eligible": false,
+  "explain_count": 0,
+  "format_version": "rq1b-power7-snapshot-capture-diagnostic-v1",
+  "fresh_stock_loader": {
+    "analyze_count": 1,
+    "null_audit": null,
+    "physical_extended_statistics_count": 0,
+    "postgres_version": null,
+    "rows": 2075259,
+    "statistics_target": 100
+  },
+  "frozen_advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "frozen_launcher_probe": {
+    "advisor_source_root": "/home/wqts/projects/extstats-advisor/src",
+    "imported_module": "/home/wqts/projects/extstats-advisor/src/extstats_advisor/__init__.py",
+    "version": "0.1.0"
+  },
+  "production_exact_count": false,
+  "query_count": 10000,
+  "recommendation_sealed": false,
+  "research_sha": "d31857485acec1ca06b4cab6ee813149c6b8e29b",
+  "returncode": 0,
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "search_started": false,
+  "seed_identifier": 123,
+  "semantic_digest": "eee301f6ac05b47e41bcb8ea92bb25b7b1c81438285acfc3087c5ec8255428ac",
+  "singleton_profiling_started": false,
+  "snapshot_created": true,
+  "snapshot_output_size_bytes": null,
+  "snapshot_validated": false,
+  "snapshot_validation": {
+    "reason": "temporary diagnostic snapshot was removed during cleanup before a separate validation command could run",
+    "status": "not-run-after-capture-cleanup"
+  },
+  "split": "valid",
+  "statistics_target": 100,
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ground_truth_semantic_digest\": null, \"output\": \"/tmp/rq1b-power7-snapshot-diagnostic-c1k884aw/advisor-snapshot\", \"relation_count\": 1, \"sample_row_counts\": {\"rel_f942ede3777a8c02b97be2ed\": 10000}, \"semantic_digest\": \"5779898cc1f6e57962e2ad794a980d76ee411d2b5f502a39a16880d4cfe8a148\", \"status\": \"captured\"}\n",
+  "stock_lab_prepared": true,
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "test_side_accessed": false
+}
