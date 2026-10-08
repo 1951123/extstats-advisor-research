@@ -67,6 +67,12 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
+CAMPAIGN_ATTEMPT_INDEX = 2
+PRIOR_FAILED_ATTEMPT_PATH = Path(
+    "experiments/arecel-power7/rq1-workload-generalization-v1/"
+    "failed-attempts/attempt-001/failure-v1.json"
+)
+PRIOR_FAILED_ATTEMPT_DIGEST = "2802214e945c1365559e921d19f4f00670de4b3dc1464dad4fb9fca2266e1917"
 DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
 PER_QUERY_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
@@ -748,6 +754,13 @@ def build_power7_rq1b_preflight(
     design_source = _design_source_spec(root)
     body: dict[str, Any] = {
         "format_version": PREFLIGHT_FORMAT,
+        "campaign_attempt_index": CAMPAIGN_ATTEMPT_INDEX,
+        "prior_failed_attempt": {
+            **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
+            "status": "non-evidence-infrastructure-failure",
+            "failure_class": "managed-postgresql-not-running",
+            "evidence_eligible": False,
+        },
         "status": "ready-to-run",
         "formal_execution": "not-started",
         "research_commit_sha": producer_sha,
@@ -783,6 +796,20 @@ def validate_power7_rq1b_preflight(
     if not isinstance(value, Mapping):
         raise RQ1BValidationError("RQ1b preflight must be an object")
     _require(value.get("format_version") == PREFLIGHT_FORMAT, "unsupported RQ1b preflight")
+    _require(
+        value.get("campaign_attempt_index") == CAMPAIGN_ATTEMPT_INDEX,
+        "RQ1b campaign attempt index drift",
+    )
+    _require(
+        value.get("prior_failed_attempt")
+        == {
+            **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
+            "status": "non-evidence-infrastructure-failure",
+            "failure_class": "managed-postgresql-not-running",
+            "evidence_eligible": False,
+        },
+        "RQ1b prior failed-attempt binding drift",
+    )
     _require(value.get("status") == "ready-to-run", "RQ1b preflight is not ready")
     _require(value.get("formal_execution") == "not-started", "RQ1b preflight execution state drift")
     _commit(value.get("research_commit_sha"), "preflight producer SHA")
@@ -1308,6 +1335,124 @@ def _execution_from_live_canonical(value: Mapping[str, Any]) -> dict[str, Any]:
     return execution
 
 
+def _managed_dsn_endpoint(dsn: str, *, role: str) -> dict[str, str]:
+    """Return the endpoint fields that bind a DSN to one managed lab role."""
+
+    try:
+        from psycopg.conninfo import conninfo_to_dict
+
+        fields = conninfo_to_dict(dsn)
+    except Exception as exc:  # noqa: BLE001  # convert parser failures to controlled validation
+        raise RQ1BValidationError(f"invalid {role} managed-lab DSN") from exc
+    endpoint = {
+        "host": str(fields.get("host", "")),
+        "port": str(fields.get("port", "")),
+        "dbname": str(fields.get("dbname", "")),
+    }
+    _require(
+        all(endpoint.values()), f"{role} DSN must specify managed host, port, and database"
+    )
+    return endpoint
+
+
+def _validate_managed_lab_dsns(*, stock_dsn: str, planner_dsn: str) -> dict[str, Any]:
+    """Reject DSNs that do not address the repository-owned lab roles exactly."""
+
+    from .postgres_lab import role_spec
+
+    expected: dict[str, dict[str, str]] = {}
+    actual = {
+        "stock": _managed_dsn_endpoint(stock_dsn, role="stock"),
+        "patched": _managed_dsn_endpoint(planner_dsn, role="patched"),
+    }
+    for role in ("stock", "patched"):
+        spec = role_spec(role)
+        expected[role] = {
+            "host": str(spec.socket),
+            "port": str(spec.port),
+            "dbname": spec.database,
+        }
+        _require(
+            actual[role] == expected[role],
+            f"{role} DSN does not match the managed PostgreSQL lab role",
+        )
+    return {"expected": expected, "actual": actual}
+
+
+def _verify_managed_lab_status(role: str, status: Mapping[str, Any], expected_sha: str) -> None:
+    from .postgres_lab import role_spec
+
+    spec = role_spec(role)
+    _require(status.get("running") is True, f"managed {role} PostgreSQL role is not running")
+    _require(status.get("socket_exists") is True, f"managed {role} PostgreSQL socket is absent")
+    _require(status.get("socket") == str(spec.socket), f"managed {role} socket drift")
+    _require(status.get("port") == spec.port, f"managed {role} port drift")
+    _require(status.get("database") == spec.database, f"managed {role} database drift")
+    identity = status.get("identity")
+    _require(isinstance(identity, Mapping), f"managed {role} identity is missing")
+    _require(
+        identity.get("source_commit_sha") == expected_sha,
+        f"managed {role} source SHA drift",
+    )
+    version = str(status.get("server_version", ""))
+    _require("PostgreSQL 16.14" in version, f"managed {role} PostgreSQL version drift")
+
+
+def prepare_power7_rq1b_formal_labs(
+    *,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+) -> dict[str, Any]:
+    """Reinitialize and verify both managed lab roles before design starts.
+
+    This orchestration-layer lifecycle is deliberately separate from the
+    historical canonical runner.  Each role is reinitialized exactly once;
+    failures are propagated to the caller for the outer cleanup path.
+    """
+
+    pins = verify_frozen_systems_v2(
+        advisor_root.resolve(), patched_postgres_root.resolve(), stock_postgres_root.resolve()
+    )
+    _require(pins["advisor_commit_sha"] == FROZEN_ADVISOR_SHA, "live Advisor SHA drift")
+    _require(
+        pins["patched_postgres_commit_sha"] == FROZEN_PATCHED_POSTGRES_SHA,
+        "live patched PostgreSQL SHA drift",
+    )
+    _require(
+        pins["stock_postgres_commit_sha"] == FROZEN_STOCK_POSTGRES_SHA,
+        "live stock PostgreSQL SHA drift",
+    )
+
+    from .postgres_lab import doctor_role, reinit_role, status_role
+
+    reinit_role("stock")
+    stock_status = status_role("stock")
+    _verify_managed_lab_status("stock", stock_status, FROZEN_STOCK_POSTGRES_SHA)
+
+    reinit_role("patched")
+    patched_status = status_role("patched")
+    _verify_managed_lab_status("patched", patched_status, FROZEN_PATCHED_POSTGRES_SHA)
+
+    # The doctor reuses the repository's existing patched-backend capability
+    # probe rather than inventing a socket-only substitute.
+    diagnoses = {role: doctor_role(role) for role in ("stock", "patched")}
+    for role, diagnosis in diagnoses.items():
+        _require(diagnosis.get("ok") is True, f"managed {role} PostgreSQL doctor failed")
+    patched_capability = diagnoses["patched"].get("patched_backend", {})
+    _require(patched_capability.get("ok") is True, "patched PostgreSQL capability probe failed")
+    _require(
+        patched_capability.get("reference_source_commit") == FROZEN_PATCHED_POSTGRES_SHA,
+        "patched PostgreSQL capability source SHA drift",
+    )
+    return {
+        "status": "ready",
+        "stock": stock_status,
+        "patched": patched_status,
+        "patched_capability": patched_capability,
+    }
+
+
 def execute_power7_rq1b_design_live(
     *,
     research_root: Path,
@@ -1733,10 +1878,16 @@ def run_power7_rq1b_formal(
     verify_power7_formal_tree(
         research_root=root, preflight_path=preflight_path, preflight=preflight
     )
+    _validate_managed_lab_dsns(stock_dsn=stock_dsn, planner_dsn=planner_dsn)
     producer = str(preflight["research_commit_sha"])
     runtime_base = _path(root, runtime_root or root / ".runtime/rq1b-power7")
     runtime = runtime_base / "design"
     try:
+        prepare_power7_rq1b_formal_labs(
+            advisor_root=advisor_root,
+            patched_postgres_root=patched_postgres_root,
+            stock_postgres_root=stock_postgres_root,
+        )
         design = execute_power7_rq1b_design_live(
             research_root=root,
             producer_sha=producer,
@@ -1801,6 +1952,7 @@ __all__ = [
     "build_power7_rq1b_result",
     "execute_power7_rq1b_design_live",
     "execute_power7_rq1b_evaluation_live",
+    "prepare_power7_rq1b_formal_labs",
     "paired_outcomes",
     "prepare_evaluation_stage",
     "publish_result",

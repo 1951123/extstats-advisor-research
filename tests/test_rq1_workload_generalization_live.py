@@ -482,6 +482,14 @@ def test_preflight_contains_only_opaque_evaluation_bindings(
         research_root=tmp_path,
         producer_sha=producer,
     )
+    assert value["campaign_attempt_index"] == 2
+    assert value["prior_failed_attempt"] == {
+        "path": live.PRIOR_FAILED_ATTEMPT_PATH.as_posix(),
+        "semantic_digest": live.PRIOR_FAILED_ATTEMPT_DIGEST,
+        "status": "non-evidence-infrastructure-failure",
+        "failure_class": "managed-postgresql-not-running",
+        "evidence_eligible": False,
+    }
     serialized = json.dumps(value, sort_keys=True)
     assert "evaluation_bindings" in value
     assert value["evaluation_bindings"] == live._opaque_evaluation_bindings()
@@ -643,6 +651,8 @@ def test_formal_runner_reloads_canonical_design_before_evaluation(
 
     monkeypatch.setattr(live, "validate_power7_rq1b_preflight", lambda *args, **kwargs: {})
     monkeypatch.setattr(live, "verify_power7_formal_tree", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "_validate_managed_lab_dsns", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "prepare_power7_rq1b_formal_labs", lambda *args, **kwargs: {})
     monkeypatch.setattr(live, "_stop_formal_roles", lambda: True)
 
     def fake_design(**kwargs: object) -> dict[str, object]:
@@ -672,3 +682,150 @@ def test_formal_runner_reloads_canonical_design_before_evaluation(
     assert result["status"] == "mock-success"
     assert observed["design_artifact"] == sealed
     assert observed["design_artifact"] is not sealed
+
+
+def test_formal_labs_reinitialize_and_verify_both_roles_before_design(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from extstats_advisor_research import postgres_lab
+
+    events: list[str] = []
+
+    monkeypatch.setattr(
+        live,
+        "verify_frozen_systems_v2",
+        lambda *args, **kwargs: {
+            "advisor_commit_sha": live.FROZEN_ADVISOR_SHA,
+            "patched_postgres_commit_sha": live.FROZEN_PATCHED_POSTGRES_SHA,
+            "stock_postgres_commit_sha": live.FROZEN_STOCK_POSTGRES_SHA,
+        },
+    )
+
+    def reinit(role: str) -> dict[str, object]:
+        events.append(f"reinit:{role}")
+        return {"role": role}
+
+    def status(role: str) -> dict[str, object]:
+        events.append(f"status:{role}")
+        spec = postgres_lab.role_spec(role)
+        sha = (
+            live.FROZEN_STOCK_POSTGRES_SHA
+            if role == "stock"
+            else live.FROZEN_PATCHED_POSTGRES_SHA
+        )
+        return {
+            "running": True,
+            "socket_exists": True,
+            "socket": str(spec.socket),
+            "port": spec.port,
+            "database": spec.database,
+            "identity": {"source_commit_sha": sha},
+            "server_version": "PostgreSQL 16.14 (mock)",
+        }
+
+    def doctor(role: str) -> dict[str, object]:
+        events.append(f"doctor:{role}")
+        return {
+            "ok": True,
+            "patched_backend": {
+                "ok": True,
+                "reference_source_commit": live.FROZEN_PATCHED_POSTGRES_SHA,
+            }
+            if role == "patched"
+            else {},
+        }
+
+    monkeypatch.setattr(postgres_lab, "reinit_role", reinit)
+    monkeypatch.setattr(postgres_lab, "status_role", status)
+    monkeypatch.setattr(postgres_lab, "doctor_role", doctor)
+    result = live.prepare_power7_rq1b_formal_labs(
+        advisor_root=Path("advisor"),
+        patched_postgres_root=Path("patched"),
+        stock_postgres_root=Path("stock"),
+    )
+
+    assert result["status"] == "ready"
+    assert events[:4] == ["reinit:stock", "status:stock", "reinit:patched", "status:patched"]
+    assert events[-2:] == ["doctor:stock", "doctor:patched"]
+
+
+def test_formal_lab_preparation_does_not_retry_after_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from extstats_advisor_research import postgres_lab
+
+    monkeypatch.setattr(
+        live,
+        "verify_frozen_systems_v2",
+        lambda *args, **kwargs: {
+            "advisor_commit_sha": live.FROZEN_ADVISOR_SHA,
+            "patched_postgres_commit_sha": live.FROZEN_PATCHED_POSTGRES_SHA,
+            "stock_postgres_commit_sha": live.FROZEN_STOCK_POSTGRES_SHA,
+        },
+    )
+    calls: list[str] = []
+
+    def fail_once(role: str) -> None:
+        calls.append(role)
+        raise RuntimeError("mock reinit failure")
+
+    monkeypatch.setattr(postgres_lab, "reinit_role", fail_once)
+    with pytest.raises(RuntimeError, match="mock reinit failure"):
+        live.prepare_power7_rq1b_formal_labs(
+            advisor_root=Path("advisor"),
+            patched_postgres_root=Path("patched"),
+            stock_postgres_root=Path("stock"),
+        )
+    assert calls == ["stock"]
+
+
+def test_formal_preparation_failure_stops_before_design_and_cleans_up(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+    preflight_path = tmp_path / live.PREFLIGHT_PATH
+    preflight_path.parent.mkdir(parents=True)
+    preflight_path.write_text(json.dumps({"research_commit_sha": producer}), encoding="utf-8")
+    events: list[str] = []
+    monkeypatch.setattr(live, "validate_power7_rq1b_preflight", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "verify_power7_formal_tree", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "_validate_managed_lab_dsns", lambda *args, **kwargs: {})
+    monkeypatch.setattr(
+        live,
+        "prepare_power7_rq1b_formal_labs",
+        lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("prep failed")),
+    )
+    monkeypatch.setattr(live, "_stop_formal_roles", lambda: events.append("cleanup") or True)
+    monkeypatch.setattr(
+        live,
+        "execute_power7_rq1b_design_live",
+        lambda **kwargs: pytest.fail("design started after lab preparation failure"),
+    )
+    with pytest.raises(RuntimeError, match="prep failed"):
+        live.run_power7_rq1b_formal(
+            research_root=tmp_path,
+            preflight_path=live.PREFLIGHT_PATH,
+            stock_dsn="unused",
+            planner_dsn="unused",
+            advisor_root=tmp_path / "advisor",
+            patched_postgres_root=tmp_path / "patched",
+            stock_postgres_root=tmp_path / "stock",
+        )
+    assert events == ["cleanup"]
+
+
+def test_managed_lab_dsns_reject_wrong_endpoints() -> None:
+    from extstats_advisor_research import postgres_lab
+
+    stock = postgres_lab.role_spec("stock")
+    patched = postgres_lab.role_spec("patched")
+    good_stock = f"host={stock.socket} port={stock.port} dbname={stock.database}"
+    good_patched = f"host={patched.socket} port={patched.port} dbname={patched.database}"
+    assert live._validate_managed_lab_dsns(
+        stock_dsn=good_stock, planner_dsn=good_patched
+    )["actual"]["stock"]["port"] == str(stock.port)
+    with pytest.raises(live.RQ1BValidationError, match="stock DSN"):
+        live._validate_managed_lab_dsns(
+            stock_dsn="host=/tmp/other port=55432 dbname=extstats_stock",
+            planner_dsn=good_patched,
+        )

@@ -21,10 +21,12 @@ def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> N
     archived = ATTEMPT_ROOT / "rq1b-preflight-v1.json"
     failure_path = ATTEMPT_ROOT / "failure-v1.json"
 
-    assert source.read_bytes() == archived.read_bytes()
+    assert not source.exists()
     assert sha256_file(archived) == EXPECTED_PREFLIGHT_SHA256
     preflight = json.loads(archived.read_text(encoding="utf-8"))
-    assert semantic_digest(preflight) == EXPECTED_PREFLIGHT_DIGEST
+    assert semantic_digest(
+        {key: value for key, value in preflight.items() if key != "semantic_digest"}
+    ) == EXPECTED_PREFLIGHT_DIGEST
 
     failure = json.loads(failure_path.read_text(encoding="utf-8"))
     assert failure["status"] == "non-evidence-infrastructure-failure"
@@ -35,4 +37,3 @@ def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> N
     assert semantic_digest(
         {key: value for key, value in failure.items() if key != "semantic_digest"}
     ) == EXPECTED_FAILURE_DIGEST
-
