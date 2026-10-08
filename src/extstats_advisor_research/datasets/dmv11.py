@@ -23,6 +23,7 @@ WORKLOAD_PICKLE_SHA256 = "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff85
 LABEL_PICKLE_SHA256 = "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65"
 CANONICAL_WORKLOAD_SHA256 = "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40"
 EXPECTED_ROWS = 11_591_877
+EXPECTED_VALID_QUERIES = 10_000
 EXPECTED_TEST_QUERIES = 10_000
 SCHEMA_CONTRACT_ID = "arecel-dmv11-postgres-schema-v1"
 AUTHORITATIVE_TRUTH_AUTHORITY = "sfu-db/AreCELearnedYet"
@@ -283,21 +284,28 @@ def adapt_query_sql(source_sql: str) -> str:
     return _adapt_identifiers(projected)
 
 
-def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+def load_records(value: Path | None = None, split: str = "test") -> list[dict[str, Any]]:
+    if split not in {"valid", "test"}:
+        raise ValueError("canonical DMV11 workload split must be valid or test")
     _audit(value)
     _source_hashes(value)
     records: list[dict[str, Any]] = []
     with gzip.open(canonical_workload_path(value), "rt", encoding="utf-8") as stream:
         for raw in map(json.loads, stream):
-            if raw.get("split") != "test":
+            if raw.get("split") != split:
                 continue
             index = int(raw["index"])
-            if raw.get("query_id") != f"arecel:dmv11:test:{index:06d}":
+            if raw.get("query_id") != f"arecel:dmv11:{split}:{index:06d}":
                 raise ValueError(f"unexpected DMV11 source query identity at index {index}")
+            if (
+                not isinstance(raw.get("source_query_sha256"), str)
+                or len(raw["source_query_sha256"]) != 64
+            ):
+                raise ValueError(f"missing DMV11 source query hash at index {index}")
             records.append(
                 {
                     "source_index": index,
-                    "query_id": f"arecel_dmv11_test_{index:06d}",
+                    "query_id": f"arecel_dmv11_{split}_{index:06d}",
                     "source_query_id": raw["query_id"],
                     "original_sql": raw["sql"],
                     "sql": adapt_query_sql(raw["sql"]),
@@ -307,22 +315,30 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
                     "source_query_sha256": raw["source_query_sha256"],
                 }
             )
-    if len(records) != EXPECTED_TEST_QUERIES:
-        raise ValueError(f"expected {EXPECTED_TEST_QUERIES} DMV11 test queries, got {len(records)}")
-    if [record["source_index"] for record in records] != list(range(EXPECTED_TEST_QUERIES)):
-        raise ValueError("DMV11 test source order is not contiguous and deterministic")
+    if len(records) != EXPECTED_VALID_QUERIES:
+        raise ValueError(
+            f"expected {EXPECTED_VALID_QUERIES} DMV11 {split} queries, got {len(records)}"
+        )
+    if [record["source_index"] for record in records] != list(range(EXPECTED_VALID_QUERIES)):
+        raise ValueError(f"DMV11 {split} source order is not contiguous and deterministic")
     return records
+
+
+def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="test")
+
+
+def load_valid_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="valid")
 
 
 def extract_workload(
     output: Path, value: Path | None = None, split: str = "test"
 ) -> dict[str, Any]:
-    if split != "test":
-        raise ValueError("DMV11 adapter currently audits only the base:test reproduction split")
-    records = load_test_records(value)
+    records = load_records(value, split=split)
     metadata = inspect(value)
     hashes = metadata["source_file_sha256"]
-    workload = _build_workload(records, metadata, hashes)
+    workload = _build_workload(records, metadata, hashes, split)
     write_json(output, workload)
     return {
         "workload_id": workload["workload_id"],
@@ -332,21 +348,21 @@ def extract_workload(
 
 
 def _build_workload(
-    records: list[dict[str, Any]], metadata: dict[str, Any], hashes: dict[str, str]
+    records: list[dict[str, Any]], metadata: dict[str, Any], hashes: dict[str, str], split: str
 ) -> dict[str, Any]:
     return {
-        "workload_id": "arecel_dmv11_test_v1",
+        "workload_id": f"arecel_dmv11_{split}_v1",
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
             "dataset_content_identity": metadata["dataset_content_identity"],
             "source_workload": "data/dmv11/workload/base.pkl",
             "source_labels": "data/dmv11/workload/base-original-label.pkl",
-            "source_split": "test",
+            "source_split": split,
             "source_workload_sha256": hashes["workload_pickle"],
             "source_label_sha256": hashes["label_pickle"],
             "canonical_source_sha256": hashes["canonical_workload"],
             "upstream_commit": UPSTREAM_COMMIT,
-            "query_id_mapping": "arecel:dmv11:test:<index> -> arecel_dmv11_test_<index>",
+            "query_id_mapping": f"arecel:dmv11:{split}:<index> -> arecel_dmv11_{split}_<index>",
             "projection_adapter": "count-star-to-select-star-v1",
             "relation_adapter": "safe-exact-dmv11-original-to-public.dmv11-v1",
             "identifier_adapter": "safe-source-identifiers-to-lowercase-catalog-identifiers-v1",

@@ -23,6 +23,7 @@ WORKLOAD_PICKLE_SHA256 = "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad291
 LABEL_PICKLE_SHA256 = "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974"
 CANONICAL_WORKLOAD_SHA256 = "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74"
 EXPECTED_ROWS = 581_012
+EXPECTED_VALID_QUERIES = 10_000
 EXPECTED_TEST_QUERIES = 10_000
 SCHEMA_CONTRACT_ID = "arecel-forest10-postgres-schema-v1"
 UPSTREAM_DDL_RELATION = '"forest10_original"'
@@ -249,21 +250,28 @@ def adapt_query_sql(source_sql: str) -> str:
     return _adapt_identifiers(projected)
 
 
-def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+def load_records(value: Path | None = None, split: str = "test") -> list[dict[str, Any]]:
+    if split not in {"valid", "test"}:
+        raise ValueError("canonical Forest10 workload split must be valid or test")
     _audit(value)
     _source_hashes(value)
     records = []
     with gzip.open(canonical_workload_path(value), "rt", encoding="utf-8") as stream:
         for record in map(json.loads, stream):
-            if record.get("split") != "test":
+            if record.get("split") != split:
                 continue
             index = int(record["index"])
-            if record.get("query_id") != f"arecel:forest10:test:{index:06d}":
+            if record.get("query_id") != f"arecel:forest10:{split}:{index:06d}":
                 raise ValueError(f"unexpected Forest10 source query identity at index {index}")
+            if (
+                not isinstance(record.get("source_query_sha256"), str)
+                or len(record["source_query_sha256"]) != 64
+            ):
+                raise ValueError(f"missing Forest10 source query hash at index {index}")
             records.append(
                 {
                     "source_index": index,
-                    "query_id": f"arecel_forest10_test_{index:06d}",
+                    "query_id": f"arecel_forest10_{split}_{index:06d}",
                     "source_query_id": record["query_id"],
                     "original_sql": record["sql"],
                     "sql": adapt_query_sql(record["sql"]),
@@ -273,23 +281,29 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
                     "source_query_sha256": record["source_query_sha256"],
                 }
             )
-    if len(records) != EXPECTED_TEST_QUERIES:
+    if len(records) != EXPECTED_VALID_QUERIES:
         raise ValueError(
-            f"expected {EXPECTED_TEST_QUERIES} Forest10 test queries, got {len(records)}"
+            f"expected {EXPECTED_VALID_QUERIES} Forest10 {split} queries, got {len(records)}"
         )
-    if [record["source_index"] for record in records] != list(range(EXPECTED_TEST_QUERIES)):
-        raise ValueError("Forest10 test source order is not contiguous and deterministic")
+    if [record["source_index"] for record in records] != list(range(EXPECTED_VALID_QUERIES)):
+        raise ValueError(f"Forest10 {split} source order is not contiguous and deterministic")
     return records
+
+
+def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="test")
+
+
+def load_valid_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="valid")
 
 
 def extract_workload(
     output: Path, value: Path | None = None, split: str = "test"
 ) -> dict[str, Any]:
-    if split != "test":
-        raise ValueError("Forest10 adapter currently audits only the base:test reproduction split")
-    records = load_test_records(value)
+    records = load_records(value, split=split)
     hashes = _source_hashes(value)
-    workload = _build_workload(records, hashes)
+    workload = _build_workload(records, hashes, split)
     write_json(output, workload)
     return {
         "workload_id": workload["workload_id"],
@@ -298,26 +312,30 @@ def extract_workload(
     }
 
 
-def _build_workload(records: list[dict[str, Any]], hashes: dict[str, str]) -> dict[str, Any]:
+def _build_workload(
+    records: list[dict[str, Any]], hashes: dict[str, str], split: str = "test"
+) -> dict[str, Any]:
     return {
-        "workload_id": "arecel_forest10_test_v1",
+        "workload_id": f"arecel_forest10_{split}_v1",
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
             "source_workload": "data/forest10/workload/base.pkl",
             "source_labels": "data/forest10/workload/base-original-label.pkl",
-            "source_split": "test",
+            "source_split": split,
             "source_workload_sha256": hashes["workload_pickle"],
             "source_label_sha256": hashes["label_pickle"],
             "canonical_source_sha256": hashes["canonical_workload"],
             "upstream_commit": UPSTREAM_COMMIT,
-            "query_id_mapping": "arecel:forest10:test:<index> -> arecel_forest10_test_<index>",
+            "query_id_mapping": (
+                f"arecel:forest10:{split}:<index> -> arecel_forest10_{split}_<index>"
+            ),
             "projection_adapter": "count-star-to-select-star-v1",
             "relation_adapter": "safe-exact-source-relation-to-public.forest10-v1",
             "identifier_adapter": "quoted-source-names-to-lowercase-catalog-identifiers-v1",
         },
         "queries": [
             {
-                "query_id": f"arecel_forest10_test_{record['source_index']:06d}",
+                "query_id": f"arecel_forest10_{split}_{record['source_index']:06d}",
                 "sql": record["sql"],
                 "weight": 1.0,
             }

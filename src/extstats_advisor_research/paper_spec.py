@@ -22,6 +22,7 @@ ALLOWED_STATUSES = {
     "planned",
     "implementation-needed",
     "ready-to-run",
+    "preregistered",
     "complete",
     "superseded",
 }

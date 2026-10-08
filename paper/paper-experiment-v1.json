@@ -299,6 +299,26 @@
       "completion_criteria": ["all source identities resolved", "matched per-dataset manifests validated", "raw and derived artifacts content-addressed"]
     },
     {
+      "experiment_id": "rq1-held-out-workload-generalization",
+      "rq": "RQ1b",
+      "status": "preregistered",
+      "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
+      "protocol": "paper/rq1-workload-generalization-protocol-v1.json",
+      "protocol_semantic_digest": "7c8d959a4388fc484013e3736140e9b49aa1060bad22736065a60522c0b3e83d",
+      "truth_policy": "paper/rq1-workload-generalization-truth-policy-v1.json",
+      "design_split": "valid",
+      "evaluation_split": "test",
+      "design_queries": 10000,
+      "evaluation_queries": 10000,
+      "underlying_data_fixed": true,
+      "same_generator_contract": true,
+      "workload_drift_claim": false,
+      "source_audit": "experiments/rq1-workload-generalization-source-audit-v1.json",
+      "formal_execution": "not-started",
+      "expected_paper_outputs": ["tab-rq1b-held-out-generalization", "fig-rq1b-qerror-generalization"],
+      "completion_criteria": ["valid-only design inputs verified", "Recommendation sealed before test access", "fresh stock physical deployment succeeded", "all test queries evaluated", "test truth mapping exact", "metrics reported regardless of direction", "cleanup passed"]
+    },
+    {
       "experiment_id": "rq2a-confirmatory-transfer",
       "rq": "RQ2a",
       "status": "complete",
@@ -907,12 +927,17 @@
     }
   ],
   "status_ledger": {
-    "allowed_statuses": ["pilot", "planned", "implementation-needed", "ready-to-run", "complete", "superseded"],
+    "allowed_statuses": ["pilot", "planned", "implementation-needed", "ready-to-run", "preregistered", "complete", "superseded"],
     "entries": [
       {
         "experiment_id": "rq1-confirmatory-matched-baselines",
         "status": "complete",
         "note": "The four-dataset, three-arm, in-workload matched comparison is complete with the immutable cross-dataset summary. This does not complete RQ4 heuristic ablations or establish held-out query generalization."
+      },
+      {
+        "experiment_id": "rq1-held-out-workload-generalization",
+        "status": "preregistered",
+        "note": "RQ1b is preregistered as a valid-to-test held-out workload generalization study under the same upstream generator contract; no formal execution has started."
       },
       {
         "experiment_id": "rq1-existing-baselines",
@@ -990,7 +1015,7 @@
     {
       "priority": 1,
       "name": "RQ1 matched baselines and RQ4 inexpensive heuristic baselines",
-      "experiment_ids": ["rq1-confirmatory-matched-baselines", "rq4-fixed-k-ablations", "rq4-fixed-evaluation-budget-ablations"]
+      "experiment_ids": ["rq1-confirmatory-matched-baselines", "rq1-held-out-workload-generalization", "rq4-fixed-k-ablations", "rq4-fixed-evaluation-budget-ablations"]
     },
     {
       "priority": 2,

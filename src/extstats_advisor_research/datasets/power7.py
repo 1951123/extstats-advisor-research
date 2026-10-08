@@ -23,6 +23,7 @@ WORKLOAD_PICKLE_SHA256 = "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5
 LABEL_PICKLE_SHA256 = "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5"
 CANONICAL_WORKLOAD_SHA256 = "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327"
 EXPECTED_ROWS = 2_075_259
+EXPECTED_VALID_QUERIES = 10_000
 EXPECTED_TEST_QUERIES = 10_000
 SCHEMA_CONTRACT_ID = "arecel-power7-postgres-schema-v1"
 SOURCE_COLUMNS: tuple[str, ...] = (
@@ -231,22 +232,29 @@ def adapt_query_sql(source_sql: str) -> str:
     return _adapt_identifiers(projected)
 
 
-def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+def load_records(value: Path | None = None, split: str = "test") -> list[dict[str, Any]]:
+    if split not in {"valid", "test"}:
+        raise ValueError("canonical Power7 workload split must be valid or test")
     _audit(value)
     _source_hashes(value)
     records = []
     with gzip.open(canonical_workload_path(value), "rt", encoding="utf-8") as stream:
         for raw in map(json.loads, stream):
-            if raw.get("split") != "test":
+            if raw.get("split") != split:
                 continue
             index = int(raw["index"])
-            expected_id = f"arecel:power7:test:{index:06d}"
+            expected_id = f"arecel:power7:{split}:{index:06d}"
             if raw.get("query_id") != expected_id:
                 raise ValueError(f"unexpected Power7 source query identity at index {index}")
+            if (
+                not isinstance(raw.get("source_query_sha256"), str)
+                or len(raw["source_query_sha256"]) != 64
+            ):
+                raise ValueError(f"missing Power7 source query hash at index {index}")
             records.append(
                 {
                     "source_index": index,
-                    "query_id": f"arecel_power7_test_{index:06d}",
+                    "query_id": f"arecel_power7_{split}_{index:06d}",
                     "source_query_id": raw["query_id"],
                     "original_sql": raw["sql"],
                     "sql": adapt_query_sql(raw["sql"]),
@@ -256,34 +264,40 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
                     "source_query_sha256": raw["source_query_sha256"],
                 }
             )
-    if len(records) != EXPECTED_TEST_QUERIES:
+    if len(records) != EXPECTED_VALID_QUERIES:
         raise ValueError(
-            f"expected {EXPECTED_TEST_QUERIES} Power7 test queries, got {len(records)}"
+            f"expected {EXPECTED_VALID_QUERIES} Power7 {split} queries, got {len(records)}"
         )
-    if [record["source_index"] for record in records] != list(range(EXPECTED_TEST_QUERIES)):
-        raise ValueError("Power7 test source order is not contiguous and deterministic")
+    if [record["source_index"] for record in records] != list(range(EXPECTED_VALID_QUERIES)):
+        raise ValueError(f"Power7 {split} source order is not contiguous and deterministic")
     return records
+
+
+def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="test")
+
+
+def load_valid_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="valid")
 
 
 def extract_workload(
     output: Path, value: Path | None = None, split: str = "test"
 ) -> dict[str, Any]:
-    if split != "test":
-        raise ValueError("Power7 adapter currently audits only the base:test reproduction split")
-    records = load_test_records(value)
+    records = load_records(value, split=split)
     hashes = _source_hashes(value)
     workload = {
-        "workload_id": "arecel_power7_test_v1",
+        "workload_id": f"arecel_power7_{split}_v1",
         "provenance": {
             "benchmark_id": BENCHMARK_ID,
             "source_workload": "data/power7/workload/base.pkl",
             "source_labels": "data/power7/workload/base-original-label.pkl",
-            "source_split": "test",
+            "source_split": split,
             "source_workload_sha256": hashes["workload_pickle"],
             "source_label_sha256": hashes["label_pickle"],
             "canonical_source_sha256": hashes["canonical_workload"],
             "upstream_commit": UPSTREAM_COMMIT,
-            "query_id_mapping": "arecel:power7:test:<index> -> arecel_power7_test_<index>",
+            "query_id_mapping": f"arecel:power7:{split}:<index> -> arecel_power7_{split}_<index>",
             "projection_adapter": "count-star-to-select-star-v1",
             "relation_adapter": "safe-exact-source-relation-to-public.power7-v1",
             "identifier_adapter": "quoted-source-names-to-lowercase-catalog-identifiers-v1",

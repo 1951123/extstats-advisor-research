@@ -26,6 +26,7 @@ WORKLOAD_PICKLE_SHA256 = "492faa529ecc6b212733602fd140a42182439a89d22bcf9c8e8b82
 LABEL_PICKLE_SHA256 = "5fd6d187830681b16b3c561f7d0a2a014a7fdbabfa1579db655de8131b0ba451"
 CANONICAL_WORKLOAD_SHA256 = "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388"
 EXPECTED_ROWS = 48_842
+EXPECTED_VALID_QUERIES = 10_000
 EXPECTED_TEST_QUERIES = 10_000
 SCHEMA_CONTRACT_ID = "arecel-census13-postgres-schema-v1"
 
@@ -232,14 +233,16 @@ def extract_workload(
     }
 
 
-def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
-    """Load the audited test queries with their immutable source labels.
+def load_records(value: Path | None = None, split: str = "test") -> list[dict[str, Any]]:
+    """Load one audited AreCEL split with its immutable source labels.
 
     The canonical Census13 workload already contains the same label and query
     provenance fields used by the other AreCEL adapters.  Exposing the shared
     ``load_test_records`` contract lets generic baseline and transfer runners
     use Census13 without a dataset-specific truth or q-error implementation.
     """
+    if split not in {"valid", "test"}:
+        raise ValueError("canonical Census13 workload split must be valid or test")
     _audit(value)
     csv_workload = canonical_workload_path(value)
     if not csv_workload.is_file() or sha256_file(csv_workload) != CANONICAL_WORKLOAD_SHA256:
@@ -247,16 +250,21 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     with gzip.open(csv_workload, "rt", encoding="utf-8") as stream:
         for raw in map(json.loads, stream):
-            if raw.get("split") != "test":
+            if raw.get("split") != split:
                 continue
             index = int(raw["index"])
-            expected_id = f"arecel:census13:test:{index:06d}"
+            expected_id = f"arecel:census13:{split}:{index:06d}"
             if raw.get("query_id") != expected_id:
                 raise ValueError(f"unexpected Census13 source query identity at index {index}")
+            if (
+                not isinstance(raw.get("source_query_sha256"), str)
+                or len(raw["source_query_sha256"]) != 64
+            ):
+                raise ValueError(f"missing Census13 source query hash at index {index}")
             records.append(
                 {
                     "source_index": index,
-                    "query_id": f"arecel_census13_test_{index:06d}",
+                    "query_id": f"arecel_census13_{split}_{index:06d}",
                     "source_query_id": raw["query_id"],
                     "original_sql": raw["sql"],
                     "sql": _advisor_workload_sql(raw["sql"]),
@@ -266,13 +274,21 @@ def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
                     "source_query_sha256": raw["source_query_sha256"],
                 }
             )
-    if len(records) != EXPECTED_TEST_QUERIES:
+    if len(records) != EXPECTED_VALID_QUERIES:
         raise ValueError(
-            f"expected {EXPECTED_TEST_QUERIES} Census13 test queries, got {len(records)}"
+            f"expected {EXPECTED_VALID_QUERIES} Census13 {split} queries, got {len(records)}"
         )
-    if [record["source_index"] for record in records] != list(range(EXPECTED_TEST_QUERIES)):
-        raise ValueError("Census13 test source order is not contiguous and deterministic")
+    if [record["source_index"] for record in records] != list(range(EXPECTED_VALID_QUERIES)):
+        raise ValueError(f"Census13 {split} source order is not contiguous and deterministic")
     return records
+
+
+def load_test_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="test")
+
+
+def load_valid_records(value: Path | None = None) -> list[dict[str, Any]]:
+    return load_records(value, split="valid")
 
 
 def write_dataset_manifest(output: Path, value: Path | None = None) -> dict[str, Any]:

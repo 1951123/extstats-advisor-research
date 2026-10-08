@@ -1,0 +1,217 @@
+{
+  "datasets": [
+    {
+      "benchmark_id": "arecel-census13",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "dataset_id": "arecel-census13",
+      "normalized_sql_overlap_semantics": "set intersection after collapsing whitespace in audited source SQL",
+      "query_hash_overlap_semantics": "set intersection of audited source_query_sha256 values",
+      "relation": "public.census13",
+      "schema_contract_id": "arecel-census13-postgres-schema-v1",
+      "source_file_sha256": {
+        "canonical_workload": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+        "label_pickle": "5fd6d187830681b16b3c561f7d0a2a014a7fdbabfa1579db655de8131b0ba451",
+        "workload_pickle": "492faa529ecc6b212733602fd140a42182439a89d22bcf9c8e8b82db1a5154ba"
+      },
+      "source_split_identity": {
+        "test": "arecel:census13:test:<index>",
+        "valid": "arecel:census13:valid:<index>"
+      },
+      "split_counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "test_exact_source_query_hash_set_size": 9476,
+      "test_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "test_query_count": 10000,
+      "test_workload_id": "arecel_census13_test_v1",
+      "test_workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "valid_exact_source_query_hash_set_size": 9472,
+      "valid_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "valid_query_count": 10000,
+      "valid_test_exact_query_hash_overlap_count": 137,
+      "valid_test_normalized_sql_overlap_count": 137,
+      "valid_workload_id": "arecel_census13_valid_v1",
+      "valid_workload_sha256": "9e616db0383ec10fc784797964338ff4fa1e69726fa007fa7f4a0515c41b2a0f"
+    },
+    {
+      "benchmark_id": "arecel-forest10",
+      "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "dataset_id": "arecel-forest10",
+      "normalized_sql_overlap_semantics": "set intersection after collapsing whitespace in audited source SQL",
+      "query_hash_overlap_semantics": "set intersection of audited source_query_sha256 values",
+      "relation": "public.forest10",
+      "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+      "source_file_sha256": {
+        "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+        "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+        "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+      },
+      "source_split_identity": {
+        "test": "arecel:forest10:test:<index>",
+        "valid": "arecel:forest10:valid:<index>"
+      },
+      "split_counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "test_exact_source_query_hash_set_size": 10000,
+      "test_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "test_query_count": 10000,
+      "test_workload_id": "arecel_forest10_test_v1",
+      "test_workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "valid_exact_source_query_hash_set_size": 10000,
+      "valid_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "valid_query_count": 10000,
+      "valid_test_exact_query_hash_overlap_count": 0,
+      "valid_test_normalized_sql_overlap_count": 0,
+      "valid_workload_id": "arecel_forest10_valid_v1",
+      "valid_workload_sha256": "e589bf277cf8303bfaf12943e651e5ba10065f8510df9b0f195dff7dfc1b5cb5"
+    },
+    {
+      "benchmark_id": "arecel-power7",
+      "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+      "dataset_id": "arecel-power7",
+      "normalized_sql_overlap_semantics": "set intersection after collapsing whitespace in audited source SQL",
+      "query_hash_overlap_semantics": "set intersection of audited source_query_sha256 values",
+      "relation": "public.power7",
+      "schema_contract_id": "arecel-power7-postgres-schema-v1",
+      "source_file_sha256": {
+        "canonical_workload": "9f1b11d72bcefe9d76cd83b1f995a6d6f4e0922434975550e2d5783425152327",
+        "label_pickle": "d7369b34d2ddc866dbb16c3b2f5147cb10a86832dba54c905ef400bc3514cdf5",
+        "workload_pickle": "1f270912f529e362545b6da519492a5aff63bdc65ecc10f71674e5779a7247a5"
+      },
+      "source_split_identity": {
+        "test": "arecel:power7:test:<index>",
+        "valid": "arecel:power7:valid:<index>"
+      },
+      "split_counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "test_exact_source_query_hash_set_size": 10000,
+      "test_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "test_query_count": 10000,
+      "test_workload_id": "arecel_power7_test_v1",
+      "test_workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "valid_exact_source_query_hash_set_size": 10000,
+      "valid_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "valid_query_count": 10000,
+      "valid_test_exact_query_hash_overlap_count": 0,
+      "valid_test_normalized_sql_overlap_count": 0,
+      "valid_workload_id": "arecel_power7_valid_v1",
+      "valid_workload_sha256": "6a4658fee7d4f022a7886700c780a49dd3c2f81f4c6e2502163cabd19096113c"
+    },
+    {
+      "benchmark_id": "arecel-dmv11",
+      "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "dataset_id": "arecel-dmv11",
+      "normalized_sql_overlap_semantics": "set intersection after collapsing whitespace in audited source SQL",
+      "query_hash_overlap_semantics": "set intersection of audited source_query_sha256 values",
+      "relation": "public.dmv11",
+      "schema_contract_id": "arecel-dmv11-postgres-schema-v1",
+      "source_file_sha256": {
+        "canonical_workload": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+        "label_pickle": "14b29cc7f28aab5dd85f3bec2e49fe841d4194b7417dcc881459a1d9d9f98d65",
+        "workload_pickle": "e37136725ace8f60a6dfcf55529da328ab202d74988538726cff8589ccec65dc"
+      },
+      "source_split_identity": {
+        "test": "arecel:dmv11:test:<index>",
+        "valid": "arecel:dmv11:valid:<index>"
+      },
+      "split_counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "test_exact_source_query_hash_set_size": 8482,
+      "test_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "test_query_count": 10000,
+      "test_workload_id": "arecel_dmv11_test_v1",
+      "test_workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a",
+      "valid_exact_source_query_hash_set_size": 8490,
+      "valid_label_coverage": {
+        "complete": true,
+        "covered": 10000,
+        "expected": 10000
+      },
+      "valid_query_count": 10000,
+      "valid_test_exact_query_hash_overlap_count": 497,
+      "valid_test_normalized_sql_overlap_count": 497,
+      "valid_workload_id": "arecel_dmv11_valid_v1",
+      "valid_workload_sha256": "b2b98540a800a0a8cafac2cd9d5a21c61db954eddd401d2df1f633a2edbe2dd5"
+    }
+  ],
+  "design_workload": {
+    "query_count": 10000,
+    "source_split": "valid"
+  },
+  "evaluation_workload": {
+    "query_count": 10000,
+    "source_split": "test"
+  },
+  "experiment_id": "rq1-workload-generalization-source-audit",
+  "format_version": "rq1-workload-generalization-source-audit-v1",
+  "no_workload_drift_claim": true,
+  "same_generator_contract": true,
+  "semantic_digest": "36345c562b97d07b05e3d96c4218634b5e15b9a977f2b55deb2fc0c4b6ebcda6",
+  "status": "source-audit-complete",
+  "underlying_data_fixed": true,
+  "upstream": {
+    "commit": "aa52da7768023270bad884232972e0b77ec6534a",
+    "generator_contract": {
+      "attribute_selection": {
+        "pred_number": 1.0
+      },
+      "center": {
+        "distribution": 0.9,
+        "vocab_ood": 0.1
+      },
+      "counts": {
+        "test": 10000,
+        "train": 100000,
+        "valid": 10000
+      },
+      "width": {
+        "exponential": 0.5,
+        "uniform": 0.5
+      }
+    },
+    "repository": "sfu-db/AreCELearnedYet"
+  }
+}

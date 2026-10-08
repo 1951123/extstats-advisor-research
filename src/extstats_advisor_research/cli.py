@@ -61,6 +61,27 @@ from .rq1_summary import (
     default_source_paths,
     validate_cross_dataset_summary,
 )
+from .rq1_workload_generalization import (
+    PROTOCOL_PATH as RQ1B_PROTOCOL_PATH,
+)
+from .rq1_workload_generalization import (
+    SOURCE_AUDIT_PATH as RQ1B_SOURCE_AUDIT_PATH,
+)
+from .rq1_workload_generalization import (
+    TRUTH_POLICY_PATH as RQ1B_TRUTH_POLICY_PATH,
+)
+from .rq1_workload_generalization import (
+    validate_protocol as validate_rq1b_protocol,
+)
+from .rq1_workload_generalization import (
+    validate_source_audit as validate_rq1b_source_audit,
+)
+from .rq1_workload_generalization import (
+    validate_truth_policy as validate_rq1b_truth_policy,
+)
+from .rq1_workload_generalization import (
+    write_source_audit as write_rq1b_source_audit,
+)
 from .rq2_transfer import (
     RQ2_DATASETS,
     inspect_rq2_artifact,
@@ -608,6 +629,24 @@ def _parser() -> argparse.ArgumentParser:
     summary_create.add_argument("--output", type=Path, required=True)
     summary_validate = summary_commands.add_parser("validate")
     summary_validate.add_argument("artifact", type=Path)
+    rq1b = validate_commands.add_parser(
+        "rq1-workload-generalization",
+        help="validate the offline RQ1b split, truth-policy, and source-audit contracts",
+    )
+    rq1b_commands = rq1b.add_subparsers(dest="rq1b_command", required=True)
+    rq1b_protocol = rq1b_commands.add_parser("protocol")
+    rq1b_protocol.add_argument("path", type=Path, nargs="?", default=RQ1B_PROTOCOL_PATH)
+    rq1b_truth = rq1b_commands.add_parser("truth-policy")
+    rq1b_truth.add_argument("path", type=Path, nargs="?", default=RQ1B_TRUTH_POLICY_PATH)
+    rq1b_source = rq1b_commands.add_parser("source-audit")
+    rq1b_source_commands = rq1b_source.add_subparsers(dest="rq1b_source_command", required=True)
+    rq1b_source_create = rq1b_source_commands.add_parser("create")
+    rq1b_source_create.add_argument("--output", type=Path, default=None)
+    rq1b_source_create.add_argument("--data-root", type=Path, default=None)
+    rq1b_source_validate = rq1b_source_commands.add_parser("validate")
+    rq1b_source_validate.add_argument(
+        "artifact", type=Path, default=RQ1B_SOURCE_AUDIT_PATH, nargs="?"
+    )
     rq2 = validate_commands.add_parser(
         "rq2-transfer", help="run or validate one formal RQ2 transfer child"
     )
@@ -1187,6 +1226,24 @@ def main(argv: list[str] | None = None) -> int:
                 result = build_cross_dataset_summary(default_source_paths(root), args.output)
             else:
                 result = validate_cross_dataset_summary(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1-workload-generalization":
+            root = Path(__file__).resolve().parents[2]
+            if args.rq1b_command == "protocol":
+                result = validate_rq1b_protocol(args.path)
+            elif args.rq1b_command == "truth-policy":
+                result = validate_rq1b_truth_policy(args.path, root)
+            elif args.rq1b_source_command == "create":
+                value = write_rq1b_source_audit(root, output=args.output, data_root=args.data_root)
+                result = {
+                    "status": "written",
+                    "format_version": value["format_version"],
+                    "semantic_digest": value["semantic_digest"],
+                    "output": str(args.output or (root / RQ1B_SOURCE_AUDIT_PATH)),
+                }
+            else:
+                result = validate_rq1b_source_audit(args.artifact, root)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq2-transfer":

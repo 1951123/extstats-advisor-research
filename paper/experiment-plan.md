@@ -5,9 +5,10 @@ not a claim that every row is complete. Historical Census13, Forest10, Power7,
 and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13,
 Forest10, Power7, and DMV11 matched-comparison artifacts are dataset-level
 canonical results under the current confirmatory truth policy. The four-dataset
-RQ1 matched campaign is complete only within its declared three-arm,
-in-workload scope; RQ4 heuristic ablations, held-out generalization, RQ3, and
-RQ5 remain separate incomplete work. The formal four-child RQ2 transfer
+RQ1a matched campaign is complete only within its declared three-arm,
+in-workload scope; RQ1b held-out generalization is separately preregistered
+and has not started. RQ4 heuristic ablations, RQ3, and RQ5 remain separate
+incomplete work. The formal four-child RQ2 transfer
 campaign is complete under the frozen v2 protocol; historical transfer
 directories remain pilot evidence.
 
@@ -116,7 +117,7 @@ already exists.
 ## Experiment status ledger
 
 The controlled vocabulary is `pilot`, `planned`, `implementation-needed`,
-`ready-to-run`, `complete`, and `superseded`. Existing historical outputs stay
+`ready-to-run`, `preregistered`, `complete`, and `superseded`. Existing historical outputs stay
 `pilot`/`preliminary`; dataset-level canonical artifacts may be `complete`, but
 the global RQ1 campaign is not complete while any dataset remains planned.
 
@@ -124,6 +125,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Validation-to-test held-out generalization under the same audited AreCEL generator contract; no formal execution has started. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -139,7 +141,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 
-## RQ1 — Effectiveness
+## RQ1 — Effectiveness and workload generalization
 
 **Question:** How much cardinality-estimation error can workload-optimized
 native extended statistics eliminate?
@@ -163,11 +165,14 @@ simple selection baselines, but does not improve every query.
 5. learned-CE results from Are We Ready, labeled literature/contextual data
    and never merged into the matched-system result table.
 
-The current RQ1 effectiveness comparison is explicitly in-workload: the
-evaluation workload is the workload used by the advisor objective. It does not
-establish held-out query generalization. The three-arm matched-comparison
-artifacts therefore do not imply that the RQ4 heuristic baselines have been
-completed.
+RQ1a is explicitly in-workload: the evaluation workload is the workload used by
+the advisor objective. Its three-arm matched-comparison artifacts do not
+establish held-out query generalization. RQ1b is preregistered separately: the
+upstream `valid` split is the design workload and the upstream `test` split is
+the held-out evaluation workload, both generated under the same contract on the
+same underlying dataset. This is same-distribution held-out generalization, not
+a workload-drift or OOD-robustness claim. RQ1a is complete, RQ1b is
+preregistered, and the expanded RQ1 program is not yet complete.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact
 ground truth and an explicit dataset inclusion table.
@@ -568,9 +573,10 @@ and DMV11 digest
 Each has nine physical method children and one shared stock ANALYZE. Forest10's
 historical v1 artifact was not rerun.
 
-RQ1 and RQ4 remain separate questions: the RQ1 matched comparison evaluates
+RQ1 and RQ4 remain separate questions: RQ1a's matched comparison evaluates
 the advisor objective workload and therefore is an in-workload effectiveness
-result, not held-out-query generalization.  The three new RQ4 v2 children pass
+result, not held-out-query generalization; RQ1b is the separately preregistered
+valid-to-test study. The three new RQ4 v2 children pass
 their design replay and physical realization gates and are marked `complete`;
 the global RQ4 program remains incomplete because fixed-evaluation-budget and
 native-ANALYZE stability are separate protocols.  A child method may still be

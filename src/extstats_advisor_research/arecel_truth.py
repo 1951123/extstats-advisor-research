@@ -24,6 +24,7 @@ EQUIVALENCE_FORMAT = "arecel-truth-equivalence-v1"
 POLICY_FORMAT = "benchmark-truth-policy-v1"
 EXPECTED_QUERY_COUNT = 10_000
 TEST_SPLIT = "test"
+VALID_SPLIT = "valid"
 ARECEL_UPSTREAM_URL = "https://github.com/sfu-db/AreCELearnedYet"
 
 _DATASETS = {
@@ -53,18 +54,18 @@ def _research_sha(repository: Path) -> str:
     return value
 
 
-def _canonical_census_records(data_root: Path | None) -> list[dict[str, Any]]:
+def _canonical_census_records(data_root: Path | None, split: str) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     with gzip.open(census13.canonical_workload_path(data_root), "rt", encoding="utf-8") as stream:
         for raw in map(json.loads, stream):
-            if raw.get("split") != TEST_SPLIT:
+            if raw.get("split") != split:
                 continue
             index = int(raw["index"])
             records.append(
                 {
                     "source_index": index,
                     "source_query_id": raw["query_id"],
-                    "query_id": f"arecel_census13_test_{index:06d}",
+                    "query_id": f"arecel_census13_{split}_{index:06d}",
                     "truth": int(raw["source_label"]["cardinality"]),
                     "source_query_sha256": raw["source_query_sha256"],
                 }
@@ -72,22 +73,30 @@ def _canonical_census_records(data_root: Path | None) -> list[dict[str, Any]]:
     return records
 
 
-def _records(dataset_id: str, data_root: Path | None) -> list[dict[str, Any]]:
+def _records(
+    dataset_id: str, data_root: Path | None, split: str = TEST_SPLIT
+) -> list[dict[str, Any]]:
+    if split not in {VALID_SPLIT, TEST_SPLIT}:
+        raise ValueError("AreCEL truth split must be valid or test")
     dataset = _DATASETS.get(dataset_id)
     if dataset is None:
         raise ValueError(f"unsupported AreCEL dataset: {dataset_id}")
     if dataset_id == census13.BENCHMARK_ID:
-        records = _canonical_census_records(data_root)
+        records = _canonical_census_records(data_root, split)
     else:
-        records = dataset.load_test_records(data_root)
+        records = (
+            dataset.load_test_records(data_root)
+            if split == TEST_SPLIT
+            else dataset.load_valid_records(data_root)
+        )
         for record in records:
             index = int(record["source_index"])
-            record["query_id"] = f"arecel_{dataset_id.removeprefix('arecel-')}_test_{index:06d}"
+            record["query_id"] = f"arecel_{dataset_id.removeprefix('arecel-')}_{split}_{index:06d}"
     if len(records) != EXPECTED_QUERY_COUNT:
-        raise ValueError(f"{dataset_id} must provide exactly {EXPECTED_QUERY_COUNT} test labels")
+        raise ValueError(f"{dataset_id} must provide exactly {EXPECTED_QUERY_COUNT} {split} labels")
     if [int(record["source_index"]) for record in records] != list(range(EXPECTED_QUERY_COUNT)):
-        raise ValueError(f"{dataset_id} source label indices are not contiguous")
-    expected_source_prefix = f"arecel:{dataset_id.removeprefix('arecel-')}:test:"
+        raise ValueError(f"{dataset_id} {split} source label indices are not contiguous")
+    expected_source_prefix = f"arecel:{dataset_id.removeprefix('arecel-')}:{split}:"
     for record in records:
         expected_source_id = f"{expected_source_prefix}{int(record['source_index']):06d}"
         if record["source_query_id"] != expected_source_id:
@@ -146,17 +155,19 @@ def _mapping_contract(dataset_id: str) -> dict[str, str]:
     }
 
 
-def build_authoritative_observations(
-    dataset_id: str, data_root: Path | None = None
+def build_authoritative_observations_for_split(
+    dataset_id: str, split: str, data_root: Path | None = None
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Build the exact production wire value and a separate audit manifest."""
 
+    if split not in {VALID_SPLIT, TEST_SPLIT}:
+        raise ValueError("AreCEL truth split must be valid or test")
     dataset = _DATASETS.get(dataset_id)
     if dataset is None:
         raise ValueError(f"unsupported AreCEL dataset: {dataset_id}")
-    records = _records(dataset_id, data_root)
+    records = _records(dataset_id, data_root, split)
     hashes = _source_hashes(dataset, data_root)
-    workload_id = f"arecel_{dataset_id.removeprefix('arecel-')}_test_v1"
+    workload_id = f"arecel_{dataset_id.removeprefix('arecel-')}_{split}_v1"
     observations = {
         "format_version": OBSERVATIONS_FORMAT,
         "workload_id": workload_id,
@@ -182,7 +193,7 @@ def build_authoritative_observations(
         "authority": "sfu-db/AreCELearnedYet",
         "authority_url": ARECEL_UPSTREAM_URL,
         "upstream_commit": dataset.UPSTREAM_COMMIT,
-        "source_split": TEST_SPLIT,
+        "source_split": split,
         "workload_id": workload_id,
         "source_workload_pickle_sha256": hashes["workload_pickle"],
         "source_label_pickle_sha256": hashes["label_pickle"],
@@ -196,6 +207,14 @@ def build_authoritative_observations(
         "cardinalities_are_not_database_recomputed": True,
     }
     return observations, audit
+
+
+def build_authoritative_observations(
+    dataset_id: str, data_root: Path | None = None
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Build the historical test-split truth artifact without changing its contract."""
+
+    return build_authoritative_observations_for_split(dataset_id, TEST_SPLIT, data_root)
 
 
 def validate_observation_wire(value: Any, *, workload_id: str | None = None) -> dict[str, Any]:
@@ -251,6 +270,29 @@ def write_dataset_observations(
     return audit
 
 
+def write_dataset_observations_for_split(
+    dataset_id: str,
+    split: str,
+    output: Path,
+    audit_output: Path,
+    data_root: Path | None = None,
+) -> dict[str, Any]:
+    """Write one split-specific wire artifact and its separate provenance audit."""
+
+    observations, audit = build_authoritative_observations_for_split(dataset_id, split, data_root)
+    if output.exists() or audit_output.exists():
+        raise FileExistsError("authoritative observation audit artifacts already exist")
+    # The wire contract is intentionally DBMS-neutral.  Writing it directly
+    # keeps this offline source-preparation path independent of the optional
+    # Advisor package while preserving the exact three-field schema.
+    write_json(output, observations)
+    validate_observation_wire(read_json(output), workload_id=observations["workload_id"])
+    audit["observation_sha256"] = sha256_file(output)
+    audit["observation_semantic_digest"] = semantic_digest(observations)
+    write_json(audit_output, audit)
+    return audit
+
+
 def observation_records(path: Path) -> dict[str, int]:
     value = read_json(path)
     validate_observation_wire(value)
@@ -294,6 +336,47 @@ def authoritative_truth_spec(dataset_id: str, research_root: Path | None = None)
         "query_count": observation_metadata["query_count"],
         "sanity_check_count": _SANITY_CHECK_COUNTS.get(dataset_id, 15),
         "policy_status": entry["status"],
+    }
+
+
+def authoritative_truth_spec_for_split(
+    dataset_id: str, split: str, research_root: Path | None = None
+) -> dict[str, Any]:
+    """Resolve the RQ1b split-aware truth policy without changing test defaults."""
+
+    if split == TEST_SPLIT:
+        return authoritative_truth_spec(dataset_id, research_root)
+    if split != VALID_SPLIT:
+        raise ValueError("AreCEL truth split must be valid or test")
+    from .rq1_workload_generalization import validate_truth_policy as validate_rq1b_truth_policy
+
+    root = (research_root or Path(__file__).resolve().parents[2]).resolve()
+    policy_path = root / "paper" / "rq1-workload-generalization-truth-policy-v1.json"
+    policy = read_json(policy_path)
+    validate_rq1b_truth_policy(policy_path, root)
+    entry = next((item for item in policy["datasets"] if item["dataset_id"] == dataset_id), None)
+    if entry is None:
+        raise ValueError(f"no RQ1b truth policy for {dataset_id}")
+    observations_path = root / entry["valid_observations_path"]
+    audit_path = root / entry["valid_audit_path"]
+    observation_metadata = validate_observation_wire(
+        read_json(observations_path), workload_id=entry["valid_workload_id"]
+    )
+    observation_sha256 = sha256_file(observations_path)
+    audit = read_json(audit_path)
+    if audit.get("observation_sha256") != observation_sha256:
+        raise ValueError(f"{dataset_id} valid observation audit does not match wire artifact")
+    return {
+        "kind": "authoritative-external-exact",
+        "collection_contract": "authoritative-external-exact-cardinality-v1",
+        "authority": entry["authority"],
+        "dataset_identity": entry["dataset_content_identity"],
+        "source_revision": entry["upstream_commit"],
+        "observations_path": observations_path,
+        "observations_sha256": observation_sha256,
+        "query_count": observation_metadata["query_count"],
+        "policy_status": policy["status"],
+        "source_split": split,
     }
 
 
