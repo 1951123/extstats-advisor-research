@@ -1,0 +1,1908 @@
+{
+  "dataset_order": [
+    "arecel-census13",
+    "arecel-forest10",
+    "arecel-power7",
+    "arecel-dmv11"
+  ],
+  "datasets": {
+    "arecel-census13": {
+      "analyze_elapsed_seconds": {
+        "max": 0.2759728440014442,
+        "median": 0.27419226900019567,
+        "min": 0.27075028600120277
+      },
+      "base_relation_total_bytes_context": {
+        "max": 8290304,
+        "median": 8290304,
+        "min": 8290304
+      },
+      "cleanup": true,
+      "ddl_elapsed_seconds": {
+        "max": 0.0032008300004235934,
+        "median": 0.002730902000621427,
+        "min": 0.002560667000579997
+      },
+      "logical_catalog_row_bytes_after_analyze": {
+        "max": 13325,
+        "median": 13317,
+        "min": 13295
+      },
+      "logical_catalog_row_bytes_after_ddl": {
+        "max": 1162,
+        "median": 1162,
+        "min": 1162
+      },
+      "object_count": 7,
+      "payload_verification": true,
+      "physical_catalog_allocation_delta_after_analyze": {
+        "max": 98304,
+        "median": 98304,
+        "min": 98304
+      },
+      "physical_catalog_allocation_delta_after_ddl": {
+        "max": 32768,
+        "median": 32768,
+        "min": 32768
+      },
+      "repetitions": [
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.2759728440014442,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0011454569994384656,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 8290304,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-census13",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.002730902000621427,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.0015625569994881516
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.2787037460020656,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 11897,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 12133,
+              "total": 13295
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 147456,
+              "data_catalog_total_relation_bytes": 81920,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 98304,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "census13",
+            "schema": "public"
+          },
+          "repetition_id": 1,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_ba355e70a4c2c126688383df",
+            "cand_2a400fd096108f66712fa5d7",
+            "cand_732acc055f32ca48ff994adf",
+            "cand_1edd4a89495b1c0989812ef6"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 0.4620322770006169,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.028945591000592685,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-census13/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "51c6ab5eaace99629b8c51662633cd8d58f4798c4cd3914e13b03755319a79bf",
+          "source_rq2_child": "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.27075028600120277,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.001498976000220864,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 8290304,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-census13",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0032008300004235934,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.001573832998474245
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.27395111600162636,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 11919,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 12155,
+              "total": 13317
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 147456,
+              "data_catalog_total_relation_bytes": 81920,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 98304,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "census13",
+            "schema": "public"
+          },
+          "repetition_id": 2,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_ba355e70a4c2c126688383df",
+            "cand_2a400fd096108f66712fa5d7",
+            "cand_732acc055f32ca48ff994adf",
+            "cand_1edd4a89495b1c0989812ef6"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 0.46138050300032774,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.023320711999986088,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-census13/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "51c6ab5eaace99629b8c51662633cd8d58f4798c4cd3914e13b03755319a79bf",
+          "source_rq2_child": "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.27419226900019567,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0014102990007813787,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 8290304,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-census13",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.002560667000579997,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.001300681000429904
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.27675293600077566,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 11927,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 12163,
+              "total": 13325
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 147456,
+              "data_catalog_total_relation_bytes": 81920,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 8290304,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 98304,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "census13",
+            "schema": "public"
+          },
+          "repetition_id": 3,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0b505b8bacb3c643f4e4dc43",
+            "cand_1af5539c1001b3f9b2f29435",
+            "cand_65bf58e313a4b96876b72b19",
+            "cand_ba355e70a4c2c126688383df",
+            "cand_2a400fd096108f66712fa5d7",
+            "cand_732acc055f32ca48ff994adf",
+            "cand_1edd4a89495b1c0989812ef6"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 0.4559833149996848,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.023287880001589656,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-census13/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "51c6ab5eaace99629b8c51662633cd8d58f4798c4cd3914e13b03755319a79bf",
+          "source_rq2_child": "experiments/arecel-census13/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "a68f96e77eab1bdc0884fe78ec5bde77e026aba3cdc7830cbc70d76b7b512790",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        }
+      ],
+      "selected_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df",
+        "cand_2a400fd096108f66712fa5d7",
+        "cand_732acc055f32ca48ff994adf",
+        "cand_1edd4a89495b1c0989812ef6"
+      ],
+      "selected_k": 7,
+      "sequential_ddl_plus_analyze_seconds": {
+        "max": 0.2787037460020656,
+        "median": 0.27675293600077566,
+        "min": 0.27395111600162636
+      },
+      "statistics_kinds": [
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv"
+      ],
+      "statistics_target": 100
+    },
+    "arecel-dmv11": {
+      "analyze_elapsed_seconds": {
+        "max": 0.36515107000013813,
+        "median": 0.35637274000146135,
+        "min": 0.3541473040004348
+      },
+      "base_relation_total_bytes_context": {
+        "max": 1079541760,
+        "median": 1079541760,
+        "min": 1079541760
+      },
+      "cleanup": true,
+      "ddl_elapsed_seconds": {
+        "max": 0.004764466999404249,
+        "median": 0.0026689739988796646,
+        "min": 0.0026091859999723965
+      },
+      "logical_catalog_row_bytes_after_analyze": {
+        "max": 6103,
+        "median": 5992,
+        "min": 5984
+      },
+      "logical_catalog_row_bytes_after_ddl": {
+        "max": 830,
+        "median": 830,
+        "min": 830
+      },
+      "object_count": 5,
+      "payload_verification": true,
+      "physical_catalog_allocation_delta_after_analyze": {
+        "max": 49152,
+        "median": 49152,
+        "min": 49152
+      },
+      "physical_catalog_allocation_delta_after_ddl": {
+        "max": 32768,
+        "median": 32768,
+        "min": 32768
+      },
+      "repetitions": [
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.3541473040004348,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0012864290001743939,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 1079541760,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-dmv11",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0026091859999723965,
+            "statement_count": 10,
+            "verification_passed": true,
+            "verification_seconds": 0.001270353999643703
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.3567564900004072,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 4994,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 5154,
+              "total": 5984
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 0,
+              "total": 830
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 5,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 98304,
+              "data_catalog_total_relation_bytes": 32768,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 16384,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 49152,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "dmv11",
+            "schema": "public"
+          },
+          "repetition_id": 1,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_a321c061df418caa0b143ac4",
+            "cand_446a7fc5aba413d985b7f659",
+            "cand_5d60cd8bc3c6c4df47d3c8f8",
+            "cand_f495ee73455905ddf4da0f95"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 38.40380571300011,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.0294503960012662,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-dmv11/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "ab46e20c8a51b6e2e35ce7f41d3d1224d3af91dcaeee4aa5595d8d25c3d0734a",
+          "source_rq2_child": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.36515107000013813,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0014911189991835272,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 1079541760,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-dmv11",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0026689739988796646,
+            "statement_count": 10,
+            "verification_passed": true,
+            "verification_seconds": 0.00132727900017926
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.3678200439990178,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 5113,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 5273,
+              "total": 6103
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 0,
+              "total": 830
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 5,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 98304,
+              "data_catalog_total_relation_bytes": 32768,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 16384,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 49152,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "dmv11",
+            "schema": "public"
+          },
+          "repetition_id": 2,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_a321c061df418caa0b143ac4",
+            "cand_446a7fc5aba413d985b7f659",
+            "cand_5d60cd8bc3c6c4df47d3c8f8",
+            "cand_f495ee73455905ddf4da0f95"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 24.580477945000894,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.02441831100077252,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-dmv11/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "ab46e20c8a51b6e2e35ce7f41d3d1224d3af91dcaeee4aa5595d8d25c3d0734a",
+          "source_rq2_child": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.35637274000146135,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0014462340004683938,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 1079541760,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-dmv11",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.004764466999404249,
+            "statement_count": 10,
+            "verification_passed": true,
+            "verification_seconds": 0.0012664930000028107
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.3611372070008656,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 5002,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 5162,
+              "total": 5992
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 830,
+              "pg_statistic_ext_data": 0,
+              "total": 830
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 5,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 98304,
+              "data_catalog_total_relation_bytes": 32768,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 1079541760,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 16384,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 49152,
+                "data_catalog_total_relation_bytes": 16384,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "dmv11",
+            "schema": "public"
+          },
+          "repetition_id": 3,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_7db3fcd2a8cbbdf2c9bfe38d",
+            "cand_a321c061df418caa0b143ac4",
+            "cand_446a7fc5aba413d985b7f659",
+            "cand_5d60cd8bc3c6c4df47d3c8f8",
+            "cand_f495ee73455905ddf4da0f95"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 25.121957291999934,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.024237057999926037,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-dmv11/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "ab46e20c8a51b6e2e35ce7f41d3d1224d3af91dcaeee4aa5595d8d25c3d0734a",
+          "source_rq2_child": "experiments/arecel-dmv11/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "0655c18ae95d1bb8a80c35deb9e4a93dd7b0592fcfcb3721234f9a0e4c02facc",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        }
+      ],
+      "selected_candidate_ids": [
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_5d60cd8bc3c6c4df47d3c8f8",
+        "cand_f495ee73455905ddf4da0f95"
+      ],
+      "selected_k": 5,
+      "sequential_ddl_plus_analyze_seconds": {
+        "max": 0.3678200439990178,
+        "median": 0.3611372070008656,
+        "min": 0.3567564900004072
+      },
+      "statistics_kinds": [
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv"
+      ],
+      "statistics_target": 100
+    },
+    "arecel-forest10": {
+      "analyze_elapsed_seconds": {
+        "max": 0.3545559169997432,
+        "median": 0.3488732460009487,
+        "min": 0.3437272480005049
+      },
+      "base_relation_total_bytes_context": {
+        "max": 63864832,
+        "median": 63864832,
+        "min": 63864832
+      },
+      "cleanup": true,
+      "ddl_elapsed_seconds": {
+        "max": 0.002879046000089147,
+        "median": 0.0026508179998927517,
+        "min": 0.0023637419999431586
+      },
+      "logical_catalog_row_bytes_after_analyze": {
+        "max": 15577,
+        "median": 15527,
+        "min": 15499
+      },
+      "logical_catalog_row_bytes_after_ddl": {
+        "max": 1328,
+        "median": 1328,
+        "min": 1328
+      },
+      "object_count": 8,
+      "payload_verification": true,
+      "physical_catalog_allocation_delta_after_analyze": {
+        "max": 98304,
+        "median": 65536,
+        "min": 65536
+      },
+      "physical_catalog_allocation_delta_after_ddl": {
+        "max": 32768,
+        "median": 32768,
+        "min": 32768
+      },
+      "repetitions": [
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.3437272480005049,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0016810109991638456,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 63864832,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-forest10",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0026508179998927517,
+            "statement_count": 16,
+            "verification_passed": true,
+            "verification_seconds": 0.0012754740000673337
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.34637806600039767,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 13931,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 14199,
+              "total": 15527
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 0,
+              "total": 1328
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 8,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 114688,
+              "data_catalog_total_relation_bytes": 49152,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "forest10",
+            "schema": "public"
+          },
+          "repetition_id": 1,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0deae0d5de82a5a1fdc34111",
+            "cand_76679921292e8c769dbbd7bc",
+            "cand_77c3e92fff291d4d9515dc69",
+            "cand_5ba9cc937a696a76876f820d",
+            "cand_cbf4af3acd6feaa65760c6d1",
+            "cand_599a2efab190b6e2b7457ff1",
+            "cand_1537a6ae8ef67c379c8d0fa0",
+            "cand_817be8bf7bbbc96c20bde230"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 1.4329722950005817,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.025764672000150313,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-forest10/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "0d3eea2ea72e8d4283203fbe397f2d0b203f67f696d1182061f88278df7269e9",
+          "source_rq2_child": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.3488732460009487,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0013501989997166675,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 63864832,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-forest10",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.002879046000089147,
+            "statement_count": 16,
+            "verification_passed": true,
+            "verification_seconds": 0.0012174340008641593
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.35175229200103786,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 13907,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 14171,
+              "total": 15499
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 0,
+              "total": 1328
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 8,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 147456,
+              "data_catalog_total_relation_bytes": 81920,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 98304,
+                "data_catalog_total_relation_bytes": 65536,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "forest10",
+            "schema": "public"
+          },
+          "repetition_id": 2,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0deae0d5de82a5a1fdc34111",
+            "cand_76679921292e8c769dbbd7bc",
+            "cand_77c3e92fff291d4d9515dc69",
+            "cand_5ba9cc937a696a76876f820d",
+            "cand_cbf4af3acd6feaa65760c6d1",
+            "cand_599a2efab190b6e2b7457ff1",
+            "cand_1537a6ae8ef67c379c8d0fa0",
+            "cand_817be8bf7bbbc96c20bde230"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 1.3152576410011534,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.02362606600036088,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-forest10/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "0d3eea2ea72e8d4283203fbe397f2d0b203f67f696d1182061f88278df7269e9",
+          "source_rq2_child": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.3545559169997432,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.001421112001480651,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 63864832,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-forest10",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0023637419999431586,
+            "statement_count": 16,
+            "verification_passed": true,
+            "verification_seconds": 0.0012272479998500785
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.35691965899968636,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 13981,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 14249,
+              "total": 15577
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1328,
+              "pg_statistic_ext_data": 0,
+              "total": 1328
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 8,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 114688,
+              "data_catalog_total_relation_bytes": 49152,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 63864832,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "forest10",
+            "schema": "public"
+          },
+          "repetition_id": 3,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_0deae0d5de82a5a1fdc34111",
+            "cand_76679921292e8c769dbbd7bc",
+            "cand_77c3e92fff291d4d9515dc69",
+            "cand_5ba9cc937a696a76876f820d",
+            "cand_cbf4af3acd6feaa65760c6d1",
+            "cand_599a2efab190b6e2b7457ff1",
+            "cand_1537a6ae8ef67c379c8d0fa0",
+            "cand_817be8bf7bbbc96c20bde230"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 1.3204148370004987,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.023814201998902718,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-forest10/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "0d3eea2ea72e8d4283203fbe397f2d0b203f67f696d1182061f88278df7269e9",
+          "source_rq2_child": "experiments/arecel-forest10/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "2961e77149a40d5b1a27c06fe15c8177377a630787234139bd44313eac9651e4",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        }
+      ],
+      "selected_candidate_ids": [
+        "cand_0deae0d5de82a5a1fdc34111",
+        "cand_76679921292e8c769dbbd7bc",
+        "cand_77c3e92fff291d4d9515dc69",
+        "cand_5ba9cc937a696a76876f820d",
+        "cand_cbf4af3acd6feaa65760c6d1",
+        "cand_599a2efab190b6e2b7457ff1",
+        "cand_1537a6ae8ef67c379c8d0fa0",
+        "cand_817be8bf7bbbc96c20bde230"
+      ],
+      "selected_k": 8,
+      "sequential_ddl_plus_analyze_seconds": {
+        "max": 0.35691965899968636,
+        "median": 0.35175229200103786,
+        "min": 0.34637806600039767
+      },
+      "statistics_kinds": [
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv"
+      ],
+      "statistics_target": 100
+    },
+    "arecel-power7": {
+      "analyze_elapsed_seconds": {
+        "max": 0.3911496740001894,
+        "median": 0.39062310199915373,
+        "min": 0.39019482500043523
+      },
+      "base_relation_total_bytes_context": {
+        "max": 175374336,
+        "median": 175374336,
+        "min": 175374336
+      },
+      "cleanup": true,
+      "ddl_elapsed_seconds": {
+        "max": 0.00270861200078798,
+        "median": 0.002307353999640327,
+        "min": 0.0022695799998473376
+      },
+      "logical_catalog_row_bytes_after_analyze": {
+        "max": 9750,
+        "median": 8935,
+        "min": 8812
+      },
+      "logical_catalog_row_bytes_after_ddl": {
+        "max": 1162,
+        "median": 1162,
+        "min": 1162
+      },
+      "object_count": 7,
+      "payload_verification": true,
+      "physical_catalog_allocation_delta_after_analyze": {
+        "max": 65536,
+        "median": 65536,
+        "min": 65536
+      },
+      "physical_catalog_allocation_delta_after_ddl": {
+        "max": 32768,
+        "median": 32768,
+        "min": 32768
+      },
+      "repetitions": [
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.3911496740001894,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0017320299994025845,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 175374336,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-power7",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.00270861200078798,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.001280684000448673
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.3938582860009774,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 8365,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 8588,
+              "total": 9750
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 114688,
+              "data_catalog_total_relation_bytes": 49152,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "power7",
+            "schema": "public"
+          },
+          "repetition_id": 1,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_3506e4367623c6d82ec5746e",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5e43adaa42103e401a3e3d23",
+            "cand_064fc60874bf261d6eb5795b",
+            "cand_844e0f859c56bfc4b50c65af",
+            "cand_bcf0bdc867941d3af34bf65e"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 3.7904391379997833,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.026865668000027654,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-power7/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "1574371282ef4427569ac1159777433ac7874a64a5e8fc9eb9477ca2d0925fa7",
+          "source_rq2_child": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.39019482500043523,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.001255441000466817,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 175374336,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-power7",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.0022695799998473376,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.0011753109993151156
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.39246440500028257,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 7550,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 7773,
+              "total": 8935
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 114688,
+              "data_catalog_total_relation_bytes": 49152,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "power7",
+            "schema": "public"
+          },
+          "repetition_id": 2,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_3506e4367623c6d82ec5746e",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5e43adaa42103e401a3e3d23",
+            "cand_064fc60874bf261d6eb5795b",
+            "cand_844e0f859c56bfc4b50c65af",
+            "cand_bcf0bdc867941d3af34bf65e"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 3.669676667999738,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.024073508000583388,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-power7/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "1574371282ef4427569ac1159777433ac7874a64a5e8fc9eb9477ca2d0925fa7",
+          "source_rq2_child": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        },
+        {
+          "analyze": {
+            "completed": true,
+            "elapsed_seconds": 0.39062310199915373,
+            "payload_verification_passed": true,
+            "payload_verification_seconds": 0.0015213879996736068,
+            "statement_count": 1
+          },
+          "base_relation_total_bytes_context": 175374336,
+          "cleanup": {
+            "database_dropped": true
+          },
+          "dataset_id": "arecel-power7",
+          "ddl": {
+            "committed": true,
+            "elapsed_seconds": 0.002307353999640327,
+            "statement_count": 14,
+            "verification_passed": true,
+            "verification_seconds": 0.0011501749995659338
+          },
+          "derived": {
+            "direct_combined_wall_clock_measurement": false,
+            "sequential_ddl_plus_analyze_seconds": 0.39293045599879406,
+            "sequential_sum_semantics": "derived sum of separately measured sequential stages"
+          },
+          "format_version": "rq5-static-deployment-cost-repetition-v1",
+          "logical_storage": {
+            "after_analyze": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 7427,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 7650,
+              "total": 8812
+            },
+            "after_ddl": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 1162,
+              "pg_statistic_ext_data": 0,
+              "total": 1162
+            },
+            "baseline": {
+              "dependencies_payload_bytes": 0,
+              "mcv_payload_bytes": 0,
+              "ndistinct_payload_bytes": 0,
+              "pg_statistic_ext": 0,
+              "pg_statistic_ext_data": 0,
+              "total": 0
+            }
+          },
+          "object_count": 7,
+          "physical_catalog_allocation": {
+            "after_analyze": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 114688,
+              "data_catalog_total_relation_bytes": 49152,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "after_ddl": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 81920,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 65536
+            },
+            "baseline": {
+              "base_relation_total_bytes_context": 175374336,
+              "combined_catalog_total_relation_bytes": 49152,
+              "data_catalog_total_relation_bytes": 16384,
+              "metadata_catalog_total_relation_bytes": 32768
+            },
+            "delta_semantics": "page-granular relation allocation; not exact per-object attribution",
+            "deltas": {
+              "after_analyze_minus_after_ddl": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 0
+              },
+              "after_analyze_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 65536,
+                "data_catalog_total_relation_bytes": 32768,
+                "metadata_catalog_total_relation_bytes": 32768
+              },
+              "after_ddl_minus_baseline": {
+                "combined_catalog_total_relation_bytes": 32768,
+                "data_catalog_total_relation_bytes": 0,
+                "metadata_catalog_total_relation_bytes": 32768
+              }
+            }
+          },
+          "relation": {
+            "relation": "power7",
+            "schema": "public"
+          },
+          "repetition_id": 3,
+          "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+          "selected_candidate_ids": [
+            "cand_d7dce3b57836a08ed61c2b5d",
+            "cand_3506e4367623c6d82ec5746e",
+            "cand_914ca1711fa3226bf091a092",
+            "cand_5e43adaa42103e401a3e3d23",
+            "cand_064fc60874bf261d6eb5795b",
+            "cand_844e0f859c56bfc4b50c65af",
+            "cand_bcf0bdc867941d3af34bf65e"
+          ],
+          "server_version": "16.14",
+          "setup": {
+            "baseline_analyze_seconds": null,
+            "data_load_seconds": 3.6300372050009173,
+            "excluded_from_static_deployment_primary_cost": true,
+            "fresh_database_setup_seconds": 0.023671167000429705,
+            "loader_elapsed_semantics": "loader elapsed includes its ordinary baseline ANALYZE"
+          },
+          "source_deployment_artifact": "experiments/arecel-power7/rq2-confirmatory/deployment-result-v1.json",
+          "source_deployment_digest": "1574371282ef4427569ac1159777433ac7874a64a5e8fc9eb9477ca2d0925fa7",
+          "source_rq2_child": "experiments/arecel-power7/rq2-confirmatory/rq2-transfer-v1.json",
+          "source_rq2_digest": "8bbb606cf2b6e650896adf9c9c104879b1214b82612a7361cb603480fbedd600",
+          "statistics_kinds": [
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv",
+            "postgresql.mcv"
+          ],
+          "statistics_target": 100,
+          "status": "complete",
+          "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+        }
+      ],
+      "selected_candidate_ids": [
+        "cand_d7dce3b57836a08ed61c2b5d",
+        "cand_3506e4367623c6d82ec5746e",
+        "cand_914ca1711fa3226bf091a092",
+        "cand_5e43adaa42103e401a3e3d23",
+        "cand_064fc60874bf261d6eb5795b",
+        "cand_844e0f859c56bfc4b50c65af",
+        "cand_bcf0bdc867941d3af34bf65e"
+      ],
+      "selected_k": 7,
+      "sequential_ddl_plus_analyze_seconds": {
+        "max": 0.3938582860009774,
+        "median": 0.39293045599879406,
+        "min": 0.39246440500028257
+      },
+      "statistics_kinds": [
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv",
+        "postgresql.mcv"
+      ],
+      "statistics_target": 100
+    }
+  },
+  "experiment_id": "rq5-static-deployment-cost",
+  "format_version": "rq5-static-deployment-cost-v1",
+  "historical_rq2_combined_deployment_context": {
+    "arecel-census13": {
+      "comparison_semantics": "cross-run contextual comparison only; no equality gate",
+      "deployment_including_final_analyze_seconds": 19.749477
+    },
+    "arecel-dmv11": {
+      "comparison_semantics": "cross-run contextual comparison only; no equality gate",
+      "deployment_including_final_analyze_seconds": 14.736146
+    },
+    "arecel-forest10": {
+      "comparison_semantics": "cross-run contextual comparison only; no equality gate",
+      "deployment_including_final_analyze_seconds": 12.334194
+    },
+    "arecel-power7": {
+      "comparison_semantics": "cross-run contextual comparison only; no equality gate",
+      "deployment_including_final_analyze_seconds": 6.828308
+    }
+  },
+  "interpretation": {
+    "catalog_logical_and_physical_views_separate": true,
+    "ddl_separate_from_analyze": true,
+    "physical_delta_not_per_object_attribution": true,
+    "repetitions_are_not_refresh": true,
+    "selected_recommendations_only": true
+  },
+  "no_advisor_selection": true,
+  "no_patched_postgres": true,
+  "no_planner_evaluation": true,
+  "no_snapshot_bytes_measurement": true,
+  "no_truth_acquisition": true,
+  "preflight_path": "experiments/rq5-static-deployment-cost-preflight-v1.json",
+  "preflight_semantic_digest": "cbaf04a9a3958ba4c74f70e5a90ffbca725f82cb54a5d572849591b6b5007224",
+  "protocol_path": "paper/rq5-static-deployment-cost-protocol-v1.json",
+  "protocol_semantic_digest": "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406",
+  "raw_repetition_artifacts": [
+    {
+      "dataset_id": "arecel-census13",
+      "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-census13.json",
+      "semantic_digest": "e24ca4280ad6d53e276d19527a86d26de2216a6c5533171807cac75f82cb316a"
+    },
+    {
+      "dataset_id": "arecel-forest10",
+      "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-forest10.json",
+      "semantic_digest": "a010aa37a0443a0fe7029b3d5e8334f26c5d5b327d9f3403ea09f34d4b0d006a"
+    },
+    {
+      "dataset_id": "arecel-power7",
+      "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-power7.json",
+      "semantic_digest": "6f8b1b8928d3619392df13993e86f93c9bc4b04deb2b80026e5d0163d0928409"
+    },
+    {
+      "dataset_id": "arecel-dmv11",
+      "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-dmv11.json",
+      "semantic_digest": "434e3fd98fec7063f87ae0fa6ce07d571d9cfcfc3b8d55120b9588dd9a93d847"
+    }
+  ],
+  "research_commit_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+  "rq5_completion_status": "incomplete",
+  "rq5_registry_status": "planned",
+  "semantic_digest": "deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0",
+  "static_deployment_cost_subexperiment": true,
+  "status": "complete",
+  "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "stock_postgresql_version": "16.14"
+}

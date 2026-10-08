@@ -823,12 +823,37 @@
         ]
       },
       "static_deployment_cost": {
-        "status": "ready-to-run",
+        "status": "complete",
         "protocol": "paper/rq5-static-deployment-cost-protocol-v1.json",
         "protocol_format_version": "rq5-static-deployment-cost-protocol-v1",
         "protocol_semantic_digest": "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406",
         "scope": "stock-only static DDL, ANALYZE, and catalog/storage subexperiment for immutable RQ2 recommendations",
         "repetitions": 3,
+        "artifact": "experiments/rq5-static-deployment-cost-v1.json",
+        "semantic_digest": "deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0",
+        "producer_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+        "preflight": {
+          "path": "experiments/rq5-static-deployment-cost-preflight-v1.json",
+          "semantic_digest": "cbaf04a9a3958ba4c74f70e5a90ffbca725f82cb54a5d572849591b6b5007224"
+        },
+        "raw_children": {
+          "arecel-census13": {
+            "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-census13.json",
+            "semantic_digest": "e24ca4280ad6d53e276d19527a86d26de2216a6c5533171807cac75f82cb316a"
+          },
+          "arecel-forest10": {
+            "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-forest10.json",
+            "semantic_digest": "a010aa37a0443a0fe7029b3d5e8334f26c5d5b327d9f3403ea09f34d4b0d006a"
+          },
+          "arecel-power7": {
+            "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-power7.json",
+            "semantic_digest": "6f8b1b8928d3619392df13993e86f93c9bc4b04deb2b80026e5d0163d0928409"
+          },
+          "arecel-dmv11": {
+            "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-dmv11.json",
+            "semantic_digest": "434e3fd98fec7063f87ae0fa6ce07d571d9cfcfc3b8d55120b9588dd9a93d847"
+          }
+        },
         "rq5_completion_status": "incomplete"
       }
     }

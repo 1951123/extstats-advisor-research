@@ -135,7 +135,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
 | `rq4-ks-sensitivity` | RQ4a | `complete` | `paper/top-k-screening-protocol-v2.json` (semantic digest `55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec`) has validated formal children for Census13, Power7, and DMV11 under `K_s={4,8,16,32,all}`, `B=4`, and 300 seconds. The child artifacts are `experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `85b832eae...`), `experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8`), and `experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109`). The Census13 and DMV11 `all` points are reused 300-second-bounded k=2 incumbents, not optimum references. The offline aggregation `experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json` is complete; global RQ4 remains incomplete. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
-| `rq5-cost-accounting` | RQ5 | `planned` | An offline existing-trace inventory is complete at `experiments/rq5-existing-trace-cost-inventory-v1.json` (digest `54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab`); RQ5 remains incomplete because directly measured gaps are explicit. |
+| `rq5-cost-accounting` | RQ5 | `planned` | The static deployment subexperiment is complete under `rq5-static-deployment-cost-v1` (digest `deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0`) with three fresh stock realizations per dataset; the broader RQ5 remains incomplete because directly measured gaps are explicit. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 
@@ -809,7 +809,10 @@ the already-selected RQ2 recommendations on stock PostgreSQL: definition DDL,
 one relation-level `ANALYZE`, and logical versus page-granular catalog
 allocation. It uses three independent fresh database realizations per dataset
 and excludes Advisor selection, truth acquisition, planner evaluation, refresh,
-and snapshot-byte measurement. Its completion will not complete RQ5.
+and snapshot-byte measurement. The formal artifact is
+`experiments/rq5-static-deployment-cost-v1.json` (digest
+`deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0`). Its
+completion does not complete RQ5.
 
 ## Provenance and completion criteria
 
