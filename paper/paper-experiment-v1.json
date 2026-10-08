@@ -304,7 +304,7 @@
       "status": "preregistered",
       "formal_execution": "power7-attempt-4-pre-execution-environment-failed",
       "formal_evidence_status": "not-produced",
-      "next_formal_attempt": "none-pending-until-environment-ready",
+      "next_formal_attempt": "power7-attempt-5-pending",
       "power7_formal_attempts": [
         {
           "attempt_index": 1,

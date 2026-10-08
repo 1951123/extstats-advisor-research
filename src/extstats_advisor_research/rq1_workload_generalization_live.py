@@ -68,14 +68,14 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
-CAMPAIGN_ATTEMPT_INDEX = 4
+CAMPAIGN_ATTEMPT_INDEX = 5
 PRIOR_FAILED_ATTEMPT_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
-    "failed-attempts/attempt-003/failure-v1.json"
+    "failed-attempts/attempt-004/failure-v1.json"
 )
-PRIOR_FAILED_ATTEMPT_DIGEST = "7ead61187975a9406f42348cc23b95b6bac2d4131f551cbc3793bb4989ee3875"
-PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-tool-resolution-failure"
-PRIOR_FAILED_ATTEMPT_CLASS = "frozen-advisor-console-script-not-resolvable"
+PRIOR_FAILED_ATTEMPT_DIGEST = "d809f9e15f4eb2bb33aa8a421b8e8c2ff690ad372eb245b0b555495d30ac638d"
+PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-environment-failure"
+PRIOR_FAILED_ATTEMPT_CLASS = "frozen-advisor-runtime-dependency-missing"
 DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
 PER_QUERY_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
