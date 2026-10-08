@@ -807,18 +807,20 @@
       "completion_criteria": ["all measured stages have provenance", "no zero-online-overhead claim is substituted for measured costs"],
       "existing_trace_inventory": {
         "status": "complete",
-        "artifact": "experiments/rq5-existing-trace-cost-inventory-v1.json",
-        "format_version": "rq5-existing-trace-cost-inventory-v1",
-        "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+        "artifact": "experiments/rq5-existing-trace-cost-inventory-v2.json",
+        "format_version": "rq5-existing-trace-cost-inventory-v2",
+        "semantic_digest": "de6d4f3291735dfdf03007adfc92678cfc31f11c8ef3f813b25b3b0ac271230b",
         "scope": "offline aggregation of already-measured cost evidence",
         "rq5_completion_status": "incomplete",
+        "prior_inventory": {
+          "artifact": "experiments/rq5-existing-trace-cost-inventory-v1.json",
+          "format_version": "rq5-existing-trace-cost-inventory-v1",
+          "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+          "status": "superseded-for-current-pointer"
+        },
         "remaining_measurement_gaps": [
           "snapshot bytes",
           "production exact truth timing",
-          "DDL-only timing",
-          "ANALYZE-only timing",
-          "catalog/storage bytes",
-          "production online planning latency",
           "refresh cost and quality trend"
         ]
       },

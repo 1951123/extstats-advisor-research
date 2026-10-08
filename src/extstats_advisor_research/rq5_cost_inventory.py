@@ -11,11 +11,13 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 from pathlib import Path
+from statistics import median
 from typing import Any
 
 from .provenance import read_json, reject_credentials, semantic_digest, write_json
 
 FORMAT_VERSION = "rq5-existing-trace-cost-inventory-v1"
+FORMAT_VERSION_V2 = "rq5-existing-trace-cost-inventory-v2"
 EXPERIMENT_ID = "rq5-existing-trace-cost-inventory"
 RQ5_STATUS = "planned"
 DATASETS = ("arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11")
@@ -79,6 +81,62 @@ KS_SUMMARY = {
 KS_PROTOCOL_DIGEST = "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec"
 KS_B = 4
 KS_WIDTHS = (4, 8, 16, 32, "all")
+V1_INVENTORY = {
+    "path": "experiments/rq5-existing-trace-cost-inventory-v1.json",
+    "semantic_digest": "54f846c0c50e8db787b87b0ad5caa50a2e180e7983ea963a9ee4d823cb0e5eab",
+}
+STATIC_DEPLOYMENT_SUMMARY = {
+    "path": "experiments/rq5-static-deployment-cost-v1.json",
+    "semantic_digest": "deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0",
+    "producer_sha": "70fa08ded50bb49ec3f19a4c57a3f9895e70f822",
+    "preflight_path": "experiments/rq5-static-deployment-cost-preflight-v1.json",
+    "preflight_semantic_digest": "cbaf04a9a3958ba4c74f70e5a90ffbca725f82cb54a5d572849591b6b5007224",
+}
+STATIC_DEPLOYMENT_RAW = {
+    "arecel-census13": {
+        "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-census13.json",
+        "semantic_digest": "e24ca4280ad6d53e276d19527a86d26de2216a6c5533171807cac75f82cb316a",
+    },
+    "arecel-forest10": {
+        "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-forest10.json",
+        "semantic_digest": "a010aa37a0443a0fe7029b3d5e8334f26c5d5b327d9f3403ea09f34d4b0d006a",
+    },
+    "arecel-power7": {
+        "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-power7.json",
+        "semantic_digest": "6f8b1b8928d3619392df13993e86f93c9bc4b04deb2b80026e5d0163d0928409",
+    },
+    "arecel-dmv11": {
+        "path": "experiments/rq5-static-deployment-cost-v1/raw/arecel-dmv11.json",
+        "semantic_digest": "434e3fd98fec7063f87ae0fa6ce07d571d9cfcfc3b8d55120b9588dd9a93d847",
+    },
+}
+STATIC_DEPLOYMENT_RQ2_SOURCES = {
+    "arecel-census13": {
+        "path": RQ2_CHILDREN["arecel-census13"]["path"],
+        "semantic_digest": RQ2_CHILDREN["arecel-census13"]["semantic_digest"],
+        "deployment_path": "experiments/arecel-census13/rq2-confirmatory/deployment-result-v1.json",
+        "deployment_digest": "51c6ab5eaace99629b8c51662633cd8d58f4798c4cd3914e13b03755319a79bf",
+    },
+    "arecel-forest10": {
+        "path": RQ2_CHILDREN["arecel-forest10"]["path"],
+        "semantic_digest": RQ2_CHILDREN["arecel-forest10"]["semantic_digest"],
+        "deployment_path": "experiments/arecel-forest10/rq2-confirmatory/deployment-result-v1.json",
+        "deployment_digest": "0d3eea2ea72e8d4283203fbe397f2d0b203f67f696d1182061f88278df7269e9",
+    },
+    "arecel-power7": {
+        "path": RQ2_CHILDREN["arecel-power7"]["path"],
+        "semantic_digest": RQ2_CHILDREN["arecel-power7"]["semantic_digest"],
+        "deployment_path": "experiments/arecel-power7/rq2-confirmatory/deployment-result-v1.json",
+        "deployment_digest": "1574371282ef4427569ac1159777433ac7874a64a5e8fc9eb9477ca2d0925fa7",
+    },
+    "arecel-dmv11": {
+        "path": RQ2_CHILDREN["arecel-dmv11"]["path"],
+        "semantic_digest": RQ2_CHILDREN["arecel-dmv11"]["semantic_digest"],
+        "deployment_path": "experiments/arecel-dmv11/rq2-confirmatory/deployment-result-v1.json",
+        "deployment_digest": "ab46e20c8a51b6e2e35ce7f41d3d1224d3af91dcaeee4aa5595d8d25c3d0734a",
+    },
+}
+STATIC_PROTOCOL_DIGEST = "01475d7979fb9c4bf027fbe43abd57c9cd06541134533712f3f258b47cc0f406"
 
 
 class RQ5CostInventoryValidationError(ValueError):
@@ -87,6 +145,10 @@ class RQ5CostInventoryValidationError(ValueError):
 
 def default_inventory_path(research_root: Path) -> Path:
     return research_root / "experiments/rq5-existing-trace-cost-inventory-v1.json"
+
+
+def default_inventory_v2_path(research_root: Path) -> Path:
+    return research_root / "experiments/rq5-existing-trace-cost-inventory-v2.json"
 
 
 def _require(condition: bool, message: str) -> None:
@@ -731,6 +793,8 @@ def write_inventory(research_root: Path, output: Path | None = None) -> dict[str
 
 def validate_inventory(path: Path, research_root: Path) -> dict[str, Any]:
     value = read_json(path)
+    if value.get("format_version") == FORMAT_VERSION_V2:
+        return validate_inventory_v2(path, research_root)
     _require(value.get("format_version") == FORMAT_VERSION, "unsupported RQ5 inventory format")
     digest = value.get("semantic_digest")
     _require(isinstance(digest, str), "RQ5 inventory lacks semantic_digest")
@@ -758,5 +822,689 @@ def validate_inventory(path: Path, research_root: Path) -> dict[str, Any]:
         "semantic_digest": digest,
         "rq5_completion_status": value["rq5_completion_status"],
         "dataset_count": len(value["formal_operational_costs"]),
+        "remaining_measurement_gap_count": len(value["remaining_measurement_gaps"]),
+    }
+
+
+def _stats(values: list[float | int]) -> dict[str, float | int]:
+    _require(values, "cannot summarize an empty measurement list")
+    return {"median": median(values), "min": min(values), "max": max(values)}
+
+
+def _static_protocol(root: Path) -> dict[str, Any]:
+    path = root / "paper/rq5-static-deployment-cost-protocol-v1.json"
+    _require(path.is_file(), "static deployment protocol is missing")
+    value = read_json(path)
+    _require(
+        value.get("format_version") == "rq5-static-deployment-cost-protocol-v1",
+        "static deployment protocol format drifted",
+    )
+    _require(
+        value.get("status") == "preregistered", "static deployment protocol is not preregistered"
+    )
+    _require(
+        value.get("semantic_digest") == STATIC_PROTOCOL_DIGEST,
+        "static deployment protocol digest drifted",
+    )
+    _require(
+        semantic_digest(_without_digest(value, "semantic_digest")) == STATIC_PROTOCOL_DIGEST,
+        "static deployment protocol semantic digest mismatch",
+    )
+    return value
+
+
+def _validate_static_summary(
+    root: Path, summary: Mapping[str, Any], raw_by_dataset: Mapping[str, Mapping[str, Any]]
+) -> None:
+    _require(
+        summary.get("format_version") == "rq5-static-deployment-cost-v1",
+        "static deployment summary format drifted",
+    )
+    _require(summary.get("status") == "complete", "static deployment summary is not complete")
+    _require(
+        summary.get("static_deployment_cost_subexperiment") is True,
+        "static deployment flag drifted",
+    )
+    _require(
+        summary.get("rq5_completion_status") == "incomplete",
+        "static summary completed RQ5 unexpectedly",
+    )
+    _require(
+        summary.get("rq5_registry_status") == RQ5_STATUS, "static summary registry status drifted"
+    )
+    _require(
+        summary.get("research_commit_sha") == STATIC_DEPLOYMENT_SUMMARY["producer_sha"],
+        "static deployment producer drifted",
+    )
+    _require(
+        summary.get("stock_postgresql_sha") == "0d1c00c624fa7367d4a895f44381887757289682",
+        "static deployment stock identity drifted",
+    )
+    _require(
+        summary.get("stock_postgresql_version") == "16.14",
+        "static deployment stock version drifted",
+    )
+    _require(
+        summary.get("protocol_semantic_digest") == STATIC_PROTOCOL_DIGEST,
+        "static summary protocol digest drifted",
+    )
+    _require(summary.get("dataset_order") == list(DATASETS), "static summary dataset order drifted")
+    refs = summary.get("raw_repetition_artifacts")
+    expected_refs = [{"dataset_id": d, **STATIC_DEPLOYMENT_RAW[d]} for d in DATASETS]
+    _require(refs == expected_refs, "static summary raw child references drifted")
+    _require(summary.get("no_advisor_selection") is True, "static summary claims Advisor selection")
+    _require(summary.get("no_patched_postgres") is True, "static summary claims patched PostgreSQL")
+    _require(
+        summary.get("no_planner_evaluation") is True, "static summary claims planner evaluation"
+    )
+    _require(summary.get("no_truth_acquisition") is True, "static summary claims truth acquisition")
+    _require(
+        summary.get("no_snapshot_bytes_measurement") is True,
+        "static summary claims snapshot-byte measurement",
+    )
+    _require(
+        summary.get("preflight_path") == STATIC_DEPLOYMENT_SUMMARY["preflight_path"],
+        "static summary preflight path drifted",
+    )
+    _require(
+        summary.get("preflight_semantic_digest")
+        == STATIC_DEPLOYMENT_SUMMARY["preflight_semantic_digest"],
+        "static summary preflight digest drifted",
+    )
+    _require(
+        summary.get("protocol_path") == "paper/rq5-static-deployment-cost-protocol-v1.json",
+        "static summary protocol path drifted",
+    )
+    for dataset_id in DATASETS:
+        raw = raw_by_dataset[dataset_id]
+        dataset = summary.get("datasets", {}).get(dataset_id)
+        _require(isinstance(dataset, Mapping), f"static summary lacks {dataset_id}")
+        repetitions = raw["repetitions"]
+        ddl = [rep["ddl"]["elapsed_seconds"] for rep in repetitions]
+        analyze = [rep["analyze"]["elapsed_seconds"] for rep in repetitions]
+        sequential = [rep["derived"]["sequential_ddl_plus_analyze_seconds"] for rep in repetitions]
+        after_ddl = [rep["logical_storage"]["after_ddl"]["total"] for rep in repetitions]
+        after_analyze = [rep["logical_storage"]["after_analyze"]["total"] for rep in repetitions]
+        physical_ddl = [
+            rep["physical_catalog_allocation"]["deltas"]["after_ddl_minus_baseline"][
+                "combined_catalog_total_relation_bytes"
+            ]
+            for rep in repetitions
+        ]
+        physical_final = [
+            rep["physical_catalog_allocation"]["deltas"]["after_analyze_minus_baseline"][
+                "combined_catalog_total_relation_bytes"
+            ]
+            for rep in repetitions
+        ]
+        expected = {
+            "selected_k": raw["object_count"],
+            "selected_candidate_ids": raw["selected_candidate_ids"],
+            "object_count": raw["object_count"],
+            "statistics_kinds": raw["statistics_kinds"],
+            "statistics_target": raw["statistics_target"],
+            "ddl_elapsed_seconds": _stats(ddl),
+            "analyze_elapsed_seconds": _stats(analyze),
+            "sequential_ddl_plus_analyze_seconds": _stats(sequential),
+            "logical_catalog_row_bytes_after_ddl": _stats(after_ddl),
+            "logical_catalog_row_bytes_after_analyze": _stats(after_analyze),
+            "physical_catalog_allocation_delta_after_ddl": _stats(physical_ddl),
+            "physical_catalog_allocation_delta_after_analyze": _stats(physical_final),
+        }
+        _require(
+            all(dataset.get(key) == value for key, value in expected.items()),
+            f"static summary projection drifted for {dataset_id}",
+        )
+        _require(dataset.get("cleanup") is True, f"static summary cleanup drifted for {dataset_id}")
+        _require(
+            dataset.get("payload_verification") is True,
+            f"static summary payload verification drifted for {dataset_id}",
+        )
+
+
+def _read_static_deployment_sources(
+    root: Path,
+) -> tuple[
+    dict[str, Any], dict[str, Any], dict[str, Any], dict[str, dict[str, Any]], dict[str, Any]
+]:
+    v1 = _read_pinned(root, V1_INVENTORY, "RQ5 inventory v1")
+    _require(v1.get("format_version") == FORMAT_VERSION, "pinned RQ5 inventory is not v1")
+    _require(v1.get("rq5_completion_status") == "incomplete", "pinned RQ5 inventory completed RQ5")
+    summary = _read_pinned(root, STATIC_DEPLOYMENT_SUMMARY, "RQ5 static deployment summary")
+    protocol = _static_protocol(root)
+    preflight = _read_pinned(
+        root,
+        {
+            "path": STATIC_DEPLOYMENT_SUMMARY["preflight_path"],
+            "semantic_digest": STATIC_DEPLOYMENT_SUMMARY["preflight_semantic_digest"],
+        },
+        "RQ5 static deployment preflight",
+    )
+    _require(
+        preflight.get("status") == "ready-to-run", "static deployment preflight is not ready-to-run"
+    )
+    _require(
+        preflight.get("formal_execution_started") is False,
+        "static deployment preflight claims execution started",
+    )
+    _require(
+        preflight.get("research_commit_sha") == STATIC_DEPLOYMENT_SUMMARY["producer_sha"],
+        "preflight producer drifted",
+    )
+    _require(
+        preflight.get("stock_postgres_sha") == "0d1c00c624fa7367d4a895f44381887757289682",
+        "preflight stock identity drifted",
+    )
+    _require(preflight.get("repetitions") == 3, "preflight repetition count drifted")
+    _require(preflight.get("dataset_order") == list(DATASETS), "preflight dataset order drifted")
+
+    raw_by_dataset: dict[str, dict[str, Any]] = {}
+    for dataset_id in DATASETS:
+        raw = _read_pinned(
+            root, STATIC_DEPLOYMENT_RAW[dataset_id], f"static deployment raw {dataset_id}"
+        )
+        raw_by_dataset[dataset_id] = raw
+        source = STATIC_DEPLOYMENT_RQ2_SOURCES[dataset_id]
+        _require(
+            raw.get("format_version") == "rq5-static-deployment-cost-dataset-v1",
+            f"{dataset_id} raw format drifted",
+        )
+        _require(
+            raw.get("status") == "complete" and raw.get("formal_execution") is True,
+            f"{dataset_id} raw is not complete",
+        )
+        _require(raw.get("dataset_id") == dataset_id, f"{dataset_id} raw dataset identity drifted")
+        _require(
+            raw.get("research_commit_sha") == STATIC_DEPLOYMENT_SUMMARY["producer_sha"],
+            f"{dataset_id} raw producer drifted",
+        )
+        _require(
+            raw.get("stock_postgresql_sha") == "0d1c00c624fa7367d4a895f44381887757289682",
+            f"{dataset_id} raw stock identity drifted",
+        )
+        _require(
+            raw.get("protocol_semantic_digest") == STATIC_PROTOCOL_DIGEST,
+            f"{dataset_id} raw protocol digest drifted",
+        )
+        _require(
+            raw.get("preflight_path") == STATIC_DEPLOYMENT_SUMMARY["preflight_path"],
+            f"{dataset_id} raw preflight path drifted",
+        )
+        _require(
+            raw.get("preflight_semantic_digest")
+            == STATIC_DEPLOYMENT_SUMMARY["preflight_semantic_digest"],
+            f"{dataset_id} raw preflight digest drifted",
+        )
+        _require(
+            raw.get("source_rq2_child") == source["path"], f"{dataset_id} raw RQ2 path drifted"
+        )
+        _require(
+            raw.get("source_rq2_digest") == source["semantic_digest"],
+            f"{dataset_id} raw RQ2 digest drifted",
+        )
+        _require(
+            raw.get("source_deployment_artifact") == source["deployment_path"],
+            f"{dataset_id} raw deployment path drifted",
+        )
+        _require(
+            raw.get("source_deployment_digest") == source["deployment_digest"],
+            f"{dataset_id} raw deployment digest drifted",
+        )
+        _require(
+            isinstance(raw.get("selected_candidate_ids"), list),
+            f"{dataset_id} raw candidates missing",
+        )
+        _require(
+            raw.get("object_count") == len(raw["selected_candidate_ids"]),
+            f"{dataset_id} raw object count drifted",
+        )
+        _require(raw.get("statistics_target") == 100, f"{dataset_id} raw statistics target drifted")
+        _require(len(raw.get("repetitions", [])) == 3, f"{dataset_id} raw repetition count drifted")
+        for expected_id, rep in enumerate(raw["repetitions"], 1):
+            _require(
+                rep.get("repetition_id") == expected_id, f"{dataset_id} repetition order drifted"
+            )
+            for key in (
+                "research_commit_sha",
+                "source_rq2_child",
+                "source_rq2_digest",
+                "source_deployment_artifact",
+                "source_deployment_digest",
+            ):
+                _require(
+                    rep.get(key) == raw.get(key),
+                    f"{dataset_id} repetition provenance drifted: {key}",
+                )
+            _require(rep.get("status") == "complete", f"{dataset_id} repetition is not complete")
+            _require(
+                rep.get("ddl", {}).get("committed") is True, f"{dataset_id} DDL was not committed"
+            )
+            _require(
+                rep.get("ddl", {}).get("verification_passed") is True,
+                f"{dataset_id} DDL verification failed",
+            )
+            _require(
+                rep.get("analyze", {}).get("completed") is True,
+                f"{dataset_id} ANALYZE did not complete",
+            )
+            _require(
+                rep.get("analyze", {}).get("payload_verification_passed") is True,
+                f"{dataset_id} payload verification failed",
+            )
+            _require(
+                rep.get("derived", {}).get("direct_combined_wall_clock_measurement") is False,
+                f"{dataset_id} combined timing semantics drifted",
+            )
+            _require(
+                rep.get("cleanup", {}).get("database_dropped") is True,
+                f"{dataset_id} cleanup failed",
+            )
+            _require(rep["ddl"]["elapsed_seconds"] <= 300, f"{dataset_id} DDL cap exceeded")
+            _require(rep["analyze"]["elapsed_seconds"] <= 300, f"{dataset_id} ANALYZE cap exceeded")
+            baseline = rep["logical_storage"]["baseline"]
+            _require(
+                all(
+                    baseline.get(key) == 0
+                    for key in (
+                        "pg_statistic_ext",
+                        "pg_statistic_ext_data",
+                        "total",
+                        "mcv_payload_bytes",
+                        "dependencies_payload_bytes",
+                        "ndistinct_payload_bytes",
+                    )
+                ),
+                f"{dataset_id} baseline logical storage is not zero",
+            )
+            after_ddl = rep["logical_storage"]["after_ddl"]
+            _require(
+                all(
+                    after_ddl.get(key) == 0
+                    for key in (
+                        "mcv_payload_bytes",
+                        "dependencies_payload_bytes",
+                        "ndistinct_payload_bytes",
+                    )
+                ),
+                f"{dataset_id} pre-ANALYZE payload is present",
+            )
+    _validate_static_summary(root, summary, raw_by_dataset)
+    reject_credentials(
+        {
+            "v1": v1,
+            "summary": summary,
+            "preflight": preflight,
+            "raw": raw_by_dataset,
+            "protocol": protocol,
+        }
+    )
+    return v1, summary, preflight, raw_by_dataset, protocol
+
+
+def _static_projection(
+    raw_by_dataset: Mapping[str, Mapping[str, Any]], protocol: Mapping[str, Any]
+) -> dict[str, Any]:
+    logical_keys = (
+        "pg_statistic_ext",
+        "pg_statistic_ext_data",
+        "total",
+        "mcv_payload_bytes",
+        "dependencies_payload_bytes",
+        "ndistinct_payload_bytes",
+    )
+    physical_keys = (
+        "metadata_catalog_total_relation_bytes",
+        "data_catalog_total_relation_bytes",
+        "combined_catalog_total_relation_bytes",
+    )
+    per_dataset: dict[str, Any] = {}
+    headline_rows: list[dict[str, Any]] = []
+    fractions: dict[str, Any] = {}
+    for dataset_id in DATASETS:
+        raw = raw_by_dataset[dataset_id]
+        reps = raw["repetitions"]
+        ddl = [rep["ddl"]["elapsed_seconds"] for rep in reps]
+        analyze = [rep["analyze"]["elapsed_seconds"] for rep in reps]
+        sequential = [rep["derived"]["sequential_ddl_plus_analyze_seconds"] for rep in reps]
+        stats = lambda values: _stats(values)
+        logical = {
+            state: {
+                key: [rep["logical_storage"][state][key] for rep in reps] for key in logical_keys
+            }
+            for state in ("after_ddl", "after_analyze")
+        }
+        physical_deltas = {
+            delta: {
+                key: [rep["physical_catalog_allocation"]["deltas"][delta][key] for rep in reps]
+                for key in physical_keys
+            }
+            for delta in (
+                "after_ddl_minus_baseline",
+                "after_analyze_minus_after_ddl",
+                "after_analyze_minus_baseline",
+            )
+        }
+        per_dataset[dataset_id] = {
+            "selected_k": raw["object_count"],
+            "selected_candidate_ids": raw["selected_candidate_ids"],
+            "object_count": raw["object_count"],
+            "statistics_kinds": raw["statistics_kinds"],
+            "statistics_target": raw["statistics_target"],
+            "ddl": {
+                "raw_seconds": ddl,
+                "statistics_seconds": stats(ddl),
+                "raw_statement_counts": [rep["ddl"]["statement_count"] for rep in reps],
+                "timer_semantics": protocol["stages"]["ddl"],
+                "measurement_scope": "DDL-only formal stock PostgreSQL measurement",
+            },
+            "analyze": {
+                "raw_seconds": analyze,
+                "statistics_seconds": stats(analyze),
+                "raw_statement_counts": [rep["analyze"]["statement_count"] for rep in reps],
+                "relation_level_statement_count": [
+                    rep["analyze"]["statement_count"] for rep in reps
+                ],
+                "timer_semantics": protocol["stages"]["analyze"],
+                "measurement_scope": "single relation-level ANALYZE on stock PostgreSQL",
+                "payload_verification": [
+                    rep["analyze"]["payload_verification_passed"] for rep in reps
+                ],
+            },
+            "sequential_ddl_plus_analyze": {
+                "raw_seconds": sequential,
+                "statistics_seconds": stats(sequential),
+                "semantics": "derived sum of separately measured sequential stages",
+            },
+            "logical_catalog_row_bytes": logical,
+            "physical_catalog_relation_allocation_deltas": {
+                "raw_bytes": physical_deltas,
+                "semantics": protocol["storage"]["physical_delta_semantics"],
+            },
+            "base_relation_total_bytes_context": [
+                rep["base_relation_total_bytes_context"] for rep in reps
+            ],
+            "payload_verification": all(
+                rep["analyze"]["payload_verification_passed"] for rep in reps
+            ),
+            "cleanup": all(rep["cleanup"]["database_dropped"] for rep in reps),
+        }
+        ddl_median = median(ddl)
+        analyze_median = median(analyze)
+        sequential_median = median(sequential)
+        fractions[dataset_id] = {
+            "ddl_fraction_of_sequential_deployment": ddl_median / sequential_median,
+            "analyze_fraction_of_sequential_deployment": analyze_median / sequential_median,
+            "ddl_median_less_than_analyze_median": ddl_median < analyze_median,
+        }
+        headline_rows.append(
+            {
+                "dataset_id": dataset_id,
+                "selected_k": raw["object_count"],
+                "ddl_seconds_median": ddl_median,
+                "analyze_seconds_median": analyze_median,
+                "sequential_ddl_plus_analyze_seconds_median": sequential_median,
+                "logical_after_ddl_bytes_median": median(logical["after_ddl"]["total"]),
+                "logical_after_analyze_bytes_median": median(logical["after_analyze"]["total"]),
+                "physical_after_ddl_delta_bytes_median": median(
+                    physical_deltas["after_ddl_minus_baseline"][
+                        "combined_catalog_total_relation_bytes"
+                    ]
+                ),
+                "physical_after_analyze_incremental_delta_bytes_median": median(
+                    physical_deltas["after_analyze_minus_after_ddl"][
+                        "combined_catalog_total_relation_bytes"
+                    ]
+                ),
+                "physical_final_delta_bytes_median": median(
+                    physical_deltas["after_analyze_minus_baseline"][
+                        "combined_catalog_total_relation_bytes"
+                    ]
+                ),
+            }
+        )
+    return {
+        "per_dataset": per_dataset,
+        "headline_rows": headline_rows,
+        "deployment_fractions": fractions,
+    }
+
+
+def _build_inventory_v2_without_digest(research_root: Path) -> dict[str, Any]:
+    _v1, _summary, _preflight, raw_by_dataset, protocol = _read_static_deployment_sources(
+        research_root
+    )
+    base = _build_inventory_without_digest(research_root)
+    projection = _static_projection(raw_by_dataset, protocol)
+    body = dict(base)
+    body["format_version"] = FORMAT_VERSION_V2
+    body["supersedes_inventory"] = dict(V1_INVENTORY)
+    body["source_evidence"] = dict(body["source_evidence"])
+    body["source_evidence"]["static_deployment"] = {
+        "summary": dict(STATIC_DEPLOYMENT_SUMMARY),
+        "preflight": {
+            "path": STATIC_DEPLOYMENT_SUMMARY["preflight_path"],
+            "semantic_digest": STATIC_DEPLOYMENT_SUMMARY["preflight_semantic_digest"],
+        },
+        "raw_children": [{"dataset_id": d, **STATIC_DEPLOYMENT_RAW[d]} for d in DATASETS],
+        "producer_sha": STATIC_DEPLOYMENT_SUMMARY["producer_sha"],
+        "protocol_path": "paper/rq5-static-deployment-cost-protocol-v1.json",
+        "protocol_semantic_digest": STATIC_PROTOCOL_DIGEST,
+    }
+    body["stages"] = dict(body["stages"])
+    stages = body["stages"]
+    stages["snapshot capture"] = dict(stages["snapshot capture"])
+    stages["snapshot capture"]["unmeasured_required_metrics"] = ["snapshot_bytes"]
+    stages["snapshot capture"]["measured_metrics"] = {
+        "snapshot_capture_elapsed_seconds": {
+            d: _rq2_values(research_root)[d]["snapshot_capture_seconds"] for d in DATASETS
+        },
+        "metric_status": {"capture_time": "formal-measured", "snapshot_bytes": "missing"},
+    }
+    static_paths = [
+        STATIC_DEPLOYMENT_SUMMARY["path"],
+        *[STATIC_DEPLOYMENT_RAW[d]["path"] for d in DATASETS],
+    ]
+    static_digests = [
+        STATIC_DEPLOYMENT_SUMMARY["semantic_digest"],
+        *[STATIC_DEPLOYMENT_RAW[d]["semantic_digest"] for d in DATASETS],
+    ]
+    static_metrics = {
+        "headline_rows": projection["headline_rows"],
+        "per_dataset": projection["per_dataset"],
+    }
+    stages["deployment DDL"] = _stage(
+        "deployment-ddl",
+        "deployment DDL",
+        "formal-measured",
+        "formal-static-deployment-stock",
+        static_paths,
+        static_digests,
+        list(DATASETS),
+        static_metrics,
+        [],
+        "DDL-only recommendation definition creation on stock PostgreSQL; ANALYZE and verification excluded",
+        ["This is not total deployment cost"],
+        True,
+    )
+    stages["deployment ANALYZE"] = _stage(
+        "deployment-analyze",
+        "deployment ANALYZE",
+        "formal-measured",
+        "formal-static-deployment-stock",
+        static_paths,
+        static_digests,
+        list(DATASETS),
+        static_metrics,
+        [],
+        "One relation-level ANALYZE after exact DDL verification",
+        ["Payload verification is recorded; this is not online query latency"],
+        True,
+    )
+    stages["catalog/storage"] = _stage(
+        "catalog-storage",
+        "catalog/storage",
+        "formal-measured",
+        "formal-static-deployment-stock",
+        static_paths,
+        static_digests,
+        list(DATASETS),
+        static_metrics,
+        [],
+        "Recommendation-local logical catalog row bytes and page-granular physical catalog relation allocation",
+        [
+            "Logical and physical views are not additive",
+            "Physical allocation deltas are not exact per-object attribution",
+            "Object count and payload presence are not byte estimators",
+        ],
+        True,
+    )
+    stages["post-deployment planning"] = dict(stages["post-deployment planning"])
+    stages["post-deployment planning"]["unmeasured_required_metrics"] = []
+    stages["post-deployment planning"]["optional_external_validity_gaps"] = [
+        "production_online_query_latency"
+    ]
+    stages["post-deployment planning"]["limitations"] = [
+        "P0/P1 are offline 10,000-query EXPLAIN workload timings, not production online latency"
+    ]
+    body["coverage_matrix"] = _coverage(stages)
+    body["formal_operational_costs"] = body["formal_operational_costs"]
+    body["static_deployment_cost"] = {
+        "summary": dict(STATIC_DEPLOYMENT_SUMMARY),
+        "preflight": {
+            "path": STATIC_DEPLOYMENT_SUMMARY["preflight_path"],
+            "semantic_digest": STATIC_DEPLOYMENT_SUMMARY["preflight_semantic_digest"],
+        },
+        "producer_sha": STATIC_DEPLOYMENT_SUMMARY["producer_sha"],
+        "protocol_semantic_digest": STATIC_PROTOCOL_DIGEST,
+        **projection,
+        "logical_and_physical_storage_are_not_additive": True,
+        "physical_delta_not_per_object_attribution": True,
+        "no_canonical_end_to_end_elapsed": True,
+    }
+    body["protocol_required_unresolved"] = [
+        {
+            "stage": "snapshot capture",
+            "missing_metric": "snapshot_bytes",
+            "reason": "snapshot size representation requires a protocol decision; file/JSON size is not silently substituted",
+            "completion_blocker": True,
+            "would_require_new_live_measurement": True,
+        },
+        {
+            "stage": "production exact truth acquisition",
+            "missing_metric": "exact_count_elapsed_seconds",
+            "reason": "equivalence evidence does not contain exact-count acquisition timing",
+            "completion_blocker": True,
+            "would_require_new_live_measurement": True,
+        },
+        {
+            "stage": "refresh",
+            "missing_metric": "refresh_elapsed_seconds",
+            "reason": "no tracked refresh protocol or execution exists",
+            "completion_blocker": True,
+            "would_require_new_live_measurement": True,
+        },
+        {
+            "stage": "refresh",
+            "missing_metric": "refresh_quality_trend",
+            "reason": "no tracked refresh quality trend exists",
+            "completion_blocker": True,
+            "would_require_new_live_measurement": True,
+        },
+    ]
+    body["optional_external_validity_gaps"] = [
+        {
+            "stage": "post-deployment planning",
+            "missing_metric": "production_online_query_latency",
+            "reason": "offline EXPLAIN timing is not online latency",
+            "completion_blocker": False,
+        }
+    ]
+    body["remaining_measurement_gaps"] = body["protocol_required_unresolved"]
+    body["claim_readiness"] = {
+        "can_claim_external_truth_import_cost": True,
+        "can_claim_incremental_singleton_savings": True,
+        "can_claim_search_scaling_cost": True,
+        "can_claim_deployment_ddl_cost": True,
+        "can_claim_deployment_analyze_cost": True,
+        "can_claim_catalog_storage_cost": True,
+        "can_claim_post_deployment_planning_cost": True,
+        "can_claim_production_exact_truth_cost": False,
+        "can_claim_refresh_cost": False,
+        "can_claim_refresh_quality_trend": False,
+        "can_claim_end_to_end_advisor_cost": False,
+    }
+    body["interpretation"] = {
+        "external_truth_import_is_not_production_exact_cost": True,
+        "production_exact_truth_cost_is_unmeasured": True,
+        "historical_rq2_combined_deployment_is_context_only": True,
+        "p0_p1_are_offline_explain_workload_timings": True,
+        "production_online_query_latency_is_optional_external_validity": True,
+        "ks_sensitivity_is_B4_not_canonical_B8": True,
+        "canonical_production_configuration": {"K_s": 8, "B": 8},
+        "static_repetitions_are_not_refresh": True,
+        "component_timings_must_not_be_summed": True,
+        "logical_and_physical_storage_are_not_additive": True,
+        "physical_delta_not_per_object_attribution": True,
+        "ddl_median_less_than_analyze_median_all_datasets": all(
+            item["ddl_median_less_than_analyze_median"]
+            for item in projection["deployment_fractions"].values()
+        ),
+        "no_canonical_end_to_end_elapsed": True,
+    }
+    return body
+
+
+def build_inventory_v2(research_root: Path) -> dict[str, Any]:
+    body = _build_inventory_v2_without_digest(research_root)
+    body["semantic_digest"] = semantic_digest(body)
+    return body
+
+
+def write_inventory_v2(research_root: Path, output: Path | None = None) -> dict[str, Any]:
+    output_path = output or default_inventory_v2_path(research_root)
+    value = build_inventory_v2(research_root)
+    write_json(output_path, value)
+    return value
+
+
+def validate_inventory_v2(path: Path, research_root: Path) -> dict[str, Any]:
+    value = read_json(path)
+    _require(
+        value.get("format_version") == FORMAT_VERSION_V2, "unsupported RQ5 inventory v2 format"
+    )
+    digest = value.get("semantic_digest")
+    _require(isinstance(digest, str), "RQ5 inventory v2 lacks semantic_digest")
+    _require(
+        digest == semantic_digest(_without_digest(value, "semantic_digest")),
+        "RQ5 inventory v2 digest mismatch",
+    )
+    _require(value.get("rq5_completion_status") == "incomplete", "RQ5 must remain incomplete")
+    _require(
+        value.get("rq5_registry_status") == RQ5_STATUS, "RQ5 registry status must remain planned"
+    )
+    _require(
+        value.get("generated_from_tracked_json_only") is True, "v2 inventory is not offline-only"
+    )
+    _require(
+        value.get("new_postgresql_execution") is False,
+        "v2 inventory claims new PostgreSQL execution",
+    )
+    _require(
+        value.get("new_planner_execution") is False, "v2 inventory claims new planner execution"
+    )
+    _require(value.get("new_benchmark_run") is False, "v2 inventory claims a new benchmark run")
+    _require(value.get("no_synthetic_total") is True, "v2 inventory must forbid synthetic totals")
+    _require("total_advisor_seconds" not in value, "synthetic end-to-end total is forbidden")
+    _require(value.get("supersedes_inventory") == V1_INVENTORY, "v1 supersession gate drifted")
+    expected = build_inventory_v2(research_root)
+    _require(value == expected, "RQ5 inventory v2 does not match immutable source-derived evidence")
+    reject_credentials(value)
+    return {
+        "status": "valid",
+        "format_version": FORMAT_VERSION_V2,
+        "experiment_id": EXPERIMENT_ID,
+        "semantic_digest": digest,
+        "rq5_completion_status": value["rq5_completion_status"],
+        "dataset_count": len(DATASETS),
         "remaining_measurement_gap_count": len(value["remaining_measurement_gaps"]),
     }

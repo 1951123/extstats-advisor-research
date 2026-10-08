@@ -129,8 +129,10 @@ from .rq4_physical import validate_shared_stock_realization
 from .rq4_postgres import inspect_real_backend_smoke, validate_real_backend_smoke
 from .rq5_cost_inventory import (
     default_inventory_path,
+    default_inventory_v2_path,
     validate_inventory,
     write_inventory,
+    write_inventory_v2,
 )
 from .rq5_static_deployment_cost import (
     build_preflight as build_static_deployment_preflight,
@@ -600,6 +602,10 @@ def _parser() -> argparse.ArgumentParser:
         "inventory", help="derive the existing-trace RQ5 cost inventory from tracked JSON"
     )
     rq5_inventory.add_argument("--output", type=Path, default=None)
+    rq5_inventory_v2 = rq5_cost_commands.add_parser(
+        "inventory-v2", help="derive the static-deployment-aware RQ5 cost inventory offline"
+    )
+    rq5_inventory_v2.add_argument("--output", type=Path, default=None)
     rq5_validate = rq5_cost_commands.add_parser("validate")
     rq5_validate.add_argument("artifact", type=Path)
     rq5_static = rq5_cost_commands.add_parser(
@@ -1110,6 +1116,16 @@ def main(argv: list[str] | None = None) -> int:
             if args.rq5_cost_command == "inventory":
                 output = args.output or default_inventory_path(root)
                 artifact = write_inventory(root, output)
+                result = {
+                    "status": "written",
+                    "format_version": artifact["format_version"],
+                    "experiment_id": artifact["experiment_id"],
+                    "semantic_digest": artifact["semantic_digest"],
+                    "output": str(output),
+                }
+            elif args.rq5_cost_command == "inventory-v2":
+                output = args.output or default_inventory_v2_path(root)
+                artifact = write_inventory_v2(root, output)
                 result = {
                     "status": "written",
                     "format_version": artifact["format_version"],
