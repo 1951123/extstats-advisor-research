@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import sys
 import time
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
@@ -67,14 +68,14 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
-CAMPAIGN_ATTEMPT_INDEX = 3
+CAMPAIGN_ATTEMPT_INDEX = 4
 PRIOR_FAILED_ATTEMPT_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
-    "failed-attempts/attempt-002/failure-v1.json"
+    "failed-attempts/attempt-003/failure-v1.json"
 )
-PRIOR_FAILED_ATTEMPT_DIGEST = "898159a74c5339d789a3c93aa22e546e9a6b91a7def137461d748ef32e24d284"
-PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-invocation-failure"
-PRIOR_FAILED_ATTEMPT_CLASS = "empty-managed-dsn-from-shell-invocation"
+PRIOR_FAILED_ATTEMPT_DIGEST = "7ead61187975a9406f42348cc23b95b6bac2d4131f551cbc3793bb4989ee3875"
+PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-tool-resolution-failure"
+PRIOR_FAILED_ATTEMPT_CLASS = "frozen-advisor-console-script-not-resolvable"
 DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
 PER_QUERY_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
@@ -773,6 +774,12 @@ def build_power7_rq1b_preflight(
         "system_freeze": _system_binding(root),
         "dataset": design_source,
         "evaluation_bindings": _opaque_evaluation_bindings(),
+        "advisor_execution_policy": {
+            "mode": "frozen-checkout-runtime-launcher",
+            "source_checkout_sha": FROZEN_ADVISOR_SHA,
+            "launcher_source": "verified advisor_root/src",
+            "path_lookup_allowed": False,
+        },
         "design_output": {
             "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json"
         },
@@ -842,6 +849,16 @@ def validate_power7_rq1b_preflight(
     _require(
         value.get("evaluation_bindings") == _opaque_evaluation_bindings(),
         "preflight evaluation binding drift",
+    )
+    _require(
+        value.get("advisor_execution_policy")
+        == {
+            "mode": "frozen-checkout-runtime-launcher",
+            "source_checkout_sha": FROZEN_ADVISOR_SHA,
+            "launcher_source": "verified advisor_root/src",
+            "path_lookup_allowed": False,
+        },
+        "preflight Advisor execution policy drift",
     )
     _require(
         value.get("parameters")
@@ -1335,6 +1352,102 @@ def _execution_from_live_canonical(value: Mapping[str, Any]) -> dict[str, Any]:
     _require(execution.get("design_stage_complete") is True, "live design did not complete")
     _require(execution.get("recommendation_sealed") is True, "live Recommendation was not sealed")
     return execution
+
+
+def prepare_frozen_advisor_launcher(*, advisor_root: Path, runtime_root: Path) -> dict[str, Any]:
+    """Create and probe a runtime-local launcher for the frozen Advisor checkout.
+
+    The formal RQ1b path must not resolve ``extstats-advisor`` through PATH:
+    that name is a packaging convenience, not the scientific source identity.
+    This launcher runs the current research interpreter while putting the
+    verified frozen checkout's ``src`` directory first on ``sys.path``.
+    """
+
+    checkout = advisor_root.resolve()
+    _require(
+        verify_git_sha(checkout, FROZEN_ADVISOR_SHA) == FROZEN_ADVISOR_SHA,
+        "frozen Advisor checkout SHA drift",
+    )
+    source_root = checkout / "src"
+    package_root = source_root / "extstats_advisor"
+    _require(source_root.is_dir(), "frozen Advisor source root is missing")
+    _require((package_root / "cli.py").is_file(), "frozen Advisor CLI source is missing")
+
+    runtime_input = Path(runtime_root)
+    _require(not runtime_input.is_symlink(), "RQ1b runtime root must not be a symlink")
+    runtime = runtime_input.resolve()
+    _require(runtime != Path("/"), "RQ1b runtime root is unsafe")
+    runtime.mkdir(parents=True, exist_ok=True)
+    _require(runtime.is_dir() and not runtime.is_symlink(), "RQ1b runtime root is not a directory")
+
+    launcher = runtime / "frozen-extstats-advisor"
+    _require(not launcher.exists(), "frozen Advisor launcher output already exists")
+    _require(not launcher.is_symlink(), "frozen Advisor launcher must not be a symlink")
+
+    interpreter = Path(sys.executable).resolve()
+    _require(
+        interpreter.is_absolute() and interpreter.is_file(), "research Python executable is invalid"
+    )
+    source_text = (
+        f"#!{interpreter}\n"
+        "import sys\n"
+        f"sys.path.insert(0, {str(source_root)!r})\n"
+        "from extstats_advisor.cli import main\n"
+        "raise SystemExit(main())\n"
+    )
+    launcher.write_text(source_text, encoding="utf-8")
+    launcher.chmod(0o700)
+    _require(launcher.is_file() and not launcher.is_symlink(), "frozen Advisor launcher is invalid")
+
+    import_probe = subprocess.run(
+        [
+            str(interpreter),
+            "-c",
+            (
+                "import sys; sys.path.insert(0, sys.argv[1]); "
+                "import extstats_advisor; print(extstats_advisor.__file__)"
+            ),
+            str(source_root),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    _require(
+        import_probe.returncode == 0,
+        f"frozen Advisor import probe failed: {import_probe.stderr.strip()}",
+    )
+    imported_text = next(
+        (line.strip() for line in reversed(import_probe.stdout.splitlines()) if line.strip()),
+        "",
+    )
+    _require(imported_text, "frozen Advisor import probe returned no module path")
+    imported = Path(imported_text).resolve()
+    try:
+        imported.relative_to(package_root.resolve())
+    except ValueError as error:
+        raise RQ1BValidationError(
+            f"Advisor import resolved outside frozen checkout: {imported}"
+        ) from error
+
+    version_probe = subprocess.run(
+        [str(launcher), "--version"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    _require(
+        version_probe.returncode == 0,
+        f"frozen Advisor --version probe failed: {version_probe.stderr.strip()}",
+    )
+    return {
+        "launcher_path": str(launcher),
+        "python_executable": str(interpreter),
+        "advisor_source_root": str(source_root),
+        "imported_module": str(imported),
+        "probe_stdout": version_probe.stdout.strip(),
+        "probe_stderr": version_probe.stderr.strip(),
+    }
 
 
 def _managed_dsn_endpoint(dsn: str, *, role: str) -> dict[str, str]:
@@ -1883,6 +1996,14 @@ def run_power7_rq1b_formal(
     runtime_base = _path(root, runtime_root or root / ".runtime/rq1b-power7")
     runtime = runtime_base / "design"
     try:
+        # ``advisor_command`` is retained for API compatibility with older
+        # callers, but the formal RQ1b path never trusts an arbitrary command
+        # or PATH entry as the scientific executable identity.
+        launcher = prepare_frozen_advisor_launcher(
+            advisor_root=advisor_root,
+            runtime_root=runtime_base,
+        )
+        resolved_advisor_command = launcher["launcher_path"]
         prepare_power7_rq1b_formal_labs(
             advisor_root=advisor_root,
             patched_postgres_root=patched_postgres_root,
@@ -1898,7 +2019,7 @@ def run_power7_rq1b_formal(
             stock_postgres_root=stock_postgres_root,
             output_root=runtime,
             data_root=data_root,
-            advisor_command=advisor_command,
+            advisor_command=resolved_advisor_command,
         )
         sealed_design = read_json(root / DESIGN_PATH)
         validate_design_artifact(sealed_design, expected_producer=producer)
@@ -1910,7 +2031,7 @@ def run_power7_rq1b_formal(
             stock_dsn=stock_dsn,
             advisor_root=advisor_root,
             data_root=data_root,
-            advisor_command=advisor_command,
+            advisor_command=resolved_advisor_command,
             stock_postgres_root=stock_postgres_root,
             runtime_cleanup_root=runtime_base,
         )
@@ -1954,6 +2075,7 @@ __all__ = [
     "execute_power7_rq1b_evaluation_live",
     "paired_outcomes",
     "prepare_evaluation_stage",
+    "prepare_frozen_advisor_launcher",
     "prepare_power7_rq1b_formal_labs",
     "publish_result",
     "resolve_power7_rq1b_evaluation_inputs_after_seal",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -482,7 +483,7 @@ def test_preflight_contains_only_opaque_evaluation_bindings(
         research_root=tmp_path,
         producer_sha=producer,
     )
-    assert value["campaign_attempt_index"] == 3
+    assert value["campaign_attempt_index"] == 4
     assert value["prior_failed_attempt"] == {
         "path": live.PRIOR_FAILED_ATTEMPT_PATH.as_posix(),
         "semantic_digest": live.PRIOR_FAILED_ATTEMPT_DIGEST,
@@ -493,6 +494,12 @@ def test_preflight_contains_only_opaque_evaluation_bindings(
     serialized = json.dumps(value, sort_keys=True)
     assert "evaluation_bindings" in value
     assert value["evaluation_bindings"] == live._opaque_evaluation_bindings()
+    assert value["advisor_execution_policy"] == {
+        "mode": "frozen-checkout-runtime-launcher",
+        "source_checkout_sha": live.FROZEN_ADVISOR_SHA,
+        "launcher_source": "verified advisor_root/src",
+        "path_lookup_allowed": False,
+    }
     for forbidden in (
         "arecel_power7_test_",
         "s_test_candidate_ids",
@@ -539,6 +546,76 @@ def test_design_safe_preflight_never_calls_evaluation_resolvers(
         producer_sha=producer,
     )
     assert live.validate_power7_rq1b_preflight(value, research_root=tmp_path)["status"] == "valid"
+
+
+def _fake_frozen_advisor_checkout(root: Path) -> Path:
+    source = root / "src" / "extstats_advisor"
+    source.mkdir(parents=True)
+    (source / "__init__.py").write_text("__version__ = 'fake'\n", encoding="utf-8")
+    (source / "cli.py").write_text(
+        "import sys\n"
+        "def main():\n"
+        "    if sys.argv[1:] == ['--version']:\n"
+        "        print('fake-advisor 1')\n"
+        "    return 0\n",
+        encoding="utf-8",
+    )
+    return root
+
+
+def test_frozen_advisor_launcher_uses_verified_checkout_and_absolute_interpreter(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    advisor_root = _fake_frozen_advisor_checkout(tmp_path / "advisor")
+    monkeypatch.setattr(live, "verify_git_sha", lambda root, expected: expected)
+
+    value = live.prepare_frozen_advisor_launcher(
+        advisor_root=advisor_root,
+        runtime_root=tmp_path / "runtime",
+    )
+    launcher = Path(value["launcher_path"])
+    assert launcher.is_absolute()
+    assert launcher.is_file()
+    assert not launcher.is_symlink()
+    assert launcher.stat().st_mode & 0o777 == 0o700
+    text = launcher.read_text(encoding="utf-8")
+    assert text.startswith(f"#!{Path(sys.executable).resolve()}\n")
+    assert f"sys.path.insert(0, {str(advisor_root / 'src')!r})" in text
+    assert Path(value["python_executable"]).is_absolute()
+    assert (
+        Path(value["imported_module"])
+        .resolve()
+        .is_relative_to((advisor_root / "src" / "extstats_advisor").resolve())
+    )
+    assert value["probe_stdout"] == "fake-advisor 1"
+
+
+def test_frozen_advisor_launcher_rejects_symlink_and_site_packages_import(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    advisor_root = _fake_frozen_advisor_checkout(tmp_path / "advisor")
+    monkeypatch.setattr(live, "verify_git_sha", lambda root, expected: expected)
+    runtime = tmp_path / "runtime"
+    runtime.mkdir()
+    target = tmp_path / "target"
+    target.write_text("placeholder", encoding="utf-8")
+    (runtime / "frozen-extstats-advisor").symlink_to(target)
+    with pytest.raises(live.RQ1BValidationError, match="launcher"):
+        live.prepare_frozen_advisor_launcher(advisor_root=advisor_root, runtime_root=runtime)
+
+    outside = tmp_path / "site-packages" / "extstats_advisor" / "__init__.py"
+    monkeypatch.setattr(
+        live.subprocess,
+        "run",
+        lambda *args, **kwargs: type(
+            "Completed", (), {"returncode": 0, "stdout": str(outside), "stderr": ""}
+        )(),
+    )
+    with pytest.raises(live.RQ1BValidationError, match="outside frozen checkout"):
+        live.prepare_frozen_advisor_launcher(
+            advisor_root=advisor_root,
+            runtime_root=tmp_path / "runtime-import",
+        )
 
 
 def test_valid_truth_design_resolver_does_not_open_mixed_evaluation_policy(
@@ -652,10 +729,16 @@ def test_formal_runner_reloads_canonical_design_before_evaluation(
     monkeypatch.setattr(live, "validate_power7_rq1b_preflight", lambda *args, **kwargs: {})
     monkeypatch.setattr(live, "verify_power7_formal_tree", lambda *args, **kwargs: {})
     monkeypatch.setattr(live, "_validate_managed_lab_dsns", lambda *args, **kwargs: {})
+    monkeypatch.setattr(
+        live,
+        "prepare_frozen_advisor_launcher",
+        lambda **kwargs: {"launcher_path": str(tmp_path / "runtime" / "frozen-extstats-advisor")},
+    )
     monkeypatch.setattr(live, "prepare_power7_rq1b_formal_labs", lambda *args, **kwargs: {})
     monkeypatch.setattr(live, "_stop_formal_roles", lambda: True)
 
     def fake_design(**kwargs: object) -> dict[str, object]:
+        observed["design_advisor_command"] = kwargs["advisor_command"]
         destination = tmp_path / live.DESIGN_PATH
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(json.dumps(sealed), encoding="utf-8")
@@ -666,6 +749,7 @@ def test_formal_runner_reloads_canonical_design_before_evaluation(
 
     def fake_evaluation(**kwargs: object) -> dict[str, object]:
         observed["design_artifact"] = kwargs["design_artifact"]
+        observed["evaluation_advisor_command"] = kwargs["advisor_command"]
         return {"status": "mock-success"}
 
     monkeypatch.setattr(live, "execute_power7_rq1b_design_live", fake_design)
@@ -682,6 +766,8 @@ def test_formal_runner_reloads_canonical_design_before_evaluation(
     assert result["status"] == "mock-success"
     assert observed["design_artifact"] == sealed
     assert observed["design_artifact"] is not sealed
+    assert observed["design_advisor_command"] == observed["evaluation_advisor_command"]
+    assert Path(str(observed["design_advisor_command"])).is_absolute()
 
 
 def test_formal_labs_reinitialize_and_verify_both_roles_before_design(
@@ -790,6 +876,14 @@ def test_formal_preparation_failure_stops_before_design_and_cleans_up(
     monkeypatch.setattr(live, "_validate_managed_lab_dsns", lambda *args, **kwargs: {})
     monkeypatch.setattr(
         live,
+        "prepare_frozen_advisor_launcher",
+        lambda **kwargs: (
+            events.append("launcher")
+            or {"launcher_path": str(tmp_path / "runtime" / "frozen-extstats-advisor")}
+        ),
+    )
+    monkeypatch.setattr(
+        live,
         "prepare_power7_rq1b_formal_labs",
         lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("prep failed")),
     )
@@ -800,6 +894,41 @@ def test_formal_preparation_failure_stops_before_design_and_cleans_up(
         lambda **kwargs: pytest.fail("design started after lab preparation failure"),
     )
     with pytest.raises(RuntimeError, match="prep failed"):
+        live.run_power7_rq1b_formal(
+            research_root=tmp_path,
+            preflight_path=live.PREFLIGHT_PATH,
+            stock_dsn="unused",
+            planner_dsn="unused",
+            advisor_root=tmp_path / "advisor",
+            patched_postgres_root=tmp_path / "patched",
+            stock_postgres_root=tmp_path / "stock",
+        )
+    assert events == ["launcher", "cleanup"]
+
+
+def test_launcher_failure_prevents_lab_preparation_and_cleans_up(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    producer = "a49b279c50f59b9fe243d1c30e2ca1bf0606dfea"
+    preflight_path = tmp_path / live.PREFLIGHT_PATH
+    preflight_path.parent.mkdir(parents=True)
+    preflight_path.write_text(json.dumps({"research_commit_sha": producer}), encoding="utf-8")
+    events: list[str] = []
+    monkeypatch.setattr(live, "validate_power7_rq1b_preflight", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "verify_power7_formal_tree", lambda *args, **kwargs: {})
+    monkeypatch.setattr(live, "_validate_managed_lab_dsns", lambda *args, **kwargs: {})
+    monkeypatch.setattr(
+        live,
+        "prepare_frozen_advisor_launcher",
+        lambda **kwargs: (_ for _ in ()).throw(live.RQ1BValidationError("launcher probe failed")),
+    )
+    monkeypatch.setattr(
+        live,
+        "prepare_power7_rq1b_formal_labs",
+        lambda *args, **kwargs: pytest.fail("labs started after launcher failure"),
+    )
+    monkeypatch.setattr(live, "_stop_formal_roles", lambda: events.append("cleanup") or True)
+    with pytest.raises(live.RQ1BValidationError, match="launcher probe failed"):
         live.run_power7_rq1b_formal(
             research_root=tmp_path,
             preflight_path=live.PREFLIGHT_PATH,
