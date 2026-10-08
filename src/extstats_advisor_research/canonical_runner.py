@@ -24,7 +24,7 @@ from .forest_canonical import (
     sampling_provenance,
 )
 from .pins import verify_frozen_systems, verify_research_repository
-from .provenance import read_json, reject_credentials, sha256_file, write_json
+from .provenance import read_json, reject_credentials, semantic_digest, sha256_file, write_json
 from .runs.layout import RunLayout, create_layout, update_manifest
 from .system_freeze_v2 import formal_system_freeze_v2_identity, verify_frozen_systems_v2
 
@@ -413,6 +413,11 @@ def _run_canonical(
     compact_evidence_directory: Path | None = None,
     system_freeze_v2: bool = False,
     stock_postgres_root: Path | None = None,
+    workload_split: str = "test",
+    records_loader: Any | None = None,
+    run_truth_sanity_check: bool = True,
+    historical_evidence: bool = True,
+    research_identity_override: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     if not production_dsn or not planner_dsn:
         raise ValueError("both PostgreSQL DSNs are required for a canonical run")
@@ -422,7 +427,9 @@ def _run_canonical(
         raise ValueError("canonical settings are candidate_limit=8 and wall_clock=300")
 
     research_root = Path(__file__).resolve().parents[2]
-    research_identity = verify_research_repository(research_root)
+    research_identity = research_identity_override or verify_research_repository(research_root)
+    if workload_split not in {"valid", "test"}:
+        raise ValueError("canonical workload split must be valid or test")
     if system_freeze_v2:
         if stock_postgres_root is None:
             raise ValueError("system-freeze-v2 canonical runs require the stock source root")
@@ -436,7 +443,7 @@ def _run_canonical(
     dataset_metadata = dataset.inspect(data_root)
     slug = dataset.BENCHMARK_ID.removeprefix("arecel-")
     workload_path = Path(output_root) / f"_{slug}_workload.json"
-    dataset.extract_workload(workload_path, data_root, "test")
+    dataset.extract_workload(workload_path, data_root, workload_split)
     workload = read_json(workload_path)
     for query in workload["queries"]:
         if set(query) != {"query_id", "sql", "weight"}:
@@ -498,29 +505,35 @@ def _run_canonical(
     timings["stock_load_initial_analyze"] = load_result.get(
         "elapsed_seconds", round(time.monotonic() - load_started, 6)
     )
-    full_data = _run_full_data_target100(
-        production_dsn,
-        data_root=data_root,
-        output_path=paths["full_data_target100"],
-        repository=research_root,
-        statistics_target=statistics_target,
-        dataset=dataset,
-        format_version=full_format_version,
-    )
-    timings["full_data_target100_explain_baseline"] = full_data["elapsed_seconds"]
-    update_manifest(
-        layout,
-        {
-            "dataset_manifest": str(paths["dataset_manifest"].relative_to(layout.directory)),
-            "workload": str(paths["workload"].relative_to(layout.directory)),
-            "full_data_target100": {
-                "path": str(paths["full_data_target100"].relative_to(layout.directory)),
-                "semantic_digest": full_data["semantic_digest"],
-            },
-            "load": load_result,
-            "stage_timings": timings,
-        },
-    )
+    if historical_evidence:
+        full_data = _run_full_data_target100(
+            production_dsn,
+            data_root=data_root,
+            output_path=paths["full_data_target100"],
+            repository=research_root,
+            statistics_target=statistics_target,
+            dataset=dataset,
+            format_version=full_format_version,
+            records_loader=records_loader,
+            workload_split=workload_split,
+        )
+        timings["full_data_target100_explain_baseline"] = full_data["elapsed_seconds"]
+    else:
+        full_data = None
+    initial_manifest = {
+        "dataset_manifest": str(paths["dataset_manifest"].relative_to(layout.directory)),
+        "workload": str(paths["workload"].relative_to(layout.directory)),
+        "load": load_result,
+        "stage_timings": timings,
+    }
+    if not historical_evidence or workload_split != "test":
+        initial_manifest["workload_split"] = workload_split
+    if full_data is not None:
+        initial_manifest["full_data_target100"] = {
+            "path": str(paths["full_data_target100"].relative_to(layout.directory)),
+            "semantic_digest": full_data["semantic_digest"],
+        }
+    update_manifest(layout, initial_manifest)
     advisor = [advisor_command]
     started = time.monotonic()
     snapshot_command = _snapshot_capture_command(
@@ -534,7 +547,12 @@ def _run_canonical(
         ground_truth_output=paths["ground_truth"] if authoritative_truth is None else None,
     )
     _run(snapshot_command, paths["logs"])
-    records = dataset.load_test_records(data_root)
+    if records_loader is not None:
+        records = records_loader(data_root, split=workload_split)
+    elif workload_split == "test":
+        records = dataset.load_test_records(data_root)
+    else:
+        records = dataset.load_records(data_root, split=workload_split)
     if authoritative_truth is None:
         truth_validation = compare_production_truth_to_labels(
             paths["snapshot"],
@@ -552,13 +570,16 @@ def _run_canonical(
         }
     else:
         timings["snapshot_capture"] = round(time.monotonic() - started, 6)
-        sanity_started = time.monotonic()
-        sanity = _run_external_truth_sanity_check(
-            production_dsn,
-            records,
-            expected_count=int(authoritative_truth["sanity_check_count"]),
-        )
-        timings["truth_sanity_check"] = round(time.monotonic() - sanity_started, 6)
+        if run_truth_sanity_check:
+            sanity_started = time.monotonic()
+            sanity = _run_external_truth_sanity_check(
+                production_dsn,
+                records,
+                expected_count=int(authoritative_truth["sanity_check_count"]),
+            )
+            timings["truth_sanity_check"] = round(time.monotonic() - sanity_started, 6)
+        else:
+            sanity = {"skipped": True, "reason": "RQ1b external truth has no live COUNT path"}
         observations_started = time.monotonic()
         observations_path = layout.path("authoritative-observations-v1.json")
         source_observations = authoritative_truth.get("observations_path")
@@ -609,7 +630,7 @@ def _run_canonical(
             "observations_sha256": truth_validation["source_artifact_sha256"],
             "observations_query_count": len(records),
             "snapshot_capture_elapsed_seconds": timings["snapshot_capture"],
-            "sanity_check_elapsed_seconds": timings["truth_sanity_check"],
+            "sanity_check_elapsed_seconds": timings.get("truth_sanity_check"),
             "observations_and_import_elapsed_seconds": timings[
                 "authoritative_observations_and_import"
             ],
@@ -923,43 +944,88 @@ def _run_canonical(
         raise
 
     summary = extract_summary(layout, benchmark_id=dataset.BENCHMARK_ID, workload=workload)
-    manifest = update_manifest(
-        layout,
-        {
-            "artifacts": _artifact_records(layout),
-            "candidate_summary": {
-                "observed_count": candidate_result.get("candidate_count"),
-                "incidence_count": candidate_result.get("incidence_count"),
-                "relevant_group_count": candidate_result.get("relevant_group_count"),
-            },
-            "full_data_target100": {
-                "path": str(paths["full_data_target100"].relative_to(layout.directory)),
-                "semantic_digest": full_data["semantic_digest"],
-            },
-            "native_repository_semantic_digest": native_digest,
-            "snapshot_sampling": sampling,
-            "truth_validation": truth_validation,
-            "truth_capture": truth_capture,
-            "stage_timings": timings,
-            "simulated_production": {
-                "server_version": load_result["server_version"],
-                "server_version_num": load_result["server_version_num"],
-                "relation": dataset.RELATION,
-            },
-            "planner": {
-                "server_version": native_manifest["backend"]["server_version"],
-                "server_version_num": native_manifest["backend"]["server_version_num"],
-                "backend_contract": native_manifest["backend"]["contract"],
-                "reference_source_commit": native_manifest["backend"]["reference_source_commit"],
-                "patched_postgres_repository": "1951123/postgresql-pgextadv",
-                "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
-            },
-            "summary": "metrics-summary.json",
-            "status": "complete",
+    manifest_updates: dict[str, Any] = {
+        "artifacts": _artifact_records(layout),
+        "candidate_summary": {
+            "observed_count": candidate_result.get("candidate_count"),
+            "incidence_count": candidate_result.get("incidence_count"),
+            "relevant_group_count": candidate_result.get("relevant_group_count"),
         },
-    )
+        "native_repository_semantic_digest": native_digest,
+        "snapshot_sampling": sampling,
+        "truth_validation": truth_validation,
+        "truth_capture": truth_capture,
+        "stage_timings": timings,
+        "simulated_production": {
+            "server_version": load_result["server_version"],
+            "server_version_num": load_result["server_version_num"],
+            "relation": dataset.RELATION,
+        },
+        "planner": {
+            "server_version": native_manifest["backend"]["server_version"],
+            "server_version_num": native_manifest["backend"]["server_version_num"],
+            "backend_contract": native_manifest["backend"]["contract"],
+            "reference_source_commit": native_manifest["backend"]["reference_source_commit"],
+            "patched_postgres_repository": "1951123/postgresql-pgextadv",
+            "patched_postgres_commit_sha": FROZEN_PATCHED_POSTGRES_SHA,
+        },
+        "summary": "metrics-summary.json",
+        "status": "complete",
+    }
+    if full_data is not None:
+        manifest_updates["full_data_target100"] = {
+            "path": str(paths["full_data_target100"].relative_to(layout.directory)),
+            "semantic_digest": full_data["semantic_digest"],
+        }
+    manifest = update_manifest(layout, manifest_updates)
     _run(advisor + ["sandbox", "destroy", "postgres", "--dsn", planner_dsn], paths["logs"])
     sandbox_active = False
+    if not historical_evidence:
+        manifest = update_manifest(
+            layout,
+            {
+                "artifacts": _artifact_records(layout),
+                "native_repository_semantic_digest": native_digest,
+                "snapshot_sampling": sampling,
+                "truth_validation": truth_validation,
+                "truth_capture": truth_capture,
+                "stage_timings": timings,
+                "status": "complete",
+                "workload_split": workload_split,
+            },
+        )
+        records = _artifact_digests(layout)
+        return {
+            "run_id": layout.run_id,
+            "run_directory": str(layout.directory),
+            "status": "complete",
+            "manifest": manifest,
+            "execution": {
+                "advisor_run_manifest_digest": semantic_digest(read_json(layout.manifest)),
+                "snapshot_digest": records.get("snapshot"),
+                "ground_truth_set_digest": records.get("ground_truth"),
+                "candidate_universe_digest": records.get("candidate_universe"),
+                "native_repository_digest": records.get("native_repository"),
+                "singleton_profile_digest": records.get("singleton_profile"),
+                "optimization_plan_digest": records.get("optimization_plan"),
+                "search_result_digest": records.get("search_result"),
+                "recommendation_digest": records.get("recommendation"),
+                "selected_candidate_ids": read_json(paths["recommendation"])[
+                    "selected_candidate_ids"
+                ],
+                "deployment_ordered_candidate_ids": read_json(paths["recommendation"])[
+                    "deployment_ordered_candidate_ids"
+                ],
+                "search_baseline_objective": search["baseline_objective"],
+                "search_final_objective": search["final_objective"],
+                "termination_reason": search.get("termination_reason"),
+                "design_stage_complete": True,
+                "recommendation_sealed": True,
+                "advisor_sha": expected_advisor_sha,
+                "patched_postgresql_sha": FROZEN_PATCHED_POSTGRES_SHA,
+                "runtime_artifact_directory": str(layout.directory),
+            },
+        }
     started = time.monotonic()
     audit_result = run_audit(
         layout.directory,

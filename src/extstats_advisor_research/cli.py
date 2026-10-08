@@ -107,11 +107,13 @@ from .rq1_workload_generalization import (
     write_source_audit as write_rq1b_source_audit,
 )
 from .rq1_workload_generalization_live import (
-    validate_design_artifact as validate_rq1b_design_artifact,
-)
-from .rq1_workload_generalization_live import (
+    run_power7_rq1b_formal,
     validate_power7_rq1b_preflight,
     validate_power7_rq1b_result,
+    write_power7_rq1b_preflight,
+)
+from .rq1_workload_generalization_live import (
+    validate_design_artifact as validate_rq1b_design_artifact,
 )
 from .rq2_transfer import (
     RQ2_DATASETS,
@@ -506,6 +508,35 @@ def _parser() -> argparse.ArgumentParser:
         "env", help="print local socket environment exports without credentials"
     )
     lab_env.add_argument("--role", choices=["stock", "patched", "all"], default="all")
+    rq1g_live = commands.add_parser(
+        "rq1-generalization",
+        help="future Power7 RQ1b formal commands; live commands are never implicit",
+    )
+    rq1g_live_commands = rq1g_live.add_subparsers(dest="rq1g_live_command", required=True)
+    rq1g_power7 = rq1g_live_commands.add_parser("power7")
+    rq1g_power7_commands = rq1g_power7.add_subparsers(dest="rq1g_power7_command", required=True)
+    rq1g_preflight = rq1g_power7_commands.add_parser("preflight-create")
+    rq1g_preflight.add_argument("--output", type=Path)
+    rq1g_run = rq1g_power7_commands.add_parser("run")
+    rq1g_run.add_argument("--stock-dsn", required=True)
+    rq1g_run.add_argument("--planner-dsn", required=True)
+    rq1g_run.add_argument("--preflight", type=Path, required=True)
+    rq1g_run.add_argument("--data-root", type=Path)
+    rq1g_run.add_argument("--runtime-root", type=Path)
+    rq1g_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    rq1g_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    rq1g_run.add_argument(
+        "--stock-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src"),
+    )
+    rq1g_run.add_argument("--advisor-command", default="extstats-advisor")
     validate = commands.add_parser("validate")
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
     transfer = validate_commands.add_parser("full-data-transfer")
@@ -1066,6 +1097,37 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "rq1-generalization":
+        root = Path(__file__).resolve().parents[2]
+        if args.rq1g_power7_command == "preflight-create":
+            value = write_power7_rq1b_preflight(research_root=root, output=args.output)
+            result = {
+                "status": "written",
+                "format_version": value["format_version"],
+                "semantic_digest": value["semantic_digest"],
+                "output": str(
+                    args.output
+                    or root
+                    / "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
+                ),
+            }
+        elif args.rq1g_power7_command == "run":
+            result = run_power7_rq1b_formal(
+                research_root=root,
+                preflight_path=args.preflight,
+                stock_dsn=args.stock_dsn,
+                planner_dsn=args.planner_dsn,
+                advisor_root=args.advisor_root,
+                patched_postgres_root=args.patched_postgres_root,
+                stock_postgres_root=args.stock_postgres_root,
+                data_root=args.data_root,
+                advisor_command=args.advisor_command,
+                runtime_root=args.runtime_root,
+            )
+        else:
+            raise ValueError(f"unsupported RQ1b Power7 command: {args.rq1g_power7_command}")
+        print(json.dumps(result, sort_keys=True, indent=2, default=str))
+        return 0
     if args.command == "postgres-lab":
         command = args.postgres_lab_command
         if command == "env":

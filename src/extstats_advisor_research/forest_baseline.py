@@ -322,6 +322,8 @@ def _run_full_data_target100(
     statistics_target: int = 100,
     dataset: Any = forest10,
     format_version: str = "arecel-forest-full-data-target100-v1",
+    records_loader: Any | None = None,
+    workload_split: str = "test",
 ) -> dict[str, Any]:
     """Measure ordinary target-100 estimates on an already-loaded full relation."""
     if not dsn.strip():
@@ -334,7 +336,12 @@ def _run_full_data_target100(
     repository = repository or Path(__file__).resolve().parents[2]
     research_sha = _git_sha(repository)
     dataset_metadata = dataset.inspect(data_root)
-    records = dataset.load_test_records(data_root)
+    if records_loader is not None:
+        records = records_loader(data_root, split=workload_split)
+    elif workload_split == "test":
+        records = dataset.load_test_records(data_root)
+    else:
+        records = dataset.load_records(data_root, split=workload_split)
     from extstats_advisor.utility import QErrorLoss
 
     loss = QErrorLoss()

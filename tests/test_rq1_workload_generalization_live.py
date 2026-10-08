@@ -81,7 +81,79 @@ def test_design_artifact_is_valid_and_valid_only(monkeypatch: pytest.MonkeyPatch
     assert artifact["design_stage"]["input_split"] == "valid"
     assert artifact["design_stage"]["workload"]["workload_id"] == "arecel_power7_valid_v1"
     assert artifact["evaluation_stage"]["test_inputs_accessed"] is False
+    assert artifact["source_audit"] == {
+        "path": live.SOURCE_AUDIT_V2_PATH.as_posix(),
+        "semantic_digest": live.SOURCE_AUDIT_DIGEST,
+    }
     assert live.validate_design_artifact(artifact)["status"] == "valid"
+
+
+def test_recommendation_contract_allows_distinct_deployment_order(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    execution = _execution()
+    execution["deployment_ordered_candidate_ids"] = ["cand_two", "cand_one"]
+    monkeypatch.setattr(live, "_valid_design_inputs", lambda *args, **kwargs: _fake_design_inputs())
+    artifact = live.build_design_artifact(
+        research_root=ROOT,
+        producer_sha="a49b279c50f59b9fe243d1c30e2ca1bf0606dfea",
+        execution=execution,
+    )
+    assert (
+        artifact["design_stage"]["selected_candidate_ids"]
+        != artifact["design_stage"]["deployment_ordered_candidate_ids"]
+    )
+    assert live.validate_design_artifact(artifact)["status"] == "valid"
+
+
+def test_live_design_adapter_binds_valid_split_without_live_work(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    runtime = tmp_path / "runtime"
+    runtime.mkdir()
+    observed: dict[str, object] = {}
+
+    monkeypatch.setattr(live, "_valid_design_inputs", lambda *args, **kwargs: _fake_design_inputs())
+    monkeypatch.setattr(
+        live,
+        "verify_frozen_systems_v2",
+        lambda *args, **kwargs: {
+            "advisor_commit_sha": live.FROZEN_ADVISOR_SHA,
+            "patched_postgres_commit_sha": live.FROZEN_PATCHED_POSTGRES_SHA,
+            "stock_postgres_commit_sha": live.FROZEN_STOCK_POSTGRES_SHA,
+        },
+    )
+
+    def fake_canonical(**kwargs: object) -> dict[str, object]:
+        observed.update(kwargs)
+        return {
+            "status": "complete",
+            "run_directory": str(runtime),
+            "execution": _execution(),
+        }
+
+    import extstats_advisor_research.canonical_runner as canonical
+
+    monkeypatch.setattr(canonical, "_run_canonical", fake_canonical)
+    output = tmp_path / "design-v1.json"
+    result = live.execute_power7_rq1b_design_live(
+        research_root=ROOT,
+        producer_sha="a49b279c50f59b9fe243d1c30e2ca1bf0606dfea",
+        production_dsn="mock-production",
+        planner_dsn="mock-planner",
+        advisor_root=tmp_path / "advisor",
+        patched_postgres_root=tmp_path / "patched",
+        stock_postgres_root=tmp_path / "stock",
+        output_root=tmp_path / "run",
+        design_output=output,
+    )
+    assert observed["workload_split"] == "valid"
+    assert observed["run_truth_sanity_check"] is False
+    assert observed["historical_evidence"] is False
+    assert result["design_artifact"]["design_stage"]["workload"]["workload_id"] == (
+        "arecel_power7_valid_v1"
+    )
+    assert output.is_file()
 
 
 def test_design_stage_does_not_need_test_or_membership(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -208,6 +280,40 @@ def test_evaluation_runs_once_and_derives_strict_metrics_offline(
             "evaluation_split": "test",
             "strict_unseen_membership_digest": live.STRICT_UNSEEN_DIGEST,
             "strict_unseen_membership": membership,
+            "source_audit": {
+                "path": live.SOURCE_AUDIT_V2_PATH.as_posix(),
+                "semantic_digest": live.SOURCE_AUDIT_DIGEST,
+            },
+            "test_workload": {
+                "workload_id": "arecel_power7_test_v1",
+                "sha256": "a" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
+            "test_truth": {
+                "workload_id": "arecel_power7_test_v1",
+                "observations_sha256": "b" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
+            "advisor": {
+                "source_commit_sha": live.FROZEN_ADVISOR_SHA,
+                "command": "extstats-advisor",
+                "source_checkout_verified": True,
+            },
+            "stock_postgresql": {
+                "source_commit_sha": live.FROZEN_STOCK_POSTGRES_SHA,
+                "postgres_version": "16.14",
+                "evaluation_mode": "stock-full-data-deployment",
+                "ordinary_statistics_target": 100,
+            },
+            "deployment": {
+                "logical_path": live.DEPLOYMENT_PATH.as_posix(),
+                "semantic_digest": "c" * 64,
+            },
+            "per_query_artifact": {
+                "logical_path": live.PER_QUERY_PATH.as_posix(),
+                "sha256": "d" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
         },
         evaluator=evaluator,
         baseline_records={"pg16-default": records, "pg16-target10000": records},

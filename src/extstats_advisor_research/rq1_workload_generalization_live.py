@@ -1,14 +1,16 @@
-"""Power7 RQ1b design/evaluation harness boundaries.
+"""Power7 RQ1b design/evaluation harness and explicit live adapters.
 
-This module prepares the future live runner without executing it.  The two
-stage API deliberately requires an injected executor: the frozen Advisor and
-PostgreSQL are not imported or started by the offline readiness harness.
+The injected APIs remain offline readiness seams.  The live adapters are
+separate explicit entry points used only by the future formal command, so
+ordinary validation and test collection never start PostgreSQL or Advisor.
 """
 
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
+import time
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -16,7 +18,8 @@ from typing import Any
 from .arecel_truth import authoritative_truth_spec_for_split
 from .datasets import DATASETS
 from .paper_baseline import percentile, qerror
-from .provenance import read_json, semantic_digest, sha256_file
+from .pins import verify_git_sha
+from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq1_workload_generalization import (
     PROTOCOL_V2_PATH,
     SOURCE_AUDIT_V2_PATH,
@@ -33,6 +36,7 @@ from .system_freeze_v2 import (
     FROZEN_STOCK_POSTGRES_SHA,
     FROZEN_SYSTEM_FREEZE_V2_DIGEST,
     load_system_freeze_v2,
+    verify_frozen_systems_v2,
 )
 
 POWER7 = "arecel-power7"
@@ -53,6 +57,14 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
+DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
+PER_QUERY_PATH = Path(
+    "experiments/arecel-power7/rq1-workload-generalization-v1/"
+    "pg16-advisor-valid-to-test-per-query-v1.jsonl"
+)
+DEPLOYMENT_PATH = Path(
+    "experiments/arecel-power7/rq1-workload-generalization-v1/deployment-result-v1.json"
+)
 PREFLIGHT_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
 )
@@ -223,9 +235,21 @@ def _require_execution_digests(execution: Mapping[str, Any]) -> None:
         isinstance(execution.get("deployment_ordered_candidate_ids"), list),
         "deployment order missing",
     )
+    selected = execution["selected_candidate_ids"]
+    deployment = execution["deployment_ordered_candidate_ids"]
     _require(
-        execution["selected_candidate_ids"] == execution["deployment_ordered_candidate_ids"],
-        "deployment order must bind sealed membership",
+        all(isinstance(item, str) and item for item in selected)
+        and all(isinstance(item, str) and item for item in deployment),
+        "Recommendation candidate IDs must be non-empty strings",
+    )
+    _require(len(selected) == len(set(selected)), "selected candidate IDs contain duplicates")
+    _require(
+        len(deployment) == len(set(deployment)),
+        "deployment candidate IDs contain duplicates",
+    )
+    _require(
+        set(selected) == set(deployment),
+        "deployment order must preserve Recommendation membership",
     )
     _require(execution["selected_candidate_ids"], "sealed Recommendation cannot be empty")
 
@@ -264,6 +288,7 @@ def build_design_artifact(
         "producer": {"research_commit_sha": producer_sha},
         "protocol": _binding(PROTOCOL_V2_PATH, PROTOCOL_DIGEST),
         "truth_policy": _binding(TRUTH_POLICY_PATH, TRUTH_POLICY_DIGEST),
+        "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
         "system_freeze": system,
         "dataset": inputs["dataset"],
         "design_stage": {
@@ -340,6 +365,10 @@ def validate_design_artifact(
         value.get("truth_policy") == _binding(TRUTH_POLICY_PATH, TRUTH_POLICY_DIGEST),
         "design truth policy binding drift",
     )
+    _require(
+        value.get("source_audit") == _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "design source audit binding drift",
+    )
     system = value.get("system_freeze")
     _require(isinstance(system, Mapping), "design system freeze binding missing")
     _require(
@@ -360,6 +389,14 @@ def validate_design_artifact(
         isinstance(dataset, Mapping) and dataset.get("dataset_id") == POWER7,
         "design dataset must be Power7",
     )
+    _require(
+        isinstance(dataset.get("content_identity"), str) and dataset["content_identity"],
+        "design dataset content identity is missing",
+    )
+    _require(
+        isinstance(dataset.get("relation"), str) and dataset["relation"],
+        "design relation identity is missing",
+    )
     stage = value.get("design_stage")
     _require(
         isinstance(stage, Mapping) and stage.get("input_split") == DESIGN_SPLIT,
@@ -367,20 +404,23 @@ def validate_design_artifact(
     )
     _require(stage.get("design_stage_complete") is True, "design stage completion missing")
     _require(stage.get("recommendation_sealed") is True, "Recommendation seal missing")
+    _require_execution_digests(stage)
+    workload = stage.get("workload")
+    truth = stage.get("truth")
+    _require(isinstance(workload, Mapping), "design workload binding is missing")
+    _require(isinstance(truth, Mapping), "design truth binding is missing")
     _require(
-        stage.get("workload", {}).get("workload_id") == "arecel_power7_valid_v1",
-        "design workload is not valid",
+        workload.get("workload_id") == "arecel_power7_valid_v1", "design workload is not valid"
     )
-    _sha(stage.get("workload", {}).get("sha256"), "design valid workload SHA")
+    _require(workload.get("query_count") == SAMPLE_ROWS, "design valid workload count drift")
+    _sha(workload.get("sha256"), "design valid workload SHA")
     _sha(
-        stage.get("workload", {}).get("canonical_source_sha256"),
+        workload.get("canonical_source_sha256"),
         "design canonical workload SHA",
     )
-    _require(
-        stage.get("truth", {}).get("workload_id") == "arecel_power7_valid_v1",
-        "design truth is not valid",
-    )
-    _sha(stage.get("truth", {}).get("observations_sha256"), "design valid truth SHA")
+    _require(truth.get("workload_id") == "arecel_power7_valid_v1", "design truth is not valid")
+    _require(truth.get("query_count") == SAMPLE_ROWS, "design valid truth count drift")
+    _sha(truth.get("observations_sha256"), "design valid truth SHA")
     for forbidden in (
         "test_workload",
         "test_truth",
@@ -393,10 +433,12 @@ def validate_design_artifact(
             forbidden not in json.dumps(stage, sort_keys=True),
             f"design stage contains forbidden test input: {forbidden}",
         )
-    _require(
-        stage.get("selected_candidate_ids") == stage.get("deployment_ordered_candidate_ids"),
-        "sealed membership/order mismatch",
-    )
+    selected = stage.get("selected_candidate_ids")
+    deployment = stage.get("deployment_ordered_candidate_ids")
+    _require(isinstance(selected, list) and isinstance(deployment, list), "sealed lists missing")
+    _require(len(selected) == len(set(selected)), "sealed membership contains duplicates")
+    _require(len(deployment) == len(set(deployment)), "sealed deployment order contains duplicates")
+    _require(set(selected) == set(deployment), "sealed membership/order set mismatch")
     for field in ("recommendation_digest", "snapshot_digest", "ground_truth_set_digest"):
         _sha(stage.get(field), f"design {field}")
     if "semantic_digest" in value:
@@ -472,6 +514,24 @@ def _baseline_binding(root: Path) -> dict[str, Any]:
         "semantic_digest": RQ1A_POWER7_DIGEST,
         "arms": {},
     }
+    advisor_arm = artifact["per_arm"]["pg16-advisor"]
+    _require(
+        advisor_arm.get("evaluation_mode") == "stock-full-data-deployment",
+        "baseline advisor arm is not stock deployment evidence",
+    )
+    recommendation = advisor_arm.get("recommendation")
+    _require(isinstance(recommendation, Mapping), "baseline S_test recommendation is missing")
+    test_selected = recommendation.get("selected_candidate_ids")
+    test_deployment = recommendation.get("deployment_ordered_candidate_ids")
+    _require(isinstance(test_selected, list), "baseline S_test membership is missing")
+    _require(isinstance(test_deployment, list), "baseline S_test deployment order is missing")
+    _require(
+        len(test_selected) == len(set(test_selected))
+        and len(test_deployment) == len(set(test_deployment))
+        and set(test_selected) == set(test_deployment),
+        "baseline S_test Recommendation membership/order contract mismatch",
+    )
+    result["s_test_candidate_ids"] = list(test_selected)
     expected_columns = [name for name, _ in DATASETS[POWER7].COLUMNS]
     for arm_id in ("pg16-default", "pg16-target10000"):
         arm = artifact["per_arm"][arm_id]
@@ -685,7 +745,8 @@ def verify_power7_formal_tree(
     _require(
         status == sorted(allowed), "formal RQ1b tree must contain exactly the canonical preflight"
     )
-    _require(not (root / RESULT_PATH).exists(), "RQ1b formal result output already exists")
+    for relative in (DESIGN_PATH, DEPLOYMENT_PATH, PER_QUERY_PATH, RESULT_PATH):
+        _require(not (root / relative).exists(), f"RQ1b formal output already exists: {relative}")
     return {"status": "ready", "head": head, "allowed_untracked": PREFLIGHT_PATH.as_posix()}
 
 
@@ -794,6 +855,45 @@ def build_power7_rq1b_result(
         evaluation_inputs.get("strict_unseen_membership_digest") == STRICT_UNSEEN_DIGEST,
         "result membership binding drift",
     )
+    _require(
+        evaluation_inputs.get("source_audit")
+        == _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "result source audit binding drift",
+    )
+    for field in ("test_workload", "test_truth", "stock_postgresql", "advisor", "deployment"):
+        _require(
+            isinstance(evaluation_inputs.get(field), Mapping), f"result {field} binding missing"
+        )
+    per_query_artifact = evaluation_inputs.get("per_query_artifact")
+    _require(isinstance(per_query_artifact, Mapping), "result per-query artifact binding missing")
+    _require(per_query_artifact.get("query_count") == SAMPLE_ROWS, "result per-query count drift")
+    _sha(per_query_artifact.get("sha256"), "result per-query artifact SHA")
+    _sha(
+        evaluation_inputs["deployment"].get("semantic_digest"),
+        "result deployment artifact digest",
+    )
+    _require(
+        evaluation_inputs["test_workload"].get("workload_id") == "arecel_power7_test_v1"
+        and evaluation_inputs["test_workload"].get("query_count") == SAMPLE_ROWS,
+        "result test workload identity drift",
+    )
+    _sha(evaluation_inputs["test_workload"].get("sha256"), "result test workload SHA")
+    _require(
+        evaluation_inputs["test_truth"].get("workload_id") == "arecel_power7_test_v1"
+        and evaluation_inputs["test_truth"].get("query_count") == SAMPLE_ROWS,
+        "result test truth identity drift",
+    )
+    _sha(evaluation_inputs["test_truth"].get("observations_sha256"), "result test truth SHA")
+    _require(
+        evaluation_inputs["advisor"].get("source_commit_sha") == FROZEN_ADVISOR_SHA
+        and evaluation_inputs["advisor"].get("source_checkout_verified") is True,
+        "result Advisor source binding drift",
+    )
+    _require(
+        evaluation_inputs["stock_postgresql"].get("source_commit_sha") == FROZEN_STOCK_POSTGRES_SHA
+        and evaluation_inputs["stock_postgresql"].get("postgres_version") == "16.14",
+        "result stock PostgreSQL binding drift",
+    )
     advisor = validate_test_evaluation_records(advisor_records)
     _require(
         set(baseline_records) == {"pg16-default", "pg16-target10000"},
@@ -864,6 +964,12 @@ def build_power7_rq1b_result(
             "test_evaluated_once": True,
             "test_query_count": len(advisor),
             "strict_unseen_derived_by_offline_filter": True,
+            "test_workload": dict(evaluation_inputs["test_workload"]),
+            "test_truth": dict(evaluation_inputs["test_truth"]),
+            "stock_postgresql": dict(evaluation_inputs["stock_postgresql"]),
+            "advisor": dict(evaluation_inputs["advisor"]),
+            "deployment": dict(evaluation_inputs["deployment"]),
+            "per_query_artifact": dict(per_query_artifact),
         },
         "baselines": full_metrics,
         "full_test_metrics": full_metrics,
@@ -929,6 +1035,39 @@ def validate_power7_rq1b_result(value: Mapping[str, Any]) -> dict[str, Any]:
         evaluation.get("strict_unseen_derived_by_offline_filter") is True,
         "result strict subset was not offline-derived",
     )
+    _require(
+        value.get("source_audit") == _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "result source audit binding drift",
+    )
+    for field in ("test_workload", "test_truth", "stock_postgresql", "advisor", "deployment"):
+        _require(isinstance(evaluation.get(field), Mapping), f"result {field} binding missing")
+    per_query_artifact = evaluation.get("per_query_artifact")
+    _require(isinstance(per_query_artifact, Mapping), "result per-query artifact binding missing")
+    _require(per_query_artifact.get("query_count") == SAMPLE_ROWS, "result per-query count drift")
+    _sha(per_query_artifact.get("sha256"), "result per-query artifact SHA")
+    _sha(evaluation["deployment"].get("semantic_digest"), "result deployment artifact digest")
+    _require(
+        evaluation["test_workload"].get("workload_id") == "arecel_power7_test_v1"
+        and evaluation["test_workload"].get("query_count") == SAMPLE_ROWS,
+        "result test workload identity drift",
+    )
+    _sha(evaluation["test_workload"].get("sha256"), "result test workload SHA")
+    _require(
+        evaluation["test_truth"].get("workload_id") == "arecel_power7_test_v1"
+        and evaluation["test_truth"].get("query_count") == SAMPLE_ROWS,
+        "result test truth identity drift",
+    )
+    _sha(evaluation["test_truth"].get("observations_sha256"), "result test truth SHA")
+    _require(
+        evaluation["advisor"].get("source_commit_sha") == FROZEN_ADVISOR_SHA
+        and evaluation["advisor"].get("source_checkout_verified") is True,
+        "result Advisor source binding drift",
+    )
+    _require(
+        evaluation["stock_postgresql"].get("source_commit_sha") == FROZEN_STOCK_POSTGRES_SHA
+        and evaluation["stock_postgresql"].get("postgres_version") == "16.14",
+        "result stock PostgreSQL binding drift",
+    )
     provenance = value.get("provenance")
     _require(isinstance(provenance, Mapping), "result provenance missing")
     _require(
@@ -972,6 +1111,487 @@ def run_power7_rq1b_evaluation(
     )
 
 
+def write_power7_rq1b_preflight(
+    *, research_root: Path, output: Path | None = None
+) -> dict[str, Any]:
+    """Create the canonical preflight without starting any live system."""
+
+    root = research_root.resolve()
+    head = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    value = build_power7_rq1b_preflight(
+        research_root=root,
+        producer_sha=head,
+        output=output or root / PREFLIGHT_PATH,
+    )
+    validate_power7_rq1b_preflight(value, research_root=root)
+    destination = _path(root, output or PREFLIGHT_PATH)
+    write_json(destination, value)
+    return value
+
+
+def _run_live_command(command: Sequence[str]) -> None:
+    completed = subprocess.run(command, capture_output=True, text=True, check=False)
+    if completed.returncode:
+        raise RQ1BValidationError(
+            f"frozen Advisor command failed ({completed.returncode}): {command[0]}"
+        )
+
+
+def _load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as stream:
+        for line in stream:
+            if line.strip():
+                records.append(json.loads(line))
+    return records
+
+
+def _write_jsonl(path: Path, records: Sequence[Mapping[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as stream:
+        for record in records:
+            stream.write(json.dumps(dict(record), sort_keys=True) + "\n")
+
+
+def _execution_from_live_canonical(value: Mapping[str, Any]) -> dict[str, Any]:
+    execution = dict(value.get("execution", {}))
+    execution.pop("runtime_artifact_directory", None)
+    _require(value.get("status") == "complete", "valid-only Advisor design did not complete")
+    _require(execution.get("design_stage_complete") is True, "live design did not complete")
+    _require(execution.get("recommendation_sealed") is True, "live Recommendation was not sealed")
+    return execution
+
+
+def execute_power7_rq1b_design_live(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    production_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    output_root: Path,
+    design_output: Path | None = None,
+    data_root: Path | None = None,
+    reset_disposable: bool = True,
+    advisor_command: str = "extstats-advisor",
+    seed_identifier: int = 123,
+) -> dict[str, Any]:
+    """Execute the frozen Advisor pipeline on Power7's valid split only.
+
+    This is the real future live seam.  It is intentionally never invoked by
+    offline validation commands; tests inject no PostgreSQL and no Advisor.
+    """
+
+    root = research_root.resolve()
+    _commit(producer_sha, "RQ1b design producer SHA")
+    _require(production_dsn and planner_dsn, "RQ1b design requires production and planner DSNs")
+    design_destination = _path(root, design_output or DESIGN_PATH)
+    _require(not design_destination.exists(), "RQ1b design output already exists")
+    pins = verify_frozen_systems_v2(
+        advisor_root.resolve(), patched_postgres_root.resolve(), stock_postgres_root.resolve()
+    )
+    _require(pins["advisor_commit_sha"] == FROZEN_ADVISOR_SHA, "live Advisor SHA drift")
+    _require(
+        pins["patched_postgres_commit_sha"] == FROZEN_PATCHED_POSTGRES_SHA,
+        "live patched PostgreSQL SHA drift",
+    )
+    _require(
+        pins["stock_postgres_commit_sha"] == FROZEN_STOCK_POSTGRES_SHA,
+        "live stock PostgreSQL SHA drift",
+    )
+
+    from .arecel_truth import authoritative_truth_spec_for_split
+    from .canonical_runner import _run_canonical
+    from .datasets import power7
+    from .postgres.loader import load_power7
+
+    truth = authoritative_truth_spec_for_split(POWER7, DESIGN_SPLIT, root)
+    result = _run_canonical(
+        dataset=power7,
+        loader=load_power7,
+        full_format_version="rq1b-power7-valid-full-data-target100-v1",
+        compact_format_version="rq1b-power7-valid-design-v1",
+        production_dsn=production_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root.resolve(),
+        patched_postgres_root=patched_postgres_root.resolve(),
+        stock_postgres_root=stock_postgres_root.resolve(),
+        output_root=output_root.resolve(),
+        sample_rows=SAMPLE_ROWS,
+        sample_seed=SAMPLE_SEED,
+        statistics_target=STATISTICS_TARGET,
+        candidate_limit=K_S,
+        search_wall_clock_seconds=SEARCH_BUDGET_SECONDS,
+        data_root=data_root,
+        reset_disposable=reset_disposable,
+        advisor_command=advisor_command,
+        authoritative_truth=truth,
+        seed_identifier=seed_identifier,
+        system_freeze_v2=True,
+        workload_split=DESIGN_SPLIT,
+        records_loader=power7.load_records,
+        run_truth_sanity_check=False,
+        historical_evidence=False,
+        research_identity_override={
+            "research_repository": "1951123/extstats-advisor-research",
+            "research_commit_sha": producer_sha,
+        },
+    )
+    execution = _execution_from_live_canonical(result)
+    artifact = build_design_artifact(
+        research_root=root,
+        producer_sha=producer_sha,
+        execution=execution,
+        data_root=data_root,
+    )
+    write_json(design_destination, artifact)
+    validate_design_artifact(read_json(design_destination), expected_producer=producer_sha)
+    return {
+        "status": "complete",
+        "design_artifact": artifact,
+        "design_path": design_destination,
+        "runtime_directory": Path(result["run_directory"]),
+    }
+
+
+def _evaluate_power7_once(
+    *,
+    stock_dsn: str,
+    workload: Sequence[Mapping[str, Any]],
+    truths: Mapping[str, int],
+    output: Path,
+) -> list[dict[str, Any]]:
+    import psycopg
+
+    started = time.monotonic()
+    records: list[dict[str, Any]] = []
+    with psycopg.connect(
+        stock_dsn,
+        application_name="extstats-research-rq1b-power7",
+        autocommit=True,
+    ) as connection:
+        for query in workload:
+            plan = connection.execute(f"EXPLAIN (FORMAT JSON) {query['sql']}").fetchone()[0]
+            if isinstance(plan, str):
+                plan = json.loads(plan)
+            estimate = int(plan[0]["Plan"]["Plan Rows"])
+            query_id = str(query["query_id"])
+            truth = int(truths[query_id])
+            records.append(
+                {
+                    "query_id": query_id,
+                    "estimate": estimate,
+                    "truth": truth,
+                    "weight": float(query.get("weight", 1.0)),
+                    "qerror": qerror(estimate, truth),
+                }
+            )
+    _require(len(records) == SAMPLE_ROWS, "Power7 Advisor evaluation did not produce 10000 rows")
+    _write_jsonl(output, records)
+    output_capture_seconds = time.monotonic() - started
+    _require(output_capture_seconds >= 0, "invalid Power7 evaluation timer")
+    return records
+
+
+def _stop_formal_roles() -> bool:
+    from .postgres_lab import stop_role
+
+    try:
+        stop_role("stock")
+        stop_role("patched")
+        return True
+    except (OSError, RuntimeError, ValueError):
+        return False
+
+
+def _cleanup_live_runtime(root: Path, target: Path | None, cleanup_result: bool) -> bool:
+    if target is None:
+        return cleanup_result
+    runtime_target = target.resolve()
+    if runtime_target.is_symlink() or runtime_target == root:
+        return False
+    if runtime_target.exists():
+        try:
+            shutil.rmtree(runtime_target)
+        except OSError:
+            return False
+    return cleanup_result
+
+
+def execute_power7_rq1b_evaluation_live(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    design_artifact: Mapping[str, Any],
+    design_runtime_directory: Path,
+    stock_dsn: str,
+    advisor_root: Path,
+    data_root: Path | None = None,
+    result_output: Path | None = None,
+    per_query_output: Path | None = None,
+    deployment_output: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    stock_postgres_root: Path | None = None,
+    runtime_cleanup_root: Path | None = None,
+    cleanup: Callable[[], bool] | None = None,
+) -> dict[str, Any]:
+    """Deploy a sealed valid design and evaluate the test workload once."""
+
+    root = research_root.resolve()
+    validate_design_artifact(design_artifact, expected_producer=producer_sha)
+    _require(
+        verify_git_sha(advisor_root.resolve(), FROZEN_ADVISOR_SHA) == FROZEN_ADVISOR_SHA,
+        "live Advisor SHA drift",
+    )
+    if stock_postgres_root is not None:
+        _require(
+            verify_git_sha(stock_postgres_root.resolve(), FROZEN_STOCK_POSTGRES_SHA)
+            == FROZEN_STOCK_POSTGRES_SHA,
+            "live stock PostgreSQL SHA drift",
+        )
+    design_runtime = design_runtime_directory.resolve()
+    required = {
+        "snapshot": design_runtime / "advisor-snapshot",
+        "candidate_universe": design_runtime / "candidate-universe.json",
+        "native_repository": design_runtime / "native-stats-repository",
+        "ground_truth": design_runtime / "ground-truth-v1.json",
+        "singleton_profile": design_runtime / "singleton-profile.json",
+        "optimization_plan": design_runtime / "optimization-plan.json",
+        "search_result": design_runtime / "search-result.json",
+        "recommendation": design_runtime / "recommendation.json",
+    }
+    for name, path in required.items():
+        _require(path.exists(), f"sealed design runtime artifact is missing: {name}")
+
+    from .arecel_truth import authoritative_truth_spec_for_split
+    from .datasets import power7
+    from .postgres.loader import load_power7
+
+    baseline = _baseline_binding(root)
+    source = _source_spec(root)
+    test_spec = authoritative_truth_spec_for_split(POWER7, EVALUATION_SPLIT, root)
+    test_workload_path = design_runtime / "rq1b-test-workload.json"
+    identity = power7.extract_workload(test_workload_path, data_root, split=EVALUATION_SPLIT)
+    _require(identity["workload_id"] == source["test_workload_id"], "test workload ID drift")
+    _require(identity["sha256"] == source["test_workload_sha256"], "test workload hash drift")
+    workload = read_json(test_workload_path)
+    truth_wire = read_json(Path(test_spec["observations_path"]))
+    _require(
+        truth_wire.get("workload_id") == source["test_workload_id"], "test truth workload drift"
+    )
+    _require(
+        test_spec["observations_sha256"] == source["test_observations_sha256"],
+        "test truth SHA drift",
+    )
+    truths = {row["query_id"]: int(row["cardinality"]) for row in truth_wire["truths"]}
+    membership = _load_exact(root, STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST)
+    baseline_records = {
+        arm_id: _load_jsonl(root / binding["per_query_path"])
+        for arm_id, binding in baseline["arms"].items()
+    }
+    per_query_destination = _path(root, per_query_output or PER_QUERY_PATH)
+    deployment_destination = _path(root, deployment_output or DEPLOYMENT_PATH)
+    result_destination = _path(root, result_output or RESULT_PATH)
+    for destination in (per_query_destination, deployment_destination, result_destination):
+        _require(not destination.exists(), f"RQ1b evaluation output already exists: {destination}")
+
+    def resolver() -> dict[str, Any]:
+        return {
+            "dataset_id": POWER7,
+            "evaluation_split": EVALUATION_SPLIT,
+            "strict_unseen_membership_digest": STRICT_UNSEEN_DIGEST,
+            "strict_unseen_membership": membership,
+            "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+            "test_workload": {
+                "workload_id": identity["workload_id"],
+                "sha256": identity["sha256"],
+                "query_count": identity["query_count"],
+            },
+            "test_truth": {
+                "observations_sha256": test_spec["observations_sha256"],
+                "workload_id": truth_wire["workload_id"],
+                "query_count": len(truth_wire["truths"]),
+            },
+            "stock_postgresql": {
+                "source_commit_sha": FROZEN_STOCK_POSTGRES_SHA,
+                "postgres_version": "16.14",
+                "evaluation_mode": "stock-full-data-deployment",
+                "ordinary_statistics_target": STATISTICS_TARGET,
+            },
+            "advisor": {
+                "source_commit_sha": FROZEN_ADVISOR_SHA,
+                "command": advisor_command,
+                "source_checkout_verified": True,
+            },
+            "s_test_candidate_ids": baseline.get("s_test_candidate_ids", []),
+            "workload": workload["queries"],
+            "truths": truths,
+            "baseline_records": baseline_records,
+        }
+
+    def evaluator(inputs: dict[str, Any], sealed: Mapping[str, Any]) -> Sequence[Mapping[str, Any]]:
+        from .postgres_lab import reinit_role
+
+        try:
+            reinit_role("stock")
+            load = load_power7(
+                stock_dsn,
+                data_root=data_root,
+                reset_disposable=True,
+                statistics_target=STATISTICS_TARGET,
+                seed_identifier=123,
+            )
+            _require(
+                load.get("physical_extended_statistics_count") == 0,
+                "stock state has extstats before deployment",
+            )
+            _run_live_command(
+                [
+                    advisor_command,
+                    "deployment",
+                    "apply",
+                    "postgres",
+                    *[
+                        str(required[name])
+                        for name in (
+                            "snapshot",
+                            "candidate_universe",
+                            "native_repository",
+                            "ground_truth",
+                            "singleton_profile",
+                            "optimization_plan",
+                            "search_result",
+                            "recommendation",
+                        )
+                    ],
+                    "--dsn",
+                    stock_dsn,
+                    "--output",
+                    str(deployment_destination),
+                ]
+            )
+            _run_live_command(
+                [
+                    advisor_command,
+                    "deployment",
+                    "validate",
+                    str(deployment_destination),
+                    str(required["recommendation"]),
+                    "--snapshot",
+                    str(required["snapshot"]),
+                    "--candidate-universe",
+                    str(required["candidate_universe"]),
+                    "--native-repository",
+                    str(required["native_repository"]),
+                    "--ground-truth",
+                    str(required["ground_truth"]),
+                    "--singleton-profile",
+                    str(required["singleton_profile"]),
+                    "--optimization-plan",
+                    str(required["optimization_plan"]),
+                    "--search-result",
+                    str(required["search_result"]),
+                ]
+            )
+            deployment = read_json(deployment_destination)
+            expected_order = sealed["design_stage"]["deployment_ordered_candidate_ids"]
+            _require(
+                deployment.get("deployment_ordered_candidate_ids") == expected_order,
+                "deployment order differs from sealed Recommendation",
+            )
+            inputs["deployment"] = {
+                "logical_path": DEPLOYMENT_PATH.as_posix(),
+                "semantic_digest": deployment.get("semantic_digest"),
+                "stock_postgresql_sha": FROZEN_STOCK_POSTGRES_SHA,
+            }
+            records = _evaluate_power7_once(
+                stock_dsn=stock_dsn,
+                workload=inputs["workload"],
+                truths=inputs["truths"],
+                output=per_query_destination,
+            )
+            inputs["per_query_artifact"] = {
+                "logical_path": PER_QUERY_PATH.as_posix(),
+                "sha256": sha256_file(per_query_destination),
+                "query_count": len(records),
+            }
+            return records
+        finally:
+            cleanup_result = cleanup() if cleanup is not None else _stop_formal_roles()
+            cleanup_result = _cleanup_live_runtime(root, runtime_cleanup_root, cleanup_result)
+            _require(cleanup_result is True, "RQ1b live cleanup failed")
+
+    result = run_power7_rq1b_evaluation(
+        design_artifact=design_artifact,
+        evaluation_resolver=resolver,
+        evaluator=evaluator,
+        baseline_records=baseline_records,
+        cleanup_passed=True,
+    )
+    publish_result(result=result, output=result_destination)
+    return {"status": "success", "result": result, "result_path": result_destination}
+
+
+def run_power7_rq1b_formal(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    stock_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    data_root: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    runtime_root: Path | None = None,
+) -> dict[str, Any]:
+    """Future formal command; never called by offline validation."""
+
+    root = research_root.resolve()
+    preflight = read_json(_path(root, preflight_path))
+    validate_power7_rq1b_preflight(preflight, research_root=root)
+    verify_power7_formal_tree(
+        research_root=root, preflight_path=preflight_path, preflight=preflight
+    )
+    producer = str(preflight["research_commit_sha"])
+    runtime_base = _path(root, runtime_root or root / ".runtime/rq1b-power7")
+    runtime = runtime_base / "design"
+    try:
+        design = execute_power7_rq1b_design_live(
+            research_root=root,
+            producer_sha=producer,
+            production_dsn=stock_dsn,
+            planner_dsn=planner_dsn,
+            advisor_root=advisor_root,
+            patched_postgres_root=patched_postgres_root,
+            stock_postgres_root=stock_postgres_root,
+            output_root=runtime,
+            data_root=data_root,
+            advisor_command=advisor_command,
+        )
+        return execute_power7_rq1b_evaluation_live(
+            research_root=root,
+            producer_sha=producer,
+            design_artifact=design["design_artifact"],
+            design_runtime_directory=design["runtime_directory"],
+            stock_dsn=stock_dsn,
+            advisor_root=advisor_root,
+            data_root=data_root,
+            advisor_command=advisor_command,
+            stock_postgres_root=stock_postgres_root,
+            runtime_cleanup_root=runtime_base,
+        )
+    finally:
+        _cleanup_live_runtime(root, runtime_base, _stop_formal_roles())
+
+
 def publish_result(*, result: Mapping[str, Any], output: Path) -> dict[str, Any]:
     """Fail closed: only a cleanup-passed success may be published."""
 
@@ -988,9 +1608,12 @@ def publish_result(*, result: Mapping[str, Any], output: Path) -> dict[str, Any]
 
 
 __all__ = [
+    "DEPLOYMENT_PATH",
     "DESIGN_FORMAT",
+    "DESIGN_PATH",
     "EVALUATION_SPLIT",
     "K_S",
+    "PER_QUERY_PATH",
     "POWER7",
     "PREFLIGHT_PATH",
     "PROTOCOL_DIGEST",
@@ -1001,11 +1624,14 @@ __all__ = [
     "build_design_artifact",
     "build_power7_rq1b_preflight",
     "build_power7_rq1b_result",
+    "execute_power7_rq1b_design_live",
+    "execute_power7_rq1b_evaluation_live",
     "paired_outcomes",
     "prepare_evaluation_stage",
     "publish_result",
     "run_power7_rq1b_design",
     "run_power7_rq1b_evaluation",
+    "run_power7_rq1b_formal",
     "strict_unseen_filter",
     "summarize_qerrors",
     "validate_design_artifact",
@@ -1013,4 +1639,5 @@ __all__ = [
     "validate_power7_rq1b_result",
     "validate_test_evaluation_records",
     "verify_power7_formal_tree",
+    "write_power7_rq1b_preflight",
 ]
