@@ -1,0 +1,54 @@
+{
+  "format_version": "rq1-workload-generalization-power7-execution-v1",
+  "attempt_index": 6,
+  "producer_research_sha": "699decdcfc960df050214abc3b64efb25d22818f",
+  "formal_invocation_count": 1,
+  "formal_return_code": 0,
+  "retry_performed": false,
+  "scientific_pipeline_complete": true,
+  "recommendation_sealed": true,
+  "deployment_completed": true,
+  "test_evaluation_completed": true,
+  "test_query_count": 10000,
+  "cleanup_passed": true,
+  "evidence_publication_status": "blocked-by-digest-contract-validation",
+  "scientific_result_rejected": false,
+  "raw_outputs": [
+    {
+      "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json",
+      "raw_path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/rq1b-preflight-v1.json",
+      "byte_sha256": "9f69f38a74fdd9c80fbe2a34190ea69a99c8124eee41222b6bb6213b6c08d8f7",
+      "file_size_bytes": 4488,
+      "semantic_digest": "4b592812013386f5b18d4187ef9f061c90e624d3b65365bdfc98d96d63f32492"
+    },
+    {
+      "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json",
+      "raw_path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/design-v1.json",
+      "byte_sha256": "f8cac6252354f91d6cd8e432c2662de7862e77443151d51fa274ece414672980",
+      "file_size_bytes": 4790,
+      "semantic_digest": "c194ebd90382d4606875ee040738bfe5fa0ac3c5c50f3f9f642e5bfaa0d6f27d"
+    },
+    {
+      "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/deployment-result-v1.json",
+      "raw_path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/deployment-result-v1.json",
+      "byte_sha256": "5ccddb3c05b70494935e936f140c481c2d87fad7217dcbecdf662485ab7c3585",
+      "file_size_bytes": 4109,
+      "semantic_digest": "bc10496c283ba4b6b0a1c0e2bdbba589ca5683e9757288fc4e67f98913424236"
+    },
+    {
+      "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl",
+      "raw_path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/pg16-advisor-valid-to-test-per-query-v1.jsonl",
+      "byte_sha256": "cca5663c4a42820c1c9c2c51d32f06cedc5b884af09c61f6f8594160c5f2051f",
+      "file_size_bytes": 1220120,
+      "query_count": 10000
+    },
+    {
+      "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json",
+      "raw_path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/result-v1.json",
+      "byte_sha256": "9fa4cbf4f733cbfae905a650fdacc487180608973c907687fcb7ba21922157f0",
+      "file_size_bytes": 7360,
+      "semantic_digest": "4a9c382676ea84fb3b42bd77e1a62270633b743f32bd331a6d65f8bc6a5570ee"
+    }
+  ],
+  "semantic_digest": "782515cf7df9db01f0febe25fab361992d4628346baef72e65825ef4a74af0ca"
+}
