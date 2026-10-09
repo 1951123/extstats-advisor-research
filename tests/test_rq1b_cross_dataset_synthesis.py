@@ -1,4 +1,5 @@
 import copy
+import inspect
 import json
 from importlib.util import find_spec
 from pathlib import Path
@@ -6,7 +7,15 @@ from pathlib import Path
 import pytest
 
 try:
-    _HAS_FROZEN_V2_ARTIFACT_API = find_spec("extstats_advisor.deployment.artifact") is not None
+    _artifact_spec = find_spec("extstats_advisor.deployment.artifact")
+    if _artifact_spec is None:
+        _HAS_FROZEN_V2_ARTIFACT_API = False
+    else:
+        from extstats_advisor.deployment import artifact as _deployment_artifact
+
+        _HAS_FROZEN_V2_ARTIFACT_API = "selected_candidate_count" in inspect.getsource(
+            _deployment_artifact.deployment_result_summary
+        )
 except ModuleNotFoundError:  # Historical Advisor CI intentionally has no frozen-v2 API.
     _HAS_FROZEN_V2_ARTIFACT_API = False
 if not _HAS_FROZEN_V2_ARTIFACT_API:
