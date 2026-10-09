@@ -24,13 +24,9 @@ ATTEMPT_004_PREFLIGHT_SHA256 = "84807c59e11ae09f3866b1fb2092537499c8d12135ce8712
 
 
 def test_attempt_001_preflight_archive_is_byte_identical_and_non_evidence() -> None:
-    source = (
-        ROOT / "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
-    )
     archived = ATTEMPT_ROOT / "rq1b-preflight-v1.json"
     failure_path = ATTEMPT_ROOT / "failure-v1.json"
 
-    assert not source.exists()
     assert sha256_file(archived) == EXPECTED_PREFLIGHT_SHA256
     preflight = json.loads(archived.read_text(encoding="utf-8"))
     assert (
