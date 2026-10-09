@@ -1,0 +1,57 @@
+{
+  "attempt_index": 2,
+  "cleanup": [
+    {
+      "operation": "stop-stock",
+      "status": "passed"
+    },
+    {
+      "operation": "stop-patched",
+      "status": "passed"
+    },
+    {
+      "operation": "runtime-remove",
+      "status": "passed"
+    }
+  ],
+  "cleanup_errors": [],
+  "evidence_eligible": false,
+  "exception": {
+    "message": "[Errno 17] File exists: '/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/census13'",
+    "type": "builtins.FileExistsError"
+  },
+  "execution_boundary": {
+    "explain_count": 0,
+    "rq1b_w_test_accessed": false,
+    "scientific_evidence_eligible": false
+  },
+  "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+  "formal_execution": "FAILED",
+  "formal_invocation_count": 0,
+  "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
+  "invocation_id": "oid-attempt-002-b3e6c5f",
+  "phase": "arecel-census13:snapshot",
+  "phase_transitions": [
+    "launcher-probe",
+    "lab-preparation",
+    "arecel-census13:snapshot"
+  ],
+  "preflight": {
+    "byte_sha256": "181fb05570dba0177a58730be4d60349e213d567fb8b1aceb7f66f556c546797",
+    "path": "experiments/oid-order-sensitivity-v1/attempts/attempt-002/preflight-v2.json",
+    "semantic_digest": "b0fc7a34d11434d085b55dbc75be0f496392ca992fbd7d8e048e5c97619760f1"
+  },
+  "resource_state": {
+    "hypothetical_active": false,
+    "patched_owned": true,
+    "physical_deployment_started": false,
+    "sandbox_prepared": false,
+    "snapshot_completed": false,
+    "stock_owned": true,
+    "synthetic_fixture_created": false
+  },
+  "retry_performed": false,
+  "scientific_producer_sha": "b3e6c5f896e439f4f32dddb43d6698af0e7251d3",
+  "semantic_digest": "1f7d7af7df5575271023382dc26076342396eafdbdf3afa238797e953845bcc4",
+  "status": "non-evidence-remediation-or-pre-execution-failure"
+}
