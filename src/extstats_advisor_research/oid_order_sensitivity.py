@@ -30,12 +30,17 @@ from .rq1_workload_generalization_live import (
     FOREST10_SPEC,
     POWER7_SPEC,
     RQ1BDatasetSpec,
+    _validate_managed_lab_dsns,
+    prepare_frozen_advisor_launcher,
+    prepare_power7_rq1b_formal_labs,
 )
 from .system_freeze_v2 import (
     FROZEN_ADVISOR_SHA,
     FROZEN_PATCHED_POSTGRES_SHA,
     FROZEN_STOCK_POSTGRES_SHA,
     formal_system_freeze_v2_identity,
+    validate_system_freeze_v2,
+    verify_frozen_systems_v2,
 )
 
 FORMAT = "postgresql-extstats-oid-order-sensitivity-v1"
@@ -56,6 +61,10 @@ COLLISION_POLICY = "left-rotate-by-one-until-unique"
 
 def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
 
 
 def _body(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -589,9 +598,10 @@ def _paired_against(
 
 def _write_gzip_jsonl(path: Path, records: Sequence[Mapping[str, Any]]) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with gzip.open(path, "wt", encoding="utf-8", mtime=0) as stream:
+    with path.open("wb") as raw, gzip.GzipFile(fileobj=raw, mode="wb", mtime=0) as compressed:
         for record in records:
-            stream.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+            line = json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n"
+            compressed.write(line.encode("utf-8"))
     return sha256_file(path)
 
 
@@ -640,7 +650,10 @@ def _physical_arm(
     """Build one disposable stock clone, evaluate valid queries, and remove it."""
 
     import psycopg
+    from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
     from psycopg.conninfo import conninfo_to_dict, make_conninfo
+
+    from extstats_advisor_research.rq3_fidelity import _physical_payload
 
     fields = conninfo_to_dict(dsn)
     clone = f"oid_order_{dataset_id.removeprefix('arecel-')}_{time.time_ns() % 10**10:010d}"
@@ -682,6 +695,12 @@ def _physical_arm(
             physical_objects = []
             for candidate_id, name in zip(order, names, strict=True):
                 row = by_name[name]
+                kind = (
+                    "mcv"
+                    if candidates[candidate_id]["kind"] == "postgresql.mcv"
+                    else "dependencies"
+                )
+                payload = _physical_payload(conn, int(row[0]), name, kind)
                 physical_objects.append(
                     {
                         "candidate_id": candidate_id,
@@ -689,6 +708,12 @@ def _physical_arm(
                         "name": name,
                         "catalog_kind": str(row[2]),
                         "keys": str(row[3]),
+                        "kind": kind,
+                        "column_names": list(candidates[candidate_id]["column_names"]),
+                        "statistics_target": STATISTICS_TARGET,
+                        "payload_sha256": payload["payload_sha256"],
+                        "payload_size": payload["payload_size"],
+                        "payload_present": payload["payload_size"] > 0,
                     }
                 )
             records = []
@@ -698,6 +723,8 @@ def _physical_arm(
                 records.append(
                     {
                         "dataset_id": dataset_id,
+                        "permutation_id": output.parent.name,
+                        "execution_arm": "stock-physical",
                         "query_id": query["query_id"],
                         "sql_sha256": _sha256_text(str(query["sql"])),
                         "truth": truth,
@@ -706,12 +733,11 @@ def _physical_arm(
                         "explain_sha256": explain_digest,
                     }
                 )
-            sys.path.insert(0, "/home/wqts/projects/extstats-advisor/src")
-            from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
-
             rel_oid = int(conn.execute("SELECT to_regclass(%s)::oid", (relation,)).fetchone()[0])
             fingerprint = ordinary_stats_fingerprint(conn, rel_oid)
         digest = _write_gzip_jsonl(output, records)
+        if not all(item["payload_present"] for item in physical_objects):
+            raise ValueError(f"{dataset_id} physical payload inventory contains an empty payload")
         return {
             "status": "complete",
             "execution_arm": "stock-physical",
@@ -724,7 +750,12 @@ def _physical_arm(
                 item["candidate_id"]
                 for item in sorted(physical_objects, key=lambda item: item["oid"])
             ],
-            "payload_sha256_by_candidate": {},
+            "payload_sha256_by_candidate": {
+                item["candidate_id"]: item["payload_sha256"] for item in physical_objects
+            },
+            "payload_size_by_candidate": {
+                item["candidate_id"]: item["payload_size"] for item in physical_objects
+            },
             "ordinary_statistics_fingerprint": fingerprint,
             "planner_settings": settings,
             "analyze_count": 1,
@@ -746,6 +777,7 @@ def _hypothetical_arms(
     queries: Sequence[Mapping[str, Any]],
     truth_by_id: Mapping[str, int],
     relation: str,
+    dataset_id: str,
     output_dir: Path,
 ) -> dict[str, dict[str, Any]]:
     sys.path.insert(0, str(advisor_root / "src"))
@@ -760,12 +792,27 @@ def _hypothetical_arms(
     snapshot = load_snapshot(snapshot_path)
     universe = load_candidate_universe(candidate_path, snapshot)
     repository = load_native_stats_repository(native_path)
+    payload_inventory = {
+        candidate.candidate_id: {
+            "sha256": _sha256_bytes(repository.payloads[candidate.candidate_id]),
+            "size": len(repository.payloads[candidate.candidate_id]),
+            "present": candidate.candidate_id in repository.payloads
+            and len(repository.payloads[candidate.candidate_id]) > 0,
+        }
+        for candidate in repository.candidate_models
+    }
+    if not all(item["present"] for item in payload_inventory.values()):
+        raise ValueError(f"{dataset_id} native repository contains an empty payload")
     results: dict[str, dict[str, Any]] = {}
     with PostgresPlannerSession(planner_dsn, snapshot, universe, repository) as planner:
         for arm in orders:
             order = tuple(arm["order"])
             planner.activate(PostgresStatisticsConfiguration(order))
             active_oids = list(planner.active_backend_oids())
+            registered = planner.registered_oids
+            expected_oids = [registered[candidate_id] for candidate_id in order]
+            if active_oids != expected_oids:
+                raise ValueError(f"{dataset_id} hypothetical activation order was not preserved")
             records = []
             for query in queries:
                 plan_rows, explain_digest = _explain(
@@ -774,7 +821,9 @@ def _hypothetical_arms(
                 truth = int(truth_by_id[query["query_id"]])
                 records.append(
                     {
-                        "dataset_id": relation.split(".")[1],
+                        "dataset_id": dataset_id,
+                        "permutation_id": arm["permutation_id"],
+                        "execution_arm": "controlled-hypothetical",
                         "query_id": query["query_id"],
                         "sql_sha256": _sha256_text(str(query["sql"])),
                         "truth": truth,
@@ -798,6 +847,15 @@ def _hypothetical_arms(
                 "metrics": _aggregate(records),
                 "prescribed_order": list(order),
                 "active_virtual_oids": active_oids,
+                "payload_sha256_by_candidate": {
+                    candidate_id: payload_inventory[candidate_id]["sha256"]
+                    for candidate_id in order
+                },
+                "payload_size_by_candidate": {
+                    candidate_id: payload_inventory[candidate_id]["size"] for candidate_id in order
+                },
+                "ordinary_statistics_fingerprint": repository.ordinary_stats_fingerprint,
+                "candidate_membership_digest": semantic_digest({"candidate_ids": list(order)}),
                 "planner_settings": _connection_settings(planner.connection),
                 "causal_status": "controlled-order-only",
             }
@@ -815,6 +873,252 @@ def validate_result_artifact(path: Path) -> dict[str, Any]:
         "semantic_digest": value["semantic_digest"],
         "dataset_count": len(value.get("datasets", [])),
     }
+
+
+def _order_diagnostics(result: dict[str, Any], reference: Mapping[str, Any]) -> dict[str, Any]:
+    records = _read_jsonl(Path(result["per_query_path"]))
+    reference_records = {
+        item["query_id"]: item for item in _read_jsonl(Path(reference["per_query_path"]))
+    }
+    if set(reference_records) != {item["query_id"] for item in records}:
+        raise ValueError("order arms do not contain the same query IDs")
+    differences = [
+        int(item["plan_rows"] != reference_records[item["query_id"]]["plan_rows"])
+        for item in records
+    ]
+    return {
+        "plan_rows_changed": sum(differences),
+        "plan_rows_changed_fraction": sum(differences) / len(differences),
+        "ratio_vs_reference": result["metrics"]["mean"] / reference["metrics"]["mean"],
+        "difference_vs_reference": result["metrics"]["mean"] - reference["metrics"]["mean"],
+        "paired_qerror": _paired_against(records, reference_records),
+    }
+
+
+def _assemble_dataset_result(
+    *,
+    root: Path,
+    spec: RQ1BDatasetSpec,
+    dataset: Mapping[str, Any],
+    producer_sha: str,
+    output_dir: Path,
+    snapshot_digest: str,
+    native_repository_digest: str,
+    truth_by_id: Mapping[str, int],
+    hypothetical: dict[str, dict[str, Any]],
+    physical: dict[str, dict[str, Any]],
+    sandbox: Mapping[str, Any],
+) -> dict[str, Any]:
+    reference_id = "reference"
+    candidate_digest = semantic_digest({"candidate_ids": dataset["reference_order"]})
+    reference_hyp = hypothetical[reference_id]
+    reference_physical = physical[reference_id]
+    native_payloads = reference_hyp["payload_sha256_by_candidate"]
+    reference_settings = reference_physical["planner_settings"]
+    for arm_id, arm in hypothetical.items():
+        arm["candidate_membership_digest"] = candidate_digest
+        arm["order_diagnostics"] = _order_diagnostics(arm, reference_hyp)
+    for arm_id, arm in physical.items():
+        payload_equal = (
+            arm["payload_sha256_by_candidate"] == reference_physical["payload_sha256_by_candidate"]
+        )
+        ordinary_equal = (
+            arm["ordinary_statistics_fingerprint"]
+            == reference_physical["ordinary_statistics_fingerprint"]
+        )
+        settings_equal = arm["planner_settings"] == reference_settings
+        order_equal = arm["actual_oid_order"] == arm["prescribed_order"]
+        arm["candidate_membership_digest"] = candidate_digest
+        arm["causal_controls"] = {
+            "membership_and_definitions_equal": True,
+            "payload_bytes_equal_to_reference": payload_equal,
+            "ordinary_statistics_equal_to_reference": ordinary_equal,
+            "planner_settings_equal_to_reference": settings_equal,
+            "prescribed_oid_order_observed": order_equal,
+        }
+        arm["causal_status"] = (
+            "reference-control"
+            if arm_id == reference_id
+            else "causal-order-only"
+            if payload_equal and ordinary_equal and settings_equal and order_equal
+            else "confounded-operational-deployment"
+        )
+        arm["order_diagnostics"] = _order_diagnostics(arm, reference_physical)
+    return {
+        "format_version": FORMAT,
+        "dataset_id": spec.dataset_id,
+        "runtime_name": spec.runtime_name,
+        "relation": spec.dataset_module.RELATION,
+        "producer_research_sha": producer_sha,
+        "rq1b_reference": {
+            "design_digest": dataset["rq1b_design_digest"],
+            "recommendation_digest": dataset["rq1b_recommendation_digest"],
+            "deployment_digest": dataset["rq1b_deployment_digest"],
+        },
+        "valid_workload": {
+            "workload_id": dataset["valid_workload_id"],
+            "sha256": dataset["valid_workload_sha256"],
+            "canonical_source_sha256": dataset["valid_canonical_workload_sha256"],
+            "query_count": QUERY_COUNT,
+        },
+        "valid_truth": {
+            "path": dataset["valid_truth_path"],
+            "sha256": dataset["valid_truth_sha256"],
+            "query_count": QUERY_COUNT,
+            "query_ids": len(truth_by_id),
+        },
+        "candidate_membership": {
+            "candidate_ids": list(dataset["reference_order"]),
+            "digest": candidate_digest,
+            "selected_k": len(dataset["reference_order"]),
+            "definitions": dataset["selected_definitions"],
+        },
+        "snapshot_digest": snapshot_digest,
+        "native_repository_digest": native_repository_digest,
+        "native_payload_inventory": native_payloads,
+        "sandbox": dict(sandbox),
+        "hypothetical": hypothetical,
+        "physical": physical,
+        "test_workload_accessed": False,
+        "test_truth_accessed": False,
+        "formal_execution_scope": "valid-only-order-ablation",
+        "evidence_eligible": True,
+        "cleanup": {"sandbox_destroyed": True, "runtime_removed": True},
+    }
+
+
+def _run_overlapping_mcv_witness(
+    *, patched_dsn: str, stock_dsn: str, output: Path
+) -> dict[str, Any]:
+    """Run the preregistered small overlapping-MCV physical/overlay witness."""
+
+    import psycopg
+    from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
+
+    del stock_dsn  # The patched catalogless backend is the source of this witness.
+    table = "oid_order_mcv_witness"
+    query = "SELECT * FROM oid_order_mcv_witness WHERE a = 1 AND b = 1 AND c = 1"
+    arms = {
+        "a-only": ("A",),
+        "b-only": ("B",),
+        "a-then-b": ("A", "B"),
+        "b-then-a": ("B", "A"),
+        "none": (),
+    }
+    candidates = {
+        "A": {"kind": "mcv", "columns": ("a", "b")},
+        "B": {"kind": "mcv", "columns": ("b", "c")},
+    }
+    results: dict[str, Any] = {}
+    with psycopg.connect(patched_dsn, autocommit=True) as conn:
+        conn.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+        conn.execute(f"DROP TABLE IF EXISTS {table}")
+        conn.execute(f"CREATE TABLE {table} (a integer, b integer, c integer)")
+        conn.execute(
+            f"INSERT INTO {table} SELECT CASE WHEN i <= 700 THEN 1 ELSE i % 10 END, "
+            f"CASE WHEN i <= 700 THEN 1 ELSE i % 10 END, "
+            f"CASE WHEN i <= 350 THEN 1 ELSE (i + 3) % 10 END "
+            f"FROM generate_series(1, 1000) AS s(i)"
+        )
+        conn.execute(f"ANALYZE {table}")
+        relation_oid = int(conn.execute(f"SELECT '{table}'::regclass::oid").fetchone()[0])
+        ordinary_baseline = ordinary_stats_fingerprint(conn, relation_oid)
+        schema = str(conn.execute("SELECT current_schema()").fetchone()[0])
+        relation = f"{schema}.{table}"
+        for arm_id, order in arms.items():
+            names: dict[str, str] = {}
+            payloads: dict[str, bytes] = {}
+            physical_objects: list[dict[str, Any]] = []
+            for candidate_id in order:
+                name = f"oid_order_mcv_{candidate_id.lower()}"
+                names[candidate_id] = name
+                columns = ", ".join(
+                    _quote_identifier(item) for item in candidates[candidate_id]["columns"]
+                )
+                conn.execute(
+                    f"CREATE STATISTICS {_quote_identifier(name)} (mcv) ON {columns} FROM {_quote_identifier(table)}"
+                )
+                conn.execute(f"ALTER STATISTICS {_quote_identifier(name)} SET STATISTICS 100")
+            if order:
+                conn.execute(f"ANALYZE {table}")
+            for candidate_id in order:
+                payload = __import__(
+                    "extstats_advisor_research.rq3_fidelity", fromlist=["_physical_payload"]
+                )._physical_payload(conn, relation_oid, names[candidate_id], "mcv")
+                payloads[candidate_id] = payload["payload"]
+                physical_objects.append(
+                    {
+                        "candidate_id": candidate_id,
+                        "oid": payload["oid"],
+                        "payload_sha256": payload["payload_sha256"],
+                        "payload_size": payload["payload_size"],
+                    }
+                )
+            physical_rows, physical_digest = _explain(conn, query, relation)
+            physical_fingerprint = ordinary_stats_fingerprint(conn, relation_oid)
+            conn.execute(
+                f"DROP STATISTICS IF EXISTS {', '.join(_quote_identifier(name) for name in names.values())}"
+            )
+            if (
+                int(
+                    conn.execute(
+                        "SELECT count(*) FROM pg_catalog.pg_statistic_ext WHERE stxrelid=%s",
+                        (relation_oid,),
+                    ).fetchone()[0]
+                )
+                != 0
+            ):
+                raise ValueError("synthetic witness physical statistics leaked")
+            if ordinary_stats_fingerprint(conn, relation_oid) != ordinary_baseline:
+                raise ValueError("synthetic witness ordinary statistics drifted")
+            conn.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+            virtual_oids: list[int] = []
+            for candidate_id in order:
+                kind = "m"
+                row = conn.execute(
+                    'SELECT pg_catalog.pg_hypothetical_extstats_register_definition(%s::text,%s::oid,%s::"char",%s::smallint[],%s::bytea)',
+                    (
+                        candidate_id,
+                        relation_oid,
+                        kind,
+                        [1, 2] if candidate_id == "A" else [2, 3],
+                        payloads[candidate_id],
+                    ),
+                ).fetchone()
+                virtual_oids.append(int(row[0]))
+            conn.execute(
+                "SELECT pg_catalog.pg_hypothetical_extstats_activate(%s::oid[])", (virtual_oids,)
+            )
+            hypothetical_rows, hypothetical_digest = _explain(conn, query, relation)
+            conn.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
+            results[arm_id] = {
+                "order": list(order),
+                "physical_plan_rows": physical_rows,
+                "hypothetical_plan_rows": hypothetical_rows,
+                "physical_explain_sha256": physical_digest,
+                "hypothetical_explain_sha256": hypothetical_digest,
+                "exact_root_plan_rows_match": physical_rows == hypothetical_rows,
+                "payload_sha256_by_candidate": {
+                    item["candidate_id"]: item["payload_sha256"] for item in physical_objects
+                },
+                "physical_objects": physical_objects,
+                "ordinary_statistics_fingerprint": physical_fingerprint,
+            }
+        conn.execute(f"DROP TABLE {table}")
+    value = {
+        "format_version": "oid-order-overlapping-mcv-witness-v1",
+        "fixture_id": "oid-order-overlapping-mcv-witness-v1",
+        "query": query,
+        "arms": results,
+        "physical_hypothetical_exact_match_count": sum(
+            item["exact_root_plan_rows_match"] for item in results.values()
+        ),
+        "physical_hypothetical_arm_count": len(results),
+        "post_cleanup": True,
+    }
+    value["semantic_digest"] = semantic_digest(value)
+    write_json(output, value)
+    return value
 
 
 def run_formal(
@@ -837,7 +1141,7 @@ def run_formal(
         raise ValueError("preflight producer SHA does not match formal producer")
     from .advisor_bridge import materialize_native_repository
     from .postgres.loader import load_census13, load_dmv11, load_forest10, load_power7
-    from .postgres_lab import reinit_role
+    from .postgres_lab import reinit_role, role_spec, stop_role
 
     loaders = {
         "arecel-census13": load_census13,
@@ -845,13 +1149,29 @@ def run_formal(
         "arecel-power7": load_power7,
         "arecel-dmv11": load_dmv11,
     }
-    dataset_results = []
+    _validate_managed_lab_dsns(stock_dsn=stock_dsn, planner_dsn=planner_dsn)
+    validate_system_freeze_v2(read_json(root / "paper/system-freeze-v2.json"))
+    pins = verify_frozen_systems_v2(
+        advisor_root.resolve(), patched_postgres_root.resolve(), stock_postgres_root.resolve()
+    )
+    runtime_base = root / ".runtime" / "oid-order-sensitivity-v1"
+    runtime_base.mkdir(parents=True, exist_ok=False)
+    launcher = prepare_frozen_advisor_launcher(advisor_root=advisor_root, runtime_root=runtime_base)
+    launcher_path = Path(launcher["launcher_path"])
+    dataset_results: list[dict[str, Any]] = []
     try:
+        prepare_power7_rq1b_formal_labs(
+            advisor_root=advisor_root,
+            patched_postgres_root=patched_postgres_root,
+            stock_postgres_root=stock_postgres_root,
+        )
         for dataset in preflight["datasets"]:
             spec = next(item for item in DATASET_SPECS if item.dataset_id == dataset["dataset_id"])
-            runtime = root / ".runtime" / "oid-order-sensitivity-v1" / spec.runtime_name
+            runtime = runtime_base / spec.runtime_name
             runtime.mkdir(parents=True, exist_ok=False)
             log_dir = runtime / "logs"
+            output_dir = root / OUTPUT_ROOT / spec.runtime_name
+            output_dir.mkdir(parents=True, exist_ok=False)
             reinit_role("stock")
             reinit_role("patched")
             load = loaders[spec.dataset_id](
@@ -874,16 +1194,14 @@ def run_formal(
                 derive_candidate_universe,
                 write_candidate_universe,
             )
-            from extstats_advisor.dbms.postgres.acquisition import (
-                AcquisitionRequest,
-                PostgresSnapshotAcquirer,
-            )
+            from extstats_advisor.dbms.base import AcquisitionRequest, SamplePolicy
+            from extstats_advisor.dbms.postgres.acquisition import PostgresSnapshotAcquirer
             from extstats_advisor.ground_truth.artifact import write_ground_truth_set
-            from extstats_advisor.ground_truth.external import import_authoritative_ground_truth
             from extstats_advisor.snapshot.bundle import load_snapshot, write_snapshot
-            from extstats_advisor.snapshot.model import SamplePolicy, Workload, WorkloadQuery
+            from extstats_advisor.snapshot.model import Workload, WorkloadQuery
 
-            advisor_truth = root / spec.valid_observations_path
+            from extstats_advisor_research.external_truth import import_audited_authoritative_truth
+
             w = Workload(
                 workload["workload_id"],
                 tuple(
@@ -900,18 +1218,18 @@ def run_formal(
                 w,
             )
             write_snapshot(snapshot, snapshot_path)
-            truth_set = import_authoritative_ground_truth(
-                snapshot_path,
-                advisor_truth,
+            truth_set = import_audited_authoritative_truth(
+                snapshot,
+                root / spec.valid_observations_path,
                 authority="sfu-db/AreCELearnedYet",
                 dataset_identity=spec.dataset_content_identity,
-                source_revision="aa52da7768023270bad884232972e0b77ec6534a",
+                source_revision=dataset["upstream_commit"],
             )
-            truth_path = runtime / "ground-truth.json"
-            write_ground_truth_set(truth_set, truth_path)
+            write_ground_truth_set(truth_set, runtime / "ground-truth.json")
             candidate_path = runtime / "candidate-universe.json"
-            universe = derive_candidate_universe(load_snapshot(snapshot_path))
-            write_candidate_universe(universe, candidate_path)
+            write_candidate_universe(
+                derive_candidate_universe(load_snapshot(snapshot_path)), candidate_path
+            )
             native_path = runtime / "native-stats-repository"
             materialize_native_repository(
                 advisor_root,
@@ -921,12 +1239,9 @@ def run_formal(
                 native_path,
                 STATISTICS_TARGET,
             )
-            _run_command(
-                [str(advisor_root / ".venv" / "bin" / "python"), "-c", "pass"], log_dir
-            ) if False else None
-            _run_command(
+            prepare_result = _run_command(
                 [
-                    str(advisor_root / ".venv" / "bin" / "extstats-advisor"),
+                    str(launcher_path),
                     "sandbox",
                     "prepare",
                     "postgres",
@@ -938,9 +1253,9 @@ def run_formal(
                 ],
                 log_dir,
             )
-            _run_command(
+            verify_result = _run_command(
                 [
-                    str(advisor_root / ".venv" / "bin" / "extstats-advisor"),
+                    str(launcher_path),
                     "sandbox",
                     "verify",
                     "postgres",
@@ -952,8 +1267,10 @@ def run_formal(
                 ],
                 log_dir,
             )
-            truth_wire = read_json(advisor_truth)
+            truth_wire = read_json(root / spec.valid_observations_path)
             truth_by_id = {row["query_id"]: int(row["cardinality"]) for row in truth_wire["truths"]}
+            if len(truth_by_id) != QUERY_COUNT:
+                raise ValueError(f"{spec.dataset_id} valid truth IDs are not unique")
             queries = [
                 {"query_id": item.query_id, "sql": item.sql}
                 for item in load_snapshot(snapshot_path).workload.queries
@@ -971,54 +1288,78 @@ def run_formal(
                 queries=queries,
                 truth_by_id=truth_by_id,
                 relation=spec.dataset_module.RELATION,
-                output_dir=runtime,
+                dataset_id=spec.dataset_id,
+                output_dir=output_dir,
             )
-            physical = {}
-            parent_db = "extstats_lab"
+            physical: dict[str, dict[str, Any]] = {}
             for arm in dataset["permutations"]:
                 physical[arm["permutation_id"]] = _physical_arm(
                     dsn=stock_dsn,
-                    parent_database=parent_db,
+                    parent_database=role_spec("stock").database,
                     relation=spec.dataset_module.RELATION,
                     candidates=candidates,
                     order=arm["order"],
                     queries=queries,
                     truth_by_id=truth_by_id,
-                    output=runtime
+                    output=output_dir
                     / "physical-stock"
                     / arm["permutation_id"]
                     / "per-query.jsonl.gz",
                     dataset_id=spec.dataset_id,
                 )
             _run_command(
-                [
-                    str(advisor_root / ".venv" / "bin" / "extstats-advisor"),
-                    "sandbox",
-                    "destroy",
-                    "postgres",
-                    "--dsn",
-                    planner_dsn,
-                ],
+                [str(launcher_path), "sandbox", "destroy", "postgres", "--dsn", planner_dsn],
                 log_dir,
             )
-            dataset_results.append(
-                {
-                    "dataset_id": spec.dataset_id,
-                    "snapshot_digest": load_snapshot(snapshot_path).semantic_digest,
-                    "native_repository_digest": read_json(native_path / "manifest.json")[
-                        "semantic_digest"
-                    ],
-                    "hypothetical": hypothetical,
-                    "physical": physical,
-                    "candidate_payload_inventory": {},
-                }
+            dataset_result = _assemble_dataset_result(
+                root=root,
+                spec=spec,
+                dataset=dataset,
+                producer_sha=producer_sha,
+                output_dir=output_dir,
+                snapshot_digest=load_snapshot(snapshot_path).semantic_digest,
+                native_repository_digest=read_json(native_path / "manifest.json")[
+                    "semantic_digest"
+                ],
+                truth_by_id=truth_by_id,
+                hypothetical=hypothetical,
+                physical=physical,
+                sandbox={"prepare": prepare_result, "verify": verify_result},
             )
+            write_json(output_dir / "result-v1.json", dataset_result)
+            dataset_results.append(dataset_result)
             shutil.rmtree(runtime, ignore_errors=True)
-        return {
+        synthetic = _run_overlapping_mcv_witness(
+            patched_dsn=planner_dsn,
+            stock_dsn=stock_dsn,
+            output=root / OUTPUT_ROOT / "synthetic-witness-v1.json",
+        )
+        summary: dict[str, Any] = {
+            "format_version": SUMMARY_FORMAT,
+            "experiment_id": EXPERIMENT_ID,
             "status": "complete",
+            "producer_research_sha": producer_sha,
             "formal_invocation_count": 1,
             "dataset_results": dataset_results,
+            "synthetic_witness": synthetic,
+            "system_identity": pins,
+            "frozen_system": {
+                "advisor_sha": FROZEN_ADVISOR_SHA,
+                "patched_postgres_sha": FROZEN_PATCHED_POSTGRES_SHA,
+                "stock_postgres_sha": FROZEN_STOCK_POSTGRES_SHA,
+                "postgres_version": "16.14",
+            },
         }
+        summary["semantic_digest"] = semantic_digest(summary)
+        write_json(root / OUTPUT_ROOT / "summary-v1.json", summary)
+        return summary
     finally:
-        reinit_role("stock")
-        reinit_role("patched")
+        try:
+            _run_command(
+                [str(launcher_path), "sandbox", "destroy", "postgres", "--dsn", planner_dsn],
+                runtime_base / "cleanup-logs",
+            )
+        finally:
+            stop_role("stock")
+            stop_role("patched")
+            shutil.rmtree(runtime_base, ignore_errors=True)
