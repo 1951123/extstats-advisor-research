@@ -1,4 +1,4 @@
-"""Power7 RQ1b design/evaluation harness and explicit live adapters.
+"""Dataset-parameterized RQ1b design/evaluation harness and live adapters.
 
 The injected APIs remain offline readiness seams.  The live adapters are
 separate explicit entry points used only by the future formal command, so
@@ -13,6 +13,7 @@ import subprocess
 import sys
 import time
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,7 @@ from .arecel_truth import authoritative_truth_spec_for_split, validate_observati
 from .datasets import DATASETS
 from .paper_baseline import percentile, qerror
 from .pins import verify_git_sha
+from .postgres.loader import load_forest10, load_power7
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq1_workload_generalization import (
     PROTOCOL_V2_PATH,
@@ -95,6 +97,107 @@ class RQ1BValidationError(ValueError):
     """Controlled failure for RQ1b provenance or stage-boundary violations."""
 
 
+@dataclass(frozen=True)
+class RQ1BDatasetSpec:
+    """The small immutable identity surface that differs between RQ1b datasets."""
+
+    dataset_id: str
+    cli_name: str
+    dataset_module: Any
+    loader: Callable[..., Any]
+    records_loader: Callable[..., Any]
+    valid_workload_id: str
+    valid_workload_sha256: str
+    valid_canonical_workload_sha256: str
+    valid_observations_path: Path
+    valid_observations_sha256: str
+    valid_audit_path: Path
+    dataset_content_identity: str
+    test_workload_id: str
+    test_workload_sha256: str
+    test_observations_path: Path
+    test_observations_sha256: str
+    baseline_path: Path
+    baseline_semantic_digest: str
+    output_root: Path
+    design_format: str
+    result_format: str
+    preflight_format: str
+    runtime_name: str
+    campaign_attempt_index: int
+    prior_failed_attempt_path: Path | None = None
+    prior_failed_attempt_digest: str | None = None
+    prior_failed_attempt_status: str | None = None
+    prior_failed_attempt_class: str | None = None
+
+
+POWER7_SPEC = RQ1BDatasetSpec(
+    dataset_id=POWER7,
+    cli_name="power7",
+    dataset_module=DATASETS[POWER7],
+    loader=load_power7,
+    records_loader=DATASETS[POWER7].load_records,
+    valid_workload_id=VALID_WORKLOAD_ID,
+    valid_workload_sha256=VALID_WORKLOAD_SHA256,
+    valid_canonical_workload_sha256=VALID_CANONICAL_WORKLOAD_SHA256,
+    valid_observations_path=VALID_OBSERVATIONS_PATH,
+    valid_observations_sha256=VALID_OBSERVATIONS_SHA256,
+    valid_audit_path=VALID_AUDIT_PATH,
+    dataset_content_identity=VALID_DATASET_CONTENT_IDENTITY,
+    test_workload_id="arecel_power7_test_v1",
+    test_workload_sha256="649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb",
+    test_observations_path=Path(
+        "truth/arecel/power7/authoritative-cardinality-observations-v1.json"
+    ),
+    test_observations_sha256="fcec220e378be356a9a5cbfa133843c3e0d9089bdcd70ea9b3f604d8360722e9",
+    baseline_path=BASELINE_PATH,
+    baseline_semantic_digest=RQ1A_POWER7_DIGEST,
+    output_root=Path("experiments/arecel-power7/rq1-workload-generalization-v1"),
+    design_format=DESIGN_FORMAT,
+    result_format=RESULT_FORMAT,
+    preflight_format=PREFLIGHT_FORMAT,
+    runtime_name="power7",
+    campaign_attempt_index=CAMPAIGN_ATTEMPT_INDEX,
+    prior_failed_attempt_path=PRIOR_FAILED_ATTEMPT_PATH,
+    prior_failed_attempt_digest=PRIOR_FAILED_ATTEMPT_DIGEST,
+    prior_failed_attempt_status=PRIOR_FAILED_ATTEMPT_STATUS,
+    prior_failed_attempt_class=PRIOR_FAILED_ATTEMPT_CLASS,
+)
+
+FOREST10_SPEC = RQ1BDatasetSpec(
+    dataset_id="arecel-forest10",
+    cli_name="forest10",
+    dataset_module=DATASETS["arecel-forest10"],
+    loader=load_forest10,
+    records_loader=DATASETS["arecel-forest10"].load_records,
+    valid_workload_id="arecel_forest10_valid_v1",
+    valid_workload_sha256="e589bf277cf8303bfaf12943e651e5ba10065f8510df9b0f195dff7dfc1b5cb5",
+    valid_canonical_workload_sha256="a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+    valid_observations_path=Path(
+        "truth/arecel/forest10/authoritative-cardinality-observations-valid-v1.json"
+    ),
+    valid_observations_sha256="fbd68c2b22600d69e29cedbfd567716d9a613cf2d1d434298f1f661e73f8a414",
+    valid_audit_path=Path("truth/arecel/forest10/audit-valid-v1.json"),
+    dataset_content_identity="fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    test_workload_id="arecel_forest10_test_v1",
+    test_workload_sha256="362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6",
+    test_observations_path=Path(
+        "truth/arecel/forest10/authoritative-cardinality-observations-v1.json"
+    ),
+    test_observations_sha256="88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+    baseline_path=Path(
+        "experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json"
+    ),
+    baseline_semantic_digest="3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436",
+    output_root=Path("experiments/arecel-forest10/rq1-workload-generalization-v1"),
+    design_format="rq1-workload-generalization-forest10-design-v1",
+    result_format="rq1-workload-generalization-forest10-v1",
+    preflight_format="rq1-workload-generalization-forest10-preflight-v1",
+    runtime_name="forest10",
+    campaign_attempt_index=1,
+)
+
+
 DesignExecutor = Callable[[Mapping[str, Any]], Mapping[str, Any]]
 
 
@@ -153,13 +256,20 @@ def _validate_immutable_inputs(root: Path, *, include_evaluation: bool) -> dict[
     }
 
 
-def _power7_row(value: Mapping[str, Any]) -> dict[str, Any]:
-    rows = [row for row in value.get("datasets", []) if row.get("dataset_id") == POWER7]
-    _require(len(rows) == 1, "RQ1b immutable input must contain exactly one Power7 row")
+def _dataset_row(value: Mapping[str, Any], spec: RQ1BDatasetSpec) -> dict[str, Any]:
+    rows = [row for row in value.get("datasets", []) if row.get("dataset_id") == spec.dataset_id]
+    _require(
+        len(rows) == 1,
+        f"RQ1b immutable input must contain exactly one {spec.dataset_id} row",
+    )
     return dict(rows[0])
 
 
-def _valid_truth_identity(root: Path) -> dict[str, Any]:
+def _power7_row(value: Mapping[str, Any]) -> dict[str, Any]:
+    return _dataset_row(value, POWER7_SPEC)
+
+
+def _valid_truth_identity(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[str, Any]:
     """Resolve only the valid truth files needed by the design stage.
 
     The general split-aware truth-policy resolver is deliberately not used
@@ -167,84 +277,113 @@ def _valid_truth_identity(root: Path) -> dict[str, Any]:
     valid wire and its valid-only audit keeps the pre-seal path literal.
     """
 
-    truth_path = root / VALID_OBSERVATIONS_PATH
-    audit_path = root / VALID_AUDIT_PATH
-    _require(truth_path.is_file(), f"missing valid Power7 truth wire: {VALID_OBSERVATIONS_PATH}")
-    _require(audit_path.is_file(), f"missing valid Power7 truth audit: {VALID_AUDIT_PATH}")
+    truth_path = root / spec.valid_observations_path
+    audit_path = root / spec.valid_audit_path
+    _require(
+        truth_path.is_file(),
+        f"missing valid {spec.dataset_id} truth wire: {spec.valid_observations_path}",
+    )
+    _require(
+        audit_path.is_file(),
+        f"missing valid {spec.dataset_id} truth audit: {spec.valid_audit_path}",
+    )
     try:
         wire = read_json(truth_path)
-        validate_observation_wire(wire, workload_id=VALID_WORKLOAD_ID)
+        validate_observation_wire(wire, workload_id=spec.valid_workload_id)
         audit = read_json(audit_path)
     except (KeyError, TypeError, ValueError) as error:
-        raise RQ1BValidationError(f"Power7 valid truth is malformed: {error}") from error
-    _require(isinstance(audit, Mapping), "Power7 valid truth audit must be an object")
-    _require(audit.get("source_split") == DESIGN_SPLIT, "Power7 valid truth audit split drift")
-    _require(audit.get("benchmark_id") == POWER7, "Power7 valid truth benchmark drift")
-    _require(audit.get("workload_id") == VALID_WORKLOAD_ID, "Power7 valid truth ID drift")
-    _require(audit.get("query_count") == SAMPLE_ROWS, "Power7 valid truth count is not 10000")
+        raise RQ1BValidationError(f"{spec.dataset_id} valid truth is malformed: {error}") from error
+    _require(isinstance(audit, Mapping), f"{spec.dataset_id} valid truth audit must be an object")
     _require(
-        audit.get("dataset_content_identity") == VALID_DATASET_CONTENT_IDENTITY,
-        "Power7 valid truth dataset identity drift",
+        audit.get("source_split") == DESIGN_SPLIT,
+        f"{spec.dataset_id} valid truth audit split drift",
+    )
+    _require(
+        audit.get("benchmark_id") == spec.dataset_id,
+        f"{spec.dataset_id} valid truth benchmark drift",
+    )
+    _require(
+        audit.get("workload_id") == spec.valid_workload_id,
+        f"{spec.dataset_id} valid truth ID drift",
+    )
+    _require(
+        audit.get("query_count") == SAMPLE_ROWS,
+        f"{spec.dataset_id} valid truth count is not 10000",
+    )
+    _require(
+        audit.get("dataset_content_identity") == spec.dataset_content_identity,
+        f"{spec.dataset_id} valid truth dataset identity drift",
     )
     _require(
         audit.get("upstream_commit") == ARECEL_UPSTREAM_COMMIT,
-        "Power7 valid truth upstream commit drift",
+        f"{spec.dataset_id} valid truth upstream commit drift",
     )
     _require(
         audit.get("authority") == "sfu-db/AreCELearnedYet",
-        "Power7 valid truth authority drift",
+        f"{spec.dataset_id} valid truth authority drift",
     )
     _require(
-        audit.get("canonical_workload_sha256") == VALID_CANONICAL_WORKLOAD_SHA256,
-        "Power7 valid truth canonical workload drift",
+        audit.get("canonical_workload_sha256") == spec.valid_canonical_workload_sha256,
+        f"{spec.dataset_id} valid truth canonical workload drift",
     )
     _require(
-        audit.get("observation_sha256") == VALID_OBSERVATIONS_SHA256
-        and sha256_file(truth_path) == VALID_OBSERVATIONS_SHA256,
-        "Power7 valid truth observation digest drift",
+        audit.get("observation_sha256") == spec.valid_observations_sha256
+        and sha256_file(truth_path) == spec.valid_observations_sha256,
+        f"{spec.dataset_id} valid truth observation digest drift",
     )
     return {
         "source_kind": "authoritative-external-exact",
         "collection_contract": "authoritative-external-exact-cardinality-v1",
-        "dataset_identity": VALID_DATASET_CONTENT_IDENTITY,
+        "dataset_identity": spec.dataset_content_identity,
         "source_revision": ARECEL_UPSTREAM_COMMIT,
-        "observations_sha256": VALID_OBSERVATIONS_SHA256,
+        "observations_sha256": spec.valid_observations_sha256,
         "observations_semantic_digest": semantic_digest(
             {key: item for key, item in wire.items() if key != "semantic_digest"}
         ),
-        "workload_id": VALID_WORKLOAD_ID,
+        "workload_id": spec.valid_workload_id,
         "query_count": SAMPLE_ROWS,
         "policy_status": "preregistered",
     }
 
 
-def _valid_design_inputs(root: Path, data_root: Path | None = None) -> dict[str, Any]:
+def _valid_design_inputs(
+    root: Path, data_root: Path | None = None, spec: RQ1BDatasetSpec = POWER7_SPEC
+) -> dict[str, Any]:
     """Resolve only valid-side inputs; no test/membership artifacts are loaded."""
 
-    dataset = DATASETS[POWER7]
+    dataset = spec.dataset_module
     metadata = dataset.inspect(data_root)
-    truth = _valid_truth_identity(root)
+    truth = _valid_truth_identity(root, spec)
     import tempfile
 
-    with tempfile.TemporaryDirectory(prefix="rq1b-power7-valid-") as directory:
+    with tempfile.TemporaryDirectory(prefix=f"rq1b-{spec.runtime_name}-valid-") as directory:
         workload_path = Path(directory) / "valid-workload.json"
         identity = dataset.extract_workload(workload_path, data_root, split=DESIGN_SPLIT)
         workload = read_json(workload_path)
-    _require(identity["workload_id"] == VALID_WORKLOAD_ID, "Power7 valid workload ID drift")
-    _require(identity["query_count"] == SAMPLE_ROWS, "Power7 valid workload count is not 10000")
-    _require(identity["sha256"] == VALID_WORKLOAD_SHA256, "Power7 valid workload SHA drift")
     _require(
-        metadata["dataset_content_identity"] == VALID_DATASET_CONTENT_IDENTITY,
-        "Power7 dataset content identity drift",
+        identity["workload_id"] == spec.valid_workload_id,
+        f"{spec.dataset_id} valid workload ID drift",
     )
-    _require(metadata["relation"] == "public.power7", "Power7 relation identity drift")
+    _require(identity["query_count"] == SAMPLE_ROWS, "valid workload count is not 10000")
     _require(
-        metadata["schema_contract"]["id"] == "arecel-power7-postgres-schema-v1",
-        "Power7 schema contract drift",
+        identity["sha256"] == spec.valid_workload_sha256,
+        f"{spec.dataset_id} valid workload SHA drift",
+    )
+    _require(
+        metadata["dataset_content_identity"] == spec.dataset_content_identity,
+        f"{spec.dataset_id} dataset content identity drift",
+    )
+    _require(
+        metadata["relation"] == dataset.RELATION,
+        f"{spec.dataset_id} relation identity drift",
+    )
+    _require(
+        metadata["schema_contract"]["id"] == dataset.SCHEMA_CONTRACT_ID,
+        f"{spec.dataset_id} schema contract drift",
     )
     return {
         "dataset": {
-            "dataset_id": POWER7,
+            "dataset_id": spec.dataset_id,
             "benchmark_id": metadata["benchmark_id"],
             "content_identity": metadata["dataset_content_identity"],
             "relation": metadata["relation"],
@@ -255,24 +394,26 @@ def _valid_design_inputs(root: Path, data_root: Path | None = None) -> dict[str,
             "workload_id": identity["workload_id"],
             "sha256": identity["sha256"],
             "query_count": identity["query_count"],
-            "canonical_source_sha256": VALID_CANONICAL_WORKLOAD_SHA256,
+            "canonical_source_sha256": spec.valid_canonical_workload_sha256,
         },
         "truth": truth,
         "workload_queries": workload["queries"],
     }
 
 
-def _valid_truth_spec_design_safe(root: Path) -> dict[str, Any]:
+def _valid_truth_spec_design_safe(
+    root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC
+) -> dict[str, Any]:
     """Build the frozen Advisor truth-spec shape from valid-only files."""
 
-    identity = _valid_truth_identity(root)
+    identity = _valid_truth_identity(root, spec)
     return {
         "kind": identity["source_kind"],
         "collection_contract": identity["collection_contract"],
         "authority": "sfu-db/AreCELearnedYet",
         "dataset_identity": identity["dataset_identity"],
         "source_revision": identity["source_revision"],
-        "observations_path": root / VALID_OBSERVATIONS_PATH,
+        "observations_path": root / spec.valid_observations_path,
         "observations_sha256": identity["observations_sha256"],
         "query_count": identity["query_count"],
         "sanity_check_count": 10,
@@ -298,19 +439,21 @@ def _system_binding(root: Path) -> dict[str, Any]:
     }
 
 
-def _design_source_spec(root: Path, data_root: Path | None = None) -> dict[str, Any]:
-    """Return the compact Power7 valid-only source contract.
+def _design_source_spec(
+    root: Path, data_root: Path | None = None, spec: RQ1BDatasetSpec = POWER7_SPEC
+) -> dict[str, Any]:
+    """Return the compact dataset-specific valid-only source contract.
 
     This helper is intentionally independent of the mixed valid/test source
     audit and the RQ1a baseline.  It may run before the Recommendation seal.
     """
 
-    inputs = _valid_design_inputs(root, data_root)
+    inputs = _valid_design_inputs(root, data_root, spec)
     dataset = inputs["dataset"]
     workload = inputs["workload"]
     truth = inputs["truth"]
     return {
-        "dataset_id": POWER7,
+        "dataset_id": spec.dataset_id,
         "benchmark_id": dataset["benchmark_id"],
         "dataset_content_identity": dataset["content_identity"],
         "relation": dataset["relation"],
@@ -325,7 +468,7 @@ def _design_source_spec(root: Path, data_root: Path | None = None) -> dict[str, 
         },
         "design_truth": {
             "source_split": DESIGN_SPLIT,
-            "path": VALID_OBSERVATIONS_PATH.as_posix(),
+            "path": spec.valid_observations_path.as_posix(),
             "observations_sha256": truth["observations_sha256"],
             "workload_id": truth["workload_id"],
             "query_count": truth["query_count"],
@@ -334,14 +477,16 @@ def _design_source_spec(root: Path, data_root: Path | None = None) -> dict[str, 
     }
 
 
-def _opaque_evaluation_bindings() -> dict[str, dict[str, str]]:
+def _opaque_evaluation_bindings(
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
+) -> dict[str, dict[str, str]]:
     """Return evaluation references without opening evaluation artifacts."""
 
     return {
         "source_audit": _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
         "truth_policy": _binding(TRUTH_POLICY_PATH, TRUTH_POLICY_DIGEST),
         "strict_unseen": _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
-        "rq1a_baseline": _binding(BASELINE_PATH, RQ1A_POWER7_DIGEST),
+        "rq1a_baseline": _binding(spec.baseline_path, spec.baseline_semantic_digest),
     }
 
 
@@ -394,6 +539,7 @@ def build_design_artifact(
     execution: Mapping[str, Any],
     data_root: Path | None = None,
     design_inputs: Mapping[str, Any] | None = None,
+    _spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Assemble and validate compact valid-only design evidence."""
 
@@ -401,7 +547,9 @@ def build_design_artifact(
     _commit(producer_sha, "research_commit_sha")
     _require_execution_digests(execution)
     inputs = (
-        dict(design_inputs) if design_inputs is not None else _valid_design_inputs(root, data_root)
+        dict(design_inputs)
+        if design_inputs is not None
+        else _valid_design_inputs(root, data_root, _spec)
     )
     system = _system_binding(root)
     _require(
@@ -414,7 +562,7 @@ def build_design_artifact(
         "design patched PostgreSQL SHA drift",
     )
     body: dict[str, Any] = {
-        "format_version": DESIGN_FORMAT,
+        "format_version": _spec.design_format,
         "experiment_id": "rq1-held-out-workload-generalization",
         "rq": "RQ1b",
         "status": "design-complete",
@@ -447,9 +595,37 @@ def build_design_artifact(
         },
         "cleanup": {"required_before_publish": True, "passed": False},
     }
-    validate_design_artifact(body, expected_producer=producer_sha)
+    validate_design_artifact(body, expected_producer=producer_sha, _spec=_spec)
     body["semantic_digest"] = semantic_digest(body)
     return body
+
+
+def run_rq1b_design(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    design_executor: Callable[[Mapping[str, Any]], Mapping[str, Any]],
+    data_root: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
+) -> dict[str, Any]:
+    """Run the valid-only orchestration through an injected frozen pipeline.
+
+    ``design_executor`` is the only execution hook.  A future live adapter
+    must call the frozen Advisor primitives in that hook; this readiness
+    module itself never starts PostgreSQL or imports the Advisor CLI.
+    """
+
+    inputs = _valid_design_inputs(research_root.resolve(), data_root, spec)
+    execution = design_executor(inputs)
+    _require(isinstance(execution, Mapping), "design executor must return an object")
+    return build_design_artifact(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        execution=execution,
+        data_root=data_root,
+        design_inputs=inputs,
+        _spec=spec,
+    )
 
 
 def run_power7_rq1b_design(
@@ -459,31 +635,24 @@ def run_power7_rq1b_design(
     design_executor: Callable[[Mapping[str, Any]], Mapping[str, Any]],
     data_root: Path | None = None,
 ) -> dict[str, Any]:
-    """Run the valid-only orchestration through an injected frozen pipeline.
-
-    ``design_executor`` is the only execution hook.  A future live adapter
-    must call the frozen Advisor primitives in that hook; this readiness
-    module itself never starts PostgreSQL or imports the Advisor CLI.
-    """
-
-    inputs = _valid_design_inputs(research_root.resolve(), data_root)
-    execution = design_executor(inputs)
-    _require(isinstance(execution, Mapping), "design executor must return an object")
-    return build_design_artifact(
+    return run_rq1b_design(
         research_root=research_root,
         producer_sha=producer_sha,
-        execution=execution,
+        design_executor=design_executor,
         data_root=data_root,
-        design_inputs=inputs,
+        spec=POWER7_SPEC,
     )
 
 
 def validate_design_artifact(
-    value: Mapping[str, Any], *, expected_producer: str | None = None
+    value: Mapping[str, Any],
+    *,
+    expected_producer: str | None = None,
+    _spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise RQ1BValidationError("design artifact must be an object")
-    _require(value.get("format_version") == DESIGN_FORMAT, "unsupported RQ1b design format")
+    _require(value.get("format_version") == _spec.design_format, "unsupported RQ1b design format")
     _require(value.get("status") == "design-complete", "design artifact is not complete")
     _require(value.get("rq") == "RQ1b", "design artifact has the wrong RQ")
     producer = value.get("producer", {}).get("research_commit_sha")
@@ -519,16 +688,28 @@ def validate_design_artifact(
     )
     dataset = value.get("dataset")
     _require(
-        isinstance(dataset, Mapping) and dataset.get("dataset_id") == POWER7,
-        "design dataset must be Power7",
+        isinstance(dataset, Mapping) and dataset.get("dataset_id") == _spec.dataset_id,
+        f"design dataset must be {_spec.dataset_id}",
     )
     _require(
         isinstance(dataset.get("content_identity"), str) and dataset["content_identity"],
         "design dataset content identity is missing",
     )
     _require(
+        dataset.get("content_identity") == _spec.dataset_content_identity,
+        "design dataset content identity drift",
+    )
+    _require(
         isinstance(dataset.get("relation"), str) and dataset["relation"],
         "design relation identity is missing",
+    )
+    _require(
+        dataset.get("relation") == _spec.dataset_module.RELATION,
+        "design relation identity drift",
+    )
+    _require(
+        dataset.get("schema_contract_id") == _spec.dataset_module.SCHEMA_CONTRACT_ID,
+        "design schema contract identity drift",
     )
     stage = value.get("design_stage")
     _require(
@@ -543,17 +724,21 @@ def validate_design_artifact(
     _require(isinstance(workload, Mapping), "design workload binding is missing")
     _require(isinstance(truth, Mapping), "design truth binding is missing")
     _require(
-        workload.get("workload_id") == "arecel_power7_valid_v1", "design workload is not valid"
+        workload.get("workload_id") == _spec.valid_workload_id,
+        "design workload is not valid",
     )
     _require(workload.get("query_count") == SAMPLE_ROWS, "design valid workload count drift")
-    _sha(workload.get("sha256"), "design valid workload SHA")
-    _sha(
-        workload.get("canonical_source_sha256"),
+    _require(workload.get("sha256") == _spec.valid_workload_sha256, "design valid workload SHA")
+    _require(
+        workload.get("canonical_source_sha256") == _spec.valid_canonical_workload_sha256,
         "design canonical workload SHA",
     )
-    _require(truth.get("workload_id") == "arecel_power7_valid_v1", "design truth is not valid")
+    _require(truth.get("workload_id") == _spec.valid_workload_id, "design truth is not valid")
     _require(truth.get("query_count") == SAMPLE_ROWS, "design valid truth count drift")
-    _sha(truth.get("observations_sha256"), "design valid truth SHA")
+    _require(
+        truth.get("observations_sha256") == _spec.valid_observations_sha256,
+        "design valid truth SHA",
+    )
     for forbidden in (
         "test_workload",
         "test_truth",
@@ -583,12 +768,12 @@ def validate_design_artifact(
     }
 
 
-def _source_spec(root: Path) -> dict[str, Any]:
+def _source_spec(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[str, Any]:
     inputs = _validate_immutable_inputs(root, include_evaluation=True)
-    row = _power7_row(inputs["source_audit"])
-    truth_rows = _power7_row(inputs["truth_policy"])
+    row = _dataset_row(inputs["source_audit"], spec)
+    truth_rows = _dataset_row(inputs["truth_policy"], spec)
     return {
-        "dataset_id": POWER7,
+        "dataset_id": spec.dataset_id,
         "benchmark_id": row["benchmark_id"],
         "dataset_content_identity": row["dataset_content_identity"],
         "relation": row["relation"],
@@ -607,25 +792,29 @@ def _source_spec(root: Path) -> dict[str, Any]:
     }
 
 
-def _baseline_binding(root: Path) -> dict[str, Any]:
-    path = root / BASELINE_PATH
-    _require(path.is_file(), "Power7 immutable RQ1a baseline is missing")
+def _baseline_binding(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[str, Any]:
+    path = root / spec.baseline_path
+    _require(path.is_file(), f"{spec.dataset_id} immutable RQ1a baseline is missing")
     artifact = read_json(path)
     _require(
         semantic_digest({key: item for key, item in artifact.items() if key != "semantic_digest"})
-        == RQ1A_POWER7_DIGEST,
-        "Power7 RQ1a source digest mismatch",
+        == spec.baseline_semantic_digest,
+        f"{'Power7' if spec is POWER7_SPEC else spec.dataset_id} RQ1a source digest mismatch",
     )
     _require(
         artifact.get("format_version") == "rq1-matched-comparison-v1"
         and artifact.get("experiment_id") == "rq1-matched-comparison-v1",
-        "Power7 RQ1a source artifact identity mismatch",
+        f"{spec.dataset_id} RQ1a source artifact identity mismatch",
     )
     _require(
         artifact.get("arms") == ["pg16-default", "pg16-target10000", "pg16-advisor"],
-        "Power7 RQ1a source arms drift",
+        f"{spec.dataset_id} RQ1a source arms drift",
     )
-    source = _source_spec(root)
+    source = _source_spec(root, spec)
+    _require(
+        artifact.get("dataset", {}).get("dataset_id") == spec.dataset_id,
+        "baseline dataset ID mismatch",
+    )
     _require(
         artifact["dataset"]["content_identity"] == source["dataset_content_identity"],
         "baseline dataset identity mismatch",
@@ -643,8 +832,8 @@ def _baseline_binding(root: Path) -> dict[str, Any]:
         "baseline test truth mismatch",
     )
     result: dict[str, Any] = {
-        "path": BASELINE_PATH.as_posix(),
-        "semantic_digest": RQ1A_POWER7_DIGEST,
+        "path": spec.baseline_path.as_posix(),
+        "semantic_digest": spec.baseline_semantic_digest,
         "arms": {},
     }
     advisor_arm = artifact["per_arm"]["pg16-advisor"]
@@ -665,7 +854,7 @@ def _baseline_binding(root: Path) -> dict[str, Any]:
         "baseline S_test Recommendation membership/order contract mismatch",
     )
     result["s_test_candidate_ids"] = list(test_selected)
-    expected_columns = [name for name, _ in DATASETS[POWER7].COLUMNS]
+    expected_columns = [name for name, _ in spec.dataset_module.COLUMNS]
     for arm_id in ("pg16-default", "pg16-target10000"):
         arm = artifact["per_arm"][arm_id]
         _require(
@@ -710,7 +899,10 @@ def _baseline_binding(root: Path) -> dict[str, Any]:
         )
         records = arm["per_query"]
         _require(len(records) == SAMPLE_ROWS, "baseline per-query count mismatch")
-        expected_ids = [f"arecel_power7_test_{index:06d}" for index in range(SAMPLE_ROWS)]
+        expected_ids = [
+            f"{spec.test_workload_id.removesuffix('_v1')}_{index:06d}"
+            for index in range(SAMPLE_ROWS)
+        ]
         _require(
             [row.get("query_id") for row in records] == expected_ids,
             "baseline query order mismatch",
@@ -730,8 +922,29 @@ def _baseline_binding(root: Path) -> dict[str, Any]:
     return result
 
 
-def build_power7_rq1b_preflight(
-    *, research_root: Path, producer_sha: str, output: Path | None = None
+def _prior_failed_attempt_binding(spec: RQ1BDatasetSpec) -> dict[str, Any] | None:
+    if spec.prior_failed_attempt_path is None:
+        return None
+    _require(
+        spec.prior_failed_attempt_digest is not None
+        and spec.prior_failed_attempt_status is not None
+        and spec.prior_failed_attempt_class is not None,
+        f"{spec.dataset_id} prior failure binding is incomplete",
+    )
+    return {
+        **_binding(spec.prior_failed_attempt_path, spec.prior_failed_attempt_digest),
+        "status": spec.prior_failed_attempt_status,
+        "failure_class": spec.prior_failed_attempt_class,
+        "evidence_eligible": False,
+    }
+
+
+def build_rq1b_preflight(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    output: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Build an in-memory preflight; callers may persist it in a future live phase."""
 
@@ -752,18 +965,14 @@ def build_power7_rq1b_preflight(
         destination = _path(root, output)
         _require(not destination.exists(), "RQ1b formal preflight output already exists")
         _require(
-            destination == root / PREFLIGHT_PATH, "RQ1b preflight output path is not canonical"
+            destination == root / spec.output_root / "rq1b-preflight-v1.json",
+            "RQ1b preflight output path is not canonical",
         )
-    design_source = _design_source_spec(root)
+    design_source = _design_source_spec(root, spec=spec)
     body: dict[str, Any] = {
-        "format_version": PREFLIGHT_FORMAT,
-        "campaign_attempt_index": CAMPAIGN_ATTEMPT_INDEX,
-        "prior_failed_attempt": {
-            **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
-            "status": PRIOR_FAILED_ATTEMPT_STATUS,
-            "failure_class": PRIOR_FAILED_ATTEMPT_CLASS,
-            "evidence_eligible": False,
-        },
+        "format_version": spec.preflight_format,
+        "campaign_attempt_index": spec.campaign_attempt_index,
+        "prior_failed_attempt": _prior_failed_attempt_binding(spec),
         "status": "ready-to-run",
         "formal_execution": "not-started",
         "research_commit_sha": producer_sha,
@@ -773,17 +982,15 @@ def build_power7_rq1b_preflight(
         "strict_unseen_membership": _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
         "system_freeze": _system_binding(root),
         "dataset": design_source,
-        "evaluation_bindings": _opaque_evaluation_bindings(),
+        "evaluation_bindings": _opaque_evaluation_bindings(spec),
         "advisor_execution_policy": {
             "mode": "frozen-checkout-runtime-launcher",
             "source_checkout_sha": FROZEN_ADVISOR_SHA,
             "launcher_source": "verified advisor_root/src",
             "path_lookup_allowed": False,
         },
-        "design_output": {
-            "canonical_path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json"
-        },
-        "evaluation_output": {"canonical_path": RESULT_PATH.as_posix()},
+        "design_output": {"canonical_path": (spec.output_root / "design-v1.json").as_posix()},
+        "evaluation_output": {"canonical_path": (spec.output_root / "result-v1.json").as_posix()},
         "parameters": {
             "sample_rows": SAMPLE_ROWS,
             "sample_seed": SAMPLE_SEED,
@@ -799,24 +1006,29 @@ def build_power7_rq1b_preflight(
     return body
 
 
-def validate_power7_rq1b_preflight(
-    value: Mapping[str, Any], *, research_root: Path
+def build_power7_rq1b_preflight(
+    *, research_root: Path, producer_sha: str, output: Path | None = None
+) -> dict[str, Any]:
+    return build_rq1b_preflight(
+        research_root=research_root, producer_sha=producer_sha, output=output, spec=POWER7_SPEC
+    )
+
+
+def validate_rq1b_preflight(
+    value: Mapping[str, Any],
+    *,
+    research_root: Path,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise RQ1BValidationError("RQ1b preflight must be an object")
-    _require(value.get("format_version") == PREFLIGHT_FORMAT, "unsupported RQ1b preflight")
+    _require(value.get("format_version") == spec.preflight_format, "unsupported RQ1b preflight")
     _require(
-        value.get("campaign_attempt_index") == CAMPAIGN_ATTEMPT_INDEX,
+        value.get("campaign_attempt_index") == spec.campaign_attempt_index,
         "RQ1b campaign attempt index drift",
     )
     _require(
-        value.get("prior_failed_attempt")
-        == {
-            **_binding(PRIOR_FAILED_ATTEMPT_PATH, PRIOR_FAILED_ATTEMPT_DIGEST),
-            "status": PRIOR_FAILED_ATTEMPT_STATUS,
-            "failure_class": PRIOR_FAILED_ATTEMPT_CLASS,
-            "evidence_eligible": False,
-        },
+        value.get("prior_failed_attempt") == _prior_failed_attempt_binding(spec),
         "RQ1b prior failed-attempt binding drift",
     )
     _require(value.get("status") == "ready-to-run", "RQ1b preflight is not ready")
@@ -843,11 +1055,11 @@ def validate_power7_rq1b_preflight(
         "preflight system freeze drift",
     )
     _require(
-        value.get("dataset") == _design_source_spec(research_root.resolve()),
-        "preflight Power7 design source spec drift",
+        value.get("dataset") == _design_source_spec(research_root.resolve(), spec=spec),
+        f"preflight {spec.dataset_id} design source spec drift",
     )
     _require(
-        value.get("evaluation_bindings") == _opaque_evaluation_bindings(),
+        value.get("evaluation_bindings") == _opaque_evaluation_bindings(spec),
         "preflight evaluation binding drift",
     )
     _require(
@@ -881,7 +1093,7 @@ def validate_power7_rq1b_preflight(
     )
     serialized = json.dumps(value, sort_keys=True)
     for forbidden in (
-        "arecel_power7_test_",
+        f"arecel_{spec.cli_name}_test_",
         "s_test_candidate_ids",
         "strict_unseen_test_query_ids",
         "seen_in_valid_count",
@@ -900,20 +1112,40 @@ def validate_power7_rq1b_preflight(
     return {
         "status": "valid",
         "semantic_digest": value.get("semantic_digest"),
-        "dataset_id": POWER7,
+        "dataset_id": spec.dataset_id,
     }
 
 
-def verify_power7_formal_tree(
-    *, research_root: Path, preflight_path: Path, preflight: Mapping[str, Any]
+def validate_power7_rq1b_preflight(
+    value: Mapping[str, Any], *, research_root: Path
+) -> dict[str, Any]:
+    return validate_rq1b_preflight(value, research_root=research_root, spec=POWER7_SPEC)
+
+
+def _validate_preflight_for_spec(
+    value: Mapping[str, Any], *, research_root: Path, spec: RQ1BDatasetSpec
+) -> dict[str, Any]:
+    """Preserve the historical Power7 validator seam while dispatching specs."""
+
+    if spec is POWER7_SPEC:
+        return validate_power7_rq1b_preflight(value, research_root=research_root)
+    return validate_rq1b_preflight(value, research_root=research_root, spec=spec)
+
+
+def verify_rq1b_formal_tree(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    preflight: Mapping[str, Any],
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Allow only the canonical untracked preflight before a future live run."""
 
     root = research_root.resolve()
-    expected = root / PREFLIGHT_PATH
+    expected = root / spec.output_root / "rq1b-preflight-v1.json"
     actual = _path(root, preflight_path)
     _require(actual == expected, "RQ1b preflight path is not canonical")
-    validate_power7_rq1b_preflight(preflight, research_root=root)
+    _validate_preflight_for_spec(preflight, research_root=root, spec=spec)
     head = subprocess.run(
         ["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True, check=True
     ).stdout.strip()
@@ -927,24 +1159,44 @@ def verify_power7_formal_tree(
         text=True,
         check=True,
     ).stdout.splitlines()
-    allowed = {f"?? {PREFLIGHT_PATH.as_posix()}"}
+    allowed_path = (spec.output_root / "rq1b-preflight-v1.json").as_posix()
+    allowed = {f"?? {allowed_path}"}
     _require(set(status) <= allowed, "formal RQ1b tree contains disallowed changes")
     _require(
         status == sorted(allowed), "formal RQ1b tree must contain exactly the canonical preflight"
     )
-    for relative in (DESIGN_PATH, DEPLOYMENT_PATH, PER_QUERY_PATH, RESULT_PATH):
+    for relative in (
+        spec.output_root / "design-v1.json",
+        spec.output_root / "deployment-result-v1.json",
+        spec.output_root / "pg16-advisor-valid-to-test-per-query-v1.jsonl",
+        spec.output_root / "result-v1.json",
+    ):
         _require(not (root / relative).exists(), f"RQ1b formal output already exists: {relative}")
-    return {"status": "ready", "head": head, "allowed_untracked": PREFLIGHT_PATH.as_posix()}
+    return {"status": "ready", "head": head, "allowed_untracked": allowed_path}
+
+
+def verify_power7_formal_tree(
+    *, research_root: Path, preflight_path: Path, preflight: Mapping[str, Any]
+) -> dict[str, Any]:
+    return verify_rq1b_formal_tree(
+        research_root=research_root,
+        preflight_path=preflight_path,
+        preflight=preflight,
+        spec=POWER7_SPEC,
+    )
 
 
 def prepare_evaluation_stage(
-    *, design_artifact: Mapping[str, Any], resolver: Callable[[], Mapping[str, Any]]
+    *,
+    design_artifact: Mapping[str, Any],
+    resolver: Callable[[], Mapping[str, Any]],
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Validate the seal before invoking any test-side resolver."""
 
-    validate_design_artifact(design_artifact)
+    validate_design_artifact(design_artifact, _spec=spec)
     value = dict(resolver())
-    _require(value.get("dataset_id") == POWER7, "evaluation dataset must be Power7")
+    _require(value.get("dataset_id") == spec.dataset_id, "evaluation dataset identity drift")
     _require(value.get("evaluation_split") == EVALUATION_SPLIT, "evaluation split must be test")
     _require(
         value.get("strict_unseen_membership_digest") == STRICT_UNSEEN_DIGEST,
@@ -953,8 +1205,12 @@ def prepare_evaluation_stage(
     return value
 
 
-def validate_test_evaluation_records(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
-    expected = [f"arecel_power7_test_{index:06d}" for index in range(SAMPLE_ROWS)]
+def _validate_test_evaluation_records(
+    records: Sequence[Mapping[str, Any]], spec: RQ1BDatasetSpec
+) -> list[dict[str, Any]]:
+    expected = [
+        f"{spec.test_workload_id.removesuffix('_v1')}_{index:06d}" for index in range(SAMPLE_ROWS)
+    ]
     _require(len(records) == SAMPLE_ROWS, "test evaluation must contain exactly 10000 records")
     normalized: list[dict[str, Any]] = []
     for expected_id, record in zip(expected, records, strict=True):
@@ -971,18 +1227,27 @@ def validate_test_evaluation_records(records: Sequence[Mapping[str, Any]]) -> li
     return normalized
 
 
+def validate_test_evaluation_records(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    return _validate_test_evaluation_records(records, POWER7_SPEC)
+
+
 def strict_unseen_filter(
-    records: Sequence[Mapping[str, Any]], membership: Mapping[str, Any]
+    records: Sequence[Mapping[str, Any]],
+    membership: Mapping[str, Any],
+    *,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> list[dict[str, Any]]:
     """Filter by the audited membership IDs; never recalculate unseen-ness."""
 
-    validate_test_evaluation_records(records)
+    _validate_test_evaluation_records(records, spec)
     _require(
         membership.get("semantic_digest") == STRICT_UNSEEN_DIGEST,
         "strict membership digest mismatch",
     )
-    rows = [row for row in membership.get("datasets", []) if row.get("dataset_id") == POWER7]
-    _require(len(rows) == 1, "Power7 strict membership row is missing")
+    rows = [
+        row for row in membership.get("datasets", []) if row.get("dataset_id") == spec.dataset_id
+    ]
+    _require(len(rows) == 1, f"{spec.dataset_id} strict membership row is missing")
     ids = set(rows[0]["strict_unseen_test_query_ids"])
     _require(
         rows[0]["seen_in_valid_count"] + rows[0]["strict_unseen_count"] == SAMPLE_ROWS,
@@ -1017,13 +1282,14 @@ def paired_outcomes(
     }
 
 
-def build_power7_rq1b_result(
+def build_rq1b_result(
     *,
     design_artifact: Mapping[str, Any],
     evaluation_inputs: Mapping[str, Any],
     advisor_records: Sequence[Mapping[str, Any]],
     baseline_records: Mapping[str, Sequence[Mapping[str, Any]]],
     cleanup_passed: bool,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Derive full-test and strict-unseen results from one evaluation pass.
 
@@ -1032,8 +1298,10 @@ def build_power7_rq1b_result(
     same records; this function has no planner or database path of its own.
     """
 
-    validate_design_artifact(design_artifact)
-    _require(evaluation_inputs.get("dataset_id") == POWER7, "result dataset must be Power7")
+    validate_design_artifact(design_artifact, _spec=spec)
+    _require(
+        evaluation_inputs.get("dataset_id") == spec.dataset_id, "result dataset identity drift"
+    )
     _require(
         evaluation_inputs.get("evaluation_split") == EVALUATION_SPLIT,
         "result evaluation split must be test",
@@ -1060,13 +1328,13 @@ def build_power7_rq1b_result(
         "result deployment artifact digest",
     )
     _require(
-        evaluation_inputs["test_workload"].get("workload_id") == "arecel_power7_test_v1"
+        evaluation_inputs["test_workload"].get("workload_id") == spec.test_workload_id
         and evaluation_inputs["test_workload"].get("query_count") == SAMPLE_ROWS,
         "result test workload identity drift",
     )
     _sha(evaluation_inputs["test_workload"].get("sha256"), "result test workload SHA")
     _require(
-        evaluation_inputs["test_truth"].get("workload_id") == "arecel_power7_test_v1"
+        evaluation_inputs["test_truth"].get("workload_id") == spec.test_workload_id
         and evaluation_inputs["test_truth"].get("query_count") == SAMPLE_ROWS,
         "result test truth identity drift",
     )
@@ -1081,20 +1349,20 @@ def build_power7_rq1b_result(
         and evaluation_inputs["stock_postgresql"].get("postgres_version") == "16.14",
         "result stock PostgreSQL binding drift",
     )
-    advisor = validate_test_evaluation_records(advisor_records)
+    advisor = _validate_test_evaluation_records(advisor_records, spec)
     _require(
         set(baseline_records) == {"pg16-default", "pg16-target10000"},
         "both immutable baselines are required",
     )
     for records in baseline_records.values():
-        validate_test_evaluation_records(records)
+        _validate_test_evaluation_records(records, spec)
     membership = evaluation_inputs.get("strict_unseen_membership")
     _require(isinstance(membership, Mapping), "strict membership object is required")
-    strict = strict_unseen_filter(advisor, membership)
+    strict = strict_unseen_filter(advisor, membership, spec=spec)
     full_metrics: dict[str, Any] = {}
     strict_metrics: dict[str, Any] = {}
     for arm_id in ("pg16-default", "pg16-target10000"):
-        baseline = validate_test_evaluation_records(baseline_records[arm_id])
+        baseline = _validate_test_evaluation_records(baseline_records[arm_id], spec)
         full_metrics[arm_id] = {
             "baseline": summarize_qerrors(baseline),
             "advisor": summarize_qerrors(advisor),
@@ -1128,7 +1396,7 @@ def build_power7_rq1b_result(
         )
     status = "success" if cleanup_passed else "failed-cleanup"
     result = {
-        "format_version": RESULT_FORMAT,
+        "format_version": spec.result_format,
         "experiment_id": "rq1-held-out-workload-generalization",
         "rq": "RQ1b",
         "status": status,
@@ -1173,6 +1441,24 @@ def build_power7_rq1b_result(
     return result
 
 
+def build_power7_rq1b_result(
+    *,
+    design_artifact: Mapping[str, Any],
+    evaluation_inputs: Mapping[str, Any],
+    advisor_records: Sequence[Mapping[str, Any]],
+    baseline_records: Mapping[str, Sequence[Mapping[str, Any]]],
+    cleanup_passed: bool,
+) -> dict[str, Any]:
+    return build_rq1b_result(
+        design_artifact=design_artifact,
+        evaluation_inputs=evaluation_inputs,
+        advisor_records=advisor_records,
+        baseline_records=baseline_records,
+        cleanup_passed=cleanup_passed,
+        spec=POWER7_SPEC,
+    )
+
+
 def validate_power7_rq1b_deployment_artifact(
     path: Path, *, expected_digest: str | None = None
 ) -> dict[str, Any]:
@@ -1199,13 +1485,16 @@ def validate_power7_rq1b_deployment_artifact(
     return dict(summary)
 
 
-def validate_power7_rq1b_result(
-    value: Mapping[str, Any], *, research_root: Path | None = None
+def validate_rq1b_result(
+    value: Mapping[str, Any],
+    *,
+    research_root: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Validate the future compact result without re-running evaluation."""
 
     _require(isinstance(value, Mapping), "RQ1b result must be an object")
-    _require(value.get("format_version") == RESULT_FORMAT, "unsupported RQ1b result format")
+    _require(value.get("format_version") == spec.result_format, "unsupported RQ1b result format")
     _require(
         value.get("experiment_id") == "rq1-held-out-workload-generalization",
         "RQ1b result identity drift",
@@ -1226,6 +1515,13 @@ def validate_power7_rq1b_result(
     _require(
         value.get("strict_unseen_membership") == _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
         "result membership drift",
+    )
+    dataset = value.get("dataset")
+    _require(isinstance(dataset, Mapping), "result dataset binding missing")
+    _require(dataset.get("dataset_id") == spec.dataset_id, "result dataset ID drift")
+    _require(
+        dataset.get("content_identity") == spec.dataset_content_identity,
+        "result dataset content identity drift",
     )
     design = value.get("design_stage")
     _require(isinstance(design, Mapping), "result design stage missing")
@@ -1263,24 +1559,33 @@ def validate_power7_rq1b_result(
     _sha(evaluation["deployment"].get("semantic_digest"), "result deployment artifact digest")
     if research_root is not None:
         deployment_path = _path(
-            research_root, evaluation["deployment"].get("logical_path", DEPLOYMENT_PATH)
+            research_root,
+            evaluation["deployment"].get(
+                "logical_path", spec.output_root / "deployment-result-v1.json"
+            ),
         )
         validate_power7_rq1b_deployment_artifact(
             deployment_path,
             expected_digest=evaluation["deployment"].get("semantic_digest"),
         )
     _require(
-        evaluation["test_workload"].get("workload_id") == "arecel_power7_test_v1"
+        evaluation["test_workload"].get("workload_id") == spec.test_workload_id
         and evaluation["test_workload"].get("query_count") == SAMPLE_ROWS,
         "result test workload identity drift",
     )
-    _sha(evaluation["test_workload"].get("sha256"), "result test workload SHA")
     _require(
-        evaluation["test_truth"].get("workload_id") == "arecel_power7_test_v1"
+        evaluation["test_workload"].get("sha256") == spec.test_workload_sha256,
+        "result test workload SHA drift",
+    )
+    _require(
+        evaluation["test_truth"].get("workload_id") == spec.test_workload_id
         and evaluation["test_truth"].get("query_count") == SAMPLE_ROWS,
         "result test truth identity drift",
     )
-    _sha(evaluation["test_truth"].get("observations_sha256"), "result test truth SHA")
+    _require(
+        evaluation["test_truth"].get("observations_sha256") == spec.test_observations_sha256,
+        "result test truth SHA drift",
+    )
     _require(
         evaluation["advisor"].get("source_commit_sha") == FROZEN_ADVISOR_SHA
         and evaluation["advisor"].get("source_checkout_verified") is True,
@@ -1308,9 +1613,40 @@ def validate_power7_rq1b_result(
         _require(value["semantic_digest"] == _digest_body(value), "RQ1b result digest mismatch")
     return {
         "status": "valid",
-        "format_version": RESULT_FORMAT,
+        "format_version": spec.result_format,
         "semantic_digest": value.get("semantic_digest"),
     }
+
+
+def validate_power7_rq1b_result(
+    value: Mapping[str, Any], *, research_root: Path | None = None
+) -> dict[str, Any]:
+    return validate_rq1b_result(value, research_root=research_root, spec=POWER7_SPEC)
+
+
+def run_rq1b_evaluation(
+    *,
+    design_artifact: Mapping[str, Any],
+    evaluation_resolver: Callable[[], Mapping[str, Any]],
+    evaluator: Callable[[Mapping[str, Any], Mapping[str, Any]], Sequence[Mapping[str, Any]]],
+    baseline_records: Mapping[str, Sequence[Mapping[str, Any]]],
+    cleanup_passed: bool,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
+) -> dict[str, Any]:
+    """Evaluate a sealed design exactly once through an injected stock runner."""
+
+    inputs = prepare_evaluation_stage(
+        design_artifact=design_artifact, resolver=evaluation_resolver, spec=spec
+    )
+    advisor_records = evaluator(inputs, design_artifact)
+    return build_rq1b_result(
+        design_artifact=design_artifact,
+        evaluation_inputs=inputs,
+        advisor_records=advisor_records,
+        baseline_records=baseline_records,
+        cleanup_passed=cleanup_passed,
+        spec=spec,
+    )
 
 
 def run_power7_rq1b_evaluation(
@@ -1321,21 +1657,21 @@ def run_power7_rq1b_evaluation(
     baseline_records: Mapping[str, Sequence[Mapping[str, Any]]],
     cleanup_passed: bool,
 ) -> dict[str, Any]:
-    """Evaluate a sealed design exactly once through an injected stock runner."""
-
-    inputs = prepare_evaluation_stage(design_artifact=design_artifact, resolver=evaluation_resolver)
-    advisor_records = evaluator(inputs, design_artifact)
-    return build_power7_rq1b_result(
+    return run_rq1b_evaluation(
         design_artifact=design_artifact,
-        evaluation_inputs=inputs,
-        advisor_records=advisor_records,
+        evaluation_resolver=evaluation_resolver,
+        evaluator=evaluator,
         baseline_records=baseline_records,
         cleanup_passed=cleanup_passed,
+        spec=POWER7_SPEC,
     )
 
 
-def write_power7_rq1b_preflight(
-    *, research_root: Path, output: Path | None = None
+def write_rq1b_preflight(
+    *,
+    research_root: Path,
+    output: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Create the canonical preflight without starting any live system."""
 
@@ -1346,15 +1682,45 @@ def write_power7_rq1b_preflight(
         capture_output=True,
         text=True,
     ).stdout.strip()
-    value = build_power7_rq1b_preflight(
+    destination = _path(root, output or spec.output_root / "rq1b-preflight-v1.json")
+    value = build_rq1b_preflight(
         research_root=root,
         producer_sha=head,
-        output=output or root / PREFLIGHT_PATH,
+        output=destination,
+        spec=spec,
     )
-    validate_power7_rq1b_preflight(value, research_root=root)
-    destination = _path(root, output or PREFLIGHT_PATH)
+    validate_rq1b_preflight(value, research_root=root, spec=spec)
     write_json(destination, value)
     return value
+
+
+def write_power7_rq1b_preflight(
+    *, research_root: Path, output: Path | None = None
+) -> dict[str, Any]:
+    return write_rq1b_preflight(research_root=research_root, output=output, spec=POWER7_SPEC)
+
+
+def write_forest10_rq1b_preflight(
+    *, research_root: Path, output: Path | None = None
+) -> dict[str, Any]:
+    return write_rq1b_preflight(research_root=research_root, output=output, spec=FOREST10_SPEC)
+
+
+def build_forest10_rq1b_preflight(
+    *, research_root: Path, producer_sha: str, output: Path | None = None
+) -> dict[str, Any]:
+    return build_rq1b_preflight(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        output=output,
+        spec=FOREST10_SPEC,
+    )
+
+
+def validate_forest10_rq1b_preflight(
+    value: Mapping[str, Any], *, research_root: Path
+) -> dict[str, Any]:
+    return validate_rq1b_preflight(value, research_root=research_root, spec=FOREST10_SPEC)
 
 
 def _run_live_command(command: Sequence[str]) -> None:
@@ -1602,7 +1968,7 @@ def prepare_power7_rq1b_formal_labs(
     }
 
 
-def execute_power7_rq1b_design_live(
+def execute_rq1b_design_live(
     *,
     research_root: Path,
     producer_sha: str,
@@ -1617,8 +1983,9 @@ def execute_power7_rq1b_design_live(
     reset_disposable: bool = True,
     advisor_command: str = "extstats-advisor",
     seed_identifier: int = 123,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
-    """Execute the frozen Advisor pipeline on Power7's valid split only.
+    """Execute the frozen Advisor pipeline on one dataset's valid split only.
 
     This is the real future live seam.  It is intentionally never invoked by
     offline validation commands; tests inject no PostgreSQL and no Advisor.
@@ -1627,7 +1994,7 @@ def execute_power7_rq1b_design_live(
     root = research_root.resolve()
     _commit(producer_sha, "RQ1b design producer SHA")
     _require(production_dsn and planner_dsn, "RQ1b design requires production and planner DSNs")
-    design_destination = _path(root, design_output or DESIGN_PATH)
+    design_destination = _path(root, design_output or spec.output_root / "design-v1.json")
     _require(not design_destination.exists(), "RQ1b design output already exists")
     pins = verify_frozen_systems_v2(
         advisor_root.resolve(), patched_postgres_root.resolve(), stock_postgres_root.resolve()
@@ -1643,15 +2010,13 @@ def execute_power7_rq1b_design_live(
     )
 
     from .canonical_runner import _run_canonical
-    from .datasets import power7
-    from .postgres.loader import load_power7
 
-    truth = _valid_truth_spec_design_safe(root)
+    truth = _valid_truth_spec_design_safe(root, spec)
     result = _run_canonical(
-        dataset=power7,
-        loader=load_power7,
-        full_format_version="rq1b-power7-valid-full-data-target100-v1",
-        compact_format_version="rq1b-power7-valid-design-v1",
+        dataset=spec.dataset_module,
+        loader=spec.loader,
+        full_format_version=f"rq1b-{spec.runtime_name}-valid-full-data-target100-v1",
+        compact_format_version=f"rq1b-{spec.runtime_name}-valid-design-v1",
         production_dsn=production_dsn,
         planner_dsn=planner_dsn,
         advisor_root=advisor_root.resolve(),
@@ -1670,7 +2035,7 @@ def execute_power7_rq1b_design_live(
         seed_identifier=seed_identifier,
         system_freeze_v2=True,
         workload_split=DESIGN_SPLIT,
-        records_loader=power7.load_records,
+        records_loader=spec.records_loader,
         run_truth_sanity_check=False,
         historical_evidence=False,
         research_identity_override={
@@ -1684,9 +2049,12 @@ def execute_power7_rq1b_design_live(
         producer_sha=producer_sha,
         execution=execution,
         data_root=data_root,
+        _spec=spec,
     )
     write_json(design_destination, artifact)
-    validate_design_artifact(read_json(design_destination), expected_producer=producer_sha)
+    validate_design_artifact(
+        read_json(design_destination), expected_producer=producer_sha, _spec=spec
+    )
     return {
         "status": "complete",
         "design_artifact": artifact,
@@ -1695,12 +2063,47 @@ def execute_power7_rq1b_design_live(
     }
 
 
-def _evaluate_power7_once(
+def execute_power7_rq1b_design_live(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    production_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    output_root: Path,
+    design_output: Path | None = None,
+    data_root: Path | None = None,
+    reset_disposable: bool = True,
+    advisor_command: str = "extstats-advisor",
+    seed_identifier: int = 123,
+) -> dict[str, Any]:
+    return execute_rq1b_design_live(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        production_dsn=production_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        stock_postgres_root=stock_postgres_root,
+        output_root=output_root,
+        design_output=design_output,
+        data_root=data_root,
+        reset_disposable=reset_disposable,
+        advisor_command=advisor_command,
+        seed_identifier=seed_identifier,
+        spec=POWER7_SPEC,
+    )
+
+
+def _evaluate_once(
     *,
     stock_dsn: str,
     workload: Sequence[Mapping[str, Any]],
     truths: Mapping[str, int],
     output: Path,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> list[dict[str, Any]]:
     import psycopg
 
@@ -1708,7 +2111,7 @@ def _evaluate_power7_once(
     records: list[dict[str, Any]] = []
     with psycopg.connect(
         stock_dsn,
-        application_name="extstats-research-rq1b-power7",
+        application_name=f"extstats-research-rq1b-{spec.runtime_name}",
         autocommit=True,
     ) as connection:
         for query in workload:
@@ -1727,10 +2130,13 @@ def _evaluate_power7_once(
                     "qerror": qerror(estimate, truth),
                 }
             )
-    _require(len(records) == SAMPLE_ROWS, "Power7 Advisor evaluation did not produce 10000 rows")
+    _require(
+        len(records) == SAMPLE_ROWS,
+        f"{spec.dataset_id} Advisor evaluation did not produce 10000 rows",
+    )
     _write_jsonl(output, records)
     output_capture_seconds = time.monotonic() - started
-    _require(output_capture_seconds >= 0, "invalid Power7 evaluation timer")
+    _require(output_capture_seconds >= 0, f"invalid {spec.dataset_id} evaluation timer")
     return records
 
 
@@ -1759,27 +2165,33 @@ def _cleanup_live_runtime(root: Path, target: Path | None, cleanup_result: bool)
     return cleanup_result
 
 
-def resolve_power7_rq1b_evaluation_inputs_after_seal(
+def resolve_rq1b_evaluation_inputs_after_seal(
     *,
     research_root: Path,
     producer_sha: str,
     design_artifact: Mapping[str, Any],
     design_runtime_directory: Path,
     data_root: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Resolve test-side inputs only after re-validating a persisted seal."""
 
     # This must remain the first operation: all evaluation content is behind
     # the canonical design-artifact boundary.
-    validate_design_artifact(design_artifact, expected_producer=producer_sha)
+    validate_design_artifact(design_artifact, expected_producer=producer_sha, _spec=spec)
     root = research_root.resolve()
-    from .datasets import power7
 
-    baseline = _baseline_binding(root)
-    source = _source_spec(root)
-    test_spec = authoritative_truth_spec_for_split(POWER7, EVALUATION_SPLIT, root)
+    if spec is POWER7_SPEC:
+        baseline = _baseline_binding(root)
+        source = _source_spec(root)
+    else:
+        baseline = _baseline_binding(root, spec)
+        source = _source_spec(root, spec)
+    test_spec = authoritative_truth_spec_for_split(spec.dataset_id, EVALUATION_SPLIT, root)
     test_workload_path = design_runtime_directory.resolve() / "rq1b-test-workload.json"
-    identity = power7.extract_workload(test_workload_path, data_root, split=EVALUATION_SPLIT)
+    identity = spec.dataset_module.extract_workload(
+        test_workload_path, data_root, split=EVALUATION_SPLIT
+    )
     _require(identity["workload_id"] == source["test_workload_id"], "test workload ID drift")
     _require(identity["sha256"] == source["test_workload_sha256"], "test workload hash drift")
     workload = read_json(test_workload_path)
@@ -1802,7 +2214,7 @@ def resolve_power7_rq1b_evaluation_inputs_after_seal(
         "source": source,
         "membership": membership,
         "baseline_records": baseline_records,
-        "dataset_id": POWER7,
+        "dataset_id": spec.dataset_id,
         "evaluation_split": EVALUATION_SPLIT,
         "strict_unseen_membership_digest": STRICT_UNSEEN_DIGEST,
         "strict_unseen_membership": membership,
@@ -1832,7 +2244,25 @@ def resolve_power7_rq1b_evaluation_inputs_after_seal(
     }
 
 
-def execute_power7_rq1b_evaluation_live(
+def resolve_power7_rq1b_evaluation_inputs_after_seal(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    design_artifact: Mapping[str, Any],
+    design_runtime_directory: Path,
+    data_root: Path | None = None,
+) -> dict[str, Any]:
+    return resolve_rq1b_evaluation_inputs_after_seal(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        design_artifact=design_artifact,
+        design_runtime_directory=design_runtime_directory,
+        data_root=data_root,
+        spec=POWER7_SPEC,
+    )
+
+
+def execute_rq1b_evaluation_live(
     *,
     research_root: Path,
     producer_sha: str,
@@ -1848,11 +2278,12 @@ def execute_power7_rq1b_evaluation_live(
     stock_postgres_root: Path | None = None,
     runtime_cleanup_root: Path | None = None,
     cleanup: Callable[[], bool] | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Deploy a sealed valid design and evaluate the test workload once."""
 
     root = research_root.resolve()
-    validate_design_artifact(design_artifact, expected_producer=producer_sha)
+    validate_design_artifact(design_artifact, expected_producer=producer_sha, _spec=spec)
     _require(
         verify_git_sha(advisor_root.resolve(), FROZEN_ADVISOR_SHA) == FROZEN_ADVISOR_SHA,
         "live Advisor SHA drift",
@@ -1877,19 +2308,22 @@ def execute_power7_rq1b_evaluation_live(
     for name, path in required.items():
         _require(path.exists(), f"sealed design runtime artifact is missing: {name}")
 
-    from .postgres.loader import load_power7
-
-    evaluation_inputs = resolve_power7_rq1b_evaluation_inputs_after_seal(
+    evaluation_inputs = resolve_rq1b_evaluation_inputs_after_seal(
         research_root=root,
         producer_sha=producer_sha,
         design_artifact=design_artifact,
         design_runtime_directory=design_runtime,
         data_root=data_root,
+        spec=spec,
     )
     baseline_records = evaluation_inputs["baseline_records"]
-    per_query_destination = _path(root, per_query_output or PER_QUERY_PATH)
-    deployment_destination = _path(root, deployment_output or DEPLOYMENT_PATH)
-    result_destination = _path(root, result_output or RESULT_PATH)
+    per_query_destination = _path(
+        root, per_query_output or spec.output_root / "pg16-advisor-valid-to-test-per-query-v1.jsonl"
+    )
+    deployment_destination = _path(
+        root, deployment_output or spec.output_root / "deployment-result-v1.json"
+    )
+    result_destination = _path(root, result_output or spec.output_root / "result-v1.json")
     for destination in (per_query_destination, deployment_destination, result_destination):
         _require(not destination.exists(), f"RQ1b evaluation output already exists: {destination}")
 
@@ -1908,7 +2342,7 @@ def execute_power7_rq1b_evaluation_live(
 
         try:
             reinit_role("stock")
-            load = load_power7(
+            load = spec.loader(
                 stock_dsn,
                 data_root=data_root,
                 reset_disposable=True,
@@ -1974,18 +2408,21 @@ def execute_power7_rq1b_evaluation_live(
                 "deployment order differs from sealed Recommendation",
             )
             inputs["deployment"] = {
-                "logical_path": DEPLOYMENT_PATH.as_posix(),
+                "logical_path": (spec.output_root / "deployment-result-v1.json").as_posix(),
                 "semantic_digest": deployment.get("semantic_digest"),
                 "stock_postgresql_sha": FROZEN_STOCK_POSTGRES_SHA,
             }
-            records = _evaluate_power7_once(
+            records = _evaluate_once(
                 stock_dsn=stock_dsn,
                 workload=inputs["workload"],
                 truths=inputs["truths"],
                 output=per_query_destination,
+                spec=spec,
             )
             inputs["per_query_artifact"] = {
-                "logical_path": PER_QUERY_PATH.as_posix(),
+                "logical_path": (
+                    spec.output_root / "pg16-advisor-valid-to-test-per-query-v1.jsonl"
+                ).as_posix(),
                 "sha256": sha256_file(per_query_destination),
                 "query_count": len(records),
             }
@@ -1995,18 +2432,55 @@ def execute_power7_rq1b_evaluation_live(
             cleanup_result = _cleanup_live_runtime(root, runtime_cleanup_root, cleanup_result)
             _require(cleanup_result is True, "RQ1b live cleanup failed")
 
-    result = run_power7_rq1b_evaluation(
+    result = run_rq1b_evaluation(
         design_artifact=design_artifact,
         evaluation_resolver=resolver,
         evaluator=evaluator,
         baseline_records=baseline_records,
         cleanup_passed=True,
+        spec=spec,
     )
-    publish_result(result=result, output=result_destination)
+    publish_result(result=result, output=result_destination, spec=spec)
     return {"status": "success", "result": result, "result_path": result_destination}
 
 
-def run_power7_rq1b_formal(
+def execute_power7_rq1b_evaluation_live(
+    *,
+    research_root: Path,
+    producer_sha: str,
+    design_artifact: Mapping[str, Any],
+    design_runtime_directory: Path,
+    stock_dsn: str,
+    advisor_root: Path,
+    data_root: Path | None = None,
+    result_output: Path | None = None,
+    per_query_output: Path | None = None,
+    deployment_output: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    stock_postgres_root: Path | None = None,
+    runtime_cleanup_root: Path | None = None,
+    cleanup: Callable[[], bool] | None = None,
+) -> dict[str, Any]:
+    return execute_rq1b_evaluation_live(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        design_artifact=design_artifact,
+        design_runtime_directory=design_runtime_directory,
+        stock_dsn=stock_dsn,
+        advisor_root=advisor_root,
+        data_root=data_root,
+        result_output=result_output,
+        per_query_output=per_query_output,
+        deployment_output=deployment_output,
+        advisor_command=advisor_command,
+        stock_postgres_root=stock_postgres_root,
+        runtime_cleanup_root=runtime_cleanup_root,
+        cleanup=cleanup,
+        spec=POWER7_SPEC,
+    )
+
+
+def run_rq1b_formal(
     *,
     research_root: Path,
     preflight_path: Path,
@@ -2018,18 +2492,24 @@ def run_power7_rq1b_formal(
     data_root: Path | None = None,
     advisor_command: str = "extstats-advisor",
     runtime_root: Path | None = None,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
 ) -> dict[str, Any]:
     """Future formal command; never called by offline validation."""
 
     root = research_root.resolve()
     preflight = read_json(_path(root, preflight_path))
-    validate_power7_rq1b_preflight(preflight, research_root=root)
-    verify_power7_formal_tree(
-        research_root=root, preflight_path=preflight_path, preflight=preflight
-    )
+    _validate_preflight_for_spec(preflight, research_root=root, spec=spec)
+    if spec is POWER7_SPEC:
+        verify_power7_formal_tree(
+            research_root=root, preflight_path=preflight_path, preflight=preflight
+        )
+    else:
+        verify_rq1b_formal_tree(
+            research_root=root, preflight_path=preflight_path, preflight=preflight, spec=spec
+        )
     _validate_managed_lab_dsns(stock_dsn=stock_dsn, planner_dsn=planner_dsn)
     producer = str(preflight["research_commit_sha"])
-    runtime_base = _path(root, runtime_root or root / ".runtime/rq1b-power7")
+    runtime_base = _path(root, runtime_root or root / f".runtime/rq1b-{spec.runtime_name}")
     runtime = runtime_base / "design"
     try:
         # ``advisor_command`` is retained for API compatibility with older
@@ -2045,37 +2525,102 @@ def run_power7_rq1b_formal(
             patched_postgres_root=patched_postgres_root,
             stock_postgres_root=stock_postgres_root,
         )
-        design = execute_power7_rq1b_design_live(
-            research_root=root,
-            producer_sha=producer,
-            production_dsn=stock_dsn,
-            planner_dsn=planner_dsn,
-            advisor_root=advisor_root,
-            patched_postgres_root=patched_postgres_root,
-            stock_postgres_root=stock_postgres_root,
-            output_root=runtime,
-            data_root=data_root,
-            advisor_command=resolved_advisor_command,
-        )
-        sealed_design = read_json(root / DESIGN_PATH)
-        validate_design_artifact(sealed_design, expected_producer=producer)
-        return execute_power7_rq1b_evaluation_live(
-            research_root=root,
-            producer_sha=producer,
-            design_artifact=sealed_design,
-            design_runtime_directory=design["runtime_directory"],
-            stock_dsn=stock_dsn,
-            advisor_root=advisor_root,
-            data_root=data_root,
-            advisor_command=resolved_advisor_command,
-            stock_postgres_root=stock_postgres_root,
-            runtime_cleanup_root=runtime_base,
-        )
+        design_kwargs = {
+            "research_root": root,
+            "producer_sha": producer,
+            "production_dsn": stock_dsn,
+            "planner_dsn": planner_dsn,
+            "advisor_root": advisor_root,
+            "patched_postgres_root": patched_postgres_root,
+            "stock_postgres_root": stock_postgres_root,
+            "output_root": runtime,
+            "data_root": data_root,
+            "advisor_command": resolved_advisor_command,
+        }
+        if spec is POWER7_SPEC:
+            design = execute_power7_rq1b_design_live(**design_kwargs)
+        else:
+            design = execute_rq1b_design_live(**design_kwargs, spec=spec)
+        sealed_design = read_json(root / spec.output_root / "design-v1.json")
+        validate_design_artifact(sealed_design, expected_producer=producer, _spec=spec)
+        evaluation_kwargs = {
+            "research_root": root,
+            "producer_sha": producer,
+            "design_artifact": sealed_design,
+            "design_runtime_directory": design["runtime_directory"],
+            "stock_dsn": stock_dsn,
+            "advisor_root": advisor_root,
+            "data_root": data_root,
+            "advisor_command": resolved_advisor_command,
+            "stock_postgres_root": stock_postgres_root,
+            "runtime_cleanup_root": runtime_base,
+        }
+        if spec is POWER7_SPEC:
+            return execute_power7_rq1b_evaluation_live(**evaluation_kwargs)
+        return execute_rq1b_evaluation_live(**evaluation_kwargs, spec=spec)
     finally:
         _cleanup_live_runtime(root, runtime_base, _stop_formal_roles())
 
 
-def publish_result(*, result: Mapping[str, Any], output: Path) -> dict[str, Any]:
+def run_power7_rq1b_formal(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    stock_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    data_root: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    runtime_root: Path | None = None,
+) -> dict[str, Any]:
+    return run_rq1b_formal(
+        research_root=research_root,
+        preflight_path=preflight_path,
+        stock_dsn=stock_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        stock_postgres_root=stock_postgres_root,
+        data_root=data_root,
+        advisor_command=advisor_command,
+        runtime_root=runtime_root,
+        spec=POWER7_SPEC,
+    )
+
+
+def run_forest10_rq1b_formal(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    stock_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    data_root: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    runtime_root: Path | None = None,
+) -> dict[str, Any]:
+    return run_rq1b_formal(
+        research_root=research_root,
+        preflight_path=preflight_path,
+        stock_dsn=stock_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        stock_postgres_root=stock_postgres_root,
+        data_root=data_root,
+        advisor_command=advisor_command,
+        runtime_root=runtime_root,
+        spec=FOREST10_SPEC,
+    )
+
+
+def publish_result(
+    *, result: Mapping[str, Any], output: Path, spec: RQ1BDatasetSpec = POWER7_SPEC
+) -> dict[str, Any]:
     """Fail closed: only a cleanup-passed success may be published."""
 
     _require(result.get("status") == "success", "only successful RQ1b results may be published")
@@ -2083,10 +2628,10 @@ def publish_result(*, result: Mapping[str, Any], output: Path) -> dict[str, Any]
     destination = Path(output)
     _require(not destination.exists(), "RQ1b result output collision")
     payload = dict(result)
-    payload.setdefault("format_version", RESULT_FORMAT)
+    payload.setdefault("format_version", spec.result_format)
     payload.pop("semantic_digest", None)
     payload["semantic_digest"] = semantic_digest(payload)
-    validate_power7_rq1b_result(payload)
+    validate_rq1b_result(payload, spec=spec)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     return payload
@@ -2097,35 +2642,53 @@ __all__ = [
     "DESIGN_FORMAT",
     "DESIGN_PATH",
     "EVALUATION_SPLIT",
+    "FOREST10_SPEC",
     "K_S",
     "PER_QUERY_PATH",
     "POWER7",
+    "POWER7_SPEC",
     "PREFLIGHT_PATH",
     "PROTOCOL_DIGEST",
     "RESULT_FORMAT",
     "SAMPLE_ROWS",
     "B",
+    "RQ1BDatasetSpec",
     "RQ1BValidationError",
     "build_design_artifact",
+    "build_forest10_rq1b_preflight",
     "build_power7_rq1b_preflight",
     "build_power7_rq1b_result",
+    "build_rq1b_preflight",
+    "build_rq1b_result",
     "execute_power7_rq1b_design_live",
     "execute_power7_rq1b_evaluation_live",
+    "execute_rq1b_design_live",
+    "execute_rq1b_evaluation_live",
     "paired_outcomes",
     "prepare_evaluation_stage",
     "prepare_frozen_advisor_launcher",
     "prepare_power7_rq1b_formal_labs",
     "publish_result",
     "resolve_power7_rq1b_evaluation_inputs_after_seal",
+    "resolve_rq1b_evaluation_inputs_after_seal",
+    "run_forest10_rq1b_formal",
     "run_power7_rq1b_design",
     "run_power7_rq1b_evaluation",
     "run_power7_rq1b_formal",
+    "run_rq1b_design",
+    "run_rq1b_evaluation",
+    "run_rq1b_formal",
     "strict_unseen_filter",
     "summarize_qerrors",
     "validate_design_artifact",
+    "validate_forest10_rq1b_preflight",
     "validate_power7_rq1b_preflight",
     "validate_power7_rq1b_result",
+    "validate_rq1b_preflight",
+    "validate_rq1b_result",
     "validate_test_evaluation_records",
     "verify_power7_formal_tree",
+    "write_forest10_rq1b_preflight",
     "write_power7_rq1b_preflight",
+    "write_rq1b_preflight",
 ]

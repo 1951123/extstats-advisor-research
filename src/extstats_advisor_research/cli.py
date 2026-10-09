@@ -107,13 +107,17 @@ from .rq1_workload_generalization import (
     write_source_audit as write_rq1b_source_audit,
 )
 from .rq1_workload_generalization_live import (
+    FOREST10_SPEC,
+    POWER7_SPEC,
+    run_forest10_rq1b_formal,
     run_power7_rq1b_formal,
-    validate_power7_rq1b_preflight,
-    validate_power7_rq1b_result,
+    validate_rq1b_preflight,
+    validate_rq1b_result,
+    write_forest10_rq1b_preflight,
     write_power7_rq1b_preflight,
 )
 from .rq1_workload_generalization_live import (
-    validate_design_artifact as validate_rq1b_design_artifact,
+    validate_design_artifact as validate_rq1b_design_artifact_generic,
 )
 from .rq2_transfer import (
     RQ2_DATASETS,
@@ -510,33 +514,34 @@ def _parser() -> argparse.ArgumentParser:
     lab_env.add_argument("--role", choices=["stock", "patched", "all"], default="all")
     rq1g_live = commands.add_parser(
         "rq1-generalization",
-        help="future Power7 RQ1b formal commands; live commands are never implicit",
+        help="future RQ1b held-out workload generalization formal commands",
     )
     rq1g_live_commands = rq1g_live.add_subparsers(dest="rq1g_live_command", required=True)
-    rq1g_power7 = rq1g_live_commands.add_parser("power7")
-    rq1g_power7_commands = rq1g_power7.add_subparsers(dest="rq1g_power7_command", required=True)
-    rq1g_preflight = rq1g_power7_commands.add_parser("preflight-create")
-    rq1g_preflight.add_argument("--output", type=Path)
-    rq1g_run = rq1g_power7_commands.add_parser("run")
-    rq1g_run.add_argument("--stock-dsn", required=True)
-    rq1g_run.add_argument("--planner-dsn", required=True)
-    rq1g_run.add_argument("--preflight", type=Path, required=True)
-    rq1g_run.add_argument("--data-root", type=Path)
-    rq1g_run.add_argument("--runtime-root", type=Path)
-    rq1g_run.add_argument(
-        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
-    )
-    rq1g_run.add_argument(
-        "--patched-postgres-root",
-        type=Path,
-        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
-    )
-    rq1g_run.add_argument(
-        "--stock-postgres-root",
-        type=Path,
-        default=Path("/home/wqts/projects/postgresql-src"),
-    )
-    rq1g_run.add_argument("--advisor-command", default="extstats-advisor")
+    for dataset_name in ("power7", "forest10"):
+        dataset_parser = rq1g_live_commands.add_parser(dataset_name)
+        dataset_commands = dataset_parser.add_subparsers(dest="rq1g_dataset_command", required=True)
+        preflight = dataset_commands.add_parser("preflight-create")
+        preflight.add_argument("--output", type=Path)
+        run = dataset_commands.add_parser("run")
+        run.add_argument("--stock-dsn", required=True)
+        run.add_argument("--planner-dsn", required=True)
+        run.add_argument("--preflight", type=Path, required=True)
+        run.add_argument("--data-root", type=Path)
+        run.add_argument("--runtime-root", type=Path)
+        run.add_argument(
+            "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+        )
+        run.add_argument(
+            "--patched-postgres-root",
+            type=Path,
+            default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+        )
+        run.add_argument(
+            "--stock-postgres-root",
+            type=Path,
+            default=Path("/home/wqts/projects/postgresql-src"),
+        )
+        run.add_argument("--advisor-command", default="extstats-advisor")
     validate = commands.add_parser("validate")
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
     transfer = validate_commands.add_parser("full-data-transfer")
@@ -733,15 +738,18 @@ def _parser() -> argparse.ArgumentParser:
     )
     rq1g = validate_commands.add_parser(
         "rq1-generalization",
-        help="validate offline Power7 RQ1b design/preflight readiness artifacts",
+        help="validate offline dataset-specific RQ1b design/preflight/result readiness artifacts",
     )
     rq1g_commands = rq1g.add_subparsers(dest="rq1g_command", required=True)
     rq1g_design = rq1g_commands.add_parser("design")
     rq1g_design.add_argument("artifact", type=Path)
+    rq1g_design.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
     rq1g_preflight = rq1g_commands.add_parser("preflight")
     rq1g_preflight.add_argument("artifact", type=Path)
+    rq1g_preflight.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
     rq1g_result = rq1g_commands.add_parser("result")
     rq1g_result.add_argument("artifact", type=Path)
+    rq1g_result.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
     rq2 = validate_commands.add_parser(
         "rq2-transfer", help="run or validate one formal RQ2 transfer child"
     )
@@ -1099,8 +1107,13 @@ def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     if args.command == "rq1-generalization":
         root = Path(__file__).resolve().parents[2]
-        if args.rq1g_power7_command == "preflight-create":
-            value = write_power7_rq1b_preflight(research_root=root, output=args.output)
+        if args.rq1g_dataset_command == "preflight-create":
+            if args.rq1g_live_command == "power7":
+                value = write_power7_rq1b_preflight(research_root=root, output=args.output)
+            elif args.rq1g_live_command == "forest10":
+                value = write_forest10_rq1b_preflight(research_root=root, output=args.output)
+            else:  # pragma: no cover - argparse constrains the dataset names
+                raise ValueError(f"unsupported RQ1b dataset: {args.rq1g_live_command}")
             result = {
                 "status": "written",
                 "format_version": value["format_version"],
@@ -1108,11 +1121,17 @@ def main(argv: list[str] | None = None) -> int:
                 "output": str(
                     args.output
                     or root
-                    / "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
+                    / f"experiments/arecel-{args.rq1g_live_command}/"
+                    "rq1-workload-generalization-v1/rq1b-preflight-v1.json"
                 ),
             }
-        elif args.rq1g_power7_command == "run":
-            result = run_power7_rq1b_formal(
+        elif args.rq1g_dataset_command == "run":
+            runner = (
+                run_power7_rq1b_formal
+                if args.rq1g_live_command == "power7"
+                else run_forest10_rq1b_formal
+            )
+            result = runner(
                 research_root=root,
                 preflight_path=args.preflight,
                 stock_dsn=args.stock_dsn,
@@ -1125,7 +1144,9 @@ def main(argv: list[str] | None = None) -> int:
                 runtime_root=args.runtime_root,
             )
         else:
-            raise ValueError(f"unsupported RQ1b Power7 command: {args.rq1g_power7_command}")
+            raise ValueError(
+                f"unsupported RQ1b {args.rq1g_live_command} command: {args.rq1g_dataset_command}"
+            )
         print(json.dumps(result, sort_keys=True, indent=2, default=str))
         return 0
     if args.command == "postgres-lab":
@@ -1400,14 +1421,17 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "rq1-generalization":
             root = Path(__file__).resolve().parents[2]
+            spec = POWER7_SPEC if args.dataset == "power7" else FOREST10_SPEC
             if args.rq1g_command == "design":
-                result = validate_rq1b_design_artifact(read_json(args.artifact))
+                result = validate_rq1b_design_artifact_generic(read_json(args.artifact), _spec=spec)
             elif args.rq1g_command == "preflight":
-                result = validate_power7_rq1b_preflight(
-                    read_json(args.artifact), research_root=root
+                result = validate_rq1b_preflight(
+                    read_json(args.artifact), research_root=root, spec=spec
                 )
             else:
-                result = validate_power7_rq1b_result(read_json(args.artifact), research_root=root)
+                result = validate_rq1b_result(
+                    read_json(args.artifact), research_root=root, spec=spec
+                )
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq2-transfer":

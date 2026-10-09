@@ -41,23 +41,23 @@ def _fake_design_inputs() -> dict[str, object]:
         "dataset": {
             "dataset_id": live.POWER7,
             "benchmark_id": live.POWER7,
-            "content_identity": "dataset-identity",
+            "content_identity": live.VALID_DATASET_CONTENT_IDENTITY,
             "relation": "public.power7",
             "schema_contract_id": "arecel-power7-postgres-schema-v1",
             "rows": 2_075_259,
         },
         "workload": {
             "workload_id": "arecel_power7_valid_v1",
-            "sha256": "4" * 64,
+            "sha256": live.VALID_WORKLOAD_SHA256,
             "query_count": 10_000,
-            "canonical_source_sha256": "5" * 64,
+            "canonical_source_sha256": live.VALID_CANONICAL_WORKLOAD_SHA256,
         },
         "truth": {
             "source_kind": "authoritative-external-exact",
             "collection_contract": "authoritative-external-exact-cardinality-v1",
-            "dataset_identity": "dataset-identity",
+            "dataset_identity": live.VALID_DATASET_CONTENT_IDENTITY,
             "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
-            "observations_sha256": "6" * 64,
+            "observations_sha256": live.VALID_OBSERVATIONS_SHA256,
             "observations_semantic_digest": "7" * 64,
             "workload_id": "arecel_power7_valid_v1",
             "query_count": 10_000,
@@ -102,12 +102,12 @@ def _built_result(monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
             },
             "test_workload": {
                 "workload_id": "arecel_power7_test_v1",
-                "sha256": "a" * 64,
+                "sha256": live.POWER7_SPEC.test_workload_sha256,
                 "query_count": live.SAMPLE_ROWS,
             },
             "test_truth": {
                 "workload_id": "arecel_power7_test_v1",
-                "observations_sha256": "b" * 64,
+                "observations_sha256": live.POWER7_SPEC.test_observations_sha256,
                 "query_count": live.SAMPLE_ROWS,
             },
             "stock_postgresql": {
@@ -349,12 +349,12 @@ def test_evaluation_runs_once_and_derives_strict_metrics_offline(
             },
             "test_workload": {
                 "workload_id": "arecel_power7_test_v1",
-                "sha256": "a" * 64,
+                "sha256": live.POWER7_SPEC.test_workload_sha256,
                 "query_count": live.SAMPLE_ROWS,
             },
             "test_truth": {
                 "workload_id": "arecel_power7_test_v1",
-                "observations_sha256": "b" * 64,
+                "observations_sha256": live.POWER7_SPEC.test_observations_sha256,
                 "query_count": live.SAMPLE_ROWS,
             },
             "advisor": {

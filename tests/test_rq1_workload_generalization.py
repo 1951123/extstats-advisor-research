@@ -297,8 +297,12 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["evaluation_split"] == "test"
     assert rq1b["formal_execution"] == "power7-attempt-6-complete"
     assert rq1b["formal_evidence_status"] == "power7-child-complete"
-    assert rq1b["next_formal_attempt"] == "none-pending-until-review"
+    assert rq1b["next_formal_attempt"] == "forest10-attempt-1-pending"
     assert rq1b["power7_runner_readiness"] == "formal-evidence-published"
+    assert rq1b["forest10_runner_readiness"] == "implementation-ready"
+    assert rq1b["forest10_formal_evidence_status"] == "not-produced"
+    assert rq1b["forest10_next_formal_attempt"] == "attempt-1-pending"
+    assert rq1b["forest10_formal_attempts"] == []
     assert len(rq1b["power7_formal_attempts"]) == 6
     assert rq1b["power7_formal_attempts"][-1]["status"] == "complete"
     assert rq1b["power7_formal_attempts"][-1]["evidence_eligible"] is True
