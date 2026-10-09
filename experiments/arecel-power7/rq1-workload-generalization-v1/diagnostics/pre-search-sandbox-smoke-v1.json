@@ -1,0 +1,118 @@
+{
+  "candidates": {
+    "count": 42,
+    "passed": true,
+    "returncode": 0,
+    "semantic_digest": "554b1bdc01416da4425230a786bf9c389e3de5765969071d0c9c9370e7ec67aa",
+    "stderr": "",
+    "stdout": "{\"candidate_count\": 42, \"incidence_count\": 159346, \"output\": \"/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/candidate-universe.json\", \"relevant_group_count\": 21, \"semantic_digest\": \"554b1bdc01416da4425230a786bf9c389e3de5765969071d0c9c9370e7ec67aa\", \"status\": \"derived\"}\n"
+  },
+  "cleanup": {
+    "patched_stopped": true,
+    "runtime_residue": false,
+    "stock_stopped": true
+  },
+  "dataset": "arecel-power7",
+  "deployment_started": false,
+  "different_physical_endpoints": true,
+  "evidence_eligible": false,
+  "explain_count": 0,
+  "format_version": "rq1b-power7-pre-search-sandbox-smoke-v1",
+  "fresh_stock_load": {
+    "analyze_count": 1,
+    "passed": true,
+    "physical_extstats_count": 0,
+    "rows": 2075259,
+    "statistics_target": 100
+  },
+  "frozen_advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "native_repository": {
+    "absent_count": 0,
+    "passed": true,
+    "present_count": 42,
+    "semantic_digest": "4af8e497418b907267c4ea7d762e394a31c8ea656ab46fa3dd3993fc1f383f7a"
+  },
+  "patched_database": "extstats_lab",
+  "patched_port": 55433,
+  "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "patched_socket": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/socket",
+  "production_exact_count": false,
+  "query_count": 10000,
+  "recommendation_sealed": false,
+  "research_sha": "6323ca63ed5f05f1a1088aa4bc093cb3145256ef",
+  "same_logical_database": true,
+  "sample_rows": 10000,
+  "sample_seed": 42,
+  "sandbox_destroy": {
+    "command": [
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/launcher/frozen-extstats-advisor",
+      "sandbox",
+      "destroy",
+      "postgres",
+      "--dsn",
+      "<REDACTED_PATCHED_DSN>"
+    ],
+    "elapsed_seconds": 0.168275,
+    "passed": true,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "{\"destroyed\": true, \"frozen_relation_name\": {\"catalog\": null, \"name\": \"frozen_sample_c0fdd7bee66a70612f93d116\", \"schema\": \"extstats_advisor_internal\"}, \"relation_name\": {\"catalog\": \"extstats_lab\", \"name\": \"power7\", \"schema\": \"public\"}, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\"}\n"
+  },
+  "sandbox_prepare": {
+    "command": [
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/launcher/frozen-extstats-advisor",
+      "sandbox",
+      "prepare",
+      "postgres",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/advisor-snapshot",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/candidate-universe.json",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/native-stats-repository",
+      "--dsn",
+      "<REDACTED_PATCHED_DSN>"
+    ],
+    "elapsed_seconds": 2.034983,
+    "passed": true,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "{\"backend_contract\": \"postgresql-pgextadv-16.14-v1\", \"candidate_universe_semantic_digest\": \"554b1bdc01416da4425230a786bf9c389e3de5765969071d0c9c9370e7ec67aa\", \"frozen_relation_name\": {\"catalog\": null, \"name\": \"frozen_sample_c0fdd7bee66a70612f93d116\", \"schema\": \"extstats_advisor_internal\"}, \"internal_schema_created\": true, \"managed_schema_created\": false, \"native_stats_repository_semantic_digest\": \"4af8e497418b907267c4ea7d762e394a31c8ea656ab46fa3dd3993fc1f383f7a\", \"ordinary_stats_fingerprint\": \"e5a6a88547f241b8eaddde1e3eb21d6ee36d12a04e5147ecf4980ebd61bc317d\", \"population_quality\": \"estimate\", \"population_row_count\": 2075259.0, \"prepared_at\": \"2026-10-09 09:32:48.835138+08:00\", \"relation_id\": \"rel_34fa5b04ec480ca3e630fe9d\", \"relation_name\": {\"catalog\": \"extstats_lab\", \"name\": \"power7\", \"schema\": \"public\"}, \"repository_absent_count\": 0, \"repository_candidate_count\": 42, \"repository_present_count\": 42, \"sample_row_count\": 10000, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"server_version\": \"16.14\", \"server_version_num\": 160014, \"source_snapshot_semantic_digest\": \"c0fdd7bee66a70612f93d116e7f993a29109d41b7c3ac9a06183d4471ee570e6\", \"statistics_target\": 100, \"status\": \"prepared\"}\n"
+  },
+  "sandbox_verify": {
+    "command": [
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/launcher/frozen-extstats-advisor",
+      "sandbox",
+      "verify",
+      "postgres",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/advisor-snapshot",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/candidate-universe.json",
+      "/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/native-stats-repository",
+      "--dsn",
+      "<REDACTED_PATCHED_DSN>"
+    ],
+    "elapsed_seconds": 1.297735,
+    "passed": true,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "{\"autovacuum_disabled\": true, \"frozen_sample_row_count\": 10000, \"metadata\": {\"backend_contract\": \"postgresql-pgextadv-16.14-v1\", \"candidate_universe_semantic_digest\": \"554b1bdc01416da4425230a786bf9c389e3de5765969071d0c9c9370e7ec67aa\", \"frozen_relation_name\": {\"catalog\": null, \"name\": \"frozen_sample_c0fdd7bee66a70612f93d116\", \"schema\": \"extstats_advisor_internal\"}, \"internal_schema_created\": true, \"managed_schema_created\": false, \"native_stats_repository_semantic_digest\": \"4af8e497418b907267c4ea7d762e394a31c8ea656ab46fa3dd3993fc1f383f7a\", \"ordinary_stats_fingerprint\": \"e5a6a88547f241b8eaddde1e3eb21d6ee36d12a04e5147ecf4980ebd61bc317d\", \"population_quality\": \"estimate\", \"population_row_count\": 2075259.0, \"prepared_at\": \"2026-10-09 09:32:48.835138+08:00\", \"relation_id\": \"rel_34fa5b04ec480ca3e630fe9d\", \"relation_name\": {\"catalog\": \"extstats_lab\", \"name\": \"power7\", \"schema\": \"public\"}, \"repository_absent_count\": 0, \"repository_candidate_count\": 42, \"repository_present_count\": 42, \"sample_row_count\": 10000, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"server_version\": \"16.14\", \"server_version_num\": 160014, \"source_snapshot_semantic_digest\": \"c0fdd7bee66a70612f93d116e7f993a29109d41b7c3ac9a06183d4471ee570e6\", \"statistics_target\": 100}, \"ordinary_stats_fingerprint\": \"e5a6a88547f241b8eaddde1e3eb21d6ee36d12a04e5147ecf4980ebd61bc317d\", \"physical_extstats_count\": 0, \"reltuples\": 2075259.0, \"repository\": {\"absent_count\": 0, \"candidate_count\": 42, \"present_count\": 42, \"semantic_digest\": \"4af8e497418b907267c4ea7d762e394a31c8ea656ab46fa3dd3993fc1f383f7a\"}, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"status\": \"valid\", \"target_relation_oid\": 16444, \"target_sample_row_count\": 10000}\n"
+  },
+  "search_started": false,
+  "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e",
+  "singleton_profiling_started": false,
+  "snapshot": {
+    "elapsed_seconds": 0.316697,
+    "passed": true,
+    "returncode": 0,
+    "sample_row_count": 10000,
+    "semantic_digest": "c0fdd7bee66a70612f93d116e7f993a29109d41b7c3ac9a06183d4471ee570e6",
+    "stderr": "",
+    "stdout": "{\"ground_truth_semantic_digest\": null, \"output\": \"/tmp/rq1b-pre-search-sandbox-smoke-rwda32sm/advisor-snapshot\", \"relation_count\": 1, \"sample_row_counts\": {\"rel_34fa5b04ec480ca3e630fe9d\": 10000}, \"semantic_digest\": \"c0fdd7bee66a70612f93d116e7f993a29109d41b7c3ac9a06183d4471ee570e6\", \"status\": \"captured\"}\n",
+    "workload_id": "arecel_power7_valid_v1"
+  },
+  "split": "valid",
+  "statistics_target": 100,
+  "status": "success",
+  "stock_database": "extstats_lab",
+  "stock_port": 55432,
+  "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "stock_socket": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/socket",
+  "test_side_accessed": false
+}

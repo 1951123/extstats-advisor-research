@@ -304,7 +304,7 @@
       "status": "preregistered",
       "formal_execution": "power7-attempt-5-sandbox-prepare-failed-before-search",
       "formal_evidence_status": "not-produced",
-      "next_formal_attempt": "none-pending-pre-search-smoke",
+      "next_formal_attempt": "power7-attempt-6-pending",
       "power7_formal_attempts": [
         {
           "attempt_index": 1,
@@ -351,7 +351,11 @@
           }
         }
       ],
-      "power7_runner_readiness": "implementation-ready",
+      "power7_runner_readiness": "pre-search-live-smoke-passed",
+      "pre_search_smoke_artifact": {
+        "path": "experiments/arecel-power7/rq1-workload-generalization-v1/diagnostics/pre-search-sandbox-smoke-v1.json",
+        "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e"
+      },
       "runner_module": "src/extstats_advisor_research/rq1_workload_generalization_live.py",
       "datasets": ["arecel-census13", "arecel-forest10", "arecel-power7", "arecel-dmv11"],
       "protocol": "paper/rq1-workload-generalization-protocol-v2.json",

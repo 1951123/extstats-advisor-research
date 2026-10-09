@@ -483,7 +483,7 @@ def test_preflight_contains_only_opaque_evaluation_bindings(
         research_root=tmp_path,
         producer_sha=producer,
     )
-    assert value["campaign_attempt_index"] == 5
+    assert value["campaign_attempt_index"] == 6
     assert value["prior_failed_attempt"] == {
         "path": live.PRIOR_FAILED_ATTEMPT_PATH.as_posix(),
         "semantic_digest": live.PRIOR_FAILED_ATTEMPT_DIGEST,

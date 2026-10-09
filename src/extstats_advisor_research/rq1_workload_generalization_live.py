@@ -68,14 +68,14 @@ SYSTEM_FREEZE_PATH = Path("paper/system-freeze-v2.json")
 DESIGN_FORMAT = "rq1-workload-generalization-power7-design-v1"
 RESULT_FORMAT = "rq1-workload-generalization-power7-v1"
 PREFLIGHT_FORMAT = "rq1-workload-generalization-power7-preflight-v1"
-CAMPAIGN_ATTEMPT_INDEX = 5
+CAMPAIGN_ATTEMPT_INDEX = 6
 PRIOR_FAILED_ATTEMPT_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
-    "failed-attempts/attempt-004/failure-v1.json"
+    "failed-attempts/attempt-005/failure-correction-v1.json"
 )
-PRIOR_FAILED_ATTEMPT_DIGEST = "d809f9e15f4eb2bb33aa8a421b8e8c2ff690ad372eb245b0b555495d30ac638d"
-PRIOR_FAILED_ATTEMPT_STATUS = "non-evidence-pre-execution-environment-failure"
-PRIOR_FAILED_ATTEMPT_CLASS = "frozen-advisor-runtime-dependency-missing"
+PRIOR_FAILED_ATTEMPT_DIGEST = "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
+PRIOR_FAILED_ATTEMPT_STATUS = "append-only-provenance-correction"
+PRIOR_FAILED_ATTEMPT_CLASS = "planner-sandbox-database-catalog-mismatch"
 DESIGN_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json")
 PER_QUERY_PATH = Path(
     "experiments/arecel-power7/rq1-workload-generalization-v1/"
