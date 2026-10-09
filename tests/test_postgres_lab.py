@@ -12,6 +12,7 @@ from extstats_advisor_research.postgres_lab import (
     LOCALE,
     MARKER_NAME,
     configure_command,
+    env_exports,
     role_spec,
     safe_role_directory,
     start_command,
@@ -37,14 +38,27 @@ def _identity(root: Path, role: str, source_sha: str = "a" * 40) -> dict:
 
 
 def test_role_mapping_and_ports_are_fixed() -> None:
-    assert role_spec("stock").port == 55432
-    assert role_spec("stock").database == "extstats_stock"
-    assert role_spec("patched").port == 55433
-    assert role_spec("patched").database == "extstats_patched"
+    stock = role_spec("stock")
+    patched = role_spec("patched")
+    assert stock.port == 55432
+    assert patched.port == 55433
+    assert stock.database == patched.database
+    assert stock.socket != patched.socket
+    assert stock.port != patched.port
     assert LOCALE == "C.utf8"
     assert ENCODING == "UTF8"
     with pytest.raises(ValueError, match="unsupported"):
         role_spec("random")
+
+
+def test_managed_role_dsns_share_logical_database_but_not_endpoints() -> None:
+    exports = env_exports("all")
+    assert "dbname=extstats_lab" in exports
+    assert exports.count("dbname=extstats_lab") == 3
+    assert "port=55432" in exports
+    assert "port=55433" in exports
+    assert str(role_spec("stock").socket) in exports
+    assert str(role_spec("patched").socket) in exports
 
 
 def test_configure_and_start_commands_are_out_of_tree_and_local() -> None:

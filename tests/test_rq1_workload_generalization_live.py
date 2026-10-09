@@ -956,3 +956,14 @@ def test_managed_lab_dsns_reject_wrong_endpoints() -> None:
             stock_dsn="host=/tmp/other port=55432 dbname=extstats_stock",
             planner_dsn=good_patched,
         )
+
+
+def test_sandbox_catalog_contract_uses_shared_managed_logical_database() -> None:
+    from extstats_advisor_research import postgres_lab
+
+    stock = postgres_lab.role_spec("stock")
+    patched = postgres_lab.role_spec("patched")
+    snapshot_catalog = stock.database
+    assert snapshot_catalog == patched.database
+    assert stock.port != patched.port
+    assert stock.socket != patched.socket
