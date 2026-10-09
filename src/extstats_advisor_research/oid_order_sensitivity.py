@@ -399,8 +399,13 @@ def _canonical_valid_records(
         raise ValueError(f"{dataset_key} valid canonical workload indices are not contiguous")
     if len({item["query_id"] for item in records}) != QUERY_COUNT:
         raise ValueError(f"{dataset_key} valid canonical workload IDs are not unique")
-    if len({item["source_query_sha256"] for item in records}) != QUERY_COUNT:
-        raise ValueError(f"{dataset_key} canonical source hashes are not unique")
+    # A workload instance has a unique audited query identity, but the
+    # generator is allowed to emit duplicate source queries.  Census13's
+    # frozen valid split contains 528 such duplicate instances.  Preserve
+    # the instance-level manifest while validating every hash as a digest;
+    # uniqueness is required for query IDs, not for source-query hashes.
+    for item in records:
+        _require_sha(item["source_query_sha256"], "canonical source query SHA")
     return records
 
 

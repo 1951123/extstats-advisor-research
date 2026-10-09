@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+import gzip
+import json
 import types
 from pathlib import Path
 
@@ -78,6 +80,39 @@ def test_formal_source_validation_remains_strict_without_raw_mount() -> None:
 
     with pytest.raises(FileNotFoundError, match="missing audited canonical workload"):
         oid._canonical_valid_records(Path("/tmp/nonexistent-oid-data"), "census13", "0" * 64)
+
+
+def test_canonical_valid_records_preserve_duplicate_source_query_instances(
+    tmp_path: Path,
+) -> None:
+    import hashlib
+
+    import extstats_advisor_research.oid_order_sensitivity as oid
+
+    data_root = tmp_path
+    audit_root = data_root / "arecel" / "audit-v1"
+    audit_root.mkdir(parents=True)
+    rows = [
+        {
+            "split": "valid",
+            "index": index,
+            "query_id": f"q-{index}",
+            "source_query_sha256": "a" * 64,
+        }
+        for index in range(oid.QUERY_COUNT)
+    ]
+    path = audit_root / "fixture.canonical.jsonl.gz"
+    with gzip.open(path, "wt", encoding="utf-8") as stream:
+        for row in rows:
+            stream.write(json.dumps(row) + "\n")
+
+    records = oid._canonical_valid_records(
+        data_root,
+        "fixture",
+        hashlib.sha256(path.read_bytes()).hexdigest(),
+    )
+    assert len(records) == oid.QUERY_COUNT
+    assert len({item["source_query_sha256"] for item in records}) == 1
 
 
 def test_attempt_two_readiness_binds_original_records_without_execution() -> None:
