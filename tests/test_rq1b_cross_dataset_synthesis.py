@@ -1,8 +1,18 @@
 import copy
 import json
+from importlib.util import find_spec
 from pathlib import Path
 
 import pytest
+
+try:
+    _HAS_FROZEN_V2_ARTIFACT_API = find_spec("extstats_advisor.deployment.artifact") is not None
+except ModuleNotFoundError:  # Historical Advisor CI intentionally has no frozen-v2 API.
+    _HAS_FROZEN_V2_ARTIFACT_API = False
+if not _HAS_FROZEN_V2_ARTIFACT_API:
+    pytestmark = pytest.mark.skip(
+        reason="RQ1b synthesis validation requires frozen-v2 DeploymentResult API"
+    )
 
 from extstats_advisor_research.provenance import semantic_digest
 from extstats_advisor_research.rq1_workload_generalization_live import RQ1BValidationError
