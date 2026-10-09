@@ -1173,7 +1173,35 @@ def build_power7_rq1b_result(
     return result
 
 
-def validate_power7_rq1b_result(value: Mapping[str, Any]) -> dict[str, Any]:
+def validate_power7_rq1b_deployment_artifact(
+    path: Path, *, expected_digest: str | None = None
+) -> dict[str, Any]:
+    """Validate a frozen Advisor DeploymentResult without a live database.
+
+    DeploymentResult owns a semantic manifest that intentionally excludes
+    runtime-only fields such as ``created_at`` and ``runtime_metadata``.
+    Delegate to that frozen public contract instead of applying the research
+    result envelope's generic JSON digest rule.
+    """
+
+    try:
+        from extstats_advisor.deployment.artifact import validate_deployment_result
+    except ImportError as exc:  # pragma: no cover - exercised by historical CI environments
+        raise RQ1BValidationError("frozen Advisor deployment artifact API is unavailable") from exc
+    try:
+        summary = validate_deployment_result(Path(path))
+    except Exception as exc:  # pragma: no cover - exact exception is frozen-repo owned
+        raise RQ1BValidationError(f"frozen DeploymentResult validation failed: {exc}") from exc
+    actual = summary.get("semantic_digest")
+    _sha(actual, "frozen deployment semantic digest")
+    if expected_digest is not None:
+        _require(actual == expected_digest, "frozen deployment semantic digest mismatch")
+    return dict(summary)
+
+
+def validate_power7_rq1b_result(
+    value: Mapping[str, Any], *, research_root: Path | None = None
+) -> dict[str, Any]:
     """Validate the future compact result without re-running evaluation."""
 
     _require(isinstance(value, Mapping), "RQ1b result must be an object")
@@ -1233,6 +1261,14 @@ def validate_power7_rq1b_result(value: Mapping[str, Any]) -> dict[str, Any]:
     _require(per_query_artifact.get("query_count") == SAMPLE_ROWS, "result per-query count drift")
     _sha(per_query_artifact.get("sha256"), "result per-query artifact SHA")
     _sha(evaluation["deployment"].get("semantic_digest"), "result deployment artifact digest")
+    if research_root is not None:
+        deployment_path = _path(
+            research_root, evaluation["deployment"].get("logical_path", DEPLOYMENT_PATH)
+        )
+        validate_power7_rq1b_deployment_artifact(
+            deployment_path,
+            expected_digest=evaluation["deployment"].get("semantic_digest"),
+        )
     _require(
         evaluation["test_workload"].get("workload_id") == "arecel_power7_test_v1"
         and evaluation["test_workload"].get("query_count") == SAMPLE_ROWS,
@@ -2048,7 +2084,9 @@ def publish_result(*, result: Mapping[str, Any], output: Path) -> dict[str, Any]
     _require(not destination.exists(), "RQ1b result output collision")
     payload = dict(result)
     payload.setdefault("format_version", RESULT_FORMAT)
+    payload.pop("semantic_digest", None)
     payload["semantic_digest"] = semantic_digest(payload)
+    validate_power7_rq1b_result(payload)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     return payload

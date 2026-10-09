@@ -76,6 +76,68 @@ def _sealed_design(monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
     )
 
 
+def _built_result(monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
+    design = _sealed_design(monkeypatch)
+    membership = read_json(ROOT / live.STRICT_UNSEEN_PATH)
+    records = [
+        {
+            "query_id": f"arecel_power7_test_{index:06d}",
+            "estimate": 1.0,
+            "truth": 1,
+            "qerror": 1.0,
+            "weight": 1.0,
+        }
+        for index in range(live.SAMPLE_ROWS)
+    ]
+    return live.build_power7_rq1b_result(
+        design_artifact=design,
+        evaluation_inputs={
+            "dataset_id": live.POWER7,
+            "evaluation_split": "test",
+            "strict_unseen_membership_digest": live.STRICT_UNSEEN_DIGEST,
+            "strict_unseen_membership": membership,
+            "source_audit": {
+                "path": live.SOURCE_AUDIT_V2_PATH.as_posix(),
+                "semantic_digest": live.SOURCE_AUDIT_DIGEST,
+            },
+            "test_workload": {
+                "workload_id": "arecel_power7_test_v1",
+                "sha256": "a" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
+            "test_truth": {
+                "workload_id": "arecel_power7_test_v1",
+                "observations_sha256": "b" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
+            "stock_postgresql": {
+                "source_commit_sha": live.FROZEN_STOCK_POSTGRES_SHA,
+                "postgres_version": "16.14",
+                "evaluation_mode": "stock-full-data-deployment",
+                "ordinary_statistics_target": 100,
+            },
+            "advisor": {
+                "source_commit_sha": live.FROZEN_ADVISOR_SHA,
+                "command": "mock-advisor",
+                "source_checkout_verified": True,
+            },
+            "deployment": {
+                "logical_path": live.DEPLOYMENT_PATH.as_posix(),
+                "semantic_digest": "c" * 64,
+            },
+            "per_query_artifact": {
+                "logical_path": live.PER_QUERY_PATH.as_posix(),
+                "sha256": "d" * 64,
+                "query_count": live.SAMPLE_ROWS,
+            },
+            "s_test_candidate_ids": ["cand_historical"],
+        },
+        advisor_records=records,
+        baseline_records={"pg16-default": records, "pg16-target10000": records},
+        cleanup_passed=True,
+    )
+
+
 def test_design_artifact_is_valid_and_valid_only(monkeypatch: pytest.MonkeyPatch) -> None:
     artifact = _sealed_design(monkeypatch)
     assert artifact["format_version"] == live.DESIGN_FORMAT
@@ -362,6 +424,86 @@ def test_publish_requires_success_and_cleanup(tmp_path: Path) -> None:
         live.publish_result(
             result={"status": "success", "cleanup": {"passed": True}}, output=existing
         )
+
+
+def test_publish_result_does_not_double_hash_existing_digest(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    result = _built_result(monkeypatch)
+    original_digest = result["semantic_digest"]
+    first = live.publish_result(result=result, output=tmp_path / "first.json")
+    second = live.publish_result(result=dict(result), output=tmp_path / "second.json")
+    first_loaded = read_json(tmp_path / "first.json")
+    second_loaded = read_json(tmp_path / "second.json")
+    assert first["semantic_digest"] == original_digest
+    assert second["semantic_digest"] == original_digest
+    assert first_loaded["semantic_digest"] == live._digest_body(first_loaded)
+    assert second_loaded["semantic_digest"] == live._digest_body(second_loaded)
+    assert live.validate_power7_rq1b_result(first_loaded)["status"] == "valid"
+    assert (tmp_path / "first.json").read_bytes() == (tmp_path / "second.json").read_bytes()
+
+
+def test_result_digest_correction_changes_only_digest(monkeypatch: pytest.MonkeyPatch) -> None:
+    built = _built_result(monkeypatch)
+    raw = copy.deepcopy(built)
+    raw["semantic_digest"] = live.semantic_digest(raw)
+    corrected = copy.deepcopy(raw)
+    corrected["semantic_digest"] = built["semantic_digest"]
+    assert [key for key in raw if raw[key] != corrected[key]] == ["semantic_digest"]
+    assert live.semantic_digest(
+        {key: value for key, value in corrected.items() if key != "semantic_digest"}
+    ) == corrected["semantic_digest"]
+
+
+def test_frozen_deployment_contract_excludes_runtime_metadata(tmp_path: Path) -> None:
+    artifact = pytest.importorskip("extstats_advisor.deployment.artifact")
+    raw_path = (
+        ROOT
+        / "experiments/arecel-power7/rq1-workload-generalization-v1/"
+        / "attempt-006-raw/deployment-result-v1.json"
+    )
+    raw = json.loads(raw_path.read_text(encoding="utf-8"))
+    baseline = artifact.load_deployment_result(raw_path)
+    assert baseline.semantic_digest == baseline.computed_semantic_digest
+    for index, fields in enumerate(
+        (
+            {"created_at": "2099-01-01T00:00:00Z"},
+            {"runtime_metadata": {"temporary": "different"}},
+            {
+                "created_at": "2099-01-01T00:00:00Z",
+                "runtime_metadata": {"temporary": "different"},
+            },
+        )
+    ):
+        mutated = copy.deepcopy(raw)
+        mutated.update(fields)
+        path = tmp_path / f"runtime-{index}.json"
+        path.write_text(json.dumps(mutated), encoding="utf-8")
+        loaded = artifact.load_deployment_result(path)
+        assert loaded.computed_semantic_digest == baseline.computed_semantic_digest
+
+    semantic_mutation = copy.deepcopy(raw)
+    semantic_mutation["server"]["server_version"] = "16.15"
+    semantic_path = tmp_path / "semantic.json"
+    semantic_path.write_text(json.dumps(semantic_mutation), encoding="utf-8")
+    with pytest.raises(Exception, match="semantic digest"):
+        artifact.load_deployment_result(semantic_path)
+
+
+def test_rq1b_deployment_validation_uses_frozen_contract() -> None:
+    pytest.importorskip("extstats_advisor.deployment.artifact")
+    path = (
+        ROOT
+        / "experiments/arecel-power7/rq1-workload-generalization-v1/"
+        / "attempt-006-raw/deployment-result-v1.json"
+    )
+    result = live.validate_power7_rq1b_deployment_artifact(
+        path,
+        expected_digest="bc10496c283ba4b6b0a1c0e2bdbba589ca5683e9757288fc4e67f98913424236",
+    )
+    assert result["semantic_digest"] == (
+        "bc10496c283ba4b6b0a1c0e2bdbba589ca5683e9757288fc4e67f98913424236"
+    )
 
 
 def test_preflight_output_collision_is_rejected(

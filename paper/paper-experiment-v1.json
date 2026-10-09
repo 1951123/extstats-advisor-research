@@ -302,9 +302,9 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "power7-attempt-5-sandbox-prepare-failed-before-search",
-      "formal_evidence_status": "not-produced",
-      "next_formal_attempt": "power7-attempt-6-pending",
+      "formal_execution": "power7-attempt-6-complete",
+      "formal_evidence_status": "power7-child-complete",
+      "next_formal_attempt": "none-pending-until-review",
       "power7_formal_attempts": [
         {
           "attempt_index": 1,
@@ -349,9 +349,40 @@
             "path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-005/failure-correction-v1.json",
             "semantic_digest": "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
           }
+        },
+        {
+          "attempt_index": 6,
+          "status": "complete",
+          "scientific_pipeline_status": "complete",
+          "evidence_eligible": true,
+          "producer_sha": "699decdcfc960df050214abc3b64efb25d22818f",
+          "formal_invocation_count": 1,
+          "preflight_semantic_digest": "4b592812013386f5b18d4187ef9f061c90e624d3b65365bdfc98d96d63f32492",
+          "design_semantic_digest": "c194ebd90382d4606875ee040738bfe5fa0ac3c5c50f3f9f642e5bfaa0d6f27d",
+          "deployment_semantic_digest": "bc10496c283ba4b6b0a1c0e2bdbba589ca5683e9757288fc4e67f98913424236",
+          "per_query_sha256": "cca5663c4a42820c1c9c2c51d32f06cedc5b884af09c61f6f8594160c5f2051f",
+          "result_semantic_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3",
+          "execution_artifact": {
+            "path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-execution-v1.json",
+            "semantic_digest": "782515cf7df9db01f0febe25fab361992d4628346baef72e65825ef4a74af0ca"
+          },
+          "result_digest_correction": {
+            "path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-digest-correction-v1.json",
+            "semantic_digest": "0624019c0aa72c734a409632e220ccf91f9cd6721fffded9f66cc3b461fcb9b0",
+            "scientific_reexecution": false,
+            "changed_json_paths": ["$.semantic_digest"]
+          }
         }
       ],
-      "power7_runner_readiness": "pre-search-live-smoke-passed",
+      "power7_runner_readiness": "formal-evidence-published",
+      "power7_formal_evidence": {
+        "result_path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json",
+        "result_semantic_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3",
+        "producer_sha": "699decdcfc960df050214abc3b64efb25d22818f",
+        "evidence_eligible": true,
+        "digest_contract_correction": true,
+        "scientific_reexecution": false
+      },
       "pre_search_smoke_artifact": {
         "path": "experiments/arecel-power7/rq1-workload-generalization-v1/diagnostics/pre-search-sandbox-smoke-v1.json",
         "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e"
@@ -1004,7 +1035,7 @@
       {
         "experiment_id": "rq1-held-out-workload-generalization",
         "status": "preregistered",
-        "note": "RQ1b remains preregistered. Power7 attempt 1 failed before design because managed PostgreSQL was not running; attempt 2 failed before lab preparation because the shell supplied an empty managed DSN. Both are retained as non-evidence provenance; attempt 3 is pending."
+        "note": "RQ1b remains preregistered at the cross-dataset level. Power7 attempts 1–5 are retained as non-evidence provenance; attempt 6 completed the Power7 child once and is evidence-eligible after an offline result digest-contract correction with no scientific re-execution. Forest10, Census13, and DMV11 remain unexecuted."
       },
       {
         "experiment_id": "rq1-existing-baselines",

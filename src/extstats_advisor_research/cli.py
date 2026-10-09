@@ -1407,7 +1407,7 @@ def main(argv: list[str] | None = None) -> int:
                     read_json(args.artifact), research_root=root
                 )
             else:
-                result = validate_power7_rq1b_result(read_json(args.artifact))
+                result = validate_power7_rq1b_result(read_json(args.artifact), research_root=root)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq2-transfer":

@@ -22,9 +22,11 @@ and initial `ANALYZE`, completed snapshot/candidate/native-repository setup,
 and failed during frozen Advisor sandbox preparation because the managed stock
 and patched logical database names differed; it is retained as non-evidence
 pre-search provenance. A subsequent valid-side pre-search smoke passed through
-sandbox destruction after the shared logical database identity was corrected;
-a future attempt 6 is pending, but no attempt 6 preflight or formal run has
-started. The formal four-child RQ2 transfer
+sandbox destruction after the shared logical database identity was corrected.
+Attempt 6 completed the Power7 valid-to-test scientific pipeline once. Its raw
+outputs are preserved byte-for-byte; evidence publication required only an
+offline result digest-contract correction, with no scientific re-execution.
+The formal four-child RQ2 transfer
 campaign is complete under the frozen v2 protocol; historical transfer
 directories remain pilot evidence.
 
@@ -141,7 +143,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–4 are retained as pre-execution non-evidence provenance, attempt 5 reached valid-side snapshot/candidate/native-repository setup but failed during sandbox preparation, and the corrected valid-side pre-search smoke passed. Attempt 6 is pending; no formal attempt 6 has started. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–5 remain non-evidence provenance, while attempt 6 completed the Power7 child once. The compact result is evidence-eligible after an offline digest-contract correction; Forest10, Census13, and DMV11 remain unexecuted. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -191,7 +193,7 @@ same test evaluation to the strict-unseen query subset whose exact audited
 source query hash does not occur in any valid record. Valid/test records are
 independent benchmark groups, but exact query identities may repeat across
 groups. This is same-distribution held-out generalization, not a workload-drift
-or OOD-robustness claim. RQ1a is complete, RQ1b is preregistered, and the
+or OOD-robustness claim. RQ1a is complete, RQ1b remains preregistered, and the
 expanded RQ1 program is not yet complete. The first Power7 formal invocation
 failed before design execution because the managed stock PostgreSQL role was
 not running; no Advisor, planner, query-evaluation, or test-side evidence was
@@ -208,12 +210,12 @@ repository setup, and failed during frozen Advisor sandbox preparation because
 the managed stock and patched logical database names differed; it is retained
 as non-evidence pre-search provenance. A subsequent valid-side pre-search
 smoke passed through sandbox destruction after the shared logical database
-identity was corrected. A future attempt 6 is pending, but no attempt 6
-preflight or formal run has started. A future attempt
-must evaluate managed DSNs in the same
-shell process before invoking the formal command, and must launch Advisor from
-the verified frozen checkout through a runtime-local launcher rather than a
-bare `PATH` command. The required shell sequence is:
+identity was corrected. Attempt 6 then completed the Power7 child once. Its
+raw outputs are retained, and the result digest was corrected offline without
+scientific re-execution. No further formal attempt is pending until review.
+Any future campaign must evaluate managed DSNs in the same shell process and
+launch Advisor from the verified frozen checkout through a runtime-local
+launcher rather than a bare `PATH` command. The required shell sequence is:
 
 ```bash
 eval "$(extstats-research postgres-lab env --role all)"
@@ -225,7 +227,7 @@ extstats-research rq1-generalization power7 run \
   --preflight experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json
 ```
 
-These commands must run in one shell process. A subsequent campaign must use
+These commands must run in one shell process. Any subsequent campaign must use
 a new committed producer and preflight.
 
 **Datasets:** Census13, Forest10, Power7, DMV11, subject to available exact

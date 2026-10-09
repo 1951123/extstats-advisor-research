@@ -295,14 +295,21 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "power7-attempt-5-sandbox-prepare-failed-before-search"
-    assert rq1b["formal_evidence_status"] == "not-produced"
-    assert rq1b["next_formal_attempt"] == "power7-attempt-6-pending"
-    assert rq1b["power7_runner_readiness"] == "pre-search-live-smoke-passed"
-    assert len(rq1b["power7_formal_attempts"]) == 5
-    assert rq1b["power7_formal_attempts"][-1]["status"] == "pre-search-sandbox-prepare-failed"
-    assert rq1b["power7_formal_attempts"][-1]["correction_artifact"]["semantic_digest"] == (
+    assert rq1b["formal_execution"] == "power7-attempt-6-complete"
+    assert rq1b["formal_evidence_status"] == "power7-child-complete"
+    assert rq1b["next_formal_attempt"] == "none-pending-until-review"
+    assert rq1b["power7_runner_readiness"] == "formal-evidence-published"
+    assert len(rq1b["power7_formal_attempts"]) == 6
+    assert rq1b["power7_formal_attempts"][-1]["status"] == "complete"
+    assert rq1b["power7_formal_attempts"][-1]["evidence_eligible"] is True
+    assert rq1b["power7_formal_attempts"][-1]["result_semantic_digest"] == (
+        "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3"
+    )
+    assert rq1b["power7_formal_attempts"][-2]["correction_artifact"]["semantic_digest"] == (
         "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
+    )
+    assert rq1b["power7_formal_attempts"][-1]["result_digest_correction"]["semantic_digest"] == (
+        "0624019c0aa72c734a409632e220ccf91f9cd6721fffded9f66cc3b461fcb9b0"
     )
     assert rq1b["protocol"] == "paper/rq1-workload-generalization-protocol-v2.json"
     assert rq1b["source_audit"] == "experiments/rq1-workload-generalization-source-audit-v2.json"
