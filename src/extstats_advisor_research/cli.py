@@ -107,12 +107,15 @@ from .rq1_workload_generalization import (
     write_source_audit as write_rq1b_source_audit,
 )
 from .rq1_workload_generalization_live import (
+    DMV11_SPEC,
     FOREST10_SPEC,
     POWER7_SPEC,
+    run_dmv11_rq1b_formal,
     run_forest10_rq1b_formal,
     run_power7_rq1b_formal,
     validate_rq1b_preflight,
     validate_rq1b_result,
+    write_dmv11_rq1b_preflight,
     write_forest10_rq1b_preflight,
     write_power7_rq1b_preflight,
 )
@@ -514,10 +517,10 @@ def _parser() -> argparse.ArgumentParser:
     lab_env.add_argument("--role", choices=["stock", "patched", "all"], default="all")
     rq1g_live = commands.add_parser(
         "rq1-generalization",
-        help="future RQ1b held-out workload generalization formal commands",
+        help="RQ1b held-out workload generalization formal commands",
     )
     rq1g_live_commands = rq1g_live.add_subparsers(dest="rq1g_live_command", required=True)
-    for dataset_name in ("power7", "forest10"):
+    for dataset_name in ("power7", "forest10", "dmv11"):
         dataset_parser = rq1g_live_commands.add_parser(dataset_name)
         dataset_commands = dataset_parser.add_subparsers(dest="rq1g_dataset_command", required=True)
         preflight = dataset_commands.add_parser("preflight-create")
@@ -743,13 +746,15 @@ def _parser() -> argparse.ArgumentParser:
     rq1g_commands = rq1g.add_subparsers(dest="rq1g_command", required=True)
     rq1g_design = rq1g_commands.add_parser("design")
     rq1g_design.add_argument("artifact", type=Path)
-    rq1g_design.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
+    rq1g_design.add_argument("--dataset", choices=["power7", "forest10", "dmv11"], default="power7")
     rq1g_preflight = rq1g_commands.add_parser("preflight")
     rq1g_preflight.add_argument("artifact", type=Path)
-    rq1g_preflight.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
+    rq1g_preflight.add_argument(
+        "--dataset", choices=["power7", "forest10", "dmv11"], default="power7"
+    )
     rq1g_result = rq1g_commands.add_parser("result")
     rq1g_result.add_argument("artifact", type=Path)
-    rq1g_result.add_argument("--dataset", choices=["power7", "forest10"], default="power7")
+    rq1g_result.add_argument("--dataset", choices=["power7", "forest10", "dmv11"], default="power7")
     rq2 = validate_commands.add_parser(
         "rq2-transfer", help="run or validate one formal RQ2 transfer child"
     )
@@ -1112,6 +1117,8 @@ def main(argv: list[str] | None = None) -> int:
                 value = write_power7_rq1b_preflight(research_root=root, output=args.output)
             elif args.rq1g_live_command == "forest10":
                 value = write_forest10_rq1b_preflight(research_root=root, output=args.output)
+            elif args.rq1g_live_command == "dmv11":
+                value = write_dmv11_rq1b_preflight(research_root=root, output=args.output)
             else:  # pragma: no cover - argparse constrains the dataset names
                 raise ValueError(f"unsupported RQ1b dataset: {args.rq1g_live_command}")
             result = {
@@ -1126,11 +1133,12 @@ def main(argv: list[str] | None = None) -> int:
                 ),
             }
         elif args.rq1g_dataset_command == "run":
-            runner = (
-                run_power7_rq1b_formal
-                if args.rq1g_live_command == "power7"
-                else run_forest10_rq1b_formal
-            )
+            if args.rq1g_live_command == "power7":
+                runner = run_power7_rq1b_formal
+            elif args.rq1g_live_command == "forest10":
+                runner = run_forest10_rq1b_formal
+            else:
+                runner = run_dmv11_rq1b_formal
             result = runner(
                 research_root=root,
                 preflight_path=args.preflight,
@@ -1421,7 +1429,11 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "rq1-generalization":
             root = Path(__file__).resolve().parents[2]
-            spec = POWER7_SPEC if args.dataset == "power7" else FOREST10_SPEC
+            spec = {
+                "power7": POWER7_SPEC,
+                "forest10": FOREST10_SPEC,
+                "dmv11": DMV11_SPEC,
+            }[args.dataset]
             if args.rq1g_command == "design":
                 result = validate_rq1b_design_artifact_generic(read_json(args.artifact), _spec=spec)
             elif args.rq1g_command == "preflight":

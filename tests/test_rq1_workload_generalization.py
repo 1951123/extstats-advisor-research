@@ -328,6 +328,10 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["forest10_formal_evidence"]["result_path"] == (
         "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json"
     )
+    assert rq1b["dmv11_runner_readiness"] == "implementation-ready"
+    assert rq1b["dmv11_formal_evidence_status"] == "not-produced"
+    assert rq1b["dmv11_next_formal_attempt"] == "attempt-1-pending"
+    assert rq1b["dmv11_formal_attempts"] == []
     assert rq1b["forest10_formal_evidence"]["producer_sha"] == (
         "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
     )

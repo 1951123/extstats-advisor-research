@@ -21,7 +21,7 @@ from .arecel_truth import authoritative_truth_spec_for_split, validate_observati
 from .datasets import DATASETS
 from .paper_baseline import percentile, qerror
 from .pins import verify_git_sha
-from .postgres.loader import load_forest10, load_power7
+from .postgres.loader import load_dmv11, load_forest10, load_power7
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq1_workload_generalization import (
     PROTOCOL_V2_PATH,
@@ -43,6 +43,7 @@ from .system_freeze_v2 import (
 )
 
 POWER7 = "arecel-power7"
+DMV11 = "arecel-dmv11"
 DESIGN_SPLIT = "valid"
 EVALUATION_SPLIT = "test"
 SAMPLE_ROWS = 10_000
@@ -91,6 +92,10 @@ PREFLIGHT_PATH = Path(
 )
 RESULT_PATH = Path("experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json")
 BASELINE_PATH = Path("experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json")
+DMV11_BASELINE_PATH = Path(
+    "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json"
+)
+DMV11_BASELINE_DIGEST = "9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd"
 
 
 class RQ1BValidationError(ValueError):
@@ -194,6 +199,37 @@ FOREST10_SPEC = RQ1BDatasetSpec(
     result_format="rq1-workload-generalization-forest10-v1",
     preflight_format="rq1-workload-generalization-forest10-preflight-v1",
     runtime_name="forest10",
+    campaign_attempt_index=1,
+)
+
+DMV11_SPEC = RQ1BDatasetSpec(
+    dataset_id=DMV11,
+    cli_name="dmv11",
+    dataset_module=DATASETS[DMV11],
+    loader=load_dmv11,
+    records_loader=DATASETS[DMV11].load_records,
+    valid_workload_id="arecel_dmv11_valid_v1",
+    valid_workload_sha256="b2b98540a800a0a8cafac2cd9d5a21c61db954eddd401d2df1f633a2edbe2dd5",
+    valid_canonical_workload_sha256="71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+    valid_observations_path=Path(
+        "truth/arecel/dmv11/authoritative-cardinality-observations-valid-v1.json"
+    ),
+    valid_observations_sha256="f1586fc00d7dcd719aeb58a512c41a397f5b9afbc7be0b48cbfb30b4ee7417e0",
+    valid_audit_path=Path("truth/arecel/dmv11/audit-valid-v1.json"),
+    dataset_content_identity="6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    test_workload_id="arecel_dmv11_test_v1",
+    test_workload_sha256="fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d",
+    test_observations_path=Path(
+        "truth/arecel/dmv11/authoritative-cardinality-observations-v1.json"
+    ),
+    test_observations_sha256="aaedaf54313926fb03efb1051ba58c86b17729cad372a69e9c6faf5b192eb37a",
+    baseline_path=DMV11_BASELINE_PATH,
+    baseline_semantic_digest=DMV11_BASELINE_DIGEST,
+    output_root=Path("experiments/arecel-dmv11/rq1-workload-generalization-v1"),
+    design_format="rq1-workload-generalization-dmv11-design-v1",
+    result_format="rq1-workload-generalization-dmv11-v1",
+    preflight_format="rq1-workload-generalization-dmv11-preflight-v1",
+    runtime_name="dmv11",
     campaign_attempt_index=1,
 )
 
@@ -1723,6 +1759,29 @@ def validate_forest10_rq1b_preflight(
     return validate_rq1b_preflight(value, research_root=research_root, spec=FOREST10_SPEC)
 
 
+def write_dmv11_rq1b_preflight(
+    *, research_root: Path, output: Path | None = None
+) -> dict[str, Any]:
+    return write_rq1b_preflight(research_root=research_root, output=output, spec=DMV11_SPEC)
+
+
+def build_dmv11_rq1b_preflight(
+    *, research_root: Path, producer_sha: str, output: Path | None = None
+) -> dict[str, Any]:
+    return build_rq1b_preflight(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        output=output,
+        spec=DMV11_SPEC,
+    )
+
+
+def validate_dmv11_rq1b_preflight(
+    value: Mapping[str, Any], *, research_root: Path
+) -> dict[str, Any]:
+    return validate_rq1b_preflight(value, research_root=research_root, spec=DMV11_SPEC)
+
+
 def _run_live_command(command: Sequence[str]) -> None:
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
     if completed.returncode:
@@ -2618,6 +2677,34 @@ def run_forest10_rq1b_formal(
     )
 
 
+def run_dmv11_rq1b_formal(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    stock_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    data_root: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    runtime_root: Path | None = None,
+) -> dict[str, Any]:
+    return run_rq1b_formal(
+        research_root=research_root,
+        preflight_path=preflight_path,
+        stock_dsn=stock_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        stock_postgres_root=stock_postgres_root,
+        data_root=data_root,
+        advisor_command=advisor_command,
+        runtime_root=runtime_root,
+        spec=DMV11_SPEC,
+    )
+
+
 def publish_result(
     *, result: Mapping[str, Any], output: Path, spec: RQ1BDatasetSpec = POWER7_SPEC
 ) -> dict[str, Any]:
@@ -2641,6 +2728,8 @@ __all__ = [
     "DEPLOYMENT_PATH",
     "DESIGN_FORMAT",
     "DESIGN_PATH",
+    "DMV11",
+    "DMV11_SPEC",
     "EVALUATION_SPLIT",
     "FOREST10_SPEC",
     "K_S",
@@ -2655,6 +2744,7 @@ __all__ = [
     "RQ1BDatasetSpec",
     "RQ1BValidationError",
     "build_design_artifact",
+    "build_dmv11_rq1b_preflight",
     "build_forest10_rq1b_preflight",
     "build_power7_rq1b_preflight",
     "build_power7_rq1b_result",
@@ -2671,6 +2761,7 @@ __all__ = [
     "publish_result",
     "resolve_power7_rq1b_evaluation_inputs_after_seal",
     "resolve_rq1b_evaluation_inputs_after_seal",
+    "run_dmv11_rq1b_formal",
     "run_forest10_rq1b_formal",
     "run_power7_rq1b_design",
     "run_power7_rq1b_evaluation",
@@ -2681,6 +2772,7 @@ __all__ = [
     "strict_unseen_filter",
     "summarize_qerrors",
     "validate_design_artifact",
+    "validate_dmv11_rq1b_preflight",
     "validate_forest10_rq1b_preflight",
     "validate_power7_rq1b_preflight",
     "validate_power7_rq1b_result",
@@ -2688,6 +2780,7 @@ __all__ = [
     "validate_rq1b_result",
     "validate_test_evaluation_records",
     "verify_power7_formal_tree",
+    "write_dmv11_rq1b_preflight",
     "write_forest10_rq1b_preflight",
     "write_power7_rq1b_preflight",
     "write_rq1b_preflight",

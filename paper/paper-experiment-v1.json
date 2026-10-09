@@ -409,6 +409,10 @@
         "evidence_eligible": true,
         "scientific_reexecution": false
       },
+      "dmv11_runner_readiness": "implementation-ready",
+      "dmv11_formal_evidence_status": "not-produced",
+      "dmv11_next_formal_attempt": "attempt-1-pending",
+      "dmv11_formal_attempts": [],
       "pre_search_smoke_artifact": {
         "path": "experiments/arecel-power7/rq1-workload-generalization-v1/diagnostics/pre-search-sandbox-smoke-v1.json",
         "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e"

@@ -143,7 +143,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–5 remain non-evidence provenance, while attempt 6 completed the Power7 child once. Forest10 attempt 1 also completed once and is evidence-eligible after offline validation; Census13 and DMV11 remain unexecuted, so the cross-dataset RQ1b campaign remains incomplete. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–5 remain non-evidence provenance, while attempt 6 completed the Power7 child once. Forest10 attempt 1 also completed once and is evidence-eligible after offline validation; DMV11 is implementation-ready with formal attempt 1 pending, while Census13 remains unexecuted, so the cross-dataset RQ1b campaign remains incomplete. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -217,7 +217,8 @@ review.
 Any future campaign must evaluate managed DSNs in the same shell process and
 launch Advisor from the verified frozen checkout through a runtime-local
 launcher rather than a bare `PATH` command. Power7 and Forest10 are complete
-at dataset scope, while Census13 and DMV11 remain unexecuted. The required
+at dataset scope, DMV11 is implementation-ready with formal attempt 1 pending,
+and Census13 remains unexecuted. The required
 shell sequence is:
 
 ```bash
