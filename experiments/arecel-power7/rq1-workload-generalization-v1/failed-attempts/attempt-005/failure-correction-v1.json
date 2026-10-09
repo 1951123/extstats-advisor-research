@@ -1,0 +1,39 @@
+{
+  "format_version": "rq1-workload-generalization-failure-correction-v1",
+  "status": "append-only-provenance-correction",
+  "attempt_index": 5,
+  "supersedes": {
+    "path": "experiments/arecel-power7/rq1-workload-generalization-v1/failed-attempts/attempt-005/failure-v1.json",
+    "semantic_digest": "4c5aeef9248d1073538d091ba74f32b8330c065f0bd858028f841e59d3b08931"
+  },
+  "correction_reason": "subsequent diagnostic and canonical-runner inspection established that the failing frozen Advisor command was `sandbox prepare postgres`, not `snapshot capture postgres`",
+  "failure_stage": "design-stage-sandbox-prepare",
+  "failure_class": "planner-sandbox-database-catalog-mismatch",
+  "execution_boundary": {
+    "snapshot_capture_completed": true,
+    "authoritative_truth_import_completed": true,
+    "candidate_generation_completed": true,
+    "native_repository_materialization_completed": true,
+    "sandbox_prepare_started": true,
+    "sandbox_prepare_completed": false,
+    "singleton_profiling_started": false,
+    "search_started": false,
+    "recommendation_sealed": false,
+    "test_side_accessed": false,
+    "deployment_started": false,
+    "explain_count": 0
+  },
+  "stderr_preservation": {
+    "original_sandbox_stderr_preserved": false,
+    "note": "original sandbox stderr was not preserved; this correction does not claim literal runtime stderr text"
+  },
+  "catalog_contract": {
+    "snapshot_catalog": "extstats_stock",
+    "patched_managed_database": "extstats_patched",
+    "frozen_sandbox_contract": "current_database() must equal snapshot relation catalog",
+    "contract_mismatch_present": true,
+    "explanation": "the managed stock and patched clusters represented different logical database names even though the Advisor sandbox contract requires them to represent the same logical catalog"
+  },
+  "evidence_eligibility": false,
+  "semantic_digest": "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
+}

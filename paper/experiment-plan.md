@@ -18,10 +18,11 @@ retained as non-evidence provenance. A fourth invocation failed at the frozen
 Advisor launcher probe because `pyarrow` was missing; it is retained as
 non-evidence environment provenance. RQ4 heuristic ablations, RQ3, and RQ5 remain separate
 incomplete work. A fifth invocation reached the fresh valid-side Power7 load
-and initial `ANALYZE`, but its frozen Advisor snapshot command returned code 2
-before snapshot publication; it is retained as non-evidence pre-search
-provenance. No attempt 6 is pending while the snapshot cause is diagnosed. The
-formal four-child RQ2 transfer
+and initial `ANALYZE`, completed snapshot/candidate/native-repository setup,
+and failed during frozen Advisor sandbox preparation because the managed stock
+and patched logical database names differed; it is retained as non-evidence
+pre-search provenance. No attempt 6 is pending while the pre-search smoke is
+diagnosed. The formal four-child RQ2 transfer
 campaign is complete under the frozen v2 protocol; historical transfer
 directories remain pilot evidence.
 
@@ -138,7 +139,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–4 are retained as pre-execution non-evidence provenance, and attempt 5 reached the valid-side snapshot stage but failed before search. No attempt 6 is pending during diagnosis. |
+| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–4 are retained as pre-execution non-evidence provenance, and attempt 5 reached valid-side snapshot/candidate/native-repository setup but failed during sandbox preparation. No attempt 6 is pending during pre-search smoke diagnosis. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -200,9 +201,11 @@ bare frozen `extstats-advisor` console script was not resolvable in `PATH`; it
 is also non-evidence. A fourth invocation then failed at the frozen Advisor
 launcher probe because `pyarrow` was missing; it is also non-evidence
 environment provenance. A fifth invocation then reached the fresh valid-side
-Power7 load and initial `ANALYZE` but failed when the frozen Advisor snapshot
-command returned code 2; it is retained as non-evidence pre-search provenance.
-No attempt 6 is pending while the snapshot cause is diagnosed. A future attempt
+Power7 load and initial `ANALYZE`, completed snapshot/candidate/native-
+repository setup, and failed during frozen Advisor sandbox preparation because
+the managed stock and patched logical database names differed; it is retained
+as non-evidence pre-search provenance. No attempt 6 is pending while the
+pre-search smoke is diagnosed. A future attempt
 must evaluate managed DSNs in the same
 shell process before invoking the formal command, and must launch Advisor from
 the verified frozen checkout through a runtime-local launcher rather than a

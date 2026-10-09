@@ -35,6 +35,14 @@ SOURCE_AUDIT = ROOT / "experiments/rq1-workload-generalization-source-audit-v1.j
 PROTOCOL_V2 = ROOT / "paper/rq1-workload-generalization-protocol-v2.json"
 SOURCE_AUDIT_V2 = ROOT / "experiments/rq1-workload-generalization-source-audit-v2.json"
 STRICT_UNSEEN = ROOT / "experiments/rq1-workload-generalization-strict-unseen-v1.json"
+ATTEMPT5_FAILURE = ROOT / (
+    "experiments/arecel-power7/rq1-workload-generalization-v1/"
+    "failed-attempts/attempt-005/failure-v1.json"
+)
+ATTEMPT5_CORRECTION = ROOT / (
+    "experiments/arecel-power7/rq1-workload-generalization-v1/"
+    "failed-attempts/attempt-005/failure-correction-v1.json"
+)
 
 
 def test_all_audited_splits_have_exact_counts_and_namespaces() -> None:
@@ -259,6 +267,25 @@ def test_source_audit_digest_and_identity_mutations_fail(tmp_path: Path) -> None
         validate_source_audit(path, ROOT)
 
 
+def test_attempt5_failure_correction_is_append_only_and_signed() -> None:
+    original = json.loads(ATTEMPT5_FAILURE.read_text(encoding="utf-8"))
+    correction = json.loads(ATTEMPT5_CORRECTION.read_text(encoding="utf-8"))
+    assert original["semantic_digest"] == (
+        "4c5aeef9248d1073538d091ba74f32b8330c065f0bd858028f841e59d3b08931"
+    )
+    assert correction["supersedes"] == {
+        "path": "experiments/arecel-power7/rq1-workload-generalization-v1/"
+        "failed-attempts/attempt-005/failure-v1.json",
+        "semantic_digest": original["semantic_digest"],
+    }
+    assert correction["semantic_digest"] == semantic_digest(
+        {key: item for key, item in correction.items() if key != "semantic_digest"}
+    )
+    assert correction["failure_stage"] == "design-stage-sandbox-prepare"
+    assert correction["catalog_contract"]["contract_mismatch_present"] is True
+    assert correction["evidence_eligibility"] is False
+
+
 def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     spec = load_paper_spec(ROOT / "paper/paper-experiment-v1.json")
     assert validate_paper_spec(spec)["status"] == "valid"
@@ -268,11 +295,14 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "power7-attempt-5-snapshot-failed-before-search"
+    assert rq1b["formal_execution"] == "power7-attempt-5-sandbox-prepare-failed-before-search"
     assert rq1b["formal_evidence_status"] == "not-produced"
-    assert rq1b["next_formal_attempt"] == "none-pending-snapshot-diagnosis"
+    assert rq1b["next_formal_attempt"] == "none-pending-pre-search-smoke"
     assert len(rq1b["power7_formal_attempts"]) == 5
-    assert rq1b["power7_formal_attempts"][-1]["status"] == "pre-search-snapshot-failed"
+    assert rq1b["power7_formal_attempts"][-1]["status"] == "pre-search-sandbox-prepare-failed"
+    assert rq1b["power7_formal_attempts"][-1]["correction_artifact"]["semantic_digest"] == (
+        "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
+    )
     assert rq1b["protocol"] == "paper/rq1-workload-generalization-protocol-v2.json"
     assert rq1b["source_audit"] == "experiments/rq1-workload-generalization-source-audit-v2.json"
     assert (
