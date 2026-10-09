@@ -1,0 +1,96 @@
+{
+  "advisor_execution_policy": {
+    "launcher_source": "verified advisor_root/src",
+    "mode": "frozen-checkout-runtime-launcher",
+    "path_lookup_allowed": false,
+    "source_checkout_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+  },
+  "campaign_attempt_index": 1,
+  "dataset": {
+    "benchmark_id": "arecel-dmv11",
+    "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    "dataset_id": "arecel-dmv11",
+    "design_truth": {
+      "dataset_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "observations_sha256": "f1586fc00d7dcd719aeb58a512c41a397f5b9afbc7be0b48cbfb30b4ee7417e0",
+      "path": "truth/arecel/dmv11/authoritative-cardinality-observations-valid-v1.json",
+      "query_count": 10000,
+      "source_split": "valid",
+      "workload_id": "arecel_dmv11_valid_v1"
+    },
+    "design_workload": {
+      "canonical_source_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "query_count": 10000,
+      "sha256": "b2b98540a800a0a8cafac2cd9d5a21c61db954eddd401d2df1f633a2edbe2dd5",
+      "source_split": "valid",
+      "workload_id": "arecel_dmv11_valid_v1"
+    },
+    "relation": "public.dmv11",
+    "rows": 11591877,
+    "schema_contract_id": "arecel-dmv11-postgres-schema-v1"
+  },
+  "design_output": {
+    "canonical_path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/design-v1.json"
+  },
+  "evaluation_bindings": {
+    "rq1a_baseline": {
+      "path": "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json",
+      "semantic_digest": "9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd"
+    },
+    "source_audit": {
+      "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+      "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+    },
+    "strict_unseen": {
+      "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+      "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+    },
+    "truth_policy": {
+      "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+      "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+    }
+  },
+  "evaluation_output": {
+    "canonical_path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/result-v1.json"
+  },
+  "formal_execution": "not-started",
+  "format_version": "rq1-workload-generalization-dmv11-preflight-v1",
+  "no_formal_execution_started": true,
+  "parameters": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100
+  },
+  "preseal_evaluation_content_unread": true,
+  "prior_failed_attempt": null,
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "research_commit_sha": "d426a1c2bc59284c82f44f5963c62a75f890916f",
+  "semantic_digest": "a9849f53965ffa3e903039b2a17a8368efefb6871d43c88bc7b1e70761c10cad",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "ready-to-run",
+  "strict_unseen_membership": {
+    "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+    "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+  },
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}

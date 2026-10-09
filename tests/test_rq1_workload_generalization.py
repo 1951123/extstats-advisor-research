@@ -295,8 +295,8 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "forest10-attempt-1-complete"
-    assert rq1b["formal_evidence_status"] == "forest10-child-complete"
+    assert rq1b["formal_execution"] == "dmv11-attempt-1-complete"
+    assert rq1b["formal_evidence_status"] == "dmv11-child-complete"
     assert rq1b["next_formal_attempt"] == "none-pending-review"
     assert rq1b["power7_runner_readiness"] == "formal-evidence-published"
     assert rq1b["forest10_runner_readiness"] == "formal-evidence-published"
@@ -328,10 +328,35 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["forest10_formal_evidence"]["result_path"] == (
         "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json"
     )
-    assert rq1b["dmv11_runner_readiness"] == "implementation-ready"
-    assert rq1b["dmv11_formal_evidence_status"] == "not-produced"
-    assert rq1b["dmv11_next_formal_attempt"] == "attempt-1-pending"
-    assert rq1b["dmv11_formal_attempts"] == []
+    assert rq1b["dmv11_runner_readiness"] == "formal-evidence-published"
+    assert rq1b["dmv11_formal_evidence_status"] == "complete"
+    assert rq1b["dmv11_next_formal_attempt"] == "none-pending-until-review"
+    assert len(rq1b["dmv11_formal_attempts"]) == 1
+    dmv_attempt = rq1b["dmv11_formal_attempts"][-1]
+    assert dmv_attempt["attempt_index"] == 1
+    assert dmv_attempt["status"] == "complete"
+    assert dmv_attempt["scientific_pipeline_status"] == "complete"
+    assert dmv_attempt["evidence_eligible"] is True
+    assert dmv_attempt["formal_invocation_count"] == 1
+    assert dmv_attempt["producer_sha"] == ("d426a1c2bc59284c82f44f5963c62a75f890916f")
+    assert dmv_attempt["preflight_semantic_digest"] == (
+        "a9849f53965ffa3e903039b2a17a8368efefb6871d43c88bc7b1e70761c10cad"
+    )
+    assert dmv_attempt["design_semantic_digest"] == (
+        "550da1e174ad16680d270f531bff4eeb0dc03421c6773b5a7d73a6c88e2172bf"
+    )
+    assert dmv_attempt["deployment_semantic_digest"] == (
+        "0a62dc07fd4919f1f4c8903b18d7961016a5c207a873d34e6df84169bd2b18d2"
+    )
+    assert dmv_attempt["per_query_sha256"] == (
+        "8745be88f458528f8e52e2d9ec95cbf89d5e31cd04451ba9064948dbeb427654"
+    )
+    assert dmv_attempt["result_semantic_digest"] == (
+        "f7aabb8ac7839457cb49bd3dd21e57e482a9967141ef45174293b5c06422b53c"
+    )
+    assert rq1b["dmv11_formal_evidence"]["result_path"] == (
+        "experiments/arecel-dmv11/rq1-workload-generalization-v1/result-v1.json"
+    )
     assert rq1b["forest10_formal_evidence"]["producer_sha"] == (
         "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
     )

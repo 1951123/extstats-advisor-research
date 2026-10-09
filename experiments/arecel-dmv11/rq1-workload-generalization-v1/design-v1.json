@@ -1,0 +1,103 @@
+{
+  "cleanup": {
+    "passed": false,
+    "required_before_publish": true
+  },
+  "dataset": {
+    "benchmark_id": "arecel-dmv11",
+    "content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+    "dataset_id": "arecel-dmv11",
+    "relation": "public.dmv11",
+    "rows": 11591877,
+    "schema_contract_id": "arecel-dmv11-postgres-schema-v1"
+  },
+  "design_stage": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "advisor_run_manifest_digest": "2778f141c9bf26f2f8725c5a2767b66f8966d30e62a599713f0d44dac4562f5d",
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "candidate_universe_digest": "9304ede03241f94d81f1cd7d71844086943f2c3a0a4a19d47ec03b1f801ee1ee",
+    "deployment_ordered_candidate_ids": [
+      "cand_fd56d3e85e0b429a3f462940",
+      "cand_a07bbc2e2594948c9a4c3a95",
+      "cand_42ed628a6d8a654defddab49",
+      "cand_8162a38aea89775313b42381",
+      "cand_3a498f54ecc7dfd98afd238c"
+    ],
+    "design_stage_complete": true,
+    "ground_truth_set_digest": "f59d1e8d8e727548ec174fee2a60f71ab6bb2e274a58a74f2849c3a8bec6b756",
+    "input_split": "valid",
+    "native_repository_digest": "8c6032ff44bf66909532387201232a55c3f5bc3f4316c33915be44c702fdeb91",
+    "optimization_plan_digest": "fc5a83abf48a361e11d39755ef11eb1d3cf6533aef990daeefde979b99ba2265",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "recommendation_digest": "213ea5f8c8b14c197d66584d879d81e965d23db51637c78a0e6cfcd6afb61c9e",
+    "recommendation_sealed": true,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "search_baseline_objective": 269.40216473928865,
+    "search_final_objective": 48.963435607914036,
+    "search_result_digest": "a568a003593c55ce3155b66bae4a3d6137bb1c4c486ab36b8ffc614aa52ed620",
+    "selected_candidate_ids": [
+      "cand_fd56d3e85e0b429a3f462940",
+      "cand_a07bbc2e2594948c9a4c3a95",
+      "cand_42ed628a6d8a654defddab49",
+      "cand_8162a38aea89775313b42381",
+      "cand_3a498f54ecc7dfd98afd238c"
+    ],
+    "singleton_profile_digest": "34b39572556b5525440461c5c1ebc6320bb442798701762585a1f9c36009b8d2",
+    "snapshot_digest": "863556ba039e7ecef45324114a639a40c252e74fd6806a048f532a0dec822290",
+    "statistics_target": 100,
+    "termination_reason": "local-optimum",
+    "truth": {
+      "collection_contract": "authoritative-external-exact-cardinality-v1",
+      "dataset_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+      "observations_semantic_digest": "a183421a90f4cc9aa5778cd3a208ef1040af92886769a38689982aba0f0665e7",
+      "observations_sha256": "f1586fc00d7dcd719aeb58a512c41a397f5b9afbc7be0b48cbfb30b4ee7417e0",
+      "policy_status": "preregistered",
+      "query_count": 10000,
+      "source_kind": "authoritative-external-exact",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "workload_id": "arecel_dmv11_valid_v1"
+    },
+    "workload": {
+      "canonical_source_sha256": "71bb6e3c61da5ab1096cc52d41e7f696d486e4a3ba1c4586c01119df26fe9f40",
+      "query_count": 10000,
+      "sha256": "b2b98540a800a0a8cafac2cd9d5a21c61db954eddd401d2df1f633a2edbe2dd5",
+      "workload_id": "arecel_dmv11_valid_v1"
+    }
+  },
+  "evaluation_stage": {
+    "recommendation_input_is_immutable": true,
+    "status": "not-started",
+    "test_inputs_accessed": false
+  },
+  "experiment_id": "rq1-held-out-workload-generalization",
+  "format_version": "rq1-workload-generalization-dmv11-design-v1",
+  "producer": {
+    "research_commit_sha": "d426a1c2bc59284c82f44f5963c62a75f890916f"
+  },
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "rq": "RQ1b",
+  "semantic_digest": "550da1e174ad16680d270f531bff4eeb0dc03421c6773b5a7d73a6c88e2172bf",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "design-complete",
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}
