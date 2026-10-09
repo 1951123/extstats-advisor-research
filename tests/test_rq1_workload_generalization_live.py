@@ -450,9 +450,12 @@ def test_result_digest_correction_changes_only_digest(monkeypatch: pytest.Monkey
     corrected = copy.deepcopy(raw)
     corrected["semantic_digest"] = built["semantic_digest"]
     assert [key for key in raw if raw[key] != corrected[key]] == ["semantic_digest"]
-    assert live.semantic_digest(
-        {key: value for key, value in corrected.items() if key != "semantic_digest"}
-    ) == corrected["semantic_digest"]
+    assert (
+        live.semantic_digest(
+            {key: value for key, value in corrected.items() if key != "semantic_digest"}
+        )
+        == corrected["semantic_digest"]
+    )
 
 
 def test_frozen_deployment_contract_excludes_runtime_metadata(tmp_path: Path) -> None:
