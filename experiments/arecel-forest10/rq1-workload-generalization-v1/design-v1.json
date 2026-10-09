@@ -1,0 +1,107 @@
+{
+  "cleanup": {
+    "passed": false,
+    "required_before_publish": true
+  },
+  "dataset": {
+    "benchmark_id": "arecel-forest10",
+    "content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "dataset_id": "arecel-forest10",
+    "relation": "public.forest10",
+    "rows": 581012,
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1"
+  },
+  "design_stage": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "advisor_run_manifest_digest": "b14a9929aca19155c307037c3dfc5358e9ab57fa480f88af679d2cfc0d1106b1",
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "candidate_universe_digest": "cb780367729131f91689d63e3ebac6dc369f7ab1b7795f17ca42dc49dcbba112",
+    "deployment_ordered_candidate_ids": [
+      "cand_e32a0fce8c8a2e0e7ca4dd87",
+      "cand_8538d66cc781cd0155880b68",
+      "cand_f282360c2fc866e601ec5e1f",
+      "cand_61ce4939fa9faf8006927709",
+      "cand_f71f05d4fc3d16dbb558fa9f",
+      "cand_1a95245949f74ac91d940870",
+      "cand_2bec5e2097b1c67e1a6ee460"
+    ],
+    "design_stage_complete": true,
+    "ground_truth_set_digest": "77891810717060ce5891dcdd27c86789bef6c09000dd29c923be6f6ff50f79f8",
+    "input_split": "valid",
+    "native_repository_digest": "739c2c0732999ac15c00e986b28a98e585e43a57683981effc33f5a100e97bf4",
+    "optimization_plan_digest": "e44283671c73f85fadd4cfe5e7bb48b5cb115f1bf8e96dd34b0805ef1d1974ca",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "recommendation_digest": "86529ea9dabe9f57c7caa60fd811ddf375cd342df5c14604fa6c19cf10079cc5",
+    "recommendation_sealed": true,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "search_baseline_objective": 6.783142595259455,
+    "search_final_objective": 6.468452690767807,
+    "search_result_digest": "8f44b550429ded15e4ce4bd7696c1c6834034387661c41dce413becd5c069160",
+    "selected_candidate_ids": [
+      "cand_e32a0fce8c8a2e0e7ca4dd87",
+      "cand_8538d66cc781cd0155880b68",
+      "cand_f282360c2fc866e601ec5e1f",
+      "cand_61ce4939fa9faf8006927709",
+      "cand_f71f05d4fc3d16dbb558fa9f",
+      "cand_1a95245949f74ac91d940870",
+      "cand_2bec5e2097b1c67e1a6ee460"
+    ],
+    "singleton_profile_digest": "79d8514d69530941731cbb0acf61f7c3985ab67edfad2464f651c1118b11733a",
+    "snapshot_digest": "8ffc6be1e27f43fd34314eda9abd490890875d2a6fb796f853a888150d66f67a",
+    "statistics_target": 100,
+    "termination_reason": "local-optimum",
+    "truth": {
+      "collection_contract": "authoritative-external-exact-cardinality-v1",
+      "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "observations_semantic_digest": "850d2bbbd332d83b4ee51f2f03aebdc96ff3e7b65d103c1d8aed7e85f2ad9f3e",
+      "observations_sha256": "fbd68c2b22600d69e29cedbfd567716d9a613cf2d1d434298f1f661e73f8a414",
+      "policy_status": "preregistered",
+      "query_count": 10000,
+      "source_kind": "authoritative-external-exact",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "workload_id": "arecel_forest10_valid_v1"
+    },
+    "workload": {
+      "canonical_source_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "query_count": 10000,
+      "sha256": "e589bf277cf8303bfaf12943e651e5ba10065f8510df9b0f195dff7dfc1b5cb5",
+      "workload_id": "arecel_forest10_valid_v1"
+    }
+  },
+  "evaluation_stage": {
+    "recommendation_input_is_immutable": true,
+    "status": "not-started",
+    "test_inputs_accessed": false
+  },
+  "experiment_id": "rq1-held-out-workload-generalization",
+  "format_version": "rq1-workload-generalization-forest10-design-v1",
+  "producer": {
+    "research_commit_sha": "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
+  },
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "rq": "RQ1b",
+  "semantic_digest": "3a77258a694a880270d80420be1f9b3359383b28a98a36b419560cc2c8d54a31",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "design-complete",
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}

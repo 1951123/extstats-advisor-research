@@ -295,14 +295,46 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "power7-attempt-6-complete"
-    assert rq1b["formal_evidence_status"] == "power7-child-complete"
-    assert rq1b["next_formal_attempt"] == "forest10-attempt-1-pending"
+    assert rq1b["formal_execution"] == "forest10-attempt-1-complete"
+    assert rq1b["formal_evidence_status"] == "forest10-child-complete"
+    assert rq1b["next_formal_attempt"] == "none-pending-review"
     assert rq1b["power7_runner_readiness"] == "formal-evidence-published"
-    assert rq1b["forest10_runner_readiness"] == "implementation-ready"
-    assert rq1b["forest10_formal_evidence_status"] == "not-produced"
-    assert rq1b["forest10_next_formal_attempt"] == "attempt-1-pending"
-    assert rq1b["forest10_formal_attempts"] == []
+    assert rq1b["forest10_runner_readiness"] == "formal-evidence-published"
+    assert rq1b["forest10_formal_evidence_status"] == "complete"
+    assert rq1b["forest10_next_formal_attempt"] == "none-pending-until-review"
+    assert len(rq1b["forest10_formal_attempts"]) == 1
+    forest_attempt = rq1b["forest10_formal_attempts"][-1]
+    assert forest_attempt["attempt_index"] == 1
+    assert forest_attempt["status"] == "complete"
+    assert forest_attempt["scientific_pipeline_status"] == "complete"
+    assert forest_attempt["evidence_eligible"] is True
+    assert forest_attempt["formal_invocation_count"] == 1
+    assert forest_attempt["producer_sha"] == "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
+    assert forest_attempt["preflight_semantic_digest"] == (
+        "06e18f9631b6066b19c00351a388ba42514c0181409c6f7b8d1b54fcd0157dd8"
+    )
+    assert forest_attempt["design_semantic_digest"] == (
+        "3a77258a694a880270d80420be1f9b3359383b28a98a36b419560cc2c8d54a31"
+    )
+    assert forest_attempt["deployment_semantic_digest"] == (
+        "d24621881b1bdabb36d2bac156df13db3a95f439f0c7483784c5606191aa6cc8"
+    )
+    assert forest_attempt["per_query_sha256"] == (
+        "40753a85902396e4cf48bfd9f8b0c0a4fd0c1ec79705d72bade19d3f2373732a"
+    )
+    assert forest_attempt["result_semantic_digest"] == (
+        "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd"
+    )
+    assert rq1b["forest10_formal_evidence"]["result_path"] == (
+        "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json"
+    )
+    assert rq1b["forest10_formal_evidence"]["producer_sha"] == (
+        "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
+    )
+    assert rq1b["forest10_formal_evidence"]["evidence_eligible"] is True
+    assert rq1b["forest10_formal_evidence"]["result_semantic_digest"] == (
+        "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd"
+    )
     assert len(rq1b["power7_formal_attempts"]) == 6
     assert rq1b["power7_formal_attempts"][-1]["status"] == "complete"
     assert rq1b["power7_formal_attempts"][-1]["evidence_eligible"] is True

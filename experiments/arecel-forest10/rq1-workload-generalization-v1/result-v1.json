@@ -1,0 +1,240 @@
+{
+  "baselines": {
+    "pg16-default": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9705.0,
+        "mean": 7.143716269173957,
+        "p50": 1.2165525964606128,
+        "p95": 16.85334665334665,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 4322,
+        "unchanged": 2811,
+        "worsened": 2867
+      }
+    },
+    "pg16-target10000": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9374.0,
+        "mean": 7.149641349595915,
+        "p50": 1.208396574971899,
+        "p95": 17.0,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 3888,
+        "unchanged": 2788,
+        "worsened": 3324
+      }
+    }
+  },
+  "cleanup": {
+    "passed": true
+  },
+  "dataset": {
+    "benchmark_id": "arecel-forest10",
+    "content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "dataset_id": "arecel-forest10",
+    "relation": "public.forest10",
+    "rows": 581012,
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1"
+  },
+  "design_stage": {
+    "design_artifact_semantic_digest": "3a77258a694a880270d80420be1f9b3359383b28a98a36b419560cc2c8d54a31",
+    "recommendation_digest": "86529ea9dabe9f57c7caa60fd811ddf375cd342df5c14604fa6c19cf10079cc5",
+    "recommendation_sealed": true
+  },
+  "evaluation_stage": {
+    "advisor": {
+      "command": "/home/wqts/projects/extstats-advisor-research/.runtime/rq1b-forest10/frozen-extstats-advisor",
+      "source_checkout_verified": true,
+      "source_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+    },
+    "deployment": {
+      "logical_path": "experiments/arecel-forest10/rq1-workload-generalization-v1/deployment-result-v1.json",
+      "semantic_digest": "d24621881b1bdabb36d2bac156df13db3a95f439f0c7483784c5606191aa6cc8",
+      "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    },
+    "evaluation_split": "test",
+    "per_query_artifact": {
+      "logical_path": "experiments/arecel-forest10/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl",
+      "query_count": 10000,
+      "sha256": "40753a85902396e4cf48bfd9f8b0c0a4fd0c1ec79705d72bade19d3f2373732a"
+    },
+    "stock_postgresql": {
+      "evaluation_mode": "stock-full-data-deployment",
+      "ordinary_statistics_target": 100,
+      "postgres_version": "16.14",
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    },
+    "strict_unseen_derived_by_offline_filter": true,
+    "test_evaluated_once": true,
+    "test_query_count": 10000,
+    "test_truth": {
+      "observations_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+      "query_count": 10000,
+      "workload_id": "arecel_forest10_test_v1"
+    },
+    "test_workload": {
+      "query_count": 10000,
+      "sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6",
+      "workload_id": "arecel_forest10_test_v1"
+    }
+  },
+  "experiment_id": "rq1-held-out-workload-generalization",
+  "format_version": "rq1-workload-generalization-forest10-v1",
+  "full_test_metrics": {
+    "pg16-default": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9705.0,
+        "mean": 7.143716269173957,
+        "p50": 1.2165525964606128,
+        "p95": 16.85334665334665,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 4322,
+        "unchanged": 2811,
+        "worsened": 2867
+      }
+    },
+    "pg16-target10000": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9374.0,
+        "mean": 7.149641349595915,
+        "p50": 1.208396574971899,
+        "p95": 17.0,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 3888,
+        "unchanged": 2788,
+        "worsened": 3324
+      }
+    }
+  },
+  "producer": {
+    "research_commit_sha": "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c"
+  },
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "provenance": {
+    "acceptance_target": "none; metrics are reported regardless of direction",
+    "no_production_exact": true,
+    "no_second_planner_evaluation": true
+  },
+  "recommendation_comparison": {
+    "intersection_count": 0,
+    "jaccard": 0.0,
+    "s_test_count": 8,
+    "s_test_secondary_only": true,
+    "s_valid_count": 7,
+    "union_count": 15
+  },
+  "rq": "RQ1b",
+  "semantic_digest": "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "success",
+  "strict_unseen_membership": {
+    "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+    "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+  },
+  "strict_unseen_metrics": {
+    "pg16-default": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9705.0,
+        "mean": 7.143716269173957,
+        "p50": 1.2165525964606128,
+        "p95": 16.85334665334665,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 4322,
+        "unchanged": 2811,
+        "worsened": 2867
+      },
+      "subset_fraction": 1.0,
+      "subset_query_count": 10000
+    },
+    "pg16-target10000": {
+      "advisor": {
+        "max": 9343.0,
+        "mean": 6.6760284337600755,
+        "p50": 1.183878212611528,
+        "p95": 15.0,
+        "p99": 64.50500000000011,
+        "query_count": 10000
+      },
+      "baseline": {
+        "max": 9374.0,
+        "mean": 7.149641349595915,
+        "p50": 1.208396574971899,
+        "p95": 17.0,
+        "p99": 71.0,
+        "query_count": 10000
+      },
+      "paired": {
+        "improved": 3888,
+        "unchanged": 2788,
+        "worsened": 3324
+      },
+      "subset_fraction": 1.0,
+      "subset_query_count": 10000
+    }
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}

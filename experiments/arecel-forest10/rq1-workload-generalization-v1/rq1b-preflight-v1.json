@@ -1,0 +1,96 @@
+{
+  "advisor_execution_policy": {
+    "launcher_source": "verified advisor_root/src",
+    "mode": "frozen-checkout-runtime-launcher",
+    "path_lookup_allowed": false,
+    "source_checkout_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+  },
+  "campaign_attempt_index": 1,
+  "dataset": {
+    "benchmark_id": "arecel-forest10",
+    "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "dataset_id": "arecel-forest10",
+    "design_truth": {
+      "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+      "observations_sha256": "fbd68c2b22600d69e29cedbfd567716d9a613cf2d1d434298f1f661e73f8a414",
+      "path": "truth/arecel/forest10/authoritative-cardinality-observations-valid-v1.json",
+      "query_count": 10000,
+      "source_split": "valid",
+      "workload_id": "arecel_forest10_valid_v1"
+    },
+    "design_workload": {
+      "canonical_source_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "query_count": 10000,
+      "sha256": "e589bf277cf8303bfaf12943e651e5ba10065f8510df9b0f195dff7dfc1b5cb5",
+      "source_split": "valid",
+      "workload_id": "arecel_forest10_valid_v1"
+    },
+    "relation": "public.forest10",
+    "rows": 581012,
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1"
+  },
+  "design_output": {
+    "canonical_path": "experiments/arecel-forest10/rq1-workload-generalization-v1/design-v1.json"
+  },
+  "evaluation_bindings": {
+    "rq1a_baseline": {
+      "path": "experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json",
+      "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436"
+    },
+    "source_audit": {
+      "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+      "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+    },
+    "strict_unseen": {
+      "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+      "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+    },
+    "truth_policy": {
+      "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+      "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+    }
+  },
+  "evaluation_output": {
+    "canonical_path": "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json"
+  },
+  "formal_execution": "not-started",
+  "format_version": "rq1-workload-generalization-forest10-preflight-v1",
+  "no_formal_execution_started": true,
+  "parameters": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100
+  },
+  "preseal_evaluation_content_unread": true,
+  "prior_failed_attempt": null,
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "research_commit_sha": "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c",
+  "semantic_digest": "06e18f9631b6066b19c00351a388ba42514c0181409c6f7b8d1b54fcd0157dd8",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "ready-to-run",
+  "strict_unseen_membership": {
+    "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+    "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+  },
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}
