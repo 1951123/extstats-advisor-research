@@ -100,6 +100,33 @@ def test_census13_preflight_is_in_memory_design_safe_and_attempt_one(
         raise AssertionError(f"unexpected command during offline preflight: {command}")
 
     monkeypatch.setattr(live.subprocess, "run", fake_run)
+    monkeypatch.setattr(
+        live,
+        "_design_source_spec",
+        lambda root, data_root=None, spec=live.CENSUS13_SPEC: {
+            "dataset_id": spec.dataset_id,
+            "benchmark_id": spec.dataset_id,
+            "dataset_content_identity": spec.dataset_content_identity,
+            "relation": spec.dataset_module.RELATION,
+            "schema_contract_id": spec.dataset_module.SCHEMA_CONTRACT_ID,
+            "rows": spec.dataset_module.EXPECTED_ROWS,
+            "design_workload": {
+                "source_split": "valid",
+                "workload_id": spec.valid_workload_id,
+                "sha256": spec.valid_workload_sha256,
+                "query_count": live.SAMPLE_ROWS,
+                "canonical_source_sha256": spec.valid_canonical_workload_sha256,
+            },
+            "design_truth": {
+                "source_split": "valid",
+                "path": spec.valid_observations_path.as_posix(),
+                "observations_sha256": spec.valid_observations_sha256,
+                "workload_id": spec.valid_workload_id,
+                "query_count": live.SAMPLE_ROWS,
+                "dataset_identity": spec.dataset_content_identity,
+            },
+        },
+    )
     value = live.build_census13_rq1b_preflight(
         research_root=ROOT,
         producer_sha=producer,
