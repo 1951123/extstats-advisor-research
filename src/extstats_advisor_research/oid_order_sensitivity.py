@@ -13,12 +13,17 @@ import gc
 import gzip
 import hashlib
 import json
+import math
+import os
 import random
+import re
 import shutil
 import subprocess
 import sys
 import time
+import uuid
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +62,259 @@ SAMPLE_ROWS = 10_000
 SAMPLE_SEED = 42
 STATISTICS_TARGET = 100
 COLLISION_POLICY = "left-rotate-by-one-until-unique"
+READINESS_PATH = OUTPUT_ROOT / "attempts" / "attempt-002" / "readiness-v1.json"
+READINESS_FORMAT = "postgresql-extstats-oid-order-sensitivity-readiness-v1"
+
+
+@dataclass
+class ExecutionState:
+    """Owned resources and phase history for one non-retryable invocation."""
+
+    invocation_id: str = field(default_factory=lambda: uuid.uuid4().hex)
+    phase: str = "preflight"
+    phases: list[dict[str, Any]] = field(default_factory=list)
+    stock_owned: bool = False
+    patched_owned: bool = False
+    snapshot_completed: bool = False
+    sandbox_prepared: bool = False
+    hypothetical_active: bool = False
+    physical_deployment_started: bool = False
+    synthetic_fixture_created: bool = False
+    cleanup: list[dict[str, Any]] = field(default_factory=list)
+
+    def transition(self, phase: str) -> None:
+        self.phase = phase
+        self.phases.append({"phase": phase, "timestamp_monotonic": time.monotonic()})
+
+
+class CommandFailure(RuntimeError):
+    """A command failure retaining diagnostics for append-only provenance."""
+
+    def __init__(
+        self,
+        command: Sequence[str],
+        returncode: int,
+        stdout: str,
+        stderr: str,
+        elapsed_seconds: float,
+    ) -> None:
+        self.command = tuple(command)
+        self.returncode = returncode
+        self.stdout = stdout
+        self.stderr = stderr
+        self.elapsed_seconds = elapsed_seconds
+        super().__init__(f"command failed ({returncode}): {_redact_command(command)}")
+
+
+def _redact_command(command: Sequence[str]) -> list[str]:
+    return [re.sub(r"(password=)[^ ]+", r"\1<redacted>", str(item)) for item in command]
+
+
+def _redact_text(value: str) -> str:
+    return re.sub(r"(password=)[^\s]+", r"\1<redacted>", value)
+
+
+def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
+    """Create one artifact without replacing an existing attempt record."""
+
+    path = Path(path)
+    if path.exists() or path.is_symlink():
+        raise FileExistsError(f"append-only artifact already exists: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
+    payload = (json.dumps(value, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    try:
+        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+        try:
+            offset = 0
+            while offset < len(payload):
+                offset += os.write(fd, payload[offset:])
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+        # link() gives collision rejection even if another writer races us.
+        os.link(temporary, path)
+        os.unlink(temporary)
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+
+
+def write_failure_artifact(
+    path: Path,
+    *,
+    producer_sha: str,
+    preflight_path: Path,
+    preflight: Mapping[str, Any],
+    state: ExecutionState,
+    exception: BaseException,
+    cleanup_errors: Sequence[Mapping[str, Any]] = (),
+) -> dict[str, Any]:
+    """Persist one append-only failure record without masking the primary error."""
+
+    failure: dict[str, Any] = {
+        "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
+        "experiment_id": EXPERIMENT_ID,
+        "attempt_index": 2,
+        "status": "non-evidence-remediation-or-pre-execution-failure",
+        "invocation_id": state.invocation_id,
+        "scientific_producer_sha": producer_sha,
+        "preflight": {
+            "path": str(preflight_path),
+            "semantic_digest": preflight.get("semantic_digest"),
+            "byte_sha256": sha256_file(preflight_path),
+        },
+        "phase": state.phase,
+        "phase_transitions": [item["phase"] for item in state.phases],
+        "resource_state": {
+            "stock_owned": state.stock_owned,
+            "patched_owned": state.patched_owned,
+            "snapshot_completed": state.snapshot_completed,
+            "sandbox_prepared": state.sandbox_prepared,
+            "hypothetical_active": state.hypothetical_active,
+            "physical_deployment_started": state.physical_deployment_started,
+            "synthetic_fixture_created": state.synthetic_fixture_created,
+        },
+        "cleanup": [dict(item) for item in state.cleanup],
+        "exception": {
+            "type": f"{type(exception).__module__}.{type(exception).__name__}",
+            "message": _redact_text(str(exception)),
+        },
+        "cleanup_errors": [dict(item) for item in cleanup_errors],
+        "execution_boundary": {
+            "explain_count": 0,
+            "rq1b_w_test_accessed": False,
+            "scientific_evidence_eligible": False,
+        },
+        "formal_execution": "NOT_EXECUTED" if state.phase == "preflight" else "FAILED",
+        "formal_invocation_count": 0,
+        "retry_performed": False,
+        "evidence_eligible": False,
+    }
+    if isinstance(exception, CommandFailure):
+        failure["command"] = {
+            "argv": _redact_command(exception.command),
+            "returncode": exception.returncode,
+            "elapsed_seconds": exception.elapsed_seconds,
+            "stdout": _redact_text(exception.stdout),
+            "stderr": _redact_text(exception.stderr),
+        }
+    failure["semantic_digest"] = semantic_digest(failure)
+    _atomic_write_json(path, failure)
+    return failure
+
+
+def build_readiness_artifact(
+    *, root: Path, implementation_commit_sha: str, verification: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Build append-only readiness metadata; this never executes scientific work."""
+
+    protocol_path = root / PROTOCOL_PATH
+    preflight_path = root / PREFLIGHT_PATH
+    failure_path = root / OUTPUT_ROOT / "failed-attempts/attempt-001/failure-v1.json"
+    protocol = read_json(protocol_path)
+    preflight = read_json(preflight_path)
+    failure = read_json(failure_path)
+    value: dict[str, Any] = {
+        "format_version": READINESS_FORMAT,
+        "experiment_id": EXPERIMENT_ID,
+        "status": "READY_FOR_INDEPENDENT_REVIEW",
+        "formal_execution": "NOT_EXECUTED",
+        "formal_invocation_count": 0,
+        "implementation_commit_sha": implementation_commit_sha,
+        "protocol": {
+            "path": PROTOCOL_PATH.as_posix(),
+            "semantic_digest": protocol["semantic_digest"],
+            "byte_sha256": sha256_file(protocol_path),
+        },
+        "original_preflight": {
+            "path": PREFLIGHT_PATH.as_posix(),
+            "semantic_digest": preflight["semantic_digest"],
+            "byte_sha256": sha256_file(preflight_path),
+        },
+        "attempt_001_failure": {
+            "path": failure_path.relative_to(root).as_posix(),
+            "semantic_digest": failure["semantic_digest"],
+            "byte_sha256": sha256_file(failure_path),
+        },
+        "treatment_identity": {
+            "seeds": list(SEEDS),
+            "collision_policy": COLLISION_POLICY,
+            "datasets": {
+                item["dataset_id"]: {
+                    "selected_k": len(item["reference_order"]),
+                    "permutations": item["permutations"],
+                }
+                for item in protocol["datasets"]
+            },
+        },
+        "verification": dict(verification),
+        "unresolved_blockers": [],
+        "scientific_execution": {
+            "attempt_002_started": False,
+            "postgresql_started": False,
+            "advisor_invoked": False,
+            "explain_executed": False,
+            "rq1b_w_test_accessed": False,
+        },
+    }
+    value["semantic_digest"] = semantic_digest(value)
+    return value
+
+
+def write_readiness_artifact(
+    *, root: Path, implementation_commit_sha: str, verification: Mapping[str, Any]
+) -> dict[str, Any]:
+    value = build_readiness_artifact(
+        root=root,
+        implementation_commit_sha=implementation_commit_sha,
+        verification=verification,
+    )
+    _atomic_write_json(root / READINESS_PATH, value)
+    return value
+
+
+def validate_readiness_artifact(value: Mapping[str, Any], *, root: Path) -> dict[str, Any]:
+    """Validate append-only Attempt 2 readiness metadata and frozen links."""
+
+    if value.get("format_version") != READINESS_FORMAT:
+        raise ValueError("unsupported OID-order readiness format")
+    if value.get("semantic_digest") != semantic_digest(_body(value)):
+        raise ValueError("OID-order readiness semantic digest mismatch")
+    if value.get("experiment_id") != EXPERIMENT_ID:
+        raise ValueError("OID-order readiness experiment identity drift")
+    if value.get("status") != "READY_FOR_INDEPENDENT_REVIEW":
+        raise ValueError("OID-order readiness status is not review-ready")
+    if value.get("formal_execution") != "NOT_EXECUTED":
+        raise ValueError("OID-order readiness formal execution drift")
+    if value.get("formal_invocation_count") != 0:
+        raise ValueError("OID-order readiness invocation count drift")
+    implementation_sha = value.get("implementation_commit_sha")
+    if not isinstance(implementation_sha, str) or not re.fullmatch(
+        r"[0-9a-f]{40}", implementation_sha
+    ):
+        raise ValueError("OID-order readiness implementation binding is invalid")
+    protocol_path = root / PROTOCOL_PATH
+    preflight_path = root / PREFLIGHT_PATH
+    failure_path = root / OUTPUT_ROOT / "failed-attempts/attempt-001/failure-v1.json"
+    for binding_name, path in (
+        ("protocol", protocol_path),
+        ("original_preflight", preflight_path),
+        ("attempt_001_failure", failure_path),
+    ):
+        binding = value.get(binding_name)
+        if not isinstance(binding, Mapping):
+            raise TypeError(f"OID-order readiness {binding_name} binding is missing")
+        if binding.get("path") != path.relative_to(root).as_posix():
+            raise ValueError(f"OID-order readiness {binding_name} path drift")
+        if binding.get("byte_sha256") != sha256_file(path):
+            raise ValueError(f"OID-order readiness {binding_name} byte SHA drift")
+        actual_semantic = read_json(path).get("semantic_digest")
+        if binding.get("semantic_digest") != actual_semantic:
+            raise ValueError(f"OID-order readiness {binding_name} semantic binding drift")
+    validate_protocol(read_json(protocol_path), root=root)
+    validate_preflight(read_json(preflight_path), root=root)
+    return {"status": "valid", "semantic_digest": value["semantic_digest"]}
 
 
 def _sha256_text(value: str) -> str:
@@ -115,10 +373,14 @@ def deterministic_orders(reference: Sequence[str]) -> list[dict[str, Any]]:
     return orders
 
 
-def _canonical_valid_records(data_root: Path, dataset_key: str) -> list[dict[str, Any]]:
+def _canonical_valid_records(
+    data_root: Path, dataset_key: str, expected_sha256: str
+) -> list[dict[str, Any]]:
     path = data_root / "arecel" / "audit-v1" / f"{dataset_key}.canonical.jsonl.gz"
     if not path.is_file():
         raise FileNotFoundError(f"missing audited canonical workload: {path}")
+    if sha256_file(path) != expected_sha256:
+        raise ValueError(f"{dataset_key} canonical workload byte SHA drift")
     records: list[dict[str, Any]] = []
     with gzip.open(path, "rt", encoding="utf-8") as stream:
         for line in stream:
@@ -133,6 +395,12 @@ def _canonical_valid_records(data_root: Path, dataset_key: str) -> list[dict[str
                 )
     if len(records) != QUERY_COUNT:
         raise ValueError(f"{dataset_key} valid canonical workload count is not 10000")
+    if [item["index"] for item in records] != list(range(QUERY_COUNT)):
+        raise ValueError(f"{dataset_key} valid canonical workload indices are not contiguous")
+    if len({item["query_id"] for item in records}) != QUERY_COUNT:
+        raise ValueError(f"{dataset_key} valid canonical workload IDs are not unique")
+    if len({item["source_query_sha256"] for item in records}) != QUERY_COUNT:
+        raise ValueError(f"{dataset_key} canonical source hashes are not unique")
     return records
 
 
@@ -145,7 +413,10 @@ def _valid_workload(root: Path, data_root: Path, spec: RQ1BDatasetSpec) -> dict[
         workload = read_json(path)
     if identity["sha256"] != spec.valid_workload_sha256:
         raise ValueError(f"{spec.dataset_id} valid workload SHA drift")
-    canonical = _canonical_valid_records(data_root, spec.runtime_name)
+    canonical_path = data_root / "arecel" / "audit-v1" / f"{spec.runtime_name}.canonical.jsonl.gz"
+    canonical = _canonical_valid_records(
+        data_root, spec.runtime_name, spec.valid_canonical_workload_sha256
+    )
     if len(workload.get("queries", [])) != QUERY_COUNT:
         raise ValueError(f"{spec.dataset_id} extracted valid workload count is not 10000")
     queries: list[dict[str, Any]] = []
@@ -165,7 +436,7 @@ def _valid_workload(root: Path, data_root: Path, spec: RQ1BDatasetSpec) -> dict[
     return {
         "workload_id": identity["workload_id"],
         "sha256": identity["sha256"],
-        "canonical_source_sha256": spec.valid_canonical_workload_sha256,
+        "canonical_source_sha256": sha256_file(canonical_path),
         "query_count": QUERY_COUNT,
         "queries": queries,
     }
@@ -194,14 +465,17 @@ def _valid_workload_isolated(root: Path, data_root: Path, spec: RQ1BDatasetSpec)
 
 
 def _selected_membership(root: Path, spec: RQ1BDatasetSpec) -> dict[str, Any]:
+    from extstats_advisor.deployment.artifact import load_deployment_result
+
     design = read_json(root / spec.output_root / "design-v1.json")
-    deployment = read_json(root / spec.output_root / "deployment-result-v1.json")
     if design.get("semantic_digest") != semantic_digest(_body(design)):
         raise ValueError(f"{spec.dataset_id} design digest is invalid")
-    ordered = deployment.get("deployment_ordered_candidate_ids")
+    deployment_path = root / spec.output_root / "deployment-result-v1.json"
+    deployment_model = load_deployment_result(deployment_path)
+    ordered = list(deployment_model.deployment_ordered_candidate_ids)
     if ordered != design.get("design_stage", {}).get("deployment_ordered_candidate_ids"):
         raise ValueError(f"{spec.dataset_id} deployment order is not sealed design order")
-    objects = {item["candidate_id"]: item for item in deployment.get("deployed_objects", [])}
+    objects = {item.candidate_id: item for item in deployment_model.deployed_objects}
     if set(objects) != set(ordered):
         raise ValueError(f"{spec.dataset_id} deployment membership is incomplete")
     definitions = []
@@ -210,16 +484,16 @@ def _selected_membership(root: Path, spec: RQ1BDatasetSpec) -> dict[str, Any]:
         definitions.append(
             {
                 "candidate_id": candidate_id,
-                "kind": item["kind"],
-                "column_ordinals": item["column_ordinals"],
-                "statistics_target": item["statistics_target"],
+                "kind": item.kind,
+                "column_ordinals": list(item.column_ordinals),
+                "statistics_target": item.statistics_target,
             }
         )
     return {
         "candidate_ids": list(ordered),
         "definitions": definitions,
         "recommendation_digest": design["design_stage"]["recommendation_digest"],
-        "deployment_digest": deployment["semantic_digest"],
+        "deployment_digest": deployment_model.computed_semantic_digest,
         "design_digest": design["semantic_digest"],
     }
 
@@ -230,14 +504,28 @@ def _truth_binding(root: Path, spec: RQ1BDatasetSpec) -> dict[str, Any]:
     truth_digest = semantic_digest(_body(wire))
     if sha256_file(path) != spec.valid_observations_sha256:
         raise ValueError(f"{spec.dataset_id} valid truth byte SHA drift")
+    if wire.get("workload_id") != spec.valid_workload_id:
+        raise ValueError(f"{spec.dataset_id} valid truth workload ID drift")
     truths = wire.get("truths")
     if not isinstance(truths, list) or len(truths) != QUERY_COUNT:
         raise ValueError(f"{spec.dataset_id} valid truth count is not 10000")
+    if any(not isinstance(item, Mapping) for item in truths):
+        raise ValueError(f"{spec.dataset_id} valid truth record is malformed")
+    ids = [item.get("query_id") for item in truths]
+    if len(set(ids)) != QUERY_COUNT:
+        raise ValueError(f"{spec.dataset_id} valid truth IDs are not unique")
+    if any(
+        not isinstance(item.get("cardinality"), int)
+        or isinstance(item.get("cardinality"), bool)
+        or item["cardinality"] < 0
+        for item in truths
+    ):
+        raise ValueError(f"{spec.dataset_id} valid truth cardinalities are invalid")
     return {
         "path": spec.valid_observations_path.as_posix(),
         "sha256": spec.valid_observations_sha256,
         "semantic_digest": truth_digest,
-        "workload_id": spec.valid_workload_id,
+        "workload_id": wire["workload_id"],
         "query_count": QUERY_COUNT,
     }
 
@@ -379,7 +667,77 @@ def build_protocol(*, root: Path, producer_sha: str) -> dict[str, Any]:
     return value
 
 
-def validate_protocol(value: Mapping[str, Any]) -> dict[str, Any]:
+def _validate_frozen_protocol_bindings(value: Mapping[str, Any], root: Path) -> None:
+    protocol_path = root / "paper/rq1-workload-generalization-protocol-v2.json"
+    source_audit_path = root / "experiments/rq1-workload-generalization-source-audit-v2.json"
+    rq1b_protocol = read_json(protocol_path)
+    source_audit = read_json(source_audit_path)
+    if value.get("source_bindings", {}).get("rq1b_protocol_v2") != {
+        "path": "paper/rq1-workload-generalization-protocol-v2.json",
+        "semantic_digest": rq1b_protocol.get("semantic_digest"),
+    }:
+        raise ValueError("OID-order RQ1b protocol source binding drift")
+    if value.get("source_bindings", {}).get("source_audit_v2") != {
+        "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+        "semantic_digest": source_audit.get("semantic_digest"),
+    }:
+        raise ValueError("OID-order source-audit binding drift")
+    if rq1b_protocol.get("semantic_digest") != semantic_digest(_body(rq1b_protocol)):
+        raise ValueError("RQ1b protocol source digest is invalid")
+    if source_audit.get("semantic_digest") != semantic_digest(_body(source_audit)):
+        raise ValueError("RQ1b source-audit digest is invalid")
+    freeze = read_json(root / "paper/system-freeze-v2.json")
+    validate_system_freeze_v2(freeze)
+    expected_system = formal_system_freeze_v2_identity()
+    if value.get("frozen_system", {}).get("system_freeze") != expected_system:
+        raise ValueError("OID-order system-freeze binding drift")
+
+    specs = {spec.dataset_id: spec for spec in DATASET_SPECS}
+    rows = {row.get("dataset_id"): row for row in source_audit.get("datasets", [])}
+    if set(specs) != {item.get("dataset_id") for item in value.get("datasets", [])}:
+        raise ValueError("OID-order dataset identity set drift")
+    for dataset in value["datasets"]:
+        dataset_id = dataset["dataset_id"]
+        spec = specs[dataset_id]
+        source = rows.get(dataset_id)
+        if not isinstance(source, Mapping):
+            raise TypeError(f"{dataset_id} source-audit row is missing")
+        expected = {
+            "dataset_id": spec.dataset_id,
+            "cli_name": spec.cli_name,
+            "relation": spec.dataset_module.RELATION,
+            "rows": spec.dataset_module.EXPECTED_ROWS,
+            "schema_contract_id": spec.dataset_module.SCHEMA_CONTRACT_ID,
+            "dataset_content_identity": spec.dataset_content_identity,
+            "upstream_commit": source.get("upstream_commit"),
+            "valid_workload_id": spec.valid_workload_id,
+            "valid_workload_sha256": spec.valid_workload_sha256,
+            "valid_canonical_workload_sha256": spec.valid_canonical_workload_sha256,
+            "valid_truth_path": spec.valid_observations_path.as_posix(),
+            "valid_truth_sha256": spec.valid_observations_sha256,
+            "valid_query_count": QUERY_COUNT,
+        }
+        for key, expected_value in expected.items():
+            if dataset.get(key) != expected_value:
+                raise ValueError(f"{dataset_id} immutable binding drift: {key}")
+        membership = _selected_membership(root, spec)
+        for key, membership_key in (
+            ("rq1b_design_digest", "design_digest"),
+            ("rq1b_recommendation_digest", "recommendation_digest"),
+            ("rq1b_deployment_digest", "deployment_digest"),
+        ):
+            if dataset.get(key) != membership[membership_key]:
+                raise ValueError(f"{dataset_id} RQ1b binding drift: {key}")
+        if dataset.get("reference_order") != membership["candidate_ids"]:
+            raise ValueError(f"{dataset_id} selected membership drift")
+        if dataset.get("selected_definitions") != membership["definitions"]:
+            raise ValueError(f"{dataset_id} selected definitions drift")
+        truth = _truth_binding(root, spec)
+        if dataset.get("valid_truth_sha256") != truth["sha256"]:
+            raise ValueError(f"{dataset_id} valid truth binding drift")
+
+
+def validate_protocol(value: Mapping[str, Any], *, root: Path | None = None) -> dict[str, Any]:
     if value.get("format_version") != FORMAT:
         raise ValueError("unsupported OID-order protocol format")
     if value.get("experiment_id") != EXPERIMENT_ID:
@@ -401,12 +759,14 @@ def validate_protocol(value: Mapping[str, Any]) -> dict[str, Any]:
         expected = deterministic_orders(reference)
         if dataset["permutations"] != expected:
             raise ValueError(f"{dataset['dataset_id']} permutation schedule drift")
+    if root is not None:
+        _validate_frozen_protocol_bindings(value, root.resolve())
     return {"status": "valid", "semantic_digest": value["semantic_digest"]}
 
 
 def build_preflight(*, root: Path, data_root: Path, producer_sha: str) -> dict[str, Any]:
     protocol = read_json(root / PROTOCOL_PATH)
-    validate_protocol(protocol)
+    validate_protocol(protocol, root=root)
     datasets: list[dict[str, Any]] = []
     for spec in DATASET_SPECS:
         protocol_dataset = next(
@@ -445,7 +805,7 @@ def validate_preflight(value: Mapping[str, Any], *, root: Path) -> dict[str, Any
     if value.get("format_version") != PREFLIGHT_FORMAT:
         raise ValueError("unsupported OID-order preflight format")
     protocol = read_json(root / PROTOCOL_PATH)
-    validate_protocol(protocol)
+    validate_protocol(protocol, root=root)
     if value.get("protocol") != {
         "path": PROTOCOL_PATH.as_posix(),
         "semantic_digest": protocol["semantic_digest"],
@@ -465,7 +825,24 @@ def validate_preflight(value: Mapping[str, Any], *, root: Path) -> dict[str, Any
         )
     ):
         raise ValueError("OID-order preflight contains test-side access")
-    for dataset in value.get("datasets", []):
+    if len(value.get("datasets", [])) != len(DATASET_SPECS):
+        raise ValueError("OID-order preflight must contain exactly four datasets")
+    expected_ids = {spec.dataset_id for spec in DATASET_SPECS}
+    actual_ids = {item.get("dataset_id") for item in value["datasets"]}
+    if actual_ids != expected_ids:
+        raise ValueError("OID-order preflight dataset identity set drift")
+    for dataset in value["datasets"]:
+        spec = next(item for item in DATASET_SPECS if item.dataset_id == dataset["dataset_id"])
+        protocol_dataset = next(
+            item for item in protocol["datasets"] if item["dataset_id"] == spec.dataset_id
+        )
+        if dataset.get("reference_order") != protocol_dataset["reference_order"]:
+            raise ValueError(f"{spec.dataset_id} preflight membership drift")
+        if dataset.get("valid_workload", {}).get("workload_id") != spec.valid_workload_id:
+            raise ValueError(f"{spec.dataset_id} preflight workload identity drift")
+        truth = _truth_binding(root, spec)
+        if dataset.get("valid_truth") != truth:
+            raise ValueError(f"{spec.dataset_id} preflight truth binding drift")
         workload = dataset.get("valid_workload", {})
         if (
             workload.get("query_count") != QUERY_COUNT
@@ -475,6 +852,17 @@ def validate_preflight(value: Mapping[str, Any], *, root: Path) -> dict[str, Any
         ids = [item.get("query_id") for item in workload["queries"]]
         if len(ids) != len(set(ids)):
             raise ValueError(f"{dataset.get('dataset_id')} preflight query IDs are duplicated")
+        truth_wire = read_json(root / spec.valid_observations_path)
+        truth_ids = [item["query_id"] for item in truth_wire["truths"]]
+        if set(ids) != set(truth_ids):
+            raise ValueError(f"{spec.dataset_id} preflight truth/workload IDs differ")
+        if any(
+            item.get("index") != index
+            or not _require_sha(item.get("source_query_sha256"), "source query SHA")
+            or not _require_sha(item.get("sql_sha256"), "SQL SHA")
+            for index, item in enumerate(workload["queries"])
+        ):
+            raise ValueError(f"{spec.dataset_id} preflight query manifest is malformed")
         if dataset.get("permutations") != deterministic_orders(dataset.get("reference_order", [])):
             raise ValueError(f"{dataset.get('dataset_id')} preflight permutation drift")
     return {
@@ -504,12 +892,19 @@ def _run_command(command: Sequence[str], log_dir: Path) -> dict[str, Any]:
     (log_dir / f"{stem}.stdout").write_text(result.stdout, encoding="utf-8")
     (log_dir / f"{stem}.stderr").write_text(result.stderr, encoding="utf-8")
     if result.returncode:
-        raise RuntimeError(f"command failed ({result.returncode}): {' '.join(command)}")
+        raise CommandFailure(
+            command,
+            result.returncode,
+            result.stdout,
+            result.stderr,
+            elapsed,
+        )
     return {
-        "returncode": 0,
+        "returncode": result.returncode,
         "stdout": result.stdout,
         "stderr": result.stderr,
         "elapsed_seconds": elapsed,
+        "argv": _redact_command(command),
     }
 
 
@@ -610,6 +1005,376 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
         return [json.loads(line) for line in stream]
 
 
+def _artifact_path(root: Path, value: Any, label: str) -> Path:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{label} path is missing")
+    path = Path(value)
+    if path.is_absolute():
+        raise ValueError(f"{label} path must be repository-relative")
+    resolved = (root / path).resolve()
+    if not resolved.is_relative_to(root.resolve()) or resolved.is_symlink():
+        raise ValueError(f"{label} path escapes repository")
+    if not resolved.is_file():
+        raise FileNotFoundError(f"missing {label}: {resolved}")
+    return resolved
+
+
+def _close_enough(actual: Any, expected: Any) -> bool:
+    return (
+        isinstance(actual, (int, float))
+        and isinstance(expected, (int, float))
+        and math.isclose(float(actual), float(expected), rel_tol=1e-12, abs_tol=1e-12)
+    )
+
+
+def _read_valid_context(
+    root: Path, dataset_id: str
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, str]]:
+    spec = next((item for item in DATASET_SPECS if item.dataset_id == dataset_id), None)
+    if spec is None:
+        raise ValueError(f"unknown OID-order dataset: {dataset_id}")
+    protocol = read_json(root / PROTOCOL_PATH)
+    validate_protocol(protocol, root=root)
+    preflight = read_json(root / PREFLIGHT_PATH)
+    validate_preflight(preflight, root=root)
+    dataset = next(item for item in preflight["datasets"] if item["dataset_id"] == dataset_id)
+    truth = read_json(root / spec.valid_observations_path)
+    if sha256_file(root / spec.valid_observations_path) != spec.valid_observations_sha256:
+        raise ValueError(f"{dataset_id} valid truth byte SHA drift")
+    if truth.get("workload_id") != spec.valid_workload_id:
+        raise ValueError(f"{dataset_id} valid truth workload identity drift")
+    truth_by_id = {item["query_id"]: str(item["cardinality"]) for item in truth["truths"]}
+    queries = dataset["valid_workload"]["queries"]
+    manifest = {item["query_id"]: item["sql_sha256"] for item in queries}
+    source = {f"source:{item['query_id']}": item["source_query_sha256"] for item in queries}
+    if set(truth_by_id) != set(manifest):
+        raise ValueError(f"{dataset_id} valid query/truth membership drift")
+    return (
+        protocol,
+        preflight,
+        manifest | source | {f"truth:{key}": value for key, value in truth_by_id.items()},
+    )
+
+
+def _validate_query_records(
+    *,
+    root: Path,
+    arm: Mapping[str, Any],
+    expected_dataset_id: str,
+    expected_permutation_id: str,
+    expected_execution_arm: str,
+    expected_sql: Mapping[str, str],
+    expected_truth: Mapping[str, str],
+) -> tuple[list[dict[str, Any]], str]:
+    path = _artifact_path(root, arm.get("per_query_path"), "per-query")
+    actual_sha = sha256_file(path)
+    if actual_sha != arm.get("per_query_sha256"):
+        raise ValueError(f"{expected_dataset_id}/{expected_permutation_id} per-query SHA drift")
+    try:
+        records = _read_jsonl(path)
+    except (OSError, EOFError, gzip.BadGzipFile, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError(
+            f"{expected_dataset_id}/{expected_permutation_id} invalid gzip JSONL"
+        ) from exc
+    if len(records) != QUERY_COUNT:
+        raise ValueError(f"{expected_dataset_id}/{expected_permutation_id} query count drift")
+    ids = [record.get("query_id") for record in records]
+    if len(set(ids)) != QUERY_COUNT or set(ids) != set(expected_sql):
+        raise ValueError(f"{expected_dataset_id}/{expected_permutation_id} query IDs drift")
+    for record in records:
+        required = {
+            "dataset_id",
+            "permutation_id",
+            "execution_arm",
+            "query_id",
+            "sql_sha256",
+            "source_query_sha256",
+            "truth",
+            "plan_rows",
+            "qerror",
+            "explain_sha256",
+        }
+        if set(record) != required:
+            raise ValueError(f"{expected_dataset_id}/{expected_permutation_id} record schema drift")
+        query_id = record["query_id"]
+        if record["dataset_id"] != expected_dataset_id:
+            raise ValueError("per-query dataset identity drift")
+        if record["permutation_id"] != expected_permutation_id:
+            raise ValueError("per-query permutation identity drift")
+        if record["execution_arm"] != expected_execution_arm:
+            raise ValueError("per-query execution-arm identity drift")
+        if record["sql_sha256"] != expected_sql[query_id]:
+            raise ValueError("per-query SQL identity drift")
+        if record["source_query_sha256"] != expected_truth[f"source:{query_id}"]:
+            raise ValueError("per-query source-query identity drift")
+        truth = record["truth"]
+        plan_rows = record["plan_rows"]
+        if (
+            not isinstance(truth, int)
+            or isinstance(truth, bool)
+            or truth < 0
+            or not isinstance(plan_rows, int)
+            or isinstance(plan_rows, bool)
+            or plan_rows < 0
+            or not isinstance(record["qerror"], (int, float))
+            or not math.isfinite(float(record["qerror"]))
+            or float(record["qerror"]) < 1.0
+            or not isinstance(record["explain_sha256"], str)
+            or len(record["explain_sha256"]) != 64
+        ):
+            raise ValueError("per-query numerical or EXPLAIN digest evidence is invalid")
+        if int(expected_truth[f"truth:{query_id}"]) != truth:
+            raise ValueError("per-query truth identity drift")
+        recomputed = qerror(plan_rows, truth)
+        if not _close_enough(record["qerror"], recomputed):
+            raise ValueError("per-query q-error is not reproducible")
+    return records, actual_sha
+
+
+def _validate_metrics(arm: Mapping[str, Any], records: Sequence[Mapping[str, Any]]) -> None:
+    expected = _aggregate(records)
+    actual = arm.get("metrics")
+    if not isinstance(actual, Mapping):
+        raise TypeError("arm metrics are missing")
+    for key, value in expected.items():
+        if key == "query_count":
+            if actual.get(key) != value:
+                raise ValueError("arm query-count metric drift")
+        elif not _close_enough(actual.get(key), value):
+            raise ValueError(f"arm metric drift: {key}")
+
+
+def _validate_synthetic_witness(value: Mapping[str, Any]) -> None:
+    if value.get("format_version") != "oid-order-overlapping-mcv-witness-v1":
+        raise ValueError("synthetic witness format drift")
+    if value.get("fixture_id") != "oid-order-overlapping-mcv-witness-v1":
+        raise ValueError("synthetic witness identity drift")
+    precondition = value.get("static_mechanism_precondition")
+    if not isinstance(precondition, Mapping):
+        raise TypeError("synthetic MCV tie precondition is missing")
+    if precondition.get("tie_precondition_source_level") is not True:
+        raise ValueError("synthetic MCV tie precondition was not established")
+    if precondition.get("runtime_tie_observation") != "not-directly-instrumented":
+        raise ValueError("synthetic runtime mechanism claim is overstated")
+    expected_arms = {"a-only", "b-only", "a-then-b", "b-then-a", "none"}
+    arms = value.get("arms")
+    if not isinstance(arms, Mapping) or set(arms) != expected_arms:
+        raise ValueError("synthetic witness arm inventory drift")
+    for arm in arms.values():
+        if not isinstance(arm, Mapping) or not arm.get("exact_root_plan_rows_match"):
+            raise ValueError("synthetic physical/hypothetical fidelity failed")
+    if value.get("physical_hypothetical_exact_match_count") != len(expected_arms):
+        raise ValueError("synthetic witness completeness drift")
+    if value.get("physical_hypothetical_arm_count") != len(expected_arms):
+        raise ValueError("synthetic witness arm count drift")
+    if value.get("post_cleanup") is not True:
+        raise ValueError("synthetic witness cleanup was not verified")
+
+
+def _validate_dataset_result(
+    *,
+    root: Path,
+    summary: Mapping[str, Any],
+    dataset_result: Mapping[str, Any],
+    protocol_dataset: Mapping[str, Any],
+    preflight_dataset: Mapping[str, Any],
+    expected_sql: Mapping[str, str],
+    expected_truth: Mapping[str, str],
+) -> None:
+    dataset_id = protocol_dataset["dataset_id"]
+    spec = next(item for item in DATASET_SPECS if item.dataset_id == dataset_id)
+    if dataset_result.get("format_version") != FORMAT:
+        raise ValueError(f"{dataset_id} dataset result format drift")
+    if dataset_result.get("dataset_id") != dataset_id:
+        raise ValueError(f"{dataset_id} dataset result identity drift")
+    if dataset_result.get("producer_research_sha") != summary.get("producer_research_sha"):
+        raise ValueError(f"{dataset_id} dataset producer binding drift")
+    if dataset_result.get("valid_workload") != {
+        "workload_id": protocol_dataset["valid_workload_id"],
+        "sha256": protocol_dataset["valid_workload_sha256"],
+        "canonical_source_sha256": protocol_dataset["valid_canonical_workload_sha256"],
+        "query_count": QUERY_COUNT,
+    }:
+        raise ValueError(f"{dataset_id} valid workload binding drift")
+    expected_membership = protocol_dataset["reference_order"]
+    candidate_membership = dataset_result.get("candidate_membership")
+    expected_membership_digest = semantic_digest({"candidate_ids": expected_membership})
+    if not isinstance(candidate_membership, Mapping):
+        raise TypeError(f"{dataset_id} candidate membership is missing")
+    if candidate_membership.get("candidate_ids") != expected_membership:
+        raise ValueError(f"{dataset_id} candidate membership drift")
+    if candidate_membership.get("digest") != expected_membership_digest:
+        raise ValueError(f"{dataset_id} candidate membership digest drift")
+    if candidate_membership.get("selected_k") != len(expected_membership):
+        raise ValueError(f"{dataset_id} selected-k drift")
+    if (
+        dataset_result.get("rq1b_reference", {}).get("design_digest")
+        != protocol_dataset["rq1b_design_digest"]
+    ):
+        raise ValueError(f"{dataset_id} design provenance drift")
+    if (
+        dataset_result.get("rq1b_reference", {}).get("recommendation_digest")
+        != protocol_dataset["rq1b_recommendation_digest"]
+    ):
+        raise ValueError(f"{dataset_id} Recommendation provenance drift")
+    if (
+        dataset_result.get("rq1b_reference", {}).get("deployment_digest")
+        != protocol_dataset["rq1b_deployment_digest"]
+    ):
+        raise ValueError(f"{dataset_id} deployment provenance drift")
+    if dataset_result.get("valid_truth", {}).get("query_count") != QUERY_COUNT:
+        raise ValueError(f"{dataset_id} valid truth count drift")
+    if (
+        dataset_result.get("valid_truth", {}).get("sha256")
+        != protocol_dataset["valid_truth_sha256"]
+    ):
+        raise ValueError(f"{dataset_id} valid truth provenance drift")
+    if (
+        dataset_result.get("test_workload_accessed") is not False
+        or dataset_result.get("test_truth_accessed") is not False
+    ):
+        raise ValueError(f"{dataset_id} test-side boundary was violated")
+    if dataset_result.get("evidence_eligible") is not False:
+        raise ValueError(
+            f"{dataset_id} raw dataset result cannot self-declare evidence eligibility"
+        )
+
+    definitions = {item["candidate_id"]: item for item in protocol_dataset["selected_definitions"]}
+    if candidate_membership.get("definitions") != protocol_dataset["selected_definitions"]:
+        raise ValueError(f"{dataset_id} selected definition binding drift")
+    arms = []
+    for group_name, expected_execution_arm in (
+        ("hypothetical", "controlled-hypothetical"),
+        ("physical", "stock-physical"),
+    ):
+        group = dataset_result.get(group_name)
+        if not isinstance(group, Mapping):
+            raise TypeError(f"{dataset_id} {group_name} arms are missing")
+        if set(group) != {item["permutation_id"] for item in protocol_dataset["permutations"]}:
+            raise ValueError(f"{dataset_id} {group_name} arm inventory drift")
+        arms.extend(
+            (group_name, arm_id, arm, expected_execution_arm) for arm_id, arm in group.items()
+        )
+
+    records_by_arm: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for group_name, arm_id, arm, expected_execution_arm in arms:
+        permutation = next(
+            item for item in protocol_dataset["permutations"] if item["permutation_id"] == arm_id
+        )
+        if not isinstance(arm, Mapping) or arm.get("status") != "complete":
+            raise ValueError(f"{dataset_id}/{group_name}/{arm_id} is incomplete")
+        if arm.get("prescribed_order") != permutation["order"]:
+            raise ValueError(f"{dataset_id}/{group_name}/{arm_id} order drift")
+        if arm.get("candidate_membership_digest") != expected_membership_digest:
+            raise ValueError(f"{dataset_id}/{group_name}/{arm_id} membership digest drift")
+        records, _ = _validate_query_records(
+            root=root,
+            arm=arm,
+            expected_dataset_id=dataset_id,
+            expected_permutation_id=arm_id,
+            expected_execution_arm=expected_execution_arm,
+            expected_sql=expected_sql,
+            expected_truth=expected_truth,
+        )
+        _validate_metrics(arm, records)
+        records_by_arm[(group_name, arm_id)] = records
+
+    reference_hyp = dataset_result["hypothetical"]["reference"]
+    reference_phys = dataset_result["physical"]["reference"]
+    for arm_id in dataset_result["hypothetical"]:
+        arm = dataset_result["hypothetical"][arm_id]
+        if arm.get("causal_status") != "controlled-order-only":
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical control status drift")
+        if len(arm.get("active_virtual_oids", [])) != len(expected_membership):
+            raise ValueError(f"{dataset_id}/{arm_id} virtual OID evidence incomplete")
+        if len(set(arm["active_virtual_oids"])) != len(expected_membership):
+            raise ValueError(f"{dataset_id}/{arm_id} virtual OID evidence is not unique")
+        if arm.get("payload_sha256_by_candidate") != reference_hyp.get(
+            "payload_sha256_by_candidate"
+        ):
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical payload realization drift")
+        diagnostics = _order_diagnostics(arm, reference_hyp)
+        if arm.get("order_diagnostics") != diagnostics:
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical diagnostics drift")
+
+    required_controls = {
+        "membership_and_definitions_equal",
+        "payload_bytes_equal_to_reference",
+        "ordinary_statistics_equal_to_reference",
+        "planner_settings_equal_to_reference",
+        "prescribed_oid_order_observed",
+        "relation_identity_equal",
+        "schema_identity_equal",
+        "statistics_target_equal",
+    }
+    for arm_id, arm in dataset_result["physical"].items():
+        controls = arm.get("causal_controls")
+        if not isinstance(controls, Mapping) or set(controls) != required_controls:
+            raise ValueError(f"{dataset_id}/{arm_id} physical controls are incomplete")
+        if any(not isinstance(controls[key], bool) for key in required_controls):
+            raise ValueError(f"{dataset_id}/{arm_id} physical controls are not observations")
+        if arm.get("actual_oid_order") != arm.get("prescribed_order"):
+            raise ValueError(f"{dataset_id}/{arm_id} physical OID order drift")
+        objects = arm.get("physical_oids")
+        if not isinstance(objects, list) or len(objects) != len(expected_membership):
+            raise ValueError(f"{dataset_id}/{arm_id} physical catalog evidence incomplete")
+        object_ids = [item.get("candidate_id") for item in objects]
+        if set(object_ids) != set(expected_membership) or len(set(object_ids)) != len(objects):
+            raise ValueError(f"{dataset_id}/{arm_id} physical membership drift")
+        if arm_id != "reference":
+            all_controls = all(controls.values())
+            expected_status = (
+                "order-only-identified" if all_controls else "confounded-operational-deployment"
+            )
+            if arm.get("causal_status") != expected_status:
+                raise ValueError(f"{dataset_id}/{arm_id} physical causal status drift")
+        diagnostics = _order_diagnostics(arm, reference_phys)
+        if arm.get("order_diagnostics") != diagnostics:
+            raise ValueError(f"{dataset_id}/{arm_id} physical diagnostics drift")
+        for item in objects:
+            candidate_id = item["candidate_id"]
+            if candidate_id not in definitions:
+                raise ValueError(f"{dataset_id}/{arm_id} unknown physical candidate")
+            expected_definition = definitions[candidate_id]
+            expected_kind = (
+                "mcv" if expected_definition["kind"] == "postgresql.mcv" else "dependencies"
+            )
+            expected_ordinals = list(expected_definition["column_ordinals"])
+            expected_names = [
+                spec.dataset_module.COLUMNS[int(ordinal) - 1][0] for ordinal in expected_ordinals
+            ]
+            if item.get("kind") != expected_kind:
+                raise ValueError(f"{dataset_id}/{arm_id} physical kind drift")
+            if item.get("column_ordinals") != expected_ordinals:
+                raise ValueError(f"{dataset_id}/{arm_id} physical column ordinal drift")
+            if item.get("column_names") != expected_names:
+                raise ValueError(f"{dataset_id}/{arm_id} physical column name drift")
+            if item.get("keys") != " ".join(str(value) for value in expected_ordinals):
+                raise ValueError(f"{dataset_id}/{arm_id} physical catalog key drift")
+            expected_candidate = dict(expected_definition)
+            expected_candidate["column_names"] = expected_names
+            if item.get("definition_fingerprint") != _definition_fingerprint(
+                candidate_id, expected_candidate
+            ):
+                raise ValueError(f"{dataset_id}/{arm_id} physical definition fingerprint drift")
+            if not item.get("payload_present") or not item.get("payload_sha256"):
+                raise ValueError(f"{dataset_id}/{arm_id} missing native payload evidence")
+            if item.get("statistics_target") != STATISTICS_TARGET:
+                raise ValueError(f"{dataset_id}/{arm_id} statistics target drift")
+
+    cleanup = dataset_result.get("cleanup")
+    if not isinstance(cleanup, Mapping) or cleanup.get("sandbox_destroyed") is not True:
+        raise ValueError(f"{dataset_id} cleanup evidence is incomplete")
+
+
+def _infer_repository_root(path: Path) -> Path:
+    resolved = Path(path).resolve()
+    for candidate in (resolved.parent, *resolved.parents):
+        if (candidate / PROTOCOL_PATH).is_file() and (candidate / PREFLIGHT_PATH).is_file():
+            return candidate
+    raise ValueError("cannot infer research repository root from OID result path")
+
+
 def _connection_settings(connection: Any) -> dict[str, str]:
     names = (
         "DateStyle",
@@ -631,6 +1396,29 @@ def _candidate_name(candidate_id: str) -> str:
     return f"oid_order_{candidate_id.removeprefix('cand_')}"
 
 
+def _definition_fingerprint(candidate_id: str, candidate: Mapping[str, Any]) -> str:
+    return semantic_digest(
+        {
+            "candidate_id": candidate_id,
+            "kind": candidate["kind"],
+            "column_ordinals": list(candidate["column_ordinals"]),
+            "column_names": list(candidate["column_names"]),
+            "statistics_target": STATISTICS_TARGET,
+        }
+    )
+
+
+def _load_sealed_snapshot(path: Path) -> Any:
+    """Reload and verify a serialized snapshot before importing authoritative truth."""
+
+    from extstats_advisor.snapshot.bundle import load_snapshot
+
+    snapshot = load_snapshot(path)
+    if not getattr(snapshot, "semantic_digest", None):
+        raise ValueError("serialized snapshot has no semantic digest")
+    return snapshot
+
+
 def _quote_identifier(value: str) -> str:
     return '"' + value.replace('"', '""') + '"'
 
@@ -646,6 +1434,7 @@ def _physical_arm(
     truth_by_id: Mapping[str, int],
     output: Path,
     dataset_id: str,
+    dataset_content_identity: str,
 ) -> dict[str, Any]:
     """Build one disposable stock clone, evaluate valid queries, and remove it."""
 
@@ -688,7 +1477,7 @@ def _physical_arm(
             conn.execute(f"ANALYZE {_quote_identifier(schema)}.{_quote_identifier(relation_name)}")
             settings = _connection_settings(conn)
             rows = conn.execute(
-                "SELECT e.oid::bigint, e.stxname, e.stxkind::text, e.stxkeys::text FROM pg_catalog.pg_statistic_ext e JOIN pg_catalog.pg_namespace n ON n.oid=e.stxnamespace JOIN pg_catalog.pg_class c ON c.oid=e.stxrelid WHERE n.nspname=%s AND c.relname=%s ORDER BY e.oid",
+                "SELECT e.oid::bigint, e.stxname, e.stxkind::text, e.stxkeys::text, e.stxstattarget FROM pg_catalog.pg_statistic_ext e JOIN pg_catalog.pg_namespace n ON n.oid=e.stxnamespace JOIN pg_catalog.pg_class c ON c.oid=e.stxrelid WHERE n.nspname=%s AND c.relname=%s ORDER BY e.oid",
                 (schema, relation_name),
             ).fetchall()
             by_name = {str(row[1]): row for row in rows}
@@ -709,8 +1498,12 @@ def _physical_arm(
                         "catalog_kind": str(row[2]),
                         "keys": str(row[3]),
                         "kind": kind,
+                        "column_ordinals": list(candidates[candidate_id]["column_ordinals"]),
                         "column_names": list(candidates[candidate_id]["column_names"]),
-                        "statistics_target": STATISTICS_TARGET,
+                        "statistics_target": int(row[4]),
+                        "definition_fingerprint": _definition_fingerprint(
+                            candidate_id, candidates[candidate_id]
+                        ),
                         "payload_sha256": payload["payload_sha256"],
                         "payload_size": payload["payload_size"],
                         "payload_present": payload["payload_size"] > 0,
@@ -727,6 +1520,7 @@ def _physical_arm(
                         "execution_arm": "stock-physical",
                         "query_id": query["query_id"],
                         "sql_sha256": _sha256_text(str(query["sql"])),
+                        "source_query_sha256": query["source_query_sha256"],
                         "truth": truth,
                         "plan_rows": plan_rows,
                         "qerror": qerror(plan_rows, truth),
@@ -758,6 +1552,9 @@ def _physical_arm(
             },
             "ordinary_statistics_fingerprint": fingerprint,
             "planner_settings": settings,
+            "database_identity": str(conninfo_to_dict(clone_dsn).get("dbname")),
+            "relation_identity": {"schema": schema, "relation": relation_name},
+            "dataset_content_identity": dataset_content_identity,
             "analyze_count": 1,
             "causal_status": "pending-payload-control",
         }
@@ -778,6 +1575,7 @@ def _hypothetical_arms(
     truth_by_id: Mapping[str, int],
     relation: str,
     dataset_id: str,
+    dataset_content_identity: str,
     output_dir: Path,
 ) -> dict[str, dict[str, Any]]:
     sys.path.insert(0, str(advisor_root / "src"))
@@ -826,6 +1624,7 @@ def _hypothetical_arms(
                         "execution_arm": "controlled-hypothetical",
                         "query_id": query["query_id"],
                         "sql_sha256": _sha256_text(str(query["sql"])),
+                        "source_query_sha256": query["source_query_sha256"],
                         "truth": truth,
                         "plan_rows": plan_rows,
                         "qerror": qerror(plan_rows, truth),
@@ -855,6 +1654,7 @@ def _hypothetical_arms(
                     candidate_id: payload_inventory[candidate_id]["size"] for candidate_id in order
                 },
                 "ordinary_statistics_fingerprint": repository.ordinary_stats_fingerprint,
+                "dataset_content_identity": dataset_content_identity,
                 "candidate_membership_digest": semantic_digest({"candidate_ids": list(order)}),
                 "planner_settings": _connection_settings(planner.connection),
                 "causal_status": "controlled-order-only",
@@ -862,16 +1662,78 @@ def _hypothetical_arms(
     return results
 
 
-def validate_result_artifact(path: Path) -> dict[str, Any]:
+def validate_result_artifact(path: Path, *, root: Path | None = None) -> dict[str, Any]:
+    """Independently validate the complete OID-order result bundle offline."""
+
+    path = Path(path)
+    root = (root or _infer_repository_root(path)).resolve()
     value = read_json(path)
     if value.get("format_version") != SUMMARY_FORMAT:
         raise ValueError("unsupported OID-order summary format")
     if value.get("semantic_digest") != semantic_digest(_body(value)):
         raise ValueError("OID-order summary semantic digest mismatch")
+    if value.get("status") != "complete":
+        raise ValueError("OID-order summary is not complete")
+    if value.get("experiment_id") != EXPERIMENT_ID:
+        raise ValueError("OID-order summary experiment identity drift")
+    protocol = read_json(root / PROTOCOL_PATH)
+    validate_protocol(protocol, root=root)
+    preflight = read_json(root / PREFLIGHT_PATH)
+    validate_preflight(preflight, root=root)
+    if value.get("producer_research_sha") != preflight.get("producer_research_sha"):
+        raise ValueError("OID-order summary producer binding drift")
+    if value.get("formal_invocation_count") != 1:
+        raise ValueError("OID-order summary invocation count drift")
+    frozen = value.get("frozen_system")
+    if frozen != {
+        "advisor_sha": FROZEN_ADVISOR_SHA,
+        "patched_postgres_sha": FROZEN_PATCHED_POSTGRES_SHA,
+        "stock_postgres_sha": FROZEN_STOCK_POSTGRES_SHA,
+        "postgres_version": "16.14",
+    }:
+        raise ValueError("OID-order summary frozen-system binding drift")
+    system_identity = value.get("system_identity")
+    if not isinstance(system_identity, Mapping):
+        raise TypeError("OID-order system identity evidence is missing")
+    dataset_results = value.get("dataset_results")
+    if not isinstance(dataset_results, list) or len(dataset_results) != len(DATASET_SPECS):
+        raise ValueError("OID-order dataset result inventory is incomplete")
+    if len({item.get("dataset_id") for item in dataset_results}) != len(DATASET_SPECS):
+        raise ValueError("OID-order dataset result IDs are not unique")
+    preflight_by_id = {item["dataset_id"]: item for item in preflight["datasets"]}
+    protocol_by_id = {item["dataset_id"]: item for item in protocol["datasets"]}
+    for dataset_result in dataset_results:
+        dataset_id = dataset_result.get("dataset_id")
+        if dataset_id not in protocol_by_id:
+            raise ValueError(f"unexpected OID-order dataset result: {dataset_id}")
+        _, _, bindings = _read_valid_context(root, dataset_id)
+        expected_sql = {
+            key: value
+            for key, value in bindings.items()
+            if not key.startswith("truth:") and not key.startswith("source:")
+        }
+        expected_truth = {
+            key: value for key, value in bindings.items() if key.startswith(("truth:", "source:"))
+        }
+        _validate_dataset_result(
+            root=root,
+            summary=value,
+            dataset_result=dataset_result,
+            protocol_dataset=protocol_by_id[dataset_id],
+            preflight_dataset=preflight_by_id[dataset_id],
+            expected_sql=expected_sql,
+            expected_truth=expected_truth,
+        )
+    synthetic = value.get("synthetic_witness")
+    if not isinstance(synthetic, Mapping):
+        raise TypeError("OID-order synthetic witness is missing")
+    _validate_synthetic_witness(synthetic)
     return {
         "status": "valid",
         "semantic_digest": value["semantic_digest"],
-        "dataset_count": len(value.get("datasets", [])),
+        "dataset_count": len(dataset_results),
+        "evidence_eligible": True,
+        "causal_controls_validated": True,
     }
 
 
@@ -928,19 +1790,65 @@ def _assemble_dataset_result(
         )
         settings_equal = arm["planner_settings"] == reference_settings
         order_equal = arm["actual_oid_order"] == arm["prescribed_order"]
+        reference_objects = {
+            item["candidate_id"]: item for item in reference_physical["physical_oids"]
+        }
+        observed_objects = {item["candidate_id"]: item for item in arm["physical_oids"]}
+        definitions_equal = set(observed_objects) == set(reference_objects) and all(
+            {
+                "kind",
+                "keys",
+                "column_names",
+                "statistics_target",
+                "definition_fingerprint",
+            }
+            <= set(observed_objects[candidate_id])
+            and all(
+                observed_objects[candidate_id].get(field)
+                == reference_objects[candidate_id].get(field)
+                for field in (
+                    "kind",
+                    "keys",
+                    "column_names",
+                    "statistics_target",
+                    "definition_fingerprint",
+                )
+            )
+            for candidate_id in reference_objects
+        )
+        relation_equal = arm.get("relation_identity") == reference_physical.get("relation_identity")
+        dataset_equal = arm.get("dataset_content_identity") == reference_physical.get(
+            "dataset_content_identity"
+        )
+        target_equal = all(
+            item.get("statistics_target") == STATISTICS_TARGET for item in arm["physical_oids"]
+        ) and all(
+            item.get("statistics_target") == STATISTICS_TARGET
+            for item in reference_physical["physical_oids"]
+        )
         arm["candidate_membership_digest"] = candidate_digest
         arm["causal_controls"] = {
-            "membership_and_definitions_equal": True,
+            "membership_and_definitions_equal": definitions_equal,
             "payload_bytes_equal_to_reference": payload_equal,
             "ordinary_statistics_equal_to_reference": ordinary_equal,
             "planner_settings_equal_to_reference": settings_equal,
             "prescribed_oid_order_observed": order_equal,
+            "relation_identity_equal": relation_equal and dataset_equal,
+            "schema_identity_equal": relation_equal,
+            "statistics_target_equal": target_equal,
         }
         arm["causal_status"] = (
             "reference-control"
             if arm_id == reference_id
-            else "causal-order-only"
-            if payload_equal and ordinary_equal and settings_equal and order_equal
+            else "order-only-identified"
+            if payload_equal
+            and ordinary_equal
+            and settings_equal
+            and order_equal
+            and definitions_equal
+            and relation_equal
+            and dataset_equal
+            and target_equal
             else "confounded-operational-deployment"
         )
         arm["order_diagnostics"] = _order_diagnostics(arm, reference_physical)
@@ -982,7 +1890,9 @@ def _assemble_dataset_result(
         "test_workload_accessed": False,
         "test_truth_accessed": False,
         "formal_execution_scope": "valid-only-order-ablation",
-        "evidence_eligible": True,
+        # The producer records only execution facts.  Evidence eligibility is
+        # granted by the independent offline validator after all controls pass.
+        "evidence_eligible": False,
         "cleanup": {"sandbox_destroyed": True, "runtime_removed": True},
     }
 
@@ -996,8 +1906,8 @@ def _run_overlapping_mcv_witness(
     from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
 
     del stock_dsn  # The patched catalogless backend is the source of this witness.
-    table = "oid_order_mcv_witness"
-    query = "SELECT * FROM oid_order_mcv_witness WHERE a = 1 AND b = 1 AND c = 1"
+    table = f"oid_order_mcv_witness_{uuid.uuid4().hex[:12]}"
+    query = f"SELECT * FROM {table} WHERE a = 1 AND b = 1 AND c = 1"
     arms = {
         "a-only": ("A",),
         "b-only": ("B",),
@@ -1013,7 +1923,7 @@ def _run_overlapping_mcv_witness(
     with psycopg.connect(patched_dsn, autocommit=True) as conn:
         conn.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
         conn.execute(f"DROP TABLE IF EXISTS {table}")
-        conn.execute(f"CREATE TABLE {table} (a integer, b integer, c integer)")
+        conn.execute(f"CREATE TEMP TABLE {table} (a integer, b integer, c integer)")
         conn.execute(
             f"INSERT INTO {table} SELECT CASE WHEN i <= 700 THEN 1 ELSE i % 10 END, "
             f"CASE WHEN i <= 700 THEN 1 ELSE i % 10 END, "
@@ -1109,6 +2019,13 @@ def _run_overlapping_mcv_witness(
         "format_version": "oid-order-overlapping-mcv-witness-v1",
         "fixture_id": "oid-order-overlapping-mcv-witness-v1",
         "query": query,
+        "static_mechanism_precondition": {
+            "mcvs": {"A": ["a", "b"], "B": ["b", "c"]},
+            "matching_attribute_count": {"A": 2, "B": 2},
+            "key_count": {"A": 2, "B": 2},
+            "tie_precondition_source_level": True,
+            "runtime_tie_observation": "not-directly-instrumented",
+        },
         "arms": results,
         "physical_hypothetical_exact_match_count": sum(
             item["exact_root_plan_rows_match"] for item in results.values()
@@ -1132,10 +2049,17 @@ def run_formal(
     patched_postgres_root: Path,
     stock_postgres_root: Path,
     producer_sha: str,
+    invocation_id: str,
+    failure_output: Path,
 ) -> dict[str, Any]:
     """Run the declared four-dataset experiment once; no retry is internal."""
 
     preflight = read_json(preflight_path)
+    state = ExecutionState(invocation_id=invocation_id)
+    if not invocation_id or not re.fullmatch(r"[A-Za-z0-9_.-]{8,128}", invocation_id):
+        raise ValueError("invocation_id must be an explicit stable token")
+    if failure_output.exists() or failure_output.is_symlink():
+        raise FileExistsError(f"failure output already exists: {failure_output}")
     validate_preflight(preflight, root=root)
     if preflight.get("producer_research_sha") != producer_sha:
         raise ValueError("preflight producer SHA does not match formal producer")
@@ -1156,16 +2080,35 @@ def run_formal(
     )
     runtime_base = root / ".runtime" / "oid-order-sensitivity-v1"
     runtime_base.mkdir(parents=True, exist_ok=False)
-    launcher = prepare_frozen_advisor_launcher(advisor_root=advisor_root, runtime_root=runtime_base)
-    launcher_path = Path(launcher["launcher_path"])
+    try:
+        state.transition("launcher-probe")
+        launcher = prepare_frozen_advisor_launcher(
+            advisor_root=advisor_root, runtime_root=runtime_base
+        )
+        launcher_path = Path(launcher["launcher_path"])
+    except Exception as error:
+        write_failure_artifact(
+            failure_output,
+            producer_sha=producer_sha,
+            preflight_path=preflight_path,
+            preflight=preflight,
+            state=state,
+            exception=error,
+        )
+        shutil.rmtree(runtime_base, ignore_errors=True)
+        raise
     dataset_results: list[dict[str, Any]] = []
     try:
+        state.transition("lab-preparation")
         prepare_power7_rq1b_formal_labs(
             advisor_root=advisor_root,
             patched_postgres_root=patched_postgres_root,
             stock_postgres_root=stock_postgres_root,
         )
+        state.stock_owned = True
+        state.patched_owned = True
         for dataset in preflight["datasets"]:
+            state.transition(f"{dataset['dataset_id']}:snapshot")
             spec = next(item for item in DATASET_SPECS if item.dataset_id == dataset["dataset_id"])
             runtime = runtime_base / spec.runtime_name
             runtime.mkdir(parents=True, exist_ok=False)
@@ -1197,7 +2140,7 @@ def run_formal(
             from extstats_advisor.dbms.base import AcquisitionRequest, SamplePolicy
             from extstats_advisor.dbms.postgres.acquisition import PostgresSnapshotAcquirer
             from extstats_advisor.ground_truth.artifact import write_ground_truth_set
-            from extstats_advisor.snapshot.bundle import load_snapshot, write_snapshot
+            from extstats_advisor.snapshot.bundle import write_snapshot
             from extstats_advisor.snapshot.model import Workload, WorkloadQuery
 
             from extstats_advisor_research.external_truth import import_audited_authoritative_truth
@@ -1218,8 +2161,10 @@ def run_formal(
                 w,
             )
             write_snapshot(snapshot, snapshot_path)
+            sealed_snapshot = _load_sealed_snapshot(snapshot_path)
+            state.snapshot_completed = True
             truth_set = import_audited_authoritative_truth(
-                snapshot,
+                sealed_snapshot,
                 root / spec.valid_observations_path,
                 authority="sfu-db/AreCELearnedYet",
                 dataset_identity=spec.dataset_content_identity,
@@ -1227,9 +2172,7 @@ def run_formal(
             )
             write_ground_truth_set(truth_set, runtime / "ground-truth.json")
             candidate_path = runtime / "candidate-universe.json"
-            write_candidate_universe(
-                derive_candidate_universe(load_snapshot(snapshot_path)), candidate_path
-            )
+            write_candidate_universe(derive_candidate_universe(sealed_snapshot), candidate_path)
             native_path = runtime / "native-stats-repository"
             materialize_native_repository(
                 advisor_root,
@@ -1253,6 +2196,8 @@ def run_formal(
                 ],
                 log_dir,
             )
+            state.sandbox_prepared = True
+            state.transition(f"{spec.dataset_id}:hypothetical")
             verify_result = _run_command(
                 [
                     str(launcher_path),
@@ -1271,13 +2216,21 @@ def run_formal(
             truth_by_id = {row["query_id"]: int(row["cardinality"]) for row in truth_wire["truths"]}
             if len(truth_by_id) != QUERY_COUNT:
                 raise ValueError(f"{spec.dataset_id} valid truth IDs are not unique")
+            manifest_by_id = {
+                item["query_id"]: item for item in dataset["valid_workload"]["queries"]
+            }
             queries = [
-                {"query_id": item.query_id, "sql": item.sql}
-                for item in load_snapshot(snapshot_path).workload.queries
+                {
+                    "query_id": item.query_id,
+                    "sql": item.sql,
+                    "source_query_sha256": manifest_by_id[item.query_id]["source_query_sha256"],
+                }
+                for item in sealed_snapshot.workload.queries
             ]
             candidates = {
                 item["candidate_id"]: item for item in read_json(candidate_path)["candidates"]
             }
+            state.hypothetical_active = True
             hypothetical = _hypothetical_arms(
                 planner_dsn=planner_dsn,
                 advisor_root=advisor_root,
@@ -1289,9 +2242,12 @@ def run_formal(
                 truth_by_id=truth_by_id,
                 relation=spec.dataset_module.RELATION,
                 dataset_id=spec.dataset_id,
+                dataset_content_identity=spec.dataset_content_identity,
                 output_dir=output_dir,
             )
+            state.hypothetical_active = False
             physical: dict[str, dict[str, Any]] = {}
+            state.physical_deployment_started = True
             for arm in dataset["permutations"]:
                 physical[arm["permutation_id"]] = _physical_arm(
                     dsn=stock_dsn,
@@ -1306,18 +2262,21 @@ def run_formal(
                     / arm["permutation_id"]
                     / "per-query.jsonl.gz",
                     dataset_id=spec.dataset_id,
+                    dataset_content_identity=spec.dataset_content_identity,
                 )
+            state.physical_deployment_started = False
             _run_command(
                 [str(launcher_path), "sandbox", "destroy", "postgres", "--dsn", planner_dsn],
                 log_dir,
             )
+            state.sandbox_prepared = False
             dataset_result = _assemble_dataset_result(
                 root=root,
                 spec=spec,
                 dataset=dataset,
                 producer_sha=producer_sha,
                 output_dir=output_dir,
-                snapshot_digest=load_snapshot(snapshot_path).semantic_digest,
+                snapshot_digest=_load_sealed_snapshot(snapshot_path).semantic_digest,
                 native_repository_digest=read_json(native_path / "manifest.json")[
                     "semantic_digest"
                 ],
@@ -1329,11 +2288,13 @@ def run_formal(
             write_json(output_dir / "result-v1.json", dataset_result)
             dataset_results.append(dataset_result)
             shutil.rmtree(runtime, ignore_errors=True)
+        state.synthetic_fixture_created = True
         synthetic = _run_overlapping_mcv_witness(
             patched_dsn=planner_dsn,
             stock_dsn=stock_dsn,
             output=root / OUTPUT_ROOT / "synthetic-witness-v1.json",
         )
+        state.synthetic_fixture_created = False
         summary: dict[str, Any] = {
             "format_version": SUMMARY_FORMAT,
             "experiment_id": EXPERIMENT_ID,
@@ -1354,12 +2315,44 @@ def run_formal(
         write_json(root / OUTPUT_ROOT / "summary-v1.json", summary)
         return summary
     finally:
-        try:
-            _run_command(
-                [str(launcher_path), "sandbox", "destroy", "postgres", "--dsn", planner_dsn],
-                runtime_base / "cleanup-logs",
-            )
-        finally:
-            stop_role("stock")
-            stop_role("patched")
-            shutil.rmtree(runtime_base, ignore_errors=True)
+        primary_error = sys.exc_info()[1]
+        cleanup_errors: list[dict[str, Any]] = []
+        if state.sandbox_prepared:
+            try:
+                _run_command(
+                    [str(launcher_path), "sandbox", "destroy", "postgres", "--dsn", planner_dsn],
+                    runtime_base / "cleanup-logs",
+                )
+                state.sandbox_prepared = False
+                state.cleanup.append({"operation": "sandbox-destroy", "status": "passed"})
+            except Exception as error:  # noqa: BLE001 - preserve primary failure
+                cleanup_errors.append(
+                    {"operation": "sandbox-destroy", "status": "failed", "error": str(error)}
+                )
+        for role, owned in (("stock", state.stock_owned), ("patched", state.patched_owned)):
+            if owned:
+                try:
+                    stop_role(role)
+                    state.cleanup.append({"operation": f"stop-{role}", "status": "passed"})
+                except Exception as error:  # noqa: BLE001 - preserve primary failure
+                    cleanup_errors.append(
+                        {"operation": f"stop-{role}", "status": "failed", "error": str(error)}
+                    )
+        shutil.rmtree(runtime_base, ignore_errors=True)
+        state.cleanup.append({"operation": "runtime-remove", "status": "passed"})
+        if primary_error is not None or cleanup_errors:
+            error = primary_error or RuntimeError("cleanup failed")
+            try:
+                write_failure_artifact(
+                    failure_output,
+                    producer_sha=producer_sha,
+                    preflight_path=preflight_path,
+                    preflight=preflight,
+                    state=state,
+                    exception=error,
+                    cleanup_errors=cleanup_errors,
+                )
+            except FileExistsError:
+                pass
+            if primary_error is None and cleanup_errors:
+                raise RuntimeError(f"OID-order cleanup failed: {cleanup_errors}")

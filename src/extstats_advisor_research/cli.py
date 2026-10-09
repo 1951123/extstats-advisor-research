@@ -39,6 +39,9 @@ from .oid_order_sensitivity import (
 from .oid_order_sensitivity import (
     validate_protocol as validate_oid_protocol,
 )
+from .oid_order_sensitivity import (
+    validate_result_artifact as validate_oid_result,
+)
 from .paper_baseline import run_paper_baseline
 from .paper_spec import (
     DEFAULT_SPEC_PATH,
@@ -591,8 +594,16 @@ def _parser() -> argparse.ArgumentParser:
     oid_run.add_argument(
         "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
     )
+    oid_run.add_argument("--invocation-id", required=True)
+    oid_run.add_argument(
+        "--failure-output",
+        type=Path,
+        default=Path(
+            "experiments/oid-order-sensitivity-v1/failed-attempts/attempt-002/failure-v1.json"
+        ),
+    )
     oid_validate = oid_commands.add_parser("validate")
-    oid_validate.add_argument("kind", choices=("protocol", "preflight"))
+    oid_validate.add_argument("kind", choices=("protocol", "preflight", "result"))
     oid_validate.add_argument("artifact", type=Path)
     validate = commands.add_parser("validate")
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
@@ -1204,16 +1215,19 @@ def main(argv: list[str] | None = None) -> int:
                 patched_postgres_root=args.patched_postgres_root,
                 stock_postgres_root=args.stock_postgres_root,
                 producer_sha=producer_sha,
+                invocation_id=args.invocation_id,
+                failure_output=args.failure_output,
             )
             print(json.dumps(result, sort_keys=True, indent=2, default=str))
             return 0
         if args.oid_command == "validate":
             value = read_json(args.artifact)
-            result = (
-                validate_oid_protocol(value)
-                if args.kind == "protocol"
-                else validate_oid_preflight(value, root=root)
-            )
+            if args.kind == "protocol":
+                result = validate_oid_protocol(value, root=root)
+            elif args.kind == "preflight":
+                result = validate_oid_preflight(value, root=root)
+            else:
+                result = validate_oid_result(args.artifact, root=root)
             print(json.dumps(result, sort_keys=True))
             return 0
     if args.command == "rq1-generalization":
