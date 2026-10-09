@@ -1266,6 +1266,168 @@ def validate_rq1b_preflight(
     }
 
 
+def validate_published_rq1b_preflight(
+    value: Mapping[str, Any],
+    *,
+    research_root: Path,
+    spec: RQ1BDatasetSpec = POWER7_SPEC,
+    expected_producer: str | None = None,
+) -> dict[str, Any]:
+    """Validate a published preflight using committed provenance only.
+
+    This is intentionally separate from ``validate_rq1b_preflight``.  The
+    latter is the formal execution gate and must reconstruct the valid
+    workload from the audited raw dataset.  Published-evidence verification
+    happens after execution and must remain reproducible on CI workers that
+    contain only committed evidence and provenance files.
+    """
+
+    if not isinstance(value, Mapping):
+        raise RQ1BValidationError("published RQ1b preflight must be an object")
+    root = research_root.resolve()
+    _require(value.get("format_version") == spec.preflight_format, "unsupported RQ1b preflight")
+    _require(
+        value.get("campaign_attempt_index") == spec.campaign_attempt_index,
+        "RQ1b campaign attempt index drift",
+    )
+    _require(
+        value.get("prior_failed_attempt") == _prior_failed_attempt_binding(spec),
+        "RQ1b prior failed-attempt binding drift",
+    )
+    _require(value.get("status") == "ready-to-run", "RQ1b preflight is not ready")
+    _require(value.get("formal_execution") == "not-started", "RQ1b preflight execution state drift")
+    producer = value.get("research_commit_sha")
+    _commit(producer, "preflight producer SHA")
+    if expected_producer is not None:
+        _commit(expected_producer, "published result producer SHA")
+        _require(producer == expected_producer, "preflight/result producer binding drift")
+    _require(
+        value.get("protocol") == _binding(PROTOCOL_V2_PATH, PROTOCOL_DIGEST),
+        "preflight protocol drift",
+    )
+    _require(
+        value.get("truth_policy") == _binding(TRUTH_POLICY_PATH, TRUTH_POLICY_DIGEST),
+        "preflight truth policy drift",
+    )
+    _require(
+        value.get("source_audit") == _binding(SOURCE_AUDIT_V2_PATH, SOURCE_AUDIT_DIGEST),
+        "preflight source audit drift",
+    )
+    _require(
+        value.get("strict_unseen_membership") == _binding(STRICT_UNSEEN_PATH, STRICT_UNSEEN_DIGEST),
+        "preflight strict membership drift",
+    )
+    _require(value.get("system_freeze") == _system_binding(root), "preflight system freeze drift")
+
+    # These validators inspect committed provenance artifacts and frozen
+    # metadata; none reconstructs a workload or opens an external data root.
+    _validate_immutable_inputs(root, include_evaluation=True)
+    audit = read_json(root / SOURCE_AUDIT_V2_PATH)
+    source = _dataset_row(audit, spec)
+    dataset = spec.dataset_module
+    _require(source.get("benchmark_id") == spec.dataset_id, "source audit benchmark identity drift")
+    _require(
+        source.get("dataset_content_identity") == spec.dataset_content_identity,
+        "source audit dataset identity drift",
+    )
+    _require(source.get("relation") == dataset.RELATION, "source audit relation drift")
+    _require(
+        source.get("schema_contract_id") == dataset.SCHEMA_CONTRACT_ID,
+        "source audit schema drift",
+    )
+    _require(source.get("upstream_commit") == ARECEL_UPSTREAM_COMMIT, "source audit upstream drift")
+    source_hashes = source.get("source_file_sha256")
+    _require(
+        isinstance(source_hashes, Mapping)
+        and source_hashes.get("canonical_workload") == spec.valid_canonical_workload_sha256,
+        "source audit canonical workload identity drift",
+    )
+    _require(source.get("valid_workload_id") == spec.valid_workload_id, "valid workload ID drift")
+    _require(
+        source.get("valid_workload_sha256") == spec.valid_workload_sha256,
+        "valid workload SHA drift",
+    )
+    _require(source.get("valid_query_count") == SAMPLE_ROWS, "valid workload count drift")
+    truth = _valid_truth_identity(root, spec)
+    expected_dataset = {
+        "dataset_id": spec.dataset_id,
+        "benchmark_id": source["benchmark_id"],
+        "dataset_content_identity": source["dataset_content_identity"],
+        "relation": source["relation"],
+        "schema_contract_id": source["schema_contract_id"],
+        "rows": dataset.EXPECTED_ROWS,
+        "design_workload": {
+            "source_split": DESIGN_SPLIT,
+            "workload_id": source["valid_workload_id"],
+            "sha256": source["valid_workload_sha256"],
+            "query_count": source["valid_query_count"],
+            "canonical_source_sha256": source_hashes["canonical_workload"],
+        },
+        "design_truth": {
+            "source_split": DESIGN_SPLIT,
+            "path": spec.valid_observations_path.as_posix(),
+            "observations_sha256": truth["observations_sha256"],
+            "workload_id": truth["workload_id"],
+            "query_count": truth["query_count"],
+            "dataset_identity": truth["dataset_identity"],
+        },
+    }
+    _require(value.get("dataset") == expected_dataset, "preflight design source provenance drift")
+    _require(
+        value.get("evaluation_bindings") == _opaque_evaluation_bindings(spec),
+        "preflight evaluation binding drift",
+    )
+    _require(
+        value.get("advisor_execution_policy")
+        == {
+            "mode": "frozen-checkout-runtime-launcher",
+            "source_checkout_sha": FROZEN_ADVISOR_SHA,
+            "launcher_source": "verified advisor_root/src",
+            "path_lookup_allowed": False,
+        },
+        "preflight Advisor execution policy drift",
+    )
+    _require(
+        value.get("parameters")
+        == {
+            "sample_rows": SAMPLE_ROWS,
+            "sample_seed": SAMPLE_SEED,
+            "statistics_target": STATISTICS_TARGET,
+            "K_s": K_S,
+            "B": B,
+            "T_seconds": SEARCH_BUDGET_SECONDS,
+        },
+        "preflight parameter drift",
+    )
+    _require(value.get("no_formal_execution_started") is True, "preflight execution marker drift")
+    _require(
+        value.get("preseal_evaluation_content_unread") is True,
+        "preflight pre-seal evaluation access marker drift",
+    )
+    serialized = json.dumps(value, sort_keys=True)
+    for forbidden in (
+        f"arecel_{spec.cli_name}_test_",
+        "s_test_candidate_ids",
+        "strict_unseen_test_query_ids",
+        "seen_in_valid_count",
+        "strict_unseen_count",
+        "pg16-default-per-query",
+        "pg16-target10000-per-query",
+    ):
+        _require(
+            forbidden not in serialized,
+            f"preflight contains evaluation-only content: {forbidden}",
+        )
+    _sha(value.get("semantic_digest"), "preflight semantic digest")
+    _require(value["semantic_digest"] == _digest_body(value), "preflight semantic digest mismatch")
+    return {
+        "status": "valid",
+        "semantic_digest": value["semantic_digest"],
+        "dataset_id": spec.dataset_id,
+        "formal_source_reconstruction": "not-performed",
+    }
+
+
 def validate_power7_rq1b_preflight(
     value: Mapping[str, Any], *, research_root: Path
 ) -> dict[str, Any]:
@@ -2946,6 +3108,7 @@ __all__ = [
     "validate_forest10_rq1b_preflight",
     "validate_power7_rq1b_preflight",
     "validate_power7_rq1b_result",
+    "validate_published_rq1b_preflight",
     "validate_rq1b_preflight",
     "validate_rq1b_result",
     "validate_test_evaluation_records",

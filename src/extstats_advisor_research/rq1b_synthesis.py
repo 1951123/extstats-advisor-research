@@ -36,7 +36,7 @@ from .rq1_workload_generalization_live import (
     RQ1BValidationError,
     _baseline_binding,
     validate_design_artifact,
-    validate_rq1b_preflight,
+    validate_published_rq1b_preflight,
     validate_rq1b_result,
 )
 
@@ -255,8 +255,10 @@ def _dataset(root: Path, spec: RQ1BDatasetSpec) -> dict[str, Any]:
     preflight = read_json(paths["preflight"])
     design = read_json(paths["design"])
     result = read_json(paths["result"])
-    validate_rq1b_preflight(preflight, research_root=root, spec=spec)
     producer = result.get("producer", {}).get("research_commit_sha")
+    validate_published_rq1b_preflight(
+        preflight, research_root=root, spec=spec, expected_producer=producer
+    )
     validate_design_artifact(design, expected_producer=producer, _spec=spec)
     validate_rq1b_result(result, research_root=root, spec=spec)
     _require(
@@ -483,8 +485,19 @@ def build_cross_dataset_synthesis(root: Path, output: Path | None = None) -> dic
 
 
 def validate_cross_dataset_synthesis(
-    path: Path, research_root: Path | None = None
+    path: Path,
+    research_root: Path | None = None,
+    external_data_root: Path | None = None,
 ) -> dict[str, Any]:
+    """Validate published evidence without reconstructing live source data.
+
+    ``external_data_root`` is accepted to make the portability contract
+    explicit at call sites.  It is intentionally unused: this downstream
+    validator must operate from committed evidence and provenance only.
+    Formal preflight validation retains the separate raw-source requirement.
+    """
+
+    del external_data_root
     root = (research_root or Path(__file__).resolve().parents[2]).resolve()
     value = read_json(path)
     _require(value.get("format_version") == SUMMARY_FORMAT, "unsupported RQ1b synthesis format")

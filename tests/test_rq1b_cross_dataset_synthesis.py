@@ -23,8 +23,12 @@ if not _HAS_FROZEN_V2_ARTIFACT_API:
         reason="RQ1b synthesis validation requires frozen-v2 DeploymentResult API"
     )
 
+from extstats_advisor_research import rq1_workload_generalization_live as live
 from extstats_advisor_research.provenance import semantic_digest
-from extstats_advisor_research.rq1_workload_generalization_live import RQ1BValidationError
+from extstats_advisor_research.rq1_workload_generalization_live import (
+    CENSUS13_SPEC,
+    RQ1BValidationError,
+)
 from extstats_advisor_research.rq1b_synthesis import (
     DATASET_ORDER,
     SPECS,
@@ -41,11 +45,76 @@ def _summary() -> dict:
     return json.loads(SUMMARY.read_text(encoding="utf-8"))
 
 
-def test_published_rq1b_synthesis_recomputes_all_children_offline():
+def test_published_rq1b_synthesis_recomputes_all_children_offline(monkeypatch, tmp_path):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("published evidence validation touched raw AreCEL data")
+
+    for spec in SPECS.values():
+        monkeypatch.setattr(spec.dataset_module, "extract_workload", forbidden)
     value = _summary()
     assert value["format_version"] == SUMMARY_FORMAT
     assert [row["dataset_id"] for row in value["datasets"]] == list(DATASET_ORDER)
-    assert validate_cross_dataset_synthesis(SUMMARY, ROOT)["status"] == "valid"
+    assert (
+        validate_cross_dataset_synthesis(
+            SUMMARY, ROOT, external_data_root=tmp_path / "does-not-exist"
+        )["status"]
+        == "valid"
+    )
+
+
+def test_formal_preflight_validation_still_requires_raw_source(monkeypatch):
+    preflight_path = (
+        ROOT / "experiments/arecel-census13/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
+    )
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("formal preflight source reconstruction was bypassed")
+
+    monkeypatch.setattr(CENSUS13_SPEC.dataset_module, "inspect", forbidden)
+    monkeypatch.setattr(CENSUS13_SPEC.dataset_module, "extract_workload", forbidden)
+    with pytest.raises(AssertionError, match="formal preflight source reconstruction"):
+        live.validate_rq1b_preflight(
+            preflight,
+            research_root=ROOT,
+            spec=CENSUS13_SPEC,
+        )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda value: value["dataset"].update({"dataset_id": "wrong-dataset"}),
+        lambda value: value["dataset"]["design_workload"].update({"sha256": "0" * 64}),
+        lambda value: value["dataset"]["design_workload"].update(
+            {"canonical_source_sha256": "0" * 64}
+        ),
+        lambda value: value["dataset"]["design_truth"].update({"observations_sha256": "0" * 64}),
+        lambda value: value["system_freeze"].update({"advisor_sha": "0" * 40}),
+        lambda value: value.update({"protocol": {"path": "wrong", "semantic_digest": "0" * 64}}),
+    ],
+)
+def test_published_preflight_rejects_provenance_mutations(mutation):
+    preflight_path = (
+        ROOT / "experiments/arecel-census13/rq1-workload-generalization-v1/rq1b-preflight-v1.json"
+    )
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    result = json.loads(
+        (
+            ROOT / "experiments/arecel-census13/rq1-workload-generalization-v1/result-v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    mutation(preflight)
+    preflight["semantic_digest"] = semantic_digest(
+        {key: item for key, item in preflight.items() if key != "semantic_digest"}
+    )
+    with pytest.raises(RQ1BValidationError):
+        live.validate_published_rq1b_preflight(
+            preflight,
+            research_root=ROOT,
+            spec=CENSUS13_SPEC,
+            expected_producer=result["producer"]["research_commit_sha"],
+        )
 
 
 def test_synthesis_binds_frozen_result_digests_and_populations():
