@@ -435,6 +435,10 @@
         "evidence_eligible": true,
         "scientific_reexecution": true
       },
+      "census13_runner_readiness": "implementation-ready",
+      "census13_formal_evidence_status": "not-produced",
+      "census13_next_formal_attempt": "attempt-1-pending",
+      "census13_formal_attempts": [],
       "pre_search_smoke_artifact": {
         "path": "experiments/arecel-power7/rq1-workload-generalization-v1/diagnostics/pre-search-sandbox-smoke-v1.json",
         "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e"
@@ -1087,7 +1091,7 @@
       {
         "experiment_id": "rq1-held-out-workload-generalization",
         "status": "preregistered",
-        "note": "RQ1b remains preregistered at the cross-dataset level. Power7 attempts 1–5 are retained as non-evidence provenance; attempt 6 completed the Power7 child once and is evidence-eligible after an offline result digest-contract correction with no scientific re-execution. Forest10 is implementation-ready with formal attempt 1 pending but no formal invocation; Census13 and DMV11 remain unexecuted."
+        "note": "RQ1b remains preregistered at the cross-dataset level. Power7 attempts 1–5 are retained as non-evidence provenance; attempt 6 completed the Power7 child once and is evidence-eligible after an offline result digest-contract correction with no scientific re-execution. Forest10 and DMV11 have published formal children; Census13 is implementation-ready with formal attempt 1 pending and no formal invocation."
       },
       {
         "experiment_id": "rq1-existing-baselines",

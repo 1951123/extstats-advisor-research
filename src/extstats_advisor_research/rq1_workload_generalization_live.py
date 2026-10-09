@@ -21,7 +21,7 @@ from .arecel_truth import authoritative_truth_spec_for_split, validate_observati
 from .datasets import DATASETS
 from .paper_baseline import percentile, qerror
 from .pins import verify_git_sha
-from .postgres.loader import load_dmv11, load_forest10, load_power7
+from .postgres.loader import load_census13, load_dmv11, load_forest10, load_power7
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq1_workload_generalization import (
     PROTOCOL_V2_PATH,
@@ -43,6 +43,7 @@ from .system_freeze_v2 import (
 )
 
 POWER7 = "arecel-power7"
+CENSUS13 = "arecel-census13"
 DMV11 = "arecel-dmv11"
 DESIGN_SPLIT = "valid"
 EVALUATION_SPLIT = "test"
@@ -96,6 +97,22 @@ DMV11_BASELINE_PATH = Path(
     "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json"
 )
 DMV11_BASELINE_DIGEST = "9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd"
+CENSUS13_BASELINE_PATH = Path(
+    "experiments/arecel-census13/rq1-confirmatory/rq1-matched-comparison-v1.json"
+)
+CENSUS13_BASELINE_DIGEST = "647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec"
+CENSUS13_HISTORICAL_BASELINE_WORKLOAD_SHA256 = (
+    "6dbeaa88b5cb687c64d4e0b4c31ab17a3a1d7a6b0e0c6a74d10a69c009a50a93"
+)
+CENSUS13_TRUTH_EQUIVALENCE_PATH = Path(
+    "experiments/arecel-census13/arecel-truth-equivalence-v1.json"
+)
+CENSUS13_TRUTH_EQUIVALENCE_DIGEST = (
+    "8d69f7cc3cfb023e122cbcb12e79237402b6a0da45eed7cf63300b940e589fd4"
+)
+CENSUS13_HISTORICAL_COMPARISON_DIGEST = (
+    "be59a7d99d35efd18ee153da203141b2a7e7fac43bf8f97012e1c95fb5089b84"
+)
 
 
 class RQ1BValidationError(ValueError):
@@ -230,6 +247,37 @@ DMV11_SPEC = RQ1BDatasetSpec(
     result_format="rq1-workload-generalization-dmv11-v1",
     preflight_format="rq1-workload-generalization-dmv11-preflight-v1",
     runtime_name="dmv11",
+    campaign_attempt_index=1,
+)
+
+CENSUS13_SPEC = RQ1BDatasetSpec(
+    dataset_id=CENSUS13,
+    cli_name="census13",
+    dataset_module=DATASETS[CENSUS13],
+    loader=load_census13,
+    records_loader=DATASETS[CENSUS13].load_records,
+    valid_workload_id="arecel_census13_valid_v1",
+    valid_workload_sha256="9e616db0383ec10fc784797964338ff4fa1e69726fa007fa7f4a0515c41b2a0f",
+    valid_canonical_workload_sha256="9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+    valid_observations_path=Path(
+        "truth/arecel/census13/authoritative-cardinality-observations-valid-v1.json"
+    ),
+    valid_observations_sha256="13c35836c2757364fb5676132d8eac93c5f4c50483fc88198e145c1a5c03e6ca",
+    valid_audit_path=Path("truth/arecel/census13/audit-valid-v1.json"),
+    dataset_content_identity="89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+    test_workload_id="arecel_census13_test_v1",
+    test_workload_sha256="84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9",
+    test_observations_path=Path(
+        "truth/arecel/census13/authoritative-cardinality-observations-v1.json"
+    ),
+    test_observations_sha256="de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+    baseline_path=CENSUS13_BASELINE_PATH,
+    baseline_semantic_digest=CENSUS13_BASELINE_DIGEST,
+    output_root=Path("experiments/arecel-census13/rq1-workload-generalization-v1"),
+    design_format="rq1-workload-generalization-census13-design-v1",
+    result_format="rq1-workload-generalization-census13-v1",
+    preflight_format="rq1-workload-generalization-census13-preflight-v1",
+    runtime_name="census13",
     campaign_attempt_index=1,
 )
 
@@ -828,6 +876,62 @@ def _source_spec(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[str, A
     }
 
 
+def _validate_census13_historical_baseline_workload(
+    root: Path, artifact: Mapping[str, Any], source: Mapping[str, Any]
+) -> None:
+    """Validate the one audited historical Census13 workload representation.
+
+    The RQ1a Census13 artifact predates the later adapter provenance fields.
+    Its historical workload SHA is accepted only when the immutable baseline,
+    source identity, and truth-equivalence chain are all exact.  Query
+    serialization itself was reconstructed from the canonical source and
+    matches the current adapter; this exception therefore does not weaken the
+    current workload or truth identities used by RQ1b.
+    """
+
+    _require(
+        artifact.get("workload", {}).get("sha256") == CENSUS13_HISTORICAL_BASELINE_WORKLOAD_SHA256,
+        "unsupported Census13 historical workload representation",
+    )
+    _require(
+        artifact.get("workload", {}).get("canonical_source_sha256")
+        == source["canonical_workload_sha256"],
+        "Census13 historical workload canonical source mismatch",
+    )
+    _require(
+        artifact.get("workload", {}).get("workload_id") == source["test_workload_id"],
+        "Census13 historical workload ID mismatch",
+    )
+    _require(
+        artifact.get("workload", {}).get("query_count") == source["test_query_count"],
+        "Census13 historical workload query count mismatch",
+    )
+    equivalence_path = root / CENSUS13_TRUTH_EQUIVALENCE_PATH
+    _require(equivalence_path.is_file(), "Census13 truth-equivalence artifact is missing")
+    equivalence = _load_exact(
+        root, CENSUS13_TRUTH_EQUIVALENCE_PATH, CENSUS13_TRUTH_EQUIVALENCE_DIGEST
+    )
+    _require(
+        equivalence.get("dataset_id") == CENSUS13
+        and equivalence.get("workload_id") == source["test_workload_id"]
+        and equivalence.get("matched") == SAMPLE_ROWS
+        and equivalence.get("mismatched") == 0
+        and equivalence.get("missing") == 0
+        and equivalence.get("extra") == 0,
+        "Census13 truth-equivalence contract is not exact",
+    )
+    provenance = artifact.get("provenance", {})
+    _require(
+        provenance.get("transformation_format") == "rq1-truth-rebind-v1"
+        and provenance.get("historical_matched_comparison_semantic_digest")
+        == CENSUS13_HISTORICAL_COMPARISON_DIGEST
+        and provenance.get("planner_estimates_reused") is True
+        and provenance.get("planner_reexecuted") is False
+        and provenance.get("database_workload_reexecuted") is False,
+        "Census13 historical baseline provenance is not the audited truth rebind",
+    )
+
+
 def _baseline_binding(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[str, Any]:
     path = root / spec.baseline_path
     _require(path.is_file(), f"{spec.dataset_id} immutable RQ1a baseline is missing")
@@ -859,10 +963,16 @@ def _baseline_binding(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[s
         artifact["workload"]["workload_id"] == source["test_workload_id"],
         "baseline test workload ID mismatch",
     )
-    _require(
-        artifact["workload"]["sha256"] == source["test_workload_sha256"],
-        "baseline test workload hash mismatch",
-    )
+    if spec.dataset_id == CENSUS13:
+        if artifact["workload"]["sha256"] == source["test_workload_sha256"]:
+            pass
+        else:
+            _validate_census13_historical_baseline_workload(root, artifact, source)
+    else:
+        _require(
+            artifact["workload"]["sha256"] == source["test_workload_sha256"],
+            "baseline test workload hash mismatch",
+        )
     _require(
         artifact["truth"]["observations_sha256"] == source["test_observations_sha256"],
         "baseline test truth mismatch",
@@ -919,10 +1029,14 @@ def _baseline_binding(root: Path, spec: RQ1BDatasetSpec = POWER7_SPEC) -> dict[s
             "baseline PostgreSQL version mismatch",
         )
         policy = arm.get("statistics_policy")
-        target = 100 if arm_id == "pg16-default" else 10_000
+        census13_historical_default = spec.dataset_id == CENSUS13 and arm_id == "pg16-default"
+        target = (
+            -1 if census13_historical_default else (100 if arm_id == "pg16-default" else 10_000)
+        )
+        requested_target = None if census13_historical_default else target
         _require(
             isinstance(policy, dict)
-            and policy.get("requested_target") == target
+            and policy.get("requested_target") == requested_target
             and policy.get("seed_identifier") == 123
             and policy.get("setseed_sql") == "SELECT setseed(1.0 / 123)",
             f"baseline {arm_id} ordinary-statistics policy mismatch",
@@ -1780,6 +1894,29 @@ def validate_dmv11_rq1b_preflight(
     value: Mapping[str, Any], *, research_root: Path
 ) -> dict[str, Any]:
     return validate_rq1b_preflight(value, research_root=research_root, spec=DMV11_SPEC)
+
+
+def write_census13_rq1b_preflight(
+    *, research_root: Path, output: Path | None = None
+) -> dict[str, Any]:
+    return write_rq1b_preflight(research_root=research_root, output=output, spec=CENSUS13_SPEC)
+
+
+def build_census13_rq1b_preflight(
+    *, research_root: Path, producer_sha: str, output: Path | None = None
+) -> dict[str, Any]:
+    return build_rq1b_preflight(
+        research_root=research_root,
+        producer_sha=producer_sha,
+        output=output,
+        spec=CENSUS13_SPEC,
+    )
+
+
+def validate_census13_rq1b_preflight(
+    value: Mapping[str, Any], *, research_root: Path
+) -> dict[str, Any]:
+    return validate_rq1b_preflight(value, research_root=research_root, spec=CENSUS13_SPEC)
 
 
 def _run_live_command(command: Sequence[str]) -> None:
@@ -2705,6 +2842,34 @@ def run_dmv11_rq1b_formal(
     )
 
 
+def run_census13_rq1b_formal(
+    *,
+    research_root: Path,
+    preflight_path: Path,
+    stock_dsn: str,
+    planner_dsn: str,
+    advisor_root: Path,
+    patched_postgres_root: Path,
+    stock_postgres_root: Path,
+    data_root: Path | None = None,
+    advisor_command: str = "extstats-advisor",
+    runtime_root: Path | None = None,
+) -> dict[str, Any]:
+    return run_rq1b_formal(
+        research_root=research_root,
+        preflight_path=preflight_path,
+        stock_dsn=stock_dsn,
+        planner_dsn=planner_dsn,
+        advisor_root=advisor_root,
+        patched_postgres_root=patched_postgres_root,
+        stock_postgres_root=stock_postgres_root,
+        data_root=data_root,
+        advisor_command=advisor_command,
+        runtime_root=runtime_root,
+        spec=CENSUS13_SPEC,
+    )
+
+
 def publish_result(
     *, result: Mapping[str, Any], output: Path, spec: RQ1BDatasetSpec = POWER7_SPEC
 ) -> dict[str, Any]:
@@ -2725,6 +2890,8 @@ def publish_result(
 
 
 __all__ = [
+    "CENSUS13",
+    "CENSUS13_SPEC",
     "DEPLOYMENT_PATH",
     "DESIGN_FORMAT",
     "DESIGN_PATH",
@@ -2743,6 +2910,7 @@ __all__ = [
     "B",
     "RQ1BDatasetSpec",
     "RQ1BValidationError",
+    "build_census13_rq1b_preflight",
     "build_design_artifact",
     "build_dmv11_rq1b_preflight",
     "build_forest10_rq1b_preflight",
@@ -2761,6 +2929,7 @@ __all__ = [
     "publish_result",
     "resolve_power7_rq1b_evaluation_inputs_after_seal",
     "resolve_rq1b_evaluation_inputs_after_seal",
+    "run_census13_rq1b_formal",
     "run_dmv11_rq1b_formal",
     "run_forest10_rq1b_formal",
     "run_power7_rq1b_design",
@@ -2771,6 +2940,7 @@ __all__ = [
     "run_rq1b_formal",
     "strict_unseen_filter",
     "summarize_qerrors",
+    "validate_census13_rq1b_preflight",
     "validate_design_artifact",
     "validate_dmv11_rq1b_preflight",
     "validate_forest10_rq1b_preflight",
@@ -2780,6 +2950,7 @@ __all__ = [
     "validate_rq1b_result",
     "validate_test_evaluation_records",
     "verify_power7_formal_tree",
+    "write_census13_rq1b_preflight",
     "write_dmv11_rq1b_preflight",
     "write_forest10_rq1b_preflight",
     "write_power7_rq1b_preflight",
