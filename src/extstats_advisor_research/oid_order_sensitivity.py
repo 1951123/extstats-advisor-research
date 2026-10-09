@@ -1293,6 +1293,14 @@ def _validate_dataset_result(
             "payload_sha256_by_candidate"
         ):
             raise ValueError(f"{dataset_id}/{arm_id} hypothetical payload realization drift")
+        if arm.get("ordinary_statistics_fingerprint") != reference_hyp.get(
+            "ordinary_statistics_fingerprint"
+        ):
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical ordinary statistics drift")
+        if arm.get("planner_settings") != reference_hyp.get("planner_settings"):
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical planner settings drift")
+        if arm.get("dataset_content_identity") != reference_hyp.get("dataset_content_identity"):
+            raise ValueError(f"{dataset_id}/{arm_id} hypothetical dataset identity drift")
         diagnostics = _order_diagnostics(arm, reference_hyp, root=root)
         if arm.get("order_diagnostics") != diagnostics:
             raise ValueError(f"{dataset_id}/{arm_id} hypothetical diagnostics drift")
@@ -1315,6 +1323,8 @@ def _validate_dataset_result(
             raise ValueError(f"{dataset_id}/{arm_id} physical controls are not observations")
         if arm.get("actual_oid_order") != arm.get("prescribed_order"):
             raise ValueError(f"{dataset_id}/{arm_id} physical OID order drift")
+        if arm_id == "reference" and arm.get("causal_status") != "reference-control":
+            raise ValueError(f"{dataset_id}/{arm_id} reference control status drift")
         objects = arm.get("physical_oids")
         if not isinstance(objects, list) or len(objects) != len(expected_membership):
             raise ValueError(f"{dataset_id}/{arm_id} physical catalog evidence incomplete")
@@ -1361,6 +1371,48 @@ def _validate_dataset_result(
                 raise ValueError(f"{dataset_id}/{arm_id} missing native payload evidence")
             if item.get("statistics_target") != STATISTICS_TARGET:
                 raise ValueError(f"{dataset_id}/{arm_id} statistics target drift")
+        observed_definition_equal = set(object_ids) == set(expected_membership) and all(
+            item.get("definition_fingerprint")
+            == _definition_fingerprint(
+                item["candidate_id"],
+                {
+                    **definitions[item["candidate_id"]],
+                    "column_names": item["column_names"],
+                },
+            )
+            for item in objects
+        )
+        observed_payload_equal = arm.get("payload_sha256_by_candidate") == reference_phys.get(
+            "payload_sha256_by_candidate"
+        )
+        observed_ordinary_equal = arm.get("ordinary_statistics_fingerprint") == reference_phys.get(
+            "ordinary_statistics_fingerprint"
+        )
+        observed_settings_equal = arm.get("planner_settings") == reference_phys.get(
+            "planner_settings"
+        )
+        observed_relation_equal = arm.get("relation_identity") == reference_phys.get(
+            "relation_identity"
+        )
+        observed_dataset_equal = arm.get("dataset_content_identity") == reference_phys.get(
+            "dataset_content_identity"
+        )
+        observed_target_equal = all(
+            item.get("statistics_target") == STATISTICS_TARGET for item in objects
+        )
+        observed_controls = {
+            "membership_and_definitions_equal": observed_definition_equal,
+            "payload_bytes_equal_to_reference": observed_payload_equal,
+            "ordinary_statistics_equal_to_reference": observed_ordinary_equal,
+            "planner_settings_equal_to_reference": observed_settings_equal,
+            "prescribed_oid_order_observed": arm.get("actual_oid_order")
+            == arm.get("prescribed_order"),
+            "relation_identity_equal": observed_relation_equal and observed_dataset_equal,
+            "schema_identity_equal": observed_relation_equal,
+            "statistics_target_equal": observed_target_equal,
+        }
+        if dict(controls) != observed_controls:
+            raise ValueError(f"{dataset_id}/{arm_id} physical controls are not observations")
 
     cleanup = dataset_result.get("cleanup")
     if not isinstance(cleanup, Mapping) or cleanup.get("sandbox_destroyed") is not True:
