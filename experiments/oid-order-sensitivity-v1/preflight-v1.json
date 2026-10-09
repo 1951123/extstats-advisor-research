@@ -240831,13 +240831,13 @@
   "formal_execution": "not-started",
   "format_version": "postgresql-extstats-oid-order-sensitivity-preflight-v1",
   "preseal_test_content_accessed": false,
-  "producer_research_sha": "cc6ba1a4441b59be4c24b88f2033658fa65f7b1f",
+  "producer_research_sha": "6733464c7325f2605e642ecb16d67b4abf18f943",
   "protocol": {
     "path": "paper/oid-order-sensitivity-protocol-v1.json",
     "semantic_digest": "7b57de3499adba8d136f93d3e1726c7b8c23bdfd092063bb87e29ab5f000b2ea"
   },
   "query_manifest_contract": "query_id + source_query_sha256 + sql_sha256; no SQL payload",
-  "semantic_digest": "f4f88d8eb58a05418569ecc5b1a75f4f865607e2308c596f62df34d8360042d4",
+  "semantic_digest": "b8f8b605aafa29d8d98f2db45bb1e2f3b6d0089671c22fb79584ab4e90f2925e",
   "source_data_root_policy": "valid-side-only extraction from audited external root",
   "status": "ready-to-run",
   "strict_unseen_accessed": false,
