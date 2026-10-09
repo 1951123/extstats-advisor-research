@@ -125,6 +125,10 @@ from .rq1_workload_generalization_live import (
 from .rq1_workload_generalization_live import (
     validate_design_artifact as validate_rq1b_design_artifact_generic,
 )
+from .rq1b_synthesis import (
+    build_cross_dataset_synthesis,
+    validate_cross_dataset_synthesis,
+)
 from .rq2_transfer import (
     RQ2_DATASETS,
     inspect_rq2_artifact,
@@ -702,6 +706,14 @@ def _parser() -> argparse.ArgumentParser:
     summary_create.add_argument("--output", type=Path, required=True)
     summary_validate = summary_commands.add_parser("validate")
     summary_validate.add_argument("artifact", type=Path)
+    synthesis = validate_commands.add_parser(
+        "rq1b-synthesis", help="build or validate the offline four-dataset RQ1b synthesis"
+    )
+    synthesis_commands = synthesis.add_subparsers(dest="synthesis_command", required=True)
+    synthesis_create = synthesis_commands.add_parser("create", aliases=["run"])
+    synthesis_create.add_argument("--output", type=Path, required=True)
+    synthesis_validate = synthesis_commands.add_parser("validate")
+    synthesis_validate.add_argument("artifact", type=Path)
     rq1b = validate_commands.add_parser(
         "rq1-workload-generalization",
         help="validate the offline RQ1b split, truth-policy, and source-audit contracts",
@@ -1392,6 +1404,20 @@ def main(argv: list[str] | None = None) -> int:
                 result = build_cross_dataset_summary(default_source_paths(root), args.output)
             else:
                 result = validate_cross_dataset_summary(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "rq1b-synthesis":
+            root = Path(__file__).resolve().parents[2]
+            if args.synthesis_command in {"create", "run"}:
+                value = build_cross_dataset_synthesis(root, args.output)
+                result = {
+                    "status": "written",
+                    "format_version": value["format_version"],
+                    "semantic_digest": value["semantic_digest"],
+                    "output": str(args.output),
+                }
+            else:
+                result = validate_cross_dataset_synthesis(args.artifact, root)
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq1-workload-generalization":

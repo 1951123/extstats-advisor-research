@@ -302,9 +302,18 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "census13-attempt-1-complete",
-      "formal_evidence_status": "census13-child-complete",
+      "formal_execution": "four-dataset-children-complete",
+      "formal_evidence_status": "four-dataset-children-complete",
       "next_formal_attempt": "none-pending-review",
+      "cross_dataset_synthesis_status": "complete",
+      "cross_dataset_synthesis": {
+        "artifact": "experiments/rq1-workload-generalization-cross-dataset-v1.json",
+        "format_version": "rq1-workload-generalization-cross-dataset-v1",
+        "semantic_digest": "92faabbd6703f79e3a5c6ad5ef13904ea01d388f095f21583557be3591893473",
+        "derived_offline": true,
+        "scientific_reexecution": false,
+        "paper_interpretation_status": "not-performed"
+      },
       "power7_formal_attempts": [
         {
           "attempt_index": 1,
@@ -1113,7 +1122,7 @@
       {
         "experiment_id": "rq1-held-out-workload-generalization",
         "status": "preregistered",
-        "note": "RQ1b remains preregistered at the cross-dataset level. Power7 attempts 1–5 are retained as non-evidence provenance; attempt 6 completed the Power7 child once and is evidence-eligible after an offline result digest-contract correction with no scientific re-execution. Forest10 and DMV11 have published formal children; Census13 is implementation-ready with formal attempt 1 pending and no formal invocation."
+        "note": "RQ1b has four evidence-eligible dataset children and a completed offline cross-dataset synthesis at experiments/rq1-workload-generalization-cross-dataset-v1.json; paper interpretation/revision remains separate and has not been performed. Power7 attempts 1–5 remain non-evidence provenance; attempt 6 was published after an offline result digest-contract correction with no scientific re-execution."
       },
       {
         "experiment_id": "rq1-existing-baselines",

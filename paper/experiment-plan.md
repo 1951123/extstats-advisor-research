@@ -218,7 +218,9 @@ Any future campaign must evaluate managed DSNs in the same shell process and
 launch Advisor from the verified frozen checkout through a runtime-local
 launcher rather than a bare `PATH` command. Power7, Forest10, DMV11 and
 Census13 are complete at dataset scope after one evidence-eligible formal child
-each; no cross-dataset scientific synthesis is created by this publication.
+each. The offline four-dataset synthesis is recorded at
+`experiments/rq1-workload-generalization-cross-dataset-v1.json`; paper
+interpretation and LaTeX revision remain separate review tasks.
 Its historical RQ1a workload SHA differs only because the later adapter added
 three provenance metadata fields; the query payload is identical, and the
 RQ1b baseline binding accepts that exact historical representation only with

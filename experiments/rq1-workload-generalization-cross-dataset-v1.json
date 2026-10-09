@@ -1,0 +1,1484 @@
+{
+  "datasets": [
+    {
+      "artifact_bindings": {
+        "deployment": {
+          "byte_sha256": "6c7cc21fe70d8c3b2c67d791ad95ebb598bd7d68bc31d47601229974809f325d",
+          "byte_size": 4111,
+          "path": "experiments/arecel-census13/rq1-workload-generalization-v1/deployment-result-v1.json",
+          "semantic_digest": "6f27af8ed49884d2a82496ef61722d08b67cd6cc31cae8f89eb2bdffe532b43c"
+        },
+        "design": {
+          "byte_sha256": "a5c5256bbe617f78f95438cc8116d90aae203dfad79dad2e983c51c56f108c59",
+          "byte_size": 4801,
+          "path": "experiments/arecel-census13/rq1-workload-generalization-v1/design-v1.json",
+          "semantic_digest": "240fa55eb2c02eaf7a4569f1c925ceebac3aa72b92f36bcf734d42a1f480a483"
+        },
+        "per_query": {
+          "byte_sha256": "e0d391ce85a0a9c852604e50d2b854b63e1de56e0b591458fbae9ffcdc5c33e7",
+          "byte_size": 1128157,
+          "path": "experiments/arecel-census13/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl"
+        },
+        "preflight": {
+          "byte_sha256": "3da602a86c47942c04f40a8d09f11074ecce3dc6acd33e85d2b7b44caf3594db",
+          "byte_size": 4141,
+          "path": "experiments/arecel-census13/rq1-workload-generalization-v1/rq1b-preflight-v1.json",
+          "semantic_digest": "0e0e09652b89f06e17dd5338ba772cd7647503c33ef9015a1aff1df673bec704"
+        },
+        "result": {
+          "byte_sha256": "0453826aceeb825cf8643174be12e3a6b828a8e66811f116087cc4e71934a77f",
+          "byte_size": 7124,
+          "path": "experiments/arecel-census13/rq1-workload-generalization-v1/result-v1.json",
+          "semantic_digest": "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b"
+        }
+      },
+      "baseline": {
+        "path": "experiments/arecel-census13/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "semantic_digest": "647d09ecb0bdedce426f71c2527a5f30c3c413da4d4c670d4c5e22710b906fec",
+        "statistics_policy": {
+          "pg16-default": {
+            "actual_column_targets": [
+              {
+                "name": "age",
+                "target": -1
+              },
+              {
+                "name": "workclass",
+                "target": -1
+              },
+              {
+                "name": "education",
+                "target": -1
+              },
+              {
+                "name": "education_num",
+                "target": -1
+              },
+              {
+                "name": "marital_status",
+                "target": -1
+              },
+              {
+                "name": "occupation",
+                "target": -1
+              },
+              {
+                "name": "relationship",
+                "target": -1
+              },
+              {
+                "name": "race",
+                "target": -1
+              },
+              {
+                "name": "sex",
+                "target": -1
+              },
+              {
+                "name": "capital_gain",
+                "target": -1
+              },
+              {
+                "name": "capital_loss",
+                "target": -1
+              },
+              {
+                "name": "hours_per_week",
+                "target": -1
+              },
+              {
+                "name": "native_country",
+                "target": -1
+              }
+            ],
+            "requested_target": null,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          },
+          "pg16-target10000": {
+            "actual_column_targets": [
+              {
+                "name": "age",
+                "target": 10000
+              },
+              {
+                "name": "workclass",
+                "target": 10000
+              },
+              {
+                "name": "education",
+                "target": 10000
+              },
+              {
+                "name": "education_num",
+                "target": 10000
+              },
+              {
+                "name": "marital_status",
+                "target": 10000
+              },
+              {
+                "name": "occupation",
+                "target": 10000
+              },
+              {
+                "name": "relationship",
+                "target": 10000
+              },
+              {
+                "name": "race",
+                "target": 10000
+              },
+              {
+                "name": "sex",
+                "target": 10000
+              },
+              {
+                "name": "capital_gain",
+                "target": 10000
+              },
+              {
+                "name": "capital_loss",
+                "target": 10000
+              },
+              {
+                "name": "hours_per_week",
+                "target": 10000
+              },
+              {
+                "name": "native_country",
+                "target": 10000
+              }
+            ],
+            "requested_target": 10000,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          }
+        }
+      },
+      "dataset_id": "arecel-census13",
+      "descriptive_inputs": {
+        "all_source_validation_gates_passed": true,
+        "paired_regression_fraction_vs_default": 0.2155,
+        "relative_mean_change_vs_pg16_default": -0.5725610783544143,
+        "relative_mean_change_vs_pg16_target10000": -0.5737204082242557,
+        "strict_unseen_minus_full_s_valid_mean": {
+          "pg16-default": 0.07823298980977667,
+          "pg16-target10000": 0.07823298980977667
+        },
+        "tail_behavior": {
+          "default": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.6183528778838762,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.2542187254434892,
+              "query_count": 100
+            }
+          },
+          "s_valid": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.40486058586462803,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.13550564615085833,
+              "query_count": 100
+            }
+          }
+        }
+      },
+      "design": {
+        "baseline_objective": 5.766611187663734,
+        "candidate_universe_count": null,
+        "candidate_universe_count_status": "not-recorded-in-published-design-artifact",
+        "final_objective": 2.27911390898824,
+        "recommendation_digest": "82e0019cbe88ffb5872135064029814a2c027bde4185abaccfaf8fd5a19007b0",
+        "s_valid_candidate_ids": [
+          "cand_c8c1413add8f3db6d6f05be0",
+          "cand_03e22fcf6c560a837d8628e7",
+          "cand_8dcd92d8fd2c19547202010a",
+          "cand_5b0b4676bec8caedc102f449",
+          "cand_7d8de54bba646a9d23debb62",
+          "cand_6fcc2b4b6d26bbc6270a5211",
+          "cand_932bbcf20f9f0a148ba95db7"
+        ],
+        "search_elapsed_seconds": null,
+        "search_termination": "local-optimum",
+        "selected_k": 7
+      },
+      "formal_attempt_index": 1,
+      "full_test": {
+        "pg16-default": {
+          "absolute_mean_change": -2.995799856090855,
+          "baseline": {
+            "max": 1634.0,
+            "mean": 5.232279959897065,
+            "p50": 1.405686955104148,
+            "p95": 18.502272727272693,
+            "p99": 57.0,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 4936,
+            "unchanged": 2909,
+            "worsened": 2155
+          },
+          "relative_mean_change": -0.5725610783544143,
+          "s_valid": {
+            "max": 106.0,
+            "mean": 2.23648010380621,
+            "p50": 1.1902570933158345,
+            "p95": 6.0,
+            "p99": 15.50500000000011,
+            "query_count": 10000
+          }
+        },
+        "pg16-target10000": {
+          "absolute_mean_change": -3.0100298088305877,
+          "baseline": {
+            "max": 1635.0,
+            "mean": 5.246509912636798,
+            "p50": 1.4025182134938232,
+            "p95": 18.551515151515066,
+            "p99": 58.0,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 4559,
+            "unchanged": 2956,
+            "worsened": 2485
+          },
+          "relative_mean_change": -0.5737204082242557,
+          "s_valid": {
+            "max": 106.0,
+            "mean": 2.23648010380621,
+            "p50": 1.1902570933158345,
+            "p95": 6.0,
+            "p99": 15.50500000000011,
+            "query_count": 10000
+          }
+        }
+      },
+      "published_result_digest": "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b",
+      "recommendation_comparison": {
+        "comparison_level": "identifier-only",
+        "intersection_count": 0,
+        "jaccard": 0.0,
+        "physical_definition_comparison": {
+          "reason": "immutable artifacts do not establish cross-run candidate identity equivalence",
+          "status": "not-derived"
+        },
+        "s_test_candidate_ids": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435",
+          "cand_65bf58e313a4b96876b72b19",
+          "cand_ba355e70a4c2c126688383df",
+          "cand_2a400fd096108f66712fa5d7",
+          "cand_732acc055f32ca48ff994adf",
+          "cand_1edd4a89495b1c0989812ef6"
+        ],
+        "s_test_count": 7,
+        "s_valid_candidate_ids": [
+          "cand_c8c1413add8f3db6d6f05be0",
+          "cand_03e22fcf6c560a837d8628e7",
+          "cand_8dcd92d8fd2c19547202010a",
+          "cand_5b0b4676bec8caedc102f449",
+          "cand_7d8de54bba646a9d23debb62",
+          "cand_6fcc2b4b6d26bbc6270a5211",
+          "cand_932bbcf20f9f0a148ba95db7"
+        ],
+        "s_valid_count": 7,
+        "union_count": 14
+      },
+      "registry_attempt": {
+        "evidence_eligible": true,
+        "formal_invocation_count": 1,
+        "status": "complete"
+      },
+      "scientific_producer_sha": "2aec334f64f14d5dc49156a3bb476665fae1ba52",
+      "source_audit": {
+        "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+        "test_query_count": 10000,
+        "test_unique_query_hash_count": 9476,
+        "test_workload_id": "arecel_census13_test_v1",
+        "test_workload_sha256": "84d2fadeacddec2a65f0a2f01d7852eb09681dd847989eb27e380da73d474fc9",
+        "valid_query_count": 10000,
+        "valid_test_unique_hash_overlap_count": 137,
+        "valid_unique_query_hash_count": 9472,
+        "valid_workload_id": "arecel_census13_valid_v1",
+        "valid_workload_sha256": "9e616db0383ec10fc784797964338ff4fa1e69726fa007fa7f4a0515c41b2a0f"
+      },
+      "strict_unseen": {
+        "fraction": 0.9386,
+        "metrics": {
+          "pg16-default": {
+            "absolute_mean_change": -3.189636715447175,
+            "baseline": {
+              "max": 1634.0,
+              "mean": 5.504349809063162,
+              "p50": 1.5386153623557715,
+              "p95": 19.389285714285712,
+              "p99": 58.0,
+              "query_count": 9386
+            },
+            "paired": {
+              "improved": 4643,
+              "unchanged": 2909,
+              "worsened": 1834
+            },
+            "relative_mean_change": -0.5794756558159319,
+            "s_valid": {
+              "max": 106.0,
+              "mean": 2.3147130936159868,
+              "p50": 1.25,
+              "p95": 6.2,
+              "p99": 16.0,
+              "query_count": 9386
+            }
+          },
+          "pg16-target10000": {
+            "absolute_mean_change": -3.2050525016542672,
+            "baseline": {
+              "max": 1635.0,
+              "mean": 5.519765595270254,
+              "p50": 1.5371865703357417,
+              "p95": 19.5,
+              "p99": 58.67916666666663,
+              "query_count": 9386
+            },
+            "paired": {
+              "improved": 4486,
+              "unchanged": 2955,
+              "worsened": 1945
+            },
+            "relative_mean_change": -0.5806501102873997,
+            "s_valid": {
+              "max": 106.0,
+              "mean": 2.3147130936159868,
+              "p50": 1.25,
+              "p95": 6.2,
+              "p99": 16.0,
+              "query_count": 9386
+            }
+          }
+        },
+        "query_count": 9386,
+        "seen_in_valid_count": 614
+      },
+      "validation": {
+        "cleanup_passed": true,
+        "deployment": true,
+        "design": true,
+        "evidence_eligible": true,
+        "per_query": true,
+        "preflight": true,
+        "result": true
+      }
+    },
+    {
+      "artifact_bindings": {
+        "deployment": {
+          "byte_sha256": "b430d93bc72232e217300f0dec2f01c6b2e5cfc2cee75d59549e7198c05c97d7",
+          "byte_size": 4111,
+          "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/deployment-result-v1.json",
+          "semantic_digest": "d24621881b1bdabb36d2bac156df13db3a95f439f0c7483784c5606191aa6cc8"
+        },
+        "design": {
+          "byte_sha256": "9567c593b0a555a5c46eeec8e47a5e6a868a79a61f7a8bcf3a38b6719a0856f3",
+          "byte_size": 4803,
+          "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/design-v1.json",
+          "semantic_digest": "3a77258a694a880270d80420be1f9b3359383b28a98a36b419560cc2c8d54a31"
+        },
+        "per_query": {
+          "byte_sha256": "40753a85902396e4cf48bfd9f8b0c0a4fd0c1ec79705d72bade19d3f2373732a",
+          "byte_size": 1159717,
+          "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl"
+        },
+        "preflight": {
+          "byte_sha256": "55762fcce333d0fb4114ec75658ed4b49cefabda8de69b75aab2a641eff442d6",
+          "byte_size": 4142,
+          "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/rq1b-preflight-v1.json",
+          "semantic_digest": "06e18f9631b6066b19c00351a388ba42514c0181409c6f7b8d1b54fcd0157dd8"
+        },
+        "result": {
+          "byte_sha256": "59ca0df5f6ad104c8223def144270d9777a894c1d9f0c0cd16ff79d3e1fc4aaa",
+          "byte_size": 7148,
+          "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json",
+          "semantic_digest": "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd"
+        }
+      },
+      "baseline": {
+        "path": "experiments/arecel-forest10/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "semantic_digest": "3dbc024c6d182011f3eab3c5c333a7013a445f4f951e6cc8725086bfff3b0436",
+        "statistics_policy": {
+          "pg16-default": {
+            "actual_column_targets": [
+              {
+                "name": "elevation",
+                "target": 100
+              },
+              {
+                "name": "aspect",
+                "target": 100
+              },
+              {
+                "name": "slope",
+                "target": 100
+              },
+              {
+                "name": "horizontal_distance_to_hydrology",
+                "target": 100
+              },
+              {
+                "name": "vertical_distance_to_hydrology",
+                "target": 100
+              },
+              {
+                "name": "horizontal_distance_to_roadways",
+                "target": 100
+              },
+              {
+                "name": "hillshade_9am",
+                "target": 100
+              },
+              {
+                "name": "hillshade_noon",
+                "target": 100
+              },
+              {
+                "name": "hillshade_3pm",
+                "target": 100
+              },
+              {
+                "name": "horizontal_distance_to_fire_points",
+                "target": 100
+              }
+            ],
+            "requested_target": 100,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          },
+          "pg16-target10000": {
+            "actual_column_targets": [
+              {
+                "name": "elevation",
+                "target": 10000
+              },
+              {
+                "name": "aspect",
+                "target": 10000
+              },
+              {
+                "name": "slope",
+                "target": 10000
+              },
+              {
+                "name": "horizontal_distance_to_hydrology",
+                "target": 10000
+              },
+              {
+                "name": "vertical_distance_to_hydrology",
+                "target": 10000
+              },
+              {
+                "name": "horizontal_distance_to_roadways",
+                "target": 10000
+              },
+              {
+                "name": "hillshade_9am",
+                "target": 10000
+              },
+              {
+                "name": "hillshade_noon",
+                "target": 10000
+              },
+              {
+                "name": "hillshade_3pm",
+                "target": 10000
+              },
+              {
+                "name": "horizontal_distance_to_fire_points",
+                "target": 10000
+              }
+            ],
+            "requested_target": 10000,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          }
+        }
+      },
+      "dataset_id": "arecel-forest10",
+      "descriptive_inputs": {
+        "all_source_validation_gates_passed": true,
+        "paired_regression_fraction_vs_default": 0.2867,
+        "relative_mean_change_vs_pg16_default": -0.06546842256767871,
+        "relative_mean_change_vs_pg16_target10000": -0.0662428914511365,
+        "strict_unseen_minus_full_s_valid_mean": {
+          "pg16-default": 0.0,
+          "pg16-target10000": 0.0
+        },
+        "tail_behavior": {
+          "default": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.7670133222639345,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.505586352368366,
+              "query_count": 100
+            }
+          },
+          "s_valid": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.7713466859481145,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.5251589494787429,
+              "query_count": 100
+            }
+          }
+        }
+      },
+      "design": {
+        "baseline_objective": 6.783142595259455,
+        "candidate_universe_count": null,
+        "candidate_universe_count_status": "not-recorded-in-published-design-artifact",
+        "final_objective": 6.468452690767807,
+        "recommendation_digest": "86529ea9dabe9f57c7caa60fd811ddf375cd342df5c14604fa6c19cf10079cc5",
+        "s_valid_candidate_ids": [
+          "cand_e32a0fce8c8a2e0e7ca4dd87",
+          "cand_8538d66cc781cd0155880b68",
+          "cand_f282360c2fc866e601ec5e1f",
+          "cand_61ce4939fa9faf8006927709",
+          "cand_f71f05d4fc3d16dbb558fa9f",
+          "cand_1a95245949f74ac91d940870",
+          "cand_2bec5e2097b1c67e1a6ee460"
+        ],
+        "search_elapsed_seconds": null,
+        "search_termination": "local-optimum",
+        "selected_k": 7
+      },
+      "formal_attempt_index": 1,
+      "full_test": {
+        "pg16-default": {
+          "absolute_mean_change": -0.4676878354138818,
+          "baseline": {
+            "max": 9705.0,
+            "mean": 7.143716269173957,
+            "p50": 1.2165525964606128,
+            "p95": 16.85334665334665,
+            "p99": 71.0,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 4322,
+            "unchanged": 2811,
+            "worsened": 2867
+          },
+          "relative_mean_change": -0.06546842256767871,
+          "s_valid": {
+            "max": 9343.0,
+            "mean": 6.6760284337600755,
+            "p50": 1.183878212611528,
+            "p95": 15.0,
+            "p99": 64.50500000000011,
+            "query_count": 10000
+          }
+        },
+        "pg16-target10000": {
+          "absolute_mean_change": -0.4736129158358393,
+          "baseline": {
+            "max": 9374.0,
+            "mean": 7.149641349595915,
+            "p50": 1.208396574971899,
+            "p95": 17.0,
+            "p99": 71.0,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 3888,
+            "unchanged": 2788,
+            "worsened": 3324
+          },
+          "relative_mean_change": -0.0662428914511365,
+          "s_valid": {
+            "max": 9343.0,
+            "mean": 6.6760284337600755,
+            "p50": 1.183878212611528,
+            "p95": 15.0,
+            "p99": 64.50500000000011,
+            "query_count": 10000
+          }
+        }
+      },
+      "published_result_digest": "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd",
+      "recommendation_comparison": {
+        "comparison_level": "identifier-only",
+        "intersection_count": 0,
+        "jaccard": 0.0,
+        "physical_definition_comparison": {
+          "reason": "immutable artifacts do not establish cross-run candidate identity equivalence",
+          "status": "not-derived"
+        },
+        "s_test_candidate_ids": [
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_599a2efab190b6e2b7457ff1",
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_817be8bf7bbbc96c20bde230"
+        ],
+        "s_test_count": 8,
+        "s_valid_candidate_ids": [
+          "cand_e32a0fce8c8a2e0e7ca4dd87",
+          "cand_8538d66cc781cd0155880b68",
+          "cand_f282360c2fc866e601ec5e1f",
+          "cand_61ce4939fa9faf8006927709",
+          "cand_f71f05d4fc3d16dbb558fa9f",
+          "cand_1a95245949f74ac91d940870",
+          "cand_2bec5e2097b1c67e1a6ee460"
+        ],
+        "s_valid_count": 7,
+        "union_count": 15
+      },
+      "registry_attempt": {
+        "evidence_eligible": true,
+        "formal_invocation_count": 1,
+        "status": "complete"
+      },
+      "scientific_producer_sha": "85b9721bd2a381a6253046fa16ee7f5ba2d7d59c",
+      "source_audit": {
+        "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+        "test_query_count": 10000,
+        "test_unique_query_hash_count": 10000,
+        "test_workload_id": "arecel_forest10_test_v1",
+        "test_workload_sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6",
+        "valid_query_count": 10000,
+        "valid_test_unique_hash_overlap_count": 0,
+        "valid_unique_query_hash_count": 10000,
+        "valid_workload_id": "arecel_forest10_valid_v1",
+        "valid_workload_sha256": "e589bf277cf8303bfaf12943e651e5ba10065f8510df9b0f195dff7dfc1b5cb5"
+      },
+      "strict_unseen": {
+        "fraction": 1.0,
+        "metrics": {
+          "pg16-default": {
+            "absolute_mean_change": -0.4676878354138818,
+            "baseline": {
+              "max": 9705.0,
+              "mean": 7.143716269173957,
+              "p50": 1.2165525964606128,
+              "p95": 16.85334665334665,
+              "p99": 71.0,
+              "query_count": 10000
+            },
+            "paired": {
+              "improved": 4322,
+              "unchanged": 2811,
+              "worsened": 2867
+            },
+            "relative_mean_change": -0.06546842256767871,
+            "s_valid": {
+              "max": 9343.0,
+              "mean": 6.6760284337600755,
+              "p50": 1.183878212611528,
+              "p95": 15.0,
+              "p99": 64.50500000000011,
+              "query_count": 10000
+            }
+          },
+          "pg16-target10000": {
+            "absolute_mean_change": -0.4736129158358393,
+            "baseline": {
+              "max": 9374.0,
+              "mean": 7.149641349595915,
+              "p50": 1.208396574971899,
+              "p95": 17.0,
+              "p99": 71.0,
+              "query_count": 10000
+            },
+            "paired": {
+              "improved": 3888,
+              "unchanged": 2788,
+              "worsened": 3324
+            },
+            "relative_mean_change": -0.0662428914511365,
+            "s_valid": {
+              "max": 9343.0,
+              "mean": 6.6760284337600755,
+              "p50": 1.183878212611528,
+              "p95": 15.0,
+              "p99": 64.50500000000011,
+              "query_count": 10000
+            }
+          }
+        },
+        "query_count": 10000,
+        "seen_in_valid_count": 0
+      },
+      "validation": {
+        "cleanup_passed": true,
+        "deployment": true,
+        "design": true,
+        "evidence_eligible": true,
+        "per_query": true,
+        "preflight": true,
+        "result": true
+      }
+    },
+    {
+      "artifact_bindings": {
+        "deployment": {
+          "byte_sha256": "5ccddb3c05b70494935e936f140c481c2d87fad7217dcbecdf662485ab7c3585",
+          "byte_size": 4109,
+          "path": "experiments/arecel-power7/rq1-workload-generalization-v1/deployment-result-v1.json",
+          "semantic_digest": "bc10496c283ba4b6b0a1c0e2bdbba589ca5683e9757288fc4e67f98913424236"
+        },
+        "design": {
+          "byte_sha256": "f8cac6252354f91d6cd8e432c2662de7862e77443151d51fa274ece414672980",
+          "byte_size": 4790,
+          "path": "experiments/arecel-power7/rq1-workload-generalization-v1/design-v1.json",
+          "semantic_digest": "c194ebd90382d4606875ee040738bfe5fa0ac3c5c50f3f9f642e5bfaa0d6f27d"
+        },
+        "per_query": {
+          "byte_sha256": "cca5663c4a42820c1c9c2c51d32f06cedc5b884af09c61f6f8594160c5f2051f",
+          "byte_size": 1220120,
+          "path": "experiments/arecel-power7/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl"
+        },
+        "preflight": {
+          "byte_sha256": "9f69f38a74fdd9c80fbe2a34190ea69a99c8124eee41222b6bb6213b6c08d8f7",
+          "byte_size": 4488,
+          "path": "experiments/arecel-power7/rq1-workload-generalization-v1/rq1b-preflight-v1.json",
+          "semantic_digest": "4b592812013386f5b18d4187ef9f061c90e624d3b65365bdfc98d96d63f32492"
+        },
+        "result": {
+          "byte_sha256": "210d79f8cf652663032c95de1bac5531ea0a956b21c6592a05e43b385ca1a191",
+          "byte_size": 7360,
+          "path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json",
+          "semantic_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3"
+        }
+      },
+      "baseline": {
+        "path": "experiments/arecel-power7/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "semantic_digest": "14a809c8677db1007fa602ead1b2b5ab362c119f8cb197724b5c5de4a2959124",
+        "statistics_policy": {
+          "pg16-default": {
+            "actual_column_targets": [
+              {
+                "name": "global_active_power",
+                "target": 100
+              },
+              {
+                "name": "global_reactive_power",
+                "target": 100
+              },
+              {
+                "name": "voltage",
+                "target": 100
+              },
+              {
+                "name": "global_intensity",
+                "target": 100
+              },
+              {
+                "name": "sub_metering_1",
+                "target": 100
+              },
+              {
+                "name": "sub_metering_2",
+                "target": 100
+              },
+              {
+                "name": "sub_metering_3",
+                "target": 100
+              }
+            ],
+            "requested_target": 100,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          },
+          "pg16-target10000": {
+            "actual_column_targets": [
+              {
+                "name": "global_active_power",
+                "target": 10000
+              },
+              {
+                "name": "global_reactive_power",
+                "target": 10000
+              },
+              {
+                "name": "voltage",
+                "target": 10000
+              },
+              {
+                "name": "global_intensity",
+                "target": 10000
+              },
+              {
+                "name": "sub_metering_1",
+                "target": 10000
+              },
+              {
+                "name": "sub_metering_2",
+                "target": 10000
+              },
+              {
+                "name": "sub_metering_3",
+                "target": 10000
+              }
+            ],
+            "requested_target": 10000,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          }
+        }
+      },
+      "dataset_id": "arecel-power7",
+      "descriptive_inputs": {
+        "all_source_validation_gates_passed": true,
+        "paired_regression_fraction_vs_default": 0.3706,
+        "relative_mean_change_vs_pg16_default": -0.49520015785854743,
+        "relative_mean_change_vs_pg16_target10000": -0.507979677124113,
+        "strict_unseen_minus_full_s_valid_mean": {
+          "pg16-default": 0.0,
+          "pg16-target10000": 0.0
+        },
+        "tail_behavior": {
+          "default": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.9898010397894169,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.9671619514684677,
+              "query_count": 100
+            }
+          },
+          "s_valid": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.9811519504011642,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.9465176495616643,
+              "query_count": 100
+            }
+          }
+        }
+      },
+      "design": {
+        "baseline_objective": 114.9351151973333,
+        "candidate_universe_count": null,
+        "candidate_universe_count_status": "not-recorded-in-published-design-artifact",
+        "final_objective": 48.33588847359031,
+        "recommendation_digest": "c51b5221eb2d285d05bb161b72cc6bcfd94936aa2a725e6bd36af15d9e13224b",
+        "s_valid_candidate_ids": [
+          "cand_2f6da4b3c3385a310c5d0604",
+          "cand_e614ac4fb85a4d2c4aa66917",
+          "cand_9511ee67e6f5124028f6b2c0",
+          "cand_ee4e14b8e60ce529d3fc2ec1",
+          "cand_a1a7da6437d6ed6411f2c7b5",
+          "cand_e2dcea0ecd95eb81413e1655",
+          "cand_c773eda023c7ecaabfdec8c9"
+        ],
+        "search_elapsed_seconds": null,
+        "search_termination": "local-optimum",
+        "selected_k": 7
+      },
+      "formal_attempt_index": 6,
+      "full_test": {
+        "pg16-default": {
+          "absolute_mean_change": -63.13961279000297,
+          "baseline": {
+            "max": 153148.0,
+            "mean": 127.50321620058656,
+            "p50": 1.0712278302189417,
+            "p95": 14.97526627218933,
+            "p99": 235.02000000000044,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 5719,
+            "unchanged": 575,
+            "worsened": 3706
+          },
+          "relative_mean_change": -0.49520015785854743,
+          "s_valid": {
+            "max": 155314.0,
+            "mean": 64.3636034105836,
+            "p50": 1.0557202839606354,
+            "p95": 13.579257901737014,
+            "p99": 162.5050000000001,
+            "query_count": 10000
+          }
+        },
+        "pg16-target10000": {
+          "absolute_mean_change": -66.45132519719145,
+          "baseline": {
+            "max": 157746.0,
+            "mean": 130.81492860777504,
+            "p50": 1.0645269314046064,
+            "p95": 14.950404979325155,
+            "p99": 235.06454545454687,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 4969,
+            "unchanged": 547,
+            "worsened": 4484
+          },
+          "relative_mean_change": -0.507979677124113,
+          "s_valid": {
+            "max": 155314.0,
+            "mean": 64.3636034105836,
+            "p50": 1.0557202839606354,
+            "p95": 13.579257901737014,
+            "p99": 162.5050000000001,
+            "query_count": 10000
+          }
+        }
+      },
+      "published_result_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3",
+      "recommendation_comparison": {
+        "comparison_level": "identifier-only",
+        "intersection_count": 0,
+        "jaccard": 0.0,
+        "physical_definition_comparison": {
+          "reason": "immutable artifacts do not establish cross-run candidate identity equivalence",
+          "status": "not-derived"
+        },
+        "s_test_candidate_ids": [
+          "cand_d7dce3b57836a08ed61c2b5d",
+          "cand_3506e4367623c6d82ec5746e",
+          "cand_914ca1711fa3226bf091a092",
+          "cand_5e43adaa42103e401a3e3d23",
+          "cand_064fc60874bf261d6eb5795b",
+          "cand_844e0f859c56bfc4b50c65af",
+          "cand_bcf0bdc867941d3af34bf65e"
+        ],
+        "s_test_count": 7,
+        "s_valid_candidate_ids": [
+          "cand_2f6da4b3c3385a310c5d0604",
+          "cand_e614ac4fb85a4d2c4aa66917",
+          "cand_9511ee67e6f5124028f6b2c0",
+          "cand_ee4e14b8e60ce529d3fc2ec1",
+          "cand_a1a7da6437d6ed6411f2c7b5",
+          "cand_e2dcea0ecd95eb81413e1655",
+          "cand_c773eda023c7ecaabfdec8c9"
+        ],
+        "s_valid_count": 7,
+        "union_count": 14
+      },
+      "registry_attempt": {
+        "evidence_eligible": true,
+        "formal_invocation_count": 1,
+        "status": "complete"
+      },
+      "scientific_producer_sha": "699decdcfc960df050214abc3b64efb25d22818f",
+      "source_audit": {
+        "dataset_content_identity": "a432183ed36b42032864fc8eb0b99f554553087eb54c60dd08179eaf6c68dab4",
+        "test_query_count": 10000,
+        "test_unique_query_hash_count": 10000,
+        "test_workload_id": "arecel_power7_test_v1",
+        "test_workload_sha256": "649b0e422ad869e758db5dfd11b6e61a49f7ada5637252be5c7ca9e20b884eeb",
+        "valid_query_count": 10000,
+        "valid_test_unique_hash_overlap_count": 0,
+        "valid_unique_query_hash_count": 10000,
+        "valid_workload_id": "arecel_power7_valid_v1",
+        "valid_workload_sha256": "6a4658fee7d4f022a7886700c780a49dd3c2f81f4c6e2502163cabd19096113c"
+      },
+      "strict_unseen": {
+        "fraction": 1.0,
+        "metrics": {
+          "pg16-default": {
+            "absolute_mean_change": -63.13961279000297,
+            "baseline": {
+              "max": 153148.0,
+              "mean": 127.50321620058656,
+              "p50": 1.0712278302189417,
+              "p95": 14.97526627218933,
+              "p99": 235.02000000000044,
+              "query_count": 10000
+            },
+            "paired": {
+              "improved": 5719,
+              "unchanged": 575,
+              "worsened": 3706
+            },
+            "relative_mean_change": -0.49520015785854743,
+            "s_valid": {
+              "max": 155314.0,
+              "mean": 64.3636034105836,
+              "p50": 1.0557202839606354,
+              "p95": 13.579257901737014,
+              "p99": 162.5050000000001,
+              "query_count": 10000
+            }
+          },
+          "pg16-target10000": {
+            "absolute_mean_change": -66.45132519719145,
+            "baseline": {
+              "max": 157746.0,
+              "mean": 130.81492860777504,
+              "p50": 1.0645269314046064,
+              "p95": 14.950404979325155,
+              "p99": 235.06454545454687,
+              "query_count": 10000
+            },
+            "paired": {
+              "improved": 4969,
+              "unchanged": 547,
+              "worsened": 4484
+            },
+            "relative_mean_change": -0.507979677124113,
+            "s_valid": {
+              "max": 155314.0,
+              "mean": 64.3636034105836,
+              "p50": 1.0557202839606354,
+              "p95": 13.579257901737014,
+              "p99": 162.5050000000001,
+              "query_count": 10000
+            }
+          }
+        },
+        "query_count": 10000,
+        "seen_in_valid_count": 0
+      },
+      "validation": {
+        "cleanup_passed": true,
+        "deployment": true,
+        "design": true,
+        "evidence_eligible": true,
+        "per_query": true,
+        "preflight": true,
+        "result": true
+      }
+    },
+    {
+      "artifact_bindings": {
+        "deployment": {
+          "byte_sha256": "b9e32bf569398f05161bd88928bda43c6d21656ae08eb48a0b46674c5210fe7c",
+          "byte_size": 3500,
+          "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/deployment-result-v1.json",
+          "semantic_digest": "0a62dc07fd4919f1f4c8903b18d7961016a5c207a873d34e6df84169bd2b18d2"
+        },
+        "design": {
+          "byte_sha256": "80e35df21ae807ba9a141e3b0837b31f1b81d71396fc01f86233e8f95bb3203a",
+          "byte_size": 4630,
+          "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/design-v1.json",
+          "semantic_digest": "550da1e174ad16680d270f531bff4eeb0dc03421c6773b5a7d73a6c88e2172bf"
+        },
+        "per_query": {
+          "byte_sha256": "8745be88f458528f8e52e2d9ec95cbf89d5e31cd04451ba9064948dbeb427654",
+          "byte_size": 1192261,
+          "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/pg16-advisor-valid-to-test-per-query-v1.jsonl"
+        },
+        "preflight": {
+          "byte_sha256": "6093afba4429078774f5293caf106585fc92474fc4e5cc34150aeec27fd39bfa",
+          "byte_size": 4111,
+          "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/rq1b-preflight-v1.json",
+          "semantic_digest": "a9849f53965ffa3e903039b2a17a8368efefb6871d43c88bc7b1e70761c10cad"
+        },
+        "result": {
+          "byte_sha256": "304be44f28fae0514bf17854945eb0f87ac6c36622a3c87a6aefb86026db62c5",
+          "byte_size": 7379,
+          "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/result-v1.json",
+          "semantic_digest": "f7aabb8ac7839457cb49bd3dd21e57e482a9967141ef45174293b5c06422b53c"
+        }
+      },
+      "baseline": {
+        "path": "experiments/arecel-dmv11/rq1-confirmatory/rq1-matched-comparison-v1.json",
+        "semantic_digest": "9015b7b824107c9b99e34dadcc1e50e5c1a4a8d03c2b616a5bfab04450cb82dd",
+        "statistics_policy": {
+          "pg16-default": {
+            "actual_column_targets": [
+              {
+                "name": "record_type",
+                "target": 100
+              },
+              {
+                "name": "registration_class",
+                "target": 100
+              },
+              {
+                "name": "state",
+                "target": 100
+              },
+              {
+                "name": "county",
+                "target": 100
+              },
+              {
+                "name": "body_type",
+                "target": 100
+              },
+              {
+                "name": "fuel_type",
+                "target": 100
+              },
+              {
+                "name": "reg_valid_date",
+                "target": 100
+              },
+              {
+                "name": "color",
+                "target": 100
+              },
+              {
+                "name": "scofflaw_indicator",
+                "target": 100
+              },
+              {
+                "name": "suspension_indicator",
+                "target": 100
+              },
+              {
+                "name": "revocation_indicator",
+                "target": 100
+              }
+            ],
+            "requested_target": 100,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          },
+          "pg16-target10000": {
+            "actual_column_targets": [
+              {
+                "name": "record_type",
+                "target": 10000
+              },
+              {
+                "name": "registration_class",
+                "target": 10000
+              },
+              {
+                "name": "state",
+                "target": 10000
+              },
+              {
+                "name": "county",
+                "target": 10000
+              },
+              {
+                "name": "body_type",
+                "target": 10000
+              },
+              {
+                "name": "fuel_type",
+                "target": 10000
+              },
+              {
+                "name": "reg_valid_date",
+                "target": 10000
+              },
+              {
+                "name": "color",
+                "target": 10000
+              },
+              {
+                "name": "scofflaw_indicator",
+                "target": 10000
+              },
+              {
+                "name": "suspension_indicator",
+                "target": 10000
+              },
+              {
+                "name": "revocation_indicator",
+                "target": 10000
+              }
+            ],
+            "requested_target": 10000,
+            "seed_identifier": 123,
+            "setseed_sql": "SELECT setseed(1.0 / 123)"
+          }
+        }
+      },
+      "dataset_id": "arecel-dmv11",
+      "descriptive_inputs": {
+        "all_source_validation_gates_passed": true,
+        "paired_regression_fraction_vs_default": 0.2455,
+        "relative_mean_change_vs_pg16_default": -0.8544053138508734,
+        "relative_mean_change_vs_pg16_target10000": -0.8571382646556074,
+        "strict_unseen_minus_full_s_valid_mean": {
+          "pg16-default": 8.786554170907138,
+          "pg16-target10000": 8.786554170907138
+        },
+        "tail_behavior": {
+          "default": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.9951887592278762,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.8748289863858156,
+              "query_count": 100
+            }
+          },
+          "s_valid": {
+            "query_count": 10000,
+            "top_10_percent": {
+              "fraction_of_total_qerror": 0.9720673394200894,
+              "query_count": 1000
+            },
+            "top_1_percent": {
+              "fraction_of_total_qerror": 0.795679048602222,
+              "query_count": 100
+            }
+          }
+        }
+      },
+      "design": {
+        "baseline_objective": 269.40216473928865,
+        "candidate_universe_count": null,
+        "candidate_universe_count_status": "not-recorded-in-published-design-artifact",
+        "final_objective": 48.963435607914036,
+        "recommendation_digest": "213ea5f8c8b14c197d66584d879d81e965d23db51637c78a0e6cfcd6afb61c9e",
+        "s_valid_candidate_ids": [
+          "cand_fd56d3e85e0b429a3f462940",
+          "cand_a07bbc2e2594948c9a4c3a95",
+          "cand_42ed628a6d8a654defddab49",
+          "cand_8162a38aea89775313b42381",
+          "cand_3a498f54ecc7dfd98afd238c"
+        ],
+        "search_elapsed_seconds": null,
+        "search_termination": "local-optimum",
+        "selected_k": 5
+      },
+      "formal_attempt_index": 1,
+      "full_test": {
+        "pg16-default": {
+          "absolute_mean_change": -236.55739769470065,
+          "baseline": {
+            "max": 112010.0,
+            "mean": 276.8678914560087,
+            "p50": 1.2006392814419862,
+            "p95": 85.57499999999891,
+            "p99": 3263.8550000000187,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 6518,
+            "unchanged": 1027,
+            "worsened": 2455
+          },
+          "relative_mean_change": -0.8544053138508734,
+          "s_valid": {
+            "max": 25952.466666666667,
+            "mean": 40.31049376130803,
+            "p50": 1.1115808316619908,
+            "p95": 39.016666666666424,
+            "p99": 801.2011764705926,
+            "query_count": 10000
+          }
+        },
+        "pg16-target10000": {
+          "absolute_mean_change": -241.85389171344977,
+          "baseline": {
+            "max": 112010.0,
+            "mean": 282.1643854747578,
+            "p50": 1.1858142021863036,
+            "p95": 78.0,
+            "p99": 3255.0800000000017,
+            "query_count": 10000
+          },
+          "paired": {
+            "improved": 5639,
+            "unchanged": 1028,
+            "worsened": 3333
+          },
+          "relative_mean_change": -0.8571382646556074,
+          "s_valid": {
+            "max": 25952.466666666667,
+            "mean": 40.31049376130803,
+            "p50": 1.1115808316619908,
+            "p95": 39.016666666666424,
+            "p99": 801.2011764705926,
+            "query_count": 10000
+          }
+        }
+      },
+      "published_result_digest": "f7aabb8ac7839457cb49bd3dd21e57e482a9967141ef45174293b5c06422b53c",
+      "recommendation_comparison": {
+        "comparison_level": "identifier-only",
+        "intersection_count": 0,
+        "jaccard": 0.0,
+        "physical_definition_comparison": {
+          "reason": "immutable artifacts do not establish cross-run candidate identity equivalence",
+          "status": "not-derived"
+        },
+        "s_test_candidate_ids": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_a321c061df418caa0b143ac4",
+          "cand_446a7fc5aba413d985b7f659",
+          "cand_5d60cd8bc3c6c4df47d3c8f8",
+          "cand_f495ee73455905ddf4da0f95"
+        ],
+        "s_test_count": 5,
+        "s_valid_candidate_ids": [
+          "cand_fd56d3e85e0b429a3f462940",
+          "cand_a07bbc2e2594948c9a4c3a95",
+          "cand_42ed628a6d8a654defddab49",
+          "cand_8162a38aea89775313b42381",
+          "cand_3a498f54ecc7dfd98afd238c"
+        ],
+        "s_valid_count": 5,
+        "union_count": 10
+      },
+      "registry_attempt": {
+        "evidence_eligible": true,
+        "formal_invocation_count": 1,
+        "status": "complete"
+      },
+      "scientific_producer_sha": "d426a1c2bc59284c82f44f5963c62a75f890916f",
+      "source_audit": {
+        "dataset_content_identity": "6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8",
+        "test_query_count": 10000,
+        "test_unique_query_hash_count": 8482,
+        "test_workload_id": "arecel_dmv11_test_v1",
+        "test_workload_sha256": "fb4f1ab89f21b34214a94e1d1bd77cf52d9e5d1e7fd9c2ee7178245832163d2d",
+        "valid_query_count": 10000,
+        "valid_test_unique_hash_overlap_count": 497,
+        "valid_unique_query_hash_count": 8490,
+        "valid_workload_id": "arecel_dmv11_valid_v1",
+        "valid_workload_sha256": "b2b98540a800a0a8cafac2cd9d5a21c61db954eddd401d2df1f633a2edbe2dd5"
+      },
+      "strict_unseen": {
+        "fraction": 0.8138,
+        "metrics": {
+          "pg16-default": {
+            "absolute_mean_change": -267.94886107189524,
+            "baseline": {
+              "max": 112010.0,
+              "mean": 317.0459090041104,
+              "p50": 1.3206979565859702,
+              "p95": 157.87857142857138,
+              "p99": 4456.690000000007,
+              "query_count": 8138
+            },
+            "paired": {
+              "improved": 5384,
+              "unchanged": 1027,
+              "worsened": 1727
+            },
+            "relative_mean_change": -0.8451421496450262,
+            "s_valid": {
+              "max": 25952.466666666667,
+              "mean": 49.09704793221517,
+              "p50": 1.1917915371837098,
+              "p95": 52.838793103448204,
+              "p99": 1068.2600000000002,
+              "query_count": 8138
+            }
+          },
+          "pg16-target10000": {
+            "absolute_mean_change": -277.1425810896911,
+            "baseline": {
+              "max": 112010.0,
+              "mean": 326.23962902190624,
+              "p50": 1.2928065855132693,
+              "p95": 146.0,
+              "p99": 4314.4500000000235,
+              "query_count": 8138
+            },
+            "paired": {
+              "improved": 5036,
+              "unchanged": 1028,
+              "worsened": 2074
+            },
+            "relative_mean_change": -0.8495061802288942,
+            "s_valid": {
+              "max": 25952.466666666667,
+              "mean": 49.09704793221517,
+              "p50": 1.1917915371837098,
+              "p95": 52.838793103448204,
+              "p99": 1068.2600000000002,
+              "query_count": 8138
+            }
+          }
+        },
+        "query_count": 8138,
+        "seen_in_valid_count": 1862
+      },
+      "validation": {
+        "cleanup_passed": true,
+        "deployment": true,
+        "design": true,
+        "evidence_eligible": true,
+        "per_query": true,
+        "preflight": true,
+        "result": true
+      }
+    }
+  ],
+  "derived_offline": true,
+  "format_version": "rq1-workload-generalization-cross-dataset-v1",
+  "global_provenance": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "protocol": {
+      "path": "paper/rq1-workload-generalization-protocol-v2.json",
+      "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+    },
+    "source_audit": {
+      "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+      "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+    },
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "strict_unseen": {
+      "path": "experiments/rq1-workload-generalization-strict-unseen-v1.json",
+      "semantic_digest": "30c8e516d44269508a944f8c73b0927b2cc213aa229ae57cb57ef757be6401be"
+    },
+    "truth_policy": {
+      "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+      "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+    }
+  },
+  "rq": "RQ1b",
+  "scientific_reexecution": false,
+  "scope": "four-dataset held-out workload generalization",
+  "semantic_digest": "92faabbd6703f79e3a5c6ad5ef13904ea01d388f095f21583557be3591893473",
+  "source_result_artifacts": [
+    {
+      "byte_sha256": "0453826aceeb825cf8643174be12e3a6b828a8e66811f116087cc4e71934a77f",
+      "byte_size": 7124,
+      "path": "experiments/arecel-census13/rq1-workload-generalization-v1/result-v1.json",
+      "semantic_digest": "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b"
+    },
+    {
+      "byte_sha256": "59ca0df5f6ad104c8223def144270d9777a894c1d9f0c0cd16ff79d3e1fc4aaa",
+      "byte_size": 7148,
+      "path": "experiments/arecel-forest10/rq1-workload-generalization-v1/result-v1.json",
+      "semantic_digest": "106809bb0ad45ee6aa0ac0a238eb22299a17e0f4d396e883ef68718d8234d8dd"
+    },
+    {
+      "byte_sha256": "210d79f8cf652663032c95de1bac5531ea0a956b21c6592a05e43b385ca1a191",
+      "byte_size": 7360,
+      "path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json",
+      "semantic_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3"
+    },
+    {
+      "byte_sha256": "304be44f28fae0514bf17854945eb0f87ac6c36622a3c87a6aefb86026db62c5",
+      "byte_size": 7379,
+      "path": "experiments/arecel-dmv11/rq1-workload-generalization-v1/result-v1.json",
+      "semantic_digest": "f7aabb8ac7839457cb49bd3dd21e57e482a9967141ef45174293b5c06422b53c"
+    }
+  ],
+  "status": "complete",
+  "summary_id": "rq1-workload-generalization-cross-dataset-v1",
+  "synthesis_producer_sha": "bda01b884bc6648ae6c5e9478c28c5ca364f1ffd"
+}

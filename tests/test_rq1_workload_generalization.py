@@ -295,9 +295,15 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     assert rq1b["status"] == "preregistered"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
-    assert rq1b["formal_execution"] == "census13-attempt-1-complete"
-    assert rq1b["formal_evidence_status"] == "census13-child-complete"
+    assert rq1b["formal_execution"] == "four-dataset-children-complete"
+    assert rq1b["formal_evidence_status"] == "four-dataset-children-complete"
     assert rq1b["next_formal_attempt"] == "none-pending-review"
+    assert rq1b["cross_dataset_synthesis_status"] == "complete"
+    assert rq1b["cross_dataset_synthesis"]["artifact"] == (
+        "experiments/rq1-workload-generalization-cross-dataset-v1.json"
+    )
+    assert rq1b["cross_dataset_synthesis"]["derived_offline"] is True
+    assert rq1b["cross_dataset_synthesis"]["scientific_reexecution"] is False
     assert rq1b["power7_runner_readiness"] == "formal-evidence-published"
     assert rq1b["forest10_runner_readiness"] == "formal-evidence-published"
     assert rq1b["forest10_formal_evidence_status"] == "complete"
