@@ -24,6 +24,21 @@ from .incremental_search_hardening import (
 from .incremental_search_hardening import (
     validate_artifact as validate_incremental_hardening,
 )
+from .oid_order_sensitivity import (
+    PREFLIGHT_PATH as OID_PREFLIGHT_PATH,
+)
+from .oid_order_sensitivity import (
+    build_preflight as build_oid_preflight,
+)
+from .oid_order_sensitivity import (
+    run_formal as run_oid_formal,
+)
+from .oid_order_sensitivity import (
+    validate_preflight as validate_oid_preflight,
+)
+from .oid_order_sensitivity import (
+    validate_protocol as validate_oid_protocol,
+)
 from .paper_baseline import run_paper_baseline
 from .paper_spec import (
     DEFAULT_SPEC_PATH,
@@ -552,6 +567,33 @@ def _parser() -> argparse.ArgumentParser:
             default=Path("/home/wqts/projects/postgresql-src"),
         )
         run.add_argument("--advisor-command", default="extstats-advisor")
+    oid_order = commands.add_parser(
+        "oid-order-sensitivity",
+        help="preregister, run, or validate the independent OID-order sensitivity ablation",
+    )
+    oid_commands = oid_order.add_subparsers(dest="oid_command", required=True)
+    oid_preflight = oid_commands.add_parser("preflight-create")
+    oid_preflight.add_argument("--data-root", type=Path, required=True)
+    oid_preflight.add_argument("--output", type=Path, default=OID_PREFLIGHT_PATH)
+    oid_run = oid_commands.add_parser("run")
+    oid_run.add_argument("--stock-dsn", required=True)
+    oid_run.add_argument("--planner-dsn", required=True)
+    oid_run.add_argument("--preflight", type=Path, default=OID_PREFLIGHT_PATH)
+    oid_run.add_argument("--data-root", type=Path, required=True)
+    oid_run.add_argument(
+        "--advisor-root", type=Path, default=Path("/home/wqts/projects/extstats-advisor")
+    )
+    oid_run.add_argument(
+        "--patched-postgres-root",
+        type=Path,
+        default=Path("/home/wqts/projects/postgresql-src-pgextadv"),
+    )
+    oid_run.add_argument(
+        "--stock-postgres-root", type=Path, default=Path("/home/wqts/projects/postgresql-src")
+    )
+    oid_validate = oid_commands.add_parser("validate")
+    oid_validate.add_argument("kind", choices=("protocol", "preflight"))
+    oid_validate.add_argument("artifact", type=Path)
     validate = commands.add_parser("validate")
     validate_commands = validate.add_subparsers(dest="validate_command", required=True)
     transfer = validate_commands.add_parser("full-data-transfer")
@@ -1129,6 +1171,51 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "oid-order-sensitivity":
+        root = Path(__file__).resolve().parents[2]
+        from .pins import verify_research_repository
+
+        producer_sha = verify_research_repository(root)["research_commit_sha"]
+        if args.oid_command == "preflight-create":
+            output = args.output
+            value = build_oid_preflight(
+                root=root, data_root=args.data_root, producer_sha=producer_sha
+            )
+            write_json(output, value)
+            print(
+                json.dumps(
+                    {
+                        "status": "written",
+                        "output": str(output),
+                        "semantic_digest": value["semantic_digest"],
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 0
+        if args.oid_command == "run":
+            result = run_oid_formal(
+                root=root,
+                preflight_path=args.preflight,
+                data_root=args.data_root,
+                stock_dsn=args.stock_dsn,
+                planner_dsn=args.planner_dsn,
+                advisor_root=args.advisor_root,
+                patched_postgres_root=args.patched_postgres_root,
+                stock_postgres_root=args.stock_postgres_root,
+                producer_sha=producer_sha,
+            )
+            print(json.dumps(result, sort_keys=True, indent=2, default=str))
+            return 0
+        if args.oid_command == "validate":
+            value = read_json(args.artifact)
+            result = (
+                validate_oid_protocol(value)
+                if args.kind == "protocol"
+                else validate_oid_preflight(value, root=root)
+            )
+            print(json.dumps(result, sort_keys=True))
+            return 0
     if args.command == "rq1-generalization":
         root = Path(__file__).resolve().parents[2]
         if args.rq1g_dataset_command == "preflight-create":
