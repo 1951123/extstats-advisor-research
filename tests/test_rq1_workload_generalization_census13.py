@@ -234,7 +234,7 @@ def test_census13_output_namespace_is_distinct_from_existing_children() -> None:
     }
 
 
-def test_census13_registry_records_readiness_without_formal_evidence() -> None:
+def test_census13_registry_records_published_formal_evidence() -> None:
     registry = read_json(ROOT / "paper/paper-experiment-v1.json")
     rq1b = next(
         item
@@ -242,7 +242,29 @@ def test_census13_registry_records_readiness_without_formal_evidence() -> None:
         if item["experiment_id"] == "rq1-held-out-workload-generalization"
     )
     assert rq1b["status"] == "preregistered"
-    assert rq1b["census13_runner_readiness"] == "implementation-ready"
-    assert rq1b["census13_formal_evidence_status"] == "not-produced"
-    assert rq1b["census13_next_formal_attempt"] == "attempt-1-pending"
-    assert rq1b["census13_formal_attempts"] == []
+    assert rq1b["census13_runner_readiness"] == "formal-evidence-published"
+    assert rq1b["census13_formal_evidence_status"] == "complete"
+    assert rq1b["census13_next_formal_attempt"] == "none-pending-until-review"
+    assert len(rq1b["census13_formal_attempts"]) == 1
+    attempt = rq1b["census13_formal_attempts"][0]
+    assert attempt["attempt_index"] == 1
+    assert attempt["status"] == "complete"
+    assert attempt["scientific_pipeline_status"] == "complete"
+    assert attempt["evidence_eligible"] is True
+    assert attempt["formal_invocation_count"] == 1
+    assert attempt["producer_sha"] == "2aec334f64f14d5dc49156a3bb476665fae1ba52"
+    assert attempt["preflight_semantic_digest"] == (
+        "0e0e09652b89f06e17dd5338ba772cd7647503c33ef9015a1aff1df673bec704"
+    )
+    assert attempt["design_semantic_digest"] == (
+        "240fa55eb2c02eaf7a4569f1c925ceebac3aa72b92f36bcf734d42a1f480a483"
+    )
+    assert attempt["deployment_semantic_digest"] == (
+        "6f27af8ed49884d2a82496ef61722d08b67cd6cc31cae8f89eb2bdffe532b43c"
+    )
+    assert attempt["per_query_sha256"] == (
+        "e0d391ce85a0a9c852604e50d2b854b63e1de56e0b591458fbae9ffcdc5c33e7"
+    )
+    assert attempt["result_semantic_digest"] == (
+        "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b"
+    )

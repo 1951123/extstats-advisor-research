@@ -302,8 +302,8 @@
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
       "status": "preregistered",
-      "formal_execution": "dmv11-attempt-1-complete",
-      "formal_evidence_status": "dmv11-child-complete",
+      "formal_execution": "census13-attempt-1-complete",
+      "formal_evidence_status": "census13-child-complete",
       "next_formal_attempt": "none-pending-review",
       "power7_formal_attempts": [
         {
@@ -435,10 +435,32 @@
         "evidence_eligible": true,
         "scientific_reexecution": true
       },
-      "census13_runner_readiness": "implementation-ready",
-      "census13_formal_evidence_status": "not-produced",
-      "census13_next_formal_attempt": "attempt-1-pending",
-      "census13_formal_attempts": [],
+      "census13_runner_readiness": "formal-evidence-published",
+      "census13_formal_evidence_status": "complete",
+      "census13_next_formal_attempt": "none-pending-until-review",
+      "census13_formal_attempts": [
+        {
+          "attempt_index": 1,
+          "status": "complete",
+          "scientific_pipeline_status": "complete",
+          "evidence_eligible": true,
+          "formal_invocation_count": 1,
+          "producer_sha": "2aec334f64f14d5dc49156a3bb476665fae1ba52",
+          "preflight_semantic_digest": "0e0e09652b89f06e17dd5338ba772cd7647503c33ef9015a1aff1df673bec704",
+          "design_semantic_digest": "240fa55eb2c02eaf7a4569f1c925ceebac3aa72b92f36bcf734d42a1f480a483",
+          "recommendation_semantic_digest": "82e0019cbe88ffb5872135064029814a2c027bde4185abaccfaf8fd5a19007b0",
+          "deployment_semantic_digest": "6f27af8ed49884d2a82496ef61722d08b67cd6cc31cae8f89eb2bdffe532b43c",
+          "per_query_sha256": "e0d391ce85a0a9c852604e50d2b854b63e1de56e0b591458fbae9ffcdc5c33e7",
+          "result_semantic_digest": "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b"
+        }
+      ],
+      "census13_formal_evidence": {
+        "result_path": "experiments/arecel-census13/rq1-workload-generalization-v1/result-v1.json",
+        "result_semantic_digest": "9cb84a6eaa1f35f3761f90853a519de36be6448f9eafe3db389c5e27acffb41b",
+        "producer_sha": "2aec334f64f14d5dc49156a3bb476665fae1ba52",
+        "evidence_eligible": true,
+        "scientific_reexecution": true
+      },
       "pre_search_smoke_artifact": {
         "path": "experiments/arecel-power7/rq1-workload-generalization-v1/diagnostics/pre-search-sandbox-smoke-v1.json",
         "semantic_digest": "bc4ed5a9f50ef17e30d717c394513277abac7ccadbb1619747698355b8fb326e"

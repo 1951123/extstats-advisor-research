@@ -1,0 +1,107 @@
+{
+  "cleanup": {
+    "passed": false,
+    "required_before_publish": true
+  },
+  "dataset": {
+    "benchmark_id": "arecel-census13",
+    "content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+    "dataset_id": "arecel-census13",
+    "relation": "public.census13",
+    "rows": 48842,
+    "schema_contract_id": "arecel-census13-postgres-schema-v1"
+  },
+  "design_stage": {
+    "B": 8,
+    "K_s": 8,
+    "T_seconds": 300,
+    "advisor_run_manifest_digest": "001837f6718d7c8d1f0a4e0c901b74fe9c6858f2d12322091c542ce2b980c679",
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "candidate_universe_digest": "e0ce36186ee00d52dd812950113ea76c4d885cf903567a9b64a8442e78eca8ca",
+    "deployment_ordered_candidate_ids": [
+      "cand_c8c1413add8f3db6d6f05be0",
+      "cand_03e22fcf6c560a837d8628e7",
+      "cand_8dcd92d8fd2c19547202010a",
+      "cand_5b0b4676bec8caedc102f449",
+      "cand_7d8de54bba646a9d23debb62",
+      "cand_6fcc2b4b6d26bbc6270a5211",
+      "cand_932bbcf20f9f0a148ba95db7"
+    ],
+    "design_stage_complete": true,
+    "ground_truth_set_digest": "1449d1e563afd8f14a1bb66ef82ceb843461ab09f9faf89f394a00cc66b0371e",
+    "input_split": "valid",
+    "native_repository_digest": "5550a2961d7c955a3d00625a9dc8a662251c3bdfda3c48ddf0c5f19b36429df9",
+    "optimization_plan_digest": "3221da6281cabc3ff94496812a20f4bb612068d924c3d2a0abbdef97b491620c",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "recommendation_digest": "82e0019cbe88ffb5872135064029814a2c027bde4185abaccfaf8fd5a19007b0",
+    "recommendation_sealed": true,
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "search_baseline_objective": 5.766611187663734,
+    "search_final_objective": 2.27911390898824,
+    "search_result_digest": "dff17b18fca35053cd38f08cda4417595fc630a3293fb9c18ba8369904d371cd",
+    "selected_candidate_ids": [
+      "cand_c8c1413add8f3db6d6f05be0",
+      "cand_03e22fcf6c560a837d8628e7",
+      "cand_8dcd92d8fd2c19547202010a",
+      "cand_5b0b4676bec8caedc102f449",
+      "cand_7d8de54bba646a9d23debb62",
+      "cand_6fcc2b4b6d26bbc6270a5211",
+      "cand_932bbcf20f9f0a148ba95db7"
+    ],
+    "singleton_profile_digest": "d6dcaafcdc2b2698c9f6809ca5da44c692fe045653963471f8169617a12fe9c5",
+    "snapshot_digest": "68ebdaf5d020554add9db9ba2d0f5706612bff09042d031850bd26b155c651b4",
+    "statistics_target": 100,
+    "termination_reason": "local-optimum",
+    "truth": {
+      "collection_contract": "authoritative-external-exact-cardinality-v1",
+      "dataset_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "observations_semantic_digest": "9141b46f36ffa4dc378152c114caac02b717dcdc7473286888c3e2f4aa4d7806",
+      "observations_sha256": "13c35836c2757364fb5676132d8eac93c5f4c50483fc88198e145c1a5c03e6ca",
+      "policy_status": "preregistered",
+      "query_count": 10000,
+      "source_kind": "authoritative-external-exact",
+      "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+      "workload_id": "arecel_census13_valid_v1"
+    },
+    "workload": {
+      "canonical_source_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+      "query_count": 10000,
+      "sha256": "9e616db0383ec10fc784797964338ff4fa1e69726fa007fa7f4a0515c41b2a0f",
+      "workload_id": "arecel_census13_valid_v1"
+    }
+  },
+  "evaluation_stage": {
+    "recommendation_input_is_immutable": true,
+    "status": "not-started",
+    "test_inputs_accessed": false
+  },
+  "experiment_id": "rq1-held-out-workload-generalization",
+  "format_version": "rq1-workload-generalization-census13-design-v1",
+  "producer": {
+    "research_commit_sha": "2aec334f64f14d5dc49156a3bb476665fae1ba52"
+  },
+  "protocol": {
+    "path": "paper/rq1-workload-generalization-protocol-v2.json",
+    "semantic_digest": "ffa5451d5212a09c4eb4713cb514945119d89a0ad6254b034a81ab7a3a88c602"
+  },
+  "rq": "RQ1b",
+  "semantic_digest": "240fa55eb2c02eaf7a4569f1c925ceebac3aa72b92f36bcf734d42a1f480a483",
+  "source_audit": {
+    "path": "experiments/rq1-workload-generalization-source-audit-v2.json",
+    "semantic_digest": "05b32b600bea27a937db4de9af005c223fef67c168e3548c9c862eb6b710164e"
+  },
+  "status": "design-complete",
+  "system_freeze": {
+    "advisor_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "path": "paper/system-freeze-v2.json",
+    "postgres_version": "16.14",
+    "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "truth_policy": {
+    "path": "paper/rq1-workload-generalization-truth-policy-v1.json",
+    "semantic_digest": "e880f0f5b6cebd468fbadcd235408ba3a4b07ee9313f4705d11cf8f4fe83d36a"
+  }
+}
