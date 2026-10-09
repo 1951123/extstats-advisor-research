@@ -492,6 +492,26 @@ def validate_cross_dataset_synthesis(
         value.get("semantic_digest") == semantic_digest(_without_digest(value)),
         "synthesis digest mismatch",
     )
+    # Reject obvious identity/reference mutations before the intentionally
+    # expensive child-level recomputation.  The complete, unmutated artifact
+    # still goes through _assemble below; this only makes fail-closed mutation
+    # checks deterministic and avoids doing four full 10k-row validations for
+    # a summary whose dataset identity is already invalid.
+    datasets = value.get("datasets")
+    _require(isinstance(datasets, list), "synthesis does not match recomputed evidence")
+    _require(
+        [row.get("dataset_id") for row in datasets if isinstance(row, Mapping)]
+        == list(DATASET_ORDER),
+        "synthesis does not match recomputed evidence",
+    )
+    _require(
+        all(
+            isinstance(row, Mapping)
+            and row.get("published_result_digest") == RESULT_DIGESTS[row["dataset_id"]]
+            for row in datasets
+        ),
+        "synthesis does not match recomputed evidence",
+    )
     expected = _assemble(root, synthesis_producer_sha=value.get("synthesis_producer_sha"))
     _require(_without_digest(value) == expected, "synthesis does not match recomputed evidence")
     return {
