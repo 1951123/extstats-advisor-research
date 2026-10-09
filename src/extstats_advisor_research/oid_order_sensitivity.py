@@ -1293,7 +1293,7 @@ def _validate_dataset_result(
             "payload_sha256_by_candidate"
         ):
             raise ValueError(f"{dataset_id}/{arm_id} hypothetical payload realization drift")
-        diagnostics = _order_diagnostics(arm, reference_hyp)
+        diagnostics = _order_diagnostics(arm, reference_hyp, root=root)
         if arm.get("order_diagnostics") != diagnostics:
             raise ValueError(f"{dataset_id}/{arm_id} hypothetical diagnostics drift")
 
@@ -1328,7 +1328,7 @@ def _validate_dataset_result(
             )
             if arm.get("causal_status") != expected_status:
                 raise ValueError(f"{dataset_id}/{arm_id} physical causal status drift")
-        diagnostics = _order_diagnostics(arm, reference_phys)
+        diagnostics = _order_diagnostics(arm, reference_phys, root=root)
         if arm.get("order_diagnostics") != diagnostics:
             raise ValueError(f"{dataset_id}/{arm_id} physical diagnostics drift")
         for item in objects:
@@ -1433,6 +1433,7 @@ def _physical_arm(
     queries: Sequence[Mapping[str, Any]],
     truth_by_id: Mapping[str, int],
     output: Path,
+    research_root: Path,
     dataset_id: str,
     dataset_content_identity: str,
 ) -> dict[str, Any]:
@@ -1535,7 +1536,7 @@ def _physical_arm(
         return {
             "status": "complete",
             "execution_arm": "stock-physical",
-            "per_query_path": output.as_posix(),
+            "per_query_path": output.relative_to(research_root).as_posix(),
             "per_query_sha256": digest,
             "metrics": _aggregate(records),
             "physical_oids": physical_objects,
@@ -1577,6 +1578,7 @@ def _hypothetical_arms(
     dataset_id: str,
     dataset_content_identity: str,
     output_dir: Path,
+    research_root: Path,
 ) -> dict[str, dict[str, Any]]:
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.candidates import load_candidate_universe
@@ -1641,7 +1643,7 @@ def _hypothetical_arms(
             results[arm["permutation_id"]] = {
                 "status": "complete",
                 "execution_arm": "controlled-hypothetical",
-                "per_query_path": path.as_posix(),
+                "per_query_path": path.relative_to(research_root).as_posix(),
                 "per_query_sha256": digest,
                 "metrics": _aggregate(records),
                 "prescribed_order": list(order),
@@ -1737,10 +1739,13 @@ def validate_result_artifact(path: Path, *, root: Path | None = None) -> dict[st
     }
 
 
-def _order_diagnostics(result: dict[str, Any], reference: Mapping[str, Any]) -> dict[str, Any]:
-    records = _read_jsonl(Path(result["per_query_path"]))
+def _order_diagnostics(
+    result: dict[str, Any], reference: Mapping[str, Any], *, root: Path
+) -> dict[str, Any]:
+    records = _read_jsonl(_artifact_path(root, result["per_query_path"], "per-query"))
     reference_records = {
-        item["query_id"]: item for item in _read_jsonl(Path(reference["per_query_path"]))
+        item["query_id"]: item
+        for item in _read_jsonl(_artifact_path(root, reference["per_query_path"], "per-query"))
     }
     if set(reference_records) != {item["query_id"] for item in records}:
         raise ValueError("order arms do not contain the same query IDs")
@@ -1779,7 +1784,7 @@ def _assemble_dataset_result(
     reference_settings = reference_physical["planner_settings"]
     for arm_id, arm in hypothetical.items():
         arm["candidate_membership_digest"] = candidate_digest
-        arm["order_diagnostics"] = _order_diagnostics(arm, reference_hyp)
+        arm["order_diagnostics"] = _order_diagnostics(arm, reference_hyp, root=root)
     for arm_id, arm in physical.items():
         payload_equal = (
             arm["payload_sha256_by_candidate"] == reference_physical["payload_sha256_by_candidate"]
@@ -1851,7 +1856,7 @@ def _assemble_dataset_result(
             and target_equal
             else "confounded-operational-deployment"
         )
-        arm["order_diagnostics"] = _order_diagnostics(arm, reference_physical)
+        arm["order_diagnostics"] = _order_diagnostics(arm, reference_physical, root=root)
     return {
         "format_version": FORMAT,
         "dataset_id": spec.dataset_id,
@@ -2244,6 +2249,7 @@ def run_formal(
                 dataset_id=spec.dataset_id,
                 dataset_content_identity=spec.dataset_content_identity,
                 output_dir=output_dir,
+                research_root=root,
             )
             state.hypothetical_active = False
             physical: dict[str, dict[str, Any]] = {}
@@ -2261,6 +2267,7 @@ def run_formal(
                     / "physical-stock"
                     / arm["permutation_id"]
                     / "per-query.jsonl.gz",
+                    research_root=root,
                     dataset_id=spec.dataset_id,
                     dataset_content_identity=spec.dataset_content_identity,
                 )
