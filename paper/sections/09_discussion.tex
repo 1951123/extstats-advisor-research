@@ -17,6 +17,17 @@ workload drift, and the current search provides no guarantee of a globally
 optimal configuration. Candidate limits and search budgets are therefore
 experimental variables, not universal defaults.
 
+For the completed RQ1b analysis, the evidence is narrower than a broad
+generalization claim. It covers only four audited AreCEL datasets whose
+validation and test workloads follow the same generator contract. Strict-unseen
+removes exact source-query overlap, but not all structural similarity. The
+reported outcome is planner cardinality-estimation q-error rather than query
+execution latency, and paired regressions remain on every dataset. Improvement
+magnitude is heterogeneous. Candidate IDs from independent advisor runs are
+not established as physical-definition identifiers, so zero identifier overlap
+does not prove disjoint PostgreSQL definitions. Census13 additionally retains
+its documented historical baseline provenance and statistics-policy caveat.
+
 Fourth, truth acquisition itself has operational cost. Authoritative external
 labels require import and binding validation, but they are not evidence that
 the advisor executed the labels itself. Production exact truth can require

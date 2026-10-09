@@ -7,11 +7,13 @@ through an isolated planner-in-the-loop what-if substrate, a fixed-sample
 design workflow, a bounded transparent search, and a stock PostgreSQL
 deployment recommendation.
 
-The framework makes the evidence boundaries explicit. The current artifacts
-are pilot evidence; confirmatory conclusions require immutable provenance for
-each RQ. Existing production extended statistics remain outside advisor
-ownership, and a SearchResult objective is not a guarantee for a combined
-catalog that the optimizer did not evaluate. The next step is therefore not to
-broaden the claim, but to complete the RQ1--RQ5 protocol, audit fidelity and
-cost, and report where native statistics help, where they do not, and what
-operational trade-off they impose.
+The framework makes the evidence boundaries explicit. The four-dataset RQ1b
+results provide validated held-out evidence that validation-selected native
+statistics can reduce mean cardinality-estimation q-error under the audited
+AreCEL generator contract, with substantial dataset heterogeneity and
+per-query regressions. This does not establish workload-drift robustness,
+execution-time improvement, or global optimality. Existing production extended
+statistics remain outside advisor ownership, and a SearchResult objective is
+not a guarantee for a combined catalog that the optimizer did not evaluate.
+The remaining RQ1--RQ5 evidence and the final paper synthesis remain scoped
+separately.

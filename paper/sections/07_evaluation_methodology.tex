@@ -122,6 +122,20 @@ implementation-needed and the blocker is recorded rather than changing DBMS
 	semantics. Sample-to-full-data utility belongs to RQ2, not this
 mechanism-fidelity question.
 
+\subsection{RQ1b held-out evaluation}
+RQ1b separates recommendation selection from held-out evaluation. The
+advisor selects native statistics using only the audited validation workload
+and authoritative validation truth, seals $S_{\mathrm{valid}}$, and only then
+resolves test-side workload, truth, strict-unseen membership, and immutable
+baseline references. The sealed definitions are deployed to fresh stock
+PostgreSQL, followed by one physical \texttt{EXPLAIN (FORMAT JSON)} pass over
+the 10,000-query test workload. Strict-unseen results are an offline filter of
+those same observations using exact source-query membership. The four-dataset
+RQ1b analysis therefore measures held-out cardinality-estimation quality under
+the same audited generator contract; it does not measure workload drift or
+distribution shift. Its fixed design uses 10,000 sampled rows, seed 42,
+statistics target 100, $K_s=8$, $B=8$, and a 300-second search cap.
+
 RQ4 is split into two evidence layers. RQ4a is the primary deterministic
 design-time comparison on the patched planner: random-k, workload-frequency
 top-k, native-payload-size top-k, singleton-utility top-k, and greedy ADD;
@@ -177,14 +191,13 @@ production exact truth contributes the cost of exact-count collection. The
 overall accounting therefore includes sample capture, truth acquisition,
 native statistics construction, planner search, and deployment \texttt{ANALYZE}.
 
-\subsection{Preliminary versus confirmatory evidence}
+\subsection{Evidence status}
 
-Existing Census13, Forest10, Power7, and DMV11 runs are pilot/preliminary
-evidence that the end-to-end pipeline and full-data validation path work. The
-paper will only promote a result to a final claim when its immutable raw and
-derived artifacts, manifest, and source identities pass the repository audit.
-The current results section therefore defines schemas and TODOs rather than
-inventing values.
+The four RQ1b dataset runs are now published evidence-eligible results whose
+immutable artifacts, manifests, and source identities pass the repository
+audit. The derived cross-dataset synthesis is an offline summary of those
+children, not a new experiment. Other research questions and historical pilot
+artifacts retain their own evidence status and are not promoted by RQ1b.
 
 \subsection{Reproducibility}
 

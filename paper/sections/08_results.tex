@@ -1,9 +1,9 @@
 \section{Results Plan}
 
-This section reports the completed four-dataset RQ1 matched comparison and
-retains protocol scaffolds for RQ2--RQ5. Claims are limited to the immutable
-artifacts attached to each subsection; no pilot result is silently promoted to
-confirmatory evidence.
+This section reports the completed four-dataset RQ1 matched comparison and the
+validated RQ1b held-out evaluation, while retaining protocol scaffolds for
+RQ2--RQ5. Claims are limited to the immutable artifacts attached to each
+subsection.
 
 \subsection{RQ1: effectiveness}
 \textbf{Intended claim.} Workload-optimized native statistics can reduce
@@ -39,6 +39,63 @@ These results do not claim that every query improves, do not complete the RQ4
 heuristic study, and do not replace the PostgreSQL estimator with a learned
 model.
 % TODO(PAPER-LITERATURE): document exact comparability limits for learned-CE context.
+
+\subsection{RQ1b: held-out workload generalization}
+Unlike RQ1a, which evaluates a recommendation on the workload used for
+selection, RQ1b asks whether native extended statistics selected from a validation
+workload retain cardinality-estimation utility on a held-out workload
+generated under the same audited AreCEL workload-generator contract. This is a
+same-distribution held-out evaluation, not a workload-drift or
+distribution-shift experiment. For each dataset, the advisor used only
+$W_{\mathrm{valid}}$ and authoritative validation truth to construct and seal
+$S_{\mathrm{valid}}$. The sealed recommendation was then deployed to fresh
+stock PostgreSQL, and each of the 10,000 test queries was evaluated once with
+physical \texttt{EXPLAIN (FORMAT JSON)}. The comparison reuses the immutable
+PG16-default and PG16-target10000 baseline arms; it does not rerun either
+baseline. The design used 10,000 sampled rows with seed 42, statistics target
+100, screening width $K_s=8$, at most $B=8$ selected definitions, and a
+300-second search limit.
+
+\input{tables/rq1b-held-out-generalization}
+
+Table~\ref{tab:rq1b-held-out-generalization} shows that $S_{\mathrm{valid}}$
+has lower mean held-out q-error than both historical baseline arms on all four
+datasets. The reduction versus PG16-default is 57.3\% for Census13, 6.5\%
+for Forest10, 49.5\% for Power7, and 85.4\% for DMV11. Thus the direction is
+consistent, but the magnitude is strongly dataset-dependent; the DMV11 value
+is not a universal improvement rate. All four searches terminated at the
+recorded local optimum, which does not establish global optimality.
+
+The mean reductions are not uniform per-query improvements. Relative to
+PG16-default, the paired counts (improved/tied/worsened) are 4,936/2,909/2,155
+for Census13, 4,322/2,811/2,867 for Forest10, 5,719/575/3,706 for Power7, and
+6,518/1,027/2,455 for DMV11. Consequently, 21.6\%--37.1\% of test instances
+worsened despite the lower mean. The p95 and p99 q-errors decrease on all four
+datasets, consistent descriptively with fewer severe errors. Maximum q-error
+also decreases for Census13, Forest10, and DMV11, but increases slightly for
+Power7 (153,148 to 155,314); these tails do not support a causal explanation.
+
+The preregistered strict-unseen analysis filters the same physical test
+observations and is secondary, not a second experiment. It removes 614
+Census13 instances and 1,862 DMV11 instances whose exact source-query hashes
+were seen in validation, leaving 9,386 and 8,138 instances respectively. The
+mean reductions versus PG16-default remain positive: 57.95\% for Census13,
+84.51\% for DMV11, 6.55\% for Forest10, and 49.52\% for Power7. Forest10 and
+Power7 have strict-unseen populations equal to the full test population, so
+they provide no within-dataset contrast between those populations. Strict
+unseen means exact source-query non-overlap, not a different query
+distribution.
+
+The identifier-level intersection between $S_{\mathrm{valid}}$ and the
+historical in-workload $S_{\mathrm{test}}$ is zero for all four datasets. The
+published evidence does not establish that candidate IDs from independently
+constructed snapshots denote comparable physical definitions, so this is not
+evidence of disjoint PostgreSQL statistics. In particular, $S_{\mathrm{test}}$
+is neither an oracle nor an optimality bound. Census13 also retains its
+audited historical baseline caveat: the RQ1a baseline was truth-rebound from
+historical evidence, its PG16-default arm inherited target $-1$, and its
+PG16-target10000 arm used an explicit target of 10,000; RQ1b selection used
+target 100.
 
 \subsection{RQ2: sample-to-full-data transfer}
 \textbf{Intended claim.} A design selected on a fixed sample can retain benefit

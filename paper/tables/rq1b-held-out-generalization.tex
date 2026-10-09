@@ -1,0 +1,21 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{RQ1b held-out workload generalization. Statistics are selected using
+the validation workload $W_{\mathrm{valid}}$ and evaluated on the sealed
+recommendation over the 10,000-query test workload $W_{\mathrm{test}}$ after
+deployment to stock PostgreSQL. The three q-error columns report mean
+q-error; lower is better. $k$ is the number of definitions in $S_{\mathrm{valid}}$,
+and $\Delta$ is the relative mean reduction versus PG16-default.}
+\label{tab:rq1b-held-out-generalization}
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset & $k$ & PG16-default & PG16-target10000 & $S_{\mathrm{valid}}$ & $\Delta$ default & Strict-unseen $n$ \\
+\midrule
+Census13 & 7 & 5.23 & 5.25 & 2.24 & 57.3\% & 9,386 \\
+Forest10 & 7 & 7.14 & 7.15 & 6.68 & 6.5\% & 10,000 \\
+Power7 & 7 & 127.50 & 130.81 & 64.36 & 49.5\% & 10,000 \\
+DMV11 & 5 & 276.87 & 282.16 & 40.31 & 85.4\% & 8,138 \\
+\bottomrule
+\end{tabular}
+\end{table*}
