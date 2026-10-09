@@ -1,0 +1,30 @@
+{
+  "format_version": "rq1-workload-generalization-artifact-digest-correction-v1",
+  "kind": "artifact-semantic-digest-writer-correction",
+  "formal_attempt": 6,
+  "scientific_producer": "699decdcfc960df050214abc3b64efb25d22818f",
+  "digest_contract_fix_commit": "d0e67ed35b954b7e48192ea3ce27f0f62d0c79f4",
+  "raw_result": {
+    "path": "experiments/arecel-power7/rq1-workload-generalization-v1/attempt-006-raw/result-v1.json",
+    "byte_sha256": "9fa4cbf4f733cbfae905a650fdacc487180608973c907687fcb7ba21922157f0",
+    "stored_semantic_digest": "4a9c382676ea84fb3b42bd77e1a62270633b743f32bd331a6d65f8bc6a5570ee"
+  },
+  "corrected_result": {
+    "path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-v1.json",
+    "byte_sha256": "210d79f8cf652663032c95de1bac5531ea0a956b21c6592a05e43b385ca1a191",
+    "semantic_digest": "1af0a8d65a78f6c6c19e63bcf2a8f1f8ab39f6a9a24dc0f00a8266e44508e9a3"
+  },
+  "changed_json_paths": [
+    "$.semantic_digest"
+  ],
+  "scientific_content_changed": false,
+  "metrics_changed": false,
+  "recommendation_changed": false,
+  "per_query_records_changed": false,
+  "planner_reexecuted": false,
+  "advisor_reexecuted": false,
+  "search_reexecuted": false,
+  "deployment_reexecuted": false,
+  "test_explain_reexecuted": false,
+  "semantic_digest": "47cef82c9b1abe3739ad3a7192f192589d57a61c732dfb74a7c2869973e76ea5"
+}
