@@ -1,0 +1,69 @@
+{
+  "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v1",
+  "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+  "attempt_index": 1,
+  "status": "non-evidence-pre-execution-pipeline-failure",
+  "scientific_producer_sha": "6733464c7325f2605e642ecb16d67b4abf18f943",
+  "research_head_at_invocation": "7af4cdb02a9f1a8fc01f5884df78650234e7f2cd",
+  "formal_invocation_count": 1,
+  "retry_performed": false,
+  "preflight": {
+    "path": "experiments/oid-order-sensitivity-v1/preflight-v1.json",
+    "semantic_digest": "b8f8b605aafa29d8d98f2db45bb1e2f3b6d0089671c22bf79584ab4e90f2925e",
+    "byte_sha256": "432f61a97c8bd32ca021f2e6fdc95109111c066e4af711bc8d10d08e7a1133f0"
+  },
+  "failure": {
+    "stage": "valid-authoritative-truth-import",
+    "class": "snapshot-not-sealed-before-truth-import",
+    "exception_type": "extstats_advisor.errors.GroundTruthValidationError",
+    "exception": "snapshot must be sealed before truth import",
+    "formal_return_code": 1,
+    "root_cause": "the evaluator passed the in-memory snapshot to the frozen truth importer after write_snapshot without reloading the sealed snapshot artifact"
+  },
+  "execution_boundary": {
+    "launcher_probe_passed": true,
+    "stock_lab_prepared": true,
+    "patched_lab_prepared": true,
+    "source_identity_and_version_verified": true,
+    "stock_dataset_load_started": true,
+    "stock_dataset_load_completed": true,
+    "snapshot_capture_started": true,
+    "snapshot_capture_completed": true,
+    "snapshot_artifact_written": true,
+    "authoritative_truth_import_started": true,
+    "authoritative_truth_import_completed": false,
+    "candidate_derivation_started": false,
+    "native_repository_started": false,
+    "sandbox_prepare_started": false,
+    "singleton_profiling_started": false,
+    "search_started": false,
+    "recommendation_sealed": false,
+    "physical_deployment_started": false,
+    "planner_evaluation_started": false,
+    "explain_count": 0,
+    "rq1b_w_test_accessed": false,
+    "advisor_pipeline_started": false,
+    "production_exact_count": false
+  },
+  "outputs": {
+    "preflight": true,
+    "dataset_results": false,
+    "summary": false,
+    "synthetic_witness": false
+  },
+  "cleanup": {
+    "sandbox_destroy_attempted": true,
+    "sandbox_destroy_return_code": 2,
+    "sandbox_destroy_exception": "command failed (2): frozen-extstats-advisor sandbox destroy postgres",
+    "stock_running_after_cleanup": false,
+    "patched_running_after_cleanup": false,
+    "runtime_residue": false,
+    "cleanup_complete": true,
+    "note": "destroy was attempted before sandbox preparation and returned no-sandbox failure; managed roles were subsequently stopped"
+  },
+  "evidence_eligible": false,
+  "scientific_result_rejected": false,
+  "formal_stdout_external_path": "/tmp/oid-order-formal-stdout.sLhzKF",
+  "formal_stderr_external_path": "/tmp/oid-order-formal-stderr.QUCl2H",
+  "semantic_digest": "14d7c2641bacc7dcd373a8f9ba185d0f548b51a7c4b02ef46cd49b4846366ffa"
+}
