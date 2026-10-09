@@ -309,7 +309,7 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
         "7e22906424e734c4726e0d7853d61bb8ed17c3e9f1cb1245fbcf5f8e4c5d2ff5"
     )
     assert rq1b["power7_formal_attempts"][-1]["result_digest_correction"]["semantic_digest"] == (
-        "0624019c0aa72c734a409632e220ccf91f9cd6721fffded9f66cc3b461fcb9b0"
+        "47cef82c9b1abe3739ad3a7192f192589d57a61c732dfb74a7c2869973e76ea5"
     )
     assert rq1b["protocol"] == "paper/rq1-workload-generalization-protocol-v2.json"
     assert rq1b["source_audit"] == "experiments/rq1-workload-generalization-source-audit-v2.json"

@@ -368,7 +368,7 @@
           },
           "result_digest_correction": {
             "path": "experiments/arecel-power7/rq1-workload-generalization-v1/result-digest-correction-v1.json",
-            "semantic_digest": "0624019c0aa72c734a409632e220ccf91f9cd6721fffded9f66cc3b461fcb9b0",
+            "semantic_digest": "47cef82c9b1abe3739ad3a7192f192589d57a61c732dfb74a7c2869973e76ea5",
             "scientific_reexecution": false,
             "changed_json_paths": ["$.semantic_digest"]
           }
