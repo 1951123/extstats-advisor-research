@@ -1186,7 +1186,15 @@ def main(argv: list[str] | None = None) -> int:
         root = Path(__file__).resolve().parents[2]
         from .pins import verify_research_repository
 
-        producer_sha = verify_research_repository(root)["research_commit_sha"]
+        if args.oid_command == "run":
+            preflight_path = args.preflight
+            if not preflight_path.is_absolute():
+                preflight_path = root / preflight_path
+            producer_sha = verify_research_repository(
+                root, allowed_untracked_paths=(preflight_path,)
+            )["research_commit_sha"]
+        else:
+            producer_sha = verify_research_repository(root)["research_commit_sha"]
         if args.oid_command == "preflight-create":
             output = args.output
             value = build_oid_preflight(

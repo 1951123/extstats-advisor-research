@@ -342,3 +342,26 @@ def test_oid_formal_cli_requires_explicit_invocation_identity() -> None:
                 "/tmp/data",
             ]
         )
+
+
+def test_formal_tree_guard_allows_only_declared_untracked_preflight(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    from extstats_advisor_research import pins
+
+    allowed = tmp_path / "preflight.json"
+
+    def fake_git(_repository: Path, *arguments: str) -> str:
+        if arguments[0] == "status":
+            return "?? preflight.json"
+        return "a" * 40
+
+    monkeypatch.setattr(pins, "_git", fake_git)
+    assert (
+        pins.verify_research_repository(tmp_path, allowed_untracked_paths=(allowed,))[
+            "research_commit_sha"
+        ]
+        == "a" * 40
+    )
+    with pytest.raises(ValueError, match="uncommitted changes"):
+        pins.verify_research_repository(tmp_path)

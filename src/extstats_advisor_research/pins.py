@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+from collections.abc import Iterable
 from pathlib import Path
 
 from . import (
@@ -28,13 +29,29 @@ def _git(repository: Path, *arguments: str) -> str:
         ) from exc
 
 
-def verify_research_repository(repository: Path) -> dict[str, str]:
-    """Require a clean, locally resolvable committed research revision."""
-    status = _git(repository, "status", "--porcelain")
-    if status:
+def verify_research_repository(
+    repository: Path, *, allowed_untracked_paths: Iterable[Path] = ()
+) -> dict[str, str]:
+    """Require a clean revision, optionally with one declared untracked input.
+
+    Formal commands may receive an append-only preflight that is intentionally
+    created immediately before execution.  Only explicitly named untracked
+    files are allowed; tracked modifications and every other status entry
+    remain fatal.
+    """
+    allowed = {Path(path).resolve() for path in allowed_untracked_paths}
+    status = _git(repository, "status", "--porcelain", "--untracked-files=all")
+    unexpected: list[str] = []
+    for line in status.splitlines():
+        if line.startswith("?? "):
+            candidate = (repository / line[3:]).resolve()
+            if candidate in allowed:
+                continue
+        unexpected.append(line)
+    if unexpected:
         raise ValueError(
             "canonical research runs require a clean research working tree; "
-            f"uncommitted changes found in {repository}"
+            f"uncommitted changes found in {repository}: {'; '.join(unexpected)}"
         )
     commit_sha = _git(repository, "rev-parse", "HEAD")
     if not commit_sha:
