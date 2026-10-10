@@ -29,6 +29,26 @@ operationally informative but confounded by native payload and ordinary
 statistics drift after independent \texttt{ANALYZE} runs, so they cannot be
 attributed to OID order alone.
 
+The transfer results provide a complementary boundary. Across the four
+datasets, the deployed sample-selected recommendation improved the controlled
+full-data comparison, but the magnitude varied and paired regressions
+remained. Sample-side utility was descriptively associated with full-data
+utility, with Spearman values ranging from 0.478 to 0.968; this is not a
+guarantee because native full-data statistics are independently realized and
+the objectives are distinct. The RQ3 fidelity checks are narrower still: exact
+Plan Rows agreement was established for the registered synthetic clause forms,
+not for arbitrary workloads or PostgreSQL versions.
+
+RQ4 shows why the search claim must remain conditional. Greedy ADD was the
+best recorded fixed-$k$ method on three datasets, while singleton utility was
+better on Census13. The screening-width results also include budget-censored
+incumbents, and neither fixed-evaluation-budget nor native-\texttt{ANALYZE}
+stability has been measured. These results support dataset- and
+workload-dependent ablation findings rather than universal superiority.
+The practicality measurements similarly cover selected stages---snapshot
+footprint, deployment DDL, \texttt{ANALYZE}, and planner-time traces---rather
+than a complete production cost model.
+
 For the completed RQ1b analysis, the evidence is narrower than a broad
 generalization claim. It covers only four audited AreCEL datasets whose
 validation and test workloads follow the same generator contract. Strict-unseen

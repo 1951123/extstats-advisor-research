@@ -1,34 +1,21 @@
 # VLDB experiment plan
 
-This document specifies the experiments behind the manuscript. It is a plan,
-not a claim that every row is complete. Historical Census13, Forest10, Power7,
-and DMV11 artifacts remain `pilot` or `preliminary`; the new Census13,
-Forest10, Power7, and DMV11 matched-comparison artifacts are dataset-level
-canonical results under the current confirmatory truth policy. The four-dataset
-RQ1a matched campaign is complete only within its declared three-arm,
-in-workload scope; RQ1b held-out generalization is separately preregistered,
-and its first Power7 formal invocation failed before design evidence because
-the managed stock PostgreSQL role was not running. A second invocation failed
-before lab preparation because the shell supplied an empty managed DSN; both
-attempts are retained as non-evidence provenance. A third invocation prepared
-both labs but failed before Advisor execution because the bare frozen
-`extstats-advisor` console script was not resolvable in `PATH`; it is also
-retained as non-evidence provenance. RQ4 heuristic ablations, RQ3, and RQ5 remain separate
-retained as non-evidence provenance. A fourth invocation failed at the frozen
-Advisor launcher probe because `pyarrow` was missing; it is retained as
-non-evidence environment provenance. RQ4 heuristic ablations, RQ3, and RQ5 remain separate
-incomplete work. A fifth invocation reached the fresh valid-side Power7 load
-and initial `ANALYZE`, completed snapshot/candidate/native-repository setup,
-and failed during frozen Advisor sandbox preparation because the managed stock
-and patched logical database names differed; it is retained as non-evidence
-pre-search provenance. A subsequent valid-side pre-search smoke passed through
-sandbox destruction after the shared logical database identity was corrected.
-Attempt 6 completed the Power7 valid-to-test scientific pipeline once. Its raw
-outputs are preserved byte-for-byte; evidence publication required only an
-offline result digest-contract correction, with no scientific re-execution.
-The formal four-child RQ2 transfer
-campaign is complete under the frozen v2 protocol; historical transfer
-directories remain pilot evidence.
+This document specifies the experiments behind the manuscript and records both
+completed evidence and remaining gaps. Historical Census13, Forest10, Power7,
+and DMV11 artifacts remain `pilot` or `preliminary`; current canonical
+matched-comparison artifacts are dataset-level results under the confirmatory
+truth policy. RQ1a is complete within its three-arm in-workload scope, and
+RQ1b is complete within its validated four-child and offline synthesis scope.
+Power7 formal attempts 1--5 remain preserved as non-evidence provenance; its
+attempt 6 completed once, with publication requiring only an offline digest
+contract correction and no scientific re-execution. The formal four-child RQ2
+transfer campaign and the registered RQ3 primary/secondary fidelity checks are
+complete within their declared scopes. RQ4 fixed-$k$ and screening-width
+studies are complete at dataset scope, while its fixed-budget and native-
+`ANALYZE` stability studies remain incomplete. RQ5 has measured subexperiments
+and an offline inventory, but remains incomplete because its end-to-end and
+refresh gaps are explicit. Historical transfer directories remain pilot
+evidence.
 
 The immutable `rq1-cross-dataset-summary-v1.json` remains historical output.
 The current paper pointer is the versioned `rq1-cross-dataset-summary-v2.json`,
@@ -143,7 +130,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | --- | --- | --- | --- |
 | `rq1-existing-baselines` | RQ1 | `pilot` | Existing artifacts require confirmatory provenance audit. |
 | `rq1-confirmatory-matched-baselines` | RQ1 | `complete` | The four-dataset, three-arm, in-workload matched comparison is complete and summarized by `experiments/rq1-cross-dataset-summary-v2.json`; v1 remains immutable historical output and RQ4 heuristic configurations remain separate work. |
-| `rq1-held-out-workload-generalization` | RQ1b | `preregistered` | Full benchmark-held-out test evaluation plus an evaluation-only strict-unseen exact-query diagnostic under the same audited AreCEL generator contract; Power7 attempts 1–5 remain non-evidence provenance, while attempt 6 completed the Power7 child once. Forest10, DMV11 and Census13 each completed one formal child and are evidence-eligible after offline validation; the registry records all four planned dataset executions, while cross-dataset scientific synthesis remains separate work. |
+| `rq1-held-out-workload-generalization` | RQ1b | `complete` | Four evidence-eligible formal children and the offline cross-dataset synthesis are complete under the audited same-generator held-out contract; strict-unseen is secondary, not distribution-shift evidence. Power7 attempts 1–5 remain non-evidence provenance and attempt 6 was published after an offline digest-contract correction without scientific re-execution. |
 | `rq2a-existing-transfer` | RQ2a | `pilot` | Existing DMV11/related transfer artifacts are preliminary. |
 | `rq2a-confirmatory-transfer` | RQ2a | `complete` | Four validated `rq2-transfer-v1` children under frozen v2 and authoritative-external-exact truth; cross-dataset summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
 | `rq2b-sample-full-utility` | RQ2b | `complete` | The same four children contain paired sample/full utility, 3x3 direction tables, and descriptive Spearman transfer diagnostics; summary digest `dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7`. |
@@ -155,7 +142,7 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
 | `rq4-ks-sensitivity` | RQ4a | `complete` | `paper/top-k-screening-protocol-v2.json` (semantic digest `55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec`) has validated formal children for Census13, Power7, and DMV11 under `K_s={4,8,16,32,all}`, `B=4`, and 300 seconds. The child artifacts are `experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `85b832eae...`), `experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8`), and `experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109`). The Census13 and DMV11 `all` points are reused 300-second-bounded k=2 incumbents, not optimum references. The offline aggregation `experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json` is complete; global RQ4 remains incomplete. |
 | `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
-| `rq5-cost-accounting` | RQ5 | `planned` | The static deployment subexperiment and snapshot-footprint subexperiment are complete under their immutable formal artifacts. The current offline inventory is `experiments/rq5-existing-trace-cost-inventory-v3.json` (digest `fc879128d2327e4bab8623b6e2ff2f820354d14093e6187c0d00ef2e552a39d2`); the broader RQ5 remains incomplete because directly measured gaps are explicit. |
+| `rq5-cost-accounting` | RQ5 | `complete` | Dataset-scope snapshot-footprint and static-deployment measurements plus the offline trace inventory are complete and reported as qualified partial evidence. The broader RQ5 remains incomplete because production-exact truth timing, refresh quality trends, and a canonical end-to-end cost are not measured. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 
@@ -193,8 +180,8 @@ same test evaluation to the strict-unseen query subset whose exact audited
 source query hash does not occur in any valid record. Valid/test records are
 independent benchmark groups, but exact query identities may repeat across
 groups. This is same-distribution held-out generalization, not a workload-drift
-or OOD-robustness claim. RQ1a is complete, RQ1b remains preregistered, and the
-expanded RQ1 program is not yet complete. The first Power7 formal invocation
+or OOD-robustness claim. RQ1a and RQ1b are complete within their declared
+scopes, while the expanded RQ1 program is not yet complete. The first Power7 formal invocation
 failed before design execution because the managed stock PostgreSQL role was
 not running; no Advisor, planner, query-evaluation, or test-side evidence was
 observed, and the attempt is retained as non-evidence infrastructure
@@ -867,7 +854,8 @@ trend.
 
 **Intended paper output:** RQ5 cost table and figure.
 
-**Status:** `planned`.
+**Status:** `complete` for the measured subexperiments; broader RQ5 remains
+incomplete.
 
 An offline RQ5 evidence inventory is complete. Existing formal traces measure
 authoritative-label import, sample-side planner evaluation, combined

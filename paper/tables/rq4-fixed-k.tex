@@ -1,0 +1,24 @@
+% Derived from experiments/rq4-fixed-k-cross-dataset-summary-v1.json and its
+% immutable dataset children. Objectives are q-error; lower is better.
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\caption{RQ4 fixed-$k$ patched-sandbox comparison at $k=4$. Values are the
+independent final sandbox objective. Random is the range over five fixed
+seeds. Forest10 retains its historical v1 dependency-correlation method;
+the other datasets use the v2 native-payload-size method. Greedy entries for
+Census13 and DMV11 are complete committed incumbents at the 300-second
+budget boundary.}
+\label{tab:rq4-fixed-k}
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset & Greedy ADD & Singleton & Workload freq. & Native/dependency & Random range & Best \\
+\midrule
+Census13 & 3.014 & 2.521 & 5.252 & 4.837 & 3.782--5.196 & Singleton \\
+Forest10 & 6.708 & 6.779 & 6.933 & 6.975 & 6.845--7.052 & Greedy \\
+Power7 & 93.948 & 105.041 & 120.571 & 152.720 & 120.372--164.432 & Greedy \\
+DMV11 & 47.205 & 73.018 & 190.933 & 345.712 & 190.944--350.322 & Greedy \\
+\bottomrule
+\end{tabular}
+\end{table*}

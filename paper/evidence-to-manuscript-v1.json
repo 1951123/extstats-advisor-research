@@ -1,0 +1,125 @@
+{
+  "format_version": "evidence-to-manuscript-v1",
+  "review_scope": "offline mapping from committed scientific evidence to the VLDB manuscript",
+  "source_commit": "e3e32e0316bfd57432ff9485768ceb970bc3b29d",
+  "frozen_system": "paper/system-freeze-v2.json",
+  "entries": [
+    {
+      "experiment_id": "rq1-confirmatory-matched-baselines",
+      "rq": "RQ1a",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/rq1-cross-dataset-summary-v2.json", "semantic_digest": "84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c"}],
+      "admissible_claims": ["in-workload q-error comparison under the declared three-arm contract"],
+      "limitations": ["not held-out generalization", "dataset-specific historical baseline provenance remains recorded"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq1-cross-dataset-summary",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq1-held-out-workload-generalization",
+      "rq": "RQ1b",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/rq1-workload-generalization-cross-dataset-v1.json", "semantic_digest": "92faabbd6703f79e3a5c6ad5ef13904ea01d388f095f21583557be3591893473"}],
+      "admissible_claims": ["same-generator-contract held-out q-error", "secondary exact-query strict-unseen diagnostic"],
+      "limitations": ["not workload drift or distribution shift", "strict-unseen excludes exact hash overlap only", "candidate-ID overlap is identifier-level"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq1b-held-out-generalization",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq2-confirmatory-transfer",
+      "rq": "RQ2a/RQ2b",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/rq2-cross-dataset-transfer-summary-v1.json", "semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7"}],
+      "admissible_claims": ["P0/P1/P2 full-data transfer", "sample/full utility relationship and 3x3 direction diagnostics"],
+      "limitations": ["P1 uses one independent native ANALYZE realization", "sample improvement does not guarantee full-data improvement", "Spearman values are descriptive"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq2-sample-full-transfer",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq3-mechanism-fidelity",
+      "rq": "RQ3",
+      "status": "confirmatory-validated",
+      "coverage": ["MCV-only", "dependencies-only", "MCV-plus-dependencies"],
+      "sources": [
+        {"path": "experiments/rq3/rq3-primary-mechanism-fidelity-v1.json", "semantic_digest": "e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6c6"},
+        {"path": "experiments/rq3/rq3-secondary-build-sanity-v1.json", "semantic_digest": "2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2"}
+      ],
+      "admissible_claims": ["9/9 exact patched hypothetical/physical Plan Rows", "9/9 exact stock/patched physical sanity pairs with overlay inactive"],
+      "limitations": ["synthetic fixture and registered clause forms only", "not arbitrary SQL, datasets, statistic kinds, or PostgreSQL versions"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq3-fidelity",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq4-fixed-k-ablations",
+      "rq": "RQ4a/RQ4b",
+      "status": "qualified-complete-dataset-scope",
+      "coverage": ["Census13", "Forest10 historical v1", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json", "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"}],
+      "admissible_claims": ["fixed-k method comparison under the recorded RQ4a/RQ4b contracts"],
+      "limitations": ["Forest10 uses historical v1 provenance", "RQ4b is a shared native realization", "global RQ4 remains incomplete"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq4-fixed-k",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq4-ks-sensitivity",
+      "rq": "RQ4a",
+      "status": "qualified-complete-dataset-scope",
+      "coverage": ["Census13", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json", "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed"}],
+      "admissible_claims": ["screening-width quality/cost trade-offs for the validated points"],
+      "limitations": ["all points for Census13 and DMV11 are budget-censored incumbents", "not optimum references", "global RQ4 remains incomplete"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq4-ks-sensitivity",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "rq4-fixed-evaluation-budget",
+      "rq": "RQ4",
+      "status": "implementation-needed",
+      "coverage": [],
+      "sources": [],
+      "admissible_claims": [],
+      "limitations": ["fixed-k evidence is not a fixed-evaluation-budget comparison"],
+      "manuscript": "paper/sections/08_results.tex",
+      "new_scientific_execution_required": true
+    },
+    {
+      "experiment_id": "rq4-native-analyze-stability",
+      "rq": "RQ4b",
+      "status": "planned",
+      "coverage": [],
+      "sources": [],
+      "admissible_claims": [],
+      "limitations": ["native ANALYZE stability is not measured by the shared-realization fixed-k study"],
+      "manuscript": "paper/sections/08_results.tex",
+      "new_scientific_execution_required": true
+    },
+    {
+      "experiment_id": "rq5-cost-accounting",
+      "rq": "RQ5",
+      "status": "qualified-partial",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "sources": [
+        {"path": "experiments/rq5-existing-trace-cost-inventory-v3.json", "semantic_digest": "fc879128d2327e4bab8623b6e2ff2f820354d14093e6187c0d00ef2e552a39d2"},
+        {"path": "experiments/rq5-snapshot-footprint-v1.json", "semantic_digest": "1b8a4279f668d9c5468bf68748d14ebe0b3f702b2aa2142a1a99a37ada23e4e4"},
+        {"path": "experiments/rq5-static-deployment-cost-v1.json", "semantic_digest": "deb3ce1ae43a66fb79c949aca08ffb34a96bb421f789463dbf4a1a0d804c11d0"}
+      ],
+      "admissible_claims": ["snapshot footprint", "static DDL/ANALYZE/storage", "planner-time and trace-stage costs", "external truth import cost"],
+      "limitations": ["no canonical end-to-end advisor cost", "no production-exact truth cost in the current inventory", "no refresh-quality trend", "no learned-model inference path does not imply zero overhead"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq5-practicality",
+      "new_scientific_execution_required": false
+    },
+    {
+      "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+      "rq": "ordering ablation",
+      "status": "qualified-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "sources": [{"path": "experiments/oid-order-sensitivity-v1/reviews/oid-order-sensitivity-evidence-review-v1.json", "semantic_digest": "8f318f6a90103edab1e9abcb3b6a8826e0d1fcd615262be0c4dd713161a66521"}],
+      "admissible_claims": ["controlled hypothetical order changes estimates", "reference order is favorable within seven declared treatments"],
+      "limitations": ["physical non-reference arms are operationally confounded", "not global order optimality or runtime improvement"],
+      "manuscript": "paper/sections/08_results.tex; tab:oid-order-sensitivity",
+      "new_scientific_execution_required": false
+    }
+  ]
+}

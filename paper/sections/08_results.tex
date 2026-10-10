@@ -1,30 +1,18 @@
-\section{Results Plan}
+\section{Results}
 
-This section reports the completed four-dataset RQ1 matched comparison and the
-validated RQ1b held-out evaluation, while retaining protocol scaffolds for
-RQ2--RQ5. Claims are limited to the immutable artifacts attached to each
-subsection.
+This section reports the validated evidence currently available for RQ1--RQ5.
+The evidence-to-claim ledger is recorded in
+\texttt{paper/evidence-to-manuscript-v1.json}; it distinguishes confirmatory
+results, qualified causal comparisons, and experiments that remain missing.
+Numbers below are derived from the committed summary artifacts and retain the
+system-freeze and workload provenance of those artifacts.
 
 \subsection{RQ1: effectiveness}
-\textbf{Intended claim.} Workload-optimized native statistics can reduce
-cardinality-estimation error on some benchmark workloads relative to stock and
-simple baselines.
-
-\textbf{Required evidence.} A per-query result table bound to immutable
-manifests, plus a distribution plot of q-error and a table of mean, quantiles,
-maximum, and query outcome counts.
-
-\begin{figure}[t]
-\centering
-\fbox{\parbox{0.86\columnwidth}{\centering RQ1 q-error distributions and baseline comparison\par\vspace{0.3em}\small TODO: render from confirmatory derived artifacts}}
-\caption{Planned RQ1 figure; no values are supplied in this framework.}
-\end{figure}
-% The generated cross-dataset table below is derived from
-% experiments/rq1-cross-dataset-summary-v2.json (digest
-% 84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c).
-% This RQ1 comparison is in-workload (the workload used by the advisor
-% objective), not a held-out query generalization evaluation. RQ4 heuristic
-% baselines are separate and remain planned.
+The validated RQ1a matched comparison is an in-workload result: the advisor
+objective and evaluation use the same workload. It is therefore evidence of
+workload-specific cardinality-estimation utility, not held-out generalization.
+The table reports the immutable three-arm comparison; the RQ4 heuristic arms
+are reported separately below.
 
 \input{tables/rq1-cross-dataset-summary.tex}
 
@@ -35,10 +23,8 @@ regressions in addition to the headline aggregates.
 The v2 summary also separates observations-file provenance from the
 snapshot-bound GroundTruthSet provenance; v1 remains retained as immutable
 historical output.
-These results do not claim that every query improves, do not complete the RQ4
-heuristic study, and do not replace the PostgreSQL estimator with a learned
-model.
-% TODO(PAPER-LITERATURE): document exact comparability limits for learned-CE context.
+These results do not claim that every query improves, do not replace the
+PostgreSQL estimator with a learned model, and do not imply runtime speedups.
 
 \subsection{RQ1b: held-out workload generalization}
 Unlike RQ1a, which evaluates a recommendation on the workload used for
@@ -145,80 +131,108 @@ OID-order causal effects. Neither arm supports a claim about query-runtime
 improvement.
 
 \subsection{RQ2: sample-to-full-data transfer}
-\textbf{Intended claim.} A design selected on a fixed sample can retain benefit
-after native payloads are independently recomputed on full data, subject to
-measured transfer error (RQ2a). Separately, the sample-sandbox utility may or
-may not predict full-data utility (RQ2b); this is a transfer relationship, not
-a mechanism-fidelity claim.
+RQ2a compares three full-data physical states. $P_0$ is a fresh baseline,
+$P_1$ deploys the immutable recommendation and runs one native full-data
+\texttt{ANALYZE}, and $P_2$ removes only advisor-managed objects from the same
+realization without another \texttt{ANALYZE}. The $P_2$--$P_1$ comparison is
+the controlled transfer comparison; $P_0$--$P_1$ also includes the ordinary-
+statistics refresh caused by deployment. The four formal children and their
+cross-dataset summary are complete.
 
-\textbf{Required evidence.} Paired P0/P1/P2 per-query results, ordinary-stat
-fingerprints, deployment verification, and the source Recommendation digest.
-The analysis will distinguish the fixed-sample objective $J_S(M)$ from the
-full-data objective $J_D(M;A)$ for a particular native \texttt{ANALYZE}
-realization $A$; native realization variability is not reported as RQ3
-mechanism fidelity.
-% TODO(PAPER-RQ2): insert P0/P1/P2 transfer table and paired query analysis.
-% TODO(PAPER-RQ2B): insert sample-utility/full-data-utility relationship figure.
+\input{tables/rq2-sample-full-transfer}
+
+Table~\ref{tab:rq2-sample-full-transfer} shows lower $P_1$ q-error than both
+comparison states on all four datasets. The controlled reduction ranges from
+7.1\% on Forest10 to 83.1\% on DMV11. Query-level regressions remain. The
+$P_0$--$P_1$ improved/unchanged/worsened counts are 5,183/2,917/1,900
+(Census13), 4,415/2,814/2,771 (Forest10), 4,016/575/5,409 (Power7), and
+6,881/1,013/2,106 (DMV11). Thus aggregate
+transfer benefit does not imply uniform query improvement.
+
+RQ2b compares the sample-side objective $J_S(M)$ with the full-data objective
+$J_D(M;A)$ and records the complete 3$\times$3 direction table per dataset.
+The descriptive Spearman values range from 0.478 (Power7) to 0.968
+(Census13), while opposite-direction query fractions range from 0.64\% to
+3.17\%. The sample-side reduction is positive for every dataset, but its size
+does not determine the full-data reduction: independent native realization,
+ordinary-statistics refresh, and the two objectives are distinct. These are
+transfer relationships, not mechanism-fidelity measurements.
 
 \subsection{RQ3: fidelity}
-\textbf{Intended claim.} Catalogless hypothetical evaluation reproduces
-physical PostgreSQL statistics behavior to the extent demonstrated by a
-same-patched-binary comparison controlling data, equivalent native payload
-semantics, ordinary statistics, and planner/session settings. The primary
-evidence is direct root \texttt{Plan Rows} agreement and classified mismatches;
-objective difference is derived. A patched-physical versus stock-physical
-comparison is a secondary overlay-inactive sanity check, not the primary
-fidelity result. The Priority-0 synthetic artifact covers MCV-only,
-dependencies-only, and combined MCV-plus-dependencies configurations.
-The formal primary artifact reports 9 paired queries, 9 exact matches, and zero
-mismatches across the three configurations; the independent secondary artifact
-also reports 9 of 9 exact stock-versus-patched physical pairs with the
-hypothetical overlay inactive. These results support only the declared
-same-binary synthetic mechanism claim and its registered controls.
-% TODO(PAPER-RQ3): render tab-rq3-mismatch-classification from the immutable
-% primary and secondary artifacts; retain the table as the primary presentation
-% if the nine paired observations are clearer than a figure.
-% The sample-to-full-data utility relationship is reported under RQ2.
+RQ3 tests mechanism fidelity rather than sample/full transfer. The primary
+same-patched-binary comparison controls schema, data, workload, ordinary
+statistics, payload correspondence, planner settings, and statistics target.
+The secondary comparison uses stock and patched physical realizations with the
+overlay inactive. Both formal artifacts report exact root \texttt{Plan Rows}
+agreement for all nine pairs.
+
+\input{tables/rq3-fidelity}
+
+The result supports the registered synthetic clause forms and controls only.
+It does not establish fidelity for arbitrary SQL, data distributions,
+statistics kinds, or PostgreSQL versions. In particular, the secondary stock/
+patched check is a build sanity comparison, not a replacement for the primary
+same-binary fidelity evidence.
 
 \subsection{RQ4: ablation and advisor necessity}
-\textbf{Intended claim.} Planner-in-the-loop search contributes measurable
-value beyond low-cost selection rules on the tested candidate universes; the
-result need not imply global optimality. RQ4a is the primary deterministic
-patched-sandbox design comparison. RQ4b is a secondary stock physical
-consequence study and is explicitly subject to native \texttt{ANALYZE}
-sampling variability.
-\textbf{Required evidence.} RQ4a requires exact deterministic replay of
-membership, planner estimates, objective, and configuration traces, plus the
-fixed-$k$ method comparison and tiny-universe exhaustive diagnostic. RQ4b
-requires a shared stock realization ID, one recorded union \texttt{ANALYZE},
-post-drop payload equality without another \texttt{ANALYZE}, and per-method
-physical EXPLAIN/q-error evidence. Neither sandbox objective nor one native
-realization is substituted for the other layer.
-\textbf{Partial dataset-scoped evidence.} The Forest10 fixed-$k$ canary has
-passed the deterministic patched-sandbox replay and the shared stock physical
-realization gates for nine configurations (five pre-registered random seeds,
-workload-frequency, native-payload-size, singleton-utility, and greedy
-ADD). The immutable parent artifact is
-\texttt{experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json} (digest
-\texttt{736ba74f...}); the global RQ4 status remains incomplete because
-Census13, Power7, and DMV11 are still planned. This result is protocol
-evidence, not a claim that greedy search is globally optimal or superior.
-% TODO(PAPER-RQ4): insert the complete cross-dataset heuristic and
-% tiny-universe exhaustive-search table after the remaining datasets run.
+RQ4a is the deterministic patched-sandbox method comparison at a fixed
+$k=4$; RQ4b is the separate stock physical consequence study under one shared
+native realization. The four-dataset fixed-$k$ evidence is complete at
+dataset scope, with Forest10 retaining its historical v1 provenance rather
+than being silently reassigned to v2.
+
+\input{tables/rq4-fixed-k}
+
+Greedy ADD is best among the recorded methods on Forest10, Power7, and DMV11,
+but singleton utility is better on Census13. This counterexample is important:
+the result supports a workload- and dataset-dependent benefit of planner-in-
+the-loop search, not universal superiority. Census13 and DMV11 greedy traces
+end at complete committed incumbents at the time budget, so their comparison
+does not imply exhaustive optimality. RQ4b retains the physical observations
+and common-realization controls separately from the deterministic RQ4a
+objectives.
+
+The validated $K_s$ sensitivity campaign covers Census13, Power7, and DMV11
+at $K_s\in\{4,8,16,32,\mathrm{all}\}$ with $B=4$.
+
+\input{tables/rq4-ks-sensitivity}
+
+The best finite screening width is 8, 16, and 32 for Census13, Power7, and
+DMV11 respectively. The $\mathrm{all}$ point is budget-censored for Census13
+and DMV11; it is a bounded incumbent rather than an optimum reference. The
+fixed-evaluation-budget comparison and native-\texttt{ANALYZE} stability
+study remain unexecuted and are not replaced by these fixed-$k$ results.
 
 \subsection{RQ5: practicality}
-\textbf{Intended claim.} The operational cost of offline capture, native
-statistics construction, sandbox search, and deployment is measurable and
-should be considered alongside accuracy.
-% TODO(PAPER-RQ5): insert cost breakdown, storage, refresh, and planning-overhead figures.
+RQ5 is partially complete. The validated snapshot-footprint and static-
+deployment subexperiments, together with the versioned trace inventory,
+provide stage-specific measurements but not a single end-to-end production
+cost.
 
-\subsection{Pilot evidence ledger}
+\input{tables/rq5-practicality}
 
-The repository contains historical pilot artifacts for all four datasets and
-validated RQ1 canonical artifacts for Census13, Forest10, Power7, and DMV11
-under \texttt{experiments/}. The historical outputs remain preliminary; the
-canonical artifacts retain their embedded system-freeze-v1 provenance and are
-not retroactively reassigned to system-freeze-v2. The DMV11 full-data
-transfer artifact remains separate RQ2 evidence and is not part of the RQ1
-completion claim.
-% TODO(PAPER-PILOT): link each figure/table to a compact derived artifact digest.
+The direct measurements separate snapshot capture and logical footprint from
+stock DDL, native \texttt{ANALYZE}, catalog bytes, and planner-time change.
+The four-dataset median sealed snapshot sizes are 3.56--5.69 MiB;
+static DDL is approximately 0.0023--0.0027 seconds, whereas relation-level
+\texttt{ANALYZE} is 0.274--0.391 seconds. The trace inventory also measures
+authoritative external truth import (approximately 0.14--0.16 seconds),
+singleton profiling, search, and full-workload planning stages. Logical and
+physical storage are not additive, and the physical allocation values are
+page-granular rather than exact per-object attribution. Production-exact
+truth collection, refresh quality trends, and a canonical end-to-end advisor
+cost remain unmeasured. The absence of a learned-model inference path is not
+treated as zero operational overhead.
+
+\subsection{Evidence status and remaining studies}
+
+The results above distinguish validated evidence from bounded or incomplete
+studies. RQ1a, RQ1b, RQ2a/RQ2b, and the two RQ3 fidelity checks have validated
+four-dataset or registered-fixture evidence. RQ4 is complete only for the
+reported fixed-$k$ and $K_s$ dataset-scope studies; its fixed-evaluation-budget
+comparison and native-\texttt{ANALYZE} stability study remain unexecuted.
+RQ5 is a qualified partial practicality account: the measured stages are
+reported above, while production-exact truth timing, refresh quality trends,
+and a canonical end-to-end cost remain open. Historical pilot outputs remain
+immutable and are not silently promoted to confirmatory evidence or reassigned
+to a different system freeze.

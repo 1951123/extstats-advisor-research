@@ -1,0 +1,24 @@
+% Derived from experiments/rq2-cross-dataset-transfer-summary-v1.json
+% semantic digest: dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{RQ2 sample-to-full-data transfer. $P_0$ is the fresh full-data
+baseline, $P_1$ is the deployed recommendation after native full-data
+\texttt{ANALYZE}, and $P_2$ is the same native realization after removing
+advisor-managed objects without another \texttt{ANALYZE}. $J_S$ is the
+sample-side objective; $R_D$ is the controlled $P_2$--$P_1$ reduction and
+$R_S$ is the sample-side reduction. Spearman is descriptive, not a guarantee
+of transfer.}
+\label{tab:rq2-sample-full-transfer}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Dataset & $P_0$ & $P_1$ & $P_2$ & $J_S$ & $R_D$ & $R_S$ & Spearman & Opposite \\
+\midrule
+Census13 & 5.240 & 2.235 & 5.241 & 2.383 & 57.4\% & 54.7\% & 0.968 & 0.64\% \\
+Forest10 & 7.078 & 6.608 & 7.114 & 6.691 & 7.1\% & 5.1\% & 0.796 & 3.17\% \\
+Power7 & 136.458 & 87.506 & 138.376 & 99.810 & 36.8\% & 40.5\% & 0.478 & 2.20\% \\
+DMV11 & 257.345 & 43.539 & 257.399 & 72.620 & 83.1\% & 79.0\% & 0.886 & 2.61\% \\
+\bottomrule
+\end{tabular}
+\end{table*}

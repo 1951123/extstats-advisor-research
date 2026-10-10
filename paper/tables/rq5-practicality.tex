@@ -1,0 +1,22 @@
+% Derived from experiments/rq5-existing-trace-cost-inventory-v3.json,
+% rq5-snapshot-footprint-v1.json and rq5-static-deployment-cost-v1.json.
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Measured RQ5 practicality quantities. Snapshot bytes are logical
+sealed-snapshot medians; DDL and ANALYZE are stock PostgreSQL medians from the
+static-deployment subexperiment; planner delta is the measured full-workload
+$P_1-P_0$ elapsed-time difference in the RQ2 transfer traces. These are
+stage-specific measurements, not a canonical end-to-end production cost.}
+\label{tab:rq5-practicality}
+\begin{tabular}{lrrrrr}
+\toprule
+Dataset & Snapshot (MiB) & DDL (s) & ANALYZE (s) & DDL+ANALYZE (s) & Planner delta (s) \\
+\midrule
+Census13 & 5.69 & 0.0027 & 0.2742 & 0.2768 & 0.2440 \\
+Forest10 & 5.32 & 0.0027 & 0.3489 & 0.3518 & 0.1659 \\
+Power7 & 3.68 & 0.0023 & 0.3906 & 0.3929 & 0.0163 \\
+DMV11 & 3.56 & 0.0027 & 0.3564 & 0.3611 & 0.0460 \\
+\bottomrule
+\end{tabular}
+\end{table*}

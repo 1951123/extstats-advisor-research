@@ -1,0 +1,23 @@
+% Derived from the immutable RQ3 primary and secondary artifacts.
+% Primary digest: e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6c6
+% Secondary digest: 2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{RQ3 mechanism-fidelity checks. Each configuration has three paired
+queries. Exact matching is the registered root \texttt{Plan Rows} criterion;
+the controls include equal ordinary statistics, payload correspondence,
+planner settings, schema, relation contents and workload.}
+\label{tab:rq3-fidelity}
+\begin{tabular}{lrrl}
+\toprule
+Configuration & Patched hypo./physical & Stock/patched physical & Scope \\
+\midrule
+MCV only & 3/3 exact & 3/3 exact & same-binary primary \\
+Dependencies only & 3/3 exact & 3/3 exact & same-binary primary \\
+MCV + dependencies & 3/3 exact & 3/3 exact & same-binary primary \\
+\midrule
+Total & 9/9 exact & 9/9 exact & zero mismatches \\
+\bottomrule
+\end{tabular}
+\end{table*}

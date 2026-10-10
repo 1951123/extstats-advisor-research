@@ -301,7 +301,7 @@
     {
       "experiment_id": "rq1-held-out-workload-generalization",
       "rq": "RQ1b",
-      "status": "preregistered",
+      "status": "complete",
       "formal_execution": "four-dataset-children-complete",
       "formal_evidence_status": "four-dataset-children-complete",
       "next_formal_attempt": "none-pending-review",
@@ -312,7 +312,7 @@
         "semantic_digest": "92faabbd6703f79e3a5c6ad5ef13904ea01d388f095f21583557be3591893473",
         "derived_offline": true,
         "scientific_reexecution": false,
-        "paper_interpretation_status": "not-performed"
+        "paper_interpretation_status": "integrated-in-manuscript"
       },
       "power7_formal_attempts": [
         {
@@ -1121,8 +1121,8 @@
       },
       {
         "experiment_id": "rq1-held-out-workload-generalization",
-        "status": "preregistered",
-        "note": "RQ1b has four evidence-eligible dataset children and a completed offline cross-dataset synthesis at experiments/rq1-workload-generalization-cross-dataset-v1.json; paper interpretation/revision remains separate and has not been performed. Power7 attempts 1–5 remain non-evidence provenance; attempt 6 was published after an offline result digest-contract correction with no scientific re-execution."
+        "status": "complete",
+        "note": "RQ1b has four evidence-eligible dataset children and a completed offline cross-dataset synthesis at experiments/rq1-workload-generalization-cross-dataset-v1.json; the evidence is now integrated into the manuscript within its same-generator held-out scope. Power7 attempts 1–5 remain non-evidence provenance; attempt 6 was published after an offline result digest-contract correction with no scientific re-execution."
       },
       {
         "experiment_id": "rq1-existing-baselines",

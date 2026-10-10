@@ -15,5 +15,14 @@ per-query regressions. This does not establish workload-drift robustness,
 execution-time improvement, or global optimality. Existing production extended
 statistics remain outside advisor ownership, and a SearchResult objective is
 not a guarantee for a combined catalog that the optimizer did not evaluate.
-The remaining RQ1--RQ5 evidence and the final paper synthesis remain scoped
-separately.
+The completed RQ2 transfer evidence shows that sample-selected designs can
+retain utility after independent full-data native-statistics realization, but
+does not guarantee the sample-side objective or eliminate query-level
+regressions. RQ3 establishes fidelity only for its registered synthetic
+fixture. RQ4 provides qualified fixed-$k$ and screening-width ablations, with
+fixed-evaluation-budget and native-\texttt{ANALYZE} stability studies still
+missing; RQ5 provides stage-specific practicality measurements rather than a
+complete end-to-end production cost. The ordering ablation likewise supports
+only the bounded hypothetical and confounded physical claims reported in the
+Results section. These evidence gaps and limitations remain explicit rather
+than being hidden by a single aggregate conclusion.

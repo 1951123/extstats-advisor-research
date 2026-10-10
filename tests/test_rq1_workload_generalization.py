@@ -292,7 +292,7 @@ def test_paper_registry_keeps_rq1a_complete_and_registers_rq1b() -> None:
     by_id = {item["experiment_id"]: item for item in spec["experiments"]}
     assert by_id["rq1-confirmatory-matched-baselines"]["status"] == "complete"
     rq1b = by_id["rq1-held-out-workload-generalization"]
-    assert rq1b["status"] == "preregistered"
+    assert rq1b["status"] == "complete"
     assert rq1b["design_split"] == "valid"
     assert rq1b["evaluation_split"] == "test"
     assert rq1b["formal_execution"] == "four-dataset-children-complete"

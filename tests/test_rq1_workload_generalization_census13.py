@@ -241,7 +241,7 @@ def test_census13_registry_records_published_formal_evidence() -> None:
         for item in registry["experiments"]
         if item["experiment_id"] == "rq1-held-out-workload-generalization"
     )
-    assert rq1b["status"] == "preregistered"
+    assert rq1b["status"] == "complete"
     assert rq1b["census13_runner_readiness"] == "formal-evidence-published"
     assert rq1b["census13_formal_evidence_status"] == "complete"
     assert rq1b["census13_next_formal_attempt"] == "none-pending-until-review"
