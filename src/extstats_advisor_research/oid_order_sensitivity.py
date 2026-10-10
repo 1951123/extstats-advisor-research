@@ -2162,8 +2162,9 @@ def _run_overlapping_mcv_witness(
         conn.execute(f"ANALYZE {table}")
         relation_oid = int(conn.execute(f"SELECT '{table}'::regclass::oid").fetchone()[0])
         ordinary_baseline = ordinary_stats_fingerprint(conn, relation_oid)
-        schema = str(conn.execute("SELECT current_schema()").fetchone()[0])
-        relation = f"{schema}.{table}"
+        # EXPLAIN VERBOSE identifies a temporary relation under the stable
+        # ``pg_temp`` namespace even though current_schema() is public.
+        relation = f"pg_temp.{table}"
         for arm_id, order in arms.items():
             names: dict[str, str] = {}
             payloads: dict[str, bytes] = {}

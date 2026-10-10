@@ -17,6 +17,7 @@ from extstats_advisor_research.oid_order_sensitivity import (
     _invocation_namespace,
     _load_sealed_snapshot,
     _physical_payload_for_catalog_row,
+    _plan_rows,
     _scan_partial_observations,
     _validate_query_records,
     _validate_synthetic_witness,
@@ -455,6 +456,20 @@ def test_physical_payload_reader_receives_relation_oid_not_statistics_oid(
         "name": "oid_order_candidate",
         "kind": "mcv",
     }
+
+
+def test_synthetic_temp_relation_uses_pg_temp_plan_schema() -> None:
+    document = [
+        {
+            "Plan": {
+                "Node Type": "Seq Scan",
+                "Relation Name": "oid_order_mcv_witness_fixture",
+                "Schema": "pg_temp",
+                "Plan Rows": 7,
+            }
+        }
+    ]
+    assert _plan_rows(document, "pg_temp.oid_order_mcv_witness_fixture") == 7
 
 
 def test_failure_writer_counts_persisted_hypothetical_observations(tmp_path: Path) -> None:
