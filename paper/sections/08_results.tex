@@ -205,10 +205,30 @@ DMV11 respectively. The $\mathrm{all}$ point is budget-censored for Census13
 and DMV11; it is a bounded incumbent rather than an optimum reference. The
 fixed-evaluation-budget comparison was cancelled by research-team decision
 after the offline time-budget fairness audit; its historical protocol remains
-preserved, but no results were generated. Native-\texttt{ANALYZE} stability
-is now preregistered as a separate five-realization study, with implementation
-readiness still under review, and has not been executed or replaced by these
-fixed-$k$ results.
+preserved, but no results were generated. The subsequent Native
+\texttt{ANALYZE} Stability v1 campaign
+completed its declared raw observation matrix but failed its original
+nonempty-payload eligibility gate: six selected dependency payloads were
+recorded as empty. PostgreSQL's frozen source permits SQL NULL dependency
+data when no nonzero dependency is retained, but the v1 capture did not
+preserve an independent SQL-NULL marker. We therefore retain the campaign's
+original failed/ineligible status and report only a qualified, post-hoc v2
+analysis.
+
+\input{tables/native-analyze-stability-v2}
+
+Table~\ref{tab:native-analyze-stability-v2} summarizes the descriptive
+stability result. Within every realization, Greedy ADD ranked first on
+Forest10 and DMV11, whereas singleton utility ranked first on Census13;
+there were no winner reversals across the five realizations. Greedy's mean
+q-error was lower than singleton utility in all five Forest10 and DMV11
+realizations, but higher in all five Census13 realizations. Ordinary-statistics
+fingerprints changed between the first and each later realization for all
+three datasets, and extended-statistics fingerprints also varied. Thus the
+analysis measures combined native-realization variability, not an
+extended-statistics-only causal component. Five realizations provide
+descriptive evidence rather than a probability guarantee, and Forest10's
+historical-v1 provenance remains a separate stratum.
 
 \subsection{RQ5: practicality}
 RQ5 is partially complete. The validated snapshot-footprint and static-

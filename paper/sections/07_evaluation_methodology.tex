@@ -160,10 +160,13 @@ performs one shared stock \texttt{ANALYZE}, and clones that analyzed parent;
 each clone drops statistics not selected by its method without another
 \texttt{ANALYZE}, verifies that kept payload bytes are unchanged, and runs
 full/small EXPLAIN evaluation. This controls a common native realization for
-method comparison. A separate planned
-\texttt{native-analyze-stability-v1} protocol uses five independent native
-realizations to quantify variability; it does not claim that the seed
-statement controls \texttt{ANALYZE}.
+method comparison. A separate \texttt{native-analyze-stability-v1} protocol
+used five independent native realizations to quantify variability; it did not
+claim that the seed statement controls \texttt{ANALYZE}. Its formal evidence
+was subsequently reanalysed under the explicitly post-hoc, qualified
+\texttt{native-analyze-stability-v2} contract after six dependency payloads
+were recorded as empty. The v2 analysis does not change the v1 eligibility
+status.
 
 The RQ4 primary eligible universe is frozen using only native kind, schema
 validity, sample payload availability, and predeclared compatibility;

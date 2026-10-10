@@ -1,0 +1,72 @@
+{
+  "format_version": "native-analyze-stability-protocol-v2",
+  "experiment_id": "native-analyze-stability-v2",
+  "status": "posthoc-analysis-only",
+  "prospective_preregistration": false,
+  "derived_from": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+    "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"
+  },
+  "scientific_question": "For fixed Advisor recommendations deployed on stock PostgreSQL, describe the stability of cardinality estimates, q-error, and method rankings across five independent native ANALYZE realizations.",
+  "interpretation_boundary": "This contract was specified after observing the v1 payload gate failure. It is not a prospective reinterpretation of v1 and does not change v1 status.",
+  "datasets": {
+    "primary": [
+      "arecel-forest10",
+      "arecel-census13",
+      "arecel-dmv11"
+    ],
+    "realizations_per_dataset": 5,
+    "methods_per_realization": 9,
+    "queries_per_method": 10000,
+    "cross_dataset_pooling": "prohibited; Forest10 historical-v1 remains a separate stratum"
+  },
+  "fixed_controls": [
+    "RQ4 Recommendation membership and physical definitions are fixed within each dataset",
+    "one shared stock parent ANALYZE per realization",
+    "zero ANALYZE calls in method-specific clones",
+    "shared parent and clone workload, truth, planner settings, and database snapshot",
+    "recorded canonical union and verified relative OID order",
+    "ordinary statistics equal within a realization",
+    "retained payload equality includes nonempty-to-nonempty and NULL-to-NULL states"
+  ],
+  "payload_semantics": {
+    "native_null": "A present PostgreSQL statistics object whose dependency build produces no retained nonzero dependency may have SQL NULL in pg_statistic_ext_data.stxddependencies.",
+    "nonempty": "payload_present=true with a nonempty serialized payload",
+    "native-null-verified": "Direct persisted catalog evidence records SQL NULL for the existing object.",
+    "native-null-supported": "The object is present, the reader returned NULL/empty bytes for a dependency payload, the frozen PostgreSQL source permits this path, and parent/clone controls are otherwise consistent; direct SQL NULL metadata was not persisted.",
+    "capture-error": "Evidence indicates an existing non-NULL payload was not captured.",
+    "unverified": "The existing evidence cannot distinguish object absence, capture failure, or SQL NULL."
+  },
+  "qualification_rules": [
+    "Do not require every native dependency payload to be nonempty.",
+    "Reject absent statistics objects, kind or definition mismatches, query/truth mismatches, missing arms, failed checksums, ordinary-statistics drift within a realization, or retained-payload inequality.",
+    "Retain native-null-supported realizations as qualified descriptive evidence, not as native-null-verified evidence.",
+    "Do not reclassify the v1 campaign as successful.",
+    "Five realizations are descriptive replicates and do not support precise probability or universal stability claims."
+  ],
+  "metrics": {
+    "qerror_contract": "qerror-cardinality-floor-1-v1",
+    "quantile_method": "linear-interpolation-n-minus-1",
+    "lower_is_better": true,
+    "per_method_realization": ["mean", "p50", "p95", "p99", "max", "changed_plan_rows_fraction"],
+    "stability": ["min_mean", "max_mean", "descriptive_population_standard_deviation", "rank", "ties", "win_tie_loss"],
+    "replicate_unit": "native ANALYZE realization, not workload query"
+  },
+  "source_constraints": {
+    "v1_failure_status": "failed/ineligible with evidence preserved",
+    "rq1b_w_test_accessed": false,
+    "formal_execution_count": 0,
+    "posthoc_only": true
+  },
+  "source_code_basis": {
+    "repository": "1951123/postgresql-src",
+    "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "postgres_version": "16.14",
+    "references": [
+      "src/backend/statistics/dependencies.c::statext_dependencies_build",
+      "src/backend/statistics/extended_stats.c::statext_store"
+    ]
+  },
+  "semantic_digest": "e5190c93f2db46d8370c2c6f40805afd8774126315e32f0f08e30bb7d7f1c142"
+}

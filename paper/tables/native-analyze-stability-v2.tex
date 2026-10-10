@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\caption{Post-hoc descriptive Native ANALYZE stability analysis over five independent stock realizations. The fixed RQ4 memberships and nine method arms are shared within each realization; lower q-error is better. Ranges show the minimum and maximum per-realization mean q-error. This analysis is qualified by the v1 payload-recording limitation and is not prospective confirmatory evidence.}
+\label{tab:native-analyze-stability-v2}
+\small
+\begin{tabular}{l l c c c c c}
+\toprule
+Dataset & Stratum & Greedy mean & Singleton mean & Greedy first & Singleton first & Nonempty payloads \\
+\midrule
+Forest10 & historical-v1 & 6.637--6.697 & 6.713--6.781 & 5/5 & 0/5 & 100/100 \\
+Census13 & current-v2 & 2.929--2.952 & 2.359--2.371 & 0/5 & 5/5 & 135/140 \\
+DMV11 & current-v2 & 23.568--25.176 & 51.333--56.569 & 5/5 & 0/5 & 143/145 \\
+\bottomrule
+\end{tabular}
+\end{table*}
