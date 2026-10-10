@@ -24,6 +24,18 @@ from .incremental_search_hardening import (
 from .incremental_search_hardening import (
     validate_artifact as validate_incremental_hardening,
 )
+from .native_analyze_stability_harness import (
+    PROTOCOL_PATH as NATIVE_STABILITY_PROTOCOL_PATH,
+)
+from .native_analyze_stability_harness import (
+    dry_run_plan as native_stability_dry_run_plan,
+)
+from .native_analyze_stability_harness import (
+    load_and_validate_protocol as load_native_stability_protocol,
+)
+from .native_analyze_stability_harness import (
+    validate_invocation_artifact as validate_native_stability_invocation,
+)
 from .oid_order_sensitivity import (
     PREFLIGHT_PATH as OID_PREFLIGHT_PATH,
 )
@@ -997,6 +1009,26 @@ def _parser() -> argparse.ArgumentParser:
     rq4_physical_commands = rq4_physical.add_subparsers(dest="rq4_physical_command", required=True)
     rq4_physical_validate = rq4_physical_commands.add_parser("validate")
     rq4_physical_validate.add_argument("artifact", type=Path)
+    native_stability = validate_commands.add_parser(
+        "native-analyze-stability",
+        help="offline plan and validation for Native ANALYZE Stability v1",
+    )
+    native_stability_commands = native_stability.add_subparsers(
+        dest="native_stability_command", required=True
+    )
+    native_stability_dry_run = native_stability_commands.add_parser(
+        "dry-run", help="construct an offline execution plan without opening PostgreSQL"
+    )
+    native_stability_dry_run.add_argument(
+        "--protocol", type=Path, default=Path(NATIVE_STABILITY_PROTOCOL_PATH)
+    )
+    native_stability_dry_run.add_argument("--invocation-id", required=True)
+    native_stability_dry_run.add_argument("--output-root", type=Path, required=True)
+    native_stability_validate = native_stability_commands.add_parser(
+        "validate", help="validate an offline Native ANALYZE invocation artifact"
+    )
+    native_stability_validate.add_argument("artifact", type=Path)
+    native_stability_validate.add_argument("--protocol-digest", default=None)
     rq4_formal = validate_commands.add_parser(
         "rq4-forest10-fixed-k", help="run or validate the Forest10 formal RQ4 fixed-k canary"
     )
@@ -1840,6 +1872,26 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.validate_command == "rq4-stock-physical":
             result = validate_shared_stock_realization(args.artifact)
+            print(json.dumps(result, sort_keys=True, indent=2))
+            return 0
+        if args.validate_command == "native-analyze-stability":
+            root = Path(__file__).resolve().parents[2]
+            if args.native_stability_command == "dry-run":
+                protocol_path = (
+                    args.protocol if args.protocol.is_absolute() else root / args.protocol
+                )
+                protocol = (
+                    load_native_stability_protocol(root)
+                    if protocol_path == root / NATIVE_STABILITY_PROTOCOL_PATH
+                    else read_json(protocol_path)
+                )
+                result = native_stability_dry_run_plan(
+                    protocol, invocation_id=args.invocation_id, output_root=args.output_root
+                )
+            else:
+                result = validate_native_stability_invocation(
+                    args.artifact, expected_protocol_digest=args.protocol_digest
+                )
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-fixed-k-v2":
