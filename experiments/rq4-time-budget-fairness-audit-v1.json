@@ -1,0 +1,1046 @@
+{
+  "anytime_analysis": {
+    "available": [
+      "Greedy records ordered search objectives, cumulative planner accounting, and elapsed search time.",
+      "Forest10 singleton and Greedy traces include per-configuration backend durations."
+    ],
+    "missing": [
+      "Absolute event timestamps or a common time origin for all methods.",
+      "Selection preprocessing wall time for v2 cheap methods and v2 reused singleton profiles.",
+      "Comparable event traces for random, workload-frequency, and native-payload-size selection."
+    ],
+    "overall_classification": "partial-anytime-trace; no defensible combined objective-vs-wall-clock curves",
+    "permitted_output": "Use aggregate cost-quality tables or scatter points; do not interpolate a combined anytime curve."
+  },
+  "artifact_verified_facts": [
+    "Census13 and DMV11 Greedy are budget-censored after incomplete rounds at approximately 300 seconds.",
+    "Power7 Greedy reaches max-statistics-count at 185.87962744000106 seconds.",
+    "Forest10 is historical rq4-design-evaluation-v1 evidence with a 3600-second declared wall-clock budget.",
+    "Singleton source profile planner calls are recorded for v2, but source profile wall-clock seconds are null.",
+    "Cheap-method v2 selection planner calls are recorded as zero; their final evaluations are separate 10000-call stages."
+  ],
+  "audit_source_commit": "bbd6ea2933ef241855a432ef1c85b941a2c55bfd",
+  "code_verified_facts": [
+    "_BudgetedEvaluator starts its perf_counter clock at evaluator construction.",
+    "Wall-clock expiry is checked before each backend call and cannot interrupt a backend call already in progress.",
+    "Greedy proposal evaluation uses the evaluator; cheap rankings do not perform selection objective evaluations.",
+    "Greedy accepts a winner only after a complete proposal round; an incomplete round returns the prior incumbent.",
+    "run_rq4_ablation rejects fixed_evaluation_budget rather than implementing a common allocator.",
+    "RQ4 v2 performs a second deterministic selection replay and then independent final sandbox evaluations."
+  ],
+  "comparison_assessment": {
+    "end_to_end_selection_cost_fairness": "not-established",
+    "reason": "The deadline constrains Greedy search and K_s points, while preprocessing, reused singleton profiling, final evaluation, and physical realization have separate or missing accounting; configuration evaluations and planner calls are not interchangeable.",
+    "resource_fairness": "not-established",
+    "search_only_time_fairness": "fair-within-declared-search-scope"
+  },
+  "datasets": {
+    "arecel-census13": {
+      "anytime_feasibility": "partial-anytime-trace",
+      "dataset_id": "arecel-census13",
+      "design_artifact": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "design_format": "rq4-design-evaluation-v2",
+      "design_semantic_digest": "ef68256b9aa26ceb55a7a3e25a9969716ba3b1a19635e64febce4af8b4e88de8",
+      "evidence_status": "formal-confirmatory",
+      "methods": [
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1217744019995735
+          },
+          "method_id": "random-k-seed-1",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.106610273000115
+          },
+          "method_id": "random-k-seed-2",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.044554613999935
+          },
+          "method_id": "random-k-seed-3",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1557633760021417
+          },
+          "method_id": "random-k-seed-4",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.0580725979998533
+          },
+          "method_id": "random-k-seed-5",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.113833011000679
+          },
+          "method_id": "workload-frequency-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.15895768900009
+          },
+          "method_id": "native-payload-size-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1442219950004073
+          },
+          "method_id": "singleton-utility-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 137,
+            "new_selection_configuration_objective_evaluations": 0,
+            "planner_query_calls": 496651,
+            "timing_scope": "reused-profile; source-wall-time-unavailable",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1428874480006925
+          },
+          "method_id": "greedy-ADD",
+          "selected_k": 2,
+          "selection": {
+            "configuration_objective_evaluations": 198,
+            "partial_final_round_evaluations": 64,
+            "planner_query_calls": 722567,
+            "timing_scope": "recorded-search-runtime",
+            "wall_clock_seconds": 300.02128408099816
+          },
+          "status": "budget-censored",
+          "termination_reason": "budget-expired-incomplete-round"
+        }
+      ],
+      "selection_budget": {
+        "final_evaluation_excluded": true,
+        "max_configuration_objective_evaluations": 2000,
+        "unit": "configuration-objective-evaluations",
+        "wall_clock_seconds": 300.0
+      }
+    },
+    "arecel-dmv11": {
+      "anytime_feasibility": "partial-anytime-trace",
+      "dataset_id": "arecel-dmv11",
+      "design_artifact": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "design_format": "rq4-design-evaluation-v2",
+      "design_semantic_digest": "8299cdfd3aa437c2660765e432bc3cbf2f642424f2d33cbefb1dc68f16e1cb03",
+      "evidence_status": "formal-confirmatory",
+      "methods": [
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.867053547000978
+          },
+          "method_id": "random-k-seed-1",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.9735505740027293
+          },
+          "method_id": "random-k-seed-2",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.9121479999994335
+          },
+          "method_id": "random-k-seed-3",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.921251568997832
+          },
+          "method_id": "random-k-seed-4",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.8907920370002103
+          },
+          "method_id": "random-k-seed-5",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.945957357002044
+          },
+          "method_id": "workload-frequency-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.9225030339985096
+          },
+          "method_id": "native-payload-size-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.920351147000474
+          },
+          "method_id": "singleton-utility-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 106,
+            "new_selection_configuration_objective_evaluations": 0,
+            "planner_query_calls": 391171,
+            "timing_scope": "reused-profile; source-wall-time-unavailable",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 2.918246564997389
+          },
+          "method_id": "greedy-ADD",
+          "selected_k": 2,
+          "selection": {
+            "configuration_objective_evaluations": 203,
+            "partial_final_round_evaluations": 100,
+            "planner_query_calls": 753529,
+            "timing_scope": "recorded-search-runtime",
+            "wall_clock_seconds": 300.03441285600275
+          },
+          "status": "budget-censored",
+          "termination_reason": "budget-expired-incomplete-round"
+        }
+      ],
+      "selection_budget": {
+        "final_evaluation_excluded": true,
+        "max_configuration_objective_evaluations": 2000,
+        "unit": "configuration-objective-evaluations",
+        "wall_clock_seconds": 300.0
+      }
+    },
+    "arecel-forest10": {
+      "anytime_feasibility": "partial-anytime-trace",
+      "dataset_id": "arecel-forest10",
+      "design_artifact": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "design_format": "rq4-design-evaluation-v1",
+      "design_semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283",
+      "evidence_status": "formal-confirmatory",
+      "methods": [
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.6182210449997
+          },
+          "method_id": "random-k-seed-1",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.748170842000036
+          },
+          "method_id": "random-k-seed-2",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.6857596529998773
+          },
+          "method_id": "random-k-seed-3",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.6975135749999026
+          },
+          "method_id": "random-k-seed-4",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.549883282999872
+          },
+          "method_id": "random-k-seed-5",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.516849718999765
+          },
+          "method_id": "workload-frequency-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.6197689059999902
+          },
+          "method_id": "dependency-correlation-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 0.0
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.5048997320000126
+          },
+          "method_id": "singleton-utility-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 58,
+            "planner_query_calls": 580000,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 201.83345527799975
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.578885332000027
+          },
+          "method_id": "greedy-ADD",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 223,
+            "planner_query_calls": 2230000,
+            "timing_scope": "recorded",
+            "wall_clock_seconds": 792.7166179960004
+          },
+          "status": "complete",
+          "termination_reason": null
+        }
+      ],
+      "selection_budget": {
+        "final_evaluation_excluded": null,
+        "max_configuration_objective_evaluations": 2000,
+        "unit": "configuration-objective-evaluations",
+        "wall_clock_seconds": 3600.0
+      }
+    },
+    "arecel-power7": {
+      "anytime_feasibility": "partial-anytime-trace",
+      "dataset_id": "arecel-power7",
+      "design_artifact": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "design_format": "rq4-design-evaluation-v2",
+      "design_semantic_digest": "939412c961032c6ace6997a05687a7bbf6a781e55321c066f7529618874e1783",
+      "evidence_status": "formal-confirmatory",
+      "methods": [
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.0220918670020183
+          },
+          "method_id": "random-k-seed-1",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.093771685998945
+          },
+          "method_id": "random-k-seed-2",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.136179686996911
+          },
+          "method_id": "random-k-seed-3",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.0318939889984904
+          },
+          "method_id": "random-k-seed-4",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1267252510006074
+          },
+          "method_id": "random-k-seed-5",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.0754938650024997
+          },
+          "method_id": "workload-frequency-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.187484804999258
+          },
+          "method_id": "native-payload-size-top-k",
+          "selected_k": 4,
+          "selection": {
+            "backend_wall_clock_seconds": 0.0,
+            "configuration_objective_evaluations": 0,
+            "planner_query_calls": 0,
+            "timing_scope": "selection-preprocessing-wall-time-not-recorded",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.1289725860006
+          },
+          "method_id": "singleton-utility-top-k",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 43,
+            "new_selection_configuration_objective_evaluations": 0,
+            "planner_query_calls": 169042,
+            "timing_scope": "reused-profile; source-wall-time-unavailable",
+            "wall_clock_seconds": null
+          },
+          "status": "complete",
+          "termination_reason": null
+        },
+        {
+          "final_evaluation": {
+            "configuration_objective_evaluations": 1,
+            "excluded_from_selection_budget": true,
+            "planner_query_calls": 10000,
+            "wall_clock_seconds": 3.0189653070010536
+          },
+          "method_id": "greedy-ADD",
+          "selected_k": 4,
+          "selection": {
+            "configuration_objective_evaluations": 120,
+            "partial_final_round_evaluations": 0,
+            "planner_query_calls": 468090,
+            "timing_scope": "recorded-search-runtime",
+            "wall_clock_seconds": 185.87962744000106
+          },
+          "status": "complete",
+          "termination_reason": "max-statistics-count"
+        }
+      ],
+      "selection_budget": {
+        "final_evaluation_excluded": true,
+        "max_configuration_objective_evaluations": 2000,
+        "unit": "configuration-objective-evaluations",
+        "wall_clock_seconds": 300.0
+      }
+    }
+  },
+  "declared_budget_semantics": {
+    "B": "selected-statistics count bound; fixed-k quality artifacts use k=4",
+    "K_s": "candidate screening width; not a planner-call or elapsed-time budget",
+    "T_seconds": 300.0,
+    "budget_clock": "_BudgetedEvaluator construction through pre-call checks; timeout checked between backend calls",
+    "configuration_objective_evaluation_cap": 2000,
+    "final_evaluation": "independent final sandbox evaluation is explicitly excluded",
+    "physical_evaluation": "separate RQ4b stage, outside selection budget"
+  },
+  "experiment_id": "rq4-time-budget-fairness-audit",
+  "fixed_evaluation_budget_recommendation": {
+    "classification": "Conditionally useful",
+    "core_quality_claim": "not-required",
+    "current_design_caveat": "A common 2000 configuration-evaluation cap alone is not a fair resource allocator because one configuration can contain thousands of planner calls and methods reuse or avoid profiling work.",
+    "efficiency_claim": "useful only if redesigned around an explicitly shared computational resource unit",
+    "recommended_next_step": "First publish the offline cost-boundary accounting; only run a new budget study if the paper needs a resource-normalized efficiency claim and the protocol defines comparable planner-call/CPU/preprocessing accounting."
+  },
+  "format_version": "rq4-time-budget-fairness-audit-v1",
+  "ks_sensitivity_evidence": {
+    "dataset_scope": {
+      "arecel-census13": {
+        "artifact_semantic_digest": "119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8",
+        "best_finite_objective": 2.483392121853901,
+        "points": [
+          {
+            "K_s": 4,
+            "execution_mode": "executed",
+            "final_objective": 2.5212688613359724,
+            "incremental_planner_calls": 35065,
+            "proposal_configuration_objective_evaluations": 6,
+            "selection_wall_clock_seconds": 14.465618764999817,
+            "status": "complete",
+            "termination_reason": "all-screened-candidates-selected"
+          },
+          {
+            "K_s": 8,
+            "execution_mode": "executed",
+            "final_objective": 2.483392121853901,
+            "incremental_planner_calls": 77953,
+            "proposal_configuration_objective_evaluations": 18,
+            "selection_wall_clock_seconds": 33.33692027400002,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 16,
+            "execution_mode": "executed",
+            "final_objective": 2.483392121853901,
+            "incremental_planner_calls": 163513,
+            "proposal_configuration_objective_evaluations": 42,
+            "selection_wall_clock_seconds": 71.25806411899976,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 32,
+            "execution_mode": "executed",
+            "final_objective": 2.483392121853901,
+            "incremental_planner_calls": 335089,
+            "proposal_configuration_objective_evaluations": 90,
+            "selection_wall_clock_seconds": 145.89874476800014,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": "all",
+            "execution_mode": "reused",
+            "final_objective": 3.0140142440167508,
+            "incremental_planner_calls": 722567,
+            "proposal_configuration_objective_evaluations": 198,
+            "selection_wall_clock_seconds": 300.02128408099816,
+            "status": "budget-censored",
+            "termination_reason": "budget-expired-incomplete-round"
+          }
+        ],
+        "smallest_width_matching_best_finite_objective": 8,
+        "status": "complete"
+      },
+      "arecel-dmv11": {
+        "artifact_semantic_digest": "569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109",
+        "best_finite_objective": 40.325278427588316,
+        "points": [
+          {
+            "K_s": 4,
+            "execution_mode": "executed",
+            "final_objective": 73.01836263281487,
+            "incremental_planner_calls": 35279,
+            "proposal_configuration_objective_evaluations": 6,
+            "selection_wall_clock_seconds": 13.51139196000031,
+            "status": "complete",
+            "termination_reason": "local-optimum"
+          },
+          {
+            "K_s": 8,
+            "execution_mode": "executed",
+            "final_objective": 72.69311227985717,
+            "incremental_planner_calls": 78773,
+            "proposal_configuration_objective_evaluations": 18,
+            "selection_wall_clock_seconds": 30.9036074630003,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 16,
+            "execution_mode": "executed",
+            "final_objective": 41.9583074764824,
+            "incremental_planner_calls": 165732,
+            "proposal_configuration_objective_evaluations": 42,
+            "selection_wall_clock_seconds": 65.65267417999985,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 32,
+            "execution_mode": "executed",
+            "final_objective": 40.325278427588316,
+            "incremental_planner_calls": 339848,
+            "proposal_configuration_objective_evaluations": 90,
+            "selection_wall_clock_seconds": 137.47222348000014,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": "all",
+            "execution_mode": "reused",
+            "final_objective": 47.20499958811888,
+            "incremental_planner_calls": 753529,
+            "proposal_configuration_objective_evaluations": 203,
+            "selection_wall_clock_seconds": 300.03441285600275,
+            "status": "budget-censored",
+            "termination_reason": "budget-expired-incomplete-round"
+          }
+        ],
+        "smallest_width_matching_best_finite_objective": 32,
+        "status": "complete"
+      },
+      "arecel-power7": {
+        "artifact_semantic_digest": "85b832eae7f253d7306b710ed769b5a9d48914bc4ad773c00e45c6a93a9db8e5",
+        "best_finite_objective": 93.94824997883099,
+        "points": [
+          {
+            "K_s": 4,
+            "execution_mode": "executed",
+            "final_objective": 105.04073854314105,
+            "incremental_planner_calls": 36544,
+            "proposal_configuration_objective_evaluations": 6,
+            "selection_wall_clock_seconds": 14.06833643899995,
+            "status": "complete",
+            "termination_reason": "all-screened-candidates-selected"
+          },
+          {
+            "K_s": 8,
+            "execution_mode": "executed",
+            "final_objective": 102.53609874329581,
+            "incremental_planner_calls": 82000,
+            "proposal_configuration_objective_evaluations": 18,
+            "selection_wall_clock_seconds": 32.200876349000055,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 16,
+            "execution_mode": "executed",
+            "final_objective": 93.94824997883099,
+            "incremental_planner_calls": 173064,
+            "proposal_configuration_objective_evaluations": 42,
+            "selection_wall_clock_seconds": 69.16269976099989,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": 32,
+            "execution_mode": "executed",
+            "final_objective": 93.94824997883099,
+            "incremental_planner_calls": 354699,
+            "proposal_configuration_objective_evaluations": 90,
+            "selection_wall_clock_seconds": 158.63871696499996,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          },
+          {
+            "K_s": "all",
+            "execution_mode": "reused",
+            "final_objective": 93.94824997883099,
+            "incremental_planner_calls": 468090,
+            "proposal_configuration_objective_evaluations": 120,
+            "selection_wall_clock_seconds": 185.87962744000106,
+            "status": "complete",
+            "termination_reason": "max-statistics-count"
+          }
+        ],
+        "smallest_width_matching_best_finite_objective": 16,
+        "status": "complete"
+      }
+    },
+    "fixed_B": 4,
+    "global_status": "incomplete",
+    "incomplete_reasons": [
+      "rq4-fixed-evaluation-budget is implementation-needed",
+      "rq4-native-analyze-stability remains planned"
+    ],
+    "screening_widths": [
+      4,
+      8,
+      16,
+      32,
+      "all"
+    ],
+    "summary_path": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json"
+  },
+  "manuscript_impact": {
+    "edits_applied_by_this_audit": false,
+    "paths": [
+      "paper/sections/07_evaluation_methodology.tex",
+      "paper/sections/08_results.tex",
+      "paper/sections/09_discussion.tex",
+      "paper/experiment-plan.md"
+    ],
+    "proposed_corrections": [
+      "Call 300 seconds a Greedy/search deadline, not an end-to-end selection-cost budget.",
+      "State that fixed-k quality comparisons do not equalize total selection computation across methods.",
+      "Retain the fixed-evaluation-budget item as unexecuted pending a reviewed common allocator; do not claim the current fixed-k results establish resource fairness.",
+      "Retain Forest10's historical 3600-second v1 budget as a provenance exception."
+    ]
+  },
+  "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+  "source_artifacts": [
+    {
+      "byte_sha256": "df4ec3ae32a364a71363570e2318e718fa18631071a9f89c50f796ee3be5d150",
+      "path": "paper/top-k-screening-protocol-v2.json",
+      "semantic_digest": "55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec"
+    },
+    {
+      "byte_sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5",
+      "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+      "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"
+    },
+    {
+      "byte_sha256": "1a9a24937ba7125ee41ec2049915e7f08ccab48c866ce2e038dd0216260e8b8d",
+      "path": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json",
+      "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed"
+    },
+    {
+      "byte_sha256": "31a8b0773483ae65b838b899744e4ff738abd477e16b989f893b14aee89db33d",
+      "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "semantic_digest": "ef68256b9aa26ceb55a7a3e25a9969716ba3b1a19635e64febce4af8b4e88de8"
+    },
+    {
+      "byte_sha256": "7fc1fe3f19ea6135108644ad5b48031ab6af8c3baadc8fbbb5954d733567288c",
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    {
+      "byte_sha256": "c71419d0c8b46095b0580d6b801f11d25776f3497196b3709320670e77e0be7b",
+      "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "semantic_digest": "939412c961032c6ace6997a05687a7bbf6a781e55321c066f7529618874e1783"
+    },
+    {
+      "byte_sha256": "1bf1a5acd6e8183b58ec051102e7e73d538c5af915cf85f08634acf984e32bfd",
+      "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+      "semantic_digest": "8299cdfd3aa437c2660765e432bc3cbf2f642424f2d33cbefb1dc68f16e1cb03"
+    }
+  ],
+  "unresolved_methodological_questions": [
+    "Whether a future budget study should charge planner calls, CPU time, wall time including preprocessing, or a declared vector of resources.",
+    "Whether reused singleton profiling should be amortized across methods or charged as method acquisition cost.",
+    "How to compare incremental Greedy planner calls with full-workload configuration evaluations without changing the scientific estimand."
+  ]
+}
