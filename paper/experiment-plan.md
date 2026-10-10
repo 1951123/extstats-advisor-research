@@ -677,14 +677,14 @@ estimates, objectives, and configuration trace outside runtime measurements.
 
 **Native realization stability:** `native-analyze-stability-v1` is
 preregistered but not run. Its offline five-realization harness is implemented
-and mock-validated (readiness-v3), but no live PostgreSQL integration or formal
+and mock-validated (readiness-v4), but no live PostgreSQL integration or formal
 execution is authorized. The protocol covers Forest10, Census13, and DMV11
 as primary dataset-scoped strata, with Power7 as a declared sensitivity
 extension. It requires five independent stock `CREATE STATISTICS` plus
 `ANALYZE` realizations, a shared union and no-ANALYZE method clones, observed
 OID/order and payload controls, and full per-method workload evaluation.
-The append-only implementation readiness-v3 record has semantic digest
-`95c5bc4f03c2de173f7b8f57971b6deaef5f18a4ff01276ccc7a25777c0f7419`.
+The append-only implementation readiness-v4 record has semantic digest
+`0a9f483d6fbcca5a40101b5596cafa3acb8262bc31fb942ef68423ce925f5be2`.
 Forest10's historical v1 freeze is retained as a separate stratum rather than
 silently normalized to v2. `setseed` is recorded only as setup provenance and
 is not treated as control of native `ANALYZE` sampling. The readiness record

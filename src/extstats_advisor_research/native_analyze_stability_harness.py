@@ -1031,6 +1031,7 @@ def validate_readiness_v2(
     if value.get("format_version") not in {
         "native-analyze-stability-readiness-review-v2",
         "native-analyze-stability-readiness-review-v3",
+        "native-analyze-stability-readiness-review-v4",
     }:
         raise StabilityError("unsupported Native ANALYZE readiness-v2 artifact")
     _validate_digest(value, "readiness-v2")
