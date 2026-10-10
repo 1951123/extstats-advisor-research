@@ -14,6 +14,7 @@ from extstats_advisor_research.oid_order_sensitivity import (
     PROTOCOL_PATH,
     CommandFailure,
     ExecutionState,
+    _invocation_namespace,
     _load_sealed_snapshot,
     _validate_query_records,
     _validate_synthetic_witness,
@@ -342,6 +343,37 @@ def test_oid_formal_cli_requires_explicit_invocation_identity() -> None:
                 "/tmp/data",
             ]
         )
+
+
+def test_formal_invocation_uses_append_only_invocation_namespace(tmp_path: Path) -> None:
+    import extstats_advisor_research.oid_order_sensitivity as oid
+
+    stale_dataset_dir = tmp_path / oid.OUTPUT_ROOT / "census13"
+    stale_dataset_dir.mkdir(parents=True)
+    invocation_id = "oid-attempt-002-fixed"
+    namespace = _invocation_namespace(tmp_path, invocation_id)
+
+    assert namespace == tmp_path / oid.OUTPUT_ROOT / "invocations" / invocation_id
+    assert not namespace.exists()
+    namespace.mkdir(parents=True)
+    with pytest.raises(FileExistsError):
+        namespace.mkdir(parents=True, exist_ok=False)
+
+
+def test_failure_writer_records_started_formal_invocation(tmp_path: Path) -> None:
+    preflight_path = ROOT / PREFLIGHT_PATH
+    preflight = read_json(preflight_path)
+    state = ExecutionState(invocation_id="oid-attempt-002-fixed")
+    state.formal_invocation_started = True
+    failure = write_failure_artifact(
+        tmp_path / "failure-v1.json",
+        producer_sha="a" * 40,
+        preflight_path=preflight_path,
+        preflight=preflight,
+        state=state,
+        exception=RuntimeError("fixture failure"),
+    )
+    assert failure["formal_invocation_count"] == 1
 
 
 def test_formal_tree_guard_allows_only_declared_untracked_preflight(

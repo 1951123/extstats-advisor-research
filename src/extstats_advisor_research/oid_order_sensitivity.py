@@ -71,6 +71,7 @@ class ExecutionState:
     """Owned resources and phase history for one non-retryable invocation."""
 
     invocation_id: str = field(default_factory=lambda: uuid.uuid4().hex)
+    formal_invocation_started: bool = False
     phase: str = "preflight"
     phases: list[dict[str, Any]] = field(default_factory=list)
     stock_owned: bool = False
@@ -187,7 +188,7 @@ def write_failure_artifact(
             "scientific_evidence_eligible": False,
         },
         "formal_execution": "NOT_EXECUTED" if state.phase == "preflight" else "FAILED",
-        "formal_invocation_count": 0,
+        "formal_invocation_count": int(state.formal_invocation_started),
         "retry_performed": False,
         "evidence_eligible": False,
     }
@@ -1033,16 +1034,19 @@ def _close_enough(actual: Any, expected: Any) -> bool:
 
 
 def _read_valid_context(
-    root: Path, dataset_id: str
+    root: Path,
+    dataset_id: str,
+    *,
+    preflight: Mapping[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, str]]:
     spec = next((item for item in DATASET_SPECS if item.dataset_id == dataset_id), None)
     if spec is None:
         raise ValueError(f"unknown OID-order dataset: {dataset_id}")
     protocol = read_json(root / PROTOCOL_PATH)
     validate_protocol(protocol, root=root)
-    preflight = read_json(root / PREFLIGHT_PATH)
-    validate_preflight(preflight, root=root)
-    dataset = next(item for item in preflight["datasets"] if item["dataset_id"] == dataset_id)
+    preflight_value = preflight or read_json(root / PREFLIGHT_PATH)
+    validate_preflight(preflight_value, root=root)
+    dataset = next(item for item in preflight_value["datasets"] if item["dataset_id"] == dataset_id)
     truth = read_json(root / spec.valid_observations_path)
     if sha256_file(root / spec.valid_observations_path) != spec.valid_observations_sha256:
         raise ValueError(f"{dataset_id} valid truth byte SHA drift")
@@ -1432,6 +1436,14 @@ def _infer_repository_root(path: Path) -> Path:
     raise ValueError("cannot infer research repository root from OID result path")
 
 
+def _invocation_namespace(root: Path, invocation_id: str) -> Path:
+    """Return the append-only output namespace for one explicit invocation."""
+
+    if not invocation_id or not re.fullmatch(r"[A-Za-z0-9_.-]{8,128}", invocation_id):
+        raise ValueError("invocation_id must be an explicit stable token")
+    return root / OUTPUT_ROOT / "invocations" / invocation_id
+
+
 def _connection_settings(connection: Any) -> dict[str, str]:
     names = (
         "DateStyle",
@@ -1737,7 +1749,19 @@ def validate_result_artifact(path: Path, *, root: Path | None = None) -> dict[st
         raise ValueError("OID-order summary experiment identity drift")
     protocol = read_json(root / PROTOCOL_PATH)
     validate_protocol(protocol, root=root)
-    preflight = read_json(root / PREFLIGHT_PATH)
+    preflight_binding = value.get("preflight")
+    if preflight_binding is None:
+        preflight_path = root / PREFLIGHT_PATH
+    else:
+        if not isinstance(preflight_binding, Mapping):
+            raise TypeError("OID-order summary preflight binding is malformed")
+        preflight_path = _artifact_path(root, preflight_binding.get("path"), "preflight")
+        if sha256_file(preflight_path) != preflight_binding.get("byte_sha256"):
+            raise ValueError("OID-order summary preflight byte SHA drift")
+        preflight_value = read_json(preflight_path)
+        if preflight_value.get("semantic_digest") != preflight_binding.get("semantic_digest"):
+            raise ValueError("OID-order summary preflight semantic binding drift")
+    preflight = read_json(preflight_path)
     validate_preflight(preflight, root=root)
     if value.get("producer_research_sha") != preflight.get("producer_research_sha"):
         raise ValueError("OID-order summary producer binding drift")
@@ -1765,7 +1789,7 @@ def validate_result_artifact(path: Path, *, root: Path | None = None) -> dict[st
         dataset_id = dataset_result.get("dataset_id")
         if dataset_id not in protocol_by_id:
             raise ValueError(f"unexpected OID-order dataset result: {dataset_id}")
-        _, _, bindings = _read_valid_context(root, dataset_id)
+        _, _, bindings = _read_valid_context(root, dataset_id, preflight=preflight)
         expected_sql = {
             key: value
             for key, value in bindings.items()
@@ -2118,8 +2142,8 @@ def run_formal(
 
     preflight = read_json(preflight_path)
     state = ExecutionState(invocation_id=invocation_id)
-    if not invocation_id or not re.fullmatch(r"[A-Za-z0-9_.-]{8,128}", invocation_id):
-        raise ValueError("invocation_id must be an explicit stable token")
+    state.formal_invocation_started = True
+    run_output_root = _invocation_namespace(root, invocation_id)
     if failure_output.exists() or failure_output.is_symlink():
         raise FileExistsError(f"failure output already exists: {failure_output}")
     validate_preflight(preflight, root=root)
@@ -2140,7 +2164,8 @@ def run_formal(
     pins = verify_frozen_systems_v2(
         advisor_root.resolve(), patched_postgres_root.resolve(), stock_postgres_root.resolve()
     )
-    runtime_base = root / ".runtime" / "oid-order-sensitivity-v1"
+    runtime_base = root / ".runtime" / "oid-order-sensitivity-v1" / invocation_id
+    run_output_root.mkdir(parents=True, exist_ok=False)
     runtime_base.mkdir(parents=True, exist_ok=False)
     try:
         state.transition("launcher-probe")
@@ -2175,7 +2200,7 @@ def run_formal(
             runtime = runtime_base / spec.runtime_name
             runtime.mkdir(parents=True, exist_ok=False)
             log_dir = runtime / "logs"
-            output_dir = root / OUTPUT_ROOT / spec.runtime_name
+            output_dir = run_output_root / spec.runtime_name
             output_dir.mkdir(parents=True, exist_ok=False)
             reinit_role("stock")
             reinit_role("patched")
@@ -2356,7 +2381,7 @@ def run_formal(
         synthetic = _run_overlapping_mcv_witness(
             patched_dsn=planner_dsn,
             stock_dsn=stock_dsn,
-            output=root / OUTPUT_ROOT / "synthetic-witness-v1.json",
+            output=run_output_root / "synthetic-witness-v1.json",
         )
         state.synthetic_fixture_created = False
         summary: dict[str, Any] = {
@@ -2364,6 +2389,13 @@ def run_formal(
             "experiment_id": EXPERIMENT_ID,
             "status": "complete",
             "producer_research_sha": producer_sha,
+            "invocation_id": invocation_id,
+            "output_namespace": run_output_root.relative_to(root).as_posix(),
+            "preflight": {
+                "path": preflight_path.resolve().relative_to(root.resolve()).as_posix(),
+                "semantic_digest": preflight["semantic_digest"],
+                "byte_sha256": sha256_file(preflight_path),
+            },
             "formal_invocation_count": 1,
             "dataset_results": dataset_results,
             "synthetic_witness": synthetic,
@@ -2376,7 +2408,7 @@ def run_formal(
             },
         }
         summary["semantic_digest"] = semantic_digest(summary)
-        write_json(root / OUTPUT_ROOT / "summary-v1.json", summary)
+        write_json(run_output_root / "summary-v1.json", summary)
         return summary
     finally:
         primary_error = sys.exc_info()[1]
