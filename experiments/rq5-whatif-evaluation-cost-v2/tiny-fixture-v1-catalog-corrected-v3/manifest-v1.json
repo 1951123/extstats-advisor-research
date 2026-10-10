@@ -1,0 +1,219 @@
+{
+  "analysis_a": {
+    "configurations": [
+      {
+        "analysis": "fixture",
+        "candidate_ids": [
+          "cand_d485cc683c85f7394fffa17e"
+        ],
+        "configuration_id": "fixture-singleton-01",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_d485cc683c85f7394fffa17e"
+        ],
+        "ordinal": 1
+      },
+      {
+        "analysis": "fixture",
+        "candidate_ids": [
+          "cand_d485cc683c85f7394fffa17e",
+          "cand_25793595ac6a480b04ba296a"
+        ],
+        "configuration_id": "fixture-overlap-pair-02",
+        "configuration_size": 2,
+        "declared_order": [
+          "cand_d485cc683c85f7394fffa17e",
+          "cand_25793595ac6a480b04ba296a"
+        ],
+        "ordinal": 2
+      }
+    ],
+    "evaluation_count": 2
+  },
+  "binding_digest": "f53863b805de909977bfd080dceee00cdfefc1aae18e215c54d8b7810d5517b8",
+  "candidate_universe": {
+    "count": 6,
+    "definitions": [
+      {
+        "candidate_id": "cand_d485cc683c85f7394fffa17e",
+        "column_names": [
+          "region",
+          "tier"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "group_id": "group_484beef31e52aac093478780",
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 1
+      },
+      {
+        "candidate_id": "cand_25793595ac6a480b04ba296a",
+        "column_names": [
+          "region",
+          "segment"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "group_id": "group_c04d6cd8c58dcfb1d163855e",
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 2
+      },
+      {
+        "candidate_id": "cand_900caf6d13d6c6927f08b3d7",
+        "column_names": [
+          "tier",
+          "segment"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "group_id": "group_c5439e90cd6bc52f566ca19b",
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 3
+      },
+      {
+        "candidate_id": "cand_2987ad833c9b26d718d510f4",
+        "column_names": [
+          "region",
+          "tier"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "group_id": "group_484beef31e52aac093478780",
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 4
+      },
+      {
+        "candidate_id": "cand_2a9799e916f2473078c5816f",
+        "column_names": [
+          "region",
+          "segment"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "group_id": "group_c04d6cd8c58dcfb1d163855e",
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 5
+      },
+      {
+        "candidate_id": "cand_de5235c7a36432b9b88cec95",
+        "column_names": [
+          "tier",
+          "segment"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "group_id": "group_c5439e90cd6bc52f566ca19b",
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_rq5_tiny_cost_v1",
+        "static_precedence_rank": 6
+      }
+    ],
+    "path": "candidate-universe.json",
+    "semantic_digest": "f978d30833a04d77b26765f7552aece9e7e11634295f946f4e84de396a887e6f"
+  },
+  "classification": "integration-readiness-only",
+  "dataset": {
+    "candidate_count": 6,
+    "dataset_id": "rq5-tiny-cost-fixture-v1-catalog-corrected-v3",
+    "population_rows": 12,
+    "relation": {
+      "catalog": "rq5_tiny_patched_template",
+      "name": "rq5_tiny_cost_fixture",
+      "schema": "public"
+    },
+    "relation_id": "rel_rq5_tiny_cost_v1",
+    "sample_rows": 12,
+    "statistics_target": 100
+  },
+  "experiment_id": "rq5-tiny-cost-fixture-v1-catalog-corrected-v3",
+  "fixture": {
+    "database_names": {
+      "patched_template": "rq5_tiny_patched_template",
+      "stock_template": "rq5_tiny_stock_template"
+    },
+    "ports": {
+      "patched": 55433,
+      "stock": 55432
+    },
+    "row_count": 12,
+    "scientific_status": "not-scientific-timing-evidence"
+  },
+  "fixture_id": "rq5-tiny-cost-fixture-v1-catalog-corrected-v3",
+  "format_version": "rq5-whatif-cost-integration-preflight-manifest-v1",
+  "producer_commit_sha": "139add9",
+  "query_subset": [
+    {
+      "query_id": "rq5_tiny_q01",
+      "source_index": 0,
+      "sql_sha256": "eb76d145b3ebba488b27d61ec8979fda7b7a6981dcf86525052a517c16e9784f",
+      "subset_ordinal": 0,
+      "weight": 1.0
+    },
+    {
+      "query_id": "rq5_tiny_q02",
+      "source_index": 1,
+      "sql_sha256": "783715526069b44038e6ec63961020c221dcd868736890e6c1253792ec878c95",
+      "subset_ordinal": 1,
+      "weight": 1.0
+    },
+    {
+      "query_id": "rq5_tiny_q03",
+      "source_index": 2,
+      "sql_sha256": "82eda15f47984cbe9bdc21041ba3ebd13c99cda62f1f58a1f69c61ef60f3731f",
+      "subset_ordinal": 2,
+      "weight": 1.0
+    },
+    {
+      "query_id": "rq5_tiny_q04",
+      "source_index": 3,
+      "sql_sha256": "91b50aebd98b4162bb186ee84fb98dbac80874e3ac5e5b84e6e891ec6b117bf9",
+      "subset_ordinal": 3,
+      "weight": 1.0
+    },
+    {
+      "query_id": "rq5_tiny_q05",
+      "source_index": 4,
+      "sql_sha256": "779335529b8aee4fdcea43511e1b7a3fe51f9b658fdfa503a9baba090909cbfd",
+      "subset_ordinal": 4,
+      "weight": 1.0
+    }
+  ],
+  "query_subset_size": 5,
+  "semantic_digest": "4b003c17163ef22e632676eac470a9a63438223d83c35b432e0a8ac37d7812e5",
+  "snapshot": {
+    "path": "snapshot",
+    "semantic_digest": "4536bb5d1adf805fb753ec295a0714115d00015f7bc5268e5768ad0e0f649ad8"
+  },
+  "source_bindings": {
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "candidate_universe_semantic_digest": "f978d30833a04d77b26765f7552aece9e7e11634295f946f4e84de396a887e6f",
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "snapshot_semantic_digest": "4536bb5d1adf805fb753ec295a0714115d00015f7bc5268e5768ad0e0f649ad8",
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "offline-fixture-ready",
+  "workload": {
+    "path": "workload.json",
+    "query_count": 5,
+    "selection_rule": "all-five-canonical-fixture-queries-v1",
+    "sha256": "426c642d690f73ed6f02980e1c780555aa497f5551d5e3af5e0cfa107c063769",
+    "workload_id": "rq5_tiny_cost_workload_v1"
+  }
+}
