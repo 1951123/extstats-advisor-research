@@ -49,7 +49,7 @@ The current \texttt{GroundTruthSet} contract has two source kinds. The
 confirmatory AreCEL policy uses audited external exact labels for Census13,
 Forest10, Power7, and DMV11. For the production-exact source kind, capture and eligible truth acquisition
 run in a read-only repeatable-read source view. The v1 wrapper counts only
-sealed \texttt{postgresql-simple-selection-v2} queries: one base relation,
+sealed \texttt{postgresql-simple-selection-}\texttt{v2} queries: one base relation,
 supported AND predicates, and row-preserving direct-column/star projection.
 Distinct, grouping, aggregates, windows, LIMIT/OFFSET, ORDER BY, locking,
 arbitrary projection expressions, and unresolved parameters fail closed before
@@ -71,7 +71,7 @@ validation/cost path, not the repeated confirmatory default.
 RQ1 compares stock PostgreSQL 16, a strong conventional statistics baseline,
 simple selection heuristics, and \advisor. The baseline protocol is explicit
 but remains dataset-specific: use stock PostgreSQL, no extended statistics,
-and execute \texttt{SELECT setseed(1.0 / 123)} before one \texttt{ANALYZE};
+and execute \texttt{setseed(1.0 / 123)} before one \texttt{ANALYZE};
 the experiment seed identifier is 123 and the setseed argument is the floating-
 point expression \texttt{1.0 / 123}. Use target 10000 on every benchmark
 column where the AreCELearnedYet paper-baseline artifact defines that setting.
