@@ -11,8 +11,11 @@ dedicated stock lab instance.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
+import math
+import statistics
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -23,7 +26,12 @@ from .native_analyze_stability import (
     _dataset_binding,
     validate_protocol,
 )
-from .native_analyze_stability_harness import write_query_records
+from .native_analyze_stability_harness import (
+    _rank,
+    metrics,
+    write_query_records,
+)
+from .paper_baseline import qerror
 from .provenance import read_json, semantic_digest, sha256_file, write_json
 from .rq4_physical import build_shared_stock_realization
 
@@ -524,6 +532,41 @@ def run_dataset(
                 )
                 write_json(output_root / f"failure-realization-{realization:02d}.json", failure)
                 raise
+            missing_payloads = _missing_payloads(physical["shared_realization"])
+            if missing_payloads:
+                failure = _digest(
+                    {
+                        "format_version": FORMAL_FAILURE_FORMAT,
+                        "failure_id": f"failure-{realization_id}-payload",
+                        "invocation_id": invocation_id,
+                        "dataset_id": dataset_id,
+                        "realization_id": realization_id,
+                        "phase": "payload-capture",
+                        "exception": {
+                            "class": "MissingNativePayload",
+                            "message": "protocol requires every selected native payload to be present",
+                        },
+                        "missing_payloads": [
+                            {
+                                "candidate_id": item["candidate_id"],
+                                "kind": item["kind"],
+                                "oid": item["oid"],
+                                "payload_sha256": item["payload_sha256"],
+                            }
+                            for item in missing_payloads
+                        ],
+                        "events": events,
+                        "analyze_count": parent_analyze + 1,
+                        "physical_explain_count": physical_explain,
+                        "status": "failed-scientific-control",
+                    }
+                )
+                write_json(
+                    output_root / f"failure-realization-{realization:02d}-payload.json", failure
+                )
+                raise ValueError(
+                    f"required native payload is missing for {dataset_id} realization {realization}"
+                )
             parent_analyze += 1
             methods: dict[str, Any] = {}
             raw_refs: dict[str, Any] = {}
@@ -645,6 +688,12 @@ def validate_formal_summary(path: Path) -> dict[str, Any]:
     ):
         raise ValueError("formal dataset accounting is incomplete")
     for realization in realizations:
+        missing_payloads = _missing_payloads(realization)
+        if missing_payloads:
+            raise ValueError(
+                "formal realization has missing selected native payloads: "
+                + ", ".join(item.get("candidate_id", "?") for item in missing_payloads)
+            )
         if (
             realization.get("status") != "complete"
             or realization.get("oid_order_status") != "verified"
@@ -659,11 +708,178 @@ def validate_formal_summary(path: Path) -> dict[str, Any]:
             raw = path.parent / arm["query_evidence"]["path"]
             if sha256_file(raw) != arm["query_evidence"]["sha256"]:
                 raise ValueError(f"raw evidence hash mismatch: {raw}")
+            with gzip.open(raw, "rt", encoding="utf-8") as stream:
+                records = [json.loads(line) for line in stream if line.strip()]
+            recomputed = metrics(records)
+            stored = arm.get("metrics", {})
+            for key in ("query_count", "mean", "p50", "p95", "p99", "max"):
+                if key not in stored or key not in recomputed:
+                    raise ValueError(f"missing metric {key}: {raw}")
+                if isinstance(recomputed[key], float):
+                    if not math.isclose(
+                        float(stored[key]), float(recomputed[key]), rel_tol=1e-12, abs_tol=1e-12
+                    ):
+                        raise ValueError(f"metric mismatch {key}: {raw}")
+                elif stored[key] != recomputed[key]:
+                    raise ValueError(f"metric mismatch {key}: {raw}")
     return {
         "status": "valid",
         "semantic_digest": value["semantic_digest"],
         "dataset_id": value["dataset_id"],
     }
+
+
+def _missing_payloads(realization: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    """Return selected parent statistics whose native payload was not captured."""
+
+    return [
+        item
+        for item in realization.get("shared_parent", {}).get("physical_statistics", [])
+        if not item.get("payload_present")
+    ]
+
+
+def _bound_query_records(
+    root: Path, dataset_id: str
+) -> tuple[list[str], dict[str, int], list[str]]:
+    source = _source_paths(root, dataset_id)
+    modules = _advisor_modules(Path("/home/wqts/projects/extstats-advisor"))
+    snapshot = modules["load_snapshot"](source["snapshot"])
+    truth = modules["load_ground_truth_set"](source["ground_truth"], snapshot)
+    queries = [query for query in snapshot.workload.queries if query.weight > 0]
+    ids = [query.query_id for query in queries]
+    truth_by_id = {item.query_id: int(item.cardinality) for item in truth.truths}
+    return ids, truth_by_id, [_sql_digest(str(query.sql)) for query in queries]
+
+
+def validate_formal_summary_against_source(path: Path, root: Path) -> dict[str, Any]:
+    """Validate raw observations against frozen workload/truth identities."""
+
+    base = validate_formal_summary(path)
+    summary = read_json(path)
+    ids, truth_by_id, sql_digests = _bound_query_records(root, summary["dataset_id"])
+    for realization in summary["realizations"]:
+        for method in METHOD_ORDER:
+            arm = realization["methods"][method]
+            raw = path.parent / arm["query_evidence"]["path"]
+            with gzip.open(raw, "rt", encoding="utf-8") as stream:
+                records = [json.loads(line) for line in stream if line.strip()]
+            if [record.get("query_id") for record in records] != ids:
+                raise ValueError(f"query order/identity mismatch: {raw}")
+            for record, expected_sql_digest in zip(records, sql_digests, strict=True):
+                if record.get("truth") != truth_by_id[record["query_id"]]:
+                    raise ValueError(f"truth mismatch: {raw}:{record['query_id']}")
+                if _sql_digest(str(record.get("sql", ""))) != expected_sql_digest:
+                    raise ValueError(f"SQL digest mismatch: {raw}:{record['query_id']}")
+                expected_qerror = qerror(record["plan_rows"], record["truth"])
+                if not math.isclose(
+                    record["qerror"], expected_qerror, rel_tol=1e-12, abs_tol=1e-12
+                ):
+                    raise ValueError(f"q-error mismatch: {raw}:{record['query_id']}")
+    return base
+
+
+def aggregate_formal_summaries(
+    summary_paths: Mapping[str, Path], *, root: Path, output: Path
+) -> dict[str, Any]:
+    """Independently recompute and aggregate the three completed datasets."""
+
+    datasets: dict[str, Any] = {}
+    for dataset_id in PRIMARY_DATASETS:
+        path = summary_paths[dataset_id]
+        validation = validate_formal_summary_against_source(path, root)
+        summary = read_json(path)
+        ranks = []
+        per_method: dict[str, list[float]] = {method: [] for method in METHOD_ORDER}
+        wins: dict[str, int] = {method: 0 for method in METHOD_ORDER}
+        payloads: dict[str, list[str]] = {}
+        ordinary: list[str] = []
+        pairwise: dict[str, dict[str, int]] = {}
+        for realization in summary["realizations"]:
+            current: dict[str, dict[str, Any]] = {}
+            ordinary.append(str(realization["shared_parent"]["ordinary_statistics_fingerprint"]))
+            for item in realization["shared_parent"]["physical_statistics"]:
+                payloads.setdefault(item["candidate_id"], []).append(item["payload_sha256"])
+            for method in METHOD_ORDER:
+                arm = realization["methods"][method]
+                recomputed = metrics(_read_gzip(path.parent / arm["query_evidence"]["path"]))
+                current[method] = recomputed
+                per_method[method].append(float(recomputed["mean"]))
+            rank = _rank(current)
+            ranks.append(rank)
+            for method in rank["best_methods"]:
+                wins[method] += 1
+            for left_index, left in enumerate(METHOD_ORDER):
+                for right in METHOD_ORDER[left_index + 1 :]:
+                    key = f"{left}__vs__{right}"
+                    item = pairwise.setdefault(key, {"left_wins": 0, "ties": 0, "right_wins": 0})
+                    if current[left]["mean"] < current[right]["mean"]:
+                        item["left_wins"] += 1
+                    elif current[left]["mean"] > current[right]["mean"]:
+                        item["right_wins"] += 1
+                    else:
+                        item["ties"] += 1
+        by_method = {
+            method: {
+                "realization_means": values,
+                "min_mean": min(values),
+                "max_mean": max(values),
+                "descriptive_stddev_population": statistics.pstdev(values),
+                "first_or_tie_count": wins[method],
+            }
+            for method, values in per_method.items()
+        }
+        greedy = [
+            per_method["greedy-ADD"][index] - per_method["singleton-utility-top-k"][index]
+            for index in range(5)
+        ]
+        datasets[dataset_id] = {
+            "summary_path": str(summary_paths[dataset_id].relative_to(root)),
+            "summary_sha256": sha256_file(summary_paths[dataset_id]),
+            "summary_semantic_digest": validation["semantic_digest"],
+            "comparability_stratum": summary["source_binding"]["comparability_stratum"],
+            "per_method": by_method,
+            "per_realization_ranking": ranks,
+            "pairwise_method_win_tie_loss": pairwise,
+            "paired_greedy_minus_singleton_mean_qerror": greedy,
+            "payload_fingerprint_difference_fraction": {
+                candidate: sum(value != values[0] for value in values[1:]) / 4
+                for candidate, values in payloads.items()
+            },
+            "ordinary_statistics_fingerprint_difference_fraction": sum(
+                value != ordinary[0] for value in ordinary[1:]
+            )
+            / 4,
+            "method_arm_count": 45,
+            "physical_explain_count": 450000,
+        }
+    aggregate = _digest(
+        {
+            "format_version": "native-analyze-stability-cross-dataset-summary-v1",
+            "status": "complete-validated",
+            "protocol_semantic_digest": read_json(
+                root / "paper/native-analyze-stability-protocol-v1.json"
+            )["semantic_digest"],
+            "datasets": datasets,
+            "dataset_count": 3,
+            "realization_count": 15,
+            "method_arm_count": 135,
+            "parent_analyze_count": 15,
+            "clone_analyze_count": 0,
+            "physical_explain_count": 1_350_000,
+            "valid_raw_observation_count": 1_350_000,
+            "pooling_policy": "dataset-scoped; Forest10 historical-v1 remains a separate stratum",
+            "interpretation": "descriptive native ANALYZE realization variability; five realizations are not probability guarantees",
+            "rq1b_w_test_accessed": False,
+        }
+    )
+    write_json(output, aggregate)
+    return aggregate
+
+
+def _read_gzip(path: Path) -> list[dict[str, Any]]:
+    with gzip.open(path, "rt", encoding="utf-8") as stream:
+        return [json.loads(line) for line in stream if line.strip()]
 
 
 def main() -> int:
@@ -702,6 +918,7 @@ __all__ = [
     "FORMAL_PREFLIGHT_FORMAT",
     "FORMAL_SUMMARY_FORMAT",
     "SOURCE_RUNS",
+    "aggregate_formal_summaries",
     "build_formal_preflight",
     "run_dataset",
     "validate_formal_preflight",
