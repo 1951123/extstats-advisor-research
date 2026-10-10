@@ -365,6 +365,72 @@ def _exclusive_json(path: Path, value: Mapping[str, Any]) -> None:
     write_json(path, dict(value))
 
 
+def _reconcile_preflight_accounting(
+    result: dict[str, Any],
+    physical_config: LiveAdapterConfig,
+    catalogless_config: LiveAdapterConfig,
+) -> None:
+    """Derive partial EXPLAIN/ANALYZE counts from append-only adapter audits."""
+
+    physical_root = (
+        physical_config.output_dir / "adapter-audit" / "physical" / physical_config.run_id
+    )
+    physical_state = tuple(physical_root.glob("*-physical-state.json"))
+    physical_explain = tuple(physical_root.glob("*-physical-explain.json"))
+    physical_failures = tuple(physical_root.glob("*-physical-explain-failure.json"))
+    physical_attempted = physical_successful = 0
+    for path in physical_explain + physical_failures:
+        value = read_json(path)
+        physical_attempted += int(value.get("attempted", 0))
+        physical_successful += int(value.get("successful", 0))
+    result["physical"].update(
+        {
+            "analyze_calls": len(physical_state),
+            "explain_attempted_calls": physical_attempted,
+            "explain_successful_calls": physical_successful,
+            "explain_calls": physical_successful,
+        }
+    )
+
+    catalogless_root = (
+        catalogless_config.output_dir / "adapter-audit" / "catalogless" / catalogless_config.run_id
+    )
+    materialization = tuple(catalogless_root.glob("materialization.json"))
+    catalogless_explain = tuple(catalogless_root.glob("*-catalogless-explain.json"))
+    catalogless_failures = tuple(catalogless_root.glob("*-catalogless-explain-failure.json"))
+    catalogless_attempted = catalogless_successful = 0
+    for path in catalogless_explain + catalogless_failures:
+        value = read_json(path)
+        catalogless_attempted += int(value.get("attempted", 0))
+        catalogless_successful += int(value.get("successful", 0))
+    materialization_count = 0
+    if materialization:
+        materialization_count = int(read_json(materialization[0]).get("analyze_count", 0))
+    result["catalogless"].update(
+        {
+            "materialization_analyze_calls": materialization_count,
+            "explain_attempted_calls": catalogless_attempted,
+            "explain_successful_calls": catalogless_successful,
+            "explain_calls": catalogless_successful,
+        }
+    )
+
+    failure_paths = (*physical_failures, *catalogless_failures)
+    if failure_paths:
+        path = min(failure_paths)
+        value = read_json(path)
+        result["failure_provenance"] = {
+            "audit_path": str(path),
+            "phase": "physical.explain"
+            if "physical-explain" in path.name
+            else "catalogless.explain",
+            "query_id": value.get("query_id"),
+            "attempted": value.get("attempted"),
+            "successful": value.get("successful"),
+            "error": value.get("error"),
+        }
+
+
 class _BaseAdapter:
     def __init__(self, manifest: Mapping[str, Any], config: LiveAdapterConfig, arm: str) -> None:
         self.manifest = manifest
@@ -625,7 +691,7 @@ class StockPhysicalCostAdapter(_BaseAdapter):
                 document = self._clone_connection.execute(
                     f"EXPLAIN (FORMAT JSON) {sql}"
                 ).fetchone()[0]
-                plan_rows = _explain_rows(document[0] if isinstance(document, list) else document)
+                plan_rows = _explain_rows(document)
                 rows.append({"query_id": query_id, "plan_rows": plan_rows})
                 successful += 1
             except Exception as exc:
@@ -959,15 +1025,14 @@ def run_integration_preflight(
             physical.create_clone(configuration)
             physical.create_statistics(configuration)
             physical.analyze(configuration)
+            result["physical"]["analyze_calls"] += 1
             physical.explain(configuration, query_ids)
+            result["physical"]["explain_calls"] += len(query_ids)
             physical.drop_statistics(configuration)
             physical.destroy_clone(configuration)
-            result["physical"]["analyze_calls"] += 1
-            result["physical"]["explain_calls"] += len(query_ids)
         catalogless.prepare_sample()
         catalogless.materialize_payloads()
         catalogless.register_repository()
-        result["catalogless"]["materialization_analyze_calls"] = 1
         for configuration in configurations:
             catalogless.activate(configuration)
             catalogless.explain(configuration, query_ids)
@@ -978,6 +1043,7 @@ def run_integration_preflight(
         primary = exc
         result["error"] = {"class": type(exc).__name__, "message": str(exc)}
     finally:
+        _reconcile_preflight_accounting(result, physical_config, catalogless_config)
         for adapter in (physical, catalogless):
             try:
                 adapter.cleanup()

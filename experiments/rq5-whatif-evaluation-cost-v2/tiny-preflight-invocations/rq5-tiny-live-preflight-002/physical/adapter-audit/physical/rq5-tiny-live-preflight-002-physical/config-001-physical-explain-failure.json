@@ -1,0 +1,10 @@
+{
+  "attempted": 1,
+  "error": {
+    "class": "LiveAdapterError",
+    "message": "EXPLAIN JSON has an invalid top-level shape"
+  },
+  "failed": 1,
+  "query_id": "rq5_tiny_q01",
+  "successful": 0
+}

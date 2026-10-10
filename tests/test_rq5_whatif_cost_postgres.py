@@ -98,6 +98,34 @@ def test_explain_shape_is_fail_closed() -> None:
         postgres._explain_rows({"Plan": {"Plan Rows": 1}})
 
 
+def test_physical_explain_replays_psycopg_json_array_without_unwrapping(tmp_path: Path) -> None:
+    class Result:
+        def fetchone(self) -> tuple[list[dict[str, object]]]:
+            return ([{"Plan": {"Plan Rows": 17}}],)
+
+    class Connection:
+        def execute(self, query: str) -> Result:
+            assert query.startswith("EXPLAIN (FORMAT JSON)")
+            return Result()
+
+    config = _config(tmp_path)
+    adapter = postgres.StockPhysicalCostAdapter({"query_subset": [{"query_id": "q1"}]}, config)
+    adapter._clone_connection = Connection()
+    adapter._queries = {"q1": "SELECT 1"}
+    assert (
+        adapter.explain(
+            {
+                "ordinal": 1,
+                "candidate_ids": [],
+                "declared_order": [],
+                "configuration_size": 0,
+            },
+            ["q1"],
+        )
+        == 1
+    )
+
+
 def test_import_and_configuration_validation_do_not_connect(tmp_path: Path) -> None:
     config = _config(tmp_path)
     result = postgres.validate_live_config(config)
