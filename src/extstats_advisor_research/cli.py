@@ -39,6 +39,15 @@ from .native_analyze_stability_harness import (
 from .native_analyze_stability_harness import (
     validate_readiness_v2 as validate_native_stability_readiness_v2,
 )
+from .native_analyze_stability_smoke import (
+    SmokeConfig as NativeStabilitySmokeConfig,
+)
+from .native_analyze_stability_smoke import (
+    run_integration_smoke as run_native_stability_integration_smoke,
+)
+from .native_analyze_stability_smoke import (
+    validate_integration_smoke as validate_native_stability_integration_smoke,
+)
 from .oid_order_sensitivity import (
     PREFLIGHT_PATH as OID_PREFLIGHT_PATH,
 )
@@ -1032,6 +1041,20 @@ def _parser() -> argparse.ArgumentParser:
     )
     native_stability_validate.add_argument("artifact", type=Path)
     native_stability_validate.add_argument("--protocol-digest", default=None)
+    native_stability_smoke = native_stability_commands.add_parser(
+        "integration-smoke", help="run or validate the bounded synthetic live PostgreSQL smoke"
+    )
+    native_stability_smoke_commands = native_stability_smoke.add_subparsers(
+        dest="native_stability_smoke_command", required=True
+    )
+    native_stability_smoke_run = native_stability_smoke_commands.add_parser("run")
+    native_stability_smoke_run.add_argument("--stock-install", type=Path, required=True)
+    native_stability_smoke_run.add_argument("--port", type=int, required=True)
+    native_stability_smoke_run.add_argument("--invocation-id", required=True)
+    native_stability_smoke_run.add_argument("--output", type=Path, required=True)
+    native_stability_smoke_run.add_argument("--authorize-live-smoke", action="store_true")
+    native_stability_smoke_validate = native_stability_smoke_commands.add_parser("validate")
+    native_stability_smoke_validate.add_argument("artifact", type=Path)
     rq4_formal = validate_commands.add_parser(
         "rq4-forest10-fixed-k", help="run or validate the Forest10 formal RQ4 fixed-k canary"
     )
@@ -1891,7 +1914,7 @@ def main(argv: list[str] | None = None) -> int:
                 result = native_stability_dry_run_plan(
                     protocol, invocation_id=args.invocation_id, output_root=args.output_root
                 )
-            else:
+            elif args.native_stability_command == "validate":
                 artifact = read_json(args.artifact)
                 if str(artifact.get("format_version", "")).startswith(
                     "native-analyze-stability-readiness-review-v"
@@ -1900,6 +1923,20 @@ def main(argv: list[str] | None = None) -> int:
                 else:
                     result = validate_native_stability_invocation(
                         args.artifact, expected_protocol_digest=args.protocol_digest
+                    )
+            else:
+                if args.native_stability_smoke_command == "validate":
+                    result = validate_native_stability_integration_smoke(args.artifact)
+                else:
+                    if not args.authorize_live_smoke:
+                        raise RuntimeError("live integration smoke requires --authorize-live-smoke")
+                    result = run_native_stability_integration_smoke(
+                        NativeStabilitySmokeConfig(
+                            stock_install=args.stock_install,
+                            port=args.port,
+                            invocation_id=args.invocation_id,
+                            output=args.output,
+                        )
                     )
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
