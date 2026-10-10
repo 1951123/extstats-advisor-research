@@ -1,17 +1,23 @@
 \section{Advisor Design}
 
-The execution advisor is intentionally decomposed into frozen artifacts so
-that a run can be audited independently of later analysis.
+The execution advisor is the design pipeline built on the what-if primitive.
+It is intentionally decomposed into explicit stages so that a Recommendation
+can be reviewed independently of later analysis.
 
-\subsection{Candidate generation and profiling}
+\subsection{From workload to candidates}
 
-Candidate generation extracts relevant relation and attribute groups from the
-workload and schema, then applies the configured candidate-row bound. Each
-candidate is represented as a native statistics design rather than as a
-feature vector for a learned model. Profiling builds or loads its sample-side
-native payload and measures its planner effect in isolation. The
-\texttt{SingletonProfile} freezes the global precedence relation used later by
-recommendations.
+Candidate generation extracts predicate co-occurrence groups from the workload
+and schema, then expands each supported group into PostgreSQL-capability
+candidates. The current implementation is intentionally narrow: one relation,
+two-column MCV and dependency designs, and a configured candidate-row bound.
+Each candidate is a native design with relation, ordered keys, kind, and a
+sample-built payload---not a feature vector for a learned model.
+
+Native materialization runs once on the fixed typed sample. Singleton profiling
+then activates each present candidate in isolation, measures its planner
+utility, and freezes a deterministic precedence profile. Candidates with
+\texttt{ABSENT\_NATIVE} are retained as explicit states; they are not assumed
+to contain a usable payload.
 
 \subsection{Planner objective and search}
 
@@ -21,25 +27,29 @@ independently bound truth records; it does not alter PostgreSQL's estimator or
 the native payloads. The utility provider applies
 \texttt{qerror-cardinality-floor-1-v1} and the workload's positive-query
 weights, returning the weighted workload mean
-\(J(M)=\sum_{q\in W^+} w_qQ_q(M)/\sum_{q\in W^+}w_q\). The OptimizationPlan records the
+\(J(M,\pi;R)=\sum_{q\in W^+} w_qQ_q(M,\pi;R)/\sum_{q\in W^+}w_q\). The OptimizationPlan records the
 workload/truth binding, utility and loss contracts, candidate limit, and
 time/evaluation constraints. The current search starts with an empty
 membership and repeatedly accepts the best strictly improving candidate under
 the configured budget. SearchResult records selected membership, objective
 values, and the accepted-move trace.
 
-The search algorithm is intentionally simple; algorithmic novelty is not the
-primary contribution. Its value in this study is that it provides a
-transparent planner-in-the-loop reference against which inexpensive
-heuristics can be compared; exhaustive search is reserved for a separately
-declared tiny-universe optimality diagnostic.
+The search starts from the empty membership and repeatedly evaluates
+one-candidate ADD proposals, accepting the best strict improvement while the
+declared candidate and time budgets permit. The implementation uses cached
+incumbent estimates and records proposal and planner-call accounting. Greedy
+ADD is a transparent planner-in-the-loop reference, not an algorithmic claim
+of global optimality; exhaustive search is reserved for a separately declared
+tiny-universe diagnostic.
 
-\subsection{Recommendation}
+\subsection{Recommendation and deployment boundary}
 
 Recommendation generation maps $M^*$ to native SQL statements and orders them
 using $D=F|_{M^*}$, not the order in which greedy moves happened to be
-accepted. For non-empty deployment, the final statement is one quoted
+accepted. Membership and deployment precedence are therefore distinct
+interfaces. For non-empty deployment, the final statement is one quoted
 \texttt{ANALYZE} for the affected relation. Deterministic-name collisions
 with a current recommendation remain fail-closed; \texttt{IF NOT EXISTS} is
 not used to hide them. Existing unrelated extended statistics are not
-reconciled or removed.
+reconciled, deleted, or silently replaced. The objective is for the evaluated
+$M^*$, not automatically for its union with unmanaged production objects.

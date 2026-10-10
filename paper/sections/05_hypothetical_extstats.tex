@@ -25,7 +25,18 @@ other kinds. A candidate may also register an absent-native realization: it
 has definition metadata but no payload, allowing the baseline behavior for a
 candidate to be represented without creating an object.
 
-\subsection{Activation and planner precedence}
+\subsection{Three design invariants}
+
+\paragraph{Fixed candidate payloads.}
+The Advisor's native repository is built before configuration search. A
+candidate's serialized payload and ordinary-statistics fingerprint therefore
+remain fixed across controlled configuration evaluations in one realization;
+candidate materialization is not repeated for every search move. An explicit
+\texttt{ABSENT\_NATIVE} candidate records a successful definition with no
+native payload and is handled as baseline behavior, rather than being silently
+converted into a fabricated statistic.
+
+\paragraph{Ordered configuration-only activation.}
 
 The SQL activation function validates that every OID is registered, rejects
 duplicates, and atomically replaces the active hash table and ordered OID
@@ -35,6 +46,7 @@ definitions carry their keys directly and bypass a catalog lookup; ordinary
 catalog OIDs not registered in the overlay remain in the list. This preserves
 unrelated physical statistics while making the selected configuration visible.
 
+\paragraph{Native estimator reuse.}
 At payload load time, the MCV and dependency loaders first ask the overlay for
 an active backend-local payload. If one is present, it is deserialized using
 the native PostgreSQL format. If an active kind is explicitly absent, the
@@ -42,6 +54,16 @@ loader returns no statistic. Otherwise the normal
 \texttt{pg\_statistic\_ext\_data} lookup runs. The subsequent MCV and
 functional-dependency selectivity routines are PostgreSQL's planner paths, not
 a second estimator.
+
+\subsection{Catalog-backed and catalogless paths}
+
+The backend also exposes a catalog-backed registration path for tests and
+payload reuse: it verifies that a real statistics OID belongs to the supplied
+relation before storing its payload. The catalogless path instead accepts a
+candidate identifier, relation OID, kind, keys, and payload, derives a virtual
+OID, and carries the definition metadata directly into planner structures.
+Both paths are backend-local and are reset with the session; neither creates a
+persistent production catalog object.
 
 \subsection{What this primitive does and does not establish}
 

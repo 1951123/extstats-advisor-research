@@ -1,22 +1,57 @@
 \section{System Architecture}
 
-Figure~\ref{fig:architecture} is a source-level view of the workflow. The
-research harness orchestrates the stages but does not reimplement advisor
-semantics; the production advisor is invoked through its public interfaces.
+Figure~\ref{fig:whatif-loop} contrasts the repeated physical design loop with
+the separation implemented by \advisor. The research harness records the
+inputs and observations, but the Advisor and patched backend provide the
+design-time semantics.
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \fbox{\parbox{0.92\columnwidth}{\centering
-  production capture $\rightarrow$ \texttt{AdvisorSnapshot} $\rightarrow$
-  fixed sample $\rightarrow$ native payloads $\rightarrow$ isolated patched
-  planner $\rightarrow$ planner estimates $+$ independent
-  \texttt{GroundTruthSet} $\rightarrow$ utility/search $\rightarrow$
-  recommendation $\rightarrow$
-  stock deployment}}
-  \caption{The design-time and deployment-time boundary. The final two
-  stages are not a second planner runtime in production.}
-  \label{fig:architecture}
-\end{figure}
+  \begin{tikzpicture}[
+    box/.style={draw, rounded corners=1pt, align=center, minimum height=8mm,
+      text width=2.15cm, font=\scriptsize, inner sep=3pt},
+    smallbox/.style={box, text width=2.5cm},
+    arrow/.style={-{Latex[length=2mm]}, semithick},
+    label/.style={font=\scriptsize\bfseries, anchor=west}
+  ]
+    \node[label] at (0,0.85) {Conventional physical evaluation};
+    \node[box] (p1) at (1.35,0) {configuration};
+    \node[box] (p2) at (4.05,0) {\texttt{CREATE STATISTICS}};
+    \node[box] (p3) at (6.75,0) {native \texttt{ANALYZE}};
+    \node[box] (p4) at (9.45,0) {workload \texttt{EXPLAIN}};
+    \draw[arrow] (p1) -- (p2);
+    \draw[arrow] (p2) -- (p3);
+    \draw[arrow] (p3) -- (p4);
+    \draw[arrow] (p4.east) .. controls +(0.7,-0.65) and +(0.7,-0.65) ..
+      node[below, font=\scriptsize] {change catalog; repeat} (p1.east);
+
+    \node[label] at (0,-0.85) {\advisor what-if evaluation};
+    \node[smallbox, fill=blue!5] (a1) at (1.35,-1.75) {fixed typed sample};
+    \node[smallbox, fill=blue!5] (a2) at (4.05,-1.75) {materialize native\\MCV/dependency payloads};
+    \node[smallbox, fill=blue!5] (a3) at (6.75,-1.75) {register backend-local\\candidates};
+    \node[smallbox, fill=blue!5] (a4) at (9.45,-1.75) {activate ordered\\configuration A/B/$\ldots$};
+    \node[smallbox, fill=blue!5] (a5) at (12.15,-1.75) {native planner\\\texttt{EXPLAIN} $+$ utility};
+    \draw[arrow] (a1) -- (a2);
+    \draw[arrow] (a2) -- (a3);
+    \draw[arrow] (a3) -- (a4);
+    \draw[arrow] (a4) -- (a5);
+    \draw[arrow] (a2.south) .. controls +(0,-0.45) and +(0,-0.45) ..
+      node[below, font=\scriptsize] {payload construction occurs once per realization}
+      (a5.south);
+
+    \node[label] at (0,-2.75) {stock deployment};
+    \node[smallbox, fill=green!5] (d1) at (4.05,-3.45) {ordered\\Recommendation};
+    \node[smallbox, fill=green!5] (d2) at (8.1,-3.45) {stock \texttt{CREATE STATISTICS}\\$+$ \texttt{ANALYZE}};
+    \draw[arrow] (d1) -- (d2);
+    \node[font=\scriptsize, align=left, text width=3.3cm] at (12.05,-3.45)
+      {DBA-reviewed production\\path; no patched planner required};
+  \end{tikzpicture}
+  \caption{Architectural separation between repeated physical evaluation and
+  the catalogless what-if path. The figure is a workflow comparison, not a
+  runtime measurement. Native payload materialization precedes repeated
+  configuration activation; physical deployment remains stock PostgreSQL.}
+  \label{fig:whatif-loop}
+\end{figure*}
 
 \subsection{Capture and snapshot}
 
@@ -36,20 +71,19 @@ provenance without claiming advisor execution.
 
 The typed sample is loaded into a sample database with the same relevant schema
 and ordinary-statistics policy. Candidate native statistics are materialized
-using PostgreSQL's own \texttt{ANALYZE} machinery from the sample. Their
-serialized MCV or dependency payloads are then available to the planner
-sandbox. The GroundTruthSet does not enter this construction path: it is used
-only after planner estimates are produced, to evaluate utility. This avoids
-passing labels, a dataframe, or an external estimator into native statistics
-construction.
+using PostgreSQL's own \texttt{ANALYZE} machinery from the sample. The Advisor
+stores the resulting payload bytes in a validated native repository with one
+ordinary-statistics fingerprint and one payload record per candidate. The
+\texttt{GroundTruthSet} does not enter this construction path: it is consumed
+only after planner estimates are produced, to evaluate utility.
 
 \subsection{Sandbox, search, and recommendation}
 
 The patched PostgreSQL backend maintains a backend-local repository of
-hypothetical definitions and payloads. The advisor activates one ordered
+hypothetical definitions and payloads. The Advisor activates one ordered
 configuration at a time, obtains planner estimates, and passes those estimates
 together with the independent GroundTruthProvider to utility evaluation. The
-same weighted objective is used for singleton profiling and bounded greedy ADD
+same weighted objective is used for singleton profiling and bounded Greedy ADD
 search over the frozen candidate universe. The resulting Recommendation
 contains native deployment statements and the order derived from the frozen
 singleton precedence profile.

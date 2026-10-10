@@ -5,58 +5,67 @@ query optimizer uses estimated result sizes to compare access paths, join
 orders, and operator implementations; an estimate that is wrong by orders of
 magnitude can therefore induce a bad plan even when the execution engine is
 otherwise sound \cite{Leis2015HowGood}. PostgreSQL's ordinary statistics are
-deliberately compact and are usually maintained per column. They consequently
-cannot represent every cross-column correlation that appears in a workload.
+compact and usually maintained per column, so they cannot represent every
+cross-column correlation in a workload. Native multivariate statistics provide
+an existing corrective mechanism for selected column groups \cite{PostgreSQL16Docs}.
 
-Learned cardinality estimators have shown that this accuracy gap can be
-substantial. The Are We Ready study also makes clear that accuracy is only one
-part of the deployment question: training or update cost, inference cost,
-staleness, interpretability, and behavior under changing data all matter
-\cite{Wang2021AreWeReady}. This paper does not argue that learned estimators
-are unsuitable for production. Instead, it asks whether a less disruptive
-intervention can recover useful accuracy before the estimator itself is
-replaced.
+Learned cardinality estimators demonstrate that the accuracy gap can be large,
+but they also make training or update cost, inference cost, staleness,
+interpretability, and behavior under changing data part of the deployment
+question \cite{Wang2021AreWeReady}. We study a less disruptive alternative:
+design the native extended statistics already consumed by PostgreSQL's
+estimator rather than replacing that estimator.
 
-\emph{How far can native statistics take cardinality estimation?} More
-precisely, instead of replacing PostgreSQL's cardinality estimator, we
-investigate how much accuracy can be recovered by automatically designing the
-native extended statistics that the deployed estimator already understands.
-PostgreSQL supports multivariate statistics for correlations and functional
-dependencies, but deciding which column groups to create, how to prioritize
-them, and how to validate their benefit remains a physical and statistical
-design problem \cite{PostgreSQL16Docs}.
+The design problem is nontrivial. Given a workload and schema, a candidate
+universe contains many possible column pairs and native kinds, while each
+candidate must cover useful predicates, be materialized at an adequate target,
+and interact with PostgreSQL's native selection and combination rules. The
+advisor must choose a membership and an order under a finite search budget;
+creating every candidate and evaluating every subset is not a practical design
+loop for the supported workload scope.
 
-\advisor approaches this problem as an offline, planner-in-the-loop workflow.
-It freezes an \texttt{AdvisorSnapshot} containing the portable schema, fixed
-typed sample, population metadata, and workload, and keeps a separately
-validated \texttt{GroundTruthSet} bound to that snapshot and workload. Native
-statistics are constructed from the snapshot/sample, never from truth labels.
-Planner estimates are compared with the independent truth provider to define
-utility; that utility then drives singleton profiling and bounded configuration
-search. The patched server is a design-time what-if substrate, not a required
-production runtime. The resulting recommendation can be deployed using stock
-PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. We use the phrase
-``patched at design time, stock at deployment time'' as a working description
-of this separation, not as a claim that the workflow is already
-production-ready.
+A straightforward physical loop makes this harder to control: choose a
+configuration, issue \texttt{CREATE STATISTICS}, run native \texttt{ANALYZE},
+plan the workload, change the catalog, and repeat. The loop mutates catalog
+state, repeats native payload construction, entangles configuration choice with
+sampling realization, and grows combinatorially. A stock shared-parent-and-
+clone experiment can reuse one analyzed realization for several physical
+configurations, but that is an experimental control technique, not a lightweight
+catalogless activation interface for repeated search.
 
-The research focus is not a new cardinality estimator, a first statistics
-advisor, or a novel greedy algorithm. The contributions are four themes, while
-the five research questions below provide the empirical structure for testing
-them:
+Our key insight is to separate native payload construction from configuration
+evaluation. \advisor builds a typed fixed sample once, materializes each
+candidate's native MCV or dependency payload once, and registers those
+payloads in a backend-local patched PostgreSQL repository. Search then changes
+only the active ordered configuration while the payload bytes, ordinary
+statistics, workload, truth binding, and planner remain fixed. PostgreSQL's
+native selectivity machinery consumes the active payloads; no replacement
+estimator is introduced.
 
-\begin{itemize}
-  \item a catalogless what-if substrate for PostgreSQL native MCV and
-  functional-dependency payloads;
-  \item a production-oriented architecture that isolates exploration and
-  preserves a stock, DBA-controlled deployment path;
-  \item a sample-to-full-data transfer protocol that separates design on a
-  fixed sample from independent native-statistics recomputation on full data;
-  \item an empirical study on the AreCELearnedYet benchmark lineage that
-  revisits how much of the reported learned-CE gap native statistics can
-  address, together with controlled studies of mechanism fidelity, search
-  ablations, and operational cost rather than accuracy alone.
-\end{itemize}
+\advisor is the central system artifact. It captures a typed
+\texttt{AdvisorSnapshot}, derives workload-relevant native candidates, performs
+singleton profiling and bounded Greedy ADD search against independently bound
+truth, and emits an ordered Recommendation. That Recommendation is reviewed
+and deployed through stock PostgreSQL \texttt{CREATE STATISTICS} followed by
+\texttt{ANALYZE}; the patched server is a design-time substrate, not a
+production dependency. The current implementation is deliberately scoped to
+single-table selection workloads and two-column MCV and dependency candidates.
+
+The paper makes three contributions:
+
+\begin{enumerate}
+  \item \textbf{Catalogless native-statistics what-if.} A PostgreSQL
+  design-time mechanism registers native payloads and activates ordered
+  hypothetical configurations without repeated physical DDL or \texttt{ANALYZE}.
+  \item \textbf{Workload-aware native-statistics Advisor.} An offline pipeline
+  turns a frozen sample and workload into relevant candidates, native payloads,
+  truth-based utility profiles, bounded Greedy ADD search, and a reviewable
+  ordered Recommendation.
+  \item \textbf{Effectiveness and transfer evidence.} A four-dataset study
+  measures estimation quality, same-generator held-out behavior, sample-to-full
+  transfer, mechanism fidelity, heuristic comparisons, practicality, bounded
+  ordering effects, and qualified native-realization variability.
+\end{enumerate}
 
 The five research questions are: RQ1, effectiveness; RQ2, sample-to-full-data
 transfer; RQ3, hypothetical-mechanism fidelity under controlled equivalent
@@ -84,7 +93,9 @@ is qualified post-hoc evidence, and end-to-end cost gaps remain explicit.
 The v2 readiness review does not retroactively reassign historical artifacts
 to a new freeze.
 
-The rest of the paper defines the design problem, describes the architecture
-and PostgreSQL extension, gives an evaluation protocol for five research
-questions, and reports the validated evidence available for all five questions
-while retaining the declared limits of incomplete RQ4 and RQ5 substudies.
+The rest of the paper defines the fixed-payload design problem, describes the
+what-if mechanism and Advisor pipeline, and evaluates the three contributions
+through five research questions. Results retain all declared qualifications:
+sample-to-full transfer is empirical, Greedy is not globally optimal, physical
+ordering comparisons can be confounded, Native \texttt{ANALYZE} v2 is
+post-hoc, and RQ5 does not establish complete production cost.

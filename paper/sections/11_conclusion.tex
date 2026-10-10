@@ -1,30 +1,20 @@
 \section{Conclusion}
 
-This paper frames \advisor around a deliberately conservative question: before
-replacing PostgreSQL's cardinality estimator, how far can the native statistics
-already consumed by that estimator take us? The proposed answer is evaluated
-through an isolated planner-in-the-loop what-if substrate, a fixed-sample
-design workflow, a bounded transparent search, and a stock PostgreSQL
-deployment recommendation.
+This paper presents \advisor as a way to explore database-native statistical
+design without replacing the deployed cardinality estimator. The system builds
+native MCV and dependency payloads once on a fixed typed sample, registers them
+in a backend-local PostgreSQL what-if overlay, and varies ordered
+configurations through the existing planner's native selectivity paths. A
+workload-aware pipeline then profiles candidates, performs bounded Greedy ADD
+search, and emits an ordered Recommendation that a DBA can deploy with stock
+PostgreSQL.
 
-The framework makes the evidence boundaries explicit. The four-dataset RQ1b
-results provide validated held-out evidence that validation-selected native
-statistics can reduce mean cardinality-estimation q-error under the audited
-AreCEL generator contract, with substantial dataset heterogeneity and
-per-query regressions. This does not establish workload-drift robustness,
-execution-time improvement, or global optimality. Existing production extended
-statistics remain outside advisor ownership, and a SearchResult objective is
-not a guarantee for a combined catalog that the optimizer did not evaluate.
-The completed RQ2 transfer evidence shows that sample-selected designs can
-retain utility after independent full-data native-statistics realization, but
-does not guarantee the sample-side objective or eliminate query-level
-regressions. RQ3 establishes fidelity only for its registered synthetic
-fixture. RQ4 provides qualified fixed-$k$ and screening-width ablations. The
-historical fixed-evaluation-budget study was cancelled with no results, and
-the Native \texttt{ANALYZE} Stability v1 campaign is failed/ineligible with
-evidence preserved; its v2 analysis is a qualified post-hoc descriptive
-reanalysis. RQ5 provides stage-specific practicality measurements rather than
-a complete end-to-end production cost. The ordering ablation likewise supports
-only the bounded hypothetical and confounded physical claims reported in the
-Results section. These evidence gaps and limitations remain explicit rather
-than being hidden by a single aggregate conclusion.
+The evidence shows substantial but dataset-dependent q-error improvement,
+qualified same-generator held-out and sample-to-full transfer, registered
+mechanism fidelity, and a bounded ordering effect. It also preserves the
+counterexample where Singleton utility beats Greedy ADD, physical-order
+confounding, the failed/ineligible Native \texttt{ANALYZE} v1 campaign and
+post-hoc v2 analysis, and the incomplete production cost account. The
+contribution is therefore not global optimization or production universality;
+it is a database-native what-if separation that makes workload-aware
+statistics design and its limitations measurable.

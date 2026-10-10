@@ -73,7 +73,9 @@ The current paper-facing evidence map is
 `paper/evidence-to-manuscript-v2.json`; the claims audit, submission checklist,
 and ranked follow-up backlog are `paper/scientific-claims-audit-v1.json`,
 `paper/submission-readiness-review-v1.json`, and
-`paper/research-backlog-v1.json`. Before submission, archive the exact research
+`paper/research-backlog-v1.json`. The system-source mapping is
+`paper/source-to-paper-technical-mapping-v1.json`, and the restructuring
+change log is `paper/system-centric-restructuring-changelog-v1.md`. Before submission, archive the exact research
 commit and these source/artifact trees in a permanent public repository, and
 provide instructions for obtaining any benchmark inputs that cannot be
 redistributed. A GitHub URL in the LaTeX source is not by itself a guarantee

@@ -1,0 +1,103 @@
+{
+  "format_version": "source-to-paper-technical-mapping-v1",
+  "mapping_id": "extstats-advisor-system-centric-mapping-20261010",
+  "mapping_producer_sha": "5d6a83b52ecfb70933da8c269555ba82c01fd513",
+  "source_revisions": {
+    "research": "5d6a83b52ecfb70933da8c269555ba82c01fd513",
+    "advisor": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "patched_postgresql": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "stock_postgresql": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "entries": [
+    {
+      "claim": "Native payloads can be registered and activated in backend-local ordered hypothetical state.",
+      "paper_locations": ["04_architecture.tex", "05_hypothetical_extstats.tex", "fig:whatif-loop"],
+      "repository": "postgresql-src-pgextadv",
+      "source_locations": [
+        "src/backend/statistics/hypothetical.c:39-57 hypothetical_extstats_init/reset",
+        "src/backend/statistics/hypothetical.c:217-260 register_definition_internal",
+        "src/backend/statistics/hypothetical.c:368-490 hypothetical_extstats_activate/filter/payload",
+        "src/include/catalog/pg_proc.dat:12051-12074 hypothetical SQL functions"
+      ],
+      "supports": "Repository entries retain relation identity, kind, keys, candidate identity, and serialized payload; activation validates registration and duplicates, then installs an ordered active list in PostgreSQL memory contexts.",
+      "limitation": "The patched path is backend-local and supports the implemented MCV and dependency kinds, not every PostgreSQL statistics kind or workload form."
+    },
+    {
+      "claim": "Virtual definitions reach native planner metadata without requiring a pg_statistic_ext catalog row.",
+      "paper_locations": ["05_hypothetical_extstats.tex"],
+      "repository": "postgresql-src-pgextadv",
+      "source_locations": [
+        "src/backend/optimizer/util/plancat.c:1370-1465 get_relation_statistics_worker",
+        "src/backend/optimizer/util/plancat.c:1485-1535 get_relation_statistics",
+        "src/backend/statistics/mcv.c:569-578 statext_mcv_load",
+        "src/backend/statistics/dependencies.c:628-638 statext_dependencies_load"
+      ],
+      "supports": "The planner path accepts virtual definition metadata and the native loaders ask the overlay for active payload bytes before falling back to catalog data.",
+      "limitation": "The paper claims reuse of native selectivity machinery, not a new estimator or universal physical equivalence."
+    },
+    {
+      "claim": "The Advisor materializes a fixed native repository once for design-time evaluation.",
+      "paper_locations": ["01_introduction.tex", "04_architecture.tex", "03_problem_formulation.tex"],
+      "repository": "extstats-advisor",
+      "source_locations": [
+        "src/extstats_advisor/dbms/postgres/native_stats.py:207 materialize_native_stats",
+        "src/extstats_advisor/native_stats/model.py:29-184 NativeStatsCandidate/Materialization/Repository",
+        "src/extstats_advisor/native_stats/repository.py:62-201 write/validate/compatibility"
+      ],
+      "supports": "One sample-side ANALYZE constructs candidate payloads and records payload, ordinary-statistics, backend, and source bindings in a validated repository.",
+      "limitation": "A fixed design-time realization is not a promise that full-data stock ANALYZE will reproduce the same payload bytes."
+    },
+    {
+      "claim": "Candidates are derived from workload predicate structure and expanded into supported native designs.",
+      "paper_locations": ["06_advisor_design.tex"],
+      "repository": "extstats-advisor",
+      "source_locations": [
+        "src/extstats_advisor/candidates/groups.py:74 derive_relevant_groups",
+        "src/extstats_advisor/candidates/universe.py:207 derive_candidate_universe",
+        "src/extstats_advisor/candidates/model.py:17 Candidate"
+      ],
+      "supports": "The candidate universe binds relation, column ordinals/names, native kind, and workload incidence under the supported single-table scope.",
+      "limitation": "The current implementation is not a general multitable or arbitrary-expression candidate generator."
+    },
+    {
+      "claim": "Singleton profiling and bounded Greedy ADD use planner estimates and independently bound truth.",
+      "paper_locations": ["04_architecture.tex", "06_advisor_design.tex", "07_evaluation_methodology.tex"],
+      "repository": "extstats-advisor",
+      "source_locations": [
+        "src/extstats_advisor/dbms/postgres/planner.py:103-344 PostgresPlannerSession",
+        "src/extstats_advisor/dbms/postgres/profiling.py:17-75 profile_postgres_singletons",
+        "src/extstats_advisor/optimization/singleton.py:485-584 profile_singletons",
+        "src/extstats_advisor/dbms/postgres/search.py:39-451 PostgresSearchEvaluator/search_postgres_greedy_add"
+      ],
+      "supports": "A session registers a repository, activates ordered candidate IDs, extracts root planner estimates, and feeds the frozen utility contract into singleton and incremental proposal evaluation.",
+      "limitation": "Greedy ADD is bounded and transparent; it is not presented as globally optimal or as a novel optimization algorithm."
+    },
+    {
+      "claim": "Recommendation order is derived separately from membership and rendered for stock deployment.",
+      "paper_locations": ["03_problem_formulation.tex", "06_advisor_design.tex", "04_architecture.tex"],
+      "repository": "extstats-advisor",
+      "source_locations": [
+        "src/extstats_advisor/dbms/postgres/recommendation.py:321 build_postgres_recommendation",
+        "src/extstats_advisor/dbms/postgres/recommendation.py:410 render_postgres_sql",
+        "src/extstats_advisor/dbms/postgres/deployment.py:536 deploy_postgres_recommendation"
+      ],
+      "supports": "The selected membership is ordered by the frozen singleton precedence profile, rendered as CREATE/ALTER STATISTICS plus relation ANALYZE, and applied under an add-only DBA-controlled deployment contract.",
+      "limitation": "Unmanaged production statistics are not reconciled; the evaluated objective does not automatically apply to their union with the Recommendation."
+    },
+    {
+      "claim": "Truth is a separate utility input rather than a native-statistics construction input.",
+      "paper_locations": ["01_introduction.tex", "03_problem_formulation.tex", "07_evaluation_methodology.tex"],
+      "repository": "extstats-advisor",
+      "source_locations": [
+        "src/extstats_advisor/ground_truth/model.py",
+        "src/extstats_advisor/ground_truth/provider.py",
+        "src/extstats_advisor/ground_truth/external.py",
+        "src/extstats_advisor/utility/provider.py"
+      ],
+      "supports": "GroundTruthSet binding and utility evaluation occur after planner estimation; native materialization consumes the snapshot/sample and candidate universe.",
+      "limitation": "The external-label confirmatory path is not evidence that the Advisor executed exact labels itself; production-exact truth remains a separate cost/validation path."
+    }
+  ],
+  "review_boundary": "This mapping documents source behavior by inspection; it does not add new runtime or experimental evidence.",
+  "semantic_digest": "ef01952d22807582755af44a803c92ff19aa69178db8e97be8407fc9af117304"
+}

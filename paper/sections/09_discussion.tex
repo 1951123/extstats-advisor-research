@@ -1,67 +1,47 @@
 \section{Discussion and Limitations}
 
-This study has several boundaries. First, the current benchmark lineage and
-truth-collection implementation are primarily single-table and
-simple-selection. Production exact truth is not a contract for arbitrary
-production SQL: the v1 collector fails closed outside its supported sealed
-one-relation, AND-predicate, row-preserving query shape. The architecture does
-not establish behavior for joins, partitioned inheritance, or all
-expression-statistics cases. Second, the what-if substrate is PostgreSQL-
-specific and currently supports only the native MCV and functional-dependency
-payload paths described in Section~5.
+The central systems trade-off is separation. Building each native candidate on
+one fixed typed sample and replaying its payload in a backend-local planner
+overlay makes membership and order comparisons controlled: native payload
+construction, ordinary statistics, workload, truth, and planner settings do
+not change with every search move. This is why the mechanism is useful even
+though the deployed estimator remains PostgreSQL's native estimator. The
+separation is a design-time contract, not a measured end-to-end speedup over a
+physical implementation.
 
-Third, not every query improves. Benefits depend on workload predicates,
-statistics target, sample representativeness, and the planner's native
-combination rules. A sample-selected design can become stale under data or
-workload drift, and the current search provides no guarantee of a globally
-optimal configuration. Candidate limits and search budgets are therefore
-experimental variables, not universal defaults.
+The transfer boundary is equally important. Full-data deployment creates a new
+native realization and can refresh ordinary statistics and externally managed
+extended-statistics payloads. Across the four RQ2 datasets, sample-selected
+designs retained utility in the controlled physical comparison, but paired
+regressions remained and the magnitude varied. The sample-side objective does
+not guarantee the full-data objective. Native \texttt{ANALYZE} Stability v2
+offers only qualified post-hoc descriptive evidence: five realizations per
+stratum showed no first-place winner reversal, while ordinary and extended
+payload fingerprints varied. The v1 campaign remains failed/ineligible because
+six dependency payloads were recorded empty without a direct SQL-NULL marker;
+the reanalysis is not prospective confirmatory evidence and does not separate
+ordinary-statistics from extended-statistics variation.
 
-The ordering ablation adds a narrower qualification to this interpretation.
-Under the controlled hypothetical realization, fixed membership and changed
-activation order alter estimates for a dataset-dependent subset of queries;
-the Advisor reference order is favorable within the seven preregistered
-orders, but this finite comparison is not an optimality result. The
-overlapping-MCV witness is consistent with the PostgreSQL implementation's
-tie behavior, while remaining a single patched-PostgreSQL fixture rather than
-a universal mechanism claim. The physical deployment comparisons are
-operationally informative but confounded by native payload and ordinary
-statistics drift after independent \texttt{ANALYZE} runs, so they cannot be
-attributed to OID order alone.
+Recommendation order is part of the interface rather than an incidental SQL
+rendering choice. The OID ablation shows that, under the fixed-payload
+hypothetical contract, changing activation order can change Plan Rows for a
+dataset-dependent subset of queries. The reference order is favorable among
+the seven declared alternatives, but the result is not global ordering
+optimality. Its synthetic overlapping-MCV witness is one bounded mechanism
+diagnostic. Physical non-reference arms are operational observations because
+their native payload and ordinary-statistics fingerprints also changed; they
+cannot identify an OID-only effect.
 
-The transfer results provide a complementary boundary. Across the four
-datasets, the deployed sample-selected recommendation improved the controlled
-full-data comparison, but the magnitude varied and paired regressions
-remained. Sample-side utility was descriptively associated with full-data
-utility, with Spearman values ranging from 0.478 to 0.968; this is not a
-guarantee because native full-data statistics are independently realized and
-the objectives are distinct. The RQ3 fidelity checks are narrower still: exact
-Plan Rows agreement was established for the registered synthetic clause forms,
-not for arbitrary workloads or PostgreSQL versions.
-
-RQ4 shows why the search claim must remain conditional. Greedy ADD was the
-best recorded fixed-$k$ method on three datasets, while singleton utility was
-better on Census13. The screening-width results also include budget-censored
-incumbents, and Forest10 retains a historical 3,600-second v1 search budget.
-The 300-second value is a Greedy/$K_s$ search-stage deadline, not an
-end-to-end resource-normalized comparison: configuration evaluations are not
-uniform planner-call units, and preprocessing, profiling, final evaluation,
-and physical realization have separate or incomplete accounting. The planned
-fixed-evaluation-budget study was therefore cancelled by research-team
-decision, with no results generated. The subsequent Native-\texttt{ANALYZE}
-Stability v1 campaign is failed/ineligible with evidence preserved; its v2
-analysis is explicitly post-hoc and qualified: five realizations
-preserve the same winner within each of the three dataset strata, but six
-dependency payloads were recorded as empty and the original v1 capture did
-not preserve direct SQL-NULL metadata. The analysis therefore supports only
-descriptive combined realization variability, not deterministic ANALYZE
-behavior, causal separation of ordinary and extended-statistics effects, or
-population-level ranking probabilities. The existing results support
-dataset- and workload-dependent ablation findings rather than universal
-superiority or end-to-end resource-normalized superiority.
-The practicality measurements similarly cover selected stages---snapshot
-footprint, deployment DDL, \texttt{ANALYZE}, and planner-time traces---rather
-than a complete production cost model.
+The Advisor search claim is similarly conditional. Greedy ADD wins the
+recorded fixed-$k$ comparison on Forest10, Power7, and DMV11, while Singleton
+utility wins on Census13. Census13 and DMV11 Greedy traces contain
+budget-censored feasible incumbents, and Forest10 uses a historical
+3,600-second budget rather than the current 300-second Greedy/$K_s$ search
+deadline. A configuration evaluation is not a uniform planner-call unit, so
+the cancelled 2,000-evaluation experiment would not by itself have established
+end-to-end resource fairness. These results support a transparent
+planner-in-the-loop reference and a dataset-dependent benefit, not a globally
+optimal algorithm or resource-normalized superiority.
 
 For the completed RQ1b analysis, the evidence is narrower than a broad
 generalization claim. It covers only four audited AreCEL datasets whose
@@ -74,31 +54,18 @@ not established as physical-definition identifiers, so zero identifier overlap
 does not prove disjoint PostgreSQL definitions. Census13 additionally retains
 its documented historical baseline provenance and statistics-policy caveat.
 
-Fourth, truth acquisition itself has operational cost. Authoritative external
-labels require import and binding validation, but they are not evidence that
-the advisor executed the labels itself. Production exact truth can require
-expensive exact-count queries even in a read-only repeatable-read source view.
-The absence of a learned-model training/inference path does not
-make sample capture, truth acquisition, native construction, planner search,
-or deployment \texttt{ANALYZE} free.
-
-Fifth, literature comparisons with learned cardinality estimators are not
-necessarily apples-to-apples: systems, workload generation, data snapshots,
-truth production, and metric definitions can differ. The Are We Ready results
-are useful context and benchmark lineage, not a substitute for matched
-experiments.
-
-Sixth, production-compatible deployment does not by itself establish
-production readiness. The add-only contract deliberately leaves arbitrary
-existing extended statistics outside advisor ownership. The DBA must decide
-whether such objects remain, are removed, are replaced, or coexist. The
-optimizer evaluated $M^*$, not necessarily
-$E_{\mathrm{existing}}\cup M^*$, so the SearchResult objective is not a
-guarantee for the combined state.
-
-Finally, the final \texttt{ANALYZE} needed by a non-empty recommendation can
-rebuild ordinary statistics and externally managed extended-statistics payloads
-on the same relation. That is an operational effect to measure and disclose,
-not evidence that the advisor owns those external objects. These limitations
-motivate the fidelity, practicality, drift, and reconciliation follow-up work
-listed in the experiment plan.
+Fourth, the remaining limitations are operational as well as scientific.
+The four RQ2 datasets show a descriptive sample/full Spearman association of
+0.478--0.968, but independent full-data realizations and distinct objectives
+prevent a transfer guarantee. RQ3 exact Plan Rows agreement is limited to its
+registered synthetic clause forms. RQ1b covers one audited workload generator;
+strict-unseen removes exact source-query overlap, not all structural similarity,
+and q-error is not query latency. External truth requires import and binding
+validation, while production-exact truth can require expensive exact counts;
+the absence of learned-model inference is therefore not zero operational cost.
+Literature comparisons likewise are contextual rather than matched experiments.
+Finally, stock deployment is not production readiness: existing statistics
+remain outside Advisor ownership, a final \texttt{ANALYZE} can rebuild native
+payloads, and the objective for $M^*$ is not a guarantee for
+$E_{\mathrm{existing}}\cup M^*$. Reconciliation and refresh remain DBA and
+operational concerns.

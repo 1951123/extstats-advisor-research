@@ -16,20 +16,24 @@ Thus the system has two inputs to utility evaluation,
 \]
 The fixed sample $S$ is materialized independently of $G$ and is not a source
 of query truth. For a query $q$ with a truth record, write its non-negative
-cardinality as $y_q$ and its planner estimate under configuration $M$ as
-$\hat y_q(M)$.
+cardinality as $y_q$ and abbreviate its estimate under $(M,\pi;R)$ as
+$\tilde y_q=\hat y_q(M,\pi;R)$.
 
 The candidate universe $C$ is a frozen finite set of native statistics
 designs derived from $\Sigma$ and predicate structure in $W$. Each candidate
 records the relation, ordered attribute keys, supported native kind, and a
-sample-built payload. A configuration $M\subseteq C$ is a set of selected
-candidates subject to a candidate-row bound and search budget. The planner
-evaluates $W$ under the active configuration and returns estimated
-cardinalities $\hat y_i(M)$.
+sample-built payload. Let $R$ denote the fixed native realization that maps
+each candidate to its serialized payload or an explicit
+\texttt{ABSENT\_NATIVE} state. A design-time configuration is the pair
+$(M,\pi)$, where $M\subseteq C$ is membership and $\pi$ is the declared
+activation order over $M$. The planner evaluates $W$ under $(M,\pi;R)$ and
+returns estimated cardinalities $\hat y_i(M,\pi;R)$. Holding $R$ fixed makes
+an order or membership comparison interpretable; it does not imply that a
+later full-data \texttt{ANALYZE} will reproduce $R$.
 
 The v1 loss contract is \texttt{qerror-cardinality-floor-1-v1}:
 \[
- Q(\hat y_q(M),y_q)=
+ Q(\tilde y_q,y_q)=
  \max\left(
    \frac{\max(\hat y_q(M),1)}{\max(y_q,1)},
    \frac{\max(y_q,1)}{\max(\hat y_q(M),1)}
@@ -40,7 +44,7 @@ Lower is better. Let $W^+$ be the positive-weight workload queries and
 $w_q$ their workload weights. The optimization objective is the weighted
 workload mean
 \[
- J(M)=\frac{\sum_{q\in W^+} w_q Q(\hat y_q(M),y_q)}
+ J(M,\pi;R)=\frac{\sum_{q\in W^+} w_q Q(\tilde y_q,y_q)}
               {\sum_{q\in W^+} w_q}.
 \]
 This weighted objective is distinct from the reporting summaries: the paper

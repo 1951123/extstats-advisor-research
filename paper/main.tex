@@ -5,6 +5,8 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
 \usepackage{xspace}
 
 \newcommand{\advisor}{\textsc{ExtStats Advisor}\xspace}
@@ -22,7 +24,7 @@
 \begin{document}
 
 \begin{abstract}
-Cardinality estimation errors remain a source of poor query plans, while replacing a database system's estimator introduces operational, maintenance, and trust costs. This paper investigates a narrower question: how much estimation accuracy can be recovered by automatically designing the native multivariate statistics already consumed by PostgreSQL's planner? \advisor keeps the portable \texttt{AdvisorSnapshot} $(\Sigma,S,P,W)$ separate from an independently validated \texttt{GroundTruthSet}; for confirmatory AreCEL evaluation, the latter is imported from audited external exact observations and supplies labels to planner-based utility evaluation, not to snapshot construction or native statistics construction. Production exact execution remains an independent validation and cost path. The system evaluates catalogless hypothetical native statistics in an isolated patched PostgreSQL planner and emits a DBA-reviewable recommendation that deploys through stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. We study the resulting accuracy, sample-to-full-data transfer, mechanism fidelity, search ablations, and operational cost on an audited single-table benchmark lineage. The four-dataset RQ1b results are validated from immutable artifacts; other research questions retain their separate evidence status. The paper does not claim a new cardinality estimator or a globally optimal statistics configuration.
+Cardinality estimation errors remain a source of poor query plans, while replacing a database system's estimator introduces operational, maintenance, and trust costs. This paper presents \advisor, a workload-aware design system for PostgreSQL native extended statistics. Its catalogless what-if mechanism materializes native MCV and dependency payloads once on a fixed typed sample, registers them in backend-local state, and activates ordered configurations through PostgreSQL's native planner paths. The Advisor derives workload-relevant candidates, profiles singleton utility against independently bound truth, runs bounded Greedy ADD search, and emits an ordered Recommendation deployable through stock PostgreSQL \texttt{CREATE STATISTICS} and \texttt{ANALYZE}. We evaluate effectiveness, same-generator held-out behavior, sample-to-full-data transfer, registered mechanism fidelity, heuristic comparisons, practicality, bounded order sensitivity, and qualified native-realization variability across an audited single-table benchmark lineage. The evidence includes validated four-dataset RQ1b and transfer results, but also preserves dataset heterogeneity, the Census13 heuristic counterexample, physical-order confounding, and the post-hoc status of Native \texttt{ANALYZE} Stability. We do not claim a replacement cardinality estimator, global optimality, or complete production-cost validation.
 \end{abstract}
 
 \maketitle

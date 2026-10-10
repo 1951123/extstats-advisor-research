@@ -23,9 +23,11 @@ candidate universe and treats selection as a bounded design problem.
 Hypothetical indexes have long illustrated the value of asking a planner what
 it would do if a physical object existed, without paying the full build cost;
 HypoPG is a PostgreSQL example \cite{HypoPG}. The present system applies a
-related idea to native extended-statistics payloads. Its hypothetical objects
-are backend-local and are consumed by the same planner selectivity paths,
-while deployment remains ordinary PostgreSQL DDL.
+related idea to native extended-statistics payloads. Its hypothetical entries
+are backend-local, carry serialized native payloads, and are consumed by the
+same planner selectivity paths, while deployment remains ordinary PostgreSQL
+DDL. This is a design-time interface for configuration activation, not a
+replacement estimator or persistent catalog state.
 
 The separation is important for operational reasons. The optimizer explores
 on a controlled sample and workload snapshot; deployment operates on the
@@ -51,3 +53,8 @@ We organize the study around five questions:
   \item[RQ5 (practicality)] What operational cost is paid for the obtained
   improvement?
 \end{description}
+
+Together, RQ1 and RQ2 test the Advisor's effectiveness and transfer; RQ3 tests
+the what-if mechanism; RQ4 tests whether workload-aware combination search adds
+value beyond simpler selection; and RQ5 measures the resulting operational
+trade-offs.

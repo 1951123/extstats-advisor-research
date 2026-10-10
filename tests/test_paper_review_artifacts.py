@@ -14,6 +14,7 @@ def test_current_review_artifacts_have_valid_digests() -> None:
     for name in (
         "evidence-to-manuscript-v2.json",
         "scientific-claims-audit-v1.json",
+        "source-to-paper-technical-mapping-v1.json",
         "submission-readiness-review-v1.json",
         "research-backlog-v1.json",
     ):
@@ -43,6 +44,24 @@ def test_claims_audit_covers_major_scientific_scopes() -> None:
     assert "results, subsection:native-analyze-stability, discussion" in locations
     assert "results, table:rq5-practicality, discussion, conclusion" in locations
     assert "global optimality of membership or ordering" in artifact["unsupported_claims"]
+
+
+def test_source_mapping_binds_frozen_revisions_and_system_paths() -> None:
+    artifact = _load("source-to-paper-technical-mapping-v1.json")
+    assert artifact["source_revisions"]["advisor"] == ("e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3")
+    assert artifact["source_revisions"]["patched_postgresql"] == (
+        "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    )
+    assert any(
+        "hypothetical.c" in item
+        for entry in artifact["entries"]
+        for item in entry["source_locations"]
+    )
+    assert any(
+        "recommendation.py" in item
+        for entry in artifact["entries"]
+        for item in entry["source_locations"]
+    )
 
 
 def test_readiness_and_backlog_do_not_promote_missing_science() -> None:
