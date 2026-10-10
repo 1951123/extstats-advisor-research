@@ -1148,6 +1148,23 @@ def _parser() -> argparse.ArgumentParser:
     preflight = commands.add_parser("integration-preflight-plan")
     preflight.add_argument("manifest", type=Path)
     preflight.add_argument("--output", type=Path, required=True)
+    live = commands.add_parser(
+        "integration-preflight", help="run an explicitly authorized tiny live fixture"
+    )
+    live.add_argument("manifest", type=Path)
+    live.add_argument("--advisor-root", type=Path, required=True)
+    live.add_argument("--snapshot", type=Path, required=True)
+    live.add_argument("--candidate-universe", type=Path, required=True)
+    live.add_argument("--workload", type=Path, required=True)
+    live.add_argument("--stock-dsn", required=True)
+    live.add_argument("--stock-admin-dsn", required=True)
+    live.add_argument("--patched-dsn", required=True)
+    live.add_argument("--stock-identity", type=Path, required=True)
+    live.add_argument("--patched-identity", type=Path, required=True)
+    live.add_argument("--output-dir", type=Path, required=True)
+    live.add_argument("--output", type=Path, required=True)
+    live.add_argument("--run-id", required=True)
+    live.add_argument("--enable-live-preflight", action="store_true")
     return parser
 
 
@@ -1195,6 +1212,27 @@ def main(argv: list[str] | None = None) -> int:
                 sort_keys=True,
             )
         )
+        return 0
+    if args.command == "integration-preflight":
+        from .rq5_whatif_cost_postgres import LiveAdapterConfig, run_integration_preflight
+
+        manifest = read_json(args.manifest)
+        config = LiveAdapterConfig(
+            stock_dsn=args.stock_dsn,
+            stock_admin_dsn=args.stock_admin_dsn,
+            patched_dsn=args.patched_dsn,
+            advisor_root=args.advisor_root,
+            snapshot_path=args.snapshot,
+            candidate_universe_path=args.candidate_universe,
+            workload_path=args.workload,
+            stock_identity_path=args.stock_identity,
+            patched_identity_path=args.patched_identity,
+            output_dir=args.output_dir,
+            run_id=args.run_id,
+            enable_live=args.enable_live_preflight,
+        )
+        result = run_integration_preflight(manifest, config, args.output)
+        print(json.dumps(result, sort_keys=True, indent=2))
         return 0
     raise AssertionError("unreachable")
 
