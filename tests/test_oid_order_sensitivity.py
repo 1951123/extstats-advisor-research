@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import gzip
 import json
+import subprocess
 import types
 from pathlib import Path
 
@@ -368,7 +369,6 @@ def test_oid_native_bridge_uses_system_freeze_v2_advisor_pin(
 ) -> None:
     import extstats_advisor_research.advisor_bridge as bridge
     import extstats_advisor_research.oid_order_sensitivity as oid
-    from extstats_advisor_research.pins import verify_git_sha
 
     captured: dict[str, object] = {}
 
@@ -390,14 +390,56 @@ def test_oid_native_bridge_uses_system_freeze_v2_advisor_pin(
         == "native-digest"
     )
     assert captured["expected_advisor_sha"] == "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
-
-    advisor_root = Path("/home/wqts/projects/extstats-advisor")
-    assert (
-        verify_git_sha(advisor_root, captured["expected_advisor_sha"])
-        == captured["expected_advisor_sha"]
+    assert captured["args"] == (
+        Path("/advisor"),
+        "dbname=patched",
+        Path("snapshot"),
+        Path("candidate"),
+        Path("native"),
+        100,
     )
+
+
+def test_verify_git_sha_uses_actual_repository_contract(tmp_path: Path) -> None:
+    from extstats_advisor_research.pins import verify_git_sha
+
+    repository = tmp_path / "advisor"
+    repository.mkdir()
+    subprocess.run(["git", "-C", str(repository), "init"], check=True, capture_output=True)
+    subprocess.run(
+        ["git", "-C", str(repository), "config", "user.name", "CI Test"],
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(repository), "config", "user.email", "ci@example.invalid"],
+        check=True,
+        capture_output=True,
+    )
+    (repository / "README").write_text("fixture\n")
+    subprocess.run(["git", "-C", str(repository), "add", "README"], check=True)
+    subprocess.run(
+        ["git", "-C", str(repository), "commit", "-m", "fixture"],
+        check=True,
+        capture_output=True,
+    )
+    expected = subprocess.run(
+        ["git", "-C", str(repository), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    assert verify_git_sha(repository, expected) == expected
     with pytest.raises(ValueError, match="expected frozen SHA"):
-        verify_git_sha(advisor_root, "0" * 40)
+        verify_git_sha(repository, "0" * 40)
+
+    with pytest.raises(ValueError, match="could not resolve Git identity"):
+        verify_git_sha(tmp_path / "missing", expected)
+    invalid_repository = tmp_path / "not-a-repository"
+    invalid_repository.mkdir()
+    with pytest.raises(ValueError, match="could not resolve Git identity"):
+        verify_git_sha(invalid_repository, expected)
 
 
 def test_hypothetical_payload_inventory_ignores_absent_unselected_candidates() -> None:
