@@ -32,6 +32,35 @@ and relation.  The admin role needs only the permissions required by the
 validated clone mechanism (normally `CREATEDB` and ownership of the disposable
 databases); superuser access is not assumed.
 
+The following is a preparation template, with absolute paths and role names
+deliberately left for the laboratory operator to fill in.  It is not executed
+by this task:
+
+```bash
+# Use the pinned stock and patched pg_ctl/initdb binaries, not PATH defaults.
+STOCK_PGDATA=/absolute/lab/rq5-tiny-stock
+PATCHED_PGDATA=/absolute/lab/rq5-tiny-patched
+/path/to/stock/bin/initdb -D "$STOCK_PGDATA" --username=<fixture-admin>
+/path/to/patched/bin/initdb -D "$PATCHED_PGDATA" --username=<fixture-admin>
+/path/to/stock/bin/pg_ctl -D "$STOCK_PGDATA" -o '-p 55432 -h 127.0.0.1' start
+/path/to/patched/bin/pg_ctl -D "$PATCHED_PGDATA" -o '-p 55433 -h 127.0.0.1' start
+/path/to/stock/bin/createdb -h 127.0.0.1 -p 55432 -U <fixture-admin> \
+  -O <fixture-owner> rq5_tiny_stock_template
+/path/to/patched/bin/createdb -h 127.0.0.1 -p 55433 -U <fixture-admin> \
+  -O <fixture-owner> rq5_tiny_patched_template
+/path/to/stock/bin/psql -h 127.0.0.1 -p 55432 \
+  -U <fixture-owner> -d rq5_tiny_stock_template -f fixture-rows-stock.sql
+/path/to/patched/bin/psql -h 127.0.0.1 -p 55433 \
+  -U <fixture-owner> -d rq5_tiny_patched_template -f fixture-rows-patched.sql
+```
+
+Before using this template, reserve ports `55432` and `55433`, verify both
+`pg_ctl` binaries with their full paths and source identity records, and ensure
+the data directories are dedicated to this fixture.  The operator must also
+verify the role and database ownership with the explicit DSNs.  These commands
+are setup instructions only; no cluster or database was created for this
+record.
+
 ## Prepared setup sequence
 
 The committed files `fixture-rows-stock.sql` and `fixture-rows-patched.sql`
