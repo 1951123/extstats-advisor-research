@@ -20,6 +20,7 @@ advisor-v2 = [
 
 [project.scripts]
 extstats-research = "extstats_advisor_research.cli:main"
+rq5-whatif-cost = "extstats_advisor_research.rq5_whatif_cost:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/extstats_advisor_research"]
