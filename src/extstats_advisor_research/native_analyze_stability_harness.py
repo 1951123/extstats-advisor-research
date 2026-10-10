@@ -1057,12 +1057,28 @@ def validate_readiness_v2(
         "source_bindings_ready": True,
         "harness_implementation_ready": True,
         "offline_tests_passed": True,
-        "real_postgresql_integration_tested": False,
         "formal_execution_authorized": False,
         "scientific_results_available": False,
     }
     if any(gates.get(key) is not expected for key, expected in expected_gates.items()):
         raise StabilityError("readiness-v2 gate status is inconsistent")
+    integration_tested = gates.get("real_postgresql_integration_tested")
+    if integration_tested is True:
+        smoke_ref = value.get("integration_smoke")
+        if not isinstance(smoke_ref, Mapping):
+            raise StabilityError("integration-tested readiness is missing its smoke binding")
+        actual_smoke = _source_ref(root, str(smoke_ref.get("path", "")))
+        if dict(smoke_ref) != actual_smoke:
+            raise StabilityError("readiness integration smoke binding mismatch")
+        smoke = read_json(root / str(smoke_ref["path"]))
+        if (
+            smoke.get("format_version") != "native-analyze-stability-integration-smoke-v1"
+            or smoke.get("scientific_eligibility") != "integration-readiness-only"
+            or smoke.get("cleanup", {}).get("status") != "complete"
+        ):
+            raise StabilityError("readiness integration smoke is not a completed readiness-only smoke")
+    elif integration_tested is not False:
+        raise StabilityError("readiness integration gate must be explicitly true or false")
     execution = value.get("execution_status", {})
     if (
         execution.get("formal_status") != "NOT_EXECUTED"
