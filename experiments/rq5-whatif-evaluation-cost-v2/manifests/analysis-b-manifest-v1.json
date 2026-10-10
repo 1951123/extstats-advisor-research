@@ -1,0 +1,2313 @@
+{
+  "analysis": "B",
+  "analysis_a": {
+    "configurations": [
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0"
+        ],
+        "configuration_id": "A-singleton-01",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0"
+        ],
+        "ordinal": 1
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_c2737dfb5bfbb3e415dfb793"
+        ],
+        "configuration_id": "A-singleton-02",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_c2737dfb5bfbb3e415dfb793"
+        ],
+        "ordinal": 2
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_817be8bf7bbbc96c20bde230"
+        ],
+        "configuration_id": "A-singleton-03",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_817be8bf7bbbc96c20bde230"
+        ],
+        "ordinal": 3
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_4de3778bb8674287b6dd5b29"
+        ],
+        "configuration_id": "A-singleton-04",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_4de3778bb8674287b6dd5b29"
+        ],
+        "ordinal": 4
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_cbf4af3acd6feaa65760c6d1"
+        ],
+        "configuration_id": "A-singleton-05",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_cbf4af3acd6feaa65760c6d1"
+        ],
+        "ordinal": 5
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_76679921292e8c769dbbd7bc"
+        ],
+        "configuration_id": "A-singleton-06",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_76679921292e8c769dbbd7bc"
+        ],
+        "ordinal": 6
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_0deae0d5de82a5a1fdc34111"
+        ],
+        "configuration_id": "A-singleton-07",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_0deae0d5de82a5a1fdc34111"
+        ],
+        "ordinal": 7
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "configuration_id": "A-singleton-08",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "ordinal": 8
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "configuration_id": "A-singleton-09",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "ordinal": 9
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_bafa53ec095d804233d42826"
+        ],
+        "configuration_id": "A-singleton-10",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_bafa53ec095d804233d42826"
+        ],
+        "ordinal": 10
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_01933ab615fb49e2f81b5b92"
+        ],
+        "configuration_id": "A-singleton-11",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_01933ab615fb49e2f81b5b92"
+        ],
+        "ordinal": 11
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_599a2efab190b6e2b7457ff1"
+        ],
+        "configuration_id": "A-singleton-12",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_599a2efab190b6e2b7457ff1"
+        ],
+        "ordinal": 12
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_42d3a67034bf5f02658cb7bf"
+        ],
+        "configuration_id": "A-singleton-13",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_42d3a67034bf5f02658cb7bf"
+        ],
+        "ordinal": 13
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_6da3014a15c7b2b3c07e9d00"
+        ],
+        "configuration_id": "A-singleton-14",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_6da3014a15c7b2b3c07e9d00"
+        ],
+        "ordinal": 14
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_c66e567561c42b80680d57a2"
+        ],
+        "configuration_id": "A-singleton-15",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_c66e567561c42b80680d57a2"
+        ],
+        "ordinal": 15
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_6b7c22215c39c807cda3872e"
+        ],
+        "configuration_id": "A-singleton-16",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_6b7c22215c39c807cda3872e"
+        ],
+        "ordinal": 16
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_12b552d6e4274b3e7916918d"
+        ],
+        "configuration_id": "A-singleton-17",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_12b552d6e4274b3e7916918d"
+        ],
+        "ordinal": 17
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_5ef1e17a9fde8da19eda6ffc"
+        ],
+        "configuration_id": "A-singleton-18",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_5ef1e17a9fde8da19eda6ffc"
+        ],
+        "ordinal": 18
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_9be7db5012712e534c019f4c"
+        ],
+        "configuration_id": "A-singleton-19",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_9be7db5012712e534c019f4c"
+        ],
+        "ordinal": 19
+      },
+      {
+        "analysis": "A",
+        "candidate_ids": [
+          "cand_da7591327792c9bc98b427d7"
+        ],
+        "configuration_id": "A-singleton-20",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_da7591327792c9bc98b427d7"
+        ],
+        "ordinal": 20
+      }
+    ],
+    "evaluation_count": 20
+  },
+  "analysis_b": {
+    "configuration_sizes": [
+      0,
+      1,
+      5,
+      10,
+      20,
+      50
+    ],
+    "configurations": [
+      {
+        "analysis": "B",
+        "candidate_ids": [],
+        "configuration_id": "B-prefix-k-00",
+        "configuration_size": 0,
+        "declared_order": [],
+        "ordinal": 1
+      },
+      {
+        "analysis": "B",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0"
+        ],
+        "configuration_id": "B-prefix-k-01",
+        "configuration_size": 1,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0"
+        ],
+        "ordinal": 2
+      },
+      {
+        "analysis": "B",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1"
+        ],
+        "configuration_id": "B-prefix-k-05",
+        "configuration_size": 5,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1"
+        ],
+        "ordinal": 3
+      },
+      {
+        "analysis": "B",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826"
+        ],
+        "configuration_id": "B-prefix-k-10",
+        "configuration_size": 10,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826"
+        ],
+        "ordinal": 4
+      },
+      {
+        "analysis": "B",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826",
+          "cand_01933ab615fb49e2f81b5b92",
+          "cand_599a2efab190b6e2b7457ff1",
+          "cand_42d3a67034bf5f02658cb7bf",
+          "cand_6da3014a15c7b2b3c07e9d00",
+          "cand_c66e567561c42b80680d57a2",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_5ef1e17a9fde8da19eda6ffc",
+          "cand_9be7db5012712e534c019f4c",
+          "cand_da7591327792c9bc98b427d7"
+        ],
+        "configuration_id": "B-prefix-k-20",
+        "configuration_size": 20,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826",
+          "cand_01933ab615fb49e2f81b5b92",
+          "cand_599a2efab190b6e2b7457ff1",
+          "cand_42d3a67034bf5f02658cb7bf",
+          "cand_6da3014a15c7b2b3c07e9d00",
+          "cand_c66e567561c42b80680d57a2",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_5ef1e17a9fde8da19eda6ffc",
+          "cand_9be7db5012712e534c019f4c",
+          "cand_da7591327792c9bc98b427d7"
+        ],
+        "ordinal": 5
+      },
+      {
+        "analysis": "B",
+        "candidate_ids": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826",
+          "cand_01933ab615fb49e2f81b5b92",
+          "cand_599a2efab190b6e2b7457ff1",
+          "cand_42d3a67034bf5f02658cb7bf",
+          "cand_6da3014a15c7b2b3c07e9d00",
+          "cand_c66e567561c42b80680d57a2",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_5ef1e17a9fde8da19eda6ffc",
+          "cand_9be7db5012712e534c019f4c",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_2d0c2bee852360475ed257b4",
+          "cand_c896441b03802e5c10cf4551",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_14cd836002a9a76c97eb6c1e",
+          "cand_93882884648663deb326f015",
+          "cand_337495ed13b57f0375c7bcab",
+          "cand_6937f79d38c06930e7c9a9ac",
+          "cand_eacd76ebde5ba7e94ae853aa",
+          "cand_f2d14d17235b34bf39a631f5",
+          "cand_1b63c8f8f8149f09f2ecb7c4",
+          "cand_2bfd4df050e52e03bab680f1",
+          "cand_81dab29687d98fe8038c0eaa",
+          "cand_7bbe4e7fc76c5686e2511cd9",
+          "cand_ee4e6f9b6b050fa4d222c6a7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_1c45580597c36333ce8f1444",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_478f6c4acd54af28ee697d8d",
+          "cand_326fad30e7ded583291003e6",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_c9b6667734c10464fab19fca",
+          "cand_9e2c1625957106365a4e00c0",
+          "cand_25decdfdae3f06f5b53849b4",
+          "cand_b5554ee4928fcdbe8d6f046c",
+          "cand_a393d81ec58b047e1e129db0",
+          "cand_ea8b2557e86251bb3994535b",
+          "cand_eaa4ce0396b4cc5c68b2550e",
+          "cand_51488597ac9ebd3cb59d2ff1",
+          "cand_b431757a4868f78ad44fa186",
+          "cand_929dfbf8e7ddadf6f4b97e87"
+        ],
+        "configuration_id": "B-prefix-k-50",
+        "configuration_size": 50,
+        "declared_order": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_c2737dfb5bfbb3e415dfb793",
+          "cand_817be8bf7bbbc96c20bde230",
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_cbf4af3acd6feaa65760c6d1",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_bafa53ec095d804233d42826",
+          "cand_01933ab615fb49e2f81b5b92",
+          "cand_599a2efab190b6e2b7457ff1",
+          "cand_42d3a67034bf5f02658cb7bf",
+          "cand_6da3014a15c7b2b3c07e9d00",
+          "cand_c66e567561c42b80680d57a2",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_5ef1e17a9fde8da19eda6ffc",
+          "cand_9be7db5012712e534c019f4c",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_2d0c2bee852360475ed257b4",
+          "cand_c896441b03802e5c10cf4551",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_14cd836002a9a76c97eb6c1e",
+          "cand_93882884648663deb326f015",
+          "cand_337495ed13b57f0375c7bcab",
+          "cand_6937f79d38c06930e7c9a9ac",
+          "cand_eacd76ebde5ba7e94ae853aa",
+          "cand_f2d14d17235b34bf39a631f5",
+          "cand_1b63c8f8f8149f09f2ecb7c4",
+          "cand_2bfd4df050e52e03bab680f1",
+          "cand_81dab29687d98fe8038c0eaa",
+          "cand_7bbe4e7fc76c5686e2511cd9",
+          "cand_ee4e6f9b6b050fa4d222c6a7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_1c45580597c36333ce8f1444",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_478f6c4acd54af28ee697d8d",
+          "cand_326fad30e7ded583291003e6",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_c9b6667734c10464fab19fca",
+          "cand_9e2c1625957106365a4e00c0",
+          "cand_25decdfdae3f06f5b53849b4",
+          "cand_b5554ee4928fcdbe8d6f046c",
+          "cand_a393d81ec58b047e1e129db0",
+          "cand_ea8b2557e86251bb3994535b",
+          "cand_eaa4ce0396b4cc5c68b2550e",
+          "cand_51488597ac9ebd3cb59d2ff1",
+          "cand_b431757a4868f78ad44fa186",
+          "cand_929dfbf8e7ddadf6f4b97e87"
+        ],
+        "ordinal": 6
+      }
+    ]
+  },
+  "binding_digest": "2221f332b8d4e86ee43343d1441a0e05bdcdf7574a2f37d325799cdcfaff53a9",
+  "candidate_universe": {
+    "count": 57,
+    "definitions": [
+      {
+        "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+        "canonical_deployment_position": 1,
+        "column_names": [
+          "aspect",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 14
+      },
+      {
+        "candidate_id": "cand_c2737dfb5bfbb3e415dfb793",
+        "canonical_deployment_position": 2,
+        "column_names": [
+          "aspect",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 15
+      },
+      {
+        "candidate_id": "cand_817be8bf7bbbc96c20bde230",
+        "canonical_deployment_position": 3,
+        "column_names": [
+          "aspect",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          2,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 16
+      },
+      {
+        "candidate_id": "cand_4de3778bb8674287b6dd5b29",
+        "canonical_deployment_position": 4,
+        "column_names": [
+          "slope",
+          "horizontal_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 18
+      },
+      {
+        "candidate_id": "cand_cbf4af3acd6feaa65760c6d1",
+        "canonical_deployment_position": 5,
+        "column_names": [
+          "slope",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          3,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 19
+      },
+      {
+        "candidate_id": "cand_76679921292e8c769dbbd7bc",
+        "canonical_deployment_position": 6,
+        "column_names": [
+          "slope",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 21
+      },
+      {
+        "candidate_id": "cand_0deae0d5de82a5a1fdc34111",
+        "canonical_deployment_position": 7,
+        "column_names": [
+          "slope",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          3,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 22
+      },
+      {
+        "candidate_id": "cand_77c3e92fff291d4d9515dc69",
+        "canonical_deployment_position": 8,
+        "column_names": [
+          "slope",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          3,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 23
+      },
+      {
+        "candidate_id": "cand_5ba9cc937a696a76876f820d",
+        "canonical_deployment_position": 9,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 25
+      },
+      {
+        "candidate_id": "cand_bafa53ec095d804233d42826",
+        "canonical_deployment_position": 10,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          4,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 28
+      },
+      {
+        "candidate_id": "cand_01933ab615fb49e2f81b5b92",
+        "canonical_deployment_position": 11,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 32
+      },
+      {
+        "candidate_id": "cand_599a2efab190b6e2b7457ff1",
+        "canonical_deployment_position": 12,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          5,
+          8
+        ],
+        "kind": "postgresql.mcv",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 33
+      },
+      {
+        "candidate_id": "cand_42d3a67034bf5f02658cb7bf",
+        "canonical_deployment_position": 13,
+        "column_names": [
+          "elevation",
+          "aspect"
+        ],
+        "column_ordinals": [
+          1,
+          2
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 46
+      },
+      {
+        "candidate_id": "cand_6da3014a15c7b2b3c07e9d00",
+        "canonical_deployment_position": 14,
+        "column_names": [
+          "elevation",
+          "slope"
+        ],
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 47
+      },
+      {
+        "candidate_id": "cand_c66e567561c42b80680d57a2",
+        "canonical_deployment_position": 15,
+        "column_names": [
+          "elevation",
+          "horizontal_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          1,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 48
+      },
+      {
+        "candidate_id": "cand_6b7c22215c39c807cda3872e",
+        "canonical_deployment_position": 16,
+        "column_names": [
+          "elevation",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 49
+      },
+      {
+        "candidate_id": "cand_12b552d6e4274b3e7916918d",
+        "canonical_deployment_position": 17,
+        "column_names": [
+          "elevation",
+          "horizontal_distance_to_roadways"
+        ],
+        "column_ordinals": [
+          1,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 50
+      },
+      {
+        "candidate_id": "cand_5ef1e17a9fde8da19eda6ffc",
+        "canonical_deployment_position": 18,
+        "column_names": [
+          "elevation",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 51
+      },
+      {
+        "candidate_id": "cand_9be7db5012712e534c019f4c",
+        "canonical_deployment_position": 19,
+        "column_names": [
+          "elevation",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          1,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 52
+      },
+      {
+        "candidate_id": "cand_da7591327792c9bc98b427d7",
+        "canonical_deployment_position": 20,
+        "column_names": [
+          "elevation",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 53
+      },
+      {
+        "candidate_id": "cand_2d0c2bee852360475ed257b4",
+        "canonical_deployment_position": 21,
+        "column_names": [
+          "elevation",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          1,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 54
+      },
+      {
+        "candidate_id": "cand_c896441b03802e5c10cf4551",
+        "canonical_deployment_position": 22,
+        "column_names": [
+          "aspect",
+          "slope"
+        ],
+        "column_ordinals": [
+          2,
+          3
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 55
+      },
+      {
+        "candidate_id": "cand_04524e4170fda10f288de2ad",
+        "canonical_deployment_position": 23,
+        "column_names": [
+          "aspect",
+          "horizontal_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          2,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 56
+      },
+      {
+        "candidate_id": "cand_14cd836002a9a76c97eb6c1e",
+        "canonical_deployment_position": 24,
+        "column_names": [
+          "aspect",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 57
+      },
+      {
+        "candidate_id": "cand_93882884648663deb326f015",
+        "canonical_deployment_position": 25,
+        "column_names": [
+          "aspect",
+          "horizontal_distance_to_roadways"
+        ],
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 58
+      },
+      {
+        "candidate_id": "cand_337495ed13b57f0375c7bcab",
+        "canonical_deployment_position": 26,
+        "column_names": [
+          "aspect",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 59
+      },
+      {
+        "candidate_id": "cand_6937f79d38c06930e7c9a9ac",
+        "canonical_deployment_position": 27,
+        "column_names": [
+          "aspect",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          2,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 60
+      },
+      {
+        "candidate_id": "cand_eacd76ebde5ba7e94ae853aa",
+        "canonical_deployment_position": 28,
+        "column_names": [
+          "aspect",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          2,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 61
+      },
+      {
+        "candidate_id": "cand_f2d14d17235b34bf39a631f5",
+        "canonical_deployment_position": 29,
+        "column_names": [
+          "aspect",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 62
+      },
+      {
+        "candidate_id": "cand_1b63c8f8f8149f09f2ecb7c4",
+        "canonical_deployment_position": 30,
+        "column_names": [
+          "slope",
+          "horizontal_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 63
+      },
+      {
+        "candidate_id": "cand_2bfd4df050e52e03bab680f1",
+        "canonical_deployment_position": 31,
+        "column_names": [
+          "slope",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          3,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 64
+      },
+      {
+        "candidate_id": "cand_81dab29687d98fe8038c0eaa",
+        "canonical_deployment_position": 32,
+        "column_names": [
+          "slope",
+          "horizontal_distance_to_roadways"
+        ],
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 65
+      },
+      {
+        "candidate_id": "cand_7bbe4e7fc76c5686e2511cd9",
+        "canonical_deployment_position": 33,
+        "column_names": [
+          "slope",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 66
+      },
+      {
+        "candidate_id": "cand_ee4e6f9b6b050fa4d222c6a7",
+        "canonical_deployment_position": 34,
+        "column_names": [
+          "slope",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          3,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 67
+      },
+      {
+        "candidate_id": "cand_4af628931e0d02eb50415f2b",
+        "canonical_deployment_position": 35,
+        "column_names": [
+          "slope",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          3,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 68
+      },
+      {
+        "candidate_id": "cand_1c45580597c36333ce8f1444",
+        "canonical_deployment_position": 36,
+        "column_names": [
+          "slope",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          3,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 69
+      },
+      {
+        "candidate_id": "cand_8b7a8e0422ed4ae2befb1bc8",
+        "canonical_deployment_position": 37,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "vertical_distance_to_hydrology"
+        ],
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 70
+      },
+      {
+        "candidate_id": "cand_478f6c4acd54af28ee697d8d",
+        "canonical_deployment_position": 38,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "horizontal_distance_to_roadways"
+        ],
+        "column_ordinals": [
+          4,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 71
+      },
+      {
+        "candidate_id": "cand_326fad30e7ded583291003e6",
+        "canonical_deployment_position": 39,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          4,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 72
+      },
+      {
+        "candidate_id": "cand_4293ec8c30a7314cb8ef5dbf",
+        "canonical_deployment_position": 40,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          4,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 73
+      },
+      {
+        "candidate_id": "cand_c9b6667734c10464fab19fca",
+        "canonical_deployment_position": 41,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          4,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 74
+      },
+      {
+        "candidate_id": "cand_9e2c1625957106365a4e00c0",
+        "canonical_deployment_position": 42,
+        "column_names": [
+          "horizontal_distance_to_hydrology",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          4,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 75
+      },
+      {
+        "candidate_id": "cand_25decdfdae3f06f5b53849b4",
+        "canonical_deployment_position": 43,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "horizontal_distance_to_roadways"
+        ],
+        "column_ordinals": [
+          5,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 76
+      },
+      {
+        "candidate_id": "cand_b5554ee4928fcdbe8d6f046c",
+        "canonical_deployment_position": 44,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 77
+      },
+      {
+        "candidate_id": "cand_a393d81ec58b047e1e129db0",
+        "canonical_deployment_position": 45,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          5,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 78
+      },
+      {
+        "candidate_id": "cand_ea8b2557e86251bb3994535b",
+        "canonical_deployment_position": 46,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          5,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 79
+      },
+      {
+        "candidate_id": "cand_eaa4ce0396b4cc5c68b2550e",
+        "canonical_deployment_position": 47,
+        "column_names": [
+          "vertical_distance_to_hydrology",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          5,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 80
+      },
+      {
+        "candidate_id": "cand_51488597ac9ebd3cb59d2ff1",
+        "canonical_deployment_position": 48,
+        "column_names": [
+          "horizontal_distance_to_roadways",
+          "hillshade_9am"
+        ],
+        "column_ordinals": [
+          6,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 81
+      },
+      {
+        "candidate_id": "cand_b431757a4868f78ad44fa186",
+        "canonical_deployment_position": 49,
+        "column_names": [
+          "horizontal_distance_to_roadways",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          6,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 82
+      },
+      {
+        "candidate_id": "cand_929dfbf8e7ddadf6f4b97e87",
+        "canonical_deployment_position": 50,
+        "column_names": [
+          "horizontal_distance_to_roadways",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          6,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 83
+      },
+      {
+        "candidate_id": "cand_d8596bbbd92afbad9d401cd6",
+        "canonical_deployment_position": 51,
+        "column_names": [
+          "horizontal_distance_to_roadways",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          6,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 84
+      },
+      {
+        "candidate_id": "cand_d94eec73746ef01a6811815f",
+        "canonical_deployment_position": 52,
+        "column_names": [
+          "hillshade_9am",
+          "hillshade_noon"
+        ],
+        "column_ordinals": [
+          7,
+          8
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 85
+      },
+      {
+        "candidate_id": "cand_66f3d1c2b0b2b61a41f44994",
+        "canonical_deployment_position": 53,
+        "column_names": [
+          "hillshade_9am",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 86
+      },
+      {
+        "candidate_id": "cand_e15685675a396385fa8dc298",
+        "canonical_deployment_position": 54,
+        "column_names": [
+          "hillshade_9am",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          7,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 87
+      },
+      {
+        "candidate_id": "cand_c7595f3b6addcec1b9919cbe",
+        "canonical_deployment_position": 55,
+        "column_names": [
+          "hillshade_noon",
+          "hillshade_3pm"
+        ],
+        "column_ordinals": [
+          8,
+          9
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 88
+      },
+      {
+        "candidate_id": "cand_71249b442b7dc4205d74a4b9",
+        "canonical_deployment_position": 56,
+        "column_names": [
+          "hillshade_noon",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          8,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 89
+      },
+      {
+        "candidate_id": "cand_e1a89b9755e5e3f384afc69f",
+        "canonical_deployment_position": 57,
+        "column_names": [
+          "hillshade_3pm",
+          "horizontal_distance_to_fire_points"
+        ],
+        "column_ordinals": [
+          9,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "static_precedence_rank": 90
+      }
+    ],
+    "semantic_digest": "b92566ec3a35a3085a1bcd58363785819ac5a51d94a04d3181195c6170a98bda"
+  },
+  "dataset": {
+    "candidate_count": 57,
+    "dataset_id": "arecel-forest10",
+    "sample_rows": 10000,
+    "sample_seed": 42,
+    "statistics_target": 100,
+    "workload_id": "arecel_forest10_test_v1"
+  },
+  "experiment_id": "rq5-whatif-evaluation-cost-v2-forest10",
+  "format_version": "rq5-whatif-evaluation-cost-manifest-v1",
+  "producer_commit_sha": "7a80e99e7585e2e0353abc5ce4be28e15c68dc57",
+  "protocol": {
+    "format": "rq5-whatif-evaluation-cost-v2",
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v2.md",
+    "sha256": "56175f66c6e05066de91ef7219984c7f5889a6484173c4d4a6766ce8aeaf5192"
+  },
+  "query_subset": [
+    {
+      "query_id": "arecel_forest10_test_000000",
+      "source_index": 0,
+      "sql_sha256": "204592927aae8fa55d02e7484032fe6b55a5d0e6dad14c40a869916b3cabe2da",
+      "subset_ordinal": 0,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000078",
+      "source_index": 78,
+      "sql_sha256": "ea9dcea5cfe6ce1c531490750a35f1c4ba112bff2a444f52294f131ec42fe62e",
+      "subset_ordinal": 1,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000157",
+      "source_index": 157,
+      "sql_sha256": "5413882b4a7ae626a7c461c9078c414f34ac8d4a358ebfcbfacf3e181ad5dc18",
+      "subset_ordinal": 2,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000236",
+      "source_index": 236,
+      "sql_sha256": "8af3ac91ae14bc88342d5a44532a7bfe38d611cd202b3f5950399e909e054375",
+      "subset_ordinal": 3,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000314",
+      "source_index": 314,
+      "sql_sha256": "b91f84b6b1d66f0bcb17d05a4198c3b567f4ec9f0bff197d69c1749cd5c66266",
+      "subset_ordinal": 4,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000393",
+      "source_index": 393,
+      "sql_sha256": "711af47cf7b70d16dedda93cda299024c89e6a2dddfa64108e0007e5802fba4d",
+      "subset_ordinal": 5,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000472",
+      "source_index": 472,
+      "sql_sha256": "fc0f09816fc85ec079e5236477bd913738acdbd104d2edf3a38587febd741954",
+      "subset_ordinal": 6,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000551",
+      "source_index": 551,
+      "sql_sha256": "1773b333b2b987795b4b85fb9e38a90c97e51a04d0e720b05a78b909b50743f2",
+      "subset_ordinal": 7,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000629",
+      "source_index": 629,
+      "sql_sha256": "7eb656384aec8df4677801f5c8dbc5381eb8b777359dbf2827e4f250133f64d8",
+      "subset_ordinal": 8,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000708",
+      "source_index": 708,
+      "sql_sha256": "4a65c3054a9d8f84c066c39a8282d8a42f1ceb6da0ef2f9da8989613cb9e720a",
+      "subset_ordinal": 9,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000787",
+      "source_index": 787,
+      "sql_sha256": "f5b7cfd01d8bfe107ba84d3c9846c65f923d6924e991a0a5224b60820beb22a7",
+      "subset_ordinal": 10,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000866",
+      "source_index": 866,
+      "sql_sha256": "c6bb18e938bb863f57d84a76a031fc90dc59ca89366bc7a99ddfd176ebc5fbb1",
+      "subset_ordinal": 11,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000944",
+      "source_index": 944,
+      "sql_sha256": "cd54e3366c2488a40d94e8930683064a56b1970bf4acd63e342cae7fc2ae7c4d",
+      "subset_ordinal": 12,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001023",
+      "source_index": 1023,
+      "sql_sha256": "8e054f8e24a8627f6c3c33d6d8f740dacea2772d829cbae0873d10420e7397ea",
+      "subset_ordinal": 13,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001102",
+      "source_index": 1102,
+      "sql_sha256": "dad739ac67179bb1515f6886532acaf40e5c65494264941c936f27ea0747a06f",
+      "subset_ordinal": 14,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001180",
+      "source_index": 1180,
+      "sql_sha256": "1b9fe5560efbd6a5e4a3e8acc4e50d2db589e80753f0eef094d0a7a268869669",
+      "subset_ordinal": 15,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001259",
+      "source_index": 1259,
+      "sql_sha256": "20adb1cd56567b995aefb7f75382c0f2aa6ffdcb611330ce7720ac3db5d8354e",
+      "subset_ordinal": 16,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001338",
+      "source_index": 1338,
+      "sql_sha256": "57047fef1c8faa923f391d23756634db664e896a07f140808de5ea5e13157936",
+      "subset_ordinal": 17,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001417",
+      "source_index": 1417,
+      "sql_sha256": "762dc65faabf23b8ef2159614eff5bb2e3315d8c0fae078c6ba68562661cc13f",
+      "subset_ordinal": 18,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001495",
+      "source_index": 1495,
+      "sql_sha256": "7645b954adae9c2e3dfccd3486fa270ca6700d7c74c67c7546c6958e8ffd6825",
+      "subset_ordinal": 19,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001574",
+      "source_index": 1574,
+      "sql_sha256": "1f6a65675747667441b7542b0b75cb81ca6594e32e226c8d2e6f7b2dafc9bcf0",
+      "subset_ordinal": 20,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001653",
+      "source_index": 1653,
+      "sql_sha256": "62bbb384216c87962073de6f72c57d5a7fea10bb0abe59a24b29463be7dce765",
+      "subset_ordinal": 21,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001732",
+      "source_index": 1732,
+      "sql_sha256": "191c3e728fe7885e5f25b70752d5f34fb82cd162110c60313227fbf2bc1e7105",
+      "subset_ordinal": 22,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001810",
+      "source_index": 1810,
+      "sql_sha256": "4fffbf4a3eb5489ae65d533c47375d4171b849c363826d9e4b3f58b94932414f",
+      "subset_ordinal": 23,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001889",
+      "source_index": 1889,
+      "sql_sha256": "a7f4d3cb3b915f12bc592c79bb5bd2c61cd7bc0933344d4a84e7b7577fac5b20",
+      "subset_ordinal": 24,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_001968",
+      "source_index": 1968,
+      "sql_sha256": "4cba35dafd3dc5e860e98643cd11d3095d1138278e924ff305f8ed892970045d",
+      "subset_ordinal": 25,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002047",
+      "source_index": 2047,
+      "sql_sha256": "942c5dafb651c2d405543216cff505705b1a3464652db3a1d4107bd6f376a119",
+      "subset_ordinal": 26,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002125",
+      "source_index": 2125,
+      "sql_sha256": "c654ee90c21dccd1d8e003b71a3df2ab9594779d3cf80e14a0af08244e17504b",
+      "subset_ordinal": 27,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002204",
+      "source_index": 2204,
+      "sql_sha256": "0a69bd69cf405ed220ba252ce66404c885370a9b6e2bc320d6f54544541ca399",
+      "subset_ordinal": 28,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002283",
+      "source_index": 2283,
+      "sql_sha256": "05a08ce9f61e2a44f6b2cfa0eb98e867c9fc31d6066f6a24d23ec1570bd2e9c8",
+      "subset_ordinal": 29,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002361",
+      "source_index": 2361,
+      "sql_sha256": "12b8788666df0ac567fdc4431aa8f9af7bcd61cb0f14565cff102a0ae0707031",
+      "subset_ordinal": 30,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002440",
+      "source_index": 2440,
+      "sql_sha256": "9f3f03f3aabf26e74dc8f864a476749402acc1e21f81e21bc47bbe6a01f2ba93",
+      "subset_ordinal": 31,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002519",
+      "source_index": 2519,
+      "sql_sha256": "2cd2cef1fe9e4677af5dd85cba37e5ea47b5ae0f7d650d24805f72286b0fc06b",
+      "subset_ordinal": 32,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002598",
+      "source_index": 2598,
+      "sql_sha256": "475eac312feb15ac380faee8dca1d815ef06b890e8a1ea9fef72bcbfaf43a767",
+      "subset_ordinal": 33,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002676",
+      "source_index": 2676,
+      "sql_sha256": "5a64dadfaf51fddc9bd3b4c17b3c666eafaf63b31c93383bac23bd4012c59911",
+      "subset_ordinal": 34,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002755",
+      "source_index": 2755,
+      "sql_sha256": "7465d4d88e614e84161eaf258e57bff42f5fb20eff10e94962ec5d31505fb534",
+      "subset_ordinal": 35,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002834",
+      "source_index": 2834,
+      "sql_sha256": "c7ae4c485126bc9f43016e7f9b828d88f542757d082173049061d691e0f7ea27",
+      "subset_ordinal": 36,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002913",
+      "source_index": 2913,
+      "sql_sha256": "571e6e8a7f4a4bb74831b2004ad29b92a477d737ddcd283eed6a189559a306c5",
+      "subset_ordinal": 37,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_002991",
+      "source_index": 2991,
+      "sql_sha256": "d235abfcd322a393e4cbd4a4347d61a6e66afff209dd0063d1486ceabd109834",
+      "subset_ordinal": 38,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003070",
+      "source_index": 3070,
+      "sql_sha256": "733981b75fac2c9d01c09e00660079fddf7589392a3fa9751b94b9426cb8f039",
+      "subset_ordinal": 39,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003149",
+      "source_index": 3149,
+      "sql_sha256": "6ad834bcde2881d213174c080deed6d9d8680a0a682b66edf8ab406b8b02c8b0",
+      "subset_ordinal": 40,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003228",
+      "source_index": 3228,
+      "sql_sha256": "3f65601131db35263a5ff255fc6ffc6b38fe2e82728012017f6634ae175abb48",
+      "subset_ordinal": 41,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003306",
+      "source_index": 3306,
+      "sql_sha256": "6a3c27b7d72e9b4f11870beb3aef85e1b4ab74c72ddeb7f3676952e498afa5aa",
+      "subset_ordinal": 42,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003385",
+      "source_index": 3385,
+      "sql_sha256": "84adc77ed36073f12dac561d3a99a036dacc121f428a1f3a7715a6d0998df1ed",
+      "subset_ordinal": 43,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003464",
+      "source_index": 3464,
+      "sql_sha256": "1c6df8a421adf3ba3458ec490350c9d634173bbedc50216b87cf233605dfa4a0",
+      "subset_ordinal": 44,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003542",
+      "source_index": 3542,
+      "sql_sha256": "f21b8eb56aef21be87970011df3f24b0df82949d50d5526ca66293b02c42fe70",
+      "subset_ordinal": 45,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003621",
+      "source_index": 3621,
+      "sql_sha256": "6b359ae0514cc3d9d97a69fa425b372bf854b254397a1d84b42731a87a66a7d0",
+      "subset_ordinal": 46,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003700",
+      "source_index": 3700,
+      "sql_sha256": "56345e66e4b4967ce6add42bb7c3b17afa80f9346c3f35228a16178ecaba772d",
+      "subset_ordinal": 47,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003779",
+      "source_index": 3779,
+      "sql_sha256": "256c61654dc2285be79733d9647d2e540a1d18e1ff361e9e48d96688993c3961",
+      "subset_ordinal": 48,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003857",
+      "source_index": 3857,
+      "sql_sha256": "941230a824c5b6339be7d402cf6e6d57290b7e3e248da1916d0095b3ac3e4826",
+      "subset_ordinal": 49,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_003936",
+      "source_index": 3936,
+      "sql_sha256": "0cc25616ca81eec3c9fcefb0379320bd9aeea60d92313a045205ff981525fdb2",
+      "subset_ordinal": 50,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004015",
+      "source_index": 4015,
+      "sql_sha256": "6edbb23611cd4282bcaf11c06a595f6dc7856712c997e7a9cf3c6accf3bae902",
+      "subset_ordinal": 51,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004094",
+      "source_index": 4094,
+      "sql_sha256": "be15ff0cb6aa7e76358be277586eb1c47b2e3280b1c996e140e9e9a6a4ffd398",
+      "subset_ordinal": 52,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004172",
+      "source_index": 4172,
+      "sql_sha256": "1758914f5e3d4cf38cd8db9d97a751890b32c5aa868a464280c490c573c1daca",
+      "subset_ordinal": 53,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004251",
+      "source_index": 4251,
+      "sql_sha256": "045089d86c7ed45bea6918cbf7c34a150b3f315f1ce15a9342cd8293d4652444",
+      "subset_ordinal": 54,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004330",
+      "source_index": 4330,
+      "sql_sha256": "a387978d0642957d4f8efc5942b47a66aac581183b3c2c5ece3d216f361908d6",
+      "subset_ordinal": 55,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004409",
+      "source_index": 4409,
+      "sql_sha256": "e2dfea5c11b710c8f81f478b48bc9a8bc4db0a5f80c32e53214b89f778113f7e",
+      "subset_ordinal": 56,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004487",
+      "source_index": 4487,
+      "sql_sha256": "9f4c54771dc950714d9531623230a3525e7501f9ea198a7ffdb5cf0880c04598",
+      "subset_ordinal": 57,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004566",
+      "source_index": 4566,
+      "sql_sha256": "826f71c93007c13c31939f5691558005dd2af50cbe7f7d38e0ce7af5266e45f6",
+      "subset_ordinal": 58,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004645",
+      "source_index": 4645,
+      "sql_sha256": "028e8b8c88a605b0f156859e76fcbc2321e679170abb1decfb35286211d34e54",
+      "subset_ordinal": 59,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004723",
+      "source_index": 4723,
+      "sql_sha256": "fdf01877dc25867c9855886056e1a320e59ce66c22c0ae5ae8e310acb780aa33",
+      "subset_ordinal": 60,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004802",
+      "source_index": 4802,
+      "sql_sha256": "5238797ce495170bfe603bc03b0621bbdbcf2c39a3525feec467c59966a7107d",
+      "subset_ordinal": 61,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004881",
+      "source_index": 4881,
+      "sql_sha256": "e05a98c1a4ef5ee7d453e7aee8ffa86d68d754f95e6d270c409d5b00fed30331",
+      "subset_ordinal": 62,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_004960",
+      "source_index": 4960,
+      "sql_sha256": "87deac615b88bb2598a7a9ca4e19db2bac532f2bff3ee51e72978d915ae3fba5",
+      "subset_ordinal": 63,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005038",
+      "source_index": 5038,
+      "sql_sha256": "7b82ca194c4d3fb6fbb217c04a1ff764484c82fcff9de331ecdf3977585f4ea9",
+      "subset_ordinal": 64,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005117",
+      "source_index": 5117,
+      "sql_sha256": "22153cdb483549eca3e6caaef3665d57911cc5118077c94cff352920e9f09b3e",
+      "subset_ordinal": 65,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005196",
+      "source_index": 5196,
+      "sql_sha256": "d4a62c8d9c37312165a48b3cee3ba02741afb95305ef86153b47b88d40e7cc89",
+      "subset_ordinal": 66,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005275",
+      "source_index": 5275,
+      "sql_sha256": "e1c454906ae5f4abd1989116ea6ea45debde94663014681a0fdfde26e7aa9ed8",
+      "subset_ordinal": 67,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005353",
+      "source_index": 5353,
+      "sql_sha256": "d2799ffc8b5320986f4b3f140e3d7f5e056e239c399faac1a2f2c022d710e9aa",
+      "subset_ordinal": 68,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005432",
+      "source_index": 5432,
+      "sql_sha256": "ee404440d13710a87e840f74a4451a86e646b41d008668c761f3286aed41366e",
+      "subset_ordinal": 69,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005511",
+      "source_index": 5511,
+      "sql_sha256": "10ec3e97b8a60aecf9ba28f1e7c60faef0b7d17ee3b31c92d27860f293b32140",
+      "subset_ordinal": 70,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005589",
+      "source_index": 5589,
+      "sql_sha256": "aff6e5c6d88c19e99092bcc441fc32e02634c9185d822817a9ae6646249e4c61",
+      "subset_ordinal": 71,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005668",
+      "source_index": 5668,
+      "sql_sha256": "a3aa2d4b933649abd8f8cf666ea69733b2b8644087ec2b6e75eca9a5c36abad7",
+      "subset_ordinal": 72,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005747",
+      "source_index": 5747,
+      "sql_sha256": "f5ef8f3292d65fb8acdde2ebd842fe1ae9e0fc9f2b76a5b7e539a8b5597c28d5",
+      "subset_ordinal": 73,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005826",
+      "source_index": 5826,
+      "sql_sha256": "9c0aef3285397f2ba359e2a70d5b8316d6729846c3858288c0e146e22ff46676",
+      "subset_ordinal": 74,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005904",
+      "source_index": 5904,
+      "sql_sha256": "48ddefab5a1e9b2e50c3048a010ab8d232b4b95447394ac586ae4d23b0b0badb",
+      "subset_ordinal": 75,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_005983",
+      "source_index": 5983,
+      "sql_sha256": "b81a3ad93bb40572ec7c77eb936ce358438cc867aa78157ebd8cb82889f2af90",
+      "subset_ordinal": 76,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006062",
+      "source_index": 6062,
+      "sql_sha256": "fd4d444ed5b8e17b6fe28ed7d4eb9f17f28eb8f691ad949da2db6240e456ae3c",
+      "subset_ordinal": 77,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006141",
+      "source_index": 6141,
+      "sql_sha256": "2f712812e6af12ee4a3ceade3fb57dc68a016075a7b8d874e3e54512c3ea5842",
+      "subset_ordinal": 78,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006219",
+      "source_index": 6219,
+      "sql_sha256": "4084d1e234c43c8b40a154979b231f761ac5da6e7183cd2fe98354dbea2810bc",
+      "subset_ordinal": 79,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006298",
+      "source_index": 6298,
+      "sql_sha256": "2417438590283b22e9aa2978f9e45eabf9147d6316720ea6ed58d749f66ea978",
+      "subset_ordinal": 80,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006377",
+      "source_index": 6377,
+      "sql_sha256": "7e2f604951b78c3b1a0891caa60cf4582341ca52247d4c87497756aee5687646",
+      "subset_ordinal": 81,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006456",
+      "source_index": 6456,
+      "sql_sha256": "bb6fcd2050daa3bef3a35cd9d8ac6a0baa4517274573160538c73cc536d1c316",
+      "subset_ordinal": 82,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006534",
+      "source_index": 6534,
+      "sql_sha256": "27cf9dcdfa50e0b3b6c90e5a8630f7485cbe8f1d4dec5fd88124a44e484d7432",
+      "subset_ordinal": 83,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006613",
+      "source_index": 6613,
+      "sql_sha256": "c286f4ba18e1f0c34c5b3c2ab0d296228ae8aa2e37fdffb1a195b08fbbef0a58",
+      "subset_ordinal": 84,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006692",
+      "source_index": 6692,
+      "sql_sha256": "ec338f01fcac97e4a48003af3cca1e761e2204c1b801c7da3e15a854755fbec7",
+      "subset_ordinal": 85,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006770",
+      "source_index": 6770,
+      "sql_sha256": "a8595ddfe5c2a0d6267e18944a81baafa977009082b0933f0e324d25c282efba",
+      "subset_ordinal": 86,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006849",
+      "source_index": 6849,
+      "sql_sha256": "a9094d4ee845ee90e6886ece5031452badc474da21c43052015d8ccef7ccd903",
+      "subset_ordinal": 87,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_006928",
+      "source_index": 6928,
+      "sql_sha256": "da4864e354c351ef00d801a0dcde612e7978cc58ed54da05cf1af01fa38197a9",
+      "subset_ordinal": 88,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007007",
+      "source_index": 7007,
+      "sql_sha256": "71e3a6f9e5ce947c492db868aef259dc368ea8aa50827897d704ae64bba39e26",
+      "subset_ordinal": 89,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007085",
+      "source_index": 7085,
+      "sql_sha256": "5bf85efdae6109b79eeb64236976055192a83fab568d6129f99cbaa4fe893fb3",
+      "subset_ordinal": 90,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007164",
+      "source_index": 7164,
+      "sql_sha256": "bce4588ccaf2a1507a5b98db743fa85c1a52d61c5c3e84e5aaf94d1f7c4b0d76",
+      "subset_ordinal": 91,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007243",
+      "source_index": 7243,
+      "sql_sha256": "2228f98b9c57b8ebe953d7bfa2486a4cf711e7dcc400ed2eb2d181541efcbee0",
+      "subset_ordinal": 92,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007322",
+      "source_index": 7322,
+      "sql_sha256": "24ec352dbbc8f7f41c0fa7dcd910e1a4f4aa34942f43b74de8efbc84d38c1c04",
+      "subset_ordinal": 93,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007400",
+      "source_index": 7400,
+      "sql_sha256": "e8c9508560ea0bd9eca023550944c8bb0fb1d6cfde689df96002802c64065415",
+      "subset_ordinal": 94,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007479",
+      "source_index": 7479,
+      "sql_sha256": "52ed901971ab9678c14333e9465ec4b31dc9be7e5ca27454e63e71b3aae2ecd2",
+      "subset_ordinal": 95,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007558",
+      "source_index": 7558,
+      "sql_sha256": "7d83aa736703e64ae0b2f16ba6e5fbb9e629f05fec04c2b13fb631547a71b058",
+      "subset_ordinal": 96,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007637",
+      "source_index": 7637,
+      "sql_sha256": "1e3e2274787fec05089c0cb0f78f0e133c8fc8b6c2de3c0a0624977af277564d",
+      "subset_ordinal": 97,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007715",
+      "source_index": 7715,
+      "sql_sha256": "d1a7f84419ba9194a91f474000c0462df4e45ba24d78fef578b6ef706e9b6871",
+      "subset_ordinal": 98,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007794",
+      "source_index": 7794,
+      "sql_sha256": "62b45b89df5dd5b8335db4028d22ae907ff10e6c4a0caf09faf7dcd3b7e5c5ef",
+      "subset_ordinal": 99,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007873",
+      "source_index": 7873,
+      "sql_sha256": "81f389bd03fef929d125adb128a8a2466536e499342e381f5db4e1525365c6b5",
+      "subset_ordinal": 100,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_007951",
+      "source_index": 7951,
+      "sql_sha256": "02561bd5ca59abdfe5f0c2511e6f65712fb39e31b6e1c3970db1f751cfc76366",
+      "subset_ordinal": 101,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008030",
+      "source_index": 8030,
+      "sql_sha256": "da4cfe24bca35f02a14b7ee8aaa900219c3603ee0c01f8ee6b40f616001e21b3",
+      "subset_ordinal": 102,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008109",
+      "source_index": 8109,
+      "sql_sha256": "c4c6c7bccda9615058cd55809071d0c2775f2a51dabc5eff769b0543ef0bf814",
+      "subset_ordinal": 103,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008188",
+      "source_index": 8188,
+      "sql_sha256": "c4b11591fc58e0cba7325b27ff8bd6c2a6272e8c06fb84e8b6d5aa5bc7403cb1",
+      "subset_ordinal": 104,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008266",
+      "source_index": 8266,
+      "sql_sha256": "07135135bfbea8ae2708d55edfa19bfd539695cd32e20279b25dc58f9e8afbf2",
+      "subset_ordinal": 105,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008345",
+      "source_index": 8345,
+      "sql_sha256": "f34f6e50e4015c63037622718c044285a41b85bfb0d4aef9b303942d04b0e94b",
+      "subset_ordinal": 106,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008424",
+      "source_index": 8424,
+      "sql_sha256": "ccc276778400564611811ecc1d516b6cb3f5035112571e2d197ef6bd16d75c71",
+      "subset_ordinal": 107,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008503",
+      "source_index": 8503,
+      "sql_sha256": "0b764933dbfd73c57a2118f7c67bc47d3df30f3d839ece6c7abce43f87e86117",
+      "subset_ordinal": 108,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008581",
+      "source_index": 8581,
+      "sql_sha256": "bcab7efe16f67814b54dab82e86945d198374584c14d84ed1a4c8b1f7540f962",
+      "subset_ordinal": 109,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008660",
+      "source_index": 8660,
+      "sql_sha256": "ccf192a0d652810c6b160bfdc1b61fcd425a0a1eab6c23c1d5d437e948ad54de",
+      "subset_ordinal": 110,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008739",
+      "source_index": 8739,
+      "sql_sha256": "65045b7f0bfa04895c2f1839511b4daeee5584a2be66affd120df600523448fc",
+      "subset_ordinal": 111,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008818",
+      "source_index": 8818,
+      "sql_sha256": "d6411fda0ff549a7ef12ad524a7b72edef50538eaafbc9cb3d6edbfa74b40a3a",
+      "subset_ordinal": 112,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008896",
+      "source_index": 8896,
+      "sql_sha256": "1097b634827a832de7385d7cc5e7c0d0ae4a5f537b2e71ebb1aaf7b1bd86680e",
+      "subset_ordinal": 113,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_008975",
+      "source_index": 8975,
+      "sql_sha256": "61d9deb3fc84d7e20cf3a75ec47b2e2860b0cc06466c1f3398ba700e4fe1b6d3",
+      "subset_ordinal": 114,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009054",
+      "source_index": 9054,
+      "sql_sha256": "7b75f057252f47bf3a5caec1f4ec7cca26f851866cb87a6f83bb0e2e8d99bd4a",
+      "subset_ordinal": 115,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009132",
+      "source_index": 9132,
+      "sql_sha256": "c0d66ad6c1e3d04b531441a1ec7878f5d744642eab05eaac8bb097a6b8d61443",
+      "subset_ordinal": 116,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009211",
+      "source_index": 9211,
+      "sql_sha256": "1d4a11f147cba29c71eb9579cdc45f0c4a60220c3d41515647db000ea5615888",
+      "subset_ordinal": 117,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009290",
+      "source_index": 9290,
+      "sql_sha256": "de674ef03ef4a736dc198107b1c2a681442637b2712116051d7f3303860e921a",
+      "subset_ordinal": 118,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009369",
+      "source_index": 9369,
+      "sql_sha256": "273eba3d53e415afc25d56ee157916075cc7a618e1e0407cce719dc8c782a1f1",
+      "subset_ordinal": 119,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009447",
+      "source_index": 9447,
+      "sql_sha256": "e3454c208d761901cc035aee1ff88febe4f43640b6ae26160f36b10bb2bb3b50",
+      "subset_ordinal": 120,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009526",
+      "source_index": 9526,
+      "sql_sha256": "b36cd9e573d105a3f188d86f60b57aecacc96a9317c6e1b860d391debd7277a9",
+      "subset_ordinal": 121,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009605",
+      "source_index": 9605,
+      "sql_sha256": "c713c9104b8f0277477ee5aa39fda94a35b598bebea20a3be739a9c9e4aef392",
+      "subset_ordinal": 122,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009684",
+      "source_index": 9684,
+      "sql_sha256": "659fe90c45f19cd53b251df3e0a3398de2705e2eac56894d3f351cc775e26e9a",
+      "subset_ordinal": 123,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009762",
+      "source_index": 9762,
+      "sql_sha256": "b3887cca1c0234ac67ded3b1caa964c208c7fd94068af0df128cd6073280ef8b",
+      "subset_ordinal": 124,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009841",
+      "source_index": 9841,
+      "sql_sha256": "604b964d25ff300dc9e0a5175b8299c939da112e9e5aeffea953f75c406336d6",
+      "subset_ordinal": 125,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009920",
+      "source_index": 9920,
+      "sql_sha256": "bdf4994a3331432896eab58e5a71e96a072c2553de5b8605d0dc5cad5420a6eb",
+      "subset_ordinal": 126,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_009999",
+      "source_index": 9999,
+      "sql_sha256": "33851856e2af1ce597f155b52ea1b28936e123f6a3b0de1ef116b66fcd437b8c",
+      "subset_ordinal": 127,
+      "weight": 1.0
+    }
+  ],
+  "query_subset_size": 128,
+  "semantic_digest": "28c795e1f9c9e16b6de83b08a4ef12bc77e9a5ad37f0e1bfd1c33a95f02dc472",
+  "source_bindings": {
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "rq4_ablation": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+      "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9"
+    },
+    "rq4_design": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "ready-for-offline-validation",
+  "timing_contract": {
+    "catalogless_analyze_per_configuration": false,
+    "catalogless_materialization_per_run": true,
+    "clock": "client-monotonic-perf-counter-ns",
+    "complete_total_includes_mandatory_preparation": true,
+    "explain_analyze": false,
+    "explain_is_ordinary": true,
+    "physical_analyze_per_configuration": true,
+    "warm_total_excludes_mandatory_preparation": true
+  },
+  "workload": {
+    "path": "runs/_forest10_workload.json",
+    "provenance": {
+      "benchmark_id": "arecel-forest10",
+      "canonical_source_sha256": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "identifier_adapter": "quoted-source-names-to-lowercase-catalog-identifiers-v1",
+      "projection_adapter": "count-star-to-select-star-v1",
+      "query_id_mapping": "arecel:forest10:test:<index> -> arecel_forest10_test_<index>",
+      "relation_adapter": "safe-exact-source-relation-to-public.forest10-v1",
+      "source_label_sha256": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+      "source_labels": "data/forest10/workload/base-original-label.pkl",
+      "source_split": "test",
+      "source_workload": "data/forest10/workload/base.pkl",
+      "source_workload_sha256": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea",
+      "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a"
+    },
+    "query_count": 10000,
+    "selection_rule": "evenly-spaced-canonical-index-v1",
+    "sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6",
+    "workload_id": "arecel_forest10_test_v1"
+  }
+}
