@@ -53,7 +53,10 @@ def test_native_stability_binds_historical_and_current_strata() -> None:
     assert protocol["dataset_bindings"]["arecel-census13"]["comparability_stratum"] == (
         "current-v2"
     )
-    assert protocol["datasets"]["cross_dataset_pooling"] == "prohibited; report dataset-scoped strata because Forest10 retains system-freeze-v1"
+    assert (
+        protocol["datasets"]["cross_dataset_pooling"]
+        == "prohibited; report dataset-scoped strata because Forest10 retains system-freeze-v1"
+    )
 
 
 def test_protocol_rejects_resealed_membership_mutation() -> None:

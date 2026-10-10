@@ -126,7 +126,9 @@ def _method_memberships(design: dict[str, Any]) -> tuple[list[str], dict[str, li
     return list(METHOD_ORDER), memberships
 
 
-def _candidate_definitions(design: dict[str, Any], memberships: dict[str, list[str]]) -> dict[str, dict[str, Any]]:
+def _candidate_definitions(
+    design: dict[str, Any], memberships: dict[str, list[str]]
+) -> dict[str, dict[str, Any]]:
     candidates = {
         item["candidate_id"]: item for item in design["eligible_universe"]["eligible_candidates"]
     }
@@ -206,9 +208,9 @@ def _dataset_binding(root: Path, dataset_id: str) -> dict[str, Any]:
             method: (
                 design["methods"].get(method, {}).get("status")
                 if design["format_version"] != "rq4-design-evaluation-v1"
-                else design["comparison"]["methods"].get(
-                    source["method_alias"].get(method, method), {}
-                ).get("termination_status")
+                else design["comparison"]["methods"]
+                .get(source["method_alias"].get(method, method), {})
+                .get("termination_status")
             )
             for method in METHOD_ORDER
         },
@@ -255,8 +257,12 @@ def build_protocol(root: Path, producer_sha: str) -> dict[str, Any]:
         },
         "source_bindings": {
             "system_freeze_v2": _source_ref(root, "paper/system-freeze-v2.json"),
-            "rq4_fixed_k_summary": _source_ref(root, "experiments/rq4-fixed-k-cross-dataset-summary-v1.json"),
-            "time_budget_audit": _source_ref(root, "experiments/rq4-time-budget-fairness-audit-v1.json"),
+            "rq4_fixed_k_summary": _source_ref(
+                root, "experiments/rq4-fixed-k-cross-dataset-summary-v1.json"
+            ),
+            "time_budget_audit": _source_ref(
+                root, "experiments/rq4-time-budget-fairness-audit-v1.json"
+            ),
         },
         "dataset_bindings": datasets,
         "realization_design": {
@@ -282,10 +288,26 @@ def build_protocol(root: Path, producer_sha: str) -> dict[str, Any]:
             "method ranking and paired q-error differences",
         ],
         "metrics": {
-            "per_method_realization": ["mean", "p50", "p95", "p99", "max", "changed_plan_rows_fraction"],
+            "per_method_realization": [
+                "mean",
+                "p50",
+                "p95",
+                "p99",
+                "max",
+                "changed_plan_rows_fraction",
+            ],
             "ranking": ["within_realization_rank", "first_or_tie_count", "pairwise_win_tie_loss"],
-            "paired": ["greedy_minus_singleton_mean_qerror", "paired_query_improved_unchanged_worsened"],
-            "across_realizations": ["min", "max", "descriptive_standard_deviation", "payload_fingerprint_difference_fraction", "ordinary_fingerprint_difference"],
+            "paired": [
+                "greedy_minus_singleton_mean_qerror",
+                "paired_query_improved_unchanged_worsened",
+            ],
+            "across_realizations": [
+                "min",
+                "max",
+                "descriptive_standard_deviation",
+                "payload_fingerprint_difference_fraction",
+                "ordinary_fingerprint_difference",
+            ],
             "definitions": {
                 "qerror": "qerror-cardinality-floor-1-v1",
                 "lower_is_better": True,
@@ -376,10 +398,18 @@ def build_readiness(root: Path, protocol: dict[str, Any], producer_sha: str) -> 
             "semantic_digest": protocol["semantic_digest"],
         },
         "status": "readiness-review-complete-formal-execution-not-authorized",
-        "formal_execution": {"authorized": False, "invocation_count": 0, "results_available": False},
+        "formal_execution": {
+            "authorized": False,
+            "invocation_count": 0,
+            "results_available": False,
+        },
         "source_coverage": {
-            "fixed_k_summary": _source_ref(root, "experiments/rq4-fixed-k-cross-dataset-summary-v1.json"),
-            "time_budget_audit": _source_ref(root, "experiments/rq4-time-budget-fairness-audit-v1.json"),
+            "fixed_k_summary": _source_ref(
+                root, "experiments/rq4-fixed-k-cross-dataset-summary-v1.json"
+            ),
+            "time_budget_audit": _source_ref(
+                root, "experiments/rq4-time-budget-fairness-audit-v1.json"
+            ),
             "system_freeze_v2": _source_ref(root, "paper/system-freeze-v2.json"),
         },
         "comparability_findings": {
@@ -425,7 +455,11 @@ def build_readiness(root: Path, protocol: dict[str, Any], producer_sha: str) -> 
                 "power7_extension_method_arms": 45,
                 "power7_extension_explain_calls": 450000,
             },
-            "dominant_stages": ["stock EXPLAIN evaluation", "database cloning/storage", "native ANALYZE"],
+            "dominant_stages": [
+                "stock EXPLAIN evaluation",
+                "database cloning/storage",
+                "native ANALYZE",
+            ],
             "workload_scope": "10,000 RQ4 fixed-k queries per method arm; no diagnostic shrinkage is authorized by this readiness record",
         },
         "implementation_plan": [
@@ -459,7 +493,10 @@ def validate_decision(value: dict[str, Any], root: Path) -> dict[str, str]:
         raise ValueError("decision claims fixed-evaluation-budget results")
     source = value.get("source_audit", {})
     actual = _source_ref(root, source.get("path", ""))
-    if source.get("semantic_digest") != actual["semantic_digest"] or source.get("sha256") != actual["sha256"]:
+    if (
+        source.get("semantic_digest") != actual["semantic_digest"]
+        or source.get("sha256") != actual["sha256"]
+    ):
         raise ValueError("decision source audit binding mismatch")
     return {"status": "valid", "semantic_digest": value["semantic_digest"]}
 
@@ -489,7 +526,9 @@ def validate_protocol(value: dict[str, Any], root: Path) -> dict[str, str]:
     return {"status": "valid", "semantic_digest": value["semantic_digest"]}
 
 
-def validate_readiness(value: dict[str, Any], protocol: dict[str, Any], root: Path) -> dict[str, str]:
+def validate_readiness(
+    value: dict[str, Any], protocol: dict[str, Any], root: Path
+) -> dict[str, str]:
     if value.get("format_version") != READINESS_FORMAT or value.get("review_id") != READINESS_ID:
         raise ValueError("unsupported native stability readiness review")
     _validate_digest(value, "readiness review")
