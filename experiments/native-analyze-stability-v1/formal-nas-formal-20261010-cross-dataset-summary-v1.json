@@ -1,0 +1,1313 @@
+{
+  "clone_analyze_count": 0,
+  "dataset_count": 3,
+  "datasets": {
+    "arecel-census13": {
+      "comparability_stratum": "current-v2",
+      "method_arm_count": 45,
+      "ordinary_statistics_fingerprint_difference_fraction": 1.0,
+      "paired_greedy_minus_singleton_mean_qerror": [
+        0.584440942928032,
+        0.5700107623307562,
+        0.5808526498653155,
+        0.5857583971584721,
+        0.5769404730152496
+      ],
+      "pairwise_method_win_tie_loss": {
+        "native-payload-size-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "native-payload-size-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-2": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-3": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-4": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-3": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-4": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-5": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__random-k-seed-5": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "singleton-utility-top-k__vs__greedy-ADD": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        }
+      },
+      "payload_fingerprint_difference_fraction": {
+        "cand_0b505b8bacb3c643f4e4dc43": 1.0,
+        "cand_1af5539c1001b3f9b2f29435": 1.0,
+        "cand_1edd4a89495b1c0989812ef6": 1.0,
+        "cand_2bff6409ebf3f1068adcda97": 1.0,
+        "cand_2e314f97c08689b6e7ad90b8": 1.0,
+        "cand_381a799a1607fdc3cd3dfea7": 1.0,
+        "cand_41eded1acb31e2a3075e7307": 1.0,
+        "cand_4a28f778fbc449dfeede3fcd": 1.0,
+        "cand_4c80e02718ed0de73de2e8a5": 1.0,
+        "cand_563a1396818ae7124888fb89": 1.0,
+        "cand_57a44cba9481268f933571e7": 1.0,
+        "cand_622cc12086322b75d4e08073": 1.0,
+        "cand_65bf58e313a4b96876b72b19": 1.0,
+        "cand_732acc055f32ca48ff994adf": 1.0,
+        "cand_75cf66d723f62da49cc3efa7": 0.75,
+        "cand_7a72ebac1e220c1b2cbec353": 1.0,
+        "cand_7dbe9e5d6af3b0470f8593fd": 1.0,
+        "cand_7e97f5097a62763e6d4508ca": 0.25,
+        "cand_7f9c5d6e557d3522afffc809": 1.0,
+        "cand_907082119654b274db2849b9": 1.0,
+        "cand_9da5f299ad8d39bb6c1d87aa": 1.0,
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb": 1.0,
+        "cand_af2001646b1b90182083d14a": 1.0,
+        "cand_b9510ae03f52378017bd059d": 1.0,
+        "cand_ba355e70a4c2c126688383df": 1.0,
+        "cand_dc9ef95a9408c9679784b874": 1.0,
+        "cand_df4e56f7a43cce985de58501": 1.0,
+        "cand_f50a783f33caca5a7d0b8f10": 1.0
+      },
+      "per_method": {
+        "greedy-ADD": {
+          "descriptive_stddev_population": 0.00796788184918948,
+          "first_or_tie_count": 0,
+          "max_mean": 2.9515290156754284,
+          "min_mean": 2.9291041222701186,
+          "realization_means": [
+            2.9515290156754284,
+            2.9291041222701186,
+            2.947798066055198,
+            2.9473958548563894,
+            2.9479743505290497
+          ]
+        },
+        "native-payload-size-top-k": {
+          "descriptive_stddev_population": 0.0038526932091505787,
+          "first_or_tie_count": 0,
+          "max_mean": 4.888976336778987,
+          "min_mean": 4.8781805416467625,
+          "realization_means": [
+            4.8781805416467625,
+            4.881140667731635,
+            4.888976336778987,
+            4.886482932477945,
+            4.882273292078312
+          ]
+        },
+        "random-k-seed-1": {
+          "descriptive_stddev_population": 0.0059525029978918275,
+          "first_or_tie_count": 0,
+          "max_mean": 4.867289794704591,
+          "min_mean": 4.850922382712907,
+          "realization_means": [
+            4.8612396258016375,
+            4.850922382712907,
+            4.866187264221642,
+            4.864900482577898,
+            4.867289794704591
+          ]
+        },
+        "random-k-seed-2": {
+          "descriptive_stddev_population": 0.011430866824967837,
+          "first_or_tie_count": 0,
+          "max_mean": 3.7825969739608345,
+          "min_mean": 3.753196731900629,
+          "realization_means": [
+            3.7825969739608345,
+            3.757231982764187,
+            3.7782593212659363,
+            3.753196731900629,
+            3.768042389593638
+          ]
+        },
+        "random-k-seed-3": {
+          "descriptive_stddev_population": 0.004690077098269264,
+          "first_or_tie_count": 0,
+          "max_mean": 5.1753047604005955,
+          "min_mean": 5.162463997131108,
+          "realization_means": [
+            5.1753047604005955,
+            5.172949214437437,
+            5.165679460424915,
+            5.170178703450953,
+            5.162463997131108
+          ]
+        },
+        "random-k-seed-4": {
+          "descriptive_stddev_population": 0.005840879830205236,
+          "first_or_tie_count": 0,
+          "max_mean": 5.123693118748448,
+          "min_mean": 5.106156407944314,
+          "realization_means": [
+            5.11283028190112,
+            5.106156407944314,
+            5.109966993254408,
+            5.123693118748448,
+            5.1137517207660474
+          ]
+        },
+        "random-k-seed-5": {
+          "descriptive_stddev_population": 0.004677694108181755,
+          "first_or_tie_count": 0,
+          "max_mean": 5.073650843777553,
+          "min_mean": 5.059460928034513,
+          "realization_means": [
+            5.069906116493483,
+            5.059460928034513,
+            5.066387960274588,
+            5.067443512761334,
+            5.073650843777553
+          ]
+        },
+        "singleton-utility-top-k": {
+          "descriptive_stddev_population": 0.004257230033090999,
+          "first_or_tie_count": 5,
+          "max_mean": 2.3710338775138,
+          "min_mean": 2.3590933599393624,
+          "realization_means": [
+            2.3670880727473964,
+            2.3590933599393624,
+            2.3669454161898824,
+            2.3616374576979173,
+            2.3710338775138
+          ]
+        },
+        "workload-frequency-top-k": {
+          "descriptive_stddev_population": 0.0033372696504205394,
+          "first_or_tie_count": 0,
+          "max_mean": 5.244051096325404,
+          "min_mean": 5.236566510749251,
+          "realization_means": [
+            5.2437004776784315,
+            5.236566510749251,
+            5.23681692660401,
+            5.242515115967422,
+            5.244051096325404
+          ]
+        }
+      },
+      "per_realization_ranking": [
+        {
+          "best_mean": 2.3670880727473964,
+          "best_methods": [
+            "singleton-utility-top-k"
+          ],
+          "ordered_methods": [
+            "singleton-utility-top-k",
+            "greedy-ADD",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-5",
+            "random-k-seed-4",
+            "random-k-seed-3",
+            "workload-frequency-top-k"
+          ]
+        },
+        {
+          "best_mean": 2.3590933599393624,
+          "best_methods": [
+            "singleton-utility-top-k"
+          ],
+          "ordered_methods": [
+            "singleton-utility-top-k",
+            "greedy-ADD",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-5",
+            "random-k-seed-4",
+            "random-k-seed-3",
+            "workload-frequency-top-k"
+          ]
+        },
+        {
+          "best_mean": 2.3669454161898824,
+          "best_methods": [
+            "singleton-utility-top-k"
+          ],
+          "ordered_methods": [
+            "singleton-utility-top-k",
+            "greedy-ADD",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-5",
+            "random-k-seed-4",
+            "random-k-seed-3",
+            "workload-frequency-top-k"
+          ]
+        },
+        {
+          "best_mean": 2.3616374576979173,
+          "best_methods": [
+            "singleton-utility-top-k"
+          ],
+          "ordered_methods": [
+            "singleton-utility-top-k",
+            "greedy-ADD",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-5",
+            "random-k-seed-4",
+            "random-k-seed-3",
+            "workload-frequency-top-k"
+          ]
+        },
+        {
+          "best_mean": 2.3710338775138,
+          "best_methods": [
+            "singleton-utility-top-k"
+          ],
+          "ordered_methods": [
+            "singleton-utility-top-k",
+            "greedy-ADD",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-5",
+            "random-k-seed-4",
+            "random-k-seed-3",
+            "workload-frequency-top-k"
+          ]
+        }
+      ],
+      "physical_explain_count": 450000,
+      "summary_path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-census13/summary-v1.json",
+      "summary_semantic_digest": "43ec3178254981aebb9af65b31aaf337a0035964e01f50dcb0ce7ccffdb5e7de",
+      "summary_sha256": "7d1df20a9ab19055d773004c888bfa75f9714156e7c6ea06e70f2f06aa361c4d"
+    },
+    "arecel-dmv11": {
+      "comparability_stratum": "current-v2",
+      "method_arm_count": 45,
+      "ordinary_statistics_fingerprint_difference_fraction": 1.0,
+      "paired_greedy_minus_singleton_mean_qerror": [
+        -30.29944466391388,
+        -28.03488604186951,
+        -31.42075185922626,
+        -29.022941143903605,
+        -26.913478077490954
+      ],
+      "pairwise_method_win_tie_loss": {
+        "native-payload-size-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "native-payload-size-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-2": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-3": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-5": {
+          "left_wins": 2,
+          "right_wins": 3,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-3": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-5": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "singleton-utility-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__native-payload-size-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        }
+      },
+      "payload_fingerprint_difference_fraction": {
+        "cand_025ef605b7fda01f7e5a731d": 0.75,
+        "cand_1468038c0729e0c99563256c": 1.0,
+        "cand_1b85c6467ace3fd56f43c3c3": 1.0,
+        "cand_29cdcb36a5d64b8bb5bca284": 1.0,
+        "cand_32dd7b43105520cf3ca2c6a8": 1.0,
+        "cand_36b212ba376a0cacc9589af9": 0.75,
+        "cand_39ff5ea02aef5da55fce782a": 1.0,
+        "cand_3d5daa3addbbf6b3267c30f5": 1.0,
+        "cand_3ea8776430fffecefaa78983": 1.0,
+        "cand_41a814527cb7626291ca8577": 1.0,
+        "cand_446a7fc5aba413d985b7f659": 1.0,
+        "cand_63b0438f7281938e19185a73": 1.0,
+        "cand_77c30674b97dc0c906422eed": 1.0,
+        "cand_7db3fcd2a8cbbdf2c9bfe38d": 1.0,
+        "cand_8173ebfcd4fc1962c8404874": 1.0,
+        "cand_83905d0c78d91e30eae5919f": 1.0,
+        "cand_92c3ee5c2d9f63a5173e590a": 1.0,
+        "cand_a321c061df418caa0b143ac4": 1.0,
+        "cand_a7d6924ed62c20dc9a788eee": 1.0,
+        "cand_acf9e531983db1cd2c7e3da4": 1.0,
+        "cand_b78d55db882b6bf067d91270": 1.0,
+        "cand_be42b3b48f0d3177f8ce1bcf": 1.0,
+        "cand_c07def92fa7a8c6fda1184e8": 1.0,
+        "cand_c097e6360631bc90a93dd900": 1.0,
+        "cand_c41b12c3e1d0549a84df8d23": 1.0,
+        "cand_ce642bea730d6ecc4a1e330d": 1.0,
+        "cand_d63f42386de504161b5b2f9d": 1.0,
+        "cand_eef9f1447e54a5874b807c19": 1.0,
+        "cand_f495ee73455905ddf4da0f95": 1.0
+      },
+      "per_method": {
+        "greedy-ADD": {
+          "descriptive_stddev_population": 0.6238847058015439,
+          "first_or_tie_count": 5,
+          "max_mean": 25.175795964940445,
+          "min_mean": 23.56808156008515,
+          "realization_means": [
+            25.10032952837978,
+            25.175795964940445,
+            25.14872021039194,
+            23.56808156008515,
+            24.419919560686456
+          ]
+        },
+        "native-payload-size-top-k": {
+          "descriptive_stddev_population": 22.80829664842948,
+          "first_or_tie_count": 0,
+          "max_mean": 305.8238473848075,
+          "min_mean": 240.77843721679278,
+          "realization_means": [
+            286.3872380779329,
+            256.2403829453554,
+            305.8238473848075,
+            266.468666251462,
+            240.77843721679278
+          ]
+        },
+        "random-k-seed-1": {
+          "descriptive_stddev_population": 22.70316837745396,
+          "first_or_tie_count": 0,
+          "max_mean": 305.52328303885025,
+          "min_mean": 240.74255846090472,
+          "realization_means": [
+            285.8792921002911,
+            255.9202879984018,
+            305.52328303885025,
+            266.4105216816061,
+            240.74255846090472
+          ]
+        },
+        "random-k-seed-2": {
+          "descriptive_stddev_population": 23.5871169823979,
+          "first_or_tie_count": 0,
+          "max_mean": 303.14164050554734,
+          "min_mean": 237.8657849582138,
+          "realization_means": [
+            285.03315715932985,
+            252.60952253234433,
+            303.14164050554734,
+            257.27223980868524,
+            237.8657849582138
+          ]
+        },
+        "random-k-seed-3": {
+          "descriptive_stddev_population": 23.863977850673756,
+          "first_or_tie_count": 0,
+          "max_mean": 310.44605433176247,
+          "min_mean": 241.37879233970563,
+          "realization_means": [
+            290.78851344903535,
+            261.1420412972416,
+            310.44605433176247,
+            270.5951150416241,
+            241.37879233970563
+          ]
+        },
+        "random-k-seed-4": {
+          "descriptive_stddev_population": 13.691001095881717,
+          "first_or_tie_count": 0,
+          "max_mean": 236.73964312776556,
+          "min_mean": 194.61896681873108,
+          "realization_means": [
+            218.69316665644254,
+            209.04348901573394,
+            236.73964312776556,
+            214.15728254932208,
+            194.61896681873108
+          ]
+        },
+        "random-k-seed-5": {
+          "descriptive_stddev_population": 23.093938295407288,
+          "first_or_tie_count": 0,
+          "max_mean": 305.45834693216955,
+          "min_mean": 240.51336246923205,
+          "realization_means": [
+            286.16939824990277,
+            256.1268797721932,
+            305.45834693216955,
+            260.71629372142917,
+            240.51336246923205
+          ]
+        },
+        "singleton-utility-top-k": {
+          "descriptive_stddev_population": 1.9036871746651178,
+          "first_or_tie_count": 0,
+          "max_mean": 56.5694720696182,
+          "min_mean": 51.33339763817741,
+          "realization_means": [
+            55.39977419229366,
+            53.210682006809954,
+            56.5694720696182,
+            52.591022703988756,
+            51.33339763817741
+          ]
+        },
+        "workload-frequency-top-k": {
+          "descriptive_stddev_population": 4.850363888106347,
+          "first_or_tie_count": 0,
+          "max_mean": 146.355285632935,
+          "min_mean": 132.80697501383284,
+          "realization_means": [
+            139.04882599648644,
+            140.16886494276915,
+            146.355285632935,
+            133.9798546423584,
+            132.80697501383284
+          ]
+        }
+      },
+      "per_realization_ranking": [
+        {
+          "best_mean": 25.10032952837978,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "workload-frequency-top-k",
+            "random-k-seed-4",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "random-k-seed-5",
+            "native-payload-size-top-k",
+            "random-k-seed-3"
+          ]
+        },
+        {
+          "best_mean": 25.175795964940445,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "workload-frequency-top-k",
+            "random-k-seed-4",
+            "random-k-seed-2",
+            "random-k-seed-1",
+            "random-k-seed-5",
+            "native-payload-size-top-k",
+            "random-k-seed-3"
+          ]
+        },
+        {
+          "best_mean": 25.14872021039194,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "workload-frequency-top-k",
+            "random-k-seed-4",
+            "random-k-seed-2",
+            "random-k-seed-5",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-3"
+          ]
+        },
+        {
+          "best_mean": 23.56808156008515,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "workload-frequency-top-k",
+            "random-k-seed-4",
+            "random-k-seed-2",
+            "random-k-seed-5",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-3"
+          ]
+        },
+        {
+          "best_mean": 24.419919560686456,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "workload-frequency-top-k",
+            "random-k-seed-4",
+            "random-k-seed-2",
+            "random-k-seed-5",
+            "random-k-seed-1",
+            "native-payload-size-top-k",
+            "random-k-seed-3"
+          ]
+        }
+      ],
+      "physical_explain_count": 450000,
+      "summary_path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-dmv11/summary-v1.json",
+      "summary_semantic_digest": "ff67e4a3a6b2ee7113900a1dfb20e827fd478a29f2933c30ab4969b5b8ad35ca",
+      "summary_sha256": "59333fc69cbdc21231ac0b5bc17f2e48c78b2a32f74e081d09e9996c4dbf0bc7"
+    },
+    "arecel-forest10": {
+      "comparability_stratum": "historical-v1",
+      "method_arm_count": 45,
+      "ordinary_statistics_fingerprint_difference_fraction": 1.0,
+      "paired_greedy_minus_singleton_mean_qerror": [
+        -0.07663497467385749,
+        -0.07726960591971288,
+        -0.09414730411166605,
+        -0.07968323286711687,
+        -0.0845221426312861
+      ],
+      "pairwise_method_win_tie_loss": {
+        "native-payload-size-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "native-payload-size-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-2": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-3": {
+          "left_wins": 0,
+          "right_wins": 0,
+          "ties": 5
+        },
+        "random-k-seed-1__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-1__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-3": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-2__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-4": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-3__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__random-k-seed-5": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-4__vs__workload-frequency-top-k": {
+          "left_wins": 5,
+          "right_wins": 0,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "random-k-seed-5__vs__workload-frequency-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "singleton-utility-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__greedy-ADD": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__native-payload-size-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        },
+        "workload-frequency-top-k__vs__singleton-utility-top-k": {
+          "left_wins": 0,
+          "right_wins": 5,
+          "ties": 0
+        }
+      },
+      "payload_fingerprint_difference_fraction": {
+        "cand_04524e4170fda10f288de2ad": 1.0,
+        "cand_0deae0d5de82a5a1fdc34111": 1.0,
+        "cand_12b552d6e4274b3e7916918d": 1.0,
+        "cand_1537a6ae8ef67c379c8d0fa0": 1.0,
+        "cand_4293ec8c30a7314cb8ef5dbf": 1.0,
+        "cand_478f6c4acd54af28ee697d8d": 1.0,
+        "cand_4af628931e0d02eb50415f2b": 1.0,
+        "cand_4de3778bb8674287b6dd5b29": 1.0,
+        "cand_51488597ac9ebd3cb59d2ff1": 1.0,
+        "cand_5ba9cc937a696a76876f820d": 1.0,
+        "cand_6b7c22215c39c807cda3872e": 1.0,
+        "cand_71249b442b7dc4205d74a4b9": 1.0,
+        "cand_76679921292e8c769dbbd7bc": 1.0,
+        "cand_77c3e92fff291d4d9515dc69": 1.0,
+        "cand_8b7a8e0422ed4ae2befb1bc8": 1.0,
+        "cand_c7595f3b6addcec1b9919cbe": 1.0,
+        "cand_d94eec73746ef01a6811815f": 1.0,
+        "cand_da7591327792c9bc98b427d7": 1.0,
+        "cand_ea8b2557e86251bb3994535b": 1.0,
+        "cand_eaa4ce0396b4cc5c68b2550e": 1.0
+      },
+      "per_method": {
+        "greedy-ADD": {
+          "descriptive_stddev_population": 0.026943502483935563,
+          "first_or_tie_count": 5,
+          "max_mean": 6.696943832153223,
+          "min_mean": 6.636668086012616,
+          "realization_means": [
+            6.636668086012616,
+            6.696828505063892,
+            6.63960251372805,
+            6.6822494998694015,
+            6.696943832153223
+          ]
+        },
+        "native-payload-size-top-k": {
+          "descriptive_stddev_population": 0.02707714217779763,
+          "first_or_tie_count": 0,
+          "max_mean": 6.940216702031065,
+          "min_mean": 6.876164847318309,
+          "realization_means": [
+            6.876164847318309,
+            6.9380554612172824,
+            6.881893943882627,
+            6.915630417894115,
+            6.940216702031065
+          ]
+        },
+        "random-k-seed-1": {
+          "descriptive_stddev_population": 0.02966402081103807,
+          "first_or_tie_count": 0,
+          "max_mean": 7.036910267113879,
+          "min_mean": 6.965658398911351,
+          "realization_means": [
+            6.965658398911351,
+            7.03365026222444,
+            6.974477294884785,
+            7.014015955029466,
+            7.036910267113879
+          ]
+        },
+        "random-k-seed-2": {
+          "descriptive_stddev_population": 0.03033731306256957,
+          "first_or_tie_count": 0,
+          "max_mean": 7.107286264421536,
+          "min_mean": 7.033004675880849,
+          "realization_means": [
+            7.033004675880849,
+            7.1015249119111745,
+            7.042355713788151,
+            7.081600303449192,
+            7.107286264421536
+          ]
+        },
+        "random-k-seed-3": {
+          "descriptive_stddev_population": 0.02966402081103807,
+          "first_or_tie_count": 0,
+          "max_mean": 7.036910267113879,
+          "min_mean": 6.965658398911351,
+          "realization_means": [
+            6.965658398911351,
+            7.03365026222444,
+            6.974477294884785,
+            7.014015955029466,
+            7.036910267113879
+          ]
+        },
+        "random-k-seed-4": {
+          "descriptive_stddev_population": 0.027215591380779638,
+          "first_or_tie_count": 0,
+          "max_mean": 6.958773134133796,
+          "min_mean": 6.895125939206258,
+          "realization_means": [
+            6.895125939206258,
+            6.957986697923066,
+            6.90080938874589,
+            6.935005868080952,
+            6.958773134133796
+          ]
+        },
+        "random-k-seed-5": {
+          "descriptive_stddev_population": 0.0301642769743982,
+          "first_or_tie_count": 0,
+          "max_mean": 7.18688498691248,
+          "min_mean": 7.11423569466381,
+          "realization_means": [
+            7.11423569466381,
+            7.179353016422515,
+            7.119196247640106,
+            7.161063490887075,
+            7.18688498691248
+          ]
+        },
+        "singleton-utility-top-k": {
+          "descriptive_stddev_population": 0.025618788695658437,
+          "first_or_tie_count": 0,
+          "max_mean": 6.781465974784509,
+          "min_mean": 6.713303060686473,
+          "realization_means": [
+            6.713303060686473,
+            6.774098110983605,
+            6.733749817839716,
+            6.761932732736518,
+            6.781465974784509
+          ]
+        },
+        "workload-frequency-top-k": {
+          "descriptive_stddev_population": 0.031113979367911312,
+          "first_or_tie_count": 0,
+          "max_mean": 6.981036762535123,
+          "min_mean": 6.9081112186808085,
+          "realization_means": [
+            6.9081112186808085,
+            6.9710877922821135,
+            6.908148445313153,
+            6.956932231917225,
+            6.981036762535123
+          ]
+        }
+      },
+      "per_realization_ranking": [
+        {
+          "best_mean": 6.636668086012616,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "native-payload-size-top-k",
+            "random-k-seed-4",
+            "workload-frequency-top-k",
+            "random-k-seed-1",
+            "random-k-seed-3",
+            "random-k-seed-2",
+            "random-k-seed-5"
+          ]
+        },
+        {
+          "best_mean": 6.696828505063892,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "native-payload-size-top-k",
+            "random-k-seed-4",
+            "workload-frequency-top-k",
+            "random-k-seed-1",
+            "random-k-seed-3",
+            "random-k-seed-2",
+            "random-k-seed-5"
+          ]
+        },
+        {
+          "best_mean": 6.63960251372805,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "native-payload-size-top-k",
+            "random-k-seed-4",
+            "workload-frequency-top-k",
+            "random-k-seed-1",
+            "random-k-seed-3",
+            "random-k-seed-2",
+            "random-k-seed-5"
+          ]
+        },
+        {
+          "best_mean": 6.6822494998694015,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "native-payload-size-top-k",
+            "random-k-seed-4",
+            "workload-frequency-top-k",
+            "random-k-seed-1",
+            "random-k-seed-3",
+            "random-k-seed-2",
+            "random-k-seed-5"
+          ]
+        },
+        {
+          "best_mean": 6.696943832153223,
+          "best_methods": [
+            "greedy-ADD"
+          ],
+          "ordered_methods": [
+            "greedy-ADD",
+            "singleton-utility-top-k",
+            "native-payload-size-top-k",
+            "random-k-seed-4",
+            "workload-frequency-top-k",
+            "random-k-seed-1",
+            "random-k-seed-3",
+            "random-k-seed-2",
+            "random-k-seed-5"
+          ]
+        }
+      ],
+      "physical_explain_count": 450000,
+      "summary_path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-forest10/summary-v1.json",
+      "summary_semantic_digest": "9f2139115421ac72a2a05b80f8ed1fee2b41259c580d582d885d0bd90303a77e",
+      "summary_sha256": "4579336daec8bbf668f99e30cb91cff4d737775c1a8fb62a91f8c4ad114ab779"
+    }
+  },
+  "format_version": "native-analyze-stability-cross-dataset-summary-v1",
+  "interpretation": "descriptive native ANALYZE realization variability; five realizations are not probability guarantees",
+  "method_arm_count": 135,
+  "parent_analyze_count": 15,
+  "physical_explain_count": 1350000,
+  "pooling_policy": "dataset-scoped; Forest10 historical-v1 remains a separate stratum",
+  "protocol_semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+  "realization_count": 15,
+  "rq1b_w_test_accessed": false,
+  "semantic_digest": "b1dedb7c3efe3b3929f2f1b0ea139360f460ec0ece49e9428f34ba4c20266e0f",
+  "status": "complete-validated",
+  "valid_raw_observation_count": 1350000
+}

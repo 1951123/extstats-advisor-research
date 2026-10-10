@@ -1,0 +1,1906 @@
+{
+  "analyze_count": 1,
+  "canonical_union": [
+    "cand_0b505b8bacb3c643f4e4dc43",
+    "cand_1af5539c1001b3f9b2f29435",
+    "cand_1edd4a89495b1c0989812ef6",
+    "cand_2bff6409ebf3f1068adcda97",
+    "cand_2e314f97c08689b6e7ad90b8",
+    "cand_381a799a1607fdc3cd3dfea7",
+    "cand_41eded1acb31e2a3075e7307",
+    "cand_4a28f778fbc449dfeede3fcd",
+    "cand_4c80e02718ed0de73de2e8a5",
+    "cand_563a1396818ae7124888fb89",
+    "cand_57a44cba9481268f933571e7",
+    "cand_622cc12086322b75d4e08073",
+    "cand_65bf58e313a4b96876b72b19",
+    "cand_732acc055f32ca48ff994adf",
+    "cand_75cf66d723f62da49cc3efa7",
+    "cand_7a72ebac1e220c1b2cbec353",
+    "cand_7dbe9e5d6af3b0470f8593fd",
+    "cand_7e97f5097a62763e6d4508ca",
+    "cand_7f9c5d6e557d3522afffc809",
+    "cand_907082119654b274db2849b9",
+    "cand_9da5f299ad8d39bb6c1d87aa",
+    "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+    "cand_af2001646b1b90182083d14a",
+    "cand_b9510ae03f52378017bd059d",
+    "cand_ba355e70a4c2c126688383df",
+    "cand_dc9ef95a9408c9679784b874",
+    "cand_df4e56f7a43cce985de58501",
+    "cand_f50a783f33caca5a7d0b8f10"
+  ],
+  "cleanup_status": "complete",
+  "dataset_id": "arecel-census13",
+  "format_version": "native-analyze-stability-formal-realization-v1",
+  "invocation_id": "nas-formal-20261010-census13",
+  "methods": {
+    "greedy-ADD": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "greedy-ADD",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 2.9479743505290497,
+        "p50": 1.25,
+        "p95": 8.0,
+        "p99": 24.501000000000023,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 2.9479743505290497
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/greedy-ADD.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "5195c965eb14779eb9129cf50b67d5300dc9fc6cac4e294fb8128cc35a1946bc"
+      },
+      "selected_membership": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 1.9082309350014839,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 2.706925856999078
+          }
+        },
+        "deployment_order": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 2.9479743505290497,
+          "p50": 1.25,
+          "p95": 8.0,
+          "p99": 24.501000000000023,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 2.9479743505290497
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "column_ordinals": [
+              3,
+              4
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+            "oid": 16754,
+            "payload_bytes": 725,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "3e226ae5f0ed8468a8e29aa2fd0fb5672a5f8f0c0eb5824acbdf26d8975ecca5",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "column_ordinals": [
+              5,
+              7
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_8cc35a14f63cee85a18a4c7ec15c79cd9b5b8604",
+            "oid": 16755,
+            "payload_bytes": 835,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "c32124dfae00a622f27e553d446f5133ce69fa1b70d00cb666be3dbe30cfa0da",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "native-payload-size-top-k": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "native-payload-size-top-k",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 4.882273292078312,
+        "p50": 1.3700828729281769,
+        "p95": 16.901874999999972,
+        "p99": 52.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 4.882273292078312
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/native-payload-size-top-k.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "ead3ccce6536106102df97b2e9a8b6cf9ab48c4697f9b8f7dd08f2efc0187d9b"
+      },
+      "selected_membership": [
+        "cand_732acc055f32ca48ff994adf",
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_1edd4a89495b1c0989812ef6",
+        "cand_2e314f97c08689b6e7ad90b8"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 1.912302806000298,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 4.6877184429995395
+          }
+        },
+        "deployment_order": [
+          "cand_732acc055f32ca48ff994adf",
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_1edd4a89495b1c0989812ef6",
+          "cand_2e314f97c08689b6e7ad90b8"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 4.882273292078312,
+          "p50": 1.3700828729281769,
+          "p95": 16.901874999999972,
+          "p99": 52.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 4.882273292078312
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_732acc055f32ca48ff994adf",
+            "column_ordinals": [
+              1,
+              5
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_5e6b6cd41d4b6e12c5c6b0d4fcbb1fa4e66f5b71",
+            "oid": 16767,
+            "payload_bytes": 2721,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "cecc83f4af39246f5bce02de37ff74a7ace43b2444d6edcc478e31b7c3b95cb7",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+            "column_ordinals": [
+              1,
+              9
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_5e621538bc5ac3071d8b80eb6ff441224fd9c3bd",
+            "oid": 16759,
+            "payload_bytes": 2696,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "4d66744dd87fee40b63b4ff1f50b2ddd97dc545d08cc533426b2ad9eb0ad2a47",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+            "column_ordinals": [
+              1,
+              7
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_8134ac21a195d061dafc0588fcdbb3e98c79ca18",
+            "oid": 16756,
+            "payload_bytes": 2700,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "02d0a5bf4264d38dc63a2ff95eb4f5c24155d91ddfb2179f5ec526e4bdb0f46a",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+            "column_ordinals": [
+              1,
+              3
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_1f64ed753f9595aea24819c64b477cfd9f7f677c",
+            "oid": 16758,
+            "payload_bytes": 2662,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "223c549dff7d042b638e6ead9a0b26ccc9fbc794e637be732f3bf6b8e2de75d2",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_732acc055f32ca48ff994adf",
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_1edd4a89495b1c0989812ef6",
+          "cand_2e314f97c08689b6e7ad90b8"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "random-k-seed-1": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "random-k-seed-1",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1495.0,
+        "mean": 4.867289794704591,
+        "p50": 1.3852917042417152,
+        "p95": 17.0,
+        "p99": 52.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 4.867289794704591
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/random-k-seed-1.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "167fb0c115c94cd66be35e8b3e13f2723dcd84d88d9832abe364c6abc1620d72"
+      },
+      "selected_membership": [
+        "cand_9da5f299ad8d39bb6c1d87aa",
+        "cand_7a72ebac1e220c1b2cbec353",
+        "cand_4a28f778fbc449dfeede3fcd",
+        "cand_4c80e02718ed0de73de2e8a5"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 1.9913935010008572,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 6.746290961000341
+          }
+        },
+        "deployment_order": [
+          "cand_9da5f299ad8d39bb6c1d87aa",
+          "cand_7a72ebac1e220c1b2cbec353",
+          "cand_4a28f778fbc449dfeede3fcd",
+          "cand_4c80e02718ed0de73de2e8a5"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1495.0,
+          "mean": 4.867289794704591,
+          "p50": 1.3852917042417152,
+          "p95": 17.0,
+          "p99": 52.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 4.867289794704591
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+            "column_ordinals": [
+              2,
+              7
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_4a06ae914fdc140e2d3b32a1a924a81c1e40878b",
+            "oid": 16774,
+            "payload_bytes": 1137,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "e3c3a73825985f40f0a0c4314621b5253bca95b9c257a43d4851ade68d8b61d7",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+            "column_ordinals": [
+              3,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_039b761f79e3a57e94ad30187422e3842f306c28",
+            "oid": 16769,
+            "payload_bytes": 1421,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "76b13ffe1efb1f3312637ba22ec621a5c0581b27aa33c71d4e6903d755c44b40",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+            "column_ordinals": [
+              4,
+              6
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_dea35ae0665a57dab727a9a339b9ffd980877252",
+            "oid": 16761,
+            "payload_bytes": 2609,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "c3a30085fb3a7624f44467c83ff36d246ba74da0253e7387807222e663325252",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+            "column_ordinals": [
+              8,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_545e1d5a8b06b3f1c4479837202973560b823134",
+            "oid": 16762,
+            "payload_bytes": 1233,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "4d89d94e40657fca5dbc090d3489b4f721fd2d54fedf177f1337c573a567fdb4",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_9da5f299ad8d39bb6c1d87aa",
+          "cand_7a72ebac1e220c1b2cbec353",
+          "cand_4a28f778fbc449dfeede3fcd",
+          "cand_4c80e02718ed0de73de2e8a5"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "random-k-seed-2": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "random-k-seed-2",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 3.768042389593638,
+        "p50": 1.3182075568825287,
+        "p95": 11.503906249999943,
+        "p99": 33.502500000000055,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 3.768042389593638
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/random-k-seed-2.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "47954f3cd8c693c65f6f852e565055af478bd1f37809602abdfb91b6c50744fa"
+      },
+      "selected_membership": [
+        "cand_41eded1acb31e2a3075e7307",
+        "cand_2bff6409ebf3f1068adcda97",
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_7e97f5097a62763e6d4508ca"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.025420142999792,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 8.838524990000224
+          }
+        },
+        "deployment_order": [
+          "cand_41eded1acb31e2a3075e7307",
+          "cand_2bff6409ebf3f1068adcda97",
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_7e97f5097a62763e6d4508ca"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 3.768042389593638,
+          "p50": 1.3182075568825287,
+          "p95": 11.503906249999943,
+          "p99": 33.502500000000055,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 3.768042389593638
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_41eded1acb31e2a3075e7307",
+            "column_ordinals": [
+              2,
+              5
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_65d26947d45baf6cf73411df392253797b9dfc85",
+            "oid": 16760,
+            "payload_bytes": 1156,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "0fef2ef0c5c47457348705c42a23a126a0a7631c936c6229502463e4ca7181e2",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+            "column_ordinals": [
+              2,
+              12
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_ff61d80643132bb8cae769b98c0b57171accccee",
+            "oid": 16757,
+            "payload_bytes": 2675,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "b9590c72ff1f5a238ac8ccd4780dec0534238fa3f9a3e89cd66c2073f106f021",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "column_ordinals": [
+              3,
+              4
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+            "oid": 16754,
+            "payload_bytes": 725,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "3e226ae5f0ed8468a8e29aa2fd0fb5672a5f8f0c0eb5824acbdf26d8975ecca5",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+            "column_ordinals": [
+              2,
+              7
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_618275a14570437db72a4e2f10ae77eca1b7bb66",
+            "oid": 16771,
+            "payload_bytes": 0,
+            "payload_present": false,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_41eded1acb31e2a3075e7307",
+          "cand_2bff6409ebf3f1068adcda97",
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_7e97f5097a62763e6d4508ca"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "random-k-seed-3": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "random-k-seed-3",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 5.162463997131108,
+        "p50": 1.4024780007804727,
+        "p95": 18.5,
+        "p99": 56.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 5.162463997131108
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/random-k-seed-3.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "f25c8c44d956c0da8a033c82b3a215f24790f9a2c3d5cfff27a15fe7dc050349"
+      },
+      "selected_membership": [
+        "cand_f50a783f33caca5a7d0b8f10",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "cand_907082119654b274db2849b9"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.0562353749992326,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 10.960915833999024
+          }
+        },
+        "deployment_order": [
+          "cand_f50a783f33caca5a7d0b8f10",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+          "cand_907082119654b274db2849b9"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 5.162463997131108,
+          "p50": 1.4024780007804727,
+          "p95": 18.5,
+          "p99": 56.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 5.162463997131108
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+            "column_ordinals": [
+              4,
+              5
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_1fcee38618d60e65dccc97aa2afc1dde53950db4",
+            "oid": 16781,
+            "payload_bytes": 2093,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "971c0e07164e7fb2cd7bea803a3831fed5b1eec9b349ba7c618e1a2e53ade664",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_dc9ef95a9408c9679784b874",
+            "column_ordinals": [
+              7,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_e0ad64f8de7f22b899a96ceb0e0bcb298c0facee",
+            "oid": 16779,
+            "payload_bytes": 1188,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "ecc71f9cab9aafea0b46810a30e2472a7570513fc450585f5b0efb146c805c4d",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+            "column_ordinals": [
+              2,
+              10
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_354f8516fdf4c5d1bd9d3da8c187ede00c335d38",
+            "oid": 16775,
+            "payload_bytes": 40,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "576833e8d4edbeda3349b05d462d0b7140d1b87a45c46c13186c80d992fb06f4",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_907082119654b274db2849b9",
+            "column_ordinals": [
+              7,
+              13
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_a2a985a14e5568d9bad6583471ddaf75a07618c5",
+            "oid": 16773,
+            "payload_bytes": 26,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "ca60922cf11a1da23d1567955e649c9d19bca026a94d8746118c4c18b1b6ca4f",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_f50a783f33caca5a7d0b8f10",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+          "cand_907082119654b274db2849b9"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "random-k-seed-4": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "random-k-seed-4",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 5.1137517207660474,
+        "p50": 1.4070546339946048,
+        "p95": 18.0,
+        "p99": 55.01000000000022,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 5.1137517207660474
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/random-k-seed-4.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "3ebb61cc512111abd073931c291fc39db879527f88d787f2b8c3b31711af051b"
+      },
+      "selected_membership": [
+        "cand_b9510ae03f52378017bd059d",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_af2001646b1b90182083d14a",
+        "cand_df4e56f7a43cce985de58501"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.0349071419987013,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 13.062569814999733
+          }
+        },
+        "deployment_order": [
+          "cand_b9510ae03f52378017bd059d",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_af2001646b1b90182083d14a",
+          "cand_df4e56f7a43cce985de58501"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 5.1137517207660474,
+          "p50": 1.4070546339946048,
+          "p95": 18.0,
+          "p99": 55.01000000000022,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 5.1137517207660474
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_b9510ae03f52378017bd059d",
+            "column_ordinals": [
+              3,
+              7
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_8cb13f8590d2fe0e6008dc86a41b1817ca8f8774",
+            "oid": 16777,
+            "payload_bytes": 2195,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "afa726a8bbaa8ebe159b3e3173a05dfa259e5c352fc4a682c9fa607800d52f4a",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_dc9ef95a9408c9679784b874",
+            "column_ordinals": [
+              7,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_e0ad64f8de7f22b899a96ceb0e0bcb298c0facee",
+            "oid": 16779,
+            "payload_bytes": 1188,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "ecc71f9cab9aafea0b46810a30e2472a7570513fc450585f5b0efb146c805c4d",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_af2001646b1b90182083d14a",
+            "column_ordinals": [
+              12,
+              13
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_b7d040f2e7ff163781e723c102a51ca39f0b25c3",
+            "oid": 16776,
+            "payload_bytes": 3074,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "b725ad22c7a443fc542486dd26ded8252550c4fc47ec632a4a1aee85c530c04e",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_df4e56f7a43cce985de58501",
+            "column_ordinals": [
+              3,
+              12
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_ee14ee3c373bc1a34773bc83036f402261d25482",
+            "oid": 16780,
+            "payload_bytes": 26,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "930d45c0a81fe5f7c6641eb09506951a22ac6a9087b83a70e593dba78d9aede8",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_b9510ae03f52378017bd059d",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_af2001646b1b90182083d14a",
+          "cand_df4e56f7a43cce985de58501"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "random-k-seed-5": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "random-k-seed-5",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1641.0,
+        "mean": 5.073650843777553,
+        "p50": 1.4037673568313402,
+        "p95": 18.0,
+        "p99": 56.0,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 5.073650843777553
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/random-k-seed-5.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "6b571a2677af679b81441ac0fdabdb9462382079000c9469beba4e38dc867841"
+      },
+      "selected_membership": [
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_4c80e02718ed0de73de2e8a5",
+        "cand_563a1396818ae7124888fb89",
+        "cand_622cc12086322b75d4e08073"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.0165439060001518,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 15.146730759999627
+          }
+        },
+        "deployment_order": [
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_4c80e02718ed0de73de2e8a5",
+          "cand_563a1396818ae7124888fb89",
+          "cand_622cc12086322b75d4e08073"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1641.0,
+          "mean": 5.073650843777553,
+          "p50": 1.4037673568313402,
+          "p95": 18.0,
+          "p99": 56.0,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 5.073650843777553
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+            "column_ordinals": [
+              1,
+              9
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_5e621538bc5ac3071d8b80eb6ff441224fd9c3bd",
+            "oid": 16759,
+            "payload_bytes": 2696,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "4d66744dd87fee40b63b4ff1f50b2ddd97dc545d08cc533426b2ad9eb0ad2a47",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+            "column_ordinals": [
+              8,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_545e1d5a8b06b3f1c4479837202973560b823134",
+            "oid": 16762,
+            "payload_bytes": 1233,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "4d89d94e40657fca5dbc090d3489b4f721fd2d54fedf177f1337c573a567fdb4",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_563a1396818ae7124888fb89",
+            "column_ordinals": [
+              2,
+              6
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_9506c70c03d5db0bfc9387aebd608dddfa3dc4c2",
+            "oid": 16763,
+            "payload_bytes": 40,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "3628a10db068dd151bd28f7775e0244c4fbae000a501736066c3c657e07a1f8d",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_622cc12086322b75d4e08073",
+            "column_ordinals": [
+              12,
+              13
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_7e36f114fdd19378eafbefa6199742fb53ecc727",
+            "oid": 16765,
+            "payload_bytes": 40,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "9d6b884436f16a33cf0e3a5cf2d4c503941d8397ae5d0df888fdcd6f109adfd0",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_4c80e02718ed0de73de2e8a5",
+          "cand_563a1396818ae7124888fb89",
+          "cand_622cc12086322b75d4e08073"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "singleton-utility-top-k": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "singleton-utility-top-k",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 103.0,
+        "mean": 2.3710338775138,
+        "p50": 1.2258064516129032,
+        "p95": 6.794794520547941,
+        "p99": 17.501363636363667,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 2.3710338775138
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/singleton-utility-top-k.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "3c8a1dc5b499a360e6cef97d32893ad4a6619ea0ffda70fe33d6f5fda11549f8"
+      },
+      "selected_membership": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_ba355e70a4c2c126688383df"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.143849627000236,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 17.3609091670005
+          }
+        },
+        "deployment_order": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435",
+          "cand_65bf58e313a4b96876b72b19",
+          "cand_ba355e70a4c2c126688383df"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 103.0,
+          "mean": 2.3710338775138,
+          "p50": 1.2258064516129032,
+          "p95": 6.794794520547941,
+          "p99": 17.501363636363667,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 2.3710338775138
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+            "column_ordinals": [
+              3,
+              4
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+            "oid": 16754,
+            "payload_bytes": 725,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "3e226ae5f0ed8468a8e29aa2fd0fb5672a5f8f0c0eb5824acbdf26d8975ecca5",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+            "column_ordinals": [
+              5,
+              7
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_8cc35a14f63cee85a18a4c7ec15c79cd9b5b8604",
+            "oid": 16755,
+            "payload_bytes": 835,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "c32124dfae00a622f27e553d446f5133ce69fa1b70d00cb666be3dbe30cfa0da",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_65bf58e313a4b96876b72b19",
+            "column_ordinals": [
+              2,
+              6
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_6043af9ad2ea0d18408114528719ee31dec2b018",
+            "oid": 16766,
+            "payload_bytes": 1864,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "c6b4162c07268c93b8dd698976ce7ec71bba278a8eabce33e15c8a0dc6774736",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_ba355e70a4c2c126688383df",
+            "column_ordinals": [
+              3,
+              6
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_a9caaa07c0e4f1cff4b02a1bee20be3637fda18a",
+            "oid": 16778,
+            "payload_bytes": 2656,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "4dc402426f7814701cfe61afce75f2a4642aee81dec2bf4d14a47ba0f2c4cf6f",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435",
+          "cand_65bf58e313a4b96876b72b19",
+          "cand_ba355e70a4c2c126688383df"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    },
+    "workload-frequency-top-k": {
+      "controls": {
+        "analyze_after_drop": false,
+        "ordinary_statistics_equal_to_parent": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true
+      },
+      "method_id": "workload-frequency-top-k",
+      "metrics": {
+        "lower_is_better": true,
+        "max": 1602.0,
+        "mean": 5.244051096325404,
+        "p50": 1.4049362140484813,
+        "p95": 18.673333333333236,
+        "p99": 57.86800000000003,
+        "qerror_contract": "qerror-cardinality-floor-1-v1",
+        "query_count": 10000,
+        "weighted_objective": 5.244051096325404
+      },
+      "query_evidence": {
+        "path": "raw/realization-05/workload-frequency-top-k.jsonl.gz",
+        "query_count": 10000,
+        "sha256": "4c4217ce17e6a6183b0d4a5694a1807f403cdf12b93880139ef76ccda5074916"
+      },
+      "selected_membership": [
+        "cand_7f9c5d6e557d3522afffc809",
+        "cand_75cf66d723f62da49cc3efa7",
+        "cand_57a44cba9481268f933571e7",
+        "cand_7dbe9e5d6af3b0470f8593fd"
+      ],
+      "source_result": {
+        "analyze_after_drop": false,
+        "costs": {
+          "design_search": "not measured by stock physical executor",
+          "evaluation": {
+            "explain_wall_clock_seconds": 2.1076071429997683,
+            "postgresql_planner_query_calls": 10000
+          },
+          "native_realization": {
+            "analyze_count": 1,
+            "analyze_sampling_stochastic": true,
+            "setseed_controls_analyze": false,
+            "shared_analyze_seconds": 0.7042778420000104,
+            "shared_union_create_and_alter_seconds": 19.53855373099941
+          }
+        },
+        "deployment_order": [
+          "cand_7f9c5d6e557d3522afffc809",
+          "cand_75cf66d723f62da49cc3efa7",
+          "cand_57a44cba9481268f933571e7",
+          "cand_7dbe9e5d6af3b0470f8593fd"
+        ],
+        "metrics": {
+          "lower_is_better": true,
+          "max": 1602.0,
+          "mean": 5.244051096325404,
+          "p50": 1.4049362140484813,
+          "p95": 18.673333333333236,
+          "p99": 57.86800000000003,
+          "qerror_contract": "qerror-cardinality-floor-1-v1",
+          "query_count": 10000,
+          "weighted_objective": 5.244051096325404
+        },
+        "ordinary_statistics_equal_to_parent": true,
+        "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+        "parent_realization_digest": "49654fdae2ba8d1780737002be575afef9f7c6b47386473483ba8dda281205ee",
+        "payload_bytes_equal_after_drop": true,
+        "payloads_exactly_preserved_after_drop": true,
+        "physical_evaluation_source": "stock-postgresql-explain",
+        "physical_statistics": [
+          {
+            "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+            "column_ordinals": [
+              2,
+              11
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_6fb39dba1341b2280aecb0e9a6988fae17af1594",
+            "oid": 16772,
+            "payload_bytes": 1347,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "f3e3af83ca906acb3525488d4796e9be6d65e3d4fd1334ca5999f8644e00e94e",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+            "column_ordinals": [
+              2,
+              11
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_57779193bf7d5f9c830ef05b80dff642ca186850",
+            "oid": 16768,
+            "payload_bytes": 40,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "6d22fdf0d3862096e38685251c2395eda13e90575dca1f8e23ad727180099770",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_57a44cba9481268f933571e7",
+            "column_ordinals": [
+              2,
+              13
+            ],
+            "kind": "postgresql.mcv",
+            "name": "extstats_adv_mcv_19bc6354f3e730c5fe90727fff5b17c68d4e54d2",
+            "oid": 16764,
+            "payload_bytes": 1933,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+            "payload_sha256": "25fa5b4f65828e071393a63660d821b8f4bf4e0b8858d5ac54652e659f06f1cd",
+            "schema": "public",
+            "statistics_target": 100
+          },
+          {
+            "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+            "column_ordinals": [
+              2,
+              13
+            ],
+            "kind": "postgresql.dependencies",
+            "name": "extstats_adv_dep_b3d05b026ff2d19d7e4a6192b4fcb5243e984d09",
+            "oid": 16770,
+            "payload_bytes": 40,
+            "payload_present": true,
+            "payload_serialization": "postgresql.pg_dependencies_send-v1",
+            "payload_sha256": "ceb981969aba48e048b98d3aeb041ec9e2e5ef58ceae54c92b587446c628e18b",
+            "schema": "public",
+            "statistics_target": 100
+          }
+        ],
+        "post_drop_analyze_count": 0,
+        "selected_deployed_membership_equal": true,
+        "selected_membership": [
+          "cand_7f9c5d6e557d3522afffc809",
+          "cand_75cf66d723f62da49cc3efa7",
+          "cand_57a44cba9481268f933571e7",
+          "cand_7dbe9e5d6af3b0470f8593fd"
+        ],
+        "shared_analyze_realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae"
+      }
+    }
+  },
+  "observed_parent_oid_sequence": [
+    16754,
+    16755,
+    16756,
+    16757,
+    16758,
+    16759,
+    16760,
+    16761,
+    16762,
+    16763,
+    16764,
+    16765,
+    16766,
+    16767,
+    16768,
+    16769,
+    16770,
+    16771,
+    16772,
+    16773,
+    16774,
+    16775,
+    16776,
+    16777,
+    16778,
+    16779,
+    16780,
+    16781
+  ],
+  "oid_order_status": "verified",
+  "physical_explain_count": 90000,
+  "raw_evidence": {
+    "greedy-ADD": {
+      "path": "raw/realization-05/greedy-ADD.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "5195c965eb14779eb9129cf50b67d5300dc9fc6cac4e294fb8128cc35a1946bc"
+    },
+    "native-payload-size-top-k": {
+      "path": "raw/realization-05/native-payload-size-top-k.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "ead3ccce6536106102df97b2e9a8b6cf9ab48c4697f9b8f7dd08f2efc0187d9b"
+    },
+    "random-k-seed-1": {
+      "path": "raw/realization-05/random-k-seed-1.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "167fb0c115c94cd66be35e8b3e13f2723dcd84d88d9832abe364c6abc1620d72"
+    },
+    "random-k-seed-2": {
+      "path": "raw/realization-05/random-k-seed-2.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "47954f3cd8c693c65f6f852e565055af478bd1f37809602abdfb91b6c50744fa"
+    },
+    "random-k-seed-3": {
+      "path": "raw/realization-05/random-k-seed-3.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "f25c8c44d956c0da8a033c82b3a215f24790f9a2c3d5cfff27a15fe7dc050349"
+    },
+    "random-k-seed-4": {
+      "path": "raw/realization-05/random-k-seed-4.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "3ebb61cc512111abd073931c291fc39db879527f88d787f2b8c3b31711af051b"
+    },
+    "random-k-seed-5": {
+      "path": "raw/realization-05/random-k-seed-5.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "6b571a2677af679b81441ac0fdabdb9462382079000c9469beba4e38dc867841"
+    },
+    "singleton-utility-top-k": {
+      "path": "raw/realization-05/singleton-utility-top-k.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "3c8a1dc5b499a360e6cef97d32893ad4a6619ea0ffda70fe33d6f5fda11549f8"
+    },
+    "workload-frequency-top-k": {
+      "path": "raw/realization-05/workload-frequency-top-k.jsonl.gz",
+      "query_count": 10000,
+      "sha256": "4c4217ce17e6a6183b0d4a5694a1807f403cdf12b93880139ef76ccda5074916"
+    }
+  },
+  "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-05",
+  "relation_control": {
+    "relation": "public.census13",
+    "relation_oid": 16556,
+    "statistics": []
+  },
+  "semantic_digest": "7abc4af93d0f9e73c6c45d22ffee11cbecdac35694ef38da1067b392f62daecd",
+  "shared_parent": {
+    "analyze_count": 1,
+    "analyze_sampling_stochastic": true,
+    "format_version": "native-analyze-stability-shared-parent-v1",
+    "fresh_state_verified": true,
+    "ordinary_statistics_fingerprint": "973539e61cfdf60f39411b9c44f641f7ceb9b33745fddc25f0f12a7239b79e79",
+    "physical_statistics": [
+      {
+        "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_95d5fb37f17906e5eb8ae4f548aec4793f0da93a",
+        "oid": 16754,
+        "payload_bytes": 725,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "3e226ae5f0ed8468a8e29aa2fd0fb5672a5f8f0c0eb5824acbdf26d8975ecca5",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8cc35a14f63cee85a18a4c7ec15c79cd9b5b8604",
+        "oid": 16755,
+        "payload_bytes": 835,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "c32124dfae00a622f27e553d446f5133ce69fa1b70d00cb666be3dbe30cfa0da",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8134ac21a195d061dafc0588fcdbb3e98c79ca18",
+        "oid": 16756,
+        "payload_bytes": 2700,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "02d0a5bf4264d38dc63a2ff95eb4f5c24155d91ddfb2179f5ec526e4bdb0f46a",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+        "column_ordinals": [
+          2,
+          12
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_ff61d80643132bb8cae769b98c0b57171accccee",
+        "oid": 16757,
+        "payload_bytes": 2675,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "b9590c72ff1f5a238ac8ccd4780dec0534238fa3f9a3e89cd66c2073f106f021",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+        "column_ordinals": [
+          1,
+          3
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_1f64ed753f9595aea24819c64b477cfd9f7f677c",
+        "oid": 16758,
+        "payload_bytes": 2662,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "223c549dff7d042b638e6ead9a0b26ccc9fbc794e637be732f3bf6b8e2de75d2",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+        "column_ordinals": [
+          1,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_5e621538bc5ac3071d8b80eb6ff441224fd9c3bd",
+        "oid": 16759,
+        "payload_bytes": 2696,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "4d66744dd87fee40b63b4ff1f50b2ddd97dc545d08cc533426b2ad9eb0ad2a47",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_41eded1acb31e2a3075e7307",
+        "column_ordinals": [
+          2,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_65d26947d45baf6cf73411df392253797b9dfc85",
+        "oid": 16760,
+        "payload_bytes": 1156,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "0fef2ef0c5c47457348705c42a23a126a0a7631c936c6229502463e4ca7181e2",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+        "column_ordinals": [
+          4,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_dea35ae0665a57dab727a9a339b9ffd980877252",
+        "oid": 16761,
+        "payload_bytes": 2609,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "c3a30085fb3a7624f44467c83ff36d246ba74da0253e7387807222e663325252",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+        "column_ordinals": [
+          8,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_545e1d5a8b06b3f1c4479837202973560b823134",
+        "oid": 16762,
+        "payload_bytes": 1233,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "4d89d94e40657fca5dbc090d3489b4f721fd2d54fedf177f1337c573a567fdb4",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_563a1396818ae7124888fb89",
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_9506c70c03d5db0bfc9387aebd608dddfa3dc4c2",
+        "oid": 16763,
+        "payload_bytes": 40,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "3628a10db068dd151bd28f7775e0244c4fbae000a501736066c3c657e07a1f8d",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_57a44cba9481268f933571e7",
+        "column_ordinals": [
+          2,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_19bc6354f3e730c5fe90727fff5b17c68d4e54d2",
+        "oid": 16764,
+        "payload_bytes": 1933,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "25fa5b4f65828e071393a63660d821b8f4bf4e0b8858d5ac54652e659f06f1cd",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_622cc12086322b75d4e08073",
+        "column_ordinals": [
+          12,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_7e36f114fdd19378eafbefa6199742fb53ecc727",
+        "oid": 16765,
+        "payload_bytes": 40,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "9d6b884436f16a33cf0e3a5cf2d4c503941d8397ae5d0df888fdcd6f109adfd0",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_65bf58e313a4b96876b72b19",
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_6043af9ad2ea0d18408114528719ee31dec2b018",
+        "oid": 16766,
+        "payload_bytes": 1864,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "c6b4162c07268c93b8dd698976ce7ec71bba278a8eabce33e15c8a0dc6774736",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_732acc055f32ca48ff994adf",
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_5e6b6cd41d4b6e12c5c6b0d4fcbb1fa4e66f5b71",
+        "oid": 16767,
+        "payload_bytes": 2721,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "cecc83f4af39246f5bce02de37ff74a7ace43b2444d6edcc478e31b7c3b95cb7",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_57779193bf7d5f9c830ef05b80dff642ca186850",
+        "oid": 16768,
+        "payload_bytes": 40,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "6d22fdf0d3862096e38685251c2395eda13e90575dca1f8e23ad727180099770",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+        "column_ordinals": [
+          3,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_039b761f79e3a57e94ad30187422e3842f306c28",
+        "oid": 16769,
+        "payload_bytes": 1421,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "76b13ffe1efb1f3312637ba22ec621a5c0581b27aa33c71d4e6903d755c44b40",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+        "column_ordinals": [
+          2,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_b3d05b026ff2d19d7e4a6192b4fcb5243e984d09",
+        "oid": 16770,
+        "payload_bytes": 40,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "ceb981969aba48e048b98d3aeb041ec9e2e5ef58ceae54c92b587446c628e18b",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_618275a14570437db72a4e2f10ae77eca1b7bb66",
+        "oid": 16771,
+        "payload_bytes": 0,
+        "payload_present": false,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+        "column_ordinals": [
+          2,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_6fb39dba1341b2280aecb0e9a6988fae17af1594",
+        "oid": 16772,
+        "payload_bytes": 1347,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "f3e3af83ca906acb3525488d4796e9be6d65e3d4fd1334ca5999f8644e00e94e",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_907082119654b274db2849b9",
+        "column_ordinals": [
+          7,
+          13
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_a2a985a14e5568d9bad6583471ddaf75a07618c5",
+        "oid": 16773,
+        "payload_bytes": 26,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "ca60922cf11a1da23d1567955e649c9d19bca026a94d8746118c4c18b1b6ca4f",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+        "column_ordinals": [
+          2,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_4a06ae914fdc140e2d3b32a1a924a81c1e40878b",
+        "oid": 16774,
+        "payload_bytes": 1137,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "e3c3a73825985f40f0a0c4314621b5253bca95b9c257a43d4851ade68d8b61d7",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "column_ordinals": [
+          2,
+          10
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_354f8516fdf4c5d1bd9d3da8c187ede00c335d38",
+        "oid": 16775,
+        "payload_bytes": 40,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "576833e8d4edbeda3349b05d462d0b7140d1b87a45c46c13186c80d992fb06f4",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_af2001646b1b90182083d14a",
+        "column_ordinals": [
+          12,
+          13
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_b7d040f2e7ff163781e723c102a51ca39f0b25c3",
+        "oid": 16776,
+        "payload_bytes": 3074,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "b725ad22c7a443fc542486dd26ded8252550c4fc47ec632a4a1aee85c530c04e",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_b9510ae03f52378017bd059d",
+        "column_ordinals": [
+          3,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_8cb13f8590d2fe0e6008dc86a41b1817ca8f8774",
+        "oid": 16777,
+        "payload_bytes": 2195,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "afa726a8bbaa8ebe159b3e3173a05dfa259e5c352fc4a682c9fa607800d52f4a",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_ba355e70a4c2c126688383df",
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_a9caaa07c0e4f1cff4b02a1bee20be3637fda18a",
+        "oid": 16778,
+        "payload_bytes": 2656,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "4dc402426f7814701cfe61afce75f2a4642aee81dec2bf4d14a47ba0f2c4cf6f",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_dc9ef95a9408c9679784b874",
+        "column_ordinals": [
+          7,
+          11
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_e0ad64f8de7f22b899a96ceb0e0bcb298c0facee",
+        "oid": 16779,
+        "payload_bytes": 1188,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "ecc71f9cab9aafea0b46810a30e2472a7570513fc450585f5b0efb146c805c4d",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_df4e56f7a43cce985de58501",
+        "column_ordinals": [
+          3,
+          12
+        ],
+        "kind": "postgresql.dependencies",
+        "name": "extstats_adv_dep_ee14ee3c373bc1a34773bc83036f402261d25482",
+        "oid": 16780,
+        "payload_bytes": 26,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_dependencies_send-v1",
+        "payload_sha256": "930d45c0a81fe5f7c6641eb09506951a22ac6a9087b83a70e593dba78d9aede8",
+        "schema": "public",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+        "column_ordinals": [
+          4,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "name": "extstats_adv_mcv_1fcee38618d60e65dccc97aa2afc1dde53950db4",
+        "oid": 16781,
+        "payload_bytes": 2093,
+        "payload_present": true,
+        "payload_serialization": "postgresql.pg_mcv_list_send-v1",
+        "payload_sha256": "971c0e07164e7fb2cd7bea803a3831fed5b1eec9b349ba7c618e1a2e53ade664",
+        "schema": "public",
+        "statistics_target": 100
+      }
+    ],
+    "preexisting_extended_statistics": [],
+    "realization_id": "069b2ad6ae615316b8daebe17c450c2e4f79e92ffb96cc8fdd43829fa786a4ae",
+    "setseed_is_not_analyze_reproducibility_proof": true,
+    "stock_server": {
+      "version": "16.14",
+      "version_num": 160014
+    },
+    "union_candidate_ids": [
+      "cand_0b505b8bacb3c643f4e4dc43",
+      "cand_1af5539c1001b3f9b2f29435",
+      "cand_1edd4a89495b1c0989812ef6",
+      "cand_2bff6409ebf3f1068adcda97",
+      "cand_2e314f97c08689b6e7ad90b8",
+      "cand_381a799a1607fdc3cd3dfea7",
+      "cand_41eded1acb31e2a3075e7307",
+      "cand_4a28f778fbc449dfeede3fcd",
+      "cand_4c80e02718ed0de73de2e8a5",
+      "cand_563a1396818ae7124888fb89",
+      "cand_57a44cba9481268f933571e7",
+      "cand_622cc12086322b75d4e08073",
+      "cand_65bf58e313a4b96876b72b19",
+      "cand_732acc055f32ca48ff994adf",
+      "cand_75cf66d723f62da49cc3efa7",
+      "cand_7a72ebac1e220c1b2cbec353",
+      "cand_7dbe9e5d6af3b0470f8593fd",
+      "cand_7e97f5097a62763e6d4508ca",
+      "cand_7f9c5d6e557d3522afffc809",
+      "cand_907082119654b274db2849b9",
+      "cand_9da5f299ad8d39bb6c1d87aa",
+      "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+      "cand_af2001646b1b90182083d14a",
+      "cand_b9510ae03f52378017bd059d",
+      "cand_ba355e70a4c2c126688383df",
+      "cand_dc9ef95a9408c9679784b874",
+      "cand_df4e56f7a43cce985de58501",
+      "cand_f50a783f33caca5a7d0b8f10"
+    ]
+  },
+  "source_physical_semantic_digest": "e3d899badb8f4f9dd7500c6491721ce93e0ff0548de313b14dc71c9091c6ab9f",
+  "status": "complete"
+}

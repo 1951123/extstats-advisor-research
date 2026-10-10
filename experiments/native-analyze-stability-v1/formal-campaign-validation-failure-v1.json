@@ -1,0 +1,122 @@
+{
+  "attempt_replacement": false,
+  "automatic_retry": false,
+  "dataset_summaries": {
+    "arecel-census13": {
+      "path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-census13/summary-v1.json",
+      "semantic_digest": "43ec3178254981aebb9af65b31aaf337a0035964e01f50dcb0ce7ccffdb5e7de",
+      "sha256": "7d1df20a9ab19055d773004c888bfa75f9714156e7c6ea06e70f2f06aa361c4d"
+    },
+    "arecel-dmv11": {
+      "path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-dmv11/summary-v1.json",
+      "semantic_digest": "ff67e4a3a6b2ee7113900a1dfb20e827fd478a29f2933c30ab4969b5b8ad35ca",
+      "sha256": "59333fc69cbdc21231ac0b5bc17f2e48c78b2a32f74e081d09e9996c4dbf0bc7"
+    },
+    "arecel-forest10": {
+      "path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-forest10/summary-v1.json",
+      "semantic_digest": "9f2139115421ac72a2a05b80f8ed1fee2b41259c580d582d885d0bd90303a77e",
+      "sha256": "4579336daec8bbf668f99e30cb91cff4d737775c1a8fb62a91f8c4ad114ab779"
+    }
+  },
+  "derived_cross_summary_rejected": {
+    "path": "experiments/native-analyze-stability-v1/formal-nas-formal-20261010-cross-dataset-summary-v1.json",
+    "reason": "generated before independent missing-payload gate was applied; not scientific evidence",
+    "semantic_digest": "b1dedb7c3efe3b3929f2f1b0ea139360f460ec0ece49e9428f34ba4c20266e0f",
+    "sha256": "246f4ef30c9a2a19f1540d6a9386cb973a25bb36d3be555c89cab1ccc0843453"
+  },
+  "failure_id": "nas-formal-20261010-validation-failure-v1",
+  "failure_rule": "paper/native-analyze-stability-protocol-v1.json::failure_rules[0]; selected native payload absence stops the affected realization and prevents complete-result promotion",
+  "formal_execution_counts": {
+    "clone_analyze": 0,
+    "datasets": 3,
+    "method_arms": 135,
+    "parent_analyze": 15,
+    "physical_explain": 1350000,
+    "raw_observations": 1350000,
+    "realizations": 15
+  },
+  "format_version": "native-analyze-stability-formal-campaign-validation-failure-v1",
+  "historical_artifacts_modified": false,
+  "interpretation_boundary": "Raw observations and their hashes are preserved for audit; no Native ANALYZE Stability scientific conclusion, ranking stability claim, or five-realization aggregate is promoted.",
+  "missing_selected_native_payloads": [
+    {
+      "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+      "dataset_id": "arecel-census13",
+      "kind": "postgresql.dependencies",
+      "oid": 16579,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-01"
+    },
+    {
+      "candidate_id": "cand_907082119654b274db2849b9",
+      "dataset_id": "arecel-census13",
+      "kind": "postgresql.dependencies",
+      "oid": 16581,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-01"
+    },
+    {
+      "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+      "dataset_id": "arecel-census13",
+      "kind": "postgresql.dependencies",
+      "oid": 16627,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-02"
+    },
+    {
+      "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+      "dataset_id": "arecel-census13",
+      "kind": "postgresql.dependencies",
+      "oid": 16675,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-03"
+    },
+    {
+      "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+      "dataset_id": "arecel-census13",
+      "kind": "postgresql.dependencies",
+      "oid": 16771,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-census13::arecel-census13::realization-05"
+    },
+    {
+      "candidate_id": "cand_36b212ba376a0cacc9589af9",
+      "dataset_id": "arecel-dmv11",
+      "kind": "postgresql.dependencies",
+      "oid": 16813,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-dmv11::arecel-dmv11::realization-01"
+    },
+    {
+      "candidate_id": "cand_36b212ba376a0cacc9589af9",
+      "dataset_id": "arecel-dmv11",
+      "kind": "postgresql.dependencies",
+      "oid": 16895,
+      "payload_bytes": 0,
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "realization_id": "nas-formal-20261010-dmv11::arecel-dmv11::realization-03"
+    }
+  ],
+  "postgresql_cleanup": "formal stock lab stopped; invocation databases removed by runner cleanup",
+  "preflight": {
+    "path": "experiments/native-analyze-stability-v1/formal-preflight-20261010-v1.json",
+    "semantic_digest": "6cb8ff772fdb0313a7b55f4f7e2fe3bbb08efd4f3bf33427a73ec55377d598fc",
+    "sha256": "40dbb58c05f5846ea50bb89f7473375c64dd7212d88185e9192eefe54902e2d0"
+  },
+  "producer_sha": "36dba33343dc497dd321470dd6262035f546801c",
+  "protocol": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+    "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"
+  },
+  "rq1b_w_test_accessed": false,
+  "scientific_eligibility": "ineligible",
+  "semantic_digest": "9bf2492028099ddf3d2c3713d9a1491ab6bcd03b234743f0fdcdf3f97c6dc1af",
+  "status": "failed-scientific-control"
+}
