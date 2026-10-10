@@ -35,6 +35,11 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
 _EXPECTED_SERVER_VERSION_NUM = 160014
 _EXPECTED_SERVER_VERSION_PREFIX = "16.14"
+_EXPERIMENT_STATS_AUDIT_SQL = (
+    "SELECT n.nspname, e.stxname FROM pg_catalog.pg_statistic_ext e "
+    "JOIN pg_catalog.pg_namespace n ON n.oid=e.stxnamespace "
+    "WHERE e.stxrelid=%s AND e.stxname LIKE 'extstats_adv_%%' ORDER BY e.stxname"
+)
 
 
 class LiveAdapterError(WhatIfCostError):
@@ -447,9 +452,7 @@ class StockPhysicalCostAdapter(_BaseAdapter):
             server = _verify_server(connection, self.config.stock_dsn, self._identity)
             relation_oid = _relation_oid(connection, self._relation.schema, self._relation.name)
             existing = connection.execute(
-                "SELECT n.nspname, e.stxname FROM pg_catalog.pg_statistic_ext e "
-                "JOIN pg_catalog.pg_namespace n ON n.oid=e.stxnamespace "
-                "WHERE e.stxrelid=%s AND e.stxname LIKE 'extstats_adv_%' ORDER BY e.stxname",
+                _EXPERIMENT_STATS_AUDIT_SQL,
                 (relation_oid,),
             ).fetchall()
             if existing:

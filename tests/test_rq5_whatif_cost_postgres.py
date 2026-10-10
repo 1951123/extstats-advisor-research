@@ -86,6 +86,10 @@ def test_ddl_preserves_declared_candidate_order() -> None:
     assert all("SET STATISTICS 250" in item[2] for item in statements)
 
 
+def test_catalog_audit_like_pattern_is_escaped_for_psycopg() -> None:
+    assert "LIKE 'extstats_adv_%%'" in postgres._EXPERIMENT_STATS_AUDIT_SQL
+
+
 def test_explain_shape_is_fail_closed() -> None:
     assert postgres._explain_rows([{"Plan": {"Plan Rows": 17}}]) == 17
     with pytest.raises(postgres.LiveAdapterError, match="Plan Rows"):
