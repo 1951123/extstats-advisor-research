@@ -215,7 +215,19 @@ def write_query_records(path: Path, records: Sequence[Mapping[str, Any]]) -> str
         (json.dumps(dict(record), sort_keys=True, separators=(",", ":")) + "\n").encode()
         for record in records
     )
-    path.write_bytes(gzip.compress(lines, mtime=0))
+    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(gzip.compress(lines, mtime=0))
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    except Exception:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+        raise
     return sha256_file(path)
 
 
