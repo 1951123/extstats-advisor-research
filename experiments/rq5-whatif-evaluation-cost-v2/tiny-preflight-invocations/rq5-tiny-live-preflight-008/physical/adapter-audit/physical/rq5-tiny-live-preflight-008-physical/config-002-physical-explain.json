@@ -1,0 +1,27 @@
+{
+  "attempted": 5,
+  "failed": 0,
+  "rows": [
+    {
+      "plan_rows": 3,
+      "query_id": "rq5_tiny_q01"
+    },
+    {
+      "plan_rows": 2,
+      "query_id": "rq5_tiny_q02"
+    },
+    {
+      "plan_rows": 3,
+      "query_id": "rq5_tiny_q03"
+    },
+    {
+      "plan_rows": 2,
+      "query_id": "rq5_tiny_q04"
+    },
+    {
+      "plan_rows": 2,
+      "query_id": "rq5_tiny_q05"
+    }
+  ],
+  "successful": 5
+}

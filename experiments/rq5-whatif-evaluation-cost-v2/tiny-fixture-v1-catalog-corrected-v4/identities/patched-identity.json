@@ -1,0 +1,8 @@
+{
+  "identity_type": "expected-source-identity",
+  "source_role": "patched-postgresql-16.14",
+  "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "source_dirty": false,
+  "server_version": "16.14",
+  "verification_required_before_live_use": true
+}
