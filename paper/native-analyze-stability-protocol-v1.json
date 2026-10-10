@@ -1,0 +1,2148 @@
+{
+  "admissible_claims": [
+    "descriptive operational variability under independent stock PostgreSQL ANALYZE realizations",
+    "within-realization method ranking stability under shared native realization"
+  ],
+  "dataset_bindings": {
+    "arecel-census13": {
+      "ablation_artifact": {
+        "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-ablation-v2.json",
+        "semantic_digest": "ed9031d8573f0048cbc852e5b8a236c7a29cc224b6012fd88b252700bbebba73",
+        "sha256": "9821b792f6a58ae6fde290d2465bab2249321441f2f7e772d70c446b9a4f369a"
+      },
+      "candidate_definitions": {
+        "cand_0b505b8bacb3c643f4e4dc43": {
+          "candidate_id": "cand_0b505b8bacb3c643f4e4dc43",
+          "canonical_deployment_position": 24,
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 24
+        },
+        "cand_1af5539c1001b3f9b2f29435": {
+          "candidate_id": "cand_1af5539c1001b3f9b2f29435",
+          "canonical_deployment_position": 44,
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 44
+        },
+        "cand_1edd4a89495b1c0989812ef6": {
+          "candidate_id": "cand_1edd4a89495b1c0989812ef6",
+          "canonical_deployment_position": 6,
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 6
+        },
+        "cand_2bff6409ebf3f1068adcda97": {
+          "candidate_id": "cand_2bff6409ebf3f1068adcda97",
+          "canonical_deployment_position": 22,
+          "column_names": [
+            "workclass",
+            "hours_per_week"
+          ],
+          "column_ordinals": [
+            2,
+            12
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 22
+        },
+        "cand_2e314f97c08689b6e7ad90b8": {
+          "candidate_id": "cand_2e314f97c08689b6e7ad90b8",
+          "canonical_deployment_position": 2,
+          "column_names": [
+            "age",
+            "education"
+          ],
+          "column_ordinals": [
+            1,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 2
+        },
+        "cand_381a799a1607fdc3cd3dfea7": {
+          "candidate_id": "cand_381a799a1607fdc3cd3dfea7",
+          "canonical_deployment_position": 8,
+          "column_names": [
+            "age",
+            "sex"
+          ],
+          "column_ordinals": [
+            1,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 8
+        },
+        "cand_41eded1acb31e2a3075e7307": {
+          "candidate_id": "cand_41eded1acb31e2a3075e7307",
+          "canonical_deployment_position": 15,
+          "column_names": [
+            "workclass",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            2,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 15
+        },
+        "cand_4a28f778fbc449dfeede3fcd": {
+          "candidate_id": "cand_4a28f778fbc449dfeede3fcd",
+          "canonical_deployment_position": 35,
+          "column_names": [
+            "education_num",
+            "occupation"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 35
+        },
+        "cand_4c80e02718ed0de73de2e8a5": {
+          "candidate_id": "cand_4c80e02718ed0de73de2e8a5",
+          "canonical_deployment_position": 66,
+          "column_names": [
+            "race",
+            "capital_loss"
+          ],
+          "column_ordinals": [
+            8,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 66
+        },
+        "cand_563a1396818ae7124888fb89": {
+          "candidate_id": "cand_563a1396818ae7124888fb89",
+          "canonical_deployment_position": 92,
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 94
+        },
+        "cand_57a44cba9481268f933571e7": {
+          "candidate_id": "cand_57a44cba9481268f933571e7",
+          "canonical_deployment_position": 23,
+          "column_names": [
+            "workclass",
+            "native_country"
+          ],
+          "column_ordinals": [
+            2,
+            13
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 23
+        },
+        "cand_622cc12086322b75d4e08073": {
+          "candidate_id": "cand_622cc12086322b75d4e08073",
+          "canonical_deployment_position": 136,
+          "column_names": [
+            "hours_per_week",
+            "native_country"
+          ],
+          "column_ordinals": [
+            12,
+            13
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 156
+        },
+        "cand_65bf58e313a4b96876b72b19": {
+          "candidate_id": "cand_65bf58e313a4b96876b72b19",
+          "canonical_deployment_position": 16,
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 16
+        },
+        "cand_732acc055f32ca48ff994adf": {
+          "candidate_id": "cand_732acc055f32ca48ff994adf",
+          "canonical_deployment_position": 4,
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 4
+        },
+        "cand_75cf66d723f62da49cc3efa7": {
+          "candidate_id": "cand_75cf66d723f62da49cc3efa7",
+          "canonical_deployment_position": 96,
+          "column_names": [
+            "workclass",
+            "capital_loss"
+          ],
+          "column_ordinals": [
+            2,
+            11
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 99
+        },
+        "cand_7a72ebac1e220c1b2cbec353": {
+          "candidate_id": "cand_7a72ebac1e220c1b2cbec353",
+          "canonical_deployment_position": 31,
+          "column_names": [
+            "education",
+            "capital_loss"
+          ],
+          "column_ordinals": [
+            3,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 31
+        },
+        "cand_7dbe9e5d6af3b0470f8593fd": {
+          "candidate_id": "cand_7dbe9e5d6af3b0470f8593fd",
+          "canonical_deployment_position": 98,
+          "column_names": [
+            "workclass",
+            "native_country"
+          ],
+          "column_ordinals": [
+            2,
+            13
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 101
+        },
+        "cand_7e97f5097a62763e6d4508ca": {
+          "candidate_id": "cand_7e97f5097a62763e6d4508ca",
+          "canonical_deployment_position": 93,
+          "column_names": [
+            "workclass",
+            "relationship"
+          ],
+          "column_ordinals": [
+            2,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 95
+        },
+        "cand_7f9c5d6e557d3522afffc809": {
+          "candidate_id": "cand_7f9c5d6e557d3522afffc809",
+          "canonical_deployment_position": 21,
+          "column_names": [
+            "workclass",
+            "capital_loss"
+          ],
+          "column_ordinals": [
+            2,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 21
+        },
+        "cand_907082119654b274db2849b9": {
+          "candidate_id": "cand_907082119654b274db2849b9",
+          "canonical_deployment_position": 122,
+          "column_names": [
+            "relationship",
+            "native_country"
+          ],
+          "column_ordinals": [
+            7,
+            13
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 141
+        },
+        "cand_9da5f299ad8d39bb6c1d87aa": {
+          "candidate_id": "cand_9da5f299ad8d39bb6c1d87aa",
+          "canonical_deployment_position": 17,
+          "column_names": [
+            "workclass",
+            "relationship"
+          ],
+          "column_ordinals": [
+            2,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 17
+        },
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb": {
+          "candidate_id": "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+          "canonical_deployment_position": 95,
+          "column_names": [
+            "workclass",
+            "capital_gain"
+          ],
+          "column_ordinals": [
+            2,
+            10
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 98
+        },
+        "cand_af2001646b1b90182083d14a": {
+          "candidate_id": "cand_af2001646b1b90182083d14a",
+          "canonical_deployment_position": 78,
+          "column_names": [
+            "hours_per_week",
+            "native_country"
+          ],
+          "column_ordinals": [
+            12,
+            13
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 78
+        },
+        "cand_b9510ae03f52378017bd059d": {
+          "candidate_id": "cand_b9510ae03f52378017bd059d",
+          "canonical_deployment_position": 27,
+          "column_names": [
+            "education",
+            "relationship"
+          ],
+          "column_ordinals": [
+            3,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 27
+        },
+        "cand_ba355e70a4c2c126688383df": {
+          "candidate_id": "cand_ba355e70a4c2c126688383df",
+          "canonical_deployment_position": 26,
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 26
+        },
+        "cand_dc9ef95a9408c9679784b874": {
+          "candidate_id": "cand_dc9ef95a9408c9679784b874",
+          "canonical_deployment_position": 61,
+          "column_names": [
+            "relationship",
+            "capital_loss"
+          ],
+          "column_ordinals": [
+            7,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 61
+        },
+        "cand_df4e56f7a43cce985de58501": {
+          "candidate_id": "cand_df4e56f7a43cce985de58501",
+          "canonical_deployment_position": 102,
+          "column_names": [
+            "education",
+            "hours_per_week"
+          ],
+          "column_ordinals": [
+            3,
+            12
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 110
+        },
+        "cand_f50a783f33caca5a7d0b8f10": {
+          "candidate_id": "cand_f50a783f33caca5a7d0b8f10",
+          "canonical_deployment_position": 34,
+          "column_names": [
+            "education_num",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_792c9fc7c23cba759b9bab83",
+          "static_precedence_rank": 34
+        }
+      },
+      "comparability_stratum": "current-v2",
+      "dataset_id": "arecel-census13",
+      "design_artifact": {
+        "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+        "semantic_digest": "ef68256b9aa26ceb55a7a3e25a9969716ba3b1a19635e64febce4af8b4e88de8",
+        "sha256": "31a8b0773483ae65b838b899744e4ff738abd477e16b989f893b14aee89db33d"
+      },
+      "fixed_k": 4,
+      "historical_selection_is_not_recomputed": true,
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435"
+        ],
+        "native-payload-size-top-k": [
+          "cand_732acc055f32ca48ff994adf",
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_1edd4a89495b1c0989812ef6",
+          "cand_2e314f97c08689b6e7ad90b8"
+        ],
+        "random-k-seed-1": [
+          "cand_9da5f299ad8d39bb6c1d87aa",
+          "cand_7a72ebac1e220c1b2cbec353",
+          "cand_4a28f778fbc449dfeede3fcd",
+          "cand_4c80e02718ed0de73de2e8a5"
+        ],
+        "random-k-seed-2": [
+          "cand_41eded1acb31e2a3075e7307",
+          "cand_2bff6409ebf3f1068adcda97",
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_7e97f5097a62763e6d4508ca"
+        ],
+        "random-k-seed-3": [
+          "cand_f50a783f33caca5a7d0b8f10",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+          "cand_907082119654b274db2849b9"
+        ],
+        "random-k-seed-4": [
+          "cand_b9510ae03f52378017bd059d",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_af2001646b1b90182083d14a",
+          "cand_df4e56f7a43cce985de58501"
+        ],
+        "random-k-seed-5": [
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_4c80e02718ed0de73de2e8a5",
+          "cand_563a1396818ae7124888fb89",
+          "cand_622cc12086322b75d4e08073"
+        ],
+        "singleton-utility-top-k": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435",
+          "cand_65bf58e313a4b96876b72b19",
+          "cand_ba355e70a4c2c126688383df"
+        ],
+        "workload-frequency-top-k": [
+          "cand_7f9c5d6e557d3522afffc809",
+          "cand_75cf66d723f62da49cc3efa7",
+          "cand_57a44cba9481268f933571e7",
+          "cand_7dbe9e5d6af3b0470f8593fd"
+        ]
+      },
+      "method_order": [
+        "random-k-seed-1",
+        "random-k-seed-2",
+        "random-k-seed-3",
+        "random-k-seed-4",
+        "random-k-seed-5",
+        "workload-frequency-top-k",
+        "native-payload-size-top-k",
+        "singleton-utility-top-k",
+        "greedy-ADD"
+      ],
+      "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+      "selection_status": {
+        "greedy-ADD": "budget-censored",
+        "native-payload-size-top-k": "complete",
+        "random-k-seed-1": "complete",
+        "random-k-seed-2": "complete",
+        "random-k-seed-3": "complete",
+        "random-k-seed-4": "complete",
+        "random-k-seed-5": "complete",
+        "singleton-utility-top-k": "complete",
+        "workload-frequency-top-k": "complete"
+      },
+      "shared_realization_artifact": {
+        "path": "experiments/arecel-census13/rq4-fixed-k-v2/rq4-stock-shared-realization-v2.json",
+        "semantic_digest": "bf603912d66e76eb9a819f72d1a26ed80f3141d4c72cfd94a3140b0affcb2ca3",
+        "sha256": "53273df2bc776acc0a7bc49371c694a27a8e934777071d07e6144c4c0a0be915"
+      },
+      "shared_source_analyze_count": 1,
+      "source_method_aliases": {},
+      "statistics_target": 100,
+      "stock_postgresql": {
+        "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "postgres_version": "16.14"
+      },
+      "system_freeze_artifact": {
+        "path": "paper/system-freeze-v2.json",
+        "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+        "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+      },
+      "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "truth_binding": {},
+      "workload": {
+        "query_count": 10000,
+        "workload_id": "arecel_census13_test_v1"
+      }
+    },
+    "arecel-dmv11": {
+      "ablation_artifact": {
+        "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-ablation-v2.json",
+        "semantic_digest": "15182b79f7691890cbfa5121d7eda65bbbb02737fb5129646dcc25341330b693",
+        "sha256": "66f7bc785ddd67ec68e69eba918163aaf7f9e83fbab138a781ecf7b52aef487b"
+      },
+      "candidate_definitions": {
+        "cand_025ef605b7fda01f7e5a731d": {
+          "candidate_id": "cand_025ef605b7fda01f7e5a731d",
+          "canonical_deployment_position": 53,
+          "column_names": [
+            "record_type",
+            "registration_class"
+          ],
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 56
+        },
+        "cand_1468038c0729e0c99563256c": {
+          "candidate_id": "cand_1468038c0729e0c99563256c",
+          "canonical_deployment_position": 73,
+          "column_names": [
+            "state",
+            "fuel_type"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 77
+        },
+        "cand_1b85c6467ace3fd56f43c3c3": {
+          "candidate_id": "cand_1b85c6467ace3fd56f43c3c3",
+          "canonical_deployment_position": 45,
+          "column_names": [
+            "reg_valid_date",
+            "suspension_indicator"
+          ],
+          "column_ordinals": [
+            7,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 48
+        },
+        "cand_29cdcb36a5d64b8bb5bca284": {
+          "candidate_id": "cand_29cdcb36a5d64b8bb5bca284",
+          "canonical_deployment_position": 98,
+          "column_names": [
+            "reg_valid_date",
+            "suspension_indicator"
+          ],
+          "column_ordinals": [
+            7,
+            10
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 103
+        },
+        "cand_32dd7b43105520cf3ca2c6a8": {
+          "candidate_id": "cand_32dd7b43105520cf3ca2c6a8",
+          "canonical_deployment_position": 25,
+          "column_names": [
+            "state",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            3,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 25
+        },
+        "cand_36b212ba376a0cacc9589af9": {
+          "candidate_id": "cand_36b212ba376a0cacc9589af9",
+          "canonical_deployment_position": 103,
+          "column_names": [
+            "scofflaw_indicator",
+            "suspension_indicator"
+          ],
+          "column_ordinals": [
+            9,
+            10
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 108
+        },
+        "cand_39ff5ea02aef5da55fce782a": {
+          "candidate_id": "cand_39ff5ea02aef5da55fce782a",
+          "canonical_deployment_position": 23,
+          "column_names": [
+            "state",
+            "reg_valid_date"
+          ],
+          "column_ordinals": [
+            3,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 23
+        },
+        "cand_3d5daa3addbbf6b3267c30f5": {
+          "candidate_id": "cand_3d5daa3addbbf6b3267c30f5",
+          "canonical_deployment_position": 76,
+          "column_names": [
+            "state",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            3,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 80
+        },
+        "cand_3ea8776430fffecefaa78983": {
+          "candidate_id": "cand_3ea8776430fffecefaa78983",
+          "canonical_deployment_position": 5,
+          "column_names": [
+            "record_type",
+            "fuel_type"
+          ],
+          "column_ordinals": [
+            1,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 5
+        },
+        "cand_41a814527cb7626291ca8577": {
+          "candidate_id": "cand_41a814527cb7626291ca8577",
+          "canonical_deployment_position": 70,
+          "column_names": [
+            "registration_class",
+            "revocation_indicator"
+          ],
+          "column_ordinals": [
+            2,
+            11
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 74
+        },
+        "cand_446a7fc5aba413d985b7f659": {
+          "candidate_id": "cand_446a7fc5aba413d985b7f659",
+          "canonical_deployment_position": 1,
+          "column_names": [
+            "record_type",
+            "registration_class"
+          ],
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 1
+        },
+        "cand_63b0438f7281938e19185a73": {
+          "candidate_id": "cand_63b0438f7281938e19185a73",
+          "canonical_deployment_position": 8,
+          "column_names": [
+            "record_type",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            1,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 8
+        },
+        "cand_77c30674b97dc0c906422eed": {
+          "candidate_id": "cand_77c30674b97dc0c906422eed",
+          "canonical_deployment_position": 39,
+          "column_names": [
+            "fuel_type",
+            "reg_valid_date"
+          ],
+          "column_ordinals": [
+            6,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 41
+        },
+        "cand_7db3fcd2a8cbbdf2c9bfe38d": {
+          "candidate_id": "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "canonical_deployment_position": 13,
+          "column_names": [
+            "registration_class",
+            "body_type"
+          ],
+          "column_ordinals": [
+            2,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 13
+        },
+        "cand_8173ebfcd4fc1962c8404874": {
+          "candidate_id": "cand_8173ebfcd4fc1962c8404874",
+          "canonical_deployment_position": 17,
+          "column_names": [
+            "registration_class",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            2,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 17
+        },
+        "cand_83905d0c78d91e30eae5919f": {
+          "candidate_id": "cand_83905d0c78d91e30eae5919f",
+          "canonical_deployment_position": 31,
+          "column_names": [
+            "county",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            4,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 32
+        },
+        "cand_92c3ee5c2d9f63a5173e590a": {
+          "candidate_id": "cand_92c3ee5c2d9f63a5173e590a",
+          "canonical_deployment_position": 18,
+          "column_names": [
+            "registration_class",
+            "suspension_indicator"
+          ],
+          "column_ordinals": [
+            2,
+            10
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 18
+        },
+        "cand_a321c061df418caa0b143ac4": {
+          "candidate_id": "cand_a321c061df418caa0b143ac4",
+          "canonical_deployment_position": 4,
+          "column_names": [
+            "record_type",
+            "body_type"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 4
+        },
+        "cand_a7d6924ed62c20dc9a788eee": {
+          "candidate_id": "cand_a7d6924ed62c20dc9a788eee",
+          "canonical_deployment_position": 46,
+          "column_names": [
+            "reg_valid_date",
+            "revocation_indicator"
+          ],
+          "column_ordinals": [
+            7,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 49
+        },
+        "cand_acf9e531983db1cd2c7e3da4": {
+          "candidate_id": "cand_acf9e531983db1cd2c7e3da4",
+          "canonical_deployment_position": 44,
+          "column_names": [
+            "reg_valid_date",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 47
+        },
+        "cand_b78d55db882b6bf067d91270": {
+          "candidate_id": "cand_b78d55db882b6bf067d91270",
+          "canonical_deployment_position": 65,
+          "column_names": [
+            "registration_class",
+            "fuel_type"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 69
+        },
+        "cand_be42b3b48f0d3177f8ce1bcf": {
+          "candidate_id": "cand_be42b3b48f0d3177f8ce1bcf",
+          "canonical_deployment_position": 33,
+          "column_names": [
+            "county",
+            "revocation_indicator"
+          ],
+          "column_ordinals": [
+            4,
+            11
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 34
+        },
+        "cand_c07def92fa7a8c6fda1184e8": {
+          "candidate_id": "cand_c07def92fa7a8c6fda1184e8",
+          "canonical_deployment_position": 95,
+          "column_names": [
+            "fuel_type",
+            "revocation_indicator"
+          ],
+          "column_ordinals": [
+            6,
+            11
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 100
+        },
+        "cand_c097e6360631bc90a93dd900": {
+          "candidate_id": "cand_c097e6360631bc90a93dd900",
+          "canonical_deployment_position": 93,
+          "column_names": [
+            "fuel_type",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            6,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 98
+        },
+        "cand_c41b12c3e1d0549a84df8d23": {
+          "candidate_id": "cand_c41b12c3e1d0549a84df8d23",
+          "canonical_deployment_position": 11,
+          "column_names": [
+            "registration_class",
+            "state"
+          ],
+          "column_ordinals": [
+            2,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 11
+        },
+        "cand_ce642bea730d6ecc4a1e330d": {
+          "candidate_id": "cand_ce642bea730d6ecc4a1e330d",
+          "canonical_deployment_position": 80,
+          "column_names": [
+            "county",
+            "reg_valid_date"
+          ],
+          "column_ordinals": [
+            4,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 85
+        },
+        "cand_d63f42386de504161b5b2f9d": {
+          "candidate_id": "cand_d63f42386de504161b5b2f9d",
+          "canonical_deployment_position": 12,
+          "column_names": [
+            "registration_class",
+            "county"
+          ],
+          "column_ordinals": [
+            2,
+            4
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 12
+        },
+        "cand_eef9f1447e54a5874b807c19": {
+          "candidate_id": "cand_eef9f1447e54a5874b807c19",
+          "canonical_deployment_position": 47,
+          "column_names": [
+            "color",
+            "scofflaw_indicator"
+          ],
+          "column_ordinals": [
+            8,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 50
+        },
+        "cand_f495ee73455905ddf4da0f95": {
+          "candidate_id": "cand_f495ee73455905ddf4da0f95",
+          "canonical_deployment_position": 14,
+          "column_names": [
+            "registration_class",
+            "fuel_type"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_9ca46508fb91888d1c922f91",
+          "static_precedence_rank": 14
+        }
+      },
+      "comparability_stratum": "current-v2",
+      "dataset_id": "arecel-dmv11",
+      "design_artifact": {
+        "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+        "semantic_digest": "8299cdfd3aa437c2660765e432bc3cbf2f642424f2d33cbefb1dc68f16e1cb03",
+        "sha256": "1bf1a5acd6e8183b58ec051102e7e73d538c5af915cf85f08634acf984e32bfd"
+      },
+      "fixed_k": 4,
+      "historical_selection_is_not_recomputed": true,
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_3ea8776430fffecefaa78983"
+        ],
+        "native-payload-size-top-k": [
+          "cand_acf9e531983db1cd2c7e3da4",
+          "cand_1b85c6467ace3fd56f43c3c3",
+          "cand_a7d6924ed62c20dc9a788eee",
+          "cand_39ff5ea02aef5da55fce782a"
+        ],
+        "random-k-seed-1": [
+          "cand_92c3ee5c2d9f63a5173e590a",
+          "cand_1468038c0729e0c99563256c",
+          "cand_29cdcb36a5d64b8bb5bca284",
+          "cand_36b212ba376a0cacc9589af9"
+        ],
+        "random-k-seed-2": [
+          "cand_63b0438f7281938e19185a73",
+          "cand_c41b12c3e1d0549a84df8d23",
+          "cand_d63f42386de504161b5b2f9d",
+          "cand_eef9f1447e54a5874b807c19"
+        ],
+        "random-k-seed-3": [
+          "cand_8173ebfcd4fc1962c8404874",
+          "cand_83905d0c78d91e30eae5919f",
+          "cand_41a814527cb7626291ca8577",
+          "cand_3d5daa3addbbf6b3267c30f5"
+        ],
+        "random-k-seed-4": [
+          "cand_f495ee73455905ddf4da0f95",
+          "cand_83905d0c78d91e30eae5919f",
+          "cand_77c30674b97dc0c906422eed",
+          "cand_c097e6360631bc90a93dd900"
+        ],
+        "random-k-seed-5": [
+          "cand_be42b3b48f0d3177f8ce1bcf",
+          "cand_a7d6924ed62c20dc9a788eee",
+          "cand_ce642bea730d6ecc4a1e330d",
+          "cand_c07def92fa7a8c6fda1184e8"
+        ],
+        "singleton-utility-top-k": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_a321c061df418caa0b143ac4",
+          "cand_446a7fc5aba413d985b7f659",
+          "cand_025ef605b7fda01f7e5a731d"
+        ],
+        "workload-frequency-top-k": [
+          "cand_f495ee73455905ddf4da0f95",
+          "cand_b78d55db882b6bf067d91270",
+          "cand_32dd7b43105520cf3ca2c6a8",
+          "cand_3d5daa3addbbf6b3267c30f5"
+        ]
+      },
+      "method_order": [
+        "random-k-seed-1",
+        "random-k-seed-2",
+        "random-k-seed-3",
+        "random-k-seed-4",
+        "random-k-seed-5",
+        "workload-frequency-top-k",
+        "native-payload-size-top-k",
+        "singleton-utility-top-k",
+        "greedy-ADD"
+      ],
+      "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+      "selection_status": {
+        "greedy-ADD": "budget-censored",
+        "native-payload-size-top-k": "complete",
+        "random-k-seed-1": "complete",
+        "random-k-seed-2": "complete",
+        "random-k-seed-3": "complete",
+        "random-k-seed-4": "complete",
+        "random-k-seed-5": "complete",
+        "singleton-utility-top-k": "complete",
+        "workload-frequency-top-k": "complete"
+      },
+      "shared_realization_artifact": {
+        "path": "experiments/arecel-dmv11/rq4-fixed-k-v2/rq4-stock-shared-realization-v2.json",
+        "semantic_digest": "4c5e5963bc87be62a317d54d15d3de7a69f402b813362197a570bcc2e7a91859",
+        "sha256": "ff5cf47db13fbcd4bdf360bb477bf92b385f5e5c01f39d827a1a8e506fa56682"
+      },
+      "shared_source_analyze_count": 1,
+      "source_method_aliases": {},
+      "statistics_target": 100,
+      "stock_postgresql": {
+        "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "postgres_version": "16.14"
+      },
+      "system_freeze_artifact": {
+        "path": "paper/system-freeze-v2.json",
+        "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+        "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+      },
+      "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "truth_binding": {},
+      "workload": {
+        "query_count": 10000,
+        "workload_id": "arecel_dmv11_test_v1"
+      }
+    },
+    "arecel-forest10": {
+      "ablation_artifact": {
+        "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+        "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9",
+        "sha256": "1f55151012841fdb1cb004bd684ff171dfb7194c761f6822b24fc932337ffc91"
+      },
+      "candidate_definitions": {
+        "cand_04524e4170fda10f288de2ad": {
+          "candidate_id": "cand_04524e4170fda10f288de2ad",
+          "canonical_deployment_position": 23,
+          "column_names": [
+            "aspect",
+            "horizontal_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            2,
+            4
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 56
+        },
+        "cand_0deae0d5de82a5a1fdc34111": {
+          "candidate_id": "cand_0deae0d5de82a5a1fdc34111",
+          "canonical_deployment_position": 7,
+          "column_names": [
+            "slope",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            3,
+            8
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 22
+        },
+        "cand_12b552d6e4274b3e7916918d": {
+          "candidate_id": "cand_12b552d6e4274b3e7916918d",
+          "canonical_deployment_position": 17,
+          "column_names": [
+            "elevation",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            1,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 50
+        },
+        "cand_1537a6ae8ef67c379c8d0fa0": {
+          "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+          "canonical_deployment_position": 1,
+          "column_names": [
+            "aspect",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            2,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 14
+        },
+        "cand_4293ec8c30a7314cb8ef5dbf": {
+          "candidate_id": "cand_4293ec8c30a7314cb8ef5dbf",
+          "canonical_deployment_position": 40,
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            4,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 73
+        },
+        "cand_478f6c4acd54af28ee697d8d": {
+          "candidate_id": "cand_478f6c4acd54af28ee697d8d",
+          "canonical_deployment_position": 38,
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "horizontal_distance_to_roadways"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 71
+        },
+        "cand_4af628931e0d02eb50415f2b": {
+          "candidate_id": "cand_4af628931e0d02eb50415f2b",
+          "canonical_deployment_position": 35,
+          "column_names": [
+            "slope",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            3,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 68
+        },
+        "cand_4de3778bb8674287b6dd5b29": {
+          "candidate_id": "cand_4de3778bb8674287b6dd5b29",
+          "canonical_deployment_position": 4,
+          "column_names": [
+            "slope",
+            "horizontal_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 18
+        },
+        "cand_51488597ac9ebd3cb59d2ff1": {
+          "candidate_id": "cand_51488597ac9ebd3cb59d2ff1",
+          "canonical_deployment_position": 48,
+          "column_names": [
+            "horizontal_distance_to_roadways",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            6,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 81
+        },
+        "cand_5ba9cc937a696a76876f820d": {
+          "candidate_id": "cand_5ba9cc937a696a76876f820d",
+          "canonical_deployment_position": 9,
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "vertical_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 25
+        },
+        "cand_6b7c22215c39c807cda3872e": {
+          "candidate_id": "cand_6b7c22215c39c807cda3872e",
+          "canonical_deployment_position": 16,
+          "column_names": [
+            "elevation",
+            "vertical_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 49
+        },
+        "cand_71249b442b7dc4205d74a4b9": {
+          "candidate_id": "cand_71249b442b7dc4205d74a4b9",
+          "canonical_deployment_position": 56,
+          "column_names": [
+            "hillshade_noon",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            8,
+            10
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 89
+        },
+        "cand_76679921292e8c769dbbd7bc": {
+          "candidate_id": "cand_76679921292e8c769dbbd7bc",
+          "canonical_deployment_position": 6,
+          "column_names": [
+            "slope",
+            "hillshade_9am"
+          ],
+          "column_ordinals": [
+            3,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 21
+        },
+        "cand_77c3e92fff291d4d9515dc69": {
+          "candidate_id": "cand_77c3e92fff291d4d9515dc69",
+          "canonical_deployment_position": 8,
+          "column_names": [
+            "slope",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            3,
+            9
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 23
+        },
+        "cand_8b7a8e0422ed4ae2befb1bc8": {
+          "candidate_id": "cand_8b7a8e0422ed4ae2befb1bc8",
+          "canonical_deployment_position": 37,
+          "column_names": [
+            "horizontal_distance_to_hydrology",
+            "vertical_distance_to_hydrology"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 70
+        },
+        "cand_c7595f3b6addcec1b9919cbe": {
+          "candidate_id": "cand_c7595f3b6addcec1b9919cbe",
+          "canonical_deployment_position": 55,
+          "column_names": [
+            "hillshade_noon",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            8,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 88
+        },
+        "cand_d94eec73746ef01a6811815f": {
+          "candidate_id": "cand_d94eec73746ef01a6811815f",
+          "canonical_deployment_position": 52,
+          "column_names": [
+            "hillshade_9am",
+            "hillshade_noon"
+          ],
+          "column_ordinals": [
+            7,
+            8
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 85
+        },
+        "cand_da7591327792c9bc98b427d7": {
+          "candidate_id": "cand_da7591327792c9bc98b427d7",
+          "canonical_deployment_position": 20,
+          "column_names": [
+            "elevation",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            1,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 53
+        },
+        "cand_ea8b2557e86251bb3994535b": {
+          "candidate_id": "cand_ea8b2557e86251bb3994535b",
+          "canonical_deployment_position": 46,
+          "column_names": [
+            "vertical_distance_to_hydrology",
+            "hillshade_3pm"
+          ],
+          "column_ordinals": [
+            5,
+            9
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 79
+        },
+        "cand_eaa4ce0396b4cc5c68b2550e": {
+          "candidate_id": "cand_eaa4ce0396b4cc5c68b2550e",
+          "canonical_deployment_position": 47,
+          "column_names": [
+            "vertical_distance_to_hydrology",
+            "horizontal_distance_to_fire_points"
+          ],
+          "column_ordinals": [
+            5,
+            10
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "static_precedence_rank": 80
+        }
+      },
+      "comparability_stratum": "historical-v1",
+      "dataset_id": "arecel-forest10",
+      "design_artifact": {
+        "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+        "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283",
+        "sha256": "7fc1fe3f19ea6135108644ad5b48031ab6af8c3baadc8fbbb5954d733567288c"
+      },
+      "fixed_k": 4,
+      "historical_selection_is_not_recomputed": true,
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "native-payload-size-top-k": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "random-k-seed-1": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_d94eec73746ef01a6811815f",
+          "cand_c7595f3b6addcec1b9919cbe"
+        ],
+        "random-k-seed-2": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_c7595f3b6addcec1b9919cbe",
+          "cand_71249b442b7dc4205d74a4b9"
+        ],
+        "random-k-seed-3": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_478f6c4acd54af28ee697d8d"
+        ],
+        "random-k-seed-4": [
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_eaa4ce0396b4cc5c68b2550e"
+        ],
+        "random-k-seed-5": [
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_51488597ac9ebd3cb59d2ff1"
+        ],
+        "singleton-utility-top-k": [
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "workload-frequency-top-k": [
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_ea8b2557e86251bb3994535b"
+        ]
+      },
+      "method_order": [
+        "random-k-seed-1",
+        "random-k-seed-2",
+        "random-k-seed-3",
+        "random-k-seed-4",
+        "random-k-seed-5",
+        "workload-frequency-top-k",
+        "native-payload-size-top-k",
+        "singleton-utility-top-k",
+        "greedy-ADD"
+      ],
+      "research_commit_sha": "3cd2e58ac9201db0f036769e985820c49ca4e4e5",
+      "selection_status": {
+        "greedy-ADD": null,
+        "native-payload-size-top-k": null,
+        "random-k-seed-1": null,
+        "random-k-seed-2": null,
+        "random-k-seed-3": null,
+        "random-k-seed-4": null,
+        "random-k-seed-5": null,
+        "singleton-utility-top-k": null,
+        "workload-frequency-top-k": null
+      },
+      "shared_realization_artifact": {
+        "path": "experiments/arecel-forest10/rq4-fixed-k/physical/dependency-correlation-top-k.json",
+        "semantic_digest": "864132e4d568bda9258da4c8da4017acf30a7a82b4a9c37a2d88fd20d7e02958",
+        "sha256": "832acb6c3173398c39822e9ccbca2ff433be74deec6a1e9be358c13d54db93fe"
+      },
+      "shared_source_analyze_count": 1,
+      "source_method_aliases": {
+        "dependency-correlation-top-k": "native-payload-size-top-k"
+      },
+      "statistics_target": 100,
+      "stock_postgresql": {
+        "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "postgres_version": "16.14"
+      },
+      "system_freeze_artifact": {
+        "path": "paper/system-freeze-v1.json",
+        "semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+        "sha256": "00e1ba0cd1fa7ea71e4d30e4fc2cb9dfed533504e03a78268ebe04eb4958d2e9"
+      },
+      "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+      "truth_binding": {
+        "authoritative_observations_semantic_digest": "4158c749c583d9c21137564361b6fb538ad9f6a7bcac11645384540d37476546",
+        "authoritative_observations_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+        "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+        "policy_semantic_digest": "7d5710fe6a7ee0a3312c0366c0c6cec30720fb03f6ec261ab12cc02ee7f86d58",
+        "source_kind": "authoritative-external-exact",
+        "workload_id": "arecel_forest10_test_v1"
+      },
+      "workload": {
+        "query_count": 10000,
+        "workload_id": "arecel_forest10_test_v1"
+      }
+    },
+    "arecel-power7": {
+      "ablation_artifact": {
+        "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-ablation-v2.json",
+        "semantic_digest": "c092541aa381a3e4eb8660e44f870f61ad1ea81eafc2d5fe94a87b79d8e853a7",
+        "sha256": "c61f11fd89f21c87af29a50552945e1657d8ce66690b76502057a871060180ef"
+      },
+      "candidate_definitions": {
+        "cand_096bd39a57f07bb6712f7f56": {
+          "candidate_id": "cand_096bd39a57f07bb6712f7f56",
+          "canonical_deployment_position": 37,
+          "column_names": [
+            "global_intensity",
+            "sub_metering_1"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 37
+        },
+        "cand_2e43075c0b9a26e510883eff": {
+          "candidate_id": "cand_2e43075c0b9a26e510883eff",
+          "canonical_deployment_position": 17,
+          "column_names": [
+            "global_intensity",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 17
+        },
+        "cand_3506e4367623c6d82ec5746e": {
+          "candidate_id": "cand_3506e4367623c6d82ec5746e",
+          "canonical_deployment_position": 1,
+          "column_names": [
+            "global_active_power",
+            "global_reactive_power"
+          ],
+          "column_ordinals": [
+            1,
+            2
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 1
+        },
+        "cand_353d783f6edd0d1a0a3963d8": {
+          "candidate_id": "cand_353d783f6edd0d1a0a3963d8",
+          "canonical_deployment_position": 10,
+          "column_names": [
+            "global_reactive_power",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 10
+        },
+        "cand_38e40192038b7ba54d609818": {
+          "candidate_id": "cand_38e40192038b7ba54d609818",
+          "canonical_deployment_position": 6,
+          "column_names": [
+            "global_active_power",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 6
+        },
+        "cand_3f9717a3107c8281a1839c18": {
+          "candidate_id": "cand_3f9717a3107c8281a1839c18",
+          "canonical_deployment_position": 38,
+          "column_names": [
+            "global_intensity",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            4,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 38
+        },
+        "cand_46360ee7739f53f045f945d2": {
+          "candidate_id": "cand_46360ee7739f53f045f945d2",
+          "canonical_deployment_position": 23,
+          "column_names": [
+            "global_active_power",
+            "voltage"
+          ],
+          "column_ordinals": [
+            1,
+            3
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 23
+        },
+        "cand_57da410d75e249fbc113452c": {
+          "candidate_id": "cand_57da410d75e249fbc113452c",
+          "canonical_deployment_position": 5,
+          "column_names": [
+            "global_active_power",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            1,
+            6
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 5
+        },
+        "cand_5e1692ac7ae3dad4927a7a70": {
+          "candidate_id": "cand_5e1692ac7ae3dad4927a7a70",
+          "canonical_deployment_position": 35,
+          "column_names": [
+            "voltage",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 35
+        },
+        "cand_5e43adaa42103e401a3e3d23": {
+          "candidate_id": "cand_5e43adaa42103e401a3e3d23",
+          "canonical_deployment_position": 15,
+          "column_names": [
+            "voltage",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            3,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 15
+        },
+        "cand_5fd1ebd87813311ef352fc96": {
+          "candidate_id": "cand_5fd1ebd87813311ef352fc96",
+          "canonical_deployment_position": 18,
+          "column_names": [
+            "global_intensity",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            4,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 18
+        },
+        "cand_631f3a290889f42855c5c594": {
+          "candidate_id": "cand_631f3a290889f42855c5c594",
+          "canonical_deployment_position": 24,
+          "column_names": [
+            "global_active_power",
+            "global_intensity"
+          ],
+          "column_ordinals": [
+            1,
+            4
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 24
+        },
+        "cand_73bc56979d5daac67ef71bef": {
+          "candidate_id": "cand_73bc56979d5daac67ef71bef",
+          "canonical_deployment_position": 42,
+          "column_names": [
+            "sub_metering_2",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            6,
+            7
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 42
+        },
+        "cand_914ca1711fa3226bf091a092": {
+          "candidate_id": "cand_914ca1711fa3226bf091a092",
+          "canonical_deployment_position": 2,
+          "column_names": [
+            "global_active_power",
+            "voltage"
+          ],
+          "column_ordinals": [
+            1,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 2
+        },
+        "cand_a5f0ee4a60ac4b6c89272a81": {
+          "candidate_id": "cand_a5f0ee4a60ac4b6c89272a81",
+          "canonical_deployment_position": 31,
+          "column_names": [
+            "global_reactive_power",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 31
+        },
+        "cand_bb6e38498f1d5d7dfb1a755f": {
+          "candidate_id": "cand_bb6e38498f1d5d7dfb1a755f",
+          "canonical_deployment_position": 9,
+          "column_names": [
+            "global_reactive_power",
+            "sub_metering_1"
+          ],
+          "column_ordinals": [
+            2,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 9
+        },
+        "cand_bcf0bdc867941d3af34bf65e": {
+          "candidate_id": "cand_bcf0bdc867941d3af34bf65e",
+          "canonical_deployment_position": 11,
+          "column_names": [
+            "global_reactive_power",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            2,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 11
+        },
+        "cand_cea313b47bb3cc0b1ecaf67c": {
+          "candidate_id": "cand_cea313b47bb3cc0b1ecaf67c",
+          "canonical_deployment_position": 40,
+          "column_names": [
+            "sub_metering_1",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            5,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 40
+        },
+        "cand_d7dce3b57836a08ed61c2b5d": {
+          "candidate_id": "cand_d7dce3b57836a08ed61c2b5d",
+          "canonical_deployment_position": 7,
+          "column_names": [
+            "global_reactive_power",
+            "voltage"
+          ],
+          "column_ordinals": [
+            2,
+            3
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 7
+        },
+        "cand_ee423b5be8ca3d96360733b6": {
+          "candidate_id": "cand_ee423b5be8ca3d96360733b6",
+          "canonical_deployment_position": 28,
+          "column_names": [
+            "global_reactive_power",
+            "voltage"
+          ],
+          "column_ordinals": [
+            2,
+            3
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 28
+        },
+        "cand_f0fa82c728d6f15135301872": {
+          "candidate_id": "cand_f0fa82c728d6f15135301872",
+          "canonical_deployment_position": 26,
+          "column_names": [
+            "global_active_power",
+            "sub_metering_2"
+          ],
+          "column_ordinals": [
+            1,
+            6
+          ],
+          "kind": "postgresql.dependencies",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 26
+        },
+        "cand_f5eafda8f9a9488befad11a4": {
+          "candidate_id": "cand_f5eafda8f9a9488befad11a4",
+          "canonical_deployment_position": 20,
+          "column_names": [
+            "sub_metering_1",
+            "sub_metering_3"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 20
+        },
+        "cand_f9dc066542ae6041a1f5fd52": {
+          "candidate_id": "cand_f9dc066542ae6041a1f5fd52",
+          "canonical_deployment_position": 4,
+          "column_names": [
+            "global_active_power",
+            "sub_metering_1"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 4
+        },
+        "cand_ffc5b1dbad5e8d842a92912b": {
+          "candidate_id": "cand_ffc5b1dbad5e8d842a92912b",
+          "canonical_deployment_position": 16,
+          "column_names": [
+            "global_intensity",
+            "sub_metering_1"
+          ],
+          "column_ordinals": [
+            4,
+            5
+          ],
+          "kind": "postgresql.mcv",
+          "relation_id": "rel_f942ede3777a8c02b97be2ed",
+          "static_precedence_rank": 16
+        }
+      },
+      "comparability_stratum": "current-v2",
+      "dataset_id": "arecel-power7",
+      "design_artifact": {
+        "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-design-evaluation-v2.json",
+        "semantic_digest": "939412c961032c6ace6997a05687a7bbf6a781e55321c066f7529618874e1783",
+        "sha256": "c71419d0c8b46095b0580d6b801f11d25776f3497196b3709320670e77e0be7b"
+      },
+      "fixed_k": 4,
+      "historical_selection_is_not_recomputed": true,
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_d7dce3b57836a08ed61c2b5d",
+          "cand_914ca1711fa3226bf091a092",
+          "cand_5fd1ebd87813311ef352fc96",
+          "cand_f9dc066542ae6041a1f5fd52"
+        ],
+        "native-payload-size-top-k": [
+          "cand_bb6e38498f1d5d7dfb1a755f",
+          "cand_2e43075c0b9a26e510883eff",
+          "cand_5fd1ebd87813311ef352fc96",
+          "cand_f9dc066542ae6041a1f5fd52"
+        ],
+        "random-k-seed-1": [
+          "cand_57da410d75e249fbc113452c",
+          "cand_bb6e38498f1d5d7dfb1a755f",
+          "cand_2e43075c0b9a26e510883eff",
+          "cand_096bd39a57f07bb6712f7f56"
+        ],
+        "random-k-seed-2": [
+          "cand_f9dc066542ae6041a1f5fd52",
+          "cand_38e40192038b7ba54d609818",
+          "cand_bcf0bdc867941d3af34bf65e",
+          "cand_631f3a290889f42855c5c594"
+        ],
+        "random-k-seed-3": [
+          "cand_bb6e38498f1d5d7dfb1a755f",
+          "cand_ffc5b1dbad5e8d842a92912b",
+          "cand_5e1692ac7ae3dad4927a7a70",
+          "cand_3f9717a3107c8281a1839c18"
+        ],
+        "random-k-seed-4": [
+          "cand_d7dce3b57836a08ed61c2b5d",
+          "cand_ffc5b1dbad5e8d842a92912b",
+          "cand_f5eafda8f9a9488befad11a4",
+          "cand_f0fa82c728d6f15135301872"
+        ],
+        "random-k-seed-5": [
+          "cand_2e43075c0b9a26e510883eff",
+          "cand_46360ee7739f53f045f945d2",
+          "cand_cea313b47bb3cc0b1ecaf67c",
+          "cand_73bc56979d5daac67ef71bef"
+        ],
+        "singleton-utility-top-k": [
+          "cand_d7dce3b57836a08ed61c2b5d",
+          "cand_3506e4367623c6d82ec5746e",
+          "cand_914ca1711fa3226bf091a092",
+          "cand_5e43adaa42103e401a3e3d23"
+        ],
+        "workload-frequency-top-k": [
+          "cand_d7dce3b57836a08ed61c2b5d",
+          "cand_ee423b5be8ca3d96360733b6",
+          "cand_353d783f6edd0d1a0a3963d8",
+          "cand_a5f0ee4a60ac4b6c89272a81"
+        ]
+      },
+      "method_order": [
+        "random-k-seed-1",
+        "random-k-seed-2",
+        "random-k-seed-3",
+        "random-k-seed-4",
+        "random-k-seed-5",
+        "workload-frequency-top-k",
+        "native-payload-size-top-k",
+        "singleton-utility-top-k",
+        "greedy-ADD"
+      ],
+      "research_commit_sha": "efb6cc31524695afe159ca634bf65aa67d0475fb",
+      "selection_status": {
+        "greedy-ADD": "complete",
+        "native-payload-size-top-k": "complete",
+        "random-k-seed-1": "complete",
+        "random-k-seed-2": "complete",
+        "random-k-seed-3": "complete",
+        "random-k-seed-4": "complete",
+        "random-k-seed-5": "complete",
+        "singleton-utility-top-k": "complete",
+        "workload-frequency-top-k": "complete"
+      },
+      "shared_realization_artifact": {
+        "path": "experiments/arecel-power7/rq4-fixed-k-v2/rq4-stock-shared-realization-v2.json",
+        "semantic_digest": "8398699ceaca528ece793ad4bb706df0d65789b2b5752bb0fdab371a983c495f",
+        "sha256": "9c1be012698e7bb5afa77f395638ce77a37f279fd151cbfed30d114401605471"
+      },
+      "shared_source_analyze_count": 1,
+      "source_method_aliases": {},
+      "statistics_target": 100,
+      "stock_postgresql": {
+        "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "postgres_version": "16.14"
+      },
+      "system_freeze_artifact": {
+        "path": "paper/system-freeze-v2.json",
+        "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+        "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+      },
+      "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "truth_binding": {},
+      "workload": {
+        "query_count": 10000,
+        "workload_id": "arecel_power7_test_v1"
+      }
+    }
+  },
+  "datasets": {
+    "cross_dataset_pooling": "prohibited; report dataset-scoped strata because Forest10 retains system-freeze-v1",
+    "primary": [
+      "arecel-forest10",
+      "arecel-census13",
+      "arecel-dmv11"
+    ],
+    "sensitivity_extension": [
+      "arecel-power7"
+    ]
+  },
+  "execution_boundary": {
+    "formal_execution_during_preregistration": false,
+    "formal_invocation_count": 0,
+    "rq1b_test_access": "not used by this protocol; only the RQ4 fixed-k workload/truth binding may be used after formal authorization"
+  },
+  "experiment_id": "native-analyze-stability-v1",
+  "failure_rules": [
+    "stop and preserve append-only failure evidence for missing definitions, payloads, kind mismatch, workload/truth mismatch, cleanup failure or source revision mismatch",
+    "stop or qualify if actual OID/relative order cannot be observed; do not infer order from CREATE statement sequence",
+    "classify sibling ordinary-statistics or retained-payload mismatch as invalid-control-evidence",
+    "never replace a failed realization without recording its failure and applying a predeclared exclusion rule",
+    "no formal result is complete unless every declared method arm and every required query observation is present"
+  ],
+  "format_version": "native-analyze-stability-protocol-v1",
+  "method_roster": [
+    "random-k-seed-1",
+    "random-k-seed-2",
+    "random-k-seed-3",
+    "random-k-seed-4",
+    "random-k-seed-5",
+    "workload-frequency-top-k",
+    "native-payload-size-top-k",
+    "singleton-utility-top-k",
+    "greedy-ADD"
+  ],
+  "metrics": {
+    "across_realizations": [
+      "min",
+      "max",
+      "descriptive_standard_deviation",
+      "payload_fingerprint_difference_fraction",
+      "ordinary_fingerprint_difference"
+    ],
+    "definitions": {
+      "independence_unit": "ANALYZE realization, not query",
+      "lower_is_better": true,
+      "qerror": "qerror-cardinality-floor-1-v1",
+      "query_weighting": "the frozen RQ4 workload weighting within each realization"
+    },
+    "paired": [
+      "greedy_minus_singleton_mean_qerror",
+      "paired_query_improved_unchanged_worsened"
+    ],
+    "per_method_realization": [
+      "mean",
+      "p50",
+      "p95",
+      "p99",
+      "max",
+      "changed_plan_rows_fraction"
+    ],
+    "ranking": [
+      "within_realization_rank",
+      "first_or_tie_count",
+      "pairwise_win_tie_loss"
+    ]
+  },
+  "primary_estimand": "combined operational impact of independent native ANALYZE realizations under otherwise fixed conditions",
+  "producer_sha": "0a86703d0e7221e7b1b4a2c3b3b698899d904c47",
+  "prohibited_claims": [
+    "deterministic ANALYZE reproducibility",
+    "extended-statistics-only causal decomposition when ordinary statistics also vary",
+    "global method superiority or broad probability guarantees from five realizations"
+  ],
+  "raw_artifacts": [
+    "dataset/realization manifest",
+    "parent and clone catalog controls",
+    "payload fingerprints and ordinary-statistics fingerprints",
+    "per-query Plan Rows/truth/q-error records",
+    "ANALYZE and EXPLAIN accounting",
+    "append-only failure/cleanup record"
+  ],
+  "realization_design": {
+    "method_clones": [
+      "clone analyzed parent",
+      "drop only unselected statistics",
+      "run no ANALYZE after DROP",
+      "verify retained payload and ordinary-statistics fingerprints against parent",
+      "evaluate identical workload and truth mapping"
+    ],
+    "parent": [
+      "fresh declared physical data snapshot",
+      "create union of all selected definitions in lexicographic candidate_id order, matching rq4_physical.union_selected_memberships",
+      "record actual object definitions, OIDs, relative OID order, payload bytes/digests and ordinary-statistics fingerprint",
+      "run exactly one stock ANALYZE"
+    ]
+  },
+  "realizations": {
+    "count": 5,
+    "ids": [
+      "realization-01",
+      "realization-02",
+      "realization-03",
+      "realization-04",
+      "realization-05"
+    ],
+    "independence": "fresh stock parent state and exactly one native ANALYZE per realization",
+    "setseed_policy": "may be recorded where required by source setup; never treated as ANALYZE reproducibility control"
+  },
+  "scientific_questions": {
+    "SQ1": "For fixed membership, quantify native ANALYZE payload, ordinary-statistics, Plan Rows and q-error variability across independent realizations.",
+    "SQ2": "Within each shared realization, assess whether method rankings remain stable.",
+    "SQ3": "Assess whether realization-induced differences change the interpretation of RQ4b physical comparisons."
+  },
+  "secondary_diagnostics": [
+    "extended-statistics payload variation",
+    "ordinary-statistics fingerprint variation",
+    "relative OID/order variation",
+    "method ranking and paired q-error differences"
+  ],
+  "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+  "source_bindings": {
+    "rq4_fixed_k_summary": {
+      "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+      "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f",
+      "sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5"
+    },
+    "system_freeze_v2": {
+      "path": "paper/system-freeze-v2.json",
+      "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+    },
+    "time_budget_audit": {
+      "path": "experiments/rq4-time-budget-fairness-audit-v1.json",
+      "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+      "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"
+    }
+  },
+  "status": "preregistered-not-executed"
+}

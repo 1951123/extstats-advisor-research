@@ -1,0 +1,94 @@
+{
+  "comparability_findings": {
+    "census13_dmv11": "current system-freeze-v2, fixed-k v2 evidence; Greedy memberships remain budget-censored where recorded and are not reselected",
+    "common_stock_contract": "PostgreSQL 16.14 and stock source commit are common; system-freeze lineage remains qualified",
+    "cross_dataset_candidate_ids": "not assumed comparable; only within-dataset physical definitions are bound",
+    "forest10": "historical system-freeze-v1 and dependency-correlation identifier; preserve as a dataset-scoped stratum and bind physical definitions from its own artifacts"
+  },
+  "formal_execution": {
+    "authorized": false,
+    "invocation_count": 0,
+    "results_available": false
+  },
+  "format_version": "native-analyze-stability-readiness-review-v1",
+  "gates": {
+    "five_realization_orchestrator_ready": false,
+    "formal_execution_authorized": false,
+    "integration_tested": false,
+    "oid_order_control_ready": false,
+    "payload_and_ordinary_cross_realization_validator_ready": false,
+    "protocol_validated_offline": true,
+    "shared_single_realization_reusable": true,
+    "source_memberships_bound": true
+  },
+  "implementation_plan": [
+    "stage-1: offline protocol-bound harness and append-only validators",
+    "stage-2: synthetic/mocked correctness tests for union, OID/order controls, payload equality, and failure semantics",
+    "stage-3: separately authorized isolated integration smoke",
+    "stage-4: separately authorized formal execution"
+  ],
+  "missing_features": [
+    "five-realization orchestrator with unique realization and arm identities",
+    "cross-realization variance/ranking aggregation and validator",
+    "explicit observed OID relative-order validation across sibling arms",
+    "append-only partial-realization and cleanup failure provenance",
+    "formal full-workload completion gate for all method arms"
+  ],
+  "protocol": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47"
+  },
+  "resource_estimate": {
+    "dominant_stages": [
+      "stock EXPLAIN evaluation",
+      "database cloning/storage",
+      "native ANALYZE"
+    ],
+    "extrapolated": {
+      "full_workload_explain_calls": 1350000,
+      "method_arms": 135,
+      "parent_analyze_operations": 15,
+      "power7_extension_explain_calls": 450000,
+      "power7_extension_method_arms": 45,
+      "power7_extension_parent_analyze_operations": 5,
+      "primary_datasets": 3,
+      "realizations_per_dataset": 5
+    },
+    "measured": [
+      "existing RQ4 physical children use 1 shared ANALYZE and 9 method arms per dataset",
+      "existing fixed-k physical evaluation accounts for 10,000 planner query calls per method arm"
+    ],
+    "workload_scope": "10,000 RQ4 fixed-k queries per method arm; no diagnostic shrinkage is authorized by this readiness record"
+  },
+  "reusable_implementation": {
+    "rq4_physical.build_shared_stock_realization": "one shared union ANALYZE and no-ANALYZE clones",
+    "rq4_physical.validate_shared_stock_realization": "single-realization freshness, payload preservation and query-count checks",
+    "rq4_postgres": "existing catalog/planner and physical evidence helpers"
+  },
+  "review_id": "native-analyze-stability-readiness-review-v1",
+  "review_producer_sha": "0a86703d0e7221e7b1b4a2c3b3b698899d904c47",
+  "semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a",
+  "source_coverage": {
+    "fixed_k_summary": {
+      "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+      "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f",
+      "sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5"
+    },
+    "system_freeze_v2": {
+      "path": "paper/system-freeze-v2.json",
+      "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+    },
+    "time_budget_audit": {
+      "path": "experiments/rq4-time-budget-fairness-audit-v1.json",
+      "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+      "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"
+    }
+  },
+  "status": "readiness-review-complete-formal-execution-not-authorized",
+  "unresolved_blockers": [
+    "No formal execution is authorized by this artifact.",
+    "The existing single-realization executor is not an implementation of the five-realization study.",
+    "A formal run must add observed OID/order and append-only realization-level controls before execution."
+  ]
+}

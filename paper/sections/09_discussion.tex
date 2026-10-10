@@ -42,9 +42,16 @@ not for arbitrary workloads or PostgreSQL versions.
 RQ4 shows why the search claim must remain conditional. Greedy ADD was the
 best recorded fixed-$k$ method on three datasets, while singleton utility was
 better on Census13. The screening-width results also include budget-censored
-incumbents, and neither fixed-evaluation-budget nor native-\texttt{ANALYZE}
-stability has been measured. These results support dataset- and
-workload-dependent ablation findings rather than universal superiority.
+incumbents, and Forest10 retains a historical 3,600-second v1 search budget.
+The 300-second value is a Greedy/$K_s$ search-stage deadline, not an
+end-to-end resource-normalized comparison: configuration evaluations are not
+uniform planner-call units, and preprocessing, profiling, final evaluation,
+and physical realization have separate or incomplete accounting. The planned
+fixed-evaluation-budget study was therefore cancelled by research-team
+decision, with no results generated. Native-\texttt{ANALYZE} stability is
+preregistered but unmeasured. The existing results support dataset- and
+workload-dependent ablation findings rather than universal superiority or
+end-to-end resource-normalized superiority.
 The practicality measurements similarly cover selected stages---snapshot
 footprint, deployment DDL, \texttt{ANALYZE}, and planner-time traces---rather
 than a complete production cost model.

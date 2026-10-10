@@ -80,7 +80,7 @@ def test_spec_preregisters_stability_replicates_and_keeps_budget_unimplemented()
     spec = load_paper_spec()
     experiments = {item["experiment_id"]: item for item in spec["experiments"]}
     assert experiments["rq4-native-analyze-stability"]["realizations"] == 5
-    assert experiments["rq4-native-analyze-stability"]["status"] == "planned"
+    assert experiments["rq4-native-analyze-stability"]["status"] == "preregistered"
     assert experiments["rq4-fixed-evaluation-budget-ablations"]["status"] == (
         "implementation-needed"
     )

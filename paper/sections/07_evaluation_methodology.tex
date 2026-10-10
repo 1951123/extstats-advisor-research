@@ -169,21 +169,26 @@ The RQ4 primary eligible universe is frozen using only native kind, schema
 validity, sample payload availability, and predeclared compatibility;
 utility/outcome screening is a separate conditional diagnostic. Its statuses
 distinguish exactly-$k$ completion, at-most-$k$ local optimum, budget
-censoring, and genuine infeasibility. The fixed-evaluation-budget mode remains
-implementation-needed and, when implemented, will cap
-configuration-objective evaluations at 2,000 and elapsed selection time at
-300 seconds. A configuration evaluation may contain many PostgreSQL
-per-query planner calls, so both quantities are recorded separately;
-selection preprocessing, singleton profiling, final evaluation, native
-realization, and physical evaluation are separate cost stages. Independent
-stock full-data evaluation is outside the selection budget. Cheap methods
-cannot inspect GroundTruthSet during selection; singleton and greedy methods
-use the same bound truth, and all methods receive the same later stock
-full-data evaluation. RQ5 measures snapshot and truth acquisition, sample
-size, native construction, planner search, deployment DDL/\texttt{ANALYZE},
-storage, planning-time change, and refresh cost. We do not claim zero online
-overhead; the narrower statement is that no separate learned-model inference
-path is added to production query processing.
+censoring, and genuine infeasibility. The historical fixed-evaluation-budget
+protocol specified 2,000 configuration-objective evaluations and 300 seconds,
+but the research team cancelled its execution after the time-budget fairness
+audit; no results were generated. The 300-second value used by fixed-$k$ and
+$K_s$ Greedy search is a search-stage deadline, checked between backend calls,
+not a shared end-to-end selection-cost budget. A configuration evaluation may
+contain many PostgreSQL per-query planner calls, so both quantities are
+reported separately. Preprocessing, singleton profiling, final evaluation,
+native realization, and physical evaluation are separate cost stages and are
+not silently charged to the Greedy deadline. A long-running backend call may
+therefore finish after the nominal deadline because the deadline cannot
+interrupt work already in progress. Independent stock full-data evaluation is
+outside the selection budget. Cheap methods cannot inspect GroundTruthSet
+during selection; singleton and greedy methods use the same bound truth, and
+all methods receive the same later stock full-data evaluation. RQ5 measures
+snapshot and truth acquisition, sample size, native construction, planner
+search, deployment DDL/\texttt{ANALYZE}, storage, planning-time change, and
+refresh cost. We do not claim zero online overhead; the narrower statement is
+that no separate learned-model inference path is added to production query
+processing.
 
 Truth acquisition is reported separately from other design-time costs:
 authoritative external truth contributes import and validation cost, whereas

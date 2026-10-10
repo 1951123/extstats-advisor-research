@@ -1,7 +1,7 @@
 {
   "format_version": "evidence-to-manuscript-v1",
   "review_scope": "offline mapping from committed scientific evidence to the VLDB manuscript",
-  "source_commit": "e3e32e0316bfd57432ff9485768ceb970bc3b29d",
+  "source_commit": "0a86703d0e7221e7b1b4a2c3b3b698899d904c47",
   "frozen_system": "paper/system-freeze-v2.json",
   "entries": [
     {
@@ -78,20 +78,28 @@
       "rq": "RQ4",
       "status": "implementation-needed",
       "coverage": [],
-      "sources": [],
+      "sources": [
+        {"path": "experiments/rq4-fixed-evaluation-budget-scope-decision-v1.json", "semantic_digest": "8701d1e1e5636743245a94e26c850353897862843104c45702a6b538053d7d63"},
+        {"path": "experiments/rq4-time-budget-fairness-audit-v1.json", "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488"}
+      ],
       "admissible_claims": [],
-      "limitations": ["fixed-k evidence is not a fixed-evaluation-budget comparison"],
+      "limitations": ["fixed-k evidence is not a fixed-evaluation-budget comparison", "the historical protocol is cancelled for current execution by research-team decision", "no fixed-evaluation-budget results exist"],
       "manuscript": "paper/sections/08_results.tex",
-      "new_scientific_execution_required": true
+      "new_scientific_execution_required": false,
+      "current_lifecycle_disposition": "cancelled-by-research-decision",
+      "historical_status_preserved": "implementation-needed"
     },
     {
       "experiment_id": "rq4-native-analyze-stability",
       "rq": "RQ4b",
-      "status": "planned",
+      "status": "preregistered",
       "coverage": [],
-      "sources": [],
+      "sources": [
+        {"path": "paper/native-analyze-stability-protocol-v1.json", "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47"},
+        {"path": "experiments/native-analyze-stability-readiness-review-v1.json", "semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a"}
+      ],
       "admissible_claims": [],
-      "limitations": ["native ANALYZE stability is not measured by the shared-realization fixed-k study"],
+      "limitations": ["native ANALYZE stability is preregistered but not executed", "the current shared-realization executor is single-realization infrastructure, not the five-realization formal implementation", "Forest10 remains a historical v1 stratum"],
       "manuscript": "paper/sections/08_results.tex",
       "new_scientific_execution_required": true
     },

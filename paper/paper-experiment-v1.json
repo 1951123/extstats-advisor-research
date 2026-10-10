@@ -764,7 +764,7 @@
         "gate": "six eligible candidates, k=3 exhaustive enumeration of 20 subsets, deterministic ordering/ties, replayable greedy trace"
       },
       "formal_arecel_runs": true,
-      "formal_arecel_scope_note": "Census13, Power7, and DMV11 have complete rq4-fixed-k-v2 children; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols.",
+      "formal_arecel_scope_note": "Census13, Power7, and DMV11 have complete rq4-fixed-k-v2 children; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because native-ANALYZE stability is a separate unexecuted protocol; the historical fixed-evaluation-budget comparison is cancelled by decision and has no results.",
       "formal_dataset_status": {
         "arecel-forest10": {
           "status": "complete",
@@ -889,6 +889,9 @@
       "experiment_id": "rq4-fixed-evaluation-budget-ablations",
       "rq": "RQ4",
       "status": "implementation-needed",
+      "current_lifecycle_disposition": "cancelled-by-research-decision",
+      "decision_record": "experiments/rq4-fixed-evaluation-budget-scope-decision-v1.json",
+      "formal_execution_required": false,
       "methods": ["random-k", "workload-frequency-top-k", "native-payload-size-top-k", "singleton-utility-top-k", "greedy-ADD"],
       "diagnostic_methods": ["exhaustive-tiny-universe"],
       "comparison_mode": "fixed_evaluation_budget",
@@ -983,8 +986,15 @@
     {
       "experiment_id": "rq4-native-analyze-stability",
       "rq": "RQ4b",
-      "status": "planned",
+      "status": "preregistered",
+      "implementation_status": "protocol-ready; five-realization implementation not yet ready",
+      "protocol_path": "paper/native-analyze-stability-protocol-v1.json",
+      "protocol_semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+      "readiness_review_path": "experiments/native-analyze-stability-readiness-review-v1.json",
+      "readiness_review_semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a",
+      "formal_execution_authorized": false,
       "datasets": ["arecel-forest10", "arecel-census13", "arecel-dmv11"],
+      "sensitivity_extension": ["arecel-power7"],
       "protocol_identity": "native-analyze-stability-v1",
       "realizations": 5,
       "systems": ["stock PostgreSQL frozen build"],
@@ -1162,12 +1172,13 @@
       {
         "experiment_id": "rq4-fixed-k-ablations",
         "status": "complete",
-        "note": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, while experiments/rq4-dependency-baseline-definition-resolution-v1.json resolves the semantic name as native-payload-size-top-k. Census13, Power7, and DMV11 passed the frozen v2 RQ4a replay and RQ4b shared-stock gates; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols."
+      "note": "The historical dependency/correlation baseline-definition audit remains preserved as blocked, while experiments/rq4-dependency-baseline-definition-resolution-v1.json resolves the semantic name as native-payload-size-top-k. Census13, Power7, and DMV11 passed the frozen v2 RQ4a replay and RQ4b shared-stock gates; Forest10 remains immutable historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because native-ANALYZE stability is a separate unexecuted protocol; the historical fixed-evaluation-budget comparison is cancelled by decision and has no results."
       },
       {
         "experiment_id": "rq4-fixed-evaluation-budget-ablations",
         "status": "implementation-needed",
-        "note": "The 2,000 configuration-evaluation/300-second contract is frozen, but the common budget-comparison allocator is not implemented; the harness fails closed rather than reusing fixed-k logic."
+        "current_lifecycle_disposition": "cancelled-by-research-decision",
+        "note": "The historical 2,000 configuration-evaluation/300-second contract is preserved, but current execution is cancelled by research-team decision after the time-budget fairness audit; no results were generated."
       },
       {
         "experiment_id": "rq4-ks-sensitivity",
@@ -1176,8 +1187,8 @@
       },
       {
         "experiment_id": "rq4-native-analyze-stability",
-        "status": "planned",
-        "note": "Five independent native ANALYZE realizations are pre-registered to quantify stock realization variability; no stability run has been executed."
+        "status": "preregistered",
+        "note": "Five independent native ANALYZE realizations are preregistered to quantify stock realization variability; the protocol and readiness review are complete, but the five-realization implementation is not ready and no stability run has been executed."
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",

@@ -186,11 +186,14 @@ than being silently reassigned to v2.
 Greedy ADD is best among the recorded methods on Forest10, Power7, and DMV11,
 but singleton utility is better on Census13. This counterexample is important:
 the result supports a workload- and dataset-dependent benefit of planner-in-
-the-loop search, not universal superiority. Census13 and DMV11 greedy traces
-end at complete committed incumbents at the time budget, so their comparison
-does not imply exhaustive optimality. RQ4b retains the physical observations
-and common-realization controls separately from the deterministic RQ4a
-objectives.
+the-loop search, not universal superiority. Census13 and DMV11 Greedy traces
+are budget-censored feasible incumbents retained after incomplete final rounds;
+their comparisons do not imply exhaustive optimality. Power7 reaches its
+maximum-statistics-count termination before the 300-second search deadline.
+Forest10 is historical v1 evidence with a 3,600-second declared search
+budget, rather than a fourth observation under the current 300-second
+deadline. RQ4b retains the physical observations and common-realization
+controls separately from the deterministic RQ4a objectives.
 
 The validated $K_s$ sensitivity campaign covers Census13, Power7, and DMV11
 at $K_s\in\{4,8,16,32,\mathrm{all}\}$ with $B=4$.
@@ -200,8 +203,12 @@ at $K_s\in\{4,8,16,32,\mathrm{all}\}$ with $B=4$.
 The best finite screening width is 8, 16, and 32 for Census13, Power7, and
 DMV11 respectively. The $\mathrm{all}$ point is budget-censored for Census13
 and DMV11; it is a bounded incumbent rather than an optimum reference. The
-fixed-evaluation-budget comparison and native-\texttt{ANALYZE} stability
-study remain unexecuted and are not replaced by these fixed-$k$ results.
+fixed-evaluation-budget comparison was cancelled by research-team decision
+after the offline time-budget fairness audit; its historical protocol remains
+preserved, but no results were generated. Native-\texttt{ANALYZE} stability
+is now preregistered as a separate five-realization study, with implementation
+readiness still under review, and has not been executed or replaced by these
+fixed-$k$ results.
 
 \subsection{RQ5: practicality}
 RQ5 is partially complete. The validated snapshot-footprint and static-
@@ -229,8 +236,9 @@ treated as zero operational overhead.
 The results above distinguish validated evidence from bounded or incomplete
 studies. RQ1a, RQ1b, RQ2a/RQ2b, and the two RQ3 fidelity checks have validated
 four-dataset or registered-fixture evidence. RQ4 is complete only for the
-reported fixed-$k$ and $K_s$ dataset-scope studies; its fixed-evaluation-budget
-comparison and native-\texttt{ANALYZE} stability study remain unexecuted.
+reported fixed-$k$ and $K_s$ dataset-scope studies: the historical
+fixed-evaluation-budget comparison is cancelled with no results, while native
+\texttt{ANALYZE} stability is preregistered but not executed.
 RQ5 is a qualified partial practicality account: the measured stages are
 reported above, while production-exact truth timing, refresh quality trends,
 and a canonical end-to-end cost remain open. Historical pilot outputs remain

@@ -139,9 +139,9 @@ the global RQ1 campaign is not complete while any dataset remains planned.
 | `rq4-existing-calibration` | RQ4 | `pilot` | Existing k-budget calibration is supporting diagnostic evidence only. |
 | `rq4-real-backend-integration-smoke` | RQ4 | `complete` | Three-query Census13 smoke passed through the frozen patched planner, catalogless activation, frozen utility/loss, and a separate one-MCV frozen stock deployment-contract probe. Immutable evidence: `experiments/rq4/integration-smoke/rq4-real-backend-smoke-v1.json` (digest `f088ddce...`). This is integration-readiness evidence, not a formal ablation. |
 | `rq4-incremental-greedy-hardening` | RQ4 | `complete` | The live v2 hardening fixture passed at `K_s=3` with `B=3,2,1`, exact bounded-reference/incremental proposal traces, empty-incidence ADD, nonincident Plan Rows audit, local-optimum, maximum-count, deadline-incomplete-round, and explicit v1 reference coverage. Evidence: `experiments/rq4/integration-smoke/advisor-greedy-incremental-hardening-v2.json` (digest `3322523889dd1b7e5f148734e0112bf31d71fcc0d1fdc7d1edbfb45a545c5743`). This is implementation-readiness evidence, not a formal RQ4 ablation. |
-| `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because fixed-evaluation-budget and native-ANALYZE stability are separate protocols. |
+| `rq4-fixed-k` | RQ4 | `complete` | The historical audit remains recorded as blocked, but the definition gate is resolved by `experiments/rq4-dependency-baseline-definition-resolution-v1.json`. Census13, Power7, and DMV11 each have complete `rq4-fixed-k-v2` RQ4a/RQ4b children under the frozen v2 SUT; Forest10 remains complete historical v1 evidence and was not rerun. The global RQ4 program remains incomplete because native-ANALYZE stability is a separate unexecuted protocol; the historical fixed-evaluation-budget comparison is cancelled by decision and has no results. |
 | `rq4-ks-sensitivity` | RQ4a | `complete` | `paper/top-k-screening-protocol-v2.json` (semantic digest `55c29212eabbd59dcc3539d9b4f538390305431a35181126866c383f1f15faec`) has validated formal children for Census13, Power7, and DMV11 under `K_s={4,8,16,32,all}`, `B=4`, and 300 seconds. The child artifacts are `experiments/arecel-power7/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `85b832eae...`), `experiments/arecel-census13/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `119dc4e886a61ee023b4045f74f43ed102c3fadc060fdb4fbd16c739188b1ee8`), and `experiments/arecel-dmv11/rq4-ks-sensitivity-v1/rq4-ks-sensitivity-v1.json` (digest `569994babd3b4bc5d07d82a3b6bfad03ca2b13a596d8533a16d68b7ee2a74109`). The Census13 and DMV11 `all` points are reused 300-second-bounded k=2 incumbents, not optimum references. The offline aggregation `experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json` is complete; global RQ4 remains incomplete. |
-| `rq4-fixed-evaluation-budget` | RQ4 | `implementation-needed` | The 2,000 configuration-objective/300-second contract is frozen, but the common budget-comparison allocator is not yet implemented. The current harness rejects this mode rather than presenting fixed-k execution as a budget comparison. |
+| `rq4-fixed-evaluation-budget` | RQ4 | `cancelled-by-research-decision` | The historical 2,000 configuration-objective/300-second protocol remains preserved, but the research team cancelled current execution after the time-budget fairness audit (`experiments/rq4-fixed-evaluation-budget-scope-decision-v1.json`, semantic digest `8701d1e1e5636743245a94e26c850353897862843104c45702a6b538053d7d63`). No fixed-evaluation-budget results were generated. |
 | `rq5-cost-accounting` | RQ5 | `complete` | Dataset-scope snapshot-footprint and static-deployment measurements plus the offline trace inventory are complete and reported as qualified partial evidence. The broader RQ5 remains incomplete because production-exact truth timing, refresh quality trends, and a canonical end-to-end cost are not measured. |
 | `stretch-drift-stability` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
 | `stretch-additional-workloads` | Stretch | `planned` | Out of the first confirmatory execution sequence. |
@@ -562,19 +562,23 @@ contract.
 All selected configurations are evaluated against the same truth after
 selection.
 
-**Comparison modes:** report two distinct comparisons. (A) The primary fixed-k
-quality comparison uses pre-registered `k=4`, independently of the final
+**Comparison modes:** the active quality comparison is fixed-$k$. (A) It uses
+pre-registered `k=4`, independently of the final
 advisor recommendation; genuinely infeasible universes, at-most-k local
 optima, and budget-censored searches are reported explicitly. A result using
 the advisor's selected k is not an unbiased unknown-k comparison. (B) The
-fixed-evaluation-budget comparison uses a common pre-registered cap of 2,000
+former fixed-evaluation-budget protocol specified a common cap of 2,000
 configuration-objective evaluations and 300 seconds. A configuration
 evaluation may contain many PostgreSQL per-query planner calls. Selection
 preprocessing, sandbox configuration evaluations, independent final sandbox
 evaluation, and stock full-data deployment/evaluation are reported as separate
 cost stages; the independent stock full-data evaluation is never charged to
 the selection budget. Every method reports both configuration evaluations and
-actual planner query calls, wall time, and censoring reason.
+actual planner query calls, wall time, and censoring reason. This historical
+contract remains frozen for traceability but is cancelled for current
+execution by the research-team decision recorded at
+`experiments/rq4-fixed-evaluation-budget-scope-decision-v1.json`; no results
+were generated.
 
 The historical Forest10 v1 artifact stores this method under the identifier
 `dependency-correlation-top-k`; code audit established that its actual score
@@ -632,8 +636,9 @@ the advisor objective workload and therefore is an in-workload effectiveness
 result, not held-out-query generalization; RQ1b is the separately preregistered
 valid-to-test study. The three new RQ4 v2 children pass
 their design replay and physical realization gates and are marked `complete`;
-the global RQ4 program remains incomplete because fixed-evaluation-budget and
-native-ANALYZE stability are separate protocols.  A child method may still be
+the global RQ4 program remains incomplete because native-ANALYZE stability is
+a separate unexecuted protocol; the historical fixed-evaluation-budget
+comparison is cancelled by decision and has no results.  A child method may still be
 `budget-censored` internally when Greedy reaches the fixed wall-clock deadline;
 that execution state is retained rather than relabeled as local optimum.
 
@@ -643,11 +648,15 @@ harness is executable for both evidence layers on a small fixture; the tracked
 smokes are readiness evidence, not formal AreCEL results. A shared physical
 realization builds the union of method memberships, performs one stock
 `ANALYZE`, and evaluates no-ANALYZE clones after dropping unrelated objects.
-This controlled comparison is distinct from the planned
+This controlled comparison is distinct from the preregistered
 `native-analyze-stability-v1` protocol with five independent native
-realizations. The fixed-evaluation-budget mode remains
-`implementation-needed` until a common budget-comparison allocator is
-implemented; the harness fails closed for that mode rather than silently
+realizations (protocol semantic digest
+`65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47`; readiness
+review semantic digest
+`805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a`). The
+fixed-evaluation-budget protocol remains frozen for historical traceability,
+but its current lifecycle disposition is `cancelled-by-research-decision`;
+the harness continues to fail closed for that mode rather than silently
 reusing fixed-k selection logic.
 
 **Evaluation accounting:** fixed-k runs must publish a declared maximum
@@ -666,11 +675,17 @@ The same ordered configuration convention is used for planner evaluation. A
 small replay smoke requires exact membership, evaluation order, planner
 estimates, objectives, and configuration trace outside runtime measurements.
 
-**Native realization stability:** `native-analyze-stability-v1` is planned,
-not run. It requires five independent stock `CREATE STATISTICS` plus
-`ANALYZE` realizations, preferably on Forest10 and Census13/DMV11, and reports
-payload and Plan Rows variability. `setseed` is recorded as an experiment
-statement but is not treated as control of native `ANALYZE` sampling.
+**Native realization stability:** `native-analyze-stability-v1` is
+preregistered but not run. The protocol covers Forest10, Census13, and DMV11
+as primary dataset-scoped strata, with Power7 as a declared sensitivity
+extension. It requires five independent stock `CREATE STATISTICS` plus
+`ANALYZE` realizations, a shared union and no-ANALYZE method clones, observed
+OID/order and payload controls, and full per-method workload evaluation.
+Forest10's historical v1 freeze is retained as a separate stratum rather than
+silently normalized to v2. `setseed` is recorded only as setup provenance and
+is not treated as control of native `ANALYZE` sampling. The implementation
+readiness review records that the current single-realization executor is not
+yet the five-realization formal implementation; no execution is authorized.
 
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.

@@ -1,0 +1,47 @@
+{
+  "claims_not_supported": [
+    "equal total computational expenditure across methods",
+    "end-to-end resource-normalized superiority",
+    "results from a fixed-evaluation-budget comparison"
+  ],
+  "claims_remaining_supported": [
+    "qualified fixed-k quality comparisons",
+    "qualified K_s screening-width quality/cost observations",
+    "search-scope timing and recorded planner-call accounting where available"
+  ],
+  "decision_authority": "research-team",
+  "decision_date": "2026-10-10",
+  "decision_id": "rq4-fixed-evaluation-budget-scope-decision-v1",
+  "decision_producer_sha": "0a86703d0e7221e7b1b4a2c3b3b698899d904c47",
+  "format_version": "rq4-fixed-evaluation-budget-scope-decision-v1",
+  "former_planned_experiment": {
+    "experiment_id": "rq4-fixed-evaluation-budget-ablations",
+    "historical_protocol_preserved": true,
+    "prior_status": "implementation-needed",
+    "protocol_identity": "paper/paper-experiment-v1.json::rq4-fixed-evaluation-budget-ablations"
+  },
+  "lifecycle_disposition": "cancelled-by-research-decision",
+  "reasoning": [
+    "The 300-second boundary is meaningful within Greedy/K_s search scope.",
+    "It does not establish equal end-to-end selection expenditure across methods.",
+    "Configuration-objective evaluations are not a uniform unit of PostgreSQL planner work.",
+    "Existing fixed-k evidence supports descriptive cost-quality comparisons with explicit qualifications.",
+    "A 2,000-evaluation cap alone would not establish resource-normalized fairness."
+  ],
+  "reconsideration_conditions": [
+    "a new versioned study defines a comparable resource vector beyond configuration count",
+    "planner calls, preprocessing, profiling, backend time and final evaluation are measured for every method",
+    "the revised protocol receives independent methodological review before execution"
+  ],
+  "results": {
+    "fixed_evaluation_budget_results_generated": false,
+    "formal_invocations": 0,
+    "historical_artifacts_modified": false
+  },
+  "semantic_digest": "8701d1e1e5636743245a94e26c850353897862843104c45702a6b538053d7d63",
+  "source_audit": {
+    "path": "experiments/rq4-time-budget-fairness-audit-v1.json",
+    "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+    "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"
+  }
+}
