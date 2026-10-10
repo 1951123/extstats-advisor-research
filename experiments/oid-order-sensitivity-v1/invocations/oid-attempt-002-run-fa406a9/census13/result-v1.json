@@ -1,0 +1,2408 @@
+{
+  "candidate_membership": {
+    "candidate_ids": [
+      "cand_c8c1413add8f3db6d6f05be0",
+      "cand_03e22fcf6c560a837d8628e7",
+      "cand_8dcd92d8fd2c19547202010a",
+      "cand_5b0b4676bec8caedc102f449",
+      "cand_7d8de54bba646a9d23debb62",
+      "cand_6fcc2b4b6d26bbc6270a5211",
+      "cand_932bbcf20f9f0a148ba95db7"
+    ],
+    "definitions": [
+      {
+        "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+        "column_ordinals": [
+          3,
+          4
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+        "column_ordinals": [
+          5,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+        "column_ordinals": [
+          2,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_5b0b4676bec8caedc102f449",
+        "column_ordinals": [
+          7,
+          9
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_7d8de54bba646a9d23debb62",
+        "column_ordinals": [
+          1,
+          7
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+        "column_ordinals": [
+          1,
+          5
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      },
+      {
+        "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+        "column_ordinals": [
+          3,
+          6
+        ],
+        "kind": "postgresql.mcv",
+        "statistics_target": 100
+      }
+    ],
+    "digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+    "selected_k": 7
+  },
+  "cleanup": {
+    "runtime_removed": true,
+    "sandbox_destroyed": true
+  },
+  "dataset_id": "arecel-census13",
+  "evidence_eligible": false,
+  "formal_execution_scope": "valid-only-order-ablation",
+  "format_version": "postgresql-extstats-oid-order-sensitivity-v1",
+  "hypothetical": {
+    "random-seed-101": {
+      "active_virtual_oids": [
+        4223239789,
+        3484408500,
+        3044356499,
+        3691541811,
+        2224590909,
+        3783036702,
+        3538456866
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 146.0,
+        "mean": 2.4543176121013164,
+        "p50": 1.2413291900561347,
+        "p95": 7.0,
+        "p99": 17.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.17520370311307465,
+        "paired_qerror": {
+          "improved": 299,
+          "unchanged": 8471,
+          "worsened": 1230
+        },
+        "plan_rows_changed": 1529,
+        "plan_rows_changed_fraction": 0.1529,
+        "ratio_vs_reference": 1.0768736053174508
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/random-seed-101/per-query.jsonl.gz",
+      "per_query_sha256": "144d022bb1a7382b4ea7619afe2e5f621d94b0a19cc0eeb1e5043682d247e79b",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "status": "complete"
+    },
+    "random-seed-17": {
+      "active_virtual_oids": [
+        3044356499,
+        3484408500,
+        3783036702,
+        2224590909,
+        3691541811,
+        4223239789,
+        3538456866
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 187.0,
+        "mean": 2.4461217257021795,
+        "p50": 1.2278919957453742,
+        "p95": 7.0,
+        "p99": 17.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.16700781671393772,
+        "paired_qerror": {
+          "improved": 378,
+          "unchanged": 8628,
+          "worsened": 994
+        },
+        "plan_rows_changed": 1372,
+        "plan_rows_changed_fraction": 0.1372,
+        "ratio_vs_reference": 1.0732775207308864
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/random-seed-17/per-query.jsonl.gz",
+      "per_query_sha256": "d5191dd551f190c463c4713e2801af21405bd445f44b58852107aca80ce81139",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "status": "complete"
+    },
+    "random-seed-29": {
+      "active_virtual_oids": [
+        4223239789,
+        3783036702,
+        3044356499,
+        2224590909,
+        3691541811,
+        3484408500,
+        3538456866
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 347.0,
+        "mean": 3.3011965773341756,
+        "p50": 1.2450490196078432,
+        "p95": 10.62009803921565,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.0220826683459339,
+        "paired_qerror": {
+          "improved": 541,
+          "unchanged": 7803,
+          "worsened": 1656
+        },
+        "plan_rows_changed": 2197,
+        "plan_rows_changed_fraction": 0.2197,
+        "ratio_vs_reference": 1.4484561584724227
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/random-seed-29/per-query.jsonl.gz",
+      "per_query_sha256": "2092bf5462edea57bb43edd12b0e8ae7c6ff60d2a9ac68674b821583a30f7890",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "status": "complete"
+    },
+    "random-seed-43": {
+      "active_virtual_oids": [
+        3044356499,
+        2224590909,
+        3538456866,
+        4223239789,
+        3783036702,
+        3691541811,
+        3484408500
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 347.0,
+        "mean": 3.3612044834479837,
+        "p50": 1.2612942612942613,
+        "p95": 11.0,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.082090574459742,
+        "paired_qerror": {
+          "improved": 626,
+          "unchanged": 7379,
+          "worsened": 1995
+        },
+        "plan_rows_changed": 2621,
+        "plan_rows_changed_fraction": 0.2621,
+        "ratio_vs_reference": 1.4747856481381882
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/random-seed-43/per-query.jsonl.gz",
+      "per_query_sha256": "0bc9e63aec1da2e251943b96a1c9f2879b5048c0d8f28ff49bf3ccc1177f6dcb",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "status": "complete"
+    },
+    "random-seed-71": {
+      "active_virtual_oids": [
+        2224590909,
+        4223239789,
+        3783036702,
+        3484408500,
+        3044356499,
+        3538456866,
+        3691541811
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 347.0,
+        "mean": 3.3011965773341756,
+        "p50": 1.2450490196078432,
+        "p95": 10.62009803921565,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.0220826683459339,
+        "paired_qerror": {
+          "improved": 541,
+          "unchanged": 7803,
+          "worsened": 1656
+        },
+        "plan_rows_changed": 2197,
+        "plan_rows_changed_fraction": 0.2197,
+        "ratio_vs_reference": 1.4484561584724227
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/random-seed-71/per-query.jsonl.gz",
+      "per_query_sha256": "2623796b72dc6cd61b260e10d23dfcd0a575d6760af697b6cc2d55e3ac68af6e",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_8dcd92d8fd2c19547202010a"
+      ],
+      "status": "complete"
+    },
+    "reference": {
+      "active_virtual_oids": [
+        3484408500,
+        3783036702,
+        3691541811,
+        4223239789,
+        3538456866,
+        3044356499,
+        2224590909
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 146.0,
+        "mean": 2.2791139089882417,
+        "p50": 1.2179777802715743,
+        "p95": 6.187802419354834,
+        "p99": 15.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.0,
+        "paired_qerror": {
+          "improved": 0,
+          "unchanged": 10000,
+          "worsened": 0
+        },
+        "plan_rows_changed": 0,
+        "plan_rows_changed_fraction": 0.0,
+        "ratio_vs_reference": 1.0
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/reference/per-query.jsonl.gz",
+      "per_query_sha256": "e49d884b4de4d66655c035e1ebdaef8382807e34a5f8585f9a07bb7c58653b0c",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7"
+      ],
+      "status": "complete"
+    },
+    "reverse": {
+      "active_virtual_oids": [
+        2224590909,
+        3044356499,
+        3538456866,
+        4223239789,
+        3691541811,
+        3783036702,
+        3484408500
+      ],
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_status": "controlled-order-only",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "controlled-hypothetical",
+      "metrics": {
+        "max": 347.0,
+        "mean": 3.3612044834479837,
+        "p50": 1.2612942612942613,
+        "p95": 11.0,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.082090574459742,
+        "paired_qerror": {
+          "improved": 626,
+          "unchanged": 7379,
+          "worsened": 1995
+        },
+        "plan_rows_changed": 2621,
+        "plan_rows_changed_fraction": 0.2621,
+        "ratio_vs_reference": 1.4747856481381882
+      },
+      "ordinary_statistics_fingerprint": "093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+        "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+        "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+        "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+        "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+        "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+        "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 660,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1358,
+        "cand_932bbcf20f9f0a148ba95db7": 2304,
+        "cand_c8c1413add8f3db6d6f05be0": 682
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/controlled-hypothetical/reverse/per-query.jsonl.gz",
+      "per_query_sha256": "26000afafa91d1d64423dbc7efca20e18a5b14b181ce010cdf7f5c1721de8617",
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "repeatable read",
+        "transaction_read_only": "on"
+      },
+      "prescribed_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "status": "complete"
+    }
+  },
+  "native_payload_inventory": {
+    "cand_03e22fcf6c560a837d8628e7": "5f8f1e657c58effb88674f23d6a1510d7cd4cb1424ee7ac5423f5b5b55cb37ab",
+    "cand_5b0b4676bec8caedc102f449": "5f2655f8d9f4e7a5e9f6bb7c8dcc09c7432c59d288f51e3a5ca65dff41df032f",
+    "cand_6fcc2b4b6d26bbc6270a5211": "61112bd88b3a5d83618b61cbf1d9f6bed6ad8fe775df9b72cde8955fcdeb72a9",
+    "cand_7d8de54bba646a9d23debb62": "2078a31e334e74dfc2ad88cd2b9853d0bd3e3c1f878feff9b72d0c50940c40fc",
+    "cand_8dcd92d8fd2c19547202010a": "7b7e709af23846831b1e64f1500bd820b69603e38181d7f7b813d5f259b18bf4",
+    "cand_932bbcf20f9f0a148ba95db7": "d77cb64f93db566fca6fde6013ccd125adb7b8dca98a6011450a71c5c4116306",
+    "cand_c8c1413add8f3db6d6f05be0": "5c863f0c1e2ab95c683c8f5e7131ef01a657ec04542e5b22288eef65e19fcc30"
+  },
+  "native_repository_digest": "5550a2961d7c955a3d00625a9dc8a662251c3bdfda3c48ddf0c5f19b36429df9",
+  "physical": {
+    "random-seed-101": {
+      "actual_oid_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_3772057400",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 136.0,
+        "mean": 2.4177314024940846,
+        "p50": 1.2267930956006863,
+        "p95": 7.0,
+        "p99": 17.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.1780100365938866,
+        "paired_qerror": {
+          "improved": 2721,
+          "unchanged": 3713,
+          "worsened": 3566
+        },
+        "plan_rows_changed": 6287,
+        "plan_rows_changed_fraction": 0.6287,
+        "ratio_vs_reference": 1.0794786527039002
+      },
+      "ordinary_statistics_fingerprint": "47ddb121f8a8306303cef5e60ead1016f853964832521d141b3b92719972062e",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "8044aaa2843fca9a428849ceb5a3af67c7df44815bc07b95ab60898811ec7f8c",
+        "cand_5b0b4676bec8caedc102f449": "96cbcfc6d19a4b406629693330afdb74b4014538bd3e900091d9ef07463a3af1",
+        "cand_6fcc2b4b6d26bbc6270a5211": "52a161b6bc1533cb48a9a56edbfe499a0678dcb32018b774a480653785b151a4",
+        "cand_7d8de54bba646a9d23debb62": "7016c1bdc4d4141b0fdef7a4b6785505f673c4283e8689c05b9b4cd2b7c25659",
+        "cand_8dcd92d8fd2c19547202010a": "f74305b5527050c184b4f3ef3a4ca54e61d4bf699f8aa5db4b62a25a2fbdf629",
+        "cand_932bbcf20f9f0a148ba95db7": "61f932f87b852f86701b2ebcdbfad2b1b327d0903d77abbbd6743f16c997cd83",
+        "cand_c8c1413add8f3db6d6f05be0": "b9883ad88d5749032c319312ec2f21d772eb5cfad7beefb4fefddc1e45253d9f"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 835,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2716,
+        "cand_8dcd92d8fd2c19547202010a": 1946,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/random-seed-101/per-query.jsonl.gz",
+      "per_query_sha256": "72e9186be1b265a6e9e43087e86e0e644141fe630b867f89aa859cce76db32ae",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16457,
+          "payload_present": true,
+          "payload_sha256": "96cbcfc6d19a4b406629693330afdb74b4014538bd3e900091d9ef07463a3af1",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16458,
+          "payload_present": true,
+          "payload_sha256": "b9883ad88d5749032c319312ec2f21d772eb5cfad7beefb4fefddc1e45253d9f",
+          "payload_size": 725,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16459,
+          "payload_present": true,
+          "payload_sha256": "52a161b6bc1533cb48a9a56edbfe499a0678dcb32018b774a480653785b151a4",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16460,
+          "payload_present": true,
+          "payload_sha256": "f74305b5527050c184b4f3ef3a4ca54e61d4bf699f8aa5db4b62a25a2fbdf629",
+          "payload_size": 1946,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16461,
+          "payload_present": true,
+          "payload_sha256": "61f932f87b852f86701b2ebcdbfad2b1b327d0903d77abbbd6743f16c997cd83",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16462,
+          "payload_present": true,
+          "payload_sha256": "8044aaa2843fca9a428849ceb5a3af67c7df44815bc07b95ab60898811ec7f8c",
+          "payload_size": 835,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16463,
+          "payload_present": true,
+          "payload_sha256": "7016c1bdc4d4141b0fdef7a4b6785505f673c4283e8689c05b9b4cd2b7c25659",
+          "payload_size": 2716,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "random-seed-17": {
+      "actual_oid_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_2653742676",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 187.0,
+        "mean": 2.4028290395329606,
+        "p50": 1.2139550193670867,
+        "p95": 7.0,
+        "p99": 17.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.16310767363276257,
+        "paired_qerror": {
+          "improved": 2915,
+          "unchanged": 3672,
+          "worsened": 3413
+        },
+        "plan_rows_changed": 6328,
+        "plan_rows_changed_fraction": 0.6328,
+        "ratio_vs_reference": 1.0728249844449762
+      },
+      "ordinary_statistics_fingerprint": "5ff89b2b871cb7c450c5d031780cf3840a41d9b411164a0510aa54c769c9371e",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "0be734d537bdd67ffc8e4739859bdeb979262d01c2d1b8684b6566b506bfab8a",
+        "cand_5b0b4676bec8caedc102f449": "af93c025e9a584bf9b4df831b06e92b9673b3bb8dbc1cc116f6801393fe12ff0",
+        "cand_6fcc2b4b6d26bbc6270a5211": "acada0fb07037f6a013aad2e0d5261637848ffcf80f520b7a0a63dc1bba07c7c",
+        "cand_7d8de54bba646a9d23debb62": "f16a96342cad38725c8c9c7102562ea0e84b176277afc73d03f3b76c52c565a6",
+        "cand_8dcd92d8fd2c19547202010a": "77af0baa09e21cb688d71766aad85d73907b36818992d86db1e05a28af453a05",
+        "cand_932bbcf20f9f0a148ba95db7": "354a345a6fd76d0d1362f765b8dc4ab03e6866f2d07d27a53ebd35effa78276e",
+        "cand_c8c1413add8f3db6d6f05be0": "cef6cc96ee9f9cf60bd294c475ab7349241129558b70bcbe02432747b56c2c53"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 835,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1902,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/random-seed-17/per-query.jsonl.gz",
+      "per_query_sha256": "7dbda86178c2e6a2074425ce13995f36d4147d3a5563441ca4325d8bf5492cef",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16413,
+          "payload_present": true,
+          "payload_sha256": "acada0fb07037f6a013aad2e0d5261637848ffcf80f520b7a0a63dc1bba07c7c",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16414,
+          "payload_present": true,
+          "payload_sha256": "cef6cc96ee9f9cf60bd294c475ab7349241129558b70bcbe02432747b56c2c53",
+          "payload_size": 725,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16415,
+          "payload_present": true,
+          "payload_sha256": "0be734d537bdd67ffc8e4739859bdeb979262d01c2d1b8684b6566b506bfab8a",
+          "payload_size": 835,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16416,
+          "payload_present": true,
+          "payload_sha256": "354a345a6fd76d0d1362f765b8dc4ab03e6866f2d07d27a53ebd35effa78276e",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16417,
+          "payload_present": true,
+          "payload_sha256": "77af0baa09e21cb688d71766aad85d73907b36818992d86db1e05a28af453a05",
+          "payload_size": 1902,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16418,
+          "payload_present": true,
+          "payload_sha256": "af93c025e9a584bf9b4df831b06e92b9673b3bb8dbc1cc116f6801393fe12ff0",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16419,
+          "payload_present": true,
+          "payload_sha256": "f16a96342cad38725c8c9c7102562ea0e84b176277afc73d03f3b76c52c565a6",
+          "payload_size": 2700,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "random-seed-29": {
+      "actual_oid_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_5428379536",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 391.0,
+        "mean": 3.2562779181740864,
+        "p50": 1.2342209072978303,
+        "p95": 10.422974963181145,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.0165565522738884,
+        "paired_qerror": {
+          "improved": 2724,
+          "unchanged": 3344,
+          "worsened": 3932
+        },
+        "plan_rows_changed": 6658,
+        "plan_rows_changed_fraction": 0.6658,
+        "ratio_vs_reference": 1.4538763471880842
+      },
+      "ordinary_statistics_fingerprint": "2095db22cbc9bea4b1e0ab0925f55df651531e4b3eb8baa2fa518b0c4d163814",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "d0c055df3c410a37a46c5a75f43edbf0f9bbb53de42c137e3b7fb6666e0a075c",
+        "cand_5b0b4676bec8caedc102f449": "398644434845d78dea5d68ba3ad0b6789c6cb3e43b14d50f37602488a7b2a7ef",
+        "cand_6fcc2b4b6d26bbc6270a5211": "8cfcc725907b80bdb83605285aa65d9a095d03e56da42b204add2af2cc18ae45",
+        "cand_7d8de54bba646a9d23debb62": "957a54077886f41ff3597828c27dcc77a4da252620fb6a275c0a9d43c4f03b18",
+        "cand_8dcd92d8fd2c19547202010a": "d966008d8c9799bf8a15d670e6f25fb1cd7a7083868b83ed96b858ed47144227",
+        "cand_932bbcf20f9f0a148ba95db7": "bc4b605466e7d04eb5fd2516042eb1a7d8223fd1d155ee354cf7535929cb2f9e",
+        "cand_c8c1413add8f3db6d6f05be0": "2b1a90c7fa6c4584ae1e70fbdee46a402f25608fced696db03e4e4f61ab265d2"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 813,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2708,
+        "cand_8dcd92d8fd2c19547202010a": 1864,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/random-seed-29/per-query.jsonl.gz",
+      "per_query_sha256": "92a3ca858da1b987c089ab287d0486ea2002416d1ffb30393602e0f736ec7cbd",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16424,
+          "payload_present": true,
+          "payload_sha256": "398644434845d78dea5d68ba3ad0b6789c6cb3e43b14d50f37602488a7b2a7ef",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16425,
+          "payload_present": true,
+          "payload_sha256": "d0c055df3c410a37a46c5a75f43edbf0f9bbb53de42c137e3b7fb6666e0a075c",
+          "payload_size": 813,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16426,
+          "payload_present": true,
+          "payload_sha256": "8cfcc725907b80bdb83605285aa65d9a095d03e56da42b204add2af2cc18ae45",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16427,
+          "payload_present": true,
+          "payload_sha256": "bc4b605466e7d04eb5fd2516042eb1a7d8223fd1d155ee354cf7535929cb2f9e",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16428,
+          "payload_present": true,
+          "payload_sha256": "d966008d8c9799bf8a15d670e6f25fb1cd7a7083868b83ed96b858ed47144227",
+          "payload_size": 1864,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16429,
+          "payload_present": true,
+          "payload_sha256": "2b1a90c7fa6c4584ae1e70fbdee46a402f25608fced696db03e4e4f61ab265d2",
+          "payload_size": 725,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16430,
+          "payload_present": true,
+          "payload_sha256": "957a54077886f41ff3597828c27dcc77a4da252620fb6a275c0a9d43c4f03b18",
+          "payload_size": 2708,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_7d8de54bba646a9d23debb62"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "random-seed-43": {
+      "actual_oid_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_8212912657",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 391.0,
+        "mean": 3.328276083875695,
+        "p50": 1.2487947205444987,
+        "p95": 11.0,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.088554717975497,
+        "paired_qerror": {
+          "improved": 2818,
+          "unchanged": 3195,
+          "worsened": 3987
+        },
+        "plan_rows_changed": 6807,
+        "plan_rows_changed_fraction": 0.6807,
+        "ratio_vs_reference": 1.486022384100435
+      },
+      "ordinary_statistics_fingerprint": "197103dfa28b6f825b869917170deabcdfb97cffb7648faab616c134d43c56b6",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "fd7a3e14e9023a714aab87af6e3ab13a94646cd37ba3e4598e5d370c3e38e680",
+        "cand_5b0b4676bec8caedc102f449": "d05af991243ddaebdc0cabf2870c4cdcc3326928e00116c3756d0db61b647c88",
+        "cand_6fcc2b4b6d26bbc6270a5211": "c15b3f6e6a5a1c4abd581d2ed3ca75c310f6ca1288c85e9e4f8195479022c8c7",
+        "cand_7d8de54bba646a9d23debb62": "3bcd2125c1523e94a2731e184efb378ddb3728bda284d88e1a54e55c6b1d7ff9",
+        "cand_8dcd92d8fd2c19547202010a": "49142e8d0db4619d1063f6a96caece631126484e68d4f986432b2381d51a7598",
+        "cand_932bbcf20f9f0a148ba95db7": "ee6aad7f4c30d629a793ec6039ab63fd5bf31daf8263ca93ce0d2a58fb6c4885",
+        "cand_c8c1413add8f3db6d6f05be0": "75f74cf1e87c093678fce2a17d343758ec9fd2968007315f21ba6ae634ec26a7"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 857,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1946,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/random-seed-43/per-query.jsonl.gz",
+      "per_query_sha256": "fbeb2c064f4efad05f31833a7d9f367aa4faa390ef453d4375d4aec77eeaf055",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16435,
+          "payload_present": true,
+          "payload_sha256": "c15b3f6e6a5a1c4abd581d2ed3ca75c310f6ca1288c85e9e4f8195479022c8c7",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16436,
+          "payload_present": true,
+          "payload_sha256": "ee6aad7f4c30d629a793ec6039ab63fd5bf31daf8263ca93ce0d2a58fb6c4885",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16437,
+          "payload_present": true,
+          "payload_sha256": "3bcd2125c1523e94a2731e184efb378ddb3728bda284d88e1a54e55c6b1d7ff9",
+          "payload_size": 2700,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16438,
+          "payload_present": true,
+          "payload_sha256": "d05af991243ddaebdc0cabf2870c4cdcc3326928e00116c3756d0db61b647c88",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16439,
+          "payload_present": true,
+          "payload_sha256": "fd7a3e14e9023a714aab87af6e3ab13a94646cd37ba3e4598e5d370c3e38e680",
+          "payload_size": 857,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16440,
+          "payload_present": true,
+          "payload_sha256": "49142e8d0db4619d1063f6a96caece631126484e68d4f986432b2381d51a7598",
+          "payload_size": 1946,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16441,
+          "payload_present": true,
+          "payload_sha256": "75f74cf1e87c093678fce2a17d343758ec9fd2968007315f21ba6ae634ec26a7",
+          "payload_size": 725,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "random-seed-71": {
+      "actual_oid_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_8dcd92d8fd2c19547202010a"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_1021252208",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 391.0,
+        "mean": 3.2497513537928246,
+        "p50": 1.2301190464067129,
+        "p95": 10.5,
+        "p99": 31.5,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.0100299878926267,
+        "paired_qerror": {
+          "improved": 2736,
+          "unchanged": 3338,
+          "worsened": 3926
+        },
+        "plan_rows_changed": 6664,
+        "plan_rows_changed_fraction": 0.6664,
+        "ratio_vs_reference": 1.4509623399010043
+      },
+      "ordinary_statistics_fingerprint": "76f4ae30b85a18809524e7ef8e1a2e7e92c830dcc22314db7f32c6cea755ab3b",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "43394c7562e68838fe2273e987f97876b6c0efeda3a395c4c32b3329e682cda4",
+        "cand_5b0b4676bec8caedc102f449": "340caa53ffae55b050f8bdca1289fab64b89c05a3473b79bd2dbcc9626650466",
+        "cand_6fcc2b4b6d26bbc6270a5211": "83430a37333d94d1b578d2b8ab7a87226cc5be1ed467b08dcca6cd012cf55371",
+        "cand_7d8de54bba646a9d23debb62": "b0ca3e5d32b09cc5abbf9957485e8bac4dcae0ec0c9a04815395c209a07eb949",
+        "cand_8dcd92d8fd2c19547202010a": "6621e3060bfe1446c56924dc0595f4643146422b2bc669c938e734a14318304e",
+        "cand_932bbcf20f9f0a148ba95db7": "7a8791430e276c2c3bc8992f66bcc850bde56254572d70e8c1e759f40b9db78f",
+        "cand_c8c1413add8f3db6d6f05be0": "affd413c186377f37ef57b3588960b4115d1242902bce1f0b229f49a125ffffa"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 835,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1924,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/random-seed-71/per-query.jsonl.gz",
+      "per_query_sha256": "30996f82f48d80da074f04b59e2da3a0ae9ec7e25c61ba9390fad4293426ec30",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16446,
+          "payload_present": true,
+          "payload_sha256": "7a8791430e276c2c3bc8992f66bcc850bde56254572d70e8c1e759f40b9db78f",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16447,
+          "payload_present": true,
+          "payload_sha256": "340caa53ffae55b050f8bdca1289fab64b89c05a3473b79bd2dbcc9626650466",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16448,
+          "payload_present": true,
+          "payload_sha256": "43394c7562e68838fe2273e987f97876b6c0efeda3a395c4c32b3329e682cda4",
+          "payload_size": 835,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16449,
+          "payload_present": true,
+          "payload_sha256": "affd413c186377f37ef57b3588960b4115d1242902bce1f0b229f49a125ffffa",
+          "payload_size": 725,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16450,
+          "payload_present": true,
+          "payload_sha256": "83430a37333d94d1b578d2b8ab7a87226cc5be1ed467b08dcca6cd012cf55371",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16451,
+          "payload_present": true,
+          "payload_sha256": "b0ca3e5d32b09cc5abbf9957485e8bac4dcae0ec0c9a04815395c209a07eb949",
+          "payload_size": 2700,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16452,
+          "payload_present": true,
+          "payload_sha256": "6621e3060bfe1446c56924dc0595f4643146422b2bc669c938e734a14318304e",
+          "payload_size": 1924,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_8dcd92d8fd2c19547202010a"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "reference": {
+      "actual_oid_order": [
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": true,
+        "payload_bytes_equal_to_reference": true,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "reference-control",
+      "database_identity": "oid_order_census13_7025858325",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 131.0,
+        "mean": 2.239721365900198,
+        "p50": 1.2032333187992847,
+        "p95": 6.0,
+        "p99": 14.138846153846208,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 0.0,
+        "paired_qerror": {
+          "improved": 0,
+          "unchanged": 10000,
+          "worsened": 0
+        },
+        "plan_rows_changed": 0,
+        "plan_rows_changed_fraction": 0.0,
+        "ratio_vs_reference": 1.0
+      },
+      "ordinary_statistics_fingerprint": "b4a2396c69b1f3a7f2370463e89f6397062f5c1e47d74cebd18c7df86f8c6c0a",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "0c3a369f5c585f5c4d0d9236e01db7931c81377b74d41d8202691f25fc281480",
+        "cand_5b0b4676bec8caedc102f449": "c4236780ee09aa314b4ef680fdeb34ca0104bf20ccddfe8c555bc80a3c9845f7",
+        "cand_6fcc2b4b6d26bbc6270a5211": "c95308ad7d8c026e7752901523e162267b6186b6ebe2e2183c5f38b355a075cd",
+        "cand_7d8de54bba646a9d23debb62": "f1fe6de7b10ed7856d45f1e18da816cc8ae00ef1663250e652d83f022cc8ffbf",
+        "cand_8dcd92d8fd2c19547202010a": "1809387ddb14c5f489d45cfd360693a24f03580feba9a6a91e20db20c8e9e9aa",
+        "cand_932bbcf20f9f0a148ba95db7": "c1e0ae5fd09663228710e27533e37644f2891775a1b32870440dfebe322f4dd1",
+        "cand_c8c1413add8f3db6d6f05be0": "598c846e8c8ff63e56f9817483267860e598f76d608871c5eb44b2ae048f03a3"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 835,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2700,
+        "cand_8dcd92d8fd2c19547202010a": 1864,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/reference/per-query.jsonl.gz",
+      "per_query_sha256": "6321c606ef51837b25e080ab47fab09b0c21b8c32d31cebc8e05a4be8f28c900",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16391,
+          "payload_present": true,
+          "payload_sha256": "598c846e8c8ff63e56f9817483267860e598f76d608871c5eb44b2ae048f03a3",
+          "payload_size": 725,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16392,
+          "payload_present": true,
+          "payload_sha256": "0c3a369f5c585f5c4d0d9236e01db7931c81377b74d41d8202691f25fc281480",
+          "payload_size": 835,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16393,
+          "payload_present": true,
+          "payload_sha256": "1809387ddb14c5f489d45cfd360693a24f03580feba9a6a91e20db20c8e9e9aa",
+          "payload_size": 1864,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16394,
+          "payload_present": true,
+          "payload_sha256": "c4236780ee09aa314b4ef680fdeb34ca0104bf20ccddfe8c555bc80a3c9845f7",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16395,
+          "payload_present": true,
+          "payload_sha256": "f1fe6de7b10ed7856d45f1e18da816cc8ae00ef1663250e652d83f022cc8ffbf",
+          "payload_size": 2700,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16396,
+          "payload_present": true,
+          "payload_sha256": "c95308ad7d8c026e7752901523e162267b6186b6ebe2e2183c5f38b355a075cd",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16397,
+          "payload_present": true,
+          "payload_sha256": "c1e0ae5fd09663228710e27533e37644f2891775a1b32870440dfebe322f4dd1",
+          "payload_size": 2656,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_c8c1413add8f3db6d6f05be0",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_932bbcf20f9f0a148ba95db7"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    },
+    "reverse": {
+      "actual_oid_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "analyze_count": 1,
+      "candidate_membership_digest": "bd79316809741979092096d710fae250a194e5ac0cbc3070e55f824ea252d5e0",
+      "causal_controls": {
+        "membership_and_definitions_equal": true,
+        "ordinary_statistics_equal_to_reference": false,
+        "payload_bytes_equal_to_reference": false,
+        "planner_settings_equal_to_reference": true,
+        "prescribed_oid_order_observed": true,
+        "relation_identity_equal": true,
+        "schema_identity_equal": true,
+        "statistics_target_equal": true
+      },
+      "causal_status": "confounded-operational-deployment",
+      "database_identity": "oid_order_census13_9849899867",
+      "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+      "execution_arm": "stock-physical",
+      "metrics": {
+        "max": 391.0,
+        "mean": 3.3211037701429493,
+        "p50": 1.25,
+        "p95": 11.0,
+        "p99": 32.0,
+        "query_count": 10000
+      },
+      "order_diagnostics": {
+        "difference_vs_reference": 1.0813824042427513,
+        "paired_qerror": {
+          "improved": 2543,
+          "unchanged": 3194,
+          "worsened": 4263
+        },
+        "plan_rows_changed": 6808,
+        "plan_rows_changed_fraction": 0.6808,
+        "ratio_vs_reference": 1.482820059989077
+      },
+      "ordinary_statistics_fingerprint": "3c173ace30b8930370b1681d44cf23d0a286cb187fa9ad7753f08b7b85332ea1",
+      "payload_sha256_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": "fc19e93afeb84de5b8da0942829fe00af2dc25eb18762ca5b6bccda9bdb6834a",
+        "cand_5b0b4676bec8caedc102f449": "c7e9153688695865b72fca87856945b15e831b9f96ca94358edfa7bae607366a",
+        "cand_6fcc2b4b6d26bbc6270a5211": "02113256e802bb3d0fecd4bf11fb312a35ad2b29875bcb1bdf7ee5b05301582c",
+        "cand_7d8de54bba646a9d23debb62": "ac6a47fdbd63d419abebecd077c5fd7eea4071fcf9cb31e8bffeaf3fd7d48758",
+        "cand_8dcd92d8fd2c19547202010a": "b5bbdaba0e405be198f78db5a84f56cfbc8eb2a8ba5cee51c13abd588052598d",
+        "cand_932bbcf20f9f0a148ba95db7": "98d4d470702b4d6c5b9e728e87d49e1caf807463b9cd8e8fc6bae4cfa76e2385",
+        "cand_c8c1413add8f3db6d6f05be0": "d0088acb34a0a26ff790e2108535793e2f1590157635db7ba36411b65cf971c0"
+      },
+      "payload_size_by_candidate": {
+        "cand_03e22fcf6c560a837d8628e7": 792,
+        "cand_5b0b4676bec8caedc102f449": 380,
+        "cand_6fcc2b4b6d26bbc6270a5211": 2721,
+        "cand_7d8de54bba646a9d23debb62": 2708,
+        "cand_8dcd92d8fd2c19547202010a": 1858,
+        "cand_932bbcf20f9f0a148ba95db7": 2656,
+        "cand_c8c1413add8f3db6d6f05be0": 725
+      },
+      "per_query_path": "experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-fa406a9/census13/physical-stock/reverse/per-query.jsonl.gz",
+      "per_query_sha256": "ee6d39dee7986de5a7fc0fbd398c0bd2175af684d0ca28f5aa35ac956fe5e162",
+      "physical_oids": [
+        {
+          "candidate_id": "cand_932bbcf20f9f0a148ba95db7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "occupation"
+          ],
+          "column_ordinals": [
+            3,
+            6
+          ],
+          "definition_fingerprint": "4a625e1d9408254179313078aa8aa18da8b9a3869ab2abd3bc535956c8c9f611",
+          "keys": "3 6",
+          "kind": "mcv",
+          "name": "oid_order_932bbcf20f9f0a148ba95db7",
+          "oid": 16402,
+          "payload_present": true,
+          "payload_sha256": "98d4d470702b4d6c5b9e728e87d49e1caf807463b9cd8e8fc6bae4cfa76e2385",
+          "payload_size": 2656,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_6fcc2b4b6d26bbc6270a5211",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "marital_status"
+          ],
+          "column_ordinals": [
+            1,
+            5
+          ],
+          "definition_fingerprint": "554e9018666c0ed6b22880f25055858c6e0d1d0e7e6296cb2d26f09993cc7d2c",
+          "keys": "1 5",
+          "kind": "mcv",
+          "name": "oid_order_6fcc2b4b6d26bbc6270a5211",
+          "oid": 16403,
+          "payload_present": true,
+          "payload_sha256": "02113256e802bb3d0fecd4bf11fb312a35ad2b29875bcb1bdf7ee5b05301582c",
+          "payload_size": 2721,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_7d8de54bba646a9d23debb62",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "age",
+            "relationship"
+          ],
+          "column_ordinals": [
+            1,
+            7
+          ],
+          "definition_fingerprint": "edf21cbc197b0fbe60344827c93bf9509fa09ea9794d115b815b77da92fd0f06",
+          "keys": "1 7",
+          "kind": "mcv",
+          "name": "oid_order_7d8de54bba646a9d23debb62",
+          "oid": 16404,
+          "payload_present": true,
+          "payload_sha256": "ac6a47fdbd63d419abebecd077c5fd7eea4071fcf9cb31e8bffeaf3fd7d48758",
+          "payload_size": 2708,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_5b0b4676bec8caedc102f449",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "relationship",
+            "sex"
+          ],
+          "column_ordinals": [
+            7,
+            9
+          ],
+          "definition_fingerprint": "062beee309e103e7fb868b7f012c7b48a734d60551a26e66db2bae1dcca4e169",
+          "keys": "7 9",
+          "kind": "mcv",
+          "name": "oid_order_5b0b4676bec8caedc102f449",
+          "oid": 16405,
+          "payload_present": true,
+          "payload_sha256": "c7e9153688695865b72fca87856945b15e831b9f96ca94358edfa7bae607366a",
+          "payload_size": 380,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_8dcd92d8fd2c19547202010a",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "workclass",
+            "occupation"
+          ],
+          "column_ordinals": [
+            2,
+            6
+          ],
+          "definition_fingerprint": "ce3962240e28073a2a2fef32b9b56a15bccf45f665902d0b28f1083b0fa38241",
+          "keys": "2 6",
+          "kind": "mcv",
+          "name": "oid_order_8dcd92d8fd2c19547202010a",
+          "oid": 16406,
+          "payload_present": true,
+          "payload_sha256": "b5bbdaba0e405be198f78db5a84f56cfbc8eb2a8ba5cee51c13abd588052598d",
+          "payload_size": 1858,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_03e22fcf6c560a837d8628e7",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "marital_status",
+            "relationship"
+          ],
+          "column_ordinals": [
+            5,
+            7
+          ],
+          "definition_fingerprint": "54d6143196a8a3b38937bd82b1c51e24aa916280c7853eaa1e40c74c5b019696",
+          "keys": "5 7",
+          "kind": "mcv",
+          "name": "oid_order_03e22fcf6c560a837d8628e7",
+          "oid": 16407,
+          "payload_present": true,
+          "payload_sha256": "fc19e93afeb84de5b8da0942829fe00af2dc25eb18762ca5b6bccda9bdb6834a",
+          "payload_size": 792,
+          "statistics_target": 100
+        },
+        {
+          "candidate_id": "cand_c8c1413add8f3db6d6f05be0",
+          "catalog_kind": "{m}",
+          "column_names": [
+            "education",
+            "education_num"
+          ],
+          "column_ordinals": [
+            3,
+            4
+          ],
+          "definition_fingerprint": "9c0cf5a88a4f9131243dfe2f790851842647cd1288b125fca787af8c98c29596",
+          "keys": "3 4",
+          "kind": "mcv",
+          "name": "oid_order_c8c1413add8f3db6d6f05be0",
+          "oid": 16408,
+          "payload_present": true,
+          "payload_sha256": "d0088acb34a0a26ff790e2108535793e2f1590157635db7ba36411b65cf971c0",
+          "payload_size": 725,
+          "statistics_target": 100
+        }
+      ],
+      "planner_settings": {
+        "DateStyle": "ISO, MDY",
+        "default_statistics_target": "100",
+        "enable_bitmapscan": "on",
+        "enable_indexscan": "on",
+        "enable_seqscan": "on",
+        "jit": "on",
+        "plan_cache_mode": "auto",
+        "search_path": "\"$user\", public",
+        "timezone": "Asia/Shanghai",
+        "transaction_isolation": "read committed",
+        "transaction_read_only": "off"
+      },
+      "prescribed_order": [
+        "cand_932bbcf20f9f0a148ba95db7",
+        "cand_6fcc2b4b6d26bbc6270a5211",
+        "cand_7d8de54bba646a9d23debb62",
+        "cand_5b0b4676bec8caedc102f449",
+        "cand_8dcd92d8fd2c19547202010a",
+        "cand_03e22fcf6c560a837d8628e7",
+        "cand_c8c1413add8f3db6d6f05be0"
+      ],
+      "relation_identity": {
+        "relation": "census13",
+        "schema": "public"
+      },
+      "status": "complete"
+    }
+  },
+  "producer_research_sha": "fa406a9a4a25e310a20a8c36ae40f3644570a758",
+  "relation": "public.census13",
+  "rq1b_reference": {
+    "deployment_digest": "6f27af8ed49884d2a82496ef61722d08b67cd6cc31cae8f89eb2bdffe532b43c",
+    "design_digest": "240fa55eb2c02eaf7a4569f1c925ceebac3aa72b92f36bcf734d42a1f480a483",
+    "recommendation_digest": "82e0019cbe88ffb5872135064029814a2c027bde4185abaccfaf8fd5a19007b0"
+  },
+  "runtime_name": "census13",
+  "sandbox": {
+    "prepare": {
+      "argv": [
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/frozen-extstats-advisor",
+        "sandbox",
+        "prepare",
+        "postgres",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/snapshot",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/candidate-universe.json",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/native-stats-repository",
+        "--dsn",
+        "host=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/socket port=55433 dbname=extstats_lab"
+      ],
+      "elapsed_seconds": 4.487042705000022,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"backend_contract\": \"postgresql-pgextadv-16.14-v1\", \"candidate_universe_semantic_digest\": \"e0ce36186ee00d52dd812950113ea76c4d885cf903567a9b64a8442e78eca8ca\", \"frozen_relation_name\": {\"catalog\": null, \"name\": \"frozen_sample_68ebdaf5d020554add9db9ba\", \"schema\": \"extstats_advisor_internal\"}, \"internal_schema_created\": true, \"managed_schema_created\": false, \"native_stats_repository_semantic_digest\": \"5550a2961d7c955a3d00625a9dc8a662251c3bdfda3c48ddf0c5f19b36429df9\", \"ordinary_stats_fingerprint\": \"093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7\", \"population_quality\": \"estimate\", \"population_row_count\": 48842.0, \"prepared_at\": \"2026-10-10 10:35:41.621687+08:00\", \"relation_id\": \"rel_629bc77394245fcc442246f7\", \"relation_name\": {\"catalog\": \"extstats_lab\", \"name\": \"census13\", \"schema\": \"public\"}, \"repository_absent_count\": 20, \"repository_candidate_count\": 156, \"repository_present_count\": 136, \"sample_row_count\": 10000, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"server_version\": \"16.14\", \"server_version_num\": 160014, \"source_snapshot_semantic_digest\": \"68ebdaf5d020554add9db9ba2d0f5706612bff09042d031850bd26b155c651b4\", \"statistics_target\": 100, \"status\": \"prepared\"}\n"
+    },
+    "verify": {
+      "argv": [
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/frozen-extstats-advisor",
+        "sandbox",
+        "verify",
+        "postgres",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/snapshot",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/candidate-universe.json",
+        "/home/wqts/projects/extstats-advisor-research/.runtime/oid-order-sensitivity-v1/oid-attempt-002-run-fa406a9/census13/native-stats-repository",
+        "--dsn",
+        "host=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/socket port=55433 dbname=extstats_lab"
+      ],
+      "elapsed_seconds": 3.815316976000304,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"autovacuum_disabled\": true, \"frozen_sample_row_count\": 10000, \"metadata\": {\"backend_contract\": \"postgresql-pgextadv-16.14-v1\", \"candidate_universe_semantic_digest\": \"e0ce36186ee00d52dd812950113ea76c4d885cf903567a9b64a8442e78eca8ca\", \"frozen_relation_name\": {\"catalog\": null, \"name\": \"frozen_sample_68ebdaf5d020554add9db9ba\", \"schema\": \"extstats_advisor_internal\"}, \"internal_schema_created\": true, \"managed_schema_created\": false, \"native_stats_repository_semantic_digest\": \"5550a2961d7c955a3d00625a9dc8a662251c3bdfda3c48ddf0c5f19b36429df9\", \"ordinary_stats_fingerprint\": \"093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7\", \"population_quality\": \"estimate\", \"population_row_count\": 48842.0, \"prepared_at\": \"2026-10-10 10:35:41.621687+08:00\", \"relation_id\": \"rel_629bc77394245fcc442246f7\", \"relation_name\": {\"catalog\": \"extstats_lab\", \"name\": \"census13\", \"schema\": \"public\"}, \"repository_absent_count\": 20, \"repository_candidate_count\": 156, \"repository_present_count\": 136, \"sample_row_count\": 10000, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"server_version\": \"16.14\", \"server_version_num\": 160014, \"source_snapshot_semantic_digest\": \"68ebdaf5d020554add9db9ba2d0f5706612bff09042d031850bd26b155c651b4\", \"statistics_target\": 100}, \"ordinary_stats_fingerprint\": \"093a19b219a615ca1eab270a1d8dedf16b35ba795f1addfb026a0f32b9ad2ec7\", \"physical_extstats_count\": 0, \"reltuples\": 48842.0, \"repository\": {\"absent_count\": 20, \"candidate_count\": 156, \"present_count\": 136, \"semantic_digest\": \"5550a2961d7c955a3d00625a9dc8a662251c3bdfda3c48ddf0c5f19b36429df9\"}, \"sandbox_contract\": \"postgresql-planner-sandbox-v1\", \"status\": \"valid\", \"target_relation_oid\": 16566, \"target_sample_row_count\": 10000}\n"
+    }
+  },
+  "snapshot_digest": "68ebdaf5d020554add9db9ba2d0f5706612bff09042d031850bd26b155c651b4",
+  "test_truth_accessed": false,
+  "test_workload_accessed": false,
+  "valid_truth": {
+    "path": "truth/arecel/census13/authoritative-cardinality-observations-valid-v1.json",
+    "query_count": 10000,
+    "query_ids": 10000,
+    "sha256": "13c35836c2757364fb5676132d8eac93c5f4c50483fc88198e145c1a5c03e6ca"
+  },
+  "valid_workload": {
+    "canonical_source_sha256": "9bcfc868effee9a796fff08454eeb85f135049e862ee0eb2dd801831d7df9388",
+    "query_count": 10000,
+    "sha256": "9e616db0383ec10fc784797964338ff4fa1e69726fa007fa7f4a0515c41b2a0f",
+    "workload_id": "arecel_census13_valid_v1"
+  }
+}
