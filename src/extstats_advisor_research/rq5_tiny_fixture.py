@@ -136,7 +136,7 @@ def fixture_workload(workload_query_type: Any) -> Any:
     return queries
 
 
-def build_snapshot() -> Any:
+def build_snapshot(*, catalog: str | None = None, fixture_id: str = FIXTURE_ID) -> Any:
     """Construct the deterministic sealed-snapshot model without filesystem I/O."""
 
     (
@@ -152,7 +152,7 @@ def build_snapshot() -> Any:
     ) = _advisor_imports(None)
     relation = RelationSchema(
         RELATION_ID,
-        RelationName(TABLE_NAME, schema="public"),
+        RelationName(TABLE_NAME, schema="public", catalog=catalog),
         (
             ColumnSchema("id", 1, "int32", False, "integer"),
             ColumnSchema("region", 2, "string", False, "text"),
@@ -164,7 +164,7 @@ def build_snapshot() -> Any:
         WORKLOAD_ID,
         tuple(fixture_workload(WorkloadQuery)),
         {
-            "fixture_id": FIXTURE_ID,
+            "fixture_id": fixture_id,
             "selection_contract": "fixed-five-single-table-equality-queries-v1",
         },
     )
@@ -192,7 +192,7 @@ def build_snapshot() -> Any:
         samples={RELATION_ID: table},
         dbms=DBMSIdentity("postgresql", "16.14"),
         semantic_provenance={
-            "fixture_id": FIXTURE_ID,
+            "fixture_id": fixture_id,
             "source_view_token": "rq5-tiny-cost-fixture-v1",
             "row_generation": "12-fixed-correlated-tuples-v1",
             "advisor_source_commit": ADVISOR_SHA,
@@ -239,6 +239,8 @@ def build_manifest(
     workload_sha256: str,
     candidate_definitions: list[dict[str, Any]],
     workload: dict[str, Any],
+    fixture_id: str = FIXTURE_ID,
+    relation_catalog: str | None = None,
 ) -> dict[str, Any]:
     candidate_ids = [item["candidate_id"] for item in candidate_definitions]
     queries = [
@@ -256,7 +258,7 @@ def build_manifest(
         _configuration(2, "fixture-overlap-pair-02", candidate_ids[:2]),
     ]
     material = {
-        "fixture_id": FIXTURE_ID,
+        "fixture_id": fixture_id,
         "candidate_definitions": candidate_definitions,
         "workload_id": workload["workload_id"],
         "query_subset": queries,
@@ -264,14 +266,15 @@ def build_manifest(
     }
     body = {
         "format_version": MANIFEST_FORMAT,
-        "experiment_id": FIXTURE_ID,
+        "fixture_id": fixture_id,
+        "experiment_id": fixture_id,
         "status": "offline-fixture-ready",
         "classification": "integration-readiness-only",
         "producer_commit_sha": producer_commit_sha,
         "dataset": {
-            "dataset_id": FIXTURE_ID,
+            "dataset_id": fixture_id,
             "relation_id": RELATION_ID,
-            "relation": {"schema": "public", "name": TABLE_NAME},
+            "relation": {"catalog": relation_catalog, "schema": "public", "name": TABLE_NAME},
             "sample_rows": len(_ROWS),
             "population_rows": len(_ROWS),
             "statistics_target": 100,
@@ -321,6 +324,8 @@ def generate_fixture(
     *,
     advisor_root: Path | None = None,
     producer_commit_sha: str | None = None,
+    fixture_id: str = FIXTURE_ID,
+    relation_catalog: str | None = None,
 ) -> dict[str, Any]:
     """Generate all fixture files once; refuse to overwrite any existing root."""
 
@@ -347,7 +352,7 @@ def generate_fixture(
         _validate_snapshot,
         write_snapshot,
     ) = _advisor_imports(advisor_root)
-    snapshot = build_snapshot()
+    snapshot = build_snapshot(catalog=relation_catalog, fixture_id=fixture_id)
     snapshot_dir = destination / "snapshot"
     snapshot_digest = write_snapshot(snapshot, snapshot_dir)
     sealed = _load_snapshot(snapshot_dir)
@@ -366,11 +371,13 @@ def generate_fixture(
         workload_sha256=sha256_file(workload_path),
         candidate_definitions=_candidate_definitions(universe),
         workload=workload,
+        fixture_id=fixture_id,
+        relation_catalog=relation_catalog,
     )
     write_json(destination / "manifest-v1.json", manifest)
-    (destination / "fixture-rows.sql").write_text(_rows_sql(), encoding="utf-8")
-    (destination / "fixture-rows-stock.sql").write_text(_rows_sql(), encoding="utf-8")
-    (destination / "fixture-rows-patched.sql").write_text(_rows_sql(), encoding="utf-8")
+    (destination / "fixture-rows.sql").write_text(_rows_sql(fixture_id), encoding="utf-8")
+    (destination / "fixture-rows-stock.sql").write_text(_rows_sql(fixture_id), encoding="utf-8")
+    (destination / "fixture-rows-patched.sql").write_text(_rows_sql(fixture_id), encoding="utf-8")
     return validate_fixture(destination)
 
 
@@ -387,9 +394,9 @@ def _research_head(destination: Path) -> str:
     raise ValueError("fixture must be generated inside a Git worktree")
 
 
-def _rows_sql() -> str:
+def _rows_sql(fixture_id: str = FIXTURE_ID) -> str:
     lines = [
-        f"-- {FIXTURE_ID}; execute only in an explicitly owned empty template database.",
+        f"-- {fixture_id}; execute only in an explicitly owned empty template database.",
         (
             f"CREATE TABLE public.{TABLE_NAME} (id integer NOT NULL, region text NOT NULL, "
             "tier text NOT NULL, segment text NOT NULL);"
@@ -468,9 +475,10 @@ def validate_fixture(destination: Path) -> dict[str, Any]:
         raise ValueError("tiny fixture configuration references an unknown candidate")
     if len(workload.get("queries", [])) != 5:
         raise ValueError("tiny fixture workload must contain five queries")
+    fixture_id = manifest.get("fixture_id", manifest.get("experiment_id"))
     return {
         "status": "valid-offline-fixture",
-        "fixture_id": FIXTURE_ID,
+        "fixture_id": fixture_id,
         "snapshot_semantic_digest": snapshot_report["semantic_digest"],
         "candidate_universe_semantic_digest": candidate_report["semantic_digest"],
         "workload_sha256": sha256_file(workload_path),
@@ -487,12 +495,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--advisor-root", type=Path)
     parser.add_argument("--producer-sha")
+    parser.add_argument("--fixture-id", default=FIXTURE_ID)
+    parser.add_argument("--relation-catalog")
     args = parser.parse_args(argv)
     if args.command == "generate":
         result = generate_fixture(
             args.output,
             advisor_root=args.advisor_root,
             producer_commit_sha=args.producer_sha,
+            fixture_id=args.fixture_id,
+            relation_catalog=args.relation_catalog,
         )
     else:
         result = validate_fixture(args.output)

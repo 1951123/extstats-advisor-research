@@ -47,6 +47,22 @@ def test_tiny_fixture_generation_and_validation_are_offline_and_deterministic(
     assert first_report["query_count"] == 5
 
 
+def test_tiny_fixture_can_bind_catalog_for_patched_sandbox(tmp_path: Path) -> None:
+    root = tmp_path / "fixture"
+    generate_fixture(
+        root,
+        producer_commit_sha="1f41f9f14d2a0121c389461942e3a293305513df",
+        fixture_id="rq5-tiny-cost-fixture-v1-catalog-corrected",
+        relation_catalog="rq5_tiny_patched_template",
+    )
+    manifest = json.loads((root / "manifest-v1.json").read_text())
+    from extstats_advisor.snapshot.bundle import load_snapshot
+
+    relation = load_snapshot(root / "snapshot").schemas[0].relation_name
+    assert relation.catalog == "rq5_tiny_patched_template"
+    assert manifest["dataset"]["relation"]["catalog"] == "rq5_tiny_patched_template"
+
+
 def test_tiny_fixture_has_distinct_ordered_configurations(tmp_path: Path) -> None:
     root = tmp_path / "fixture"
     generate_fixture(
