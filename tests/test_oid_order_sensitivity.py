@@ -16,6 +16,8 @@ from extstats_advisor_research.oid_order_sensitivity import (
     ExecutionState,
     _invocation_namespace,
     _load_sealed_snapshot,
+    _physical_payload_for_catalog_row,
+    _scan_partial_observations,
     _validate_query_records,
     _validate_synthetic_witness,
     build_readiness_artifact,
@@ -429,6 +431,51 @@ def test_failure_writer_records_started_formal_invocation(tmp_path: Path) -> Non
         exception=RuntimeError("fixture failure"),
     )
     assert failure["formal_invocation_count"] == 1
+
+
+def test_physical_payload_reader_receives_relation_oid_not_statistics_oid(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import extstats_advisor_research.rq3_fidelity as fidelity
+
+    captured: dict[str, object] = {}
+
+    def fake_reader(
+        connection: object, relation_oid: int, name: str, kind: str
+    ) -> dict[str, object]:
+        captured.update(connection=connection, relation_oid=relation_oid, name=name, kind=kind)
+        return {"payload_sha256": "a" * 64}
+
+    monkeypatch.setattr(fidelity, "_physical_payload", fake_reader)
+    result = _physical_payload_for_catalog_row("connection", 12345, "oid_order_candidate", "mcv")
+    assert result["payload_sha256"] == "a" * 64
+    assert captured == {
+        "connection": "connection",
+        "relation_oid": 12345,
+        "name": "oid_order_candidate",
+        "kind": "mcv",
+    }
+
+
+def test_failure_writer_counts_persisted_hypothetical_observations(tmp_path: Path) -> None:
+    import extstats_advisor_research.oid_order_sensitivity as oid
+
+    root = tmp_path / "run"
+    oid._write_gzip_jsonl(
+        root / "census13/controlled-hypothetical/reference/per-query.jsonl.gz",
+        [
+            {"execution_arm": "controlled-hypothetical", "query_id": "q0"},
+            {"execution_arm": "controlled-hypothetical", "query_id": "q1"},
+        ],
+    )
+    oid._write_gzip_jsonl(
+        root / "census13/physical-stock/reference/per-query.jsonl.gz",
+        [{"execution_arm": "stock-physical", "query_id": "q0"}],
+    )
+    observed = _scan_partial_observations(root)
+    assert observed["hypothetical_explain_count"] == 2
+    assert observed["physical_explain_count"] == 1
+    assert observed["completed_treatment_count"] == 2
 
 
 def test_formal_tree_guard_allows_only_declared_untracked_preflight(

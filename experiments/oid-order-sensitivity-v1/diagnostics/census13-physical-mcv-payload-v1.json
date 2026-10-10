@@ -1,0 +1,49 @@
+{
+  "format_version": "oid-order-sensitivity-census13-physical-mcv-diagnostic-v1",
+  "status": "diagnostic-only",
+  "diagnostic_producer_sha": "a7f3fcd2d101dd800a852f4805916128caf487f1",
+  "dataset_id": "arecel-census13",
+  "relation": "public.census13",
+  "dataset_content_identity": "89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9",
+  "schema_contract_id": "arecel-census13-postgres-schema-v1",
+  "source_csv_sha256": "f751fc7ecd5bd5e62acd9868a0bbe36413528b6eb2de9c2fc8fcf71d9ef2c13a",
+  "rows": 48842,
+  "statistics_target": 100,
+  "seed_identifier": 123,
+  "postgres_source_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+  "postgres_version": "16.14",
+  "relation_oid_in_diagnostic_clone": 16385,
+  "selected_order": [
+    "cand_c8c1413add8f3db6d6f05be0",
+    "cand_03e22fcf6c560a837d8628e7",
+    "cand_8dcd92d8fd2c19547202010a",
+    "cand_5b0b4676bec8caedc102f449",
+    "cand_7d8de54bba646a9d23debb62",
+    "cand_6fcc2b4b6d26bbc6270a5211",
+    "cand_932bbcf20f9f0a148ba95db7"
+  ],
+  "catalog_observations": [
+    {"candidate_id": "cand_c8c1413add8f3db6d6f05be0", "name": "oid_order_c8c1413add8f3db6d6f05be0", "statistics_oid": 16391, "data_statistics_oid": 16391, "stxrelid": 16385, "stxkeys": "3 4", "stxkind": "{m}", "statistics_target": 100, "mcv_is_null": false, "mcv_payload_bytes": 725},
+    {"candidate_id": "cand_03e22fcf6c560a837d8628e7", "name": "oid_order_03e22fcf6c560a837d8628e7", "statistics_oid": 16392, "data_statistics_oid": 16392, "stxrelid": 16385, "stxkeys": "5 7", "stxkind": "{m}", "statistics_target": 100, "mcv_is_null": false, "mcv_payload_bytes": 835},
+    {"candidate_id": "cand_8dcd92d8fd2c19547202010a", "name": "oid_order_8dcd92d8fd2c19547202010a", "statistics_oid": 16393, "data_statistics_oid": 16393, "stxrelid": 16385, "stxkeys": "2 6", "stxkind": "{m}", "mcv_is_null": false, "mcv_payload_bytes": 1946},
+    {"candidate_id": "cand_5b0b4676bec8caedc102f449", "name": "oid_order_5b0b4676bec8caedc102f449", "statistics_oid": 16394, "data_statistics_oid": 16394, "stxrelid": 16385, "stxkeys": "7 9", "stxkind": "{m}", "mcv_is_null": false, "mcv_payload_bytes": 380},
+    {"candidate_id": "cand_7d8de54bba646a9d23debb62", "name": "oid_order_7d8de54bba646a9d23debb62", "statistics_oid": 16395, "data_statistics_oid": 16395, "stxrelid": 16385, "stxkeys": "1 7", "stxkind": "{m}", "mcv_is_null": false, "mcv_payload_bytes": 2708},
+    {"candidate_id": "cand_6fcc2b4b6d26bbc6270a5211", "name": "oid_order_6fcc2b4b6d26bbc6270a5211", "statistics_oid": 16396, "data_statistics_oid": 16396, "stxrelid": 16385, "stxkeys": "1 5", "stxkind": "{m}", "mcv_is_null": false, "mcv_payload_bytes": 2721},
+    {"candidate_id": "cand_932bbcf20f9f0a148ba95db7", "name": "oid_order_932bbcf20f9f0a148ba95db7", "statistics_oid": 16397, "data_statistics_oid": 16397, "stxrelid": 16385, "stxkeys": "3 6", "stxkind": "{m}", "mcv_is_null": false, "mcv_payload_bytes": 2656}
+  ],
+  "lookup_contract": "pg_statistic_ext LEFT JOIN pg_statistic_ext_data ON stxoid, filtered by actual relation OID and exact statistics name",
+  "mcv_null_candidates": [],
+  "mcv_nonnull_candidates": [
+    "cand_c8c1413add8f3db6d6f05be0",
+    "cand_03e22fcf6c560a837d8628e7",
+    "cand_8dcd92d8fd2c19547202010a",
+    "cand_5b0b4676bec8caedc102f449",
+    "cand_7d8de54bba646a9d23debb62",
+    "cand_6fcc2b4b6d26bbc6270a5211",
+    "cand_932bbcf20f9f0a148ba95db7"
+  ],
+  "test_side_accessed": false,
+  "formal_invocation": false,
+  "scientific_evidence_eligible": false,
+  "semantic_digest": "227b3fa080fd7e65c953c88f90abb4dcbe200b0709f7ecaf4ce8138c88c0e4ab"
+}

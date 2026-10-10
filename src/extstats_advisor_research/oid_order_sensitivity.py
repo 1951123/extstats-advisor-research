@@ -82,6 +82,12 @@ class ExecutionState:
     physical_deployment_started: bool = False
     synthetic_fixture_created: bool = False
     cleanup: list[dict[str, Any]] = field(default_factory=list)
+    run_output_root: Path | None = None
+    hypothetical_explain_count: int = 0
+    physical_explain_count: int = 0
+    synthetic_explain_count: int = 0
+    completed_treatment_count: int = 0
+    completed_dataset_count: int = 0
 
     def transition(self, phase: str) -> None:
         self.phase = phase
@@ -153,6 +159,12 @@ def write_failure_artifact(
 ) -> dict[str, Any]:
     """Persist one append-only failure record without masking the primary error."""
 
+    observed = _scan_partial_observations(state.run_output_root)
+    hypothetical_count = max(
+        state.hypothetical_explain_count, observed["hypothetical_explain_count"]
+    )
+    physical_count = max(state.physical_explain_count, observed["physical_explain_count"])
+    synthetic_count = max(state.synthetic_explain_count, observed["synthetic_explain_count"])
     failure: dict[str, Any] = {
         "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
         "experiment_id": EXPERIMENT_ID,
@@ -183,7 +195,15 @@ def write_failure_artifact(
         },
         "cleanup_errors": [dict(item) for item in cleanup_errors],
         "execution_boundary": {
-            "explain_count": 0,
+            "explain_count": hypothetical_count + physical_count + synthetic_count,
+            "hypothetical_explain_count": hypothetical_count,
+            "physical_explain_count": physical_count,
+            "synthetic_explain_count": synthetic_count,
+            "completed_treatment_count": max(
+                state.completed_treatment_count, observed["completed_treatment_count"]
+            ),
+            "completed_dataset_count": state.completed_dataset_count,
+            "partial_raw_observations": observed["files"],
             "rq1b_w_test_accessed": False,
             "scientific_evidence_eligible": False,
         },
@@ -203,6 +223,52 @@ def write_failure_artifact(
     failure["semantic_digest"] = semantic_digest(failure)
     _atomic_write_json(path, failure)
     return failure
+
+
+def _scan_partial_observations(root: Path | None) -> dict[str, Any]:
+    """Count persisted observations for failure provenance without trusting summaries."""
+
+    empty: dict[str, Any] = {
+        "hypothetical_explain_count": 0,
+        "physical_explain_count": 0,
+        "synthetic_explain_count": 0,
+        "completed_treatment_count": 0,
+        "files": [],
+    }
+    if root is None or not root.exists():
+        return empty
+    for path in sorted(root.rglob("per-query.jsonl.gz")):
+        record_count = 0
+        arm_names: set[str] = set()
+        parse_error: str | None = None
+        try:
+            with gzip.open(path, "rt", encoding="utf-8") as stream:
+                for line in stream:
+                    record = json.loads(line)
+                    if not isinstance(record, Mapping):
+                        raise TypeError("observation is not a JSON object")
+                    record_count += 1
+                    arm_names.add(str(record.get("execution_arm")))
+        except Exception as error:  # noqa: BLE001 - preserve primary failure diagnostics
+            parse_error = f"{type(error).__name__}: {error}"
+        if parse_error is None:
+            empty["completed_treatment_count"] += 1
+            if "controlled-hypothetical" in arm_names:
+                empty["hypothetical_explain_count"] += record_count
+            elif "stock-physical" in arm_names:
+                empty["physical_explain_count"] += record_count
+            elif arm_names:
+                empty["synthetic_explain_count"] += record_count
+        entry: dict[str, Any] = {
+            "path": path.as_posix(),
+            "byte_sha256": sha256_file(path),
+            "record_count": record_count,
+            "execution_arms": sorted(arm_names),
+        }
+        if parse_error is not None:
+            entry["parse_error"] = parse_error
+        empty["files"].append(entry)
+    return empty
 
 
 def build_readiness_artifact(
@@ -1512,6 +1578,16 @@ def _load_sealed_snapshot(path: Path) -> Any:
     return snapshot
 
 
+def _physical_payload_for_catalog_row(
+    connection: Any, relation_oid: int, name: str, kind: str
+) -> dict[str, Any]:
+    """Read a physical payload using the relation OID, never the stats-object OID."""
+
+    from extstats_advisor_research.rq3_fidelity import _physical_payload
+
+    return _physical_payload(connection, relation_oid, name, kind)
+
+
 def _quote_identifier(value: str) -> str:
     return '"' + value.replace('"', '""') + '"'
 
@@ -1529,14 +1605,13 @@ def _physical_arm(
     research_root: Path,
     dataset_id: str,
     dataset_content_identity: str,
+    execution_state: ExecutionState | None = None,
 ) -> dict[str, Any]:
     """Build one disposable stock clone, evaluate valid queries, and remove it."""
 
     import psycopg
     from extstats_advisor.dbms.postgres.ordinary_stats import ordinary_stats_fingerprint
     from psycopg.conninfo import conninfo_to_dict, make_conninfo
-
-    from extstats_advisor_research.rq3_fidelity import _physical_payload
 
     fields = conninfo_to_dict(dsn)
     clone = f"oid_order_{dataset_id.removeprefix('arecel-')}_{time.time_ns() % 10**10:010d}"
@@ -1570,6 +1645,7 @@ def _physical_arm(
                 )
             conn.execute(f"ANALYZE {_quote_identifier(schema)}.{_quote_identifier(relation_name)}")
             settings = _connection_settings(conn)
+            rel_oid = int(conn.execute("SELECT to_regclass(%s)::oid", (relation,)).fetchone()[0])
             rows = conn.execute(
                 "SELECT e.oid::bigint, e.stxname, e.stxkind::text, e.stxkeys::text, e.stxstattarget FROM pg_catalog.pg_statistic_ext e JOIN pg_catalog.pg_namespace n ON n.oid=e.stxnamespace JOIN pg_catalog.pg_class c ON c.oid=e.stxrelid WHERE n.nspname=%s AND c.relname=%s ORDER BY e.oid",
                 (schema, relation_name),
@@ -1583,7 +1659,7 @@ def _physical_arm(
                     if candidates[candidate_id]["kind"] == "postgresql.mcv"
                     else "dependencies"
                 )
-                payload = _physical_payload(conn, int(row[0]), name, kind)
+                payload = _physical_payload_for_catalog_row(conn, rel_oid, name, kind)
                 physical_objects.append(
                     {
                         "candidate_id": candidate_id,
@@ -1606,6 +1682,8 @@ def _physical_arm(
             records = []
             for query in queries:
                 plan_rows, explain_digest = _explain(conn, str(query["sql"]), relation)
+                if execution_state is not None:
+                    execution_state.physical_explain_count += 1
                 truth = int(truth_by_id[query["query_id"]])
                 records.append(
                     {
@@ -1621,9 +1699,10 @@ def _physical_arm(
                         "explain_sha256": explain_digest,
                     }
                 )
-            rel_oid = int(conn.execute("SELECT to_regclass(%s)::oid", (relation,)).fetchone()[0])
             fingerprint = ordinary_stats_fingerprint(conn, rel_oid)
         digest = _write_gzip_jsonl(output, records)
+        if execution_state is not None:
+            execution_state.completed_treatment_count += 1
         if not all(item["payload_present"] for item in physical_objects):
             raise ValueError(f"{dataset_id} physical payload inventory contains an empty payload")
         return {
@@ -1717,6 +1796,7 @@ def _hypothetical_arms(
     dataset_content_identity: str,
     output_dir: Path,
     research_root: Path,
+    execution_state: ExecutionState | None = None,
 ) -> dict[str, dict[str, Any]]:
     sys.path.insert(0, str(advisor_root / "src"))
     from extstats_advisor.candidates import load_candidate_universe
@@ -1746,6 +1826,8 @@ def _hypothetical_arms(
                 plan_rows, explain_digest = _explain(
                     planner.connection, str(query["sql"]), relation
                 )
+                if execution_state is not None:
+                    execution_state.hypothetical_explain_count += 1
                 truth = int(truth_by_id[query["query_id"]])
                 records.append(
                     {
@@ -1768,6 +1850,8 @@ def _hypothetical_arms(
                 / "per-query.jsonl.gz"
             )
             digest = _write_gzip_jsonl(path, records)
+            if execution_state is not None:
+                execution_state.completed_treatment_count += 1
             results[arm["permutation_id"]] = {
                 "status": "complete",
                 "execution_arm": "controlled-hypothetical",
@@ -2224,6 +2308,7 @@ def run_formal(
     )
     runtime_base = root / ".runtime" / "oid-order-sensitivity-v1" / invocation_id
     run_output_root.mkdir(parents=True, exist_ok=False)
+    state.run_output_root = run_output_root
     runtime_base.mkdir(parents=True, exist_ok=False)
     try:
         state.transition("launcher-probe")
@@ -2390,6 +2475,7 @@ def run_formal(
                 dataset_content_identity=spec.dataset_content_identity,
                 output_dir=output_dir,
                 research_root=root,
+                execution_state=state,
             )
             state.hypothetical_active = False
             physical: dict[str, dict[str, Any]] = {}
@@ -2410,6 +2496,7 @@ def run_formal(
                     research_root=root,
                     dataset_id=spec.dataset_id,
                     dataset_content_identity=spec.dataset_content_identity,
+                    execution_state=state,
                 )
             state.physical_deployment_started = False
             _run_command(
@@ -2432,6 +2519,7 @@ def run_formal(
                 physical=physical,
                 sandbox={"prepare": prepare_result, "verify": verify_result},
             )
+            state.completed_dataset_count += 1
             write_json(output_dir / "result-v1.json", dataset_result)
             dataset_results.append(dataset_result)
             shutil.rmtree(runtime, ignore_errors=True)
