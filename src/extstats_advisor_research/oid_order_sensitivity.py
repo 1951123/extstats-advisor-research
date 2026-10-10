@@ -1588,6 +1588,13 @@ def _physical_payload_for_catalog_row(
     return _physical_payload(connection, relation_oid, name, kind)
 
 
+def _drop_physical_statistics_if_any(connection: Any, names: Sequence[str]) -> None:
+    if names:
+        connection.execute(
+            f"DROP STATISTICS IF EXISTS {', '.join(_quote_identifier(name) for name in names)}"
+        )
+
+
 def _quote_identifier(value: str) -> str:
     return '"' + value.replace('"', '""') + '"'
 
@@ -2196,9 +2203,7 @@ def _run_overlapping_mcv_witness(
                 )
             physical_rows, physical_digest = _explain(conn, query, relation)
             physical_fingerprint = ordinary_stats_fingerprint(conn, relation_oid)
-            conn.execute(
-                f"DROP STATISTICS IF EXISTS {', '.join(_quote_identifier(name) for name in names.values())}"
-            )
+            _drop_physical_statistics_if_any(conn, tuple(names.values()))
             if (
                 int(
                     conn.execute(

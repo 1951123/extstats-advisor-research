@@ -472,6 +472,25 @@ def test_synthetic_temp_relation_uses_pg_temp_plan_schema() -> None:
     assert _plan_rows(document, "pg_temp.oid_order_mcv_witness_fixture") == 7
 
 
+def test_synthetic_none_arm_does_not_issue_empty_drop_statistics() -> None:
+    from extstats_advisor_research.oid_order_sensitivity import (
+        _drop_physical_statistics_if_any,
+    )
+
+    class Connection:
+        def __init__(self) -> None:
+            self.statements: list[str] = []
+
+        def execute(self, statement: str) -> None:
+            self.statements.append(statement)
+
+    connection = Connection()
+    _drop_physical_statistics_if_any(connection, ())
+    assert connection.statements == []
+    _drop_physical_statistics_if_any(connection, ("a", "b"))
+    assert connection.statements == ['DROP STATISTICS IF EXISTS "a", "b"']
+
+
 def test_failure_writer_counts_persisted_hypothetical_observations(tmp_path: Path) -> None:
     import extstats_advisor_research.oid_order_sensitivity as oid
 
