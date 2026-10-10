@@ -1076,7 +1076,9 @@ def validate_readiness_v2(
             or smoke.get("scientific_eligibility") != "integration-readiness-only"
             or smoke.get("cleanup", {}).get("status") != "complete"
         ):
-            raise StabilityError("readiness integration smoke is not a completed readiness-only smoke")
+            raise StabilityError(
+                "readiness integration smoke is not a completed readiness-only smoke"
+            )
     elif integration_tested is not False:
         raise StabilityError("readiness integration gate must be explicitly true or false")
     execution = value.get("execution_status", {})
