@@ -396,6 +396,7 @@ def _reconcile_preflight_accounting(
         catalogless_config.output_dir / "adapter-audit" / "catalogless" / catalogless_config.run_id
     )
     materialization = tuple(catalogless_root.glob("materialization.json"))
+    sandbox = tuple(catalogless_root.glob("sandbox.json"))
     catalogless_explain = tuple(catalogless_root.glob("*-catalogless-explain.json"))
     catalogless_failures = tuple(catalogless_root.glob("*-catalogless-explain-failure.json"))
     catalogless_attempted = catalogless_successful = 0
@@ -406,9 +407,13 @@ def _reconcile_preflight_accounting(
     materialization_count = 0
     if materialization:
         materialization_count = int(read_json(materialization[0]).get("analyze_count", 0))
+    sandbox_count = 0
+    if sandbox:
+        sandbox_count = int(read_json(sandbox[0]).get("analyze_count", 0))
     result["catalogless"].update(
         {
             "materialization_analyze_calls": materialization_count,
+            "sandbox_prepare_analyze_calls": sandbox_count,
             "explain_attempted_calls": catalogless_attempted,
             "explain_successful_calls": catalogless_successful,
             "explain_calls": catalogless_successful,
@@ -791,6 +796,7 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         self._materialization: Any = None
         self._session: Any = None
         self._registered_oids: dict[str, int] = {}
+        self._sandbox_prepared = False
 
     def prepare_sample(self) -> int:
         self._load_sources()
@@ -853,7 +859,11 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         if not hasattr(self, "_repository_path"):
             raise LiveAdapterError("materialize_payloads must precede repository registration")
         _advisor_modules(self.config)
-        from extstats_advisor.dbms.postgres.planner import PostgresPlannerSession
+        from extstats_advisor.dbms.postgres import (
+            PostgresPlannerSession,
+            prepare_postgres_planner_sandbox,
+            verify_postgres_planner_sandbox,
+        )
         from extstats_advisor.native_stats import load_native_stats_repository
         from extstats_advisor.native_stats.repository import (
             validate_native_stats_repository_compatibility,
@@ -862,6 +872,28 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         self._repository = load_native_stats_repository(self._repository_path)
         validate_native_stats_repository_compatibility(
             self._repository, self._snapshot, self._universe
+        )
+        prepared = prepare_postgres_planner_sandbox(
+            self.config.patched_dsn,
+            self._snapshot,
+            self._universe,
+            self._repository,
+        )
+        self._sandbox_prepared = True
+        verified = verify_postgres_planner_sandbox(
+            self.config.patched_dsn,
+            self._snapshot,
+            self._universe,
+            self._repository,
+        )
+        _exclusive_json(
+            self._audit_root / "sandbox.json",
+            {
+                "prepared": prepared.metadata.to_dict(),
+                "target_relation_oid": prepared.target_relation_oid,
+                "verified": verified,
+                "analyze_count": 1,
+            },
         )
         self._session = PostgresPlannerSession(
             self.config.patched_dsn, self._snapshot, self._universe, self._repository
@@ -932,9 +964,24 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         return len(ids)
 
     def cleanup(self) -> int:
+        errors: list[BaseException] = []
         if self._session is not None:
-            self._session.close()
+            try:
+                self._session.close()
+            except BaseException as exc:  # noqa: BLE001 - preserve cleanup failures
+                errors.append(exc)
             self._session = None
+        if self._sandbox_prepared:
+            try:
+                _advisor_modules(self.config)
+                from extstats_advisor.dbms.postgres import destroy_postgres_planner_sandbox
+
+                destroy_postgres_planner_sandbox(self.config.patched_dsn)
+                self._sandbox_prepared = False
+            except BaseException as exc:  # noqa: BLE001 - preserve cleanup failures
+                errors.append(exc)
+        if errors:
+            raise LiveAdapterError("catalogless sandbox cleanup failed") from errors[0]
         return 1
 
 

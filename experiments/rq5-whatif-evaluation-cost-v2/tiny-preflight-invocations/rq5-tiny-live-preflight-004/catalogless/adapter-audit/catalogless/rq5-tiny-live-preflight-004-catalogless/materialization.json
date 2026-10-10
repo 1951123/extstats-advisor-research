@@ -1,0 +1,15 @@
+{
+  "analyze_count": 1,
+  "candidate_universe_semantic_digest": "9097517947e6d7115982f63db6520cd805fee1ab7668c5aa0e5698a23eda5bc9",
+  "native_repository_semantic_digest": "15fb1568bbfc4518b66bd819602a37f2d0352dfed493c4ad9e3c370a35d91de5",
+  "ordinary_statistics_fingerprint": "faf5ede82c92880b17b086c21b4d02807e7294f89bbd41aa4b807dbdfebb4e23",
+  "payload_states": {
+    "cand_25793595ac6a480b04ba296a": "present",
+    "cand_2987ad833c9b26d718d510f4": "absent-native",
+    "cand_2a9799e916f2473078c5816f": "absent-native",
+    "cand_900caf6d13d6c6927f08b3d7": "present",
+    "cand_d485cc683c85f7394fffa17e": "present",
+    "cand_de5235c7a36432b9b88cec95": "absent-native"
+  },
+  "snapshot_semantic_digest": "bdcaba67494f8a977ca06d37347656f3257921a3db514f023811ed91c5563833"
+}

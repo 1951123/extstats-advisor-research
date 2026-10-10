@@ -106,6 +106,18 @@ Afterward, stop only the dedicated lab instances and remove only adapter-owned
 `rq5wc_` clones and run-scoped output.  Cleanup failures must remain visible in
 the preflight artifact.
 
+## Corrected fixture binding
+
+The original `tiny-fixture-v1` is preserved unchanged.  Live preflight revealed
+that the historical patched planner sandbox requires the sealed relation
+catalog to equal the patched `current_database()`.  The append-only corrected
+fixture
+`experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected`
+binds the snapshot catalog to `rq5_tiny_patched_template` and must be used for
+the next correctness invocation.  Its distinct digests are intentional; the
+original v1 artifact remains historical evidence of the initial fixture
+contract.
+
 ## Invocation boundary
 
 The future correctness-only command is the existing explicit-opt-in entrypoint
@@ -115,16 +127,16 @@ fixture preparation:
 ```bash
 rq5-whatif-cost integration-preflight \
   --enable-live-preflight \
-  --manifest experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/manifest-v1.json \
-  --snapshot experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/snapshot \
-  --candidate-universe experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/candidate-universe.json \
-  --workload experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/workload.json \
+  --manifest experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/manifest-v1.json \
+  --snapshot experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/snapshot \
+  --candidate-universe experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/candidate-universe.json \
+  --workload experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/workload.json \
   --advisor-root /path/to/extstats-advisor-at-0865 \
   --stock-dsn 'host=127.0.0.1 port=55432 dbname=rq5_tiny_stock_template user=<fixture-owner>' \
   --stock-admin-dsn 'host=127.0.0.1 port=55432 dbname=postgres user=<fixture-admin>' \
   --patched-dsn 'host=127.0.0.1 port=55433 dbname=rq5_tiny_patched_template user=<fixture-owner>' \
-  --stock-identity experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/identities/stock-identity.json \
-  --patched-identity experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1/identities/patched-identity.json \
+  --stock-identity experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/identities/stock-identity.json \
+  --patched-identity experiments/rq5-whatif-evaluation-cost-v2/tiny-fixture-v1-catalog-corrected/identities/patched-identity.json \
   --output-dir /absolute/path/to/new-output \
   --output /absolute/path/to/new-output/preflight.json \
   --run-id rq5-tiny-preflight-001
