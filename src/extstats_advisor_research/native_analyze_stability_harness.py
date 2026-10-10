@@ -1016,7 +1016,10 @@ def load_and_validate_protocol(root: Path) -> dict[str, Any]:
 def validate_readiness_v2(
     value: Mapping[str, Any], root: Path, *, expected_producer_sha: str | None = None
 ) -> dict[str, str]:
-    if value.get("format_version") != "native-analyze-stability-readiness-review-v2":
+    if value.get("format_version") not in {
+        "native-analyze-stability-readiness-review-v2",
+        "native-analyze-stability-readiness-review-v3",
+    }:
         raise StabilityError("unsupported Native ANALYZE readiness-v2 artifact")
     _validate_digest(value, "readiness-v2")
     producer = value.get("review_producer_sha")

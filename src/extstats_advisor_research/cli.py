@@ -1893,7 +1893,9 @@ def main(argv: list[str] | None = None) -> int:
                 )
             else:
                 artifact = read_json(args.artifact)
-                if artifact.get("format_version") == "native-analyze-stability-readiness-review-v2":
+                if str(artifact.get("format_version", "")).startswith(
+                    "native-analyze-stability-readiness-review-v"
+                ):
                     result = validate_native_stability_readiness_v2(artifact, root)
                 else:
                     result = validate_native_stability_invocation(

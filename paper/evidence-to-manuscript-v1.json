@@ -97,7 +97,8 @@
       "sources": [
         {"path": "paper/native-analyze-stability-protocol-v1.json", "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47"},
         {"path": "experiments/native-analyze-stability-readiness-review-v1.json", "semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a"},
-        {"path": "experiments/native-analyze-stability-readiness-review-v2.json", "semantic_digest": "93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55"}
+        {"path": "experiments/native-analyze-stability-readiness-review-v2.json", "semantic_digest": "93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55"},
+        {"path": "experiments/native-analyze-stability-readiness-review-v3.json", "semantic_digest": "95c5bc4f03c2de173f7b8f57971b6deaef5f18a4ff01276ccc7a25777c0f7419"}
       ],
       "admissible_claims": [],
       "limitations": ["native ANALYZE stability is preregistered but not executed", "the offline five-realization harness has mock coverage but no live PostgreSQL integration test", "Forest10 remains a historical v1 stratum"],
