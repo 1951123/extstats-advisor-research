@@ -1,0 +1,57 @@
+{
+  "attempt_index": 2,
+  "cleanup": [
+    {
+      "operation": "stop-stock",
+      "status": "passed"
+    },
+    {
+      "operation": "stop-patched",
+      "status": "passed"
+    },
+    {
+      "operation": "runtime-remove",
+      "status": "passed"
+    }
+  ],
+  "cleanup_errors": [],
+  "evidence_eligible": false,
+  "exception": {
+    "message": "repository /home/wqts/projects/extstats-advisor is e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3, expected frozen SHA 0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "type": "builtins.ValueError"
+  },
+  "execution_boundary": {
+    "explain_count": 0,
+    "rq1b_w_test_accessed": false,
+    "scientific_evidence_eligible": false
+  },
+  "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+  "formal_execution": "FAILED",
+  "formal_invocation_count": 1,
+  "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
+  "invocation_id": "oid-attempt-002-run-858ce6a",
+  "phase": "arecel-census13:snapshot",
+  "phase_transitions": [
+    "launcher-probe",
+    "lab-preparation",
+    "arecel-census13:snapshot"
+  ],
+  "preflight": {
+    "byte_sha256": "751549beccd0463ab7fbc9e55e72568f07d443cfef5dd0ae9749cc90961617e9",
+    "path": "experiments/oid-order-sensitivity-v1/attempts/attempt-002/preflight-v4.json",
+    "semantic_digest": "73787f00d5fb04869d5915bd019022913c20292fbeb5ed55ba8f13e826df0286"
+  },
+  "resource_state": {
+    "hypothetical_active": false,
+    "patched_owned": true,
+    "physical_deployment_started": false,
+    "sandbox_prepared": false,
+    "snapshot_completed": true,
+    "stock_owned": true,
+    "synthetic_fixture_created": false
+  },
+  "retry_performed": false,
+  "scientific_producer_sha": "858ce6a054907b5cbbd0df6f4fe8b4adee03d1f3",
+  "semantic_digest": "ee381eca6aa3c26c0023bbd930fd8b000f4a13e7c31240daad5a28db77fc8ffc",
+  "status": "non-evidence-remediation-or-pre-execution-failure"
+}
