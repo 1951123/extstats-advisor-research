@@ -1,0 +1,748 @@
+{
+  "cleanup": {
+    "errors": [],
+    "status": "complete"
+  },
+  "counters": {
+    "analyze_count": 2,
+    "clone_analyze_count": 0,
+    "completed_clones": 8,
+    "completed_realizations": 2,
+    "explain_count": 24,
+    "parent_analyze_count": 2,
+    "physical_explain_count": 24
+  },
+  "failure_invocation": {
+    "path": "smoke-v1-failure.json",
+    "semantic_digest": "ee3d15ec2efa976c6e456bd59d4e98e3e83226518cf56e15c65e039c62b48dea"
+  },
+  "fixture": {
+    "identity": "synthetic-oid-stability-fixture-v1",
+    "sql_contract": "deterministic 2000-row correlated a/b/c fixture"
+  },
+  "formal_execution_authorized": false,
+  "format_version": "native-analyze-stability-integration-smoke-v1",
+  "invocation_id": "native-smoke-001-881a07d",
+  "max_explain_calls": 32,
+  "oid_mapping_regression": {
+    "pass": true,
+    "relation_oid": 16385,
+    "statistics_oid": 16390
+  },
+  "postgresql": {
+    "initdb_binary": ".runtime/postgres-lab/stock/install/bin/initdb",
+    "pg_ctl_binary": ".runtime/postgres-lab/stock/install/bin/pg_ctl",
+    "postgres_binary": ".runtime/postgres-lab/stock/install/bin/postgres",
+    "postgres_binary_sha256": "693b15293a4d4ee3c6e4fdddbe788e31e2936ef9ef287c40c184cc2dfb5c0465",
+    "postgres_version": "postgres (PostgreSQL) 16.14",
+    "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "source_dirty": false
+  },
+  "producer_sha": "881a07d9b58fa707cf5a752ac300a1c3a3b1753b",
+  "protocol_semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+  "realizations": [
+    {
+      "analyze_count": 1,
+      "database": "nas_smoke_r1",
+      "fixture": {
+        "canonical_creation_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "database": "nas_smoke_r1",
+        "format_version": "native-analyze-stability-synthetic-fixture-v1",
+        "method_memberships": {
+          "ab-only": [
+            "stat_ab"
+          ],
+          "all": [
+            "stat_ab",
+            "stat_bc"
+          ],
+          "bc-only": [
+            "stat_bc"
+          ],
+          "none": []
+        },
+        "queries": [
+          {
+            "query_id": "q_ab",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE a = 1 AND b = 1",
+            "truth": 500
+          },
+          {
+            "query_id": "q_bc",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE b = 2 AND c = 2",
+            "truth": 500
+          },
+          {
+            "query_id": "q_abc",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE a = 3 AND b = 3 AND c = 3",
+            "truth": 500
+          }
+        ],
+        "relation": "oid_stability_fixture",
+        "row_count": 2000,
+        "schema": "public",
+        "statistics_definitions": {
+          "stat_ab": {
+            "columns": [
+              "a",
+              "b"
+            ],
+            "kind": "mcv"
+          },
+          "stat_bc": {
+            "columns": [
+              "b",
+              "c"
+            ],
+            "kind": "mcv"
+          }
+        },
+        "statistics_target": 100
+      },
+      "method_arms": {
+        "ab-only": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_ab": {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16390,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            },
+            "relation_oid": 16385,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16390,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "ab-only",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 3.0,
+            "p50_qerror": 4.0,
+            "p95_qerror": 4.0,
+            "p99_qerror": 4.0,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-01-ab-only.jsonl.gz",
+            "sha256": "fee28669d9add02c0a17f8591ceb936d8d4e5395d08ac5ea660c4bc80a0c0a70"
+          },
+          "selected_membership": [
+            "stat_ab"
+          ]
+        },
+        "all": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_ab": {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16390,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              },
+              "stat_bc": {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16391,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            },
+            "relation_oid": 16385,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16390,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              },
+              {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16391,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "all",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 2.0,
+            "p50_qerror": 1.0,
+            "p95_qerror": 3.6999999999999997,
+            "p99_qerror": 3.94,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-01-all.jsonl.gz",
+            "sha256": "fa0be4b4cb1319a049b98b4ba9527ce25cc38433aaaaeb59739ecaffad62c126"
+          },
+          "selected_membership": [
+            "stat_ab",
+            "stat_bc"
+          ]
+        },
+        "bc-only": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_bc": {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16391,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            },
+            "relation_oid": 16385,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16391,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16385
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "bc-only",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 3.0,
+            "p50_qerror": 4.0,
+            "p95_qerror": 4.0,
+            "p99_qerror": 4.0,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-01-bc-only.jsonl.gz",
+            "sha256": "494e2862b16a882077d613c9e317f124a01d57434cab388c52e4ffe456081f28"
+          },
+          "selected_membership": [
+            "stat_bc"
+          ]
+        },
+        "none": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {},
+            "relation_oid": 16385,
+            "statistics_objects": []
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "none",
+          "metrics": {
+            "max_qerror": 16.129032258064516,
+            "mean_qerror": 8.043010752688172,
+            "p50_qerror": 4.0,
+            "p95_qerror": 14.916129032258063,
+            "p99_qerror": 15.886451612903226,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-01-none.jsonl.gz",
+            "sha256": "069ae6f7aa334b1eab90844de8841a9131a1409909ff890b5da4bd1d7841e710"
+          },
+          "selected_membership": []
+        }
+      },
+      "oid_controls": {
+        "expected_creation_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "observed_oid_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "relation_oid": 16385,
+        "relative_order_status": "verified",
+        "statistics_oids": {
+          "stat_ab": 16390,
+          "stat_bc": 16391
+        }
+      },
+      "realization_id": "realization-01",
+      "shared_parent": {
+        "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+        "payloads": {
+          "stat_ab": {
+            "candidate_id": "stat_ab",
+            "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+            "keys": "1 2",
+            "kinds": "{m}",
+            "oid": 16390,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16385
+          },
+          "stat_bc": {
+            "candidate_id": "stat_bc",
+            "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+            "keys": "2 3",
+            "kinds": "{m}",
+            "oid": 16391,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16385
+          }
+        },
+        "relation_oid": 16385,
+        "statistics_objects": [
+          {
+            "candidate_id": "stat_ab",
+            "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+            "keys": "1 2",
+            "kinds": "{m}",
+            "oid": 16390,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16385
+          },
+          {
+            "candidate_id": "stat_bc",
+            "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+            "keys": "2 3",
+            "kinds": "{m}",
+            "oid": 16391,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16385
+          }
+        ]
+      }
+    },
+    {
+      "analyze_count": 1,
+      "database": "nas_smoke_r2",
+      "fixture": {
+        "canonical_creation_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "database": "nas_smoke_r2",
+        "format_version": "native-analyze-stability-synthetic-fixture-v1",
+        "method_memberships": {
+          "ab-only": [
+            "stat_ab"
+          ],
+          "all": [
+            "stat_ab",
+            "stat_bc"
+          ],
+          "bc-only": [
+            "stat_bc"
+          ],
+          "none": []
+        },
+        "queries": [
+          {
+            "query_id": "q_ab",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE a = 1 AND b = 1",
+            "truth": 500
+          },
+          {
+            "query_id": "q_bc",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE b = 2 AND c = 2",
+            "truth": 500
+          },
+          {
+            "query_id": "q_abc",
+            "sql": "SELECT * FROM public.oid_stability_fixture WHERE a = 3 AND b = 3 AND c = 3",
+            "truth": 500
+          }
+        ],
+        "relation": "oid_stability_fixture",
+        "row_count": 2000,
+        "schema": "public",
+        "statistics_definitions": {
+          "stat_ab": {
+            "columns": [
+              "a",
+              "b"
+            ],
+            "kind": "mcv"
+          },
+          "stat_bc": {
+            "columns": [
+              "b",
+              "c"
+            ],
+            "kind": "mcv"
+          }
+        },
+        "statistics_target": 100
+      },
+      "method_arms": {
+        "ab-only": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_ab": {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16402,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            },
+            "relation_oid": 16397,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16402,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "ab-only",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 3.0,
+            "p50_qerror": 4.0,
+            "p95_qerror": 4.0,
+            "p99_qerror": 4.0,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-02-ab-only.jsonl.gz",
+            "sha256": "0ea745e266f1f62295f83ab3eafb25b20e149bc3b5c0096c9ecf920d2f718b77"
+          },
+          "selected_membership": [
+            "stat_ab"
+          ]
+        },
+        "all": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_ab": {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16402,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              },
+              "stat_bc": {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16403,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            },
+            "relation_oid": 16397,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_ab",
+                "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+                "keys": "1 2",
+                "kinds": "{m}",
+                "oid": 16402,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              },
+              {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16403,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "all",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 2.0,
+            "p50_qerror": 1.0,
+            "p95_qerror": 3.6999999999999997,
+            "p99_qerror": 3.94,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-02-all.jsonl.gz",
+            "sha256": "6531120cba71d90315763e0eee8a639aca613a14e89ed862f14aad2b6f9a961f"
+          },
+          "selected_membership": [
+            "stat_ab",
+            "stat_bc"
+          ]
+        },
+        "bc-only": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {
+              "stat_bc": {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16403,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            },
+            "relation_oid": 16397,
+            "statistics_objects": [
+              {
+                "candidate_id": "stat_bc",
+                "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+                "keys": "2 3",
+                "kinds": "{m}",
+                "oid": 16403,
+                "payload_bytes": 182,
+                "payload_present": true,
+                "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+                "relation_oid": 16397
+              }
+            ]
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "bc-only",
+          "metrics": {
+            "max_qerror": 4.0,
+            "mean_qerror": 3.0,
+            "p50_qerror": 4.0,
+            "p95_qerror": 4.0,
+            "p99_qerror": 4.0,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-02-bc-only.jsonl.gz",
+            "sha256": "761d205a55f268cbad1f99ef90bf3c7fc9a6c1d86163561cdb568e31d1f4d07c"
+          },
+          "selected_membership": [
+            "stat_bc"
+          ]
+        },
+        "none": {
+          "analyze_count": 0,
+          "catalog": {
+            "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+            "payloads": {},
+            "relation_oid": 16397,
+            "statistics_objects": []
+          },
+          "controls": {
+            "no_method_analyze": true,
+            "ordinary_statistics_equal": true,
+            "retained_payloads_equal": true
+          },
+          "method_id": "none",
+          "metrics": {
+            "max_qerror": 16.129032258064516,
+            "mean_qerror": 8.043010752688172,
+            "p50_qerror": 4.0,
+            "p95_qerror": 14.916129032258063,
+            "p99_qerror": 15.886451612903226,
+            "query_count": 3
+          },
+          "raw_observations": {
+            "count": 3,
+            "path": "smoke-v1-raw/realization-02-none.jsonl.gz",
+            "sha256": "f768706ec0adbf70a9f29d8914eadba48db8c8d0a9a5437e602c79a8571fd00b"
+          },
+          "selected_membership": []
+        }
+      },
+      "oid_controls": {
+        "expected_creation_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "observed_oid_order": [
+          "stat_ab",
+          "stat_bc"
+        ],
+        "relation_oid": 16397,
+        "relative_order_status": "verified",
+        "statistics_oids": {
+          "stat_ab": 16402,
+          "stat_bc": 16403
+        }
+      },
+      "realization_id": "realization-02",
+      "shared_parent": {
+        "ordinary_statistics_fingerprint": "8f932cb69b9b52fe8650d355564202142156cb7b84990c5f522ef02c6bf91722",
+        "payloads": {
+          "stat_ab": {
+            "candidate_id": "stat_ab",
+            "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+            "keys": "1 2",
+            "kinds": "{m}",
+            "oid": 16402,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16397
+          },
+          "stat_bc": {
+            "candidate_id": "stat_bc",
+            "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+            "keys": "2 3",
+            "kinds": "{m}",
+            "oid": 16403,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16397
+          }
+        },
+        "relation_oid": 16397,
+        "statistics_objects": [
+          {
+            "candidate_id": "stat_ab",
+            "definition": "CREATE STATISTICS public.stat_ab (mcv) ON a, b FROM oid_stability_fixture",
+            "keys": "1 2",
+            "kinds": "{m}",
+            "oid": 16402,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16397
+          },
+          {
+            "candidate_id": "stat_bc",
+            "definition": "CREATE STATISTICS public.stat_bc (mcv) ON b, c FROM oid_stability_fixture",
+            "keys": "2 3",
+            "kinds": "{m}",
+            "oid": 16403,
+            "payload_bytes": 182,
+            "payload_present": true,
+            "payload_sha256": "f600e3deab16ab31e6be8b5e4c62cc1c74914c0ad1e033528b35f2efba96f20f",
+            "relation_oid": 16397
+          }
+        ]
+      }
+    }
+  ],
+  "scientific_eligibility": "integration-readiness-only",
+  "scientific_stability_results_available": false,
+  "semantic_digest": "864ea1926334f91233f1274bd93dbf739dd5e300cbcbb91d703d5da0a4df7ff9"
+}

@@ -100,10 +100,11 @@
         {"path": "experiments/native-analyze-stability-readiness-review-v2.json", "semantic_digest": "93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55"},
         {"path": "experiments/native-analyze-stability-readiness-review-v3.json", "semantic_digest": "95c5bc4f03c2de173f7b8f57971b6deaef5f18a4ff01276ccc7a25777c0f7419"},
         {"path": "experiments/native-analyze-stability-readiness-review-v4.json", "semantic_digest": "0a9f483d6fbcca5a40101b5596cafa3acb8262bc31fb942ef68423ce925f5be2"},
-        {"path": "experiments/native-analyze-stability-readiness-review-v5.json", "semantic_digest": "60394aafe1b167a4489b8cba1dc27dd5bade49b0dcc1b7ad0a55f4bcc9384ae0"}
+        {"path": "experiments/native-analyze-stability-readiness-review-v5.json", "semantic_digest": "60394aafe1b167a4489b8cba1dc27dd5bade49b0dcc1b7ad0a55f4bcc9384ae0"},
+        {"path": "experiments/native-analyze-stability-readiness-review-v6.json", "semantic_digest": "1a8878af9b0d4af3e43fe7c1e3b7a4e971b054d3045721691ca19e077e053fa3"}
       ],
       "admissible_claims": [],
-      "limitations": ["native ANALYZE stability is preregistered but not executed", "the offline five-realization harness has mock coverage but no live PostgreSQL integration test", "Forest10 remains a historical v1 stratum"],
+      "limitations": ["native ANALYZE stability is preregistered but not executed", "the harness has only a bounded synthetic live integration smoke, not the formal five-realization campaign", "Forest10 remains a historical v1 stratum"],
       "manuscript": "paper/sections/08_results.tex",
       "new_scientific_execution_required": true
     },

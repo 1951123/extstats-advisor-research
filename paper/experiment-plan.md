@@ -676,20 +676,21 @@ small replay smoke requires exact membership, evaluation order, planner
 estimates, objectives, and configuration trace outside runtime measurements.
 
 **Native realization stability:** `native-analyze-stability-v1` is
-preregistered but not run. Its offline five-realization harness is implemented
-and mock-validated (readiness-v5), but no live PostgreSQL integration or formal
-execution is authorized. The protocol covers Forest10, Census13, and DMV11
+preregistered but not run. Its offline five-realization harness and bounded
+synthetic live PostgreSQL integration smoke are validated (readiness-v6), but
+no formal stability realization is authorized. The protocol covers Forest10, Census13, and DMV11
 as primary dataset-scoped strata, with Power7 as a declared sensitivity
 extension. It requires five independent stock `CREATE STATISTICS` plus
 `ANALYZE` realizations, a shared union and no-ANALYZE method clones, observed
 OID/order and payload controls, and full per-method workload evaluation.
-The append-only implementation readiness-v5 record has semantic digest
-`60394aafe1b167a4489b8cba1dc27dd5bade49b0dcc1b7ad0a55f4bcc9384ae0`.
+The append-only implementation readiness-v6 record has semantic digest
+`1a8878af9b0d4af3e43fe7c1e3b7a4e971b054d3045721691ca19e077e053fa3`.
 Forest10's historical v1 freeze is retained as a separate stratum rather than
 silently normalized to v2. `setseed` is recorded only as setup provenance and
 is not treated as control of native `ANALYZE` sampling. The readiness record
-keeps live integration, formal execution, and scientific results explicitly
-false; no execution is authorized.
+keeps formal execution and scientific results explicitly false; the smoke is
+classified as integration-readiness-only and does not authorize the formal
+campaign.
 
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.

@@ -1,0 +1,96 @@
+{
+  "format_version": "native-analyze-stability-readiness-review-v6",
+  "review_id": "native-analyze-stability-readiness-review-v6",
+  "status": "offline-harness-implemented-live-integration-tested-formal-not-authorized",
+  "review_producer_sha": "d6f5c538085bebcf7024651bfd9c9a173465d5ea",
+  "producer_binding_scope": "readiness validator and integration-smoke implementation commit d6f5c53; this readiness record is append-only and is not part of its producer tree",
+  "supersedes": {
+    "path": "experiments/native-analyze-stability-readiness-review-v5.json",
+    "semantic_digest": "60394aafe1b167a4489b8cba1dc27dd5bade49b0dcc1b7ad0a55f4bcc9384ae0",
+    "sha256": "aea81acfcd3026c24e270f6c398da02d59f9136f74af9799ef1b8180341fdd77"
+  },
+  "protocol": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+    "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"
+  },
+  "source_coverage": {
+    "system_freeze_v2": {
+      "path": "paper/system-freeze-v2.json",
+      "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+    },
+    "rq4_fixed_k_summary": {
+      "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+      "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f",
+      "sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5"
+    },
+    "time_budget_audit": {
+      "path": "experiments/rq4-time-budget-fairness-audit-v1.json",
+      "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+      "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"
+    }
+  },
+  "integration_smoke": {
+    "path": "experiments/native-analyze-stability-integration-smoke-v1/smoke-v1.json",
+    "semantic_digest": "864ea1926334f91233f1274bd93dbf739dd5e300cbcbb91d703d5da0a4df7ff9",
+    "sha256": "c65747e28b4bbba072b0f8ec54c266afacc3a3045b00c3929cdf1f01fa363eb6"
+  },
+  "implementation": {
+    "module": "src/extstats_advisor_research/native_analyze_stability_harness.py",
+    "live_smoke_module": "src/extstats_advisor_research/native_analyze_stability_smoke.py",
+    "cli": "extstats-research validate native-analyze-stability integration-smoke",
+    "controls": [
+      "explicit synthetic-only live authorization and no implicit DSN",
+      "two independent disposable stock parent databases",
+      "exactly one parent ANALYZE and no clone ANALYZE per realization",
+      "relation and statistics-object OID distinction",
+      "canonical statistics creation and observed relative order",
+      "native MCV payload presence and retained payload equality",
+      "ordinary-statistics equality within each realization",
+      "bounded EXPLAIN JSON observations with frozen floor-one q-error",
+      "append-only raw gzip and failure evidence"
+    ],
+    "historical_strata": {
+      "arecel-forest10": "historical-v1",
+      "arecel-census13": "current-v2",
+      "arecel-dmv11": "current-v2",
+      "arecel-power7": "sensitivity extension only"
+    }
+  },
+  "verification": {
+    "focused_tests": "19 passed",
+    "full_offline_suite": "516 passed, 18 skipped in 267.10s",
+    "ruff_check": "passed",
+    "targeted_format_check": "passed",
+    "dry_run_database_connections": 0,
+    "integration_smoke_validator": "valid",
+    "integration_smoke_parent_analyze_calls": 2,
+    "integration_smoke_clone_analyze_calls": 0,
+    "integration_smoke_explain_calls": 24,
+    "integration_smoke_cleanup": "complete"
+  },
+  "gates": {
+    "protocol_ready": true,
+    "source_bindings_ready": true,
+    "harness_implementation_ready": true,
+    "offline_tests_passed": true,
+    "real_postgresql_integration_tested": true,
+    "formal_execution_authorized": false,
+    "scientific_results_available": false
+  },
+  "execution_status": {
+    "formal_status": "NOT_EXECUTED",
+    "formal_invocation_count": 0,
+    "power7_sensitivity_invocation_count": 0,
+    "rq1b_w_test_accessed": false,
+    "historical_artifacts_modified": false
+  },
+  "unresolved_blockers": [
+    "The real smoke is readiness-only and does not validate the formal AreCEL source, truth, or five-realization campaign.",
+    "Formal execution remains explicitly unauthorized and requires independent review.",
+    "The two synthetic realizations are not Native ANALYZE Stability scientific results."
+  ],
+  "next_stage": "independent review before any separately authorized formal Native ANALYZE Stability execution",
+  "semantic_digest": "1a8878af9b0d4af3e43fe7c1e3b7a4e971b054d3045721691ca19e077e053fa3"
+}

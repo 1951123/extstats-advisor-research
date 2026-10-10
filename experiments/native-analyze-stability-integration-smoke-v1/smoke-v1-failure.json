@@ -1,0 +1,20 @@
+{
+  "cleanup": {
+    "status": "complete"
+  },
+  "counters": {
+    "analyze_count": 2,
+    "completed_clones": 8,
+    "completed_realizations": 2,
+    "explain_count": 24
+  },
+  "exception": {
+    "class": "StabilityError",
+    "message": "controlled wrong statistics-object/relation OID mapping"
+  },
+  "format_version": "native-analyze-stability-integration-smoke-failure-v1",
+  "invocation_id": "native-smoke-001-881a07d-failure",
+  "phase": "catalog-payload-audit",
+  "semantic_digest": "ee3d15ec2efa976c6e456bd59d4e98e3e83226518cf56e15c65e039c62b48dea",
+  "status": "failed"
+}
