@@ -1,0 +1,456 @@
+{
+  "datasets": {
+    "arecel-census13": {
+      "candidate_definition_digest": "0beb6714e53ac4d12e214e32afda82a0a32ac332877b14f25211f119f2893f09",
+      "comparability_stratum": "current-v2",
+      "dataset_id": "arecel-census13",
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435"
+        ],
+        "native-payload-size-top-k": [
+          "cand_732acc055f32ca48ff994adf",
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_1edd4a89495b1c0989812ef6",
+          "cand_2e314f97c08689b6e7ad90b8"
+        ],
+        "random-k-seed-1": [
+          "cand_9da5f299ad8d39bb6c1d87aa",
+          "cand_7a72ebac1e220c1b2cbec353",
+          "cand_4a28f778fbc449dfeede3fcd",
+          "cand_4c80e02718ed0de73de2e8a5"
+        ],
+        "random-k-seed-2": [
+          "cand_41eded1acb31e2a3075e7307",
+          "cand_2bff6409ebf3f1068adcda97",
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_7e97f5097a62763e6d4508ca"
+        ],
+        "random-k-seed-3": [
+          "cand_f50a783f33caca5a7d0b8f10",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+          "cand_907082119654b274db2849b9"
+        ],
+        "random-k-seed-4": [
+          "cand_b9510ae03f52378017bd059d",
+          "cand_dc9ef95a9408c9679784b874",
+          "cand_af2001646b1b90182083d14a",
+          "cand_df4e56f7a43cce985de58501"
+        ],
+        "random-k-seed-5": [
+          "cand_381a799a1607fdc3cd3dfea7",
+          "cand_4c80e02718ed0de73de2e8a5",
+          "cand_563a1396818ae7124888fb89",
+          "cand_622cc12086322b75d4e08073"
+        ],
+        "singleton-utility-top-k": [
+          "cand_0b505b8bacb3c643f4e4dc43",
+          "cand_1af5539c1001b3f9b2f29435",
+          "cand_65bf58e313a4b96876b72b19",
+          "cand_ba355e70a4c2c126688383df"
+        ],
+        "workload-frequency-top-k": [
+          "cand_7f9c5d6e557d3522afffc809",
+          "cand_75cf66d723f62da49cc3efa7",
+          "cand_57a44cba9481268f933571e7",
+          "cand_7dbe9e5d6af3b0470f8593fd"
+        ]
+      },
+      "source_artifact_digests": {
+        "candidate_universe": "3b9e179d2cb35f7e5f081897a5c47a9f33b6db1371faa3495a9418583f5d6d60",
+        "ground_truth": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50",
+        "native_repository": "04715cc4f797df3c4fc70eddd64df422c6985f6569e4577c21ca5957608fa172",
+        "snapshot": "123ceb5419816cad757af2c492808b38255510709ae15790daf4ec51b05831b0"
+      },
+      "source_manifest_identity": {
+        "advisor_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+        "benchmark_id": "arecel-census13",
+        "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+        "stock_postgres_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "workload_id": "arecel_census13_test_v1"
+      },
+      "source_manifest_semantic_digest": null,
+      "source_manifest_sha256": "8d707aaef1ee4514acc635edc17f7f318b2e1a49bb39e729b5e68c32e1033ea0",
+      "source_paths": {
+        "candidate_universe": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f/candidate-universe.json",
+        "ground_truth": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f/ground-truth-v1.json",
+        "manifest": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f/manifest.json",
+        "native_repository": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f/native-stats-repository",
+        "root": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f",
+        "snapshot": ".runtime/rq2-formal-v7/census13/canonical/6fab9c14bec4c26ad44ff42f/advisor-snapshot"
+      },
+      "statistics_target": 100,
+      "system_freeze_path": "paper/system-freeze-v2.json",
+      "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "truth": {
+        "cardinality_vector_digest": "4dd040ee528a77572edf2f970b1742668a98fc9b24e56dc8ebdf84182d6939f7",
+        "query_count": 10000,
+        "source_kind": "GroundTruthSource(kind='authoritative-external-exact', dbms=None, server_version=None, server_version_num=None, source_view_token=None, authority='sfu-db/AreCELearnedYet', dataset_identity='89287088327771eef7fbc26e44739f73ed840b541f887d39dab68f57dc8af6e9', source_revision='aa52da7768023270bad884232972e0b77ec6534a', source_artifact_sha256='de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d')",
+        "source_sha256": "de3870a2665bbacbc9f299535222ee64f2bf967a5757345f883cff9e1cf6d99d",
+        "truth_semantic_digest": "0d91a09a9dd9547bc0d17d952744417c509660c76113fca391572ca46532ea50"
+      },
+      "union_candidate_ids": [
+        "cand_0b505b8bacb3c643f4e4dc43",
+        "cand_1af5539c1001b3f9b2f29435",
+        "cand_1edd4a89495b1c0989812ef6",
+        "cand_2bff6409ebf3f1068adcda97",
+        "cand_2e314f97c08689b6e7ad90b8",
+        "cand_381a799a1607fdc3cd3dfea7",
+        "cand_41eded1acb31e2a3075e7307",
+        "cand_4a28f778fbc449dfeede3fcd",
+        "cand_4c80e02718ed0de73de2e8a5",
+        "cand_563a1396818ae7124888fb89",
+        "cand_57a44cba9481268f933571e7",
+        "cand_622cc12086322b75d4e08073",
+        "cand_65bf58e313a4b96876b72b19",
+        "cand_732acc055f32ca48ff994adf",
+        "cand_75cf66d723f62da49cc3efa7",
+        "cand_7a72ebac1e220c1b2cbec353",
+        "cand_7dbe9e5d6af3b0470f8593fd",
+        "cand_7e97f5097a62763e6d4508ca",
+        "cand_7f9c5d6e557d3522afffc809",
+        "cand_907082119654b274db2849b9",
+        "cand_9da5f299ad8d39bb6c1d87aa",
+        "cand_ad1dc1d2ef71fa3a5f5e1bdb",
+        "cand_af2001646b1b90182083d14a",
+        "cand_b9510ae03f52378017bd059d",
+        "cand_ba355e70a4c2c126688383df",
+        "cand_dc9ef95a9408c9679784b874",
+        "cand_df4e56f7a43cce985de58501",
+        "cand_f50a783f33caca5a7d0b8f10"
+      ],
+      "workload": {
+        "first_query_id": "arecel_census13_test_000000",
+        "last_query_id": "arecel_census13_test_009999",
+        "query_count": 10000,
+        "query_id_digest": "d4afe2a5f8a51431610bfbef360429d780b45a079a8b770106ee9116918b9bba",
+        "sql_digest": "515818001ed532d3422f8649302520961b638e2bcdf669213606b7e78d852a71",
+        "workload_id": "arecel_census13_test_v1"
+      }
+    },
+    "arecel-dmv11": {
+      "candidate_definition_digest": "c0dc098f07690140c44a92637dbc27d6b2c0991c5616629d96c8bf48f12bee4c",
+      "comparability_stratum": "current-v2",
+      "dataset_id": "arecel-dmv11",
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_3ea8776430fffecefaa78983"
+        ],
+        "native-payload-size-top-k": [
+          "cand_acf9e531983db1cd2c7e3da4",
+          "cand_1b85c6467ace3fd56f43c3c3",
+          "cand_a7d6924ed62c20dc9a788eee",
+          "cand_39ff5ea02aef5da55fce782a"
+        ],
+        "random-k-seed-1": [
+          "cand_92c3ee5c2d9f63a5173e590a",
+          "cand_1468038c0729e0c99563256c",
+          "cand_29cdcb36a5d64b8bb5bca284",
+          "cand_36b212ba376a0cacc9589af9"
+        ],
+        "random-k-seed-2": [
+          "cand_63b0438f7281938e19185a73",
+          "cand_c41b12c3e1d0549a84df8d23",
+          "cand_d63f42386de504161b5b2f9d",
+          "cand_eef9f1447e54a5874b807c19"
+        ],
+        "random-k-seed-3": [
+          "cand_8173ebfcd4fc1962c8404874",
+          "cand_83905d0c78d91e30eae5919f",
+          "cand_41a814527cb7626291ca8577",
+          "cand_3d5daa3addbbf6b3267c30f5"
+        ],
+        "random-k-seed-4": [
+          "cand_f495ee73455905ddf4da0f95",
+          "cand_83905d0c78d91e30eae5919f",
+          "cand_77c30674b97dc0c906422eed",
+          "cand_c097e6360631bc90a93dd900"
+        ],
+        "random-k-seed-5": [
+          "cand_be42b3b48f0d3177f8ce1bcf",
+          "cand_a7d6924ed62c20dc9a788eee",
+          "cand_ce642bea730d6ecc4a1e330d",
+          "cand_c07def92fa7a8c6fda1184e8"
+        ],
+        "singleton-utility-top-k": [
+          "cand_7db3fcd2a8cbbdf2c9bfe38d",
+          "cand_a321c061df418caa0b143ac4",
+          "cand_446a7fc5aba413d985b7f659",
+          "cand_025ef605b7fda01f7e5a731d"
+        ],
+        "workload-frequency-top-k": [
+          "cand_f495ee73455905ddf4da0f95",
+          "cand_b78d55db882b6bf067d91270",
+          "cand_32dd7b43105520cf3ca2c6a8",
+          "cand_3d5daa3addbbf6b3267c30f5"
+        ]
+      },
+      "source_artifact_digests": {
+        "candidate_universe": "a17b0fb88c64d44f68a89636d9e44c8f8caa4507de5897f5324d720c66bee824",
+        "ground_truth": "6402ffafbb3ab9a2bd4d8800e99ed21f1e3215126189a4cf38783796517a9af7",
+        "native_repository": "60d453d644d3af65d8f9860efc56caea8e38e457da3e67a08afc8469d02fb8e7",
+        "snapshot": "449ca8dff9b77c0394881c754ad256c94031d2b4a287aa7f6958e73987ccc75c"
+      },
+      "source_manifest_identity": {
+        "advisor_commit_sha": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+        "benchmark_id": "arecel-dmv11",
+        "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+        "stock_postgres_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "workload_id": "arecel_dmv11_test_v1"
+      },
+      "source_manifest_semantic_digest": null,
+      "source_manifest_sha256": "3470f766983bf115a538d0b282a937bb13b0adfbf2695aa532d7660a61b9affb",
+      "source_paths": {
+        "candidate_universe": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894/candidate-universe.json",
+        "ground_truth": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894/ground-truth-v1.json",
+        "manifest": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894/manifest.json",
+        "native_repository": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894/native-stats-repository",
+        "root": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894",
+        "snapshot": ".runtime/rq2-formal-v4/dmv11/canonical/8af4a1d328125d01258bb894/advisor-snapshot"
+      },
+      "statistics_target": 100,
+      "system_freeze_path": "paper/system-freeze-v2.json",
+      "system_freeze_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "truth": {
+        "cardinality_vector_digest": "7086c13bedd8b516a6b4541109440d30354899e3c07c9420798cdad42c51cbe4",
+        "query_count": 10000,
+        "source_kind": "GroundTruthSource(kind='authoritative-external-exact', dbms=None, server_version=None, server_version_num=None, source_view_token=None, authority='sfu-db/AreCELearnedYet', dataset_identity='6fc636211b53bc29993c0ffa6e6c2cd13444ce1166d7e0b2af534563f2edeef8', source_revision='aa52da7768023270bad884232972e0b77ec6534a', source_artifact_sha256='aaedaf54313926fb03efb1051ba58c86b17729cad372a69e9c6faf5b192eb37a')",
+        "source_sha256": "aaedaf54313926fb03efb1051ba58c86b17729cad372a69e9c6faf5b192eb37a",
+        "truth_semantic_digest": "6402ffafbb3ab9a2bd4d8800e99ed21f1e3215126189a4cf38783796517a9af7"
+      },
+      "union_candidate_ids": [
+        "cand_025ef605b7fda01f7e5a731d",
+        "cand_1468038c0729e0c99563256c",
+        "cand_1b85c6467ace3fd56f43c3c3",
+        "cand_29cdcb36a5d64b8bb5bca284",
+        "cand_32dd7b43105520cf3ca2c6a8",
+        "cand_36b212ba376a0cacc9589af9",
+        "cand_39ff5ea02aef5da55fce782a",
+        "cand_3d5daa3addbbf6b3267c30f5",
+        "cand_3ea8776430fffecefaa78983",
+        "cand_41a814527cb7626291ca8577",
+        "cand_446a7fc5aba413d985b7f659",
+        "cand_63b0438f7281938e19185a73",
+        "cand_77c30674b97dc0c906422eed",
+        "cand_7db3fcd2a8cbbdf2c9bfe38d",
+        "cand_8173ebfcd4fc1962c8404874",
+        "cand_83905d0c78d91e30eae5919f",
+        "cand_92c3ee5c2d9f63a5173e590a",
+        "cand_a321c061df418caa0b143ac4",
+        "cand_a7d6924ed62c20dc9a788eee",
+        "cand_acf9e531983db1cd2c7e3da4",
+        "cand_b78d55db882b6bf067d91270",
+        "cand_be42b3b48f0d3177f8ce1bcf",
+        "cand_c07def92fa7a8c6fda1184e8",
+        "cand_c097e6360631bc90a93dd900",
+        "cand_c41b12c3e1d0549a84df8d23",
+        "cand_ce642bea730d6ecc4a1e330d",
+        "cand_d63f42386de504161b5b2f9d",
+        "cand_eef9f1447e54a5874b807c19",
+        "cand_f495ee73455905ddf4da0f95"
+      ],
+      "workload": {
+        "first_query_id": "arecel_dmv11_test_000000",
+        "last_query_id": "arecel_dmv11_test_009999",
+        "query_count": 10000,
+        "query_id_digest": "b1f578ce154ddb6750df89311739b353901829a776195c50bfd2b8886316eef1",
+        "sql_digest": "beab29dc0471664a4abaf6615df685ed2cd3d26ad67980ad5aa157ff2454966c",
+        "workload_id": "arecel_dmv11_test_v1"
+      }
+    },
+    "arecel-forest10": {
+      "candidate_definition_digest": "ebf81f2ae67df6bbe23a889a57d6a1612c43bdbc7d84aa3e297cbd79d87c2dc7",
+      "comparability_stratum": "historical-v1",
+      "dataset_id": "arecel-forest10",
+      "method_memberships": {
+        "greedy-ADD": [
+          "cand_1537a6ae8ef67c379c8d0fa0",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "native-payload-size-top-k": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69"
+        ],
+        "random-k-seed-1": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_8b7a8e0422ed4ae2befb1bc8",
+          "cand_d94eec73746ef01a6811815f",
+          "cand_c7595f3b6addcec1b9919cbe"
+        ],
+        "random-k-seed-2": [
+          "cand_4de3778bb8674287b6dd5b29",
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_c7595f3b6addcec1b9919cbe",
+          "cand_71249b442b7dc4205d74a4b9"
+        ],
+        "random-k-seed-3": [
+          "cand_5ba9cc937a696a76876f820d",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_478f6c4acd54af28ee697d8d"
+        ],
+        "random-k-seed-4": [
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_6b7c22215c39c807cda3872e",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_eaa4ce0396b4cc5c68b2550e"
+        ],
+        "random-k-seed-5": [
+          "cand_12b552d6e4274b3e7916918d",
+          "cand_04524e4170fda10f288de2ad",
+          "cand_4293ec8c30a7314cb8ef5dbf",
+          "cand_51488597ac9ebd3cb59d2ff1"
+        ],
+        "singleton-utility-top-k": [
+          "cand_76679921292e8c769dbbd7bc",
+          "cand_0deae0d5de82a5a1fdc34111",
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_5ba9cc937a696a76876f820d"
+        ],
+        "workload-frequency-top-k": [
+          "cand_77c3e92fff291d4d9515dc69",
+          "cand_da7591327792c9bc98b427d7",
+          "cand_4af628931e0d02eb50415f2b",
+          "cand_ea8b2557e86251bb3994535b"
+        ]
+      },
+      "source_artifact_digests": {
+        "candidate_universe": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+        "ground_truth": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
+        "native_repository": "81dcedea77461d1310b4b2fb430ac3564b2b29de3526266d676d936efcb23afc",
+        "snapshot": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a"
+      },
+      "source_manifest_identity": {
+        "advisor_commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+        "benchmark_id": "arecel-forest10",
+        "patched_postgres_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+        "stock_binding_origin": "paper/system-freeze-v1.json",
+        "stock_postgres_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+        "workload_id": "arecel_forest10_test_v1"
+      },
+      "source_manifest_semantic_digest": null,
+      "source_manifest_sha256": "dc3173472028c17789c24c60936971b9a4940bcd164d079b58a6f63db0075767",
+      "source_paths": {
+        "candidate_universe": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+        "ground_truth": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/ground-truth-v1.json",
+        "manifest": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/manifest.json",
+        "native_repository": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/native-stats-repository",
+        "root": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c",
+        "snapshot": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot"
+      },
+      "statistics_target": 100,
+      "system_freeze_path": "paper/system-freeze-v1.json",
+      "system_freeze_semantic_digest": "02f3742f07e81fe144a43d86d98f833d5de5cda95d839c31cd59a59557f68ad7",
+      "truth": {
+        "cardinality_vector_digest": "78fd6d2cf3d35671395844b8eb30e59baf3d81466e1b1474d87c95478802f14d",
+        "query_count": 10000,
+        "source_kind": "GroundTruthSource(kind='authoritative-external-exact', dbms=None, server_version=None, server_version_num=None, source_view_token=None, authority='sfu-db/AreCELearnedYet', dataset_identity='fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556', source_revision='aa52da7768023270bad884232972e0b77ec6534a', source_artifact_sha256='88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744')",
+        "source_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+        "truth_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be"
+      },
+      "union_candidate_ids": [
+        "cand_04524e4170fda10f288de2ad",
+        "cand_0deae0d5de82a5a1fdc34111",
+        "cand_12b552d6e4274b3e7916918d",
+        "cand_1537a6ae8ef67c379c8d0fa0",
+        "cand_4293ec8c30a7314cb8ef5dbf",
+        "cand_478f6c4acd54af28ee697d8d",
+        "cand_4af628931e0d02eb50415f2b",
+        "cand_4de3778bb8674287b6dd5b29",
+        "cand_51488597ac9ebd3cb59d2ff1",
+        "cand_5ba9cc937a696a76876f820d",
+        "cand_6b7c22215c39c807cda3872e",
+        "cand_71249b442b7dc4205d74a4b9",
+        "cand_76679921292e8c769dbbd7bc",
+        "cand_77c3e92fff291d4d9515dc69",
+        "cand_8b7a8e0422ed4ae2befb1bc8",
+        "cand_c7595f3b6addcec1b9919cbe",
+        "cand_d94eec73746ef01a6811815f",
+        "cand_da7591327792c9bc98b427d7",
+        "cand_ea8b2557e86251bb3994535b",
+        "cand_eaa4ce0396b4cc5c68b2550e"
+      ],
+      "workload": {
+        "first_query_id": "arecel_forest10_test_000000",
+        "last_query_id": "arecel_forest10_test_009999",
+        "query_count": 10000,
+        "query_id_digest": "e2406713ccb800863a4b9765f2dcce4a6c8bbe221a5315569a633b45fc46673e",
+        "sql_digest": "3c7b6e377ad8d6fbe0e63207a8c099b4015801492bfcbc27d91ce07df140b44d",
+        "workload_id": "arecel_forest10_test_v1"
+      }
+    }
+  },
+  "formal_scope": {
+    "clone_analyze_calls": 0,
+    "datasets": [
+      "arecel-forest10",
+      "arecel-census13",
+      "arecel-dmv11"
+    ],
+    "methods_per_realization": 9,
+    "parent_analyze_calls": 15,
+    "physical_explain_calls": 1350000,
+    "power7_included": false,
+    "queries_per_method": 10000,
+    "realizations_per_dataset": 5,
+    "rq1b_w_test_accessed": false
+  },
+  "format_version": "native-analyze-stability-formal-preflight-v1",
+  "invocation_id": "nas-formal-20261010",
+  "preflight_id": "nas-formal-20261010-preflight-v1",
+  "producer_sha": "36dba33343dc497dd321470dd6262035f546801c",
+  "protocol": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+    "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"
+  },
+  "semantic_digest": "6cb8ff772fdb0313a7b55f4f7e2fe3bbb08efd4f3bf33427a73ec55377d598fc",
+  "source_verification": {
+    "historical_artifacts_unchanged": true,
+    "membership_reselection": false,
+    "method_roster": [
+      "random-k-seed-1",
+      "random-k-seed-2",
+      "random-k-seed-3",
+      "random-k-seed-4",
+      "random-k-seed-5",
+      "workload-frequency-top-k",
+      "native-payload-size-top-k",
+      "singleton-utility-top-k",
+      "greedy-ADD"
+    ],
+    "truth_policy": "authoritative valid fixed-k truth imported from frozen source bundle",
+    "union_order": "lexicographic candidate_id order"
+  },
+  "status": "passed-before-formal-sql",
+  "system_freeze": {
+    "stock_postgresql": {
+      "commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "postgres_version": "16.14",
+      "repository": "1951123/postgresql-src",
+      "required_build_contract": {
+        "compiler_policy": {
+          "CC": "cc",
+          "CFLAGS": ""
+        },
+        "configure_features": [
+          "--with-icu",
+          "--with-libxml",
+          "--with-libxslt",
+          "--with-ssl=openssl"
+        ],
+        "encoding": "UTF8",
+        "locale": "C.utf8"
+      }
+    },
+    "v2_path": "paper/system-freeze-v2.json",
+    "v2_semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48"
+  }
+}
