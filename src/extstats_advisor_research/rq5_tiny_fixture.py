@@ -136,7 +136,12 @@ def fixture_workload(workload_query_type: Any) -> Any:
     return queries
 
 
-def build_snapshot(*, catalog: str | None = None, fixture_id: str = FIXTURE_ID) -> Any:
+def build_snapshot(
+    *,
+    catalog: str | None = None,
+    fixture_id: str = FIXTURE_ID,
+    text_native_collation: str | None = None,
+) -> Any:
     """Construct the deterministic sealed-snapshot model without filesystem I/O."""
 
     (
@@ -155,9 +160,9 @@ def build_snapshot(*, catalog: str | None = None, fixture_id: str = FIXTURE_ID) 
         RelationName(TABLE_NAME, schema="public", catalog=catalog),
         (
             ColumnSchema("id", 1, "int32", False, "integer"),
-            ColumnSchema("region", 2, "string", False, "text"),
-            ColumnSchema("tier", 3, "string", False, "text"),
-            ColumnSchema("segment", 4, "string", False, "text"),
+            ColumnSchema("region", 2, "string", False, "text", text_native_collation),
+            ColumnSchema("tier", 3, "string", False, "text", text_native_collation),
+            ColumnSchema("segment", 4, "string", False, "text", text_native_collation),
         ),
     )
     workload = Workload(
@@ -241,6 +246,7 @@ def build_manifest(
     workload: dict[str, Any],
     fixture_id: str = FIXTURE_ID,
     relation_catalog: str | None = None,
+    text_native_collation: str | None = None,
 ) -> dict[str, Any]:
     candidate_ids = [item["candidate_id"] for item in candidate_definitions]
     queries = [
@@ -326,6 +332,7 @@ def generate_fixture(
     producer_commit_sha: str | None = None,
     fixture_id: str = FIXTURE_ID,
     relation_catalog: str | None = None,
+    text_native_collation: str | None = None,
 ) -> dict[str, Any]:
     """Generate all fixture files once; refuse to overwrite any existing root."""
 
@@ -352,7 +359,11 @@ def generate_fixture(
         _validate_snapshot,
         write_snapshot,
     ) = _advisor_imports(advisor_root)
-    snapshot = build_snapshot(catalog=relation_catalog, fixture_id=fixture_id)
+    snapshot = build_snapshot(
+        catalog=relation_catalog,
+        fixture_id=fixture_id,
+        text_native_collation=text_native_collation,
+    )
     snapshot_dir = destination / "snapshot"
     snapshot_digest = write_snapshot(snapshot, snapshot_dir)
     sealed = _load_snapshot(snapshot_dir)
@@ -497,6 +508,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--producer-sha")
     parser.add_argument("--fixture-id", default=FIXTURE_ID)
     parser.add_argument("--relation-catalog")
+    parser.add_argument("--text-native-collation")
     args = parser.parse_args(argv)
     if args.command == "generate":
         result = generate_fixture(
@@ -505,6 +517,7 @@ def main(argv: list[str] | None = None) -> int:
             producer_commit_sha=args.producer_sha,
             fixture_id=args.fixture_id,
             relation_catalog=args.relation_catalog,
+            text_native_collation=args.text_native_collation,
         )
     else:
         result = validate_fixture(args.output)

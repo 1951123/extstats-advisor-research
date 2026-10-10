@@ -1,0 +1,11 @@
+{
+  "relation_oid": 16444,
+  "server": {
+    "database": "rq5_tiny_stock_template",
+    "role": "wqts",
+    "server_version": "16.14",
+    "server_version_num": 160014,
+    "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "source_database": "rq5_tiny_stock_template"
+}

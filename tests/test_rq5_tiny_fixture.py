@@ -63,6 +63,21 @@ def test_tiny_fixture_can_bind_catalog_for_patched_sandbox(tmp_path: Path) -> No
     assert manifest["dataset"]["relation"]["catalog"] == "rq5_tiny_patched_template"
 
 
+def test_tiny_fixture_can_preserve_postgresql_default_collation(tmp_path: Path) -> None:
+    root = tmp_path / "fixture"
+    generate_fixture(
+        root,
+        producer_commit_sha="1f41f9f14d2a0121c389461942e3a293305513df",
+        text_native_collation="pg_catalog.default",
+    )
+    snapshot = load_snapshot(root / "snapshot")
+    assert {
+        column.native_collation
+        for column in snapshot.schemas[0].columns
+        if column.native_type == "text"
+    } == {"pg_catalog.default"}
+
+
 def test_tiny_fixture_has_distinct_ordered_configurations(tmp_path: Path) -> None:
     root = tmp_path / "fixture"
     generate_fixture(
