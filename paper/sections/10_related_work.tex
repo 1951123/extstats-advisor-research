@@ -10,14 +10,15 @@ deployment artifact is explicitly a stock PostgreSQL recommendation.
 
 DB2 LEO closes a feedback loop around optimizer mistakes and learned
 information \cite{Stillger2001LEO}. Query-feedback dependency detection is a
-nearby line of work, but the exact primary citation and the comparison protocol
-must be pinned before submission \cite{QueryFeedbackDependency}. The present
+nearby line of work: Haas et al. rank attribute dependencies from sparse query
+feedback to guide statistics configuration
+\cite{Haas2007AttributeDependencies}. The present
 study instead freezes an offline workload snapshot and evaluates native
 statistics designs without adding an online feedback estimator.
 
 PostgreSQL's extended-statistics documentation describes the native catalog
 objects, MCV lists, and functional dependencies that motivate this work
-\cite{PostgreSQL16Docs,PostgreSQL18Catalog}. HypoPG demonstrates a practical
+\cite{PostgreSQL16Docs,PostgreSQL16Catalog}. HypoPG demonstrates a practical
 PostgreSQL what-if mechanism for hypothetical indexes \cite{HypoPG}; our
 patched substrate targets statistics payloads and planner selectivity paths,
 not indexes. EDB Query Advisor provides a software precedent for PostgreSQL

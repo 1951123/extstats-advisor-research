@@ -9,7 +9,7 @@ and extract audited workloads. Each run keeps the \texttt{AdvisorSnapshot}
 separate from its bound \texttt{GroundTruthSet}. The latter is an independent
 utility input, not a snapshot field and not an input to native statistics
 construction. The benchmark data root is selected through
-\texttt{EXTSTATS\_RESEARCH\_DATA\_ROOT}, so an absolute local path is not part
+\texttt{EXTSTATS\_\allowbreak{}RESEARCH\_\allowbreak{}DATA\_\allowbreak{}ROOT}, so an absolute local path is not part
 of semantic run identity.
 
 Every canonical RunManifest records the research repository and committed
@@ -39,17 +39,16 @@ replayability.
 \subsection{Truth acquisition and binding}
 
 The current \texttt{GroundTruthSet} contract has two source kinds. The
-confirmatory AreCEL policy uses \texttt{authoritative-external-exact} for
-Census13, Forest10, Power7, and DMV11. For
-\texttt{production-exact-execution}, capture and eligible truth acquisition
+confirmatory AreCEL policy uses audited external exact labels for Census13,
+Forest10, Power7, and DMV11. For the production-exact source kind, capture and eligible truth acquisition
 run in a read-only repeatable-read source view. The v1 wrapper counts only
 sealed \texttt{postgresql-simple-selection-v2} queries: one base relation,
 supported AND predicates, and row-preserving direct-column/star projection.
 Distinct, grouping, aggregates, windows, LIMIT/OFFSET, ORDER BY, locking,
 arbitrary projection expressions, and unresolved parameters fail closed before
 count execution. Exact count collection can be expensive on large relations;
-read-only is not zero cost. For \texttt{authoritative-external-exact}, immutable
-labels are imported and validated against the sealed snapshot semantic digest,
+read-only is not zero cost. For the external-label source kind, immutable labels
+are imported and validated against the sealed snapshot semantic digest,
 workload ID, positive-weight query coverage, and source artifact SHA-256. The
 advisor does not claim to have executed those labels. All four AreCEL datasets
 use this external source kind and bind the AreCELearnedYet base:test workload

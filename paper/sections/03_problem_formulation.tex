@@ -8,8 +8,11 @@ validated \texttt{GroundTruthSet} $G$ binds to the snapshot semantic digest and
 workload ID and is consumed by a replaceable \texttt{GroundTruthProvider}.
 Thus the system has two inputs to utility evaluation,
 \[
+\begin{aligned}
   \texttt{AdvisorSnapshot} + \texttt{GroundTruthSet}
-  \longrightarrow \text{planner estimates} \longrightarrow \text{utility}.
+    &\longrightarrow \text{planner estimates}\\
+    &\longrightarrow \text{utility}.
+\end{aligned}
 \]
 The fixed sample $S$ is materialized independently of $G$ and is not a source
 of query truth. For a query $q$ with a truth record, write its non-negative
@@ -73,11 +76,11 @@ The accepted greedy move order is evidence about search, not deployment order.
 
 The distinction between membership and deployment order matters when physical
 objects are interleaved with externally managed statistics. If the advisor
-recommends $[A,B,C]$, a production catalog containing
-$[\text{existing\_X},A,\text{existing\_Y},B,C]$ is valid as long as the
-advisor-managed objects preserve $\operatorname{OID}(A)<
-\operatorname{OID}(B)<\operatorname{OID}(C)$. The advisor does not require
-the complete production extstats set to equal the recommendation.
+recommends $[A,B,C]$, a catalog may contain other objects between them as long
+as the advisor-managed objects preserve
+$\operatorname{OID}(A)<\operatorname{OID}(B)<\operatorname{OID}(C)$. The advisor
+does not require the complete production extstats set to equal the
+recommendation.
 
 The objective is consequently scoped. The optimizer evaluated $M^*$, not
 necessarily $E_{\mathrm{existing}}\cup M^*$. When externally managed

@@ -1,0 +1,45 @@
+{
+  "format_version": "submission-readiness-review-v1",
+  "review_id": "extstats-advisor-vldb-claims-review-20261010",
+  "review_producer_sha": "e35caa04a9ecb0f1268c27379587f3a37594cb2d",
+  "target": {
+    "venue": "PVLDB Volume 20 / VLDB 2027 Research Track",
+    "official_submission_guidelines": "https://vldb.org/2027/submission-guidelines.html",
+    "verified_date": "2026-10-10",
+    "regular_or_eab_decision": "manual-author-decision-required"
+  },
+  "paper_build": {
+    "source": "paper/main.tex",
+    "pdf": "paper/main.pdf",
+    "total_pages": 13,
+    "body_pages_excluding_references": 12,
+    "reference_start_page": 13,
+    "reference_pages": 1,
+    "limit_pages_excluding_references": 12,
+    "paper_size": "US letter",
+    "template_revision": "vldbproceedings/VLDB-Template@39c95f5c6fcbe652a83be24e4eff8f2134cd3fbc",
+    "fonts_embedded": true
+  },
+  "checks": [
+    {"id": "claims-scope", "status": "pass", "evidence": "paper/scientific-claims-audit-v1.json"},
+    {"id": "body-page-limit", "status": "pass", "evidence": "12 body pages; page 13 is references"},
+    {"id": "template-binding", "status": "pass", "evidence": "paper/TEMPLATE_REVISION; paper/README.md"},
+    {"id": "cross-references", "status": "pass", "evidence": "latex build has no undefined references"},
+    {"id": "citation-placeholder", "status": "pass-after-edit", "evidence": "Haas2007AttributeDependencies and PostgreSQL16Catalog"},
+    {"id": "single-blind-author-metadata", "status": "blocking", "evidence": "paper/main.tex still uses Anonymous Authors/Under review"},
+    {"id": "submission-metadata", "status": "blocking", "evidence": "paper/main.tex still uses XX.XX/XXX.XX and XXX--XXX"},
+    {"id": "layout-overflows", "status": "qualified", "evidence": "existing overfull hbox/vbox warnings remain in main.log"},
+    {"id": "artifact-permanence", "status": "qualified", "evidence": "GitHub repository URL is present, but final public archival package and reuse instructions require author confirmation"},
+    {"id": "scientific-completeness", "status": "qualified", "evidence": "RQ4 stability is post-hoc qualified; RQ5 remains partial; no missing result is hidden"},
+    {"id": "related-work-audit", "status": "qualified", "evidence": "primary query-feedback citation corrected; final author review of coverage remains needed"}
+  ],
+  "overall_status": "not-submission-ready",
+  "blocking_reasons": [
+    "Replace anonymous author and affiliation placeholders for PVLDB's single-blind submission.",
+    "Replace placeholder DOI and page metadata with submission-cycle metadata.",
+    "Resolve overfull boxes and perform final visual/layout review under the submission template.",
+    "Confirm a permanent public reproducibility package and complete reuse instructions, especially if submitting as EA&B."
+  ],
+  "scientific_review_boundary": "No new PostgreSQL, Advisor, ANALYZE, EXPLAIN, COUNT, or workload execution was performed.",
+  "semantic_digest": "4e61882080431bbd8716483835ee98d78754bad60b5c6ff39a571d76c8d22f79"
+}

@@ -66,3 +66,19 @@ extended statistics are outside advisor ownership.  The advisor does not model,
 reconcile, drop, rename, or replace those objects.  A recommendation describes
 the selected membership and required relative ordering of advisor-managed
 objects; it is not a claim that a production catalog must equal that set.
+
+## Submission reproducibility checklist
+
+The current paper-facing evidence map is
+`paper/evidence-to-manuscript-v2.json`; the claims audit, submission checklist,
+and ranked follow-up backlog are `paper/scientific-claims-audit-v1.json`,
+`paper/submission-readiness-review-v1.json`, and
+`paper/research-backlog-v1.json`. Before submission, archive the exact research
+commit and these source/artifact trees in a permanent public repository, and
+provide instructions for obtaining any benchmark inputs that cannot be
+redistributed. A GitHub URL in the LaTeX source is not by itself a guarantee
+that the full raw bundles, dependencies, and data-source instructions are
+permanent or sufficient for artifact evaluation. The reproducibility package
+should document the clean-tree requirement, frozen Advisor/PostgreSQL commits,
+Python/LaTeX environment, offline validators, and the distinction between
+formal runs, post-hoc analyses, and integration-only evidence.

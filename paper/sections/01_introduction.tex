@@ -62,10 +62,9 @@ The five research questions are: RQ1, effectiveness; RQ2, sample-to-full-data
 transfer; RQ3, hypothetical-mechanism fidelity under controlled equivalent
 physical realizations; RQ4, advisor necessity through search ablations; and
 RQ5, practicality. Exact truth is a separate evaluation input. Current source
-contracts admit either \texttt{production-exact-execution}, collected through a
-restricted read-only repeatable-read source view, or
-\texttt{authoritative-external-exact}, imported with provenance and binding
-validation. The confirmatory AreCEL policy selects the latter source kind for
+contracts admit either a production-exact source collected through a restricted
+read-only repeatable-read source view, or authoritative external labels
+imported with provenance and binding validation. The confirmatory AreCEL policy selects the latter source kind for
 all four datasets; Census13 has a one-time 10,000-query equivalence audit
 against an existing production-exact canary, while future canonical runs do
 not repeat that expensive collection. Production exact execution remains an
@@ -80,7 +79,8 @@ objects remain, are removed, are replaced, or coexist. Historical RQ1a outputs
 remain preliminary where their evidence status says so; the matched RQ1a
 campaign, four RQ1b children, RQ2 transfer campaign, and RQ3 fidelity checks
 are reported only within their declared scopes. RQ4 and RQ5 remain qualified
-because their fixed-budget/stability and end-to-end cost gaps are explicit.
+because the fixed-budget study was cancelled, Native \texttt{ANALYZE} stability
+is qualified post-hoc evidence, and end-to-end cost gaps remain explicit.
 The v2 readiness review does not retroactively reassign historical artifacts
 to a new freeze.
 

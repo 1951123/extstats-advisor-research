@@ -1,9 +1,11 @@
 \section{Results}
 
 This section reports the validated evidence currently available for RQ1--RQ5.
-The evidence-to-claim ledger is recorded in
-\texttt{paper/evidence-to-manuscript-v1.json}; it distinguishes confirmatory
-results, qualified causal comparisons, and experiments that remain missing.
+The current evidence-to-claim mapping is recorded in
+\texttt{paper/evidence-to-manuscript-v2.json}; its predecessor remains an
+immutable historical mapping. The mapping distinguishes confirmatory results,
+qualified causal comparisons, post-hoc analyses, and experiments that remain
+missing.
 Numbers below are derived from the committed summary artifacts and retain the
 system-freeze and workload provenance of those artifacts.
 
@@ -243,7 +245,7 @@ stock DDL, native \texttt{ANALYZE}, catalog bytes, and planner-time change.
 The four-dataset median sealed snapshot sizes are 3.56--5.69 MiB;
 static DDL is approximately 0.0023--0.0027 seconds, whereas relation-level
 \texttt{ANALYZE} is 0.274--0.391 seconds. The trace inventory also measures
-authoritative external truth import (approximately 0.14--0.16 seconds),
+external truth import (0.14--0.16 seconds),
 singleton profiling, search, and full-workload planning stages. Logical and
 physical storage are not additive, and the physical allocation values are
 page-granular rather than exact per-object attribution. Production-exact
@@ -253,12 +255,13 @@ treated as zero operational overhead.
 
 \subsection{Evidence status and remaining studies}
 
-The results above distinguish validated evidence from bounded or incomplete
-studies. RQ1a, RQ1b, RQ2a/RQ2b, and the two RQ3 fidelity checks have validated
+The results above distinguish validated from bounded or incomplete evidence.
+RQ1a, RQ1b, RQ2a/RQ2b, and the two RQ3 fidelity checks have validated
 four-dataset or registered-fixture evidence. RQ4 is complete only for the
 reported fixed-$k$ and $K_s$ dataset-scope studies: the historical
-fixed-evaluation-budget comparison is cancelled with no results, while native
-\texttt{ANALYZE} stability is preregistered but not executed.
+fixed-evaluation-budget comparison is cancelled with no results, while Native
+\texttt{ANALYZE} stability remains a failed/ineligible v1 campaign with a
+qualified descriptive v2 post-hoc analysis.
 RQ5 is a qualified partial practicality account: the measured stages are
 reported above, while production-exact truth timing, refresh quality trends,
 and a canonical end-to-end cost remain open. Historical pilot outputs remain

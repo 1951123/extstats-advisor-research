@@ -1,0 +1,71 @@
+{
+  "format_version": "research-backlog-v1",
+  "backlog_id": "extstats-advisor-submission-followups-20261010",
+  "producer_sha": "e35caa04a9ecb0f1268c27379587f3a37594cb2d",
+  "items": [
+    {
+      "rank": 1,
+      "item": "Permanent reproducibility package and end-to-end rerun instructions",
+      "hypothesis_or_goal": "A reviewer can follow each paper claim to public derived and raw artifacts and reproduce the declared offline analyses.",
+      "strengthens": "all empirical claims and PVLDB artifact evaluation",
+      "missing_evidence": "public permanence and environment/data acquisition instructions are not verified by the local checkout",
+      "new_execution": false,
+      "estimated_cost": "low-to-medium",
+      "priority": "submission-required"
+    },
+    {
+      "rank": 2,
+      "item": "Prospective Native ANALYZE stability study with direct NULL-state capture",
+      "hypothesis_or_goal": "Independent native realizations preserve or change method rankings under a prospectively eligible payload contract.",
+      "strengthens": "RQ4b physical ranking-stability interpretation",
+      "missing_evidence": "v1 captured six empty dependency payloads without an independent SQL-NULL marker",
+      "new_execution": true,
+      "estimated_cost": "high",
+      "priority": "optional-before-submission; high scientific value"
+    },
+    {
+      "rank": 3,
+      "item": "Production-exact truth acquisition and refresh-quality measurements",
+      "hypothesis_or_goal": "The operational costs and maintenance implications of truth acquisition and refresh can be bounded in the intended deployment path.",
+      "strengthens": "RQ5 practicality claims",
+      "missing_evidence": "production-exact truth timing, refresh cost, and refresh quality trend",
+      "new_execution": true,
+      "estimated_cost": "high and environment-dependent",
+      "priority": "optional; required only for stronger end-to-end cost claims"
+    },
+    {
+      "rank": 4,
+      "item": "Resource-normalized search comparison",
+      "hypothesis_or_goal": "Greedy ADD's quality benefit persists under a common measured resource vector rather than a configuration-count cap.",
+      "strengthens": "RQ4 efficiency claims",
+      "missing_evidence": "current 300-second deadline is search-stage only and configuration evaluations are not uniform planner work",
+      "new_execution": true,
+      "estimated_cost": "high",
+      "priority": "optional; the cancelled 2,000-evaluation design is not recommended"
+    },
+    {
+      "rank": 5,
+      "item": "Runtime-plan or execution-latency impact study",
+      "hypothesis_or_goal": "Lower cardinality-estimation q-error translates into improved selected-plan quality or query execution time under controlled workloads.",
+      "strengthens": "external validity beyond planner estimates",
+      "missing_evidence": "current evidence measures EXPLAIN estimates and q-error, not execution latency",
+      "new_execution": true,
+      "estimated_cost": "high",
+      "priority": "optional; do not imply this claim in the current paper"
+    },
+    {
+      "rank": 6,
+      "item": "Joins, multi-table workloads, and additional workload generators",
+      "hypothesis_or_goal": "The snapshot, hypothetical payload, and recommendation workflow extends beyond the audited single-table simple-selection lineage.",
+      "strengthens": "scope and generalization claims",
+      "missing_evidence": "current benchmark and truth contract are primarily single-table and simple-selection",
+      "new_execution": true,
+      "estimated_cost": "very high",
+      "priority": "future work"
+    }
+  ],
+  "explicitly_not_recommended": [
+    "Do not resurrect the historical fixed-evaluation-budget experiment solely as a 2,000-configuration cap; its fairness audit found that cap non-identifying without a shared resource model."
+  ],
+  "semantic_digest": "170ec9628399cff0f90191d70e55aef85c77480ac463415230da23b18139b835"
+}

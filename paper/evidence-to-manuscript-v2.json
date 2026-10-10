@@ -1,0 +1,132 @@
+{
+  "format_version": "evidence-to-manuscript-v2",
+  "review_scope": "current offline evidence-to-manuscript mapping after the Native ANALYZE Stability v2 post-hoc review",
+  "review_producer_sha": "e35caa04a9ecb0f1268c27379587f3a37594cb2d",
+  "historical_mapping": {
+    "path": "paper/evidence-to-manuscript-v1.json",
+    "preserved": true
+  },
+  "entries": [
+    {
+      "experiment_id": "rq1-confirmatory-matched-baselines",
+      "rq": "RQ1a",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "source": "experiments/rq1-cross-dataset-summary-v2.json",
+      "source_semantic_digest": "84ce7a91fc94ad137f1b8dfd901429d41e3ab89a84c1cece30901233f42da90c",
+      "admissible_claims": ["in-workload three-arm q-error comparison"],
+      "limitations": ["not held-out generalization", "historical baseline caveats remain dataset-specific"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq1-cross-dataset-summary",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "rq1-held-out-workload-generalization",
+      "rq": "RQ1b",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "source": "experiments/rq1-workload-generalization-cross-dataset-v1.json",
+      "source_semantic_digest": "92faabbd6703f79e3a5c6ad5ef13904ea01d388f095f21583557be3591893473",
+      "admissible_claims": ["same-generator-contract held-out q-error", "secondary exact-query strict-unseen diagnostic"],
+      "limitations": ["not workload drift or distribution shift", "strict-unseen removes exact-query overlap only", "candidate-ID overlap is identifier-level"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq1b-held-out-generalization",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "rq2-confirmatory-transfer",
+      "rq": "RQ2a/RQ2b",
+      "status": "confirmatory-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "source": "experiments/rq2-cross-dataset-transfer-summary-v1.json",
+      "source_semantic_digest": "dbf6fe6f734039e6de7040406d24aa05baec4b81d1fec1ecc5280b8998a5dfc7",
+      "admissible_claims": ["P0/P1/P2 full-data transfer", "descriptive sample/full utility relationship"],
+      "limitations": ["one native full-data realization per child", "sample improvement does not guarantee full-data improvement", "Spearman values are descriptive"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq2-sample-full-transfer",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "rq3-mechanism-fidelity",
+      "rq": "RQ3",
+      "status": "confirmatory-validated-scoped",
+      "coverage": ["MCV-only", "dependencies-only", "MCV-plus-dependencies"],
+      "sources": [
+        {"path": "experiments/rq3/rq3-primary-mechanism-fidelity-v1.json", "semantic_digest": "e3304129a7bf1155825b073e15dd71702b369b53a391d94fd9aedd43c9fdd6c6"},
+        {"path": "experiments/rq3/rq3-secondary-build-sanity-v1.json", "semantic_digest": "2678bb4e4bf676739b51a03272d0be02350461acb52766d1618187333e4304e2"}
+      ],
+      "admissible_claims": ["9/9 exact Plan Rows in each registered comparison"],
+      "limitations": ["registered synthetic fixture and clause forms only", "not arbitrary SQL, data, statistic kinds, or PostgreSQL versions"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq3-fidelity",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "rq4-fixed-k-and-screening-width",
+      "rq": "RQ4a/RQ4b",
+      "status": "qualified-validated-dataset-scope",
+      "coverage": ["Census13", "Forest10 historical-v1", "Power7", "DMV11"],
+      "sources": [
+        {"path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json", "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f"},
+        {"path": "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json", "semantic_digest": "3985c2b17b1af48a8aa9142e1e6cbd376215b1d458e7843a44960e34d6b6f3ed"},
+        {"path": "experiments/rq4-time-budget-fairness-audit-v1.json", "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488"}
+      ],
+      "admissible_claims": ["descriptive fixed-k method comparison", "validated K_s quality/cost points with censoring labels"],
+      "limitations": ["Greedy is not universally best", "Census13 and DMV11 Greedy/all points are budget-censored incumbents", "300 seconds is not an end-to-end common-cost budget", "Forest10 uses historical v1"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq4-fixed-k; tab:rq4-ks-sensitivity",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+      "rq": "ordering ablation",
+      "status": "qualified-validated",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "source": "experiments/oid-order-sensitivity-v1/reviews/oid-order-sensitivity-evidence-review-v1.json",
+      "source_semantic_digest": "8f318f6a90103edab1e9abcb3b6a8826e0d1fcd615262be0c4dd713161a66521",
+      "admissible_claims": ["fixed-membership hypothetical order changes estimates", "reference order is favorable within seven declared treatments"],
+      "limitations": ["physical non-reference arms are confounded by native payload and ordinary-statistics drift", "not global ordering optimality or runtime improvement"],
+      "manuscript": "paper/sections/08_results.tex; tab:oid-order-sensitivity",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "native-analyze-stability-v1-v2",
+      "rq": "RQ4b stability",
+      "status": "posthoc-qualified",
+      "coverage": ["Forest10", "Census13", "DMV11"],
+      "sources": [
+        {"path": "paper/native-analyze-stability-protocol-v1.json", "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47"},
+        {"path": "experiments/native-analyze-stability-v1/formal-campaign-validation-failure-v1.json", "semantic_digest": "9bf2492028099ddf3d2c3713d9a1491ab6bcd03b234743f0fdcdf3f97c6dc1af"},
+        {"path": "paper/native-analyze-stability-protocol-v2.json", "semantic_digest": "e5190c93f2db46d8370c2c6f40805afd8774126315e32f0f08e30bb7d7f1c142"},
+        {"path": "experiments/native-analyze-stability-v1/native-analyze-stability-posthoc-analysis-v2.json", "semantic_digest": "78795abafe16a2af4dd335bbaec442f9cf7dc30070174d83a73029e092016240"}
+      ],
+      "admissible_claims": ["qualified descriptive combined realization variability", "no winner reversal across the recorded five-realization strata"],
+      "limitations": ["v1 failed/ineligible with evidence preserved", "six dependency payloads are native-null-supported, not verified NULL", "ordinary and extended-statistics drift are not causally separated", "five realizations are descriptive only"],
+      "manuscript": "paper/sections/08_results.tex; tab:native-analyze-stability-v2",
+      "new_execution_required": false
+    },
+    {
+      "experiment_id": "rq5-cost-accounting",
+      "rq": "RQ5",
+      "status": "qualified-partial",
+      "coverage": ["Census13", "Forest10", "Power7", "DMV11"],
+      "source": "experiments/rq5-existing-trace-cost-inventory-v3.json",
+      "source_semantic_digest": "fc879128d2327e4bab8623b6e2ff2f820354d14093e6187c0d00ef2e552a39d2",
+      "admissible_claims": ["stage-specific snapshot, deployment, planning, search, and external-label import costs"],
+      "limitations": ["no canonical end-to-end cost", "production-exact truth timing and refresh-quality trends remain unmeasured", "absence of learned inference is not zero overhead"],
+      "manuscript": "paper/sections/08_results.tex; tab:rq5-practicality",
+      "new_execution_required": false
+    }
+  ],
+  "global_corrections": [
+    "Replace stale claims that Native ANALYZE Stability is merely unexecuted with failed/ineligible v1 plus qualified post-hoc v2 wording.",
+    "Keep the cancelled fixed-evaluation-budget protocol historical and state that no results exist.",
+    "Align the related-work bibliography with the verified Haas et al. VLDB 2007 paper and PostgreSQL 16 catalog documentation.",
+    "Treat anonymous author metadata, placeholder DOI/page metadata, permanent artifact hosting, and layout warnings as submission preparation items rather than scientific evidence."
+  ],
+  "unsupported_global_claims": [
+    "global optimality of the recommendation or Advisor order",
+    "workload-drift or arbitrary distribution-shift robustness from RQ1b",
+    "query-runtime improvement from q-error reductions",
+    "end-to-end resource-normalized superiority of Greedy ADD",
+    "deterministic or universally stable native ANALYZE",
+    "causal separation of ordinary-statistics and extended-statistics sampling effects",
+    "full production cost validation or production readiness"
+  ],
+  "semantic_digest": "650e0239ae56a5d4199ee870c8e0155cd61ee6490bc738d83dfab9d1def10841"
+}

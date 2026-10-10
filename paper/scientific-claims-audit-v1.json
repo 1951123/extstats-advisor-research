@@ -1,0 +1,82 @@
+{
+  "format_version": "scientific-claims-audit-v1",
+  "audit_id": "extstats-advisor-vldb-claims-audit-20261010",
+  "audit_producer_sha": "e35caa04a9ecb0f1268c27379587f3a37594cb2d",
+  "scope": "Substantive claims in the title, abstract, introduction, results, discussion, and conclusion, checked against immutable research artifacts.",
+  "entries": [
+    {
+      "location": "title, abstract, introduction",
+      "claim": "The system advises native PostgreSQL extended statistics for a workload and evaluates recommendations through a catalogless hypothetical planner mechanism.",
+      "status": "supported-with-scope",
+      "support": ["RQ1a/RQ1b matched and held-out evidence", "RQ3 registered synthetic fidelity evidence"],
+      "scope": "The mechanism and effectiveness claims are bounded by the registered PostgreSQL build, datasets, workloads, truth contracts, and fixture forms.",
+      "correction": "Do not imply a replacement cardinality estimator, PostgreSQL upstream support, or arbitrary-query fidelity."
+    },
+    {
+      "location": "results, table:rq1-cross-dataset-summary, table:rq1b-held-out-generalization",
+      "claim": "Recommendations improve cardinality-estimation quality on the declared workloads and generalize to held-out queries from the same workload-generation contract.",
+      "status": "validated-with-scope",
+      "support": ["experiments/rq1-cross-dataset-summary-v2.json", "experiments/rq1-workload-generalization-cross-dataset-v1.json"],
+      "scope": "RQ1a is in-workload; RQ1b is same-generator held-out evaluation; strict-unseen is a secondary exact-query diagnostic.",
+      "correction": "Do not call RQ1b arbitrary distribution-shift robustness or treat historical S_test as an oracle."
+    },
+    {
+      "location": "results, table:rq2-sample-full-transfer",
+      "claim": "Sample-selected recommendations can retain utility after independent full-data native-statistics realization, but sample-side improvement does not guarantee full-data improvement.",
+      "status": "validated-descriptive",
+      "support": ["experiments/rq2-cross-dataset-transfer-summary-v1.json"],
+      "scope": "Four dataset-scoped P0/P1/P2 comparisons and descriptive sample/full relationships; one native full-data realization per child.",
+      "correction": "Do not claim guaranteed transfer, causal separation from native ANALYZE variability, or a universal sample/full correlation."
+    },
+    {
+      "location": "results, table:rq3-fidelity",
+      "claim": "Catalogless hypothetical evaluation matches the registered physical mechanism fixtures under the declared controls.",
+      "status": "validated-fixture-scoped",
+      "support": ["experiments/rq3/rq3-primary-mechanism-fidelity-v1.json", "experiments/rq3/rq3-secondary-build-sanity-v1.json"],
+      "scope": "Primary 9/9 same-patched-binary comparisons and secondary 9/9 physical sanity comparisons on registered synthetic fixtures.",
+      "correction": "Do not generalize the 9/9 result to arbitrary SQL, datasets, statistic kinds, or PostgreSQL versions."
+    },
+    {
+      "location": "results, discussion, conclusion",
+      "claim": "Greedy ADD is useful in the tested fixed-k comparisons but is not universally superior or globally optimal.",
+      "status": "qualified-validated",
+      "support": ["experiments/rq4-fixed-k-cross-dataset-summary-v1.json", "experiments/rq4-ks-sensitivity-cross-dataset-summary-v1.json", "experiments/rq4-time-budget-fairness-audit-v1.json"],
+      "scope": "Greedy wins the tested Forest10, Power7, and DMV11 comparisons; Singleton wins Census13. Census13 and DMV11 Greedy outcomes are budget-censored, and Forest10 uses historical v1 timing.",
+      "correction": "The 300-second limit is a Greedy/K_s search-stage deadline, not an equal end-to-end cost budget; the cancelled 2,000-evaluation study has no results."
+    },
+    {
+      "location": "results, subsection:ordering-sensitivity",
+      "claim": "With fixed membership and payloads, changing hypothetical activation order can change cardinality estimates, and the Advisor reference order is favorable among the seven declared treatments.",
+      "status": "qualified-validated",
+      "support": ["experiments/oid-order-sensitivity-v1/reviews/oid-order-sensitivity-evidence-review-v1.json"],
+      "scope": "Controlled hypothetical patched-PostgreSQL contract across four datasets; physical non-reference observations are operational and confounded by payload and ordinary-statistics drift.",
+      "correction": "Do not claim global ordering optimality, runtime improvement, or a universal PostgreSQL OID-precedence rule."
+    },
+    {
+      "location": "results, subsection:native-analyze-stability, discussion",
+      "claim": "The five-realization Native ANALYZE observations show qualified descriptive stability patterns, including no recorded first-place winner reversal within the three dataset strata.",
+      "status": "posthoc-qualified",
+      "support": ["experiments/native-analyze-stability-v1/native-analyze-stability-posthoc-analysis-v2.json"],
+      "scope": "Post-hoc reanalysis of a v1 campaign that remains failed/ineligible; Forest10 is historical-v1, Census13/DMV11 are v2 strata, and six dependency payloads are native-null-supported rather than directly SQL-NULL verified.",
+      "correction": "Do not present this as prospective confirmatory evidence, deterministic ANALYZE, or universal ranking robustness."
+    },
+    {
+      "location": "results, table:rq5-practicality, discussion, conclusion",
+      "claim": "The measured operational stages establish a qualified practicality account.",
+      "status": "qualified-partial",
+      "support": ["experiments/rq5-existing-trace-cost-inventory-v3.json"],
+      "scope": "Snapshot, deployment, native ANALYZE, profiling, search, planning, and external-label import stages are measured or derived from validated traces; production-exact truth timing, refresh quality trends, and canonical end-to-end cost remain unmeasured.",
+      "correction": "Do not equate absent learned-model inference with zero production overhead or claim production readiness."
+    }
+  ],
+  "unsupported_claims": [
+    "global optimality of membership or ordering",
+    "arbitrary distribution-shift robustness from RQ1b",
+    "query-runtime improvement from q-error reduction",
+    "end-to-end resource-normalized superiority of Greedy ADD",
+    "deterministic or universally stable native ANALYZE",
+    "full production cost validation or production readiness"
+  ],
+  "review_boundary": "No new PostgreSQL, Advisor, ANALYZE, EXPLAIN, COUNT, or workload execution was performed.",
+  "semantic_digest": "b722417aa0851c5e9fc29533022a36e49d43e33cf4543054e968c66fdcb22f52"
+}

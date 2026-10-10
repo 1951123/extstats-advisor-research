@@ -8,7 +8,7 @@ When predicates refer to correlated columns, multiplying independent
 selectivities can be a poor approximation. PostgreSQL's extended statistics
 objects provide a native representation for selected column groups; the
 catalog definition and the data produced by \texttt{ANALYZE} are separate
-pieces of state \cite{PostgreSQL16Docs,PostgreSQL18Catalog}. The system under
+pieces of state \cite{PostgreSQL16Docs,PostgreSQL16Catalog}. The system under
 study uses the MCV and functional-dependency kinds supported by the patched
 what-if path.
 
