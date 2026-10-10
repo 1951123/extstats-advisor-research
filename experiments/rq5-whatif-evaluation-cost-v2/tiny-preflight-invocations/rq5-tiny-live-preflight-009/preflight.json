@@ -1,0 +1,27 @@
+{
+  "candidate_count": 6,
+  "catalogless": {
+    "explain_attempted_calls": 10,
+    "explain_calls": 10,
+    "explain_successful_calls": 10,
+    "materialization_analyze_calls": 1,
+    "sandbox_prepare_analyze_calls": 1
+  },
+  "classification": "integration-readiness-only",
+  "cleanup": {
+    "error_count": 0,
+    "status": "complete"
+  },
+  "configuration_count": 2,
+  "format_version": "rq5-whatif-evaluation-cost-integration-preflight-v1",
+  "live_opt_in": true,
+  "physical": {
+    "analyze_calls": 2,
+    "explain_attempted_calls": 10,
+    "explain_calls": 10,
+    "explain_successful_calls": 10
+  },
+  "query_count": 5,
+  "semantic_digest": "9f2f0e7a64b439703a270237f208a8b60156e417fa19f021dea45cf0f8e044d3",
+  "status": "complete"
+}

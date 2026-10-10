@@ -1,0 +1,98 @@
+{
+  "format_version": "rq5-tiny-live-preflight-audit-v1",
+  "classification": "integration-readiness-only",
+  "status": "passed",
+  "invocation_id": "rq5-tiny-live-preflight-009",
+  "research_producer_commit": "f2651e703be3dcb21037a7ffcd934fc816d2f9da",
+  "advisor_source_commit": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+  "stock_postgres_source_commit": "0d1c00c624fa7367d4a895f44381887757289682",
+  "patched_postgres_source_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "postgres_version": "16.14",
+  "fixture": {
+    "fixture_id": "rq5-tiny-cost-fixture-v1-catalog-corrected-v4",
+    "relation": "rq5_tiny_patched_template.public.rq5_tiny_cost_fixture",
+    "row_count": 12,
+    "row_sha256": "9218ac96d136e017086a4820ffd41008f8fdc5daebe0747875e134695bc63634",
+    "candidate_count": 6,
+    "configuration_count": 2,
+    "query_count": 5,
+    "snapshot_semantic_digest": "510ec273c1e9f04ad184bc144879899f025de2fa34a7adb910fa82d5ee09d5f3",
+    "candidate_universe_semantic_digest": "f790910686378e0a8af050c5f4dc5526ec27b2829d72cb0e851f1fd7e75f8372",
+    "manifest_semantic_digest": "4988e911e2cfc98b3d9000bd53f1ad6672465ef0406c68035cf5f2aac69c2fb1",
+    "workload_sha256": "003fb2b99ea9bdd32d523d9bf35be570b00f1327bfcbb00e0fa4d779a9ad605b"
+  },
+  "dsn_scope": {
+    "stock": "host=<dedicated socket> port=55432 dbname=rq5_tiny_stock_template user=wqts",
+    "stock_admin": "host=<dedicated socket> port=55432 dbname=postgres user=wqts",
+    "patched": "host=<dedicated socket> port=55433 dbname=rq5_tiny_patched_template user=wqts"
+  },
+  "counts": {
+    "physical": {
+      "configuration_analyze_calls": 2,
+      "explain_attempted": 10,
+      "explain_successful": 10,
+      "clone_analyze_calls": 0
+    },
+    "catalogless": {
+      "materialization_analyze_calls": 1,
+      "sandbox_prepare_analyze_calls": 1,
+      "per_configuration_analyze_calls": 0,
+      "explain_attempted": 10,
+      "explain_successful": 10
+    }
+  },
+  "physical": {
+    "relation_oid": 16444,
+    "configurations": [
+      {"ordinal": 1, "statistics_oids": [16477], "declared_order_verified": true},
+      {"ordinal": 2, "statistics_oids": [16479, 16480], "declared_order_verified": true}
+    ],
+    "ordinary_statistics_fingerprint": "faf5ede82c92880b17b086c21b4d02807e7294f89bbd41aa4b807dbdfebb4e23",
+    "payloads_present": true,
+    "query_order_and_json_explain_verified": true
+  },
+  "catalogless": {
+    "sandbox_contract_verified": true,
+    "target_relation_oid": 16649,
+    "ordinary_statistics_fingerprint": "faf5ede82c92880b17b086c21b4d02807e7294f89bbd41aa4b807dbdfebb4e23",
+    "payload_states": {
+      "present": 3,
+      "absent-native": 3,
+      "native_null_or_absent_not_used_as_planning_evidence": true
+    },
+    "activation_orders_verified": true,
+    "virtual_oids_recorded": true,
+    "query_order_and_json_explain_verified": true
+  },
+  "cross_arm": {
+    "logical_rows_equal": true,
+    "query_plan_rows_equal_for_both_configurations": true,
+    "physical_and_hypothetical_payload_byte_identity_not_required": true,
+    "ordinary_stats_fingerprint_equal": true,
+    "no_unowned_database_touched": true
+  },
+  "cleanup": {
+    "adapter_cleanup_status": "complete",
+    "sandbox_destroy_verified": true,
+    "physical_clones_remaining": 0,
+    "patched_fixture_restored": true,
+    "preflight_owned_resources_remaining": 0
+  },
+  "historical_failed_invocations": [
+    "rq5-tiny-live-preflight-001",
+    "rq5-tiny-live-preflight-002",
+    "rq5-tiny-live-preflight-003",
+    "rq5-tiny-live-preflight-004",
+    "rq5-tiny-live-preflight-005",
+    "rq5-tiny-live-preflight-006",
+    "rq5-tiny-live-preflight-007",
+    "rq5-tiny-live-preflight-008"
+  ],
+  "source_artifacts": {
+    "protocol_sha256": "56175f66c6e05066de91ef7219984c7f5889a6484173c4d4a6766ce8aeaf5192",
+    "preflight_result_sha256": "0d1e5ccfb54c06d04ec5d4c9f8dc56e1928105dbb451ecd1c013dc8a3efb843d",
+    "native_repository_manifest_sha256": "7160463b9bd45fb103164f050563d8d0add39e3fe2e48b219e4179a40660b4d7"
+  },
+  "scientific_use": "not scientific timing evidence; readiness only",
+  "semantic_digest": "284b0aec6ce965d7d3087219129d64d9f778ca1780a59c3310958398e4a1a33f"
+}
