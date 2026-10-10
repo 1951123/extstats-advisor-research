@@ -987,11 +987,11 @@
       "experiment_id": "rq4-native-analyze-stability",
       "rq": "RQ4b",
       "status": "preregistered",
-      "implementation_status": "protocol-ready; five-realization implementation not yet ready",
+      "implementation_status": "offline five-realization harness implemented; live PostgreSQL integration not tested",
       "protocol_path": "paper/native-analyze-stability-protocol-v1.json",
       "protocol_semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
-      "readiness_review_path": "experiments/native-analyze-stability-readiness-review-v1.json",
-      "readiness_review_semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a",
+      "readiness_review_path": "experiments/native-analyze-stability-readiness-review-v2.json",
+      "readiness_review_semantic_digest": "93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55",
       "formal_execution_authorized": false,
       "datasets": ["arecel-forest10", "arecel-census13", "arecel-dmv11"],
       "sensitivity_extension": ["arecel-power7"],
@@ -1188,7 +1188,7 @@
       {
         "experiment_id": "rq4-native-analyze-stability",
         "status": "preregistered",
-        "note": "Five independent native ANALYZE realizations are preregistered to quantify stock realization variability; the protocol and readiness review are complete, but the five-realization implementation is not ready and no stability run has been executed."
+        "note": "Five independent native ANALYZE realizations are preregistered to quantify stock realization variability; the offline five-realization harness and mock validation are complete, live PostgreSQL integration is not tested, and no stability run has been executed."
       },
       {
         "experiment_id": "rq3-primary-mechanism-fidelity",

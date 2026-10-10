@@ -676,16 +676,20 @@ small replay smoke requires exact membership, evaluation order, planner
 estimates, objectives, and configuration trace outside runtime measurements.
 
 **Native realization stability:** `native-analyze-stability-v1` is
-preregistered but not run. The protocol covers Forest10, Census13, and DMV11
+preregistered but not run. Its offline five-realization harness is implemented
+and mock-validated (readiness-v2), but no live PostgreSQL integration or formal
+execution is authorized. The protocol covers Forest10, Census13, and DMV11
 as primary dataset-scoped strata, with Power7 as a declared sensitivity
 extension. It requires five independent stock `CREATE STATISTICS` plus
 `ANALYZE` realizations, a shared union and no-ANALYZE method clones, observed
 OID/order and payload controls, and full per-method workload evaluation.
+The append-only implementation readiness-v2 record has semantic digest
+`93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55`.
 Forest10's historical v1 freeze is retained as a separate stratum rather than
 silently normalized to v2. `setseed` is recorded only as setup provenance and
 is not treated as control of native `ANALYZE` sampling. The implementation
-readiness review records that the current single-realization executor is not
-yet the five-realization formal implementation; no execution is authorized.
+the readiness record keeps live integration, formal execution, and scientific
+results explicitly false; no execution is authorized.
 
 **Datasets:** a representative subset for full ablation and synthetic/tiny
 candidate universes for exhaustive comparison; dataset choice must be recorded.

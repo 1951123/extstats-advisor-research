@@ -1,0 +1,100 @@
+{
+  "format_version": "native-analyze-stability-readiness-review-v2",
+  "review_id": "native-analyze-stability-readiness-review-v2",
+  "status": "offline-harness-implemented-live-integration-not-tested",
+  "review_producer_sha": "88bf146a7f5fdcd027a302495cec68375ede6f58",
+  "producer_binding_scope": "implementation commit 88bf146; this readiness record is append-only and is not part of its producer tree",
+  "supersedes": {
+    "path": "experiments/native-analyze-stability-readiness-review-v1.json",
+    "semantic_digest": "805445c02ab78398c6db894c99ca39bdc9a6da80da60b1a7982176354b10b70a",
+    "sha256": "18396d1bd5131f6c20b9e5ce762597c955176afcad5563c7f5df67ec7fd52239"
+  },
+  "protocol": {
+    "path": "paper/native-analyze-stability-protocol-v1.json",
+    "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47",
+    "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"
+  },
+  "source_coverage": {
+    "system_freeze_v2": {
+      "path": "paper/system-freeze-v2.json",
+      "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48",
+      "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"
+    },
+    "rq4_fixed_k_summary": {
+      "path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json",
+      "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f",
+      "sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5"
+    },
+    "time_budget_audit": {
+      "path": "experiments/rq4-time-budget-fairness-audit-v1.json",
+      "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488",
+      "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"
+    }
+  },
+  "implementation": {
+    "module": "src/extstats_advisor_research/native_analyze_stability_harness.py",
+    "cli": "extstats-research validate native-analyze-stability",
+    "features": [
+      "invocation, dataset, realization and method-arm identities",
+      "append-only invocation namespaces and atomic failure/cleanup records",
+      "canonical fixed-membership union and clone filtering",
+      "relation-OID versus statistics-object-OID validation",
+      "payload and ordinary-statistics equality checks within a realization",
+      "raw gzip query evidence with byte hashes and offline metric recomputation",
+      "five-realization mockable orchestration and deterministic stability aggregation",
+      "campaign-level dataset accounting",
+      "fail-closed live-adapter authorization with no implicit DSN"
+    ],
+    "historical_strata": {
+      "arecel-forest10": "historical-v1 binding remains dataset-scoped",
+      "arecel-census13": "current-v2 binding",
+      "arecel-dmv11": "current-v2 binding",
+      "arecel-power7": "protocol-declared sensitivity extension, not primary campaign"
+    }
+  },
+  "verification": {
+    "focused_tests": {
+      "command": ".venv/bin/pytest -q tests/test_native_analyze_stability.py tests/test_native_analyze_stability_harness.py tests/test_rq4_physical.py tests/test_evidence_to_manuscript.py",
+      "result": "20 passed"
+    },
+    "static_checks": [
+      ".venv/bin/ruff check src/extstats_advisor_research/native_analyze_stability_harness.py tests/test_native_analyze_stability_harness.py src/extstats_advisor_research/cli.py",
+      ".venv/bin/ruff format --check src/extstats_advisor_research/native_analyze_stability_harness.py tests/test_native_analyze_stability_harness.py src/extstats_advisor_research/cli.py"
+    ],
+    "dry_run": {
+      "command": "extstats-research validate native-analyze-stability dry-run",
+      "database_connections_opened": 0,
+      "planned_analyze_calls": 15,
+      "planned_physical_explain_calls": 1350000
+    },
+    "mock_end_to_end": {
+      "realizations": 5,
+      "method_arms": 45,
+      "raw_query_evidence": true,
+      "live_postgresql": false
+    }
+  },
+  "gates": {
+    "protocol_ready": true,
+    "source_bindings_ready": true,
+    "harness_implementation_ready": true,
+    "offline_tests_passed": true,
+    "real_postgresql_integration_tested": false,
+    "formal_execution_authorized": false,
+    "scientific_results_available": false
+  },
+  "execution_status": {
+    "formal_status": "NOT_EXECUTED",
+    "formal_invocation_count": 0,
+    "power7_sensitivity_invocation_count": 0,
+    "rq1b_w_test_accessed": false,
+    "historical_artifacts_modified": false
+  },
+  "unresolved_blockers": [
+    "No live PostgreSQL integration smoke has been authorized or executed.",
+    "A future formal run must supply an explicit stock adapter implementing the adapter contract and a fresh invocation namespace.",
+    "Full workload source/truth loading and physical catalog controls remain runtime gates, not proven by mock tests."
+  ],
+  "next_stage": "separately authorized isolated PostgreSQL integration smoke, followed by independent review before formal execution",
+  "semantic_digest": "93ed1972d2c0cf802655ad1e096770796250f8cf42b6ea93859b0d7f34b5ea55"
+}

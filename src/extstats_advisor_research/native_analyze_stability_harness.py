@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
-from .native_analyze_stability import METHOD_ORDER, PRIMARY_DATASETS, validate_protocol
+from .native_analyze_stability import METHOD_ORDER, PRIMARY_DATASETS, _source_ref, validate_protocol
 from .paper_baseline import percentile, qerror
 from .provenance import read_json, semantic_digest, sha256_file
 
@@ -1013,6 +1013,50 @@ def load_and_validate_protocol(root: Path) -> dict[str, Any]:
     return value
 
 
+def validate_readiness_v2(
+    value: Mapping[str, Any], root: Path, *, expected_producer_sha: str | None = None
+) -> dict[str, str]:
+    if value.get("format_version") != "native-analyze-stability-readiness-review-v2":
+        raise StabilityError("unsupported Native ANALYZE readiness-v2 artifact")
+    _validate_digest(value, "readiness-v2")
+    producer = value.get("review_producer_sha")
+    if not isinstance(producer, str) or not re.fullmatch(r"[0-9a-f]{40}", producer):
+        raise StabilityError("readiness-v2 producer SHA is invalid")
+    if expected_producer_sha is not None and producer != expected_producer_sha:
+        raise StabilityError("readiness-v2 producer binding mismatch")
+    protocol = value.get("protocol", {})
+    actual_protocol = _source_ref(root, protocol.get("path", ""))
+    if protocol != actual_protocol:
+        raise StabilityError("readiness-v2 protocol binding mismatch")
+    supersedes = value.get("supersedes", {})
+    actual_previous = _source_ref(root, supersedes.get("path", ""))
+    if supersedes != actual_previous:
+        raise StabilityError("readiness-v2 previous readiness binding mismatch")
+    for source in value.get("source_coverage", {}).values():
+        actual = _source_ref(root, source.get("path", ""))
+        if dict(source) != actual:
+            raise StabilityError(f"readiness-v2 source binding mismatch: {source.get('path')}")
+    gates = value.get("gates", {})
+    expected_gates = {
+        "protocol_ready": True,
+        "source_bindings_ready": True,
+        "harness_implementation_ready": True,
+        "offline_tests_passed": True,
+        "real_postgresql_integration_tested": False,
+        "formal_execution_authorized": False,
+        "scientific_results_available": False,
+    }
+    if any(gates.get(key) is not expected for key, expected in expected_gates.items()):
+        raise StabilityError("readiness-v2 gate status is inconsistent")
+    execution = value.get("execution_status", {})
+    if (
+        execution.get("formal_status") != "NOT_EXECUTED"
+        or execution.get("formal_invocation_count") != 0
+    ):
+        raise StabilityError("readiness-v2 records formal execution")
+    return {"status": "valid", "semantic_digest": str(value["semantic_digest"])}
+
+
 __all__ = [
     "ARM_FORMAT",
     "CLEANUP_FORMAT",
@@ -1044,6 +1088,7 @@ __all__ = [
     "paired_counts",
     "validate_invocation_artifact",
     "validate_query_evidence",
+    "validate_readiness_v2",
     "verify_clone_controls",
     "verify_oid_order_controls",
     "verify_parent_payloads",

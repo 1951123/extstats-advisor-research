@@ -36,6 +36,9 @@ from .native_analyze_stability_harness import (
 from .native_analyze_stability_harness import (
     validate_invocation_artifact as validate_native_stability_invocation,
 )
+from .native_analyze_stability_harness import (
+    validate_readiness_v2 as validate_native_stability_readiness_v2,
+)
 from .oid_order_sensitivity import (
     PREFLIGHT_PATH as OID_PREFLIGHT_PATH,
 )
@@ -1889,9 +1892,13 @@ def main(argv: list[str] | None = None) -> int:
                     protocol, invocation_id=args.invocation_id, output_root=args.output_root
                 )
             else:
-                result = validate_native_stability_invocation(
-                    args.artifact, expected_protocol_digest=args.protocol_digest
-                )
+                artifact = read_json(args.artifact)
+                if artifact.get("format_version") == "native-analyze-stability-readiness-review-v2":
+                    result = validate_native_stability_readiness_v2(artifact, root)
+                else:
+                    result = validate_native_stability_invocation(
+                        args.artifact, expected_protocol_digest=args.protocol_digest
+                    )
             print(json.dumps(result, sort_keys=True, indent=2))
             return 0
         if args.validate_command == "rq4-fixed-k-v2":

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 
 import pytest
@@ -23,6 +24,7 @@ from extstats_advisor_research.native_analyze_stability_harness import (
     output_scope,
     paired_counts,
     validate_invocation_artifact,
+    validate_readiness_v2,
     verify_clone_controls,
     verify_oid_order_controls,
     write_failure,
@@ -201,3 +203,20 @@ def test_dry_run_is_offline_and_no_adapter_is_implicit() -> None:
             method_memberships=_memberships(),
             queries=_queries(),
         )
+
+
+def test_committed_readiness_v2_is_bound_and_mutations_fail() -> None:
+    root = Path(__file__).resolve().parents[1]
+    value = json.loads(
+        (root / "experiments/native-analyze-stability-readiness-review-v2.json").read_text()
+    )
+    assert validate_readiness_v2(value, root)["status"] == "valid"
+    mutated = copy.deepcopy(value)
+    mutated["gates"]["formal_execution_authorized"] = True
+    from extstats_advisor_research.provenance import semantic_digest
+
+    mutated["semantic_digest"] = semantic_digest(
+        {key: item for key, item in mutated.items() if key != "semantic_digest"}
+    )
+    with pytest.raises(StabilityError):
+        validate_readiness_v2(mutated, root)
