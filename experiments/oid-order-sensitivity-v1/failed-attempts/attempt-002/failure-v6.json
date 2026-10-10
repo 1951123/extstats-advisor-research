@@ -1,0 +1,519 @@
+{
+  "attempt_index": 2,
+  "cleanup": [
+    {
+      "operation": "stop-stock",
+      "status": "passed"
+    },
+    {
+      "operation": "stop-patched",
+      "status": "passed"
+    },
+    {
+      "operation": "runtime-remove",
+      "status": "passed"
+    }
+  ],
+  "cleanup_errors": [],
+  "evidence_eligible": false,
+  "exception": {
+    "message": "expected one managed base-relation plan node for public.oid_order_mcv_witness_902d1ce0aeec",
+    "type": "builtins.ValueError"
+  },
+  "execution_boundary": {
+    "completed_dataset_count": 4,
+    "completed_treatment_count": 56,
+    "explain_count": 560000,
+    "hypothetical_explain_count": 280000,
+    "partial_raw_observations": [
+      {
+        "byte_sha256": "144d022bb1a7382b4ea7619afe2e5f621d94b0a19cc0eeb1e5043682d247e79b",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "d5191dd551f190c463c4713e2801af21405bd445f44b58852107aca80ce81139",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "2092bf5462edea57bb43edd12b0e8ae7c6ff60d2a9ac68674b821583a30f7890",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "0bc9e63aec1da2e251943b96a1c9f2879b5048c0d8f28ff49bf3ccc1177f6dcb",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "2623796b72dc6cd61b260e10d23dfcd0a575d6760af697b6cc2d55e3ac68af6e",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "e49d884b4de4d66655c035e1ebdaef8382807e34a5f8585f9a07bb7c58653b0c",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "26000afafa91d1d64423dbc7efca20e18a5b14b181ce010cdf7f5c1721de8617",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/controlled-hypothetical/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "591b509b0d654d5fab520f0730854acf1a255b60906351ac615e7401c7083b5f",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "378c386543881cc06946baab987ad6b8f12570ab47f9d0903c872c3ac3458ac2",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "99bfc43def9100871ae6386065dc84a6bd5fedcd6c3b66c631b7b85941285b05",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "8afdf19e7b1a9fb83937c98e73bce467290496f89412171a144763f273d9aff6",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "d23790d73de1d6b670d8745c0c3d14470434f0b90555129d38fca115fbb27619",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "f2e6df6e12d4d0f2c0cb09bfdf5b79f1a740cf39902026c65f7b3976a3595ac6",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "2ce4d0c7b36bfc47be5d5659e58e34e5507df80dddc61fd3a75a20f11e2f3c10",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/census13/physical-stock/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "a81c273f665f6c113381cf02ef148366cfb34b6a2b19b2034e9dd2e8a6dd3a98",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "5356dcf6e62634e8b8f37d91c821bb53e0741c77886e91d9c43a4be0173d74b6",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "82a244966b45bae927cd390b86d82a3e954736e2662dd742b9a92907a6ec9f72",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "447feae30dd54ceea9d4c8bfc469a9a8a8485e8ecba2a135b24be9a6a573fe01",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "85b7b6e78a9df800bc603fa4b706f8d2e26e2dd90ecb13e18e5ab949fe808eeb",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "c9e6570ea0fce017b5251d69c4a3d4c7333983e7051358f3d482b7c41b58d0c8",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "7e98b4d8066b7887cf0b3ad6767e741a4523f1e6103d9e28fc73a7637a3642db",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/controlled-hypothetical/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "0314bdad3b4ff1f54cf44a607067dbb2cfba16d983156822e63890748d55ad04",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "9a00a45c844a289ea046fb0387b498d786b31292be15ccc249efb130dc67e1a8",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "043eacf23590b689c964116c21bbdda6ca00c147fbc69cf391e7305e9d44eea0",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "2ce1464d39ba7f2a35176c858d2cfef4e01c68f9c47111a7cbd567e9440662a8",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "6afe4eae95569f12bf91324a29dc02f9ec113787411f81d2399ea97fbe6ff141",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "1d4c9ed2782868fa37667ad8bda5bb639cd45aae96cf7400dbf655b819500c51",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "8979d97cc983968da97f4acd2ec6624d6fa1c0d0492b13c3907d36c31585e373",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/dmv11/physical-stock/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "8f697cedb033f71c89dc593835dd985d988a1061520fc51d6b544641d0c19246",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "f9c29f50f484994c5293752414c6192edaeba8016772f3d7a3871ed926829310",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "7fff254a8eb541a8b6d499fcb96f2d5fe4cddc94cba3c76bcafc30f802fe2f5d",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "f5541546c3b149cf4fed87b8dda0aa885b41f3e22a591afb4aef8ffff750a8b3",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "ccf5fc1b9a614909b7863eeb55acfda61a7dc43b75cb6e681c0d11f9f403a68b",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "92b4a4570b9083c4bd701b107cc1d34163cdbaa2e0221e82ba884e330861526c",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "64da66e7f5cd1f594bdada8d604d621f4eefb73a266e34ef48fc5fc750e384b5",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/controlled-hypothetical/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "006c634971f628b1ae1ef3ebaf5bcacd2021062e931ff4d52a26f590f8f47454",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "56cb442d603f35ddfbf6baabe04c7ebc9a9625a7633c1c735474a87087b92ae4",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "e5b98738d4098dc40213f4565c880a937e956891f2ec9e6d5f61620bbc0aa4e3",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "54b9ad0c2e0b0e059fd3039f121d97eb187ed14eef0fc7d723fa0172f8ca80dd",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "6b121b7156c95b67ebb3d5214c6cc17c6d7e7a420897bd97ea050eed7ab95016",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "fdf2141f138608db5ceaabe66de1d3371f0cd2ae2974957b51f4ffabdb0c3e2d",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "e951481f7ccb85e16ea2a6fd5b99f3b7dee79e8e4f050b45c8b3cf58fc82f273",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/forest10/physical-stock/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "10bf0fd83201130a664c38e0a76e5cd7d0daf120201aa5abb68488f41930b431",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "d4097405d6133fea121906569b2a075a385c2d68ee7cb4ddb0148e97f8554c61",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "add8a133c54702b51a23e41f4bc455ad4fd78bf93b42f4aaa01470841249eb2e",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "7cc1fec350937150503102a25a940a0047c1044f0ed1fe0bc0d09097134fb337",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "b92000b38925331838755af8f312c6b2891f7b13035a7affc48b607ab871ff54",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "d4490e730b9d00ed18cd8f6a60356817e0beb66e16c7d5653e336992aa13ed2d",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "cbe6d463e2c6c86c4ad715833adc0cef7455a2a8bee0511ba76edfb40a9fb039",
+        "execution_arms": [
+          "controlled-hypothetical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/controlled-hypothetical/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "9138186e6aad212fca0d0099fb4d78ab713ec589d392920fae94ebb9b1a23452",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/random-seed-101/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "c1c0735ae162425ea6c2afaa4e13a3563b53f9fcba4721a20be8e2e725245595",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/random-seed-17/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "9e4591724526b6d6cf343e64083352d9529a0a9c940823756e6d722457eb02a1",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/random-seed-29/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "53dc805f5ce63f63246a1b44f5bfac29b6c5f52d169c577852400eb16f60a9fb",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/random-seed-43/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "90c7b7bfc94cf87ce2a618b26add9e462ab4ff58318c0d99c497e79564a8c65b",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/random-seed-71/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "94dc502efd40596318a25f45e070ef551785a7911645c1d5894057fd2a2588f2",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/reference/per-query.jsonl.gz",
+        "record_count": 10000
+      },
+      {
+        "byte_sha256": "5ced47c3cdd01f3173579b3ac1b11bc2324bf682b1bca0ebf2223c054771b87c",
+        "execution_arms": [
+          "stock-physical"
+        ],
+        "path": "/home/wqts/projects/extstats-advisor-research/experiments/oid-order-sensitivity-v1/invocations/oid-attempt-002-run-ded8d75/power7/physical-stock/reverse/per-query.jsonl.gz",
+        "record_count": 10000
+      }
+    ],
+    "physical_explain_count": 280000,
+    "rq1b_w_test_accessed": false,
+    "scientific_evidence_eligible": false,
+    "synthetic_explain_count": 0
+  },
+  "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+  "formal_execution": "FAILED",
+  "formal_invocation_count": 1,
+  "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
+  "invocation_id": "oid-attempt-002-run-ded8d75",
+  "phase": "arecel-dmv11:hypothetical",
+  "phase_transitions": [
+    "launcher-probe",
+    "lab-preparation",
+    "arecel-census13:snapshot",
+    "arecel-census13:hypothetical",
+    "arecel-forest10:snapshot",
+    "arecel-forest10:hypothetical",
+    "arecel-power7:snapshot",
+    "arecel-power7:hypothetical",
+    "arecel-dmv11:snapshot",
+    "arecel-dmv11:hypothetical"
+  ],
+  "preflight": {
+    "byte_sha256": "c0c4395a50bab340b44a9fc8a27324a75264a4c9b7dece1d586860dcbbcaa71c",
+    "path": "experiments/oid-order-sensitivity-v1/attempts/attempt-002/preflight-v7.json",
+    "semantic_digest": "83cde7577210b2d3267acbaa73bfe9b78c9a46a9989a2371f63a643fa2fa0ba9"
+  },
+  "resource_state": {
+    "hypothetical_active": false,
+    "patched_owned": true,
+    "physical_deployment_started": false,
+    "sandbox_prepared": false,
+    "snapshot_completed": true,
+    "stock_owned": true,
+    "synthetic_fixture_created": true
+  },
+  "retry_performed": false,
+  "scientific_producer_sha": "ded8d75c25554a06078a5bf0a6e2590558626bf6",
+  "semantic_digest": "ae0719a32f6c3f2f5f3d2fbbeef506af4b5592f21d91f56c3d9e8704792c13df",
+  "status": "non-evidence-remediation-or-pre-execution-failure"
+}
