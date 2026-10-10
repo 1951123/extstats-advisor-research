@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Fixed-membership OID-order sensitivity ablation on the 10,000-query
+validation workloads. Each row compares the Advisor's reference activation
+order with the preregistered reverse and five random permutations in the
+controlled hypothetical arm. Values are mean q-error; lower is better.
+The random column gives the minimum--maximum across the five fixed seeds,
+and the final column gives the reference rank among the seven declared
+treatments (ties are retained). The changed fraction is the range of paired
+Plan Rows changes versus the reference across the alternatives.}
+\label{tab:oid-order-sensitivity}
+\begin{tabular}{lrrrrr}
+\toprule
+Dataset & Reference & Reverse & Random range & Reference rank & Changed fraction \\
+\midrule
+Census13 & 2.279 & 3.361 & 2.446--3.361 & 1/7 & 13.7--26.2\% \\
+Forest10 & 6.468 & 6.659 & 6.572--6.714 & 1/7 & 18.7--26.4\% \\
+Power7 & 48.336 & 75.619 & 50.617--75.619 & 1/7 & 11.0--42.6\% \\
+DMV11 & 48.964 & 54.193 & 48.964--59.187 & 1--2/7 & 0.0--30.7\% \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -17,6 +17,18 @@ workload drift, and the current search provides no guarantee of a globally
 optimal configuration. Candidate limits and search budgets are therefore
 experimental variables, not universal defaults.
 
+The ordering ablation adds a narrower qualification to this interpretation.
+Under the controlled hypothetical realization, fixed membership and changed
+activation order alter estimates for a dataset-dependent subset of queries;
+the Advisor reference order is favorable within the seven preregistered
+orders, but this finite comparison is not an optimality result. The
+overlapping-MCV witness is consistent with the PostgreSQL implementation's
+tie behavior, while remaining a single patched-PostgreSQL fixture rather than
+a universal mechanism claim. The physical deployment comparisons are
+operationally informative but confounded by native payload and ordinary
+statistics drift after independent \texttt{ANALYZE} runs, so they cannot be
+attributed to OID order alone.
+
 For the completed RQ1b analysis, the evidence is narrower than a broad
 generalization claim. It covers only four audited AreCEL datasets whose
 validation and test workloads follow the same generator contract. Strict-unseen

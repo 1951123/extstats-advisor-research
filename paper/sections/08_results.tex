@@ -97,6 +97,53 @@ historical evidence, its PG16-default arm inherited target $-1$, and its
 PG16-target10000 arm used an explicit target of 10,000; RQ1b selection used
 target 100.
 
+\subsection{Ordering sensitivity ablation}
+The fixed-membership ordering ablation asks a narrower systems question than
+RQ1b: with the selected native statistics held fixed, does changing their
+activation order change PostgreSQL's cardinality estimates? For each of the
+four datasets, we replayed the published $S_{\mathrm{valid}}$ membership in
+its reference order, the exact reverse order, and five deterministic random
+orders (seeds 17, 29, 43, 71, and 101). The hypothetical arm reused one
+native payload realization, ordinary-statistics fingerprint, workload, truth
+mapping, and planner configuration per dataset. It therefore isolates
+activation order within the registered patched-PostgreSQL what-if contract;
+it does not rerun Advisor selection or access $W_{\mathrm{test}}$.
+
+\input{tables/oid-order-sensitivity-ablation}
+
+The controlled hypothetical observations show order sensitivity, but with
+substantial dataset heterogeneity. Reversing the reference order increased
+mean q-error from 2.279 to 3.361 on Census13, from 6.468 to 6.659 on
+Forest10, from 48.336 to 75.619 on Power7, and from 48.964 to 54.193 on
+DMV11. The reference order ranked first among the seven declared treatments
+on the first three datasets and tied the best treatment on DMV11, where
+random seed 17 produced identical observations. These are descriptive
+comparisons over five preregistered alternatives, not evidence that the
+Advisor order is globally optimal.
+
+The paired changes are not uniform: relative to the reference, alternative
+hypothetical orders changed Plan Rows for 13.7--26.2\% of Census13 queries,
+18.7--26.4\% of Forest10 queries, 11.0--42.6\% of Power7 queries, and
+0--30.7\% of DMV11 queries. Mean differences can therefore reflect a
+minority of queries, including tail changes, rather than a uniform shift in
+all estimates. The synthetic overlapping-MCV witness gives a mechanism-level
+diagnostic: the A--B and B--A orders produced root Plan Rows 303 and 281,
+respectively, versus 221 with no extended statistics, while all five matched
+physical/hypothetical witness arms agreed exactly. The PostgreSQL source
+supports this bounded interpretation: tied MCV candidates are selected by
+the order of the relation statistics list, and the patched overlay supplies
+the registered order. The witness does not establish a universal OID rule
+for every statistics kind or workload.
+
+The physical-stock arm achieved the prescribed OID orders, but every
+non-reference comparison was classified as
+\texttt{confounded-operational-deployment}: native payload and
+ordinary-statistics fingerprints changed across independent \texttt{ANALYZE}
+realizations. Those observations are retained as operational evidence, but
+are not combined with the hypothetical arm and are not interpreted as pure
+OID-order causal effects. Neither arm supports a claim about query-runtime
+improvement.
+
 \subsection{RQ2: sample-to-full-data transfer}
 \textbf{Intended claim.} A design selected on a fixed sample can retain benefit
 after native payloads are independently recomputed on full data, subject to
