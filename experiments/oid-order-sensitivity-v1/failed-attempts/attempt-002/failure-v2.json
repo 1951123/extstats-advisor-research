@@ -1,0 +1,40 @@
+{
+  "attempt_index": 2,
+  "cleanup": [],
+  "cleanup_errors": [],
+  "evidence_eligible": false,
+  "exception": {
+    "message": "preflight producer SHA does not match formal producer",
+    "type": "builtins.ValueError"
+  },
+  "execution_boundary": {
+    "explain_count": 0,
+    "rq1b_w_test_accessed": false,
+    "scientific_evidence_eligible": false
+  },
+  "experiment_id": "postgresql-extstats-oid-order-sensitivity-v1",
+  "formal_execution": "NOT_EXECUTED",
+  "formal_invocation_count": 1,
+  "format_version": "postgresql-extstats-oid-order-sensitivity-failed-attempt-v2",
+  "invocation_id": "oid-attempt-002-fixed-f6d47bd",
+  "phase": "preflight",
+  "phase_transitions": [],
+  "preflight": {
+    "byte_sha256": "bc97edb62f08c57a87604775fa85b5649e5d5d6614d190aacf4fdade4a9b3ef0",
+    "path": "experiments/oid-order-sensitivity-v1/attempts/attempt-002/preflight-v3.json",
+    "semantic_digest": "4ba876519e4838dab1352ad3d1cd01c214ab930d919623bf5c95453bbe488cdb"
+  },
+  "resource_state": {
+    "hypothetical_active": false,
+    "patched_owned": false,
+    "physical_deployment_started": false,
+    "sandbox_prepared": false,
+    "snapshot_completed": false,
+    "stock_owned": false,
+    "synthetic_fixture_created": false
+  },
+  "retry_performed": false,
+  "scientific_producer_sha": "f6d47bdfbf8ea094a4473e8ad44177fa3d7eda92",
+  "semantic_digest": "af3e1ef48a136a03e978b43eefbdc6b79566d6313f1db07760c687b4f81fa101",
+  "status": "non-evidence-remediation-or-pre-execution-failure"
+}
