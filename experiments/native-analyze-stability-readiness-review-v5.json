@@ -1,0 +1,21 @@
+{
+  "format_version": "native-analyze-stability-readiness-review-v5",
+  "review_id": "native-analyze-stability-readiness-review-v5",
+  "status": "offline-harness-implemented-live-integration-not-tested",
+  "review_producer_sha": "b6bf70c0c41aeecf117f760fe3aaad1dbb65f998",
+  "producer_binding_scope": "implementation and validator commit b6bf70c; this readiness record is append-only and is not part of its producer tree",
+  "supersedes": {"path": "experiments/native-analyze-stability-readiness-review-v4.json", "semantic_digest": "0a9f483d6fbcca5a40101b5596cafa3acb8262bc31fb942ef68423ce925f5be2", "sha256": "d258969fe2926e68c4b70bf273e466a7f684132c51d4edcb7a31f52b077d8f4a"},
+  "protocol": {"path": "paper/native-analyze-stability-protocol-v1.json", "semantic_digest": "65123eb04bd53ed6dc35a526ceff190072f305490c2f3f00b4c6454f505a9c47", "sha256": "0ad431c31f299a999c5d1be3d919c90778b6139e8963deba7af1d63ae2c0f64c"},
+  "source_coverage": {
+    "system_freeze_v2": {"path": "paper/system-freeze-v2.json", "semantic_digest": "552c44e1f80244632061815c723f0cd8674aee45a9e013524320aed2314bdc48", "sha256": "b2ca8c4fe04c9e286dcefc1a598500546c876e00f926fd756641e7a053742ed6"},
+    "rq4_fixed_k_summary": {"path": "experiments/rq4-fixed-k-cross-dataset-summary-v1.json", "semantic_digest": "4db25845552c38f1b3b48b5cf3ec9b7637617eb162701e9444a2a2b8b189f50f", "sha256": "c6c97ebd2895df71ac64ad09f74fdca3942a3240942b78404091131ae3d387a5"},
+    "time_budget_audit": {"path": "experiments/rq4-time-budget-fairness-audit-v1.json", "semantic_digest": "d4fdce374d9893022fe11033a95aa97a54069e1b6c916b28ab355e146e334488", "sha256": "25a94fa86ae983b716ebd039eae7a21847252c211828a788fcaa44dac0bd16b9"}
+  },
+  "implementation": {"module": "src/extstats_advisor_research/native_analyze_stability_harness.py", "cli": "extstats-research validate native-analyze-stability", "controls": ["append-only invocation/dataset/realization/arm identities", "canonical fixed-membership union", "relation and statistics-object OID distinction", "payload and ordinary-statistics equality within realization", "raw gzip evidence with atomic write and hash", "deterministic five-realization aggregation", "append-only readiness validation", "fail-closed live authorization and no implicit DSN"], "historical_strata": {"arecel-forest10": "historical-v1", "arecel-census13": "current-v2", "arecel-dmv11": "current-v2", "arecel-power7": "sensitivity extension only"}},
+  "verification": {"focused_tests": "15 passed", "full_offline_suite": "512 passed, 18 skipped", "ruff_check": "passed", "targeted_format_check": "passed", "dry_run_database_connections": 0, "planned_analyze_calls": 15, "planned_physical_explain_calls": 1350000, "mock_realizations": 5, "mock_method_arms": 45},
+  "gates": {"protocol_ready": true, "source_bindings_ready": true, "harness_implementation_ready": true, "offline_tests_passed": true, "real_postgresql_integration_tested": false, "formal_execution_authorized": false, "scientific_results_available": false},
+  "execution_status": {"formal_status": "NOT_EXECUTED", "formal_invocation_count": 0, "power7_sensitivity_invocation_count": 0, "rq1b_w_test_accessed": false, "historical_artifacts_modified": false},
+  "unresolved_blockers": ["No live PostgreSQL integration smoke has been authorized or executed.", "A future formal run must supply an explicit stock adapter implementing the adapter contract and a fresh invocation namespace.", "Full workload source/truth loading and physical catalog controls remain runtime gates, not proven by mock tests."],
+  "next_stage": "separately authorized isolated PostgreSQL integration smoke, followed by independent review before formal execution",
+  "semantic_digest": "60394aafe1b167a4489b8cba1dc27dd5bade49b0dcc1b7ad0a55f4bcc9384ae0"
+}
