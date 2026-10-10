@@ -360,6 +360,43 @@ def test_formal_invocation_uses_append_only_invocation_namespace(tmp_path: Path)
         namespace.mkdir(parents=True, exist_ok=False)
 
 
+def test_oid_native_bridge_uses_system_freeze_v2_advisor_pin(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import extstats_advisor_research.advisor_bridge as bridge
+    import extstats_advisor_research.oid_order_sensitivity as oid
+    from extstats_advisor_research.pins import verify_git_sha
+
+    captured: dict[str, object] = {}
+
+    def fake_materialize(*args: object, **kwargs: object) -> str:
+        captured["args"] = args
+        captured.update(kwargs)
+        return "native-digest"
+
+    monkeypatch.setattr(bridge, "materialize_native_repository", fake_materialize)
+    assert (
+        oid._materialize_oid_native_repository(
+            advisor_root=Path("/advisor"),
+            patched_dsn="dbname=patched",
+            snapshot_path=Path("snapshot"),
+            candidate_path=Path("candidate"),
+            output_path=Path("native"),
+            statistics_target=100,
+        )
+        == "native-digest"
+    )
+    assert captured["expected_advisor_sha"] == "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3"
+
+    advisor_root = Path("/home/wqts/projects/extstats-advisor")
+    assert (
+        verify_git_sha(advisor_root, captured["expected_advisor_sha"])
+        == captured["expected_advisor_sha"]
+    )
+    with pytest.raises(ValueError, match="expected frozen SHA"):
+        verify_git_sha(advisor_root, "0" * 40)
+
+
 def test_failure_writer_records_started_formal_invocation(tmp_path: Path) -> None:
     preflight_path = ROOT / PREFLIGHT_PATH
     preflight = read_json(preflight_path)

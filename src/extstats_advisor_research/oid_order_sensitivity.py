@@ -1444,6 +1444,30 @@ def _invocation_namespace(root: Path, invocation_id: str) -> Path:
     return root / OUTPUT_ROOT / "invocations" / invocation_id
 
 
+def _materialize_oid_native_repository(
+    *,
+    advisor_root: Path,
+    patched_dsn: str,
+    snapshot_path: Path,
+    candidate_path: Path,
+    output_path: Path,
+    statistics_target: int,
+) -> str:
+    """Call the production bridge with the OID protocol's System Freeze v2 pin."""
+
+    from .advisor_bridge import materialize_native_repository
+
+    return materialize_native_repository(
+        advisor_root,
+        patched_dsn,
+        snapshot_path,
+        candidate_path,
+        output_path,
+        statistics_target,
+        expected_advisor_sha=FROZEN_ADVISOR_SHA,
+    )
+
+
 def _connection_settings(connection: Any) -> dict[str, str]:
     names = (
         "DateStyle",
@@ -2149,7 +2173,6 @@ def run_formal(
     validate_preflight(preflight, root=root)
     if preflight.get("producer_research_sha") != producer_sha:
         raise ValueError("preflight producer SHA does not match formal producer")
-    from .advisor_bridge import materialize_native_repository
     from .postgres.loader import load_census13, load_dmv11, load_forest10, load_power7
     from .postgres_lab import reinit_role, role_spec, stop_role
 
@@ -2261,13 +2284,13 @@ def run_formal(
             candidate_path = runtime / "candidate-universe.json"
             write_candidate_universe(derive_candidate_universe(sealed_snapshot), candidate_path)
             native_path = runtime / "native-stats-repository"
-            materialize_native_repository(
-                advisor_root,
-                planner_dsn,
-                snapshot_path,
-                candidate_path,
-                native_path,
-                STATISTICS_TARGET,
+            _materialize_oid_native_repository(
+                advisor_root=advisor_root,
+                patched_dsn=planner_dsn,
+                snapshot_path=snapshot_path,
+                candidate_path=candidate_path,
+                output_path=native_path,
+                statistics_target=STATISTICS_TARGET,
             )
             prepare_result = _run_command(
                 [
