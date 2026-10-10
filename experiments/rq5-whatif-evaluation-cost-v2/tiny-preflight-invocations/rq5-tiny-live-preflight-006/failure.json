@@ -1,0 +1,18 @@
+{
+  "format_version": "rq5-tiny-live-preflight-failure-v1",
+  "invocation_id": "rq5-tiny-live-preflight-006",
+  "status": "failed-before-sql",
+  "classification": "integration-readiness-only",
+  "phase": "configuration.identity-validation",
+  "sql_executed": false,
+  "error": {
+    "class": "FileNotFoundError",
+    "message": "corrected-v2/identities/stock-identity.json was missing"
+  },
+  "cleanup": {
+    "status": "not-required",
+    "preflight_resources_registered": false
+  },
+  "preservation_note": "The invocation namespace was unused for live database work and was not reused.",
+  "semantic_digest": "ab03b215a22aaf0e2a681e27668e7ad206a6277f6afee46f8252d82cfea4008c"
+}
