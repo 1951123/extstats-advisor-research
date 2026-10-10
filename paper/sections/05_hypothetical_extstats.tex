@@ -2,8 +2,8 @@
 
 \subsection{Backend-local representation}
 
-The patched source implements a backend-local overlay in
-\texttt{src/backend/statistics/hypothetical.c}. Repository entries are keyed
+The patched PostgreSQL backend implements a backend-local overlay in
+\texttt{hypothetical.c}. Repository entries are keyed
 by a synthetic statistics OID and native kind. They retain the relation OID,
 serialized payload, optional attribute bitmap, candidate identifier, and flags
 for a virtual definition or an intentionally absent native payload. The
