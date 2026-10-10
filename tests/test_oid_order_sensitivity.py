@@ -512,6 +512,27 @@ def test_failure_writer_counts_persisted_hypothetical_observations(tmp_path: Pat
     assert observed["completed_treatment_count"] == 2
 
 
+def test_failure_state_keeps_synthetic_explain_subcounts(tmp_path: Path) -> None:
+    preflight_path = ROOT / PREFLIGHT_PATH
+    preflight = read_json(preflight_path)
+    state = ExecutionState(invocation_id="synthetic-counter-fixture")
+    state.synthetic_physical_explain_count = 2
+    state.synthetic_hypothetical_explain_count = 2
+    state.synthetic_explain_count = 4
+    failure = write_failure_artifact(
+        tmp_path / "failure.json",
+        producer_sha="a" * 40,
+        preflight_path=preflight_path,
+        preflight=preflight,
+        state=state,
+        exception=RuntimeError("synthetic fixture failure"),
+    )
+    boundary = failure["execution_boundary"]
+    assert boundary["synthetic_explain_count"] == 4
+    assert boundary["synthetic_physical_explain_count"] == 2
+    assert boundary["synthetic_hypothetical_explain_count"] == 2
+
+
 def test_formal_tree_guard_allows_only_declared_untracked_preflight(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

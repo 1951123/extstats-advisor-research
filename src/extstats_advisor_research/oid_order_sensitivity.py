@@ -86,6 +86,8 @@ class ExecutionState:
     hypothetical_explain_count: int = 0
     physical_explain_count: int = 0
     synthetic_explain_count: int = 0
+    synthetic_physical_explain_count: int = 0
+    synthetic_hypothetical_explain_count: int = 0
     completed_treatment_count: int = 0
     completed_dataset_count: int = 0
 
@@ -199,6 +201,8 @@ def write_failure_artifact(
             "hypothetical_explain_count": hypothetical_count,
             "physical_explain_count": physical_count,
             "synthetic_explain_count": synthetic_count,
+            "synthetic_physical_explain_count": state.synthetic_physical_explain_count,
+            "synthetic_hypothetical_explain_count": state.synthetic_hypothetical_explain_count,
             "completed_treatment_count": max(
                 state.completed_treatment_count, observed["completed_treatment_count"]
             ),
@@ -2134,7 +2138,11 @@ def _assemble_dataset_result(
 
 
 def _run_overlapping_mcv_witness(
-    *, patched_dsn: str, stock_dsn: str, output: Path
+    *,
+    patched_dsn: str,
+    stock_dsn: str,
+    output: Path,
+    execution_state: ExecutionState | None = None,
 ) -> dict[str, Any]:
     """Run the preregistered small overlapping-MCV physical/overlay witness."""
 
@@ -2202,6 +2210,9 @@ def _run_overlapping_mcv_witness(
                     }
                 )
             physical_rows, physical_digest = _explain(conn, query, relation)
+            if execution_state is not None:
+                execution_state.synthetic_physical_explain_count += 1
+                execution_state.synthetic_explain_count += 1
             physical_fingerprint = ordinary_stats_fingerprint(conn, relation_oid)
             _drop_physical_statistics_if_any(conn, tuple(names.values()))
             if (
@@ -2235,6 +2246,9 @@ def _run_overlapping_mcv_witness(
                 "SELECT pg_catalog.pg_hypothetical_extstats_activate(%s::oid[])", (virtual_oids,)
             )
             hypothetical_rows, hypothetical_digest = _explain(conn, query, relation)
+            if execution_state is not None:
+                execution_state.synthetic_hypothetical_explain_count += 1
+                execution_state.synthetic_explain_count += 1
             conn.execute("SELECT pg_catalog.pg_hypothetical_extstats_reset()")
             results[arm_id] = {
                 "order": list(order),
@@ -2534,6 +2548,7 @@ def run_formal(
             patched_dsn=planner_dsn,
             stock_dsn=stock_dsn,
             output=run_output_root / "synthetic-witness-v1.json",
+            execution_state=state,
         )
         state.synthetic_fixture_created = False
         summary: dict[str, Any] = {
