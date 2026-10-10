@@ -397,6 +397,24 @@ def test_oid_native_bridge_uses_system_freeze_v2_advisor_pin(
         verify_git_sha(advisor_root, "0" * 40)
 
 
+def test_hypothetical_payload_inventory_ignores_absent_unselected_candidates() -> None:
+    import types
+
+    import extstats_advisor_research.oid_order_sensitivity as oid
+
+    repository = types.SimpleNamespace(
+        candidate_models=(
+            types.SimpleNamespace(candidate_id="selected"),
+            types.SimpleNamespace(candidate_id="absent-native"),
+        ),
+        payloads={"selected": b"fixed-native-payload"},
+    )
+    inventory = oid._selected_payload_inventory(repository, [{"order": ["selected"]}], "fixture")
+    assert inventory["selected"]["present"] is True
+    with pytest.raises(ValueError, match="selected payloads"):
+        oid._selected_payload_inventory(repository, [{"order": ["absent-native"]}], "fixture")
+
+
 def test_failure_writer_records_started_formal_invocation(tmp_path: Path) -> None:
     preflight_path = ROOT / PREFLIGHT_PATH
     preflight = read_json(preflight_path)

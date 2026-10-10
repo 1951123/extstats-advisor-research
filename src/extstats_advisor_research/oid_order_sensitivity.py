@@ -1657,6 +1657,51 @@ def _physical_arm(
             conn.execute(f"DROP DATABASE IF EXISTS {_quote_identifier(clone)} WITH (FORCE)")
 
 
+def _selected_payload_inventory(
+    repository: Any, orders: Sequence[Mapping[str, Any]], dataset_id: str
+) -> dict[str, dict[str, Any]]:
+    """Inventory payloads only for the preregistered selected membership.
+
+    A native repository may legitimately contain candidate models marked
+    ``absent-native``.  Those candidates are registered as absent by the
+    frozen planner bridge and are not part of this experiment's fixed
+    selected membership.  The order-only experiment requires non-empty
+    payloads for every candidate that appears in one of its declared orders.
+    """
+
+    candidate_models = {
+        candidate.candidate_id: candidate for candidate in repository.candidate_models
+    }
+    selected_ids = list(
+        dict.fromkeys(candidate_id for arm in orders for candidate_id in arm["order"])
+    )
+    missing_models = [
+        candidate_id for candidate_id in selected_ids if candidate_id not in candidate_models
+    ]
+    if missing_models:
+        raise ValueError(
+            f"{dataset_id} native repository lacks selected candidates: {missing_models}"
+        )
+    inventory: dict[str, dict[str, Any]] = {}
+    missing_payloads: list[str] = []
+    for candidate_id in selected_ids:
+        payload = repository.payloads.get(candidate_id)
+        present = isinstance(payload, bytes) and len(payload) > 0
+        if not present:
+            missing_payloads.append(candidate_id)
+            continue
+        inventory[candidate_id] = {
+            "sha256": _sha256_bytes(payload),
+            "size": len(payload),
+            "present": True,
+        }
+    if missing_payloads:
+        raise ValueError(
+            f"{dataset_id} native repository lacks non-empty selected payloads: {missing_payloads}"
+        )
+    return inventory
+
+
 def _hypothetical_arms(
     *,
     planner_dsn: str,
@@ -1685,17 +1730,7 @@ def _hypothetical_arms(
     snapshot = load_snapshot(snapshot_path)
     universe = load_candidate_universe(candidate_path, snapshot)
     repository = load_native_stats_repository(native_path)
-    payload_inventory = {
-        candidate.candidate_id: {
-            "sha256": _sha256_bytes(repository.payloads[candidate.candidate_id]),
-            "size": len(repository.payloads[candidate.candidate_id]),
-            "present": candidate.candidate_id in repository.payloads
-            and len(repository.payloads[candidate.candidate_id]) > 0,
-        }
-        for candidate in repository.candidate_models
-    }
-    if not all(item["present"] for item in payload_inventory.values()):
-        raise ValueError(f"{dataset_id} native repository contains an empty payload")
+    payload_inventory = _selected_payload_inventory(repository, orders, dataset_id)
     results: dict[str, dict[str, Any]] = {}
     with PostgresPlannerSession(planner_dsn, snapshot, universe, repository) as planner:
         for arm in orders:
