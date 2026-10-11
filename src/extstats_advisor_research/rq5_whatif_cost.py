@@ -438,6 +438,14 @@ def validate_manifest(
             research_root=research_root,
             verify_sources=verify_sources,
         )
+    if manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v4":
+        from .rq5_whatif_cost_v4 import validate_v4_manifest
+
+        return validate_v4_manifest(
+            manifest,
+            research_root=research_root,
+            verify_sources=verify_sources,
+        )
 
     _require(manifest.get("format_version") == MANIFEST_FORMAT, "unsupported cost manifest")
     digest = manifest.get("semantic_digest")
@@ -743,6 +751,14 @@ _PHYSICAL_CONFIG_STAGES = (
 )
 _CATALOGLESS_CONFIG_STAGES = ("activate", "explain", "deactivate")
 _PHYSICAL_RUN_STAGES = ("baseline-initialization", "arm-cleanup")
+_V4_INPLACE_PHYSICAL_CONFIG_STAGES = (
+    "create-alter-statistics",
+    "analyze",
+    "explain",
+    "drop-statistics",
+    "post-drop-verification",
+)
+_V4_INPLACE_PHYSICAL_RUN_STAGES = ("baseline-initialization", "arm-cleanup")
 _CATALOGLESS_RUN_STAGES = (
     "fixed-sample-preparation",
     "native-payload-materialization",
@@ -764,15 +780,25 @@ def _is_v3_manifest(manifest: Mapping[str, Any]) -> bool:
     return manifest.get("protocol", {}).get("format") == "rq5-whatif-evaluation-cost-v3"
 
 
+def _is_v4_manifest(manifest: Mapping[str, Any]) -> bool:
+    return manifest.get("protocol", {}).get("format") == "rq5-whatif-evaluation-cost-v4"
+
+
 def _run_stage_names(manifest: Mapping[str, Any], arm: str) -> tuple[str, ...]:
     if arm == "physical":
+        if _is_v4_manifest(manifest):
+            return _V4_INPLACE_PHYSICAL_RUN_STAGES
         return _PHYSICAL_RUN_STAGES
-    if _is_v3_manifest(manifest):
+    if _is_v3_manifest(manifest) or _is_v4_manifest(manifest):
         return _CATALOGLESS_V3_RUN_STAGES
     return _CATALOGLESS_RUN_STAGES
 
 
-def _config_stage_names(arm: str) -> tuple[str, ...]:
+def _config_stage_names(
+    manifest: Mapping[str, Any], arm: str
+) -> tuple[str, ...]:
+    if arm == "physical" and _is_v4_manifest(manifest):
+        return _V4_INPLACE_PHYSICAL_CONFIG_STAGES
     return _PHYSICAL_CONFIG_STAGES if arm == "physical" else _CATALOGLESS_CONFIG_STAGES
 
 
@@ -782,7 +808,7 @@ def _expected_stage_keys(manifest: Mapping[str, Any], arm: str) -> list[tuple[st
     keys.extend(
         (stage, int(config["ordinal"]))
         for config in _manifest_configs(manifest)
-        for stage in _config_stage_names(arm)
+        for stage in _config_stage_names(manifest, arm)
     )
     keys.append(("arm-cleanup", None))
     return keys
@@ -807,6 +833,7 @@ def _expected_count(
         "fixed-sample-preparation",
         "arm-cleanup",
         "analyze",
+        "post-drop-verification",
     }:
         return 1
     if stage in {
@@ -842,7 +869,7 @@ def validate_events(
     configs = _manifest_configs(manifest)
     config_by_ordinal = {int(item["ordinal"]): item for item in configs}
     run_stages = set(_run_stage_names(manifest, arm))
-    config_stages = set(_config_stage_names(arm))
+    config_stages = set(_config_stage_names(manifest, arm))
     seen: set[tuple[str, int | None]] = set()
     observed_keys: list[tuple[str, int | None]] = []
     errors: list[str] = []
@@ -1090,6 +1117,18 @@ def run_physical_arm(
 ) -> dict[str, Any]:
     """Run the physical orchestration against an explicit adapter."""
 
+    if _is_v4_manifest(manifest):
+        return run_inplace_physical_arm(
+            manifest,
+            adapter,
+            run_id=run_id,
+            repetition=repetition,
+            events_path=events_path,
+            failure_output=failure_output,
+            producer_sha=producer_sha,
+            clock=clock,
+        )
+
     validate_manifest(manifest)
     event_producer_sha = _commit(
         producer_sha or manifest["producer_commit_sha"], "event producer commit"
@@ -1172,6 +1211,105 @@ def run_physical_arm(
         )
 
 
+def run_inplace_physical_arm(
+    manifest: Mapping[str, Any],
+    adapter: PhysicalCostAdapter,
+    *,
+    run_id: str,
+    repetition: int,
+    events_path: Path,
+    failure_output: Path | None = None,
+    producer_sha: str | None = None,
+    clock: Callable[[], int] = time.perf_counter_ns,
+) -> dict[str, Any]:
+    """Run v4's sequential in-place physical lifecycle.
+
+    The database is provisioned before this boundary.  Configuration-specific
+    work is CREATE/ALTER, ANALYZE, EXPLAIN, DROP, and an explicit post-drop
+    inventory check; no clone operation is part of this contract.
+    """
+
+    validate_manifest(manifest)
+    event_producer_sha = _commit(
+        producer_sha or manifest["producer_commit_sha"], "event producer commit"
+    )
+    with EventWriter(events_path) as writer:
+        timer = StageTimer(
+            writer,
+            producer_sha=event_producer_sha,
+            manifest_digest=manifest["semantic_digest"],
+            binding_digest=manifest["binding_digest"],
+            run_id=run_id,
+            arm="physical",
+            repetition=repetition,
+            protocol_format=str(manifest["protocol"]["format"]),
+            clock=clock,
+        )
+        primary: BaseException | None = None
+        cleanup_error: BaseException | None = None
+        try:
+            timer.measure("baseline-initialization", adapter.prepare_run)
+            for config in _manifest_configs(manifest):
+                timer.measure(
+                    "create-alter-statistics",
+                    lambda c=config: adapter.create_statistics(c),
+                    configuration=config,
+                )
+                timer.measure("analyze", lambda c=config: adapter.analyze(c), configuration=config)
+                timer.measure(
+                    "explain",
+                    lambda c=config: adapter.explain(
+                        c, [item["query_id"] for item in manifest["query_subset"]]
+                    ),
+                    configuration=config,
+                )
+                timer.measure(
+                    "drop-statistics",
+                    lambda c=config: adapter.drop_statistics(c),
+                    configuration=config,
+                )
+                timer.measure(
+                    "post-drop-verification",
+                    lambda c=config: adapter.verify_post_drop(c),  # type: ignore[attr-defined]
+                    configuration=config,
+                )
+        except BaseException as exc:  # noqa: BLE001 - preserve arbitrary adapter failures
+            primary = exc
+        try:
+            timer.measure("arm-cleanup", adapter.cleanup)
+        except BaseException as exc:  # noqa: BLE001 - preserve independent cleanup failures
+            cleanup_error = exc
+        if primary is not None:
+            _run_arm_failure(
+                failure_output,
+                f"{run_id}-physical-inplace-failure",
+                run_id,
+                "physical",
+                repetition,
+                manifest,
+                writer,
+                primary,
+                cleanup_error,
+            )
+            raise AdapterExecutionError(primary, cleanup_error) from primary
+        if cleanup_error is not None:
+            _run_arm_failure(
+                failure_output,
+                f"{run_id}-physical-inplace-cleanup-failure",
+                run_id,
+                "physical",
+                repetition,
+                manifest,
+                writer,
+                cleanup_error,
+                cleanup_error,
+            )
+            raise AdapterExecutionError(cleanup_error, cleanup_error) from cleanup_error
+        return summarize_events(
+            manifest, writer.events, run_id=run_id, arm="physical", repetition=repetition
+        )
+
+
 def run_catalogless_arm(
     manifest: Mapping[str, Any],
     adapter: CataloglessCostAdapter,
@@ -1204,7 +1342,7 @@ def run_catalogless_arm(
         primary: BaseException | None = None
         cleanup_error: BaseException | None = None
         try:
-            if _is_v3_manifest(manifest):
+            if _is_v3_manifest(manifest) or _is_v4_manifest(manifest):
                 timer.measure("sample-acquisition", adapter.acquire_sample)
                 timer.measure("snapshot-construction", adapter.construct_snapshot)
                 timer.measure("snapshot-serialization-validation", adapter.validate_snapshot)
@@ -1212,7 +1350,7 @@ def run_catalogless_arm(
             timer.measure("native-payload-materialization", adapter.materialize_payloads)
             timer.measure(
                 "repository-registration-and-sandbox-preparation"
-                if _is_v3_manifest(manifest)
+                if _is_v3_manifest(manifest) or _is_v4_manifest(manifest)
                 else "repository-registration",
                 adapter.register_repository,
             )

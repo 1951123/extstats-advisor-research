@@ -43,7 +43,10 @@ _EXPERIMENT_STATS_AUDIT_SQL = (
 
 
 def _is_v3_cost_manifest(manifest: Mapping[str, Any]) -> bool:
-    return manifest.get("protocol", {}).get("format") == "rq5-whatif-evaluation-cost-v3"
+    return manifest.get("protocol", {}).get("format") in {
+        "rq5-whatif-evaluation-cost-v3",
+        "rq5-whatif-evaluation-cost-v4",
+    }
 
 
 class LiveAdapterError(WhatIfCostError):
@@ -144,6 +147,15 @@ def validate_experiment_database_name(name: str) -> str:
     return _safe_database_name(name)
 
 
+def validate_inplace_database_name(name: str) -> str:
+    """Validate the stricter namespace used by v4 in-place databases."""
+
+    value = _safe_database_name(name)
+    if not value.startswith("rq5wc_v4_"):
+        raise LiveAdapterError("v4 in-place database must use the rq5wc_v4_ namespace")
+    return value
+
+
 def _connect(dsn: str, application_name: str) -> Any:
     import psycopg
 
@@ -156,6 +168,93 @@ def _make_conninfo(dsn: str, database: str) -> str:
     fields = conninfo_to_dict(dsn)
     fields["dbname"] = database
     return make_conninfo(**fields)
+
+
+def provision_inplace_database(
+    config: LiveAdapterConfig,
+    database_name: str,
+    *,
+    template_database: str,
+) -> dict[str, Any]:
+    """Create one v4 database before the primary timing boundary.
+
+    Only the strict ``rq5wc_v4_`` namespace is accepted.  The template is
+    never modified or dropped; provisioning is intentionally outside the
+    measured in-place lifecycle.
+    """
+
+    config.require_live()
+    name = validate_inplace_database_name(database_name)
+    if not isinstance(template_database, str) or re.fullmatch(
+        r"[a-z][a-z0-9_]{0,62}", template_database
+    ) is None:
+        raise LiveAdapterError("template database name is unsafe")
+    template = template_database
+    if template.startswith("rq5wc_"):
+        raise LiveAdapterError("v4 template database cannot be experiment-owned")
+    fields = _validate_explicit_dsn(config.stock_admin_dsn, "stock admin DSN")
+    if str(fields["dbname"]) == name or str(fields["dbname"]) == template:
+        raise LiveAdapterError("admin database cannot be the v4 target or template")
+    identity = _load_identity(
+        config.stock_identity_path, config.expected_stock_sha, "stock PostgreSQL"
+    )
+    admin = _connect(config.stock_admin_dsn, "extstats-research-rq5-v4-provision")
+    try:
+        server = _verify_server(admin, config.stock_admin_dsn, identity)
+        current_user = str(admin.execute("SELECT current_user").fetchone()[0])
+        template_owner = admin.execute(
+            "SELECT pg_catalog.pg_get_userbyid(datdba) FROM pg_catalog.pg_database "
+            "WHERE datname=%s",
+            (template,),
+        ).fetchone()
+        if template_owner is None:
+            raise LiveAdapterError(f"template database does not exist: {template}")
+        if str(template_owner[0]) != current_user:
+            raise LiveAdapterError("template database is not owned by the current role")
+        if admin.execute(
+            "SELECT 1 FROM pg_catalog.pg_database WHERE datname=%s", (name,)
+        ).fetchone():
+            raise LiveAdapterError(f"v4 database already exists: {name}")
+        admin.execute(
+            f"CREATE DATABASE {_quote_identifier(name)} TEMPLATE {_quote_identifier(template)}"
+        )
+        return {
+            "database": name,
+            "template_database": template,
+            "owner": current_user,
+            "server": server,
+            "provisioning_boundary": "outside-primary-timing",
+        }
+    finally:
+        admin.close()
+
+
+def drop_owned_inplace_database(config: LiveAdapterConfig, database_name: str) -> dict[str, Any]:
+    """Drop only a previously registered v4 database after ownership checks."""
+
+    config.require_live()
+    name = validate_inplace_database_name(database_name)
+    admin = _connect(config.stock_admin_dsn, "extstats-research-rq5-v4-cleanup")
+    try:
+        owner_row = admin.execute(
+            "SELECT pg_catalog.pg_get_userbyid(datdba) FROM pg_catalog.pg_database "
+            "WHERE datname=%s",
+            (name,),
+        ).fetchone()
+        if owner_row is None:
+            return {"database": name, "dropped": False, "reason": "already-absent"}
+        current_user = str(admin.execute("SELECT current_user").fetchone()[0])
+        if str(owner_row[0]) != current_user:
+            raise LiveAdapterError(f"refusing cleanup of unowned v4 database: {name}")
+        admin.execute(f"DROP DATABASE {_quote_identifier(name)} WITH (FORCE)")
+        residual = admin.execute(
+            "SELECT 1 FROM pg_catalog.pg_database WHERE datname=%s", (name,)
+        ).fetchone()
+        if residual:
+            raise LiveAdapterError(f"v4 database remains after cleanup: {name}")
+        return {"database": name, "dropped": True, "owner": current_user}
+    finally:
+        admin.close()
 
 
 def _quote_identifier(value: str) -> str:
@@ -852,6 +951,156 @@ class StockPhysicalCostAdapter(_BaseAdapter):
         return 1
 
 
+class InPlacePhysicalCostAdapter(StockPhysicalCostAdapter):
+    """v4 Physical adapter: one owned full-data database per repetition.
+
+    The inherited DDL, ANALYZE, catalog-audit, EXPLAIN, and DROP operations
+    remain the source of truth.  Only database lifecycle is changed: the
+    connection is opened once and reused for every configuration, and each
+    drop is followed by an explicit inventory check.
+    """
+
+    def __init__(
+        self,
+        manifest: Mapping[str, Any],
+        config: LiveAdapterConfig,
+        *,
+        owns_database: bool = False,
+    ) -> None:
+        super().__init__(manifest, config)
+        self._owns_inplace_database = owns_database
+        self._inplace_database: str | None = None
+
+    def prepare_run(self) -> int:
+        if self.manifest.get("protocol", {}).get("format") != "rq5-whatif-evaluation-cost-v4":
+            raise LiveAdapterError("InPlacePhysicalCostAdapter requires the v4 protocol")
+        self._load_sources()
+        if self.config.forest10_data_root is None:
+            raise LiveAdapterError("v4 physical arm requires the audited Forest10 data root")
+        from .rq5_whatif_cost_v3 import validate_full_forest10_source
+
+        validate_full_forest10_source(self.config.forest10_data_root)
+        self._identity = _load_identity(
+            self.config.stock_identity_path, self.config.expected_stock_sha, "stock PostgreSQL"
+        )
+        stock_fields = _validate_explicit_dsn(self.config.stock_dsn, "stock DSN")
+        admin_fields = _validate_explicit_dsn(self.config.stock_admin_dsn, "stock admin DSN")
+        database = validate_inplace_database_name(str(stock_fields["dbname"]))
+        admin_database = str(admin_fields["dbname"])
+        if admin_database.startswith("rq5wc_"):
+            raise LiveAdapterError("stock admin database cannot be experiment-owned")
+        self._source_database = database
+        self._admin_database = admin_database
+        self._inplace_database = database
+        connection = _connect(self.config.stock_dsn, "extstats-research-rq5-v4-inplace")
+        self._clone_connection = connection
+        try:
+            server = _verify_server(connection, self.config.stock_dsn, self._identity)
+            relation_oid = _relation_oid(connection, self._relation.schema, self._relation.name)
+            relation_name = (
+                f"{_quote_identifier(self._relation.schema)}."
+                f"{_quote_identifier(self._relation.name)}"
+            )
+            population_rows = int(connection.execute(f"SELECT count(*) FROM {relation_name}").fetchone()[0])
+            expected_population = int(self.manifest["dataset"]["full_population_rows"])
+            if population_rows != expected_population:
+                raise LiveAdapterError(
+                    f"in-place population row count {population_rows} != {expected_population}"
+                )
+            existing = connection.execute(_EXPERIMENT_STATS_AUDIT_SQL, (relation_oid,)).fetchall()
+            if existing:
+                raise LiveAdapterError(
+                    "in-place database contains unexpected experiment statistics at baseline"
+                )
+            relation_stats = connection.execute(
+                "SELECT reltuples::double precision, relpages::bigint "
+                "FROM pg_catalog.pg_class WHERE oid=%s",
+                (relation_oid,),
+            ).fetchone()
+            self._exclusive_preflight_audit(
+                {
+                    "server": server,
+                    "relation_oid": relation_oid,
+                    "source_database": database,
+                    "database_reset_strategy": "same-database-sequential-configurations",
+                    "population_rows": population_rows,
+                    "reltuples": None if relation_stats is None else float(relation_stats[0]),
+                    "relpages": None if relation_stats is None else int(relation_stats[1]),
+                    "unexpected_statistics": [],
+                }
+            )
+            return 1
+        except BaseException:
+            self._clone_connection = None
+            connection.close()
+            raise
+
+    def verify_post_drop(self, configuration: Mapping[str, Any]) -> int:
+        if self._clone_connection is None:
+            raise LiveAdapterError("in-place database is not connected")
+        relation_oid = _relation_oid(
+            self._clone_connection, self._relation.schema, self._relation.name
+        )
+        residual = self._clone_connection.execute(
+            _EXPERIMENT_STATS_AUDIT_SQL, (relation_oid,)
+        ).fetchall()
+        if residual:
+            raise LiveAdapterError(
+                "post-drop inventory contains residual experiment statistics: "
+                + repr(residual)
+            )
+        self._created_names = []
+        _exclusive_json(
+            self._audit_path(
+                "physical-post-drop", configuration
+            ),
+            {
+                "relation_oid": relation_oid,
+                "remaining_experiment_statistics": [],
+                "ordinary_statistics_fingerprint": _ordinary_fingerprint(
+                    self._clone_connection, relation_oid
+                ),
+            },
+        )
+        return 1
+
+    def cleanup(self) -> int:
+        errors: list[BaseException] = []
+        residual = False
+        if self._clone_connection is not None:
+            try:
+                relation_oid = _relation_oid(
+                    self._clone_connection, self._relation.schema, self._relation.name
+                )
+                rows = self._clone_connection.execute(
+                    _EXPERIMENT_STATS_AUDIT_SQL, (relation_oid,)
+                ).fetchall()
+                residual = bool(rows)
+                if residual:
+                    errors.append(
+                        LiveAdapterError(
+                            "refusing to drop in-place database with residual statistics: "
+                            + repr(rows)
+                        )
+                    )
+            except BaseException as exc:  # noqa: BLE001
+                errors.append(exc)
+            try:
+                self._clone_connection.close()
+            except BaseException as exc:  # noqa: BLE001
+                errors.append(exc)
+            self._clone_connection = None
+        if self._owns_inplace_database and self._inplace_database and not residual and not errors:
+            try:
+                drop_owned_inplace_database(self.config, self._inplace_database)
+                self._inplace_database = None
+            except BaseException as exc:  # noqa: BLE001
+                errors.append(exc)
+        if errors:
+            raise LiveAdapterError("in-place physical cleanup failed") from errors[0]
+        return 1
+
+
 class CataloglessWhatIfCostAdapter(_BaseAdapter):
     """Catalogless adapter using Advisor's native repository and planner session."""
 
@@ -1156,13 +1405,17 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         return 1
 
 
-def validate_live_config(config: LiveAdapterConfig) -> dict[str, Any]:
+def validate_live_config(
+    config: LiveAdapterConfig, *, inplace_physical: bool = False
+) -> dict[str, Any]:
     """Validate paths, pins, and explicit opt-in without opening a database."""
 
     stock_fields = _validate_explicit_dsn(config.stock_dsn, "stock DSN")
     admin_fields = _validate_explicit_dsn(config.stock_admin_dsn, "stock admin DSN")
     _validate_explicit_dsn(config.patched_dsn, "patched DSN")
-    if str(stock_fields["dbname"]).startswith("rq5wc_"):
+    if inplace_physical:
+        validate_inplace_database_name(str(stock_fields["dbname"]))
+    elif str(stock_fields["dbname"]).startswith("rq5wc_"):
         raise LiveAdapterError("stock DSN points at an experiment-owned database")
     if str(admin_fields["dbname"]).startswith("rq5wc_"):
         raise LiveAdapterError("stock admin DSN points at an experiment-owned database")
@@ -1174,6 +1427,7 @@ def validate_live_config(config: LiveAdapterConfig) -> dict[str, Any]:
         "status": "valid-config-only",
         "live_opt_in": config.enable_live,
         "database_names_are_explicit": True,
+        "inplace_physical_database": inplace_physical,
         "source_pins": {
             "advisor_sha": config.expected_advisor_sha,
             "stock_postgres_sha": config.expected_stock_sha,
