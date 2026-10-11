@@ -129,11 +129,13 @@ database initialization.
 
 Primary machine-readable summary:
 `experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/summary-v1.json`
-(SHA256 `29f9474b45be5b7e0731eae91bf823f34d7dd86bbe67d60bf6f9606a68b61003`).
+(file SHA256 `1f1784a248d9e468ad9cf10510d869fbf9a216cf2f0910c4bba9b789a5c3ebf0`,
+semantic digest `29f9474b45be5b7e0731eae91bf823f34d7dd86bbe67d60bf6f9606a68b61003`).
 
 Cleanup record:
 `experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/cleanup-v1.json`
-(SHA256 `8dc3fa75343ddfa8961735d0b021836ad5637ff90837d92e3bf34da6eb085e03`).
+(file SHA256 `80c6d11c8ae146a301187cf7fca1ec52cb0332063d5bb2b9464c21b77865bc82`,
+semantic digest `8dc3fa75343ddfa8961735d0b021836ad5637ff90837d92e3bf34da6eb085e03`).
 
 The summary records SHA256 values for the binding, limited manifest, raw
 physical/catalogless audits, repository manifest, and result. All artifacts
