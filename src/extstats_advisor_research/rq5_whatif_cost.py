@@ -797,9 +797,7 @@ def _run_stage_names(manifest: Mapping[str, Any], arm: str) -> tuple[str, ...]:
     return _CATALOGLESS_RUN_STAGES
 
 
-def _config_stage_names(
-    manifest: Mapping[str, Any], arm: str
-) -> tuple[str, ...]:
+def _config_stage_names(manifest: Mapping[str, Any], arm: str) -> tuple[str, ...]:
     if arm == "physical" and _is_v4_manifest(manifest):
         return _V4_INPLACE_PHYSICAL_CONFIG_STAGES
     return _PHYSICAL_CONFIG_STAGES if arm == "physical" else _CATALOGLESS_CONFIG_STAGES

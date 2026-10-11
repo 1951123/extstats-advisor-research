@@ -1,0 +1,14 @@
+{
+  "classification": "integration-readiness-only",
+  "database": "rq5wc_v4_preflight_001",
+  "owner": "wqts",
+  "provisioning_boundary": "outside-primary-timing",
+  "server": {
+    "database": "extstats_lab",
+    "role": "wqts",
+    "server_version": "16.14",
+    "server_version_num": 160014,
+    "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "template_database": "extstats_stock"
+}

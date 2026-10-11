@@ -1,0 +1,5 @@
+{
+  "classification": "integration-readiness-only",
+  "event_count": 13,
+  "path": "experiments/rq5-whatif-evaluation-cost-v4/preflight-invocations/v4-inplace-preflight-001/catalogless.events.jsonl"
+}

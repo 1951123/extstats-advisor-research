@@ -1,0 +1,63 @@
+{
+  "catalogless": {
+    "activation_order_verified": true,
+    "explain_calls": 10,
+    "materialization_analyze_calls": 1,
+    "per_configuration_analyze_calls": 0,
+    "population_metadata_rows": 581012,
+    "repository_candidates": 57,
+    "sample_rows": 30000,
+    "sandbox_prepare_analyze_calls": 1,
+    "status": "complete"
+  },
+  "classification": "integration-readiness-only",
+  "data_bindings": {
+    "candidate_count": 57,
+    "candidate_universe_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "full_csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "full_population_rows": 581012,
+    "sample_index_digest": "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b",
+    "sample_rows": 30000,
+    "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5"
+  },
+  "formal_manifest_semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+  "formal_timing_authorization_after_preflight": true,
+  "invocation_id": "v4-inplace-preflight-001",
+  "physical": {
+    "analyze_calls": 2,
+    "explain_calls": 10,
+    "ordinary_statistics_fingerprints": [
+      "3c180a01936ee24307d41193c7e57877ba91538e6eb3c8311671ab5025d795a6",
+      "693e1bd07f91f422639530a525515bed1a2fe7e90790e4f17b4e33bdf5c0317d"
+    ],
+    "payload_states": [
+      "present",
+      "present"
+    ],
+    "post_drop_empty_after_each_configuration": true,
+    "same_database_relation_oid": 16501,
+    "status": "complete"
+  },
+  "preflight_manifest_binding_digest": "27467a9fa07799bb1b7ee49a6ac7b4217aa0c0d0a1dcbaa1a68c66ca47370438",
+  "preflight_manifest_semantic_digest": "3e0e15337ea2c733445909dee8e739ced13b6da2725955d7fddaad618f31d646",
+  "protocol": "rq5-whatif-evaluation-cost-v4",
+  "selected_configuration_ids": [
+    "A-singleton-01",
+    "A-singleton-02"
+  ],
+  "selected_query_ids": [
+    "arecel_forest10_test_000000",
+    "arecel_forest10_test_000078",
+    "arecel_forest10_test_000157",
+    "arecel_forest10_test_000236",
+    "arecel_forest10_test_000314"
+  ],
+  "source_identities": {
+    "advisor": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgres": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgres_version": "16.14",
+    "stock_postgres": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "PASS",
+  "timing_classification": "not scientific timing evidence"
+}

@@ -185,9 +185,10 @@ def provision_inplace_database(
 
     config.require_live()
     name = validate_inplace_database_name(database_name)
-    if not isinstance(template_database, str) or re.fullmatch(
-        r"[a-z][a-z0-9_]{0,62}", template_database
-    ) is None:
+    if (
+        not isinstance(template_database, str)
+        or re.fullmatch(r"[a-z][a-z0-9_]{0,62}", template_database) is None
+    ):
         raise LiveAdapterError("template database name is unsafe")
     template = template_database
     if template.startswith("rq5wc_"):
@@ -1001,7 +1002,9 @@ class InPlacePhysicalCostAdapter(StockPhysicalCostAdapter):
                 f"{_quote_identifier(self._relation.schema)}."
                 f"{_quote_identifier(self._relation.name)}"
             )
-            population_rows = int(connection.execute(f"SELECT count(*) FROM {relation_name}").fetchone()[0])
+            population_rows = int(
+                connection.execute(f"SELECT count(*) FROM {relation_name}").fetchone()[0]
+            )
             expected_population = int(self.manifest["dataset"]["full_population_rows"])
             if population_rows != expected_population:
                 raise LiveAdapterError(
@@ -1046,14 +1049,11 @@ class InPlacePhysicalCostAdapter(StockPhysicalCostAdapter):
         ).fetchall()
         if residual:
             raise LiveAdapterError(
-                "post-drop inventory contains residual experiment statistics: "
-                + repr(residual)
+                "post-drop inventory contains residual experiment statistics: " + repr(residual)
             )
         self._created_names = []
         _exclusive_json(
-            self._audit_path(
-                "physical-post-drop", configuration
-            ),
+            self._audit_path("physical-post-drop", configuration),
             {
                 "relation_oid": relation_oid,
                 "remaining_experiment_statistics": [],

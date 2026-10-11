@@ -1,0 +1,44 @@
+{
+  "catalogless": {
+    "configuration_count": 2,
+    "event_count": 13,
+    "explain_calls": 10,
+    "missing_events": [],
+    "status": "complete"
+  },
+  "catalogless_event_sha256": "8b31a36266babdefa4078ec9680b02f32e4b86e91166380e9e262142b057115e",
+  "catalogless_materialization_analyze_operations": 1,
+  "catalogless_per_configuration_analyze_operations": 0,
+  "catalogless_sandbox_analyze_operations": 1,
+  "classification": "integration-readiness-only",
+  "physical": {
+    "configuration_count": 2,
+    "event_count": 12,
+    "explain_calls": 10,
+    "missing_events": [],
+    "status": "complete"
+  },
+  "physical_analyze_operations": 2,
+  "physical_event_sha256": "c0cd68542d8f5fdf43635fbd3675ab5f7797b2a5d2f4200202189fc57d4fd6da",
+  "required_catalogless_stages": [
+    "sample-acquisition",
+    "snapshot-construction",
+    "snapshot-serialization-validation",
+    "fixed-sample-preparation",
+    "native-payload-materialization",
+    "repository-registration-and-sandbox-preparation",
+    "activate",
+    "explain",
+    "deactivate",
+    "arm-cleanup"
+  ],
+  "required_physical_stages": [
+    "baseline-initialization",
+    "create-alter-statistics",
+    "analyze",
+    "explain",
+    "drop-statistics",
+    "post-drop-verification",
+    "arm-cleanup"
+  ]
+}

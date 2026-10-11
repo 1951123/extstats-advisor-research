@@ -1,0 +1,99 @@
+{
+  "arms": {
+    "catalogless": {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "binding_digest": "27467a9fa07799bb1b7ee49a6ac7b4217aa0c0d0a1dcbaa1a68c66ca47370438",
+      "cleanup_ns": 14857191,
+      "configuration_count": 2,
+      "cumulative": [
+        {
+          "complete_lifecycle_ns": 6719375526,
+          "configuration_id": "A-singleton-01",
+          "configuration_size": 1,
+          "ordinal": 1,
+          "warm_start_ns": 3155946
+        },
+        {
+          "complete_lifecycle_ns": 6736590141,
+          "configuration_id": "A-singleton-02",
+          "configuration_size": 1,
+          "ordinal": 2,
+          "warm_start_ns": 5513370
+        }
+      ],
+      "explain_calls": 10,
+      "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+      "manifest_semantic_digest": "3e0e15337ea2c733445909dee8e739ced13b6da2725955d7fddaad618f31d646",
+      "preparation_ns": 6716219580,
+      "repetition": 1,
+      "run_id": "v4-inplace-preflight-001",
+      "stage_totals_ns": {
+        "activate": 1471272,
+        "arm-cleanup": 14857191,
+        "deactivate": 939054,
+        "explain": 3103044,
+        "fixed-sample-preparation": 1081676378,
+        "native-payload-materialization": 2393988021,
+        "repository-registration-and-sandbox-preparation": 1826652347,
+        "sample-acquisition": 1233069300,
+        "snapshot-construction": 39571026,
+        "snapshot-serialization-validation": 141262508
+      },
+      "status": "complete",
+      "warm_start_excludes": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation"
+      ]
+    },
+    "physical": {
+      "analyze_calls": 2,
+      "arm": "physical",
+      "binding_digest": "27467a9fa07799bb1b7ee49a6ac7b4217aa0c0d0a1dcbaa1a68c66ca47370438",
+      "cleanup_ns": 61741992,
+      "configuration_count": 2,
+      "cumulative": [
+        {
+          "complete_lifecycle_ns": 2332445921,
+          "configuration_id": "A-singleton-01",
+          "configuration_size": 1,
+          "ordinal": 1,
+          "warm_start_ns": 223984621
+        },
+        {
+          "complete_lifecycle_ns": 2602759502,
+          "configuration_id": "A-singleton-02",
+          "configuration_size": 1,
+          "ordinal": 2,
+          "warm_start_ns": 432556210
+        }
+      ],
+      "explain_calls": 10,
+      "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+      "manifest_semantic_digest": "3e0e15337ea2c733445909dee8e739ced13b6da2725955d7fddaad618f31d646",
+      "preparation_ns": 2108461300,
+      "repetition": 1,
+      "run_id": "v4-inplace-preflight-001",
+      "stage_totals_ns": {
+        "analyze": 420509327,
+        "arm-cleanup": 61741992,
+        "baseline-initialization": 2108461300,
+        "create-alter-statistics": 1984635,
+        "drop-statistics": 1103588,
+        "explain": 3912333,
+        "post-drop-verification": 5046327
+      },
+      "status": "complete",
+      "warm_start_excludes": [
+        "baseline-initialization"
+      ]
+    }
+  },
+  "classification": "integration-readiness-only",
+  "invocation_id": "v4-inplace-preflight-001",
+  "status": "PASS"
+}

@@ -1,0 +1,40 @@
+{
+  "catalogless_sample_rows": 30000,
+  "classification": "integration-readiness-only",
+  "formal_manifest_path": "experiments/rq5-whatif-evaluation-cost-v4/manifests/analysis-a-manifest-v1.json",
+  "formal_manifest_semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+  "formal_manifest_sha256": "6710fa425409103c12f4710f163db05082930604da83b41c03c0073b580f3701",
+  "full_population_rows": 581012,
+  "invocation_id": "v4-inplace-preflight-001",
+  "preflight_manifest_binding_digest": "27467a9fa07799bb1b7ee49a6ac7b4217aa0c0d0a1dcbaa1a68c66ca47370438",
+  "preflight_manifest_semantic_digest": "3e0e15337ea2c733445909dee8e739ced13b6da2725955d7fddaad618f31d646",
+  "producer_commit": "fcbb721a98c0769aa3bc8e8f2f3b33b71c9edc41",
+  "selected_configurations": [
+    "A-singleton-01",
+    "A-singleton-02"
+  ],
+  "selected_query_ids": [
+    "arecel_forest10_test_000000",
+    "arecel_forest10_test_000078",
+    "arecel_forest10_test_000157",
+    "arecel_forest10_test_000236",
+    "arecel_forest10_test_000314"
+  ],
+  "source_pins": {
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "candidate_universe": {
+      "path": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json",
+      "semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134"
+    },
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "rq4_ablation": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+      "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9"
+    },
+    "rq4_design": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "classification": "integration-readiness-only",
+  "lab_instances_left_running_for_followup": true,
+  "patched_database": "extstats_stock",
+  "patched_internal_sandbox_relation_count": 0,
+  "patched_managed_sandbox_relation_count": 0,
+  "physical_database": "rq5wc_v4_preflight_001",
+  "physical_database_absent_after_adapter_cleanup": true,
+  "physical_source_database": "extstats_stock",
+  "physical_source_experiment_statistics_count": 0,
+  "physical_source_relation_rows": 581012,
+  "status": "verified-clean"
+}

@@ -1,0 +1,27 @@
+{
+  "attempted": 5,
+  "failed": 0,
+  "rows": [
+    {
+      "plan_rows": 6779,
+      "query_id": "arecel_forest10_test_000000"
+    },
+    {
+      "plan_rows": 3731,
+      "query_id": "arecel_forest10_test_000078"
+    },
+    {
+      "plan_rows": 142929,
+      "query_id": "arecel_forest10_test_000157"
+    },
+    {
+      "plan_rows": 17477,
+      "query_id": "arecel_forest10_test_000236"
+    },
+    {
+      "plan_rows": 39,
+      "query_id": "arecel_forest10_test_000314"
+    }
+  ],
+  "successful": 5
+}
