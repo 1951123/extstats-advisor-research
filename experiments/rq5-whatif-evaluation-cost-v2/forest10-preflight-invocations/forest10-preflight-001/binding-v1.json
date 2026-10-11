@@ -1,0 +1,104 @@
+{
+  "format_version": "rq5-forest10-limited-preflight-binding-v1",
+  "status": "static-binding-passed",
+  "classification": "integration-readiness-only",
+  "invocation_id": "forest10-preflight-001",
+  "producer_commit_sha": "dd1a605d09aae6ef3f67510f2c537700a9e38f2f",
+  "protocol": {
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v2.md",
+    "sha256": "56175f66c6e05066de91ef7219984c7f5889a6484173c4d4a6766ce8aeaf5192",
+    "formal_analysis_a": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-a-manifest-v1.json",
+      "semantic_digest": "c58f6abed18a4a3998c1bb49cf125cc760fc27de793e36588e17bbf84d8d8b81",
+      "byte_sha256": "d0c4d8a991b74581d9bbaaa69881b8b1dae66911d55fabc85940fce78186c919"
+    },
+    "formal_analysis_b": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-b-manifest-v1.json",
+      "semantic_digest": "28c795e1f9c9e16b6de83b08a4ef12bc77e9a5ad37f0e1bfd1c33a95f02dc472",
+      "byte_sha256": "e71710605ec8295b3063916aa8c90b2ec9a2dde1dbf3071ec72f067f846b28cd"
+    }
+  },
+  "source_bindings": {
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "postgresql_version": "16.14",
+    "stock_identity_path": ".runtime/postgres-lab/stock/identity.json",
+    "stock_identity_sha256": "1402807eb37b6643bbb2f4f83ef33f1b7fd80a399aa77cb756d349c44c28ffbb",
+    "patched_identity_path": ".runtime/postgres-lab/patched/identity.json",
+    "patched_identity_sha256": "a2d33d3604ba3209b2ccba5b0055c883df947b4f3215a516237f94fa1da417bb",
+    "advisor_checkout_verification": "detached historical worktree at 0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+  },
+  "forest10": {
+    "dataset_id": "arecel-forest10",
+    "workload_id": "arecel_forest10_test_v1",
+    "relation": {
+      "catalog": "extstats_stock",
+      "schema": "public",
+      "name": "forest10",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "statistics_target": 100
+    },
+    "snapshot": {
+      "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot",
+      "semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+      "manifest_sha256": "7d05f86bde463e6b4c1090261306784ec8c7960b28baaccdddc27b56499f31ed"
+    },
+    "candidate_universe": {
+      "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+      "count": 57,
+      "semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+      "source_sha256": "006b82f33ed08e0df7320caae74e7836394c2e027a0490bfab3ea90a1c9f6703"
+    },
+    "workload": {
+      "path": "runs/_forest10_workload.json",
+      "count": 10000,
+      "sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    }
+  },
+  "limited_scope": {
+    "formal_analysis": "A",
+    "selected_configuration": {
+      "configuration_id": "A-singleton-01",
+      "ordinal": 1,
+      "candidate_ids": ["cand_1537a6ae8ef67c379c8d0fa0"],
+      "declared_order": ["cand_1537a6ae8ef67c379c8d0fa0"],
+      "configuration_size": 1
+    },
+    "selected_query_count": 5,
+    "selection_rule": "first five entries of the frozen 128-query manifest subset, in manifest order",
+    "query_ids": [
+      "arecel_forest10_test_000000",
+      "arecel_forest10_test_000078",
+      "arecel_forest10_test_000157",
+      "arecel_forest10_test_000236",
+      "arecel_forest10_test_000314"
+    ],
+    "query_sql_sha256": [
+      "204592927aae8fa55d02e7484032fe6b55a5d0e6dad14c40a869916b3cabe2da",
+      "ea9dcea5cfe6ce1c531490750a35f1c4ba112bff2a444f52294f131ec42fe62e2",
+      "5413882b4a7ae626a7c461c9078c414f34ac8d4a358ebfcbfacf3e181ad5dc18",
+      "8af3ac91ae14bc88342d5a44532a7bfe38d611cd202b3f5950399e909e054375",
+      "b91f84b6b1d66f0bcb17d05a4198c3b567f4ec9f0bff197d69c1749cd5c66266"
+    ],
+    "physical_analyze_limit": 1,
+    "physical_explain_limit": 5,
+    "catalogless_configuration_limit": 1,
+    "catalogless_explain_limit": 5,
+    "formal_timing": false,
+    "advisor_search": false,
+    "ground_truth_acquisition": false
+  },
+  "preflight_gates": {
+    "formal_manifests_validated": true,
+    "formal_manifests_unchanged": true,
+    "snapshot_sealed_and_bound": true,
+    "candidate_count_is_57": true,
+    "selected_candidate_is_in_analysis_a": true,
+    "selected_queries_are_in_formal_subset": true,
+    "source_pins_match_protocol": true,
+    "live_database_writes": false,
+    "status_before_live_execution": "static-binding-passed"
+  }
+}
