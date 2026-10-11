@@ -1085,15 +1085,19 @@ def run_physical_arm(
     repetition: int,
     events_path: Path,
     failure_output: Path | None = None,
+    producer_sha: str | None = None,
     clock: Callable[[], int] = time.perf_counter_ns,
 ) -> dict[str, Any]:
     """Run the physical orchestration against an explicit adapter."""
 
     validate_manifest(manifest)
+    event_producer_sha = _commit(
+        producer_sha or manifest["producer_commit_sha"], "event producer commit"
+    )
     with EventWriter(events_path) as writer:
         timer = StageTimer(
             writer,
-            producer_sha=manifest["producer_commit_sha"],
+            producer_sha=event_producer_sha,
             manifest_digest=manifest["semantic_digest"],
             binding_digest=manifest["binding_digest"],
             run_id=run_id,
@@ -1176,15 +1180,19 @@ def run_catalogless_arm(
     repetition: int,
     events_path: Path,
     failure_output: Path | None = None,
+    producer_sha: str | None = None,
     clock: Callable[[], int] = time.perf_counter_ns,
 ) -> dict[str, Any]:
     """Run the catalogless orchestration against an explicit adapter."""
 
     validate_manifest(manifest)
+    event_producer_sha = _commit(
+        producer_sha or manifest["producer_commit_sha"], "event producer commit"
+    )
     with EventWriter(events_path) as writer:
         timer = StageTimer(
             writer,
-            producer_sha=manifest["producer_commit_sha"],
+            producer_sha=event_producer_sha,
             manifest_digest=manifest["semantic_digest"],
             binding_digest=manifest["binding_digest"],
             run_id=run_id,

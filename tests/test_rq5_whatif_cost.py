@@ -230,6 +230,22 @@ def test_physical_and_catalogless_runs_account_for_all_stages(tmp_path: Path) ->
     assert read_events(catalogless_events)
 
 
+def test_run_event_producer_can_bind_current_execution_commit(tmp_path: Path) -> None:
+    manifest, _ = _manifests(tmp_path)
+    events_path = tmp_path / "producer.events.jsonl"
+    run_physical_arm(
+        manifest,
+        FakePhysical(),
+        run_id="producer-run",
+        repetition=1,
+        events_path=events_path,
+        producer_sha="a" * 40,
+        clock=_clock(),
+    )
+    events = read_events(events_path)
+    assert {event["producer_commit_sha"] for event in events} == {"a" * 40}
+
+
 def test_partial_runs_are_not_summarized(tmp_path: Path) -> None:
     manifest, _ = _manifests(tmp_path)
     events_path = tmp_path / "partial.events.jsonl"
