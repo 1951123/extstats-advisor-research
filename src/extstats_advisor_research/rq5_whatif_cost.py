@@ -427,7 +427,10 @@ def validate_manifest(
 ) -> dict[str, Any]:
     """Validate structure, immutable source bindings, and both analysis boundaries."""
 
-    if manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+    if manifest.get("format_version") in {
+        "rq5-whatif-evaluation-cost-manifest-v3",
+        "rq5-whatif-evaluation-cost-timing-smoke-manifest-v1",
+    }:
         from .rq5_whatif_cost_v3 import validate_v3_manifest
 
         return validate_v3_manifest(
@@ -758,7 +761,7 @@ _CATALOGLESS_V3_RUN_STAGES = (
 
 
 def _is_v3_manifest(manifest: Mapping[str, Any]) -> bool:
-    return manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3"
+    return manifest.get("protocol", {}).get("format") == "rq5-whatif-evaluation-cost-v3"
 
 
 def _run_stage_names(manifest: Mapping[str, Any], arm: str) -> tuple[str, ...]:

@@ -9,6 +9,7 @@ are intended to run before a separately authorized live benchmark.
 
 from __future__ import annotations
 
+import copy
 import csv
 import hashlib
 import json
@@ -38,6 +39,7 @@ from .rq5_whatif_cost import (
 V3_PROTOCOL_FORMAT = "rq5-whatif-evaluation-cost-v3"
 V3_PROTOCOL_PATH = "docs/protocols/rq5-whatif-evaluation-cost-v3.md"
 V3_MANIFEST_FORMAT = "rq5-whatif-evaluation-cost-manifest-v3"
+V3_TIMING_SMOKE_MANIFEST_FORMAT = "rq5-whatif-evaluation-cost-timing-smoke-manifest-v1"
 V3_EXPERIMENT_ID = "rq5-whatif-evaluation-cost-v3-forest10"
 V3_SAMPLE_ROWS = 30_000
 V3_SAMPLE_SEED = 42
@@ -503,6 +505,171 @@ def build_v3_manifest(
     return body
 
 
+def build_v3_timing_smoke_manifest(
+    formal_manifest: Mapping[str, Any],
+    *,
+    formal_manifest_path: str,
+    formal_manifest_sha256: str,
+) -> dict[str, Any]:
+    """Derive a non-scientific one-configuration timing smoke manifest."""
+
+    validate_v3_manifest(formal_manifest)
+    if formal_manifest.get("analysis") != "A":
+        raise WhatIfCostError("timing smoke requires the formal Analysis A manifest")
+    configurations = formal_manifest["analysis_a"]["configurations"]
+    selected_configuration = copy.deepcopy(configurations[0])
+    selected_queries = copy.deepcopy(formal_manifest["query_subset"][:5])
+    derived = copy.deepcopy(dict(formal_manifest))
+    derived.update(
+        {
+            "format_version": V3_TIMING_SMOKE_MANIFEST_FORMAT,
+            "status": "ready-for-timing-smoke",
+            "source_formal_manifest": {
+                "path": formal_manifest_path,
+                "semantic_digest": formal_manifest["semantic_digest"],
+                "byte_sha256": formal_manifest_sha256,
+            },
+            "query_subset": selected_queries,
+            "query_subset_size": len(selected_queries),
+            "analysis_a": {
+                "evaluation_count": 1,
+                "configuration_size": 1,
+                "checkpoints": [1],
+                "configurations": [selected_configuration],
+            },
+            "analysis_b": {"configuration_sizes": [], "configurations": []},
+            "timing_smoke": {
+                "classification": "timing-instrumentation-only",
+                "configuration_count": 1,
+                "query_count": len(selected_queries),
+                "formal_timing_authorized": False,
+                "scientific_results_authorized": False,
+            },
+        }
+    )
+    derived["binding_digest"] = semantic_digest(
+        {
+            "source_formal_manifest": derived["source_formal_manifest"],
+            "candidate_definitions": derived["candidate_universe"]["definitions"],
+            "workload": derived["workload"],
+            "query_subset": selected_queries,
+            "configuration": selected_configuration,
+        }
+    )
+    derived["semantic_digest"] = semantic_digest(_body(derived))
+    return derived
+
+
+def validate_v3_timing_smoke_manifest(
+    manifest: Mapping[str, Any],
+    *,
+    research_root: Path | None = None,
+    require_sample: bool = False,
+) -> dict[str, Any]:
+    """Validate the bounded, non-scientific v3 timing-smoke binding."""
+
+    _v3_require(
+        manifest.get("format_version") == V3_TIMING_SMOKE_MANIFEST_FORMAT,
+        "unsupported v3 timing-smoke manifest",
+    )
+    _v3_require(
+        manifest.get("semantic_digest") == semantic_digest(_body(manifest)),
+        "v3 timing-smoke manifest semantic digest mismatch",
+    )
+    _commit(manifest.get("producer_commit_sha"), "producer commit")
+    _v3_require(manifest.get("experiment_id") == V3_EXPERIMENT_ID, "v3 experiment identity drifted")
+    _v3_require(manifest.get("query_subset_size") == 5, "timing smoke query count drifted")
+    dataset = manifest.get("dataset", {})
+    _v3_require(
+        dataset.get("full_population_rows") == V3_POPULATION_ROWS,
+        "full population row count drifted",
+    )
+    _v3_require(dataset.get("catalogless_sample_rows") == V3_SAMPLE_ROWS, "sample size drifted")
+    _v3_require(dataset.get("sample_seed") == V3_SAMPLE_SEED, "sample seed drifted")
+    _v3_require(dataset.get("statistics_target") == 100, "statistics target drifted")
+    _v3_require(dataset.get("candidate_count") == V3_CANDIDATE_COUNT, "candidate count drifted")
+    bindings = manifest.get("source_bindings", {})
+    _v3_require(bindings.get("advisor_sha") == ADVISOR_SHA_V1, "Advisor source pin drifted")
+    _v3_require(
+        bindings.get("stock_postgres_sha") == STOCK_POSTGRES_SHA, "stock source pin drifted"
+    )
+    _v3_require(
+        bindings.get("patched_postgres_sha") == PATCHED_POSTGRES_SHA, "patched source pin drifted"
+    )
+    _sha(manifest.get("protocol", {}).get("sha256"), "v3 protocol sha256")
+    _sha(manifest.get("binding_digest"), "v3 timing-smoke binding digest")
+    definitions = manifest.get("candidate_universe", {}).get("definitions", [])
+    ids = [item.get("candidate_id") for item in definitions]
+    _v3_require(
+        len(ids) == V3_CANDIDATE_COUNT and len(set(ids)) == V3_CANDIDATE_COUNT,
+        "timing-smoke candidates incomplete",
+    )
+    queries = manifest.get("query_subset", [])
+    _v3_require(len(queries) == 5, "timing-smoke query subset incomplete")
+    _v3_require(
+        len({item.get("query_id") for item in queries}) == 5,
+        "duplicate timing-smoke query IDs",
+    )
+    for query in queries:
+        _v3_require(isinstance(query.get("query_id"), str), "invalid timing-smoke query ID")
+        _sha(query.get("sql_sha256"), "timing-smoke SQL digest")
+    configurations = manifest.get("analysis_a", {}).get("configurations", [])
+    _v3_require(len(configurations) == 1, "timing-smoke requires one configuration")
+    configuration = configurations[0]
+    _v3_require(configuration.get("ordinal") == 1, "timing-smoke ordinal drifted")
+    _v3_require(
+        configuration.get("configuration_id") == "A-singleton-01",
+        "timing-smoke configuration drifted",
+    )
+    candidate_ids = configuration.get("candidate_ids")
+    _v3_require(candidate_ids == [ids[0]], "timing-smoke singleton drifted")
+    _v3_require(configuration.get("declared_order") == candidate_ids, "timing-smoke order drifted")
+    _v3_require(configuration.get("configuration_size") == 1, "timing-smoke size drifted")
+    sample_contract = manifest.get("sample_contract", {})
+    _v3_require(
+        sample_contract.get("sample_rows") == V3_SAMPLE_ROWS, "sample contract row count drifted"
+    )
+    _v3_require(
+        sample_contract.get("selection", {}).get("algorithm") == V3_SAMPLE_SELECTION,
+        "sample selection algorithm drifted",
+    )
+    smoke = manifest.get("timing_smoke", {})
+    _v3_require(
+        smoke.get("classification") == "timing-instrumentation-only",
+        "timing-smoke classification drifted",
+    )
+    _v3_require(
+        smoke.get("formal_timing_authorized") is False, "timing-smoke authorization drifted"
+    )
+    if require_sample:
+        path_value = sample_contract.get("snapshot_path")
+        _v3_require(path_value, "v3 sealed snapshot is required")
+        snapshot_path = Path(path_value)
+        if research_root is not None and not snapshot_path.is_absolute():
+            snapshot_path = research_root / snapshot_path
+        _v3_require(snapshot_path.is_dir(), f"v3 sealed snapshot is missing: {snapshot_path}")
+        from extstats_advisor.snapshot.bundle import load_snapshot
+
+        snapshot = load_snapshot(snapshot_path)
+        _v3_require(
+            snapshot.semantic_digest == sample_contract.get("snapshot_semantic_digest"),
+            "v3 snapshot digest mismatch",
+        )
+        _v3_require(
+            len(snapshot.samples[V3_RELATION_ID]) == V3_SAMPLE_ROWS,
+            "v3 sealed snapshot row count mismatch",
+        )
+    return {
+        "status": "valid",
+        "format_version": V3_TIMING_SMOKE_MANIFEST_FORMAT,
+        "semantic_digest": manifest["semantic_digest"],
+        "binding_digest": manifest["binding_digest"],
+        "configuration_count": 1,
+        "query_count": 5,
+        "classification": "timing-instrumentation-only",
+    }
+
+
 def validate_v3_manifest(
     manifest: Mapping[str, Any],
     *,
@@ -512,6 +679,12 @@ def validate_v3_manifest(
 ) -> dict[str, Any]:
     """Validate v3 structure; strict sample readiness is opt-in and fail-closed."""
 
+    if manifest.get("format_version") == V3_TIMING_SMOKE_MANIFEST_FORMAT:
+        return validate_v3_timing_smoke_manifest(
+            manifest,
+            research_root=research_root,
+            require_sample=require_sample,
+        )
     _v3_require(manifest.get("format_version") == V3_MANIFEST_FORMAT, "unsupported v3 manifest")
     _v3_require(
         manifest.get("semantic_digest") == semantic_digest(_body(manifest)),
@@ -660,9 +833,11 @@ __all__ = [
     "V3_SAMPLE_INDEX_DIGEST",
     "V3_SAMPLE_ROWS",
     "V3_SAMPLE_SEED",
+    "V3_TIMING_SMOKE_MANIFEST_FORMAT",
     "V3SampleAcquisition",
     "acquire_v3_sample",
     "build_v3_manifest",
+    "build_v3_timing_smoke_manifest",
     "construct_v3_snapshot",
     "derive_sample_indices",
     "prepare_v3_candidate_universe",
@@ -671,4 +846,5 @@ __all__ = [
     "sample_recipe",
     "validate_full_forest10_source",
     "validate_v3_manifest",
+    "validate_v3_timing_smoke_manifest",
 ]

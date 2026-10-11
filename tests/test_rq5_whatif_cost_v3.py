@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from extstats_advisor_research.provenance import sha256_file
 from extstats_advisor_research.rq5_whatif_cost import (
     IncompleteRunError,
     WhatIfCostError,
@@ -18,6 +19,8 @@ from extstats_advisor_research.rq5_whatif_cost_v3 import (
     V3_MANIFEST_FORMAT,
     V3_SAMPLE_INDEX_DIGEST,
     V3_SAMPLE_ROWS,
+    V3_TIMING_SMOKE_MANIFEST_FORMAT,
+    build_v3_timing_smoke_manifest,
     derive_sample_indices,
     sample_index_digest,
     sample_recipe,
@@ -90,6 +93,24 @@ def test_v3_manifest_rejects_sample_size_drift() -> None:
     value["dataset"]["catalogless_sample_rows"] = 10_000
     with pytest.raises(WhatIfCostError, match="semantic digest mismatch"):
         validate_v3_manifest(value)
+
+
+def test_v3_timing_smoke_manifest_is_derived_without_mutating_formal_binding() -> None:
+    formal_path = MANIFESTS / "analysis-a-manifest-v1.json"
+    formal = _manifest("A")
+    smoke = build_v3_timing_smoke_manifest(
+        formal,
+        formal_manifest_path=formal_path.as_posix(),
+        formal_manifest_sha256=sha256_file(formal_path),
+    )
+    assert smoke["format_version"] == V3_TIMING_SMOKE_MANIFEST_FORMAT
+    assert validate_manifest(smoke)["query_count"] == 5
+    assert validate_v3_manifest(smoke, require_sample=True)["classification"] == (
+        "timing-instrumentation-only"
+    )
+    assert len(smoke["candidate_universe"]["definitions"]) == 57
+    assert len(formal["query_subset"]) == 128
+    assert len(formal["analysis_a"]["configurations"]) == 20
 
 
 class _FakeV3Catalogless:

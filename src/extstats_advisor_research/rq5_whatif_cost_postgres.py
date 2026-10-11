@@ -42,6 +42,10 @@ _EXPERIMENT_STATS_AUDIT_SQL = (
 )
 
 
+def _is_v3_cost_manifest(manifest: Mapping[str, Any]) -> bool:
+    return manifest.get("protocol", {}).get("format") == "rq5-whatif-evaluation-cost-v3"
+
+
 class LiveAdapterError(WhatIfCostError):
     """Raised when a live adapter cannot prove its execution boundary safe."""
 
@@ -464,7 +468,7 @@ class _BaseAdapter:
 
         snapshot_path = self._runtime_snapshot_path or self.config.snapshot_path
         self._snapshot = load_snapshot(snapshot_path)
-        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+        if _is_v3_cost_manifest(self.manifest):
             from .rq5_whatif_cost_v3 import V3_POPULATION_ROWS, V3_RELATION_ID, V3_SAMPLE_ROWS
 
             dataset = self.manifest.get("dataset", {})
@@ -527,7 +531,7 @@ class StockPhysicalCostAdapter(_BaseAdapter):
 
     def prepare_run(self) -> int:
         self._load_sources()
-        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+        if _is_v3_cost_manifest(self.manifest):
             if self.config.forest10_data_root is None:
                 raise LiveAdapterError("v3 physical arm requires the audited Forest10 data root")
             from .rq5_whatif_cost_v3 import validate_full_forest10_source
@@ -550,7 +554,7 @@ class StockPhysicalCostAdapter(_BaseAdapter):
             relation_oid = _relation_oid(connection, self._relation.schema, self._relation.name)
             population_rows = None
             relation_stats = None
-            if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+            if _is_v3_cost_manifest(self.manifest):
                 relation_name = (
                     f"{_quote_identifier(self._relation.schema)}."
                     f"{_quote_identifier(self._relation.name)}"
@@ -593,8 +597,7 @@ class StockPhysicalCostAdapter(_BaseAdapter):
                             "actual_sample_row_count_observable": False,
                             "actual_sample_row_count_evidence": "not exposed by standard PostgreSQL catalog",
                         }
-                        if self.manifest.get("format_version")
-                        == "rq5-whatif-evaluation-cost-manifest-v3"
+                        if _is_v3_cost_manifest(self.manifest)
                         else None
                     ),
                 }
@@ -863,7 +866,7 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
     def acquire_sample(self) -> int:
         """Materialize the frozen v3 rows inside the primary timing boundary."""
 
-        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+        if not _is_v3_cost_manifest(self.manifest):
             raise LiveAdapterError("runtime sample acquisition is only defined for v3")
         self._require_live()
         if self.config.forest10_data_root is None:
@@ -902,7 +905,7 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
     def construct_snapshot(self) -> int:
         """Build an AdvisorSnapshot from the already acquired v3 rows."""
 
-        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+        if not _is_v3_cost_manifest(self.manifest):
             raise LiveAdapterError("runtime Snapshot construction is only defined for v3")
         self._require_live()
         if self._sample_acquisition is None:
@@ -919,7 +922,7 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
     def validate_snapshot(self) -> int:
         """Serialize, reload, and validate the runtime v3 Snapshot binding."""
 
-        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+        if not _is_v3_cost_manifest(self.manifest):
             raise LiveAdapterError("runtime Snapshot validation is only defined for v3")
         self._require_live()
         if self._constructed_snapshot is None:
@@ -951,10 +954,7 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         return 1
 
     def prepare_sample(self) -> int:
-        if (
-            self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3"
-            and self._runtime_snapshot_path is None
-        ):
+        if _is_v3_cost_manifest(self.manifest) and self._runtime_snapshot_path is None:
             raise LiveAdapterError(
                 "v3 catalogless arm requires a runtime-produced Snapshot; "
                 "prebuilt Snapshot loading is not valid for complete lifecycle timing"
