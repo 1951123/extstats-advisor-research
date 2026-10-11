@@ -1,0 +1,92 @@
+{
+  "classification": "formal-rq5-v4-analysis-a",
+  "completed": [
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P1",
+      "repetition": 1,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C1",
+      "repetition": 1,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C2",
+      "repetition": 2,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P2",
+      "repetition": 2,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P3",
+      "repetition": 3,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C3",
+      "repetition": 3,
+      "status": "complete"
+    }
+  ],
+  "schedule": [
+    {
+      "arm": "physical",
+      "label": "P1",
+      "ordinal": 1,
+      "repetition": 1
+    },
+    {
+      "arm": "catalogless",
+      "label": "C1",
+      "ordinal": 2,
+      "repetition": 1
+    },
+    {
+      "arm": "catalogless",
+      "label": "C2",
+      "ordinal": 3,
+      "repetition": 2
+    },
+    {
+      "arm": "physical",
+      "label": "P2",
+      "ordinal": 4,
+      "repetition": 2
+    },
+    {
+      "arm": "physical",
+      "label": "P3",
+      "ordinal": 5,
+      "repetition": 3
+    },
+    {
+      "arm": "catalogless",
+      "label": "C3",
+      "ordinal": 6,
+      "repetition": 3
+    }
+  ],
+  "status": "all-runs-completed"
+}

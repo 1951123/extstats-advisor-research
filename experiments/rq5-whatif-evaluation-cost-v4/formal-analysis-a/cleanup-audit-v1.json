@@ -1,0 +1,12 @@
+{
+  "classification": "formal-rq5-v4-analysis-a",
+  "lab_instances_running_until_post_validation": true,
+  "lab_instances_stopped": true,
+  "patched_internal_relations": 0,
+  "patched_managed_relations": 0,
+  "physical_formal_databases_absent": true,
+  "residual_database_query_after_run": "zero rq5wc_v4_formal_a_* databases",
+  "status": "verified-clean",
+  "stock_source_experiment_statistics": 0,
+  "stock_source_rows": 581012
+}

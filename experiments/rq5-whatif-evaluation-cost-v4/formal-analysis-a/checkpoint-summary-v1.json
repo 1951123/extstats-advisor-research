@@ -1,0 +1,337 @@
+{
+  "checkpoint_ordinals": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "checkpoint_rows": [
+    {
+      "catalogless": {
+        "max_ms": 7133.001337,
+        "max_ns": 7133001337,
+        "median_ms": 7045.933506,
+        "median_ns": 7045933506,
+        "min_ms": 6877.820787,
+        "min_ns": 6877820787,
+        "values_ms": [
+          7045.933506,
+          6877.820787,
+          7133.001337
+        ],
+        "values_ns": [
+          7045933506,
+          6877820787,
+          7133001337
+        ],
+        "warm_start": {
+          "max_ms": 62.334917,
+          "max_ns": 62334917,
+          "median_ms": 52.115393,
+          "median_ns": 52115393,
+          "min_ms": 48.538336,
+          "min_ns": 48538336,
+          "values_ms": [
+            52.115393,
+            48.538336,
+            62.334917
+          ],
+          "values_ns": [
+            52115393,
+            48538336,
+            62334917
+          ]
+        }
+      },
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "configuration_ordinal": 1,
+      "observed_median_crossover": false,
+      "physical": {
+        "max_ms": 2061.023925,
+        "max_ns": 2061023925,
+        "median_ms": 1871.06993,
+        "median_ns": 1871069930,
+        "min_ms": 1824.921118,
+        "min_ns": 1824921118,
+        "values_ms": [
+          2061.023925,
+          1871.06993,
+          1824.921118
+        ],
+        "values_ns": [
+          2061023925,
+          1871069930,
+          1824921118
+        ],
+        "warm_start": {
+          "max_ms": 269.047096,
+          "max_ns": 269047096,
+          "median_ms": 263.360986,
+          "median_ns": 263360986,
+          "min_ms": 245.402633,
+          "min_ns": 245402633,
+          "values_ms": [
+            263.360986,
+            269.047096,
+            245.402633
+          ],
+          "values_ns": [
+            263360986,
+            269047096,
+            245402633
+          ]
+        }
+      }
+    },
+    {
+      "catalogless": {
+        "max_ms": 7379.187523,
+        "max_ns": 7379187523,
+        "median_ms": 7237.321101,
+        "median_ns": 7237321101,
+        "min_ms": 7071.159215,
+        "min_ns": 7071159215,
+        "values_ms": [
+          7237.321101,
+          7071.159215,
+          7379.187523
+        ],
+        "values_ns": [
+          7237321101,
+          7071159215,
+          7379187523
+        ],
+        "warm_start": {
+          "max_ms": 308.521103,
+          "max_ns": 308521103,
+          "median_ms": 243.502988,
+          "median_ns": 243502988,
+          "min_ms": 241.876764,
+          "min_ns": 241876764,
+          "values_ms": [
+            243.502988,
+            241.876764,
+            308.521103
+          ],
+          "values_ns": [
+            243502988,
+            241876764,
+            308521103
+          ]
+        }
+      },
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "configuration_ordinal": 5,
+      "observed_median_crossover": false,
+      "physical": {
+        "max_ms": 3068.395695,
+        "max_ns": 3068395695,
+        "median_ms": 2847.376031,
+        "median_ns": 2847376031,
+        "min_ms": 2780.525701,
+        "min_ns": 2780525701,
+        "values_ms": [
+          3068.395695,
+          2847.376031,
+          2780.525701
+        ],
+        "values_ns": [
+          3068395695,
+          2847376031,
+          2780525701
+        ],
+        "warm_start": {
+          "max_ms": 1270.732756,
+          "max_ns": 1270732756,
+          "median_ms": 1245.353197,
+          "median_ns": 1245353197,
+          "min_ms": 1201.007216,
+          "min_ns": 1201007216,
+          "values_ms": [
+            1270.732756,
+            1245.353197,
+            1201.007216
+          ],
+          "values_ns": [
+            1270732756,
+            1245353197,
+            1201007216
+          ]
+        }
+      }
+    },
+    {
+      "catalogless": {
+        "max_ms": 7650.434685,
+        "max_ns": 7650434685,
+        "median_ms": 7470.0684,
+        "median_ns": 7470068400,
+        "min_ms": 7310.698163,
+        "min_ns": 7310698163,
+        "values_ms": [
+          7470.0684,
+          7310.698163,
+          7650.434685
+        ],
+        "values_ns": [
+          7470068400,
+          7310698163,
+          7650434685
+        ],
+        "warm_start": {
+          "max_ms": 579.768265,
+          "max_ns": 579768265,
+          "median_ms": 481.415712,
+          "median_ns": 481415712,
+          "min_ms": 476.250287,
+          "min_ns": 476250287,
+          "values_ms": [
+            476.250287,
+            481.415712,
+            579.768265
+          ],
+          "values_ns": [
+            476250287,
+            481415712,
+            579768265
+          ]
+        }
+      },
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "configuration_ordinal": 10,
+      "observed_median_crossover": false,
+      "physical": {
+        "max_ms": 4271.505601,
+        "max_ns": 4271505601,
+        "median_ms": 4135.709232,
+        "median_ns": 4135709232,
+        "min_ms": 4011.388051,
+        "min_ns": 4011388051,
+        "values_ms": [
+          4271.505601,
+          4135.709232,
+          4011.388051
+        ],
+        "values_ns": [
+          4271505601,
+          4135709232,
+          4011388051
+        ],
+        "warm_start": {
+          "max_ms": 2533.686398,
+          "max_ns": 2533686398,
+          "median_ms": 2473.842662,
+          "median_ns": 2473842662,
+          "min_ms": 2431.869566,
+          "min_ns": 2431869566,
+          "values_ms": [
+            2473.842662,
+            2533.686398,
+            2431.869566
+          ],
+          "values_ns": [
+            2473842662,
+            2533686398,
+            2431869566
+          ]
+        }
+      }
+    },
+    {
+      "catalogless": {
+        "max_ms": 8154.503579,
+        "max_ns": 8154503579,
+        "median_ms": 7979.23335,
+        "median_ns": 7979233350,
+        "min_ms": 7799.565429,
+        "min_ns": 7799565429,
+        "values_ms": [
+          7979.23335,
+          7799.565429,
+          8154.503579
+        ],
+        "values_ns": [
+          7979233350,
+          7799565429,
+          8154503579
+        ],
+        "warm_start": {
+          "max_ms": 1069.023592,
+          "max_ns": 1069023592,
+          "median_ms": 970.843124,
+          "median_ns": 970843124,
+          "min_ms": 954.909067,
+          "min_ns": 954909067,
+          "values_ms": [
+            970.843124,
+            954.909067,
+            1069.023592
+          ],
+          "values_ns": [
+            970843124,
+            954909067,
+            1069023592
+          ]
+        }
+      },
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "configuration_ordinal": 20,
+      "observed_median_crossover": false,
+      "physical": {
+        "max_ms": 6844.546126,
+        "max_ns": 6844546126,
+        "median_ms": 6751.456772,
+        "median_ns": 6751456772,
+        "min_ms": 6656.795497,
+        "min_ns": 6656795497,
+        "values_ms": [
+          6844.546126,
+          6751.456772,
+          6656.795497
+        ],
+        "values_ns": [
+          6844546126,
+          6751456772,
+          6656795497
+        ],
+        "warm_start": {
+          "max_ms": 5084.21144,
+          "max_ns": 5084211440,
+          "median_ms": 5016.732323,
+          "median_ns": 5016732323,
+          "min_ms": 4986.043449,
+          "min_ns": 4986043449,
+          "values_ms": [
+            4986.043449,
+            5084.21144,
+            5016.732323
+          ],
+          "values_ns": [
+            4986043449,
+            5084211440,
+            5016732323
+          ]
+        }
+      }
+    }
+  ],
+  "classification": "formal-rq5-v4-analysis-a",
+  "cleanup_convention": "final arm-cleanup included only at N=20",
+  "status": "PASS"
+}

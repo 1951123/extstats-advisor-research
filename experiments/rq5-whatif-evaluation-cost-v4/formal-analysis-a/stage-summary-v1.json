@@ -1,0 +1,513 @@
+{
+  "by_stage": {
+    "catalogless": {
+      "activate": {
+        "max_ms": 14.133077,
+        "max_ns": 14133077,
+        "median_ms": 12.393417,
+        "median_ns": 12393417,
+        "min_ms": 12.24169,
+        "min_ns": 12241690,
+        "values_ms": [
+          12.393417,
+          12.24169,
+          14.133077
+        ],
+        "values_ns": [
+          12393417,
+          12241690,
+          14133077
+        ]
+      },
+      "arm-cleanup": {
+        "max_ms": 15.373911,
+        "max_ns": 15373911,
+        "median_ms": 14.813567,
+        "median_ns": 14813567,
+        "min_ms": 14.572113,
+        "min_ns": 14572113,
+        "values_ms": [
+          14.572113,
+          15.373911,
+          14.813567
+        ],
+        "values_ns": [
+          14572113,
+          15373911,
+          14813567
+        ]
+      },
+      "deactivate": {
+        "max_ms": 12.139385,
+        "max_ns": 12139385,
+        "median_ms": 10.749532,
+        "median_ns": 10749532,
+        "min_ms": 10.414495,
+        "min_ns": 10414495,
+        "values_ms": [
+          10.749532,
+          10.414495,
+          12.139385
+        ],
+        "values_ns": [
+          10749532,
+          10414495,
+          12139385
+        ]
+      },
+      "explain": {
+        "max_ms": 1042.75113,
+        "max_ns": 1042751130,
+        "median_ms": 947.700175,
+        "median_ns": 947700175,
+        "min_ms": 932.252882,
+        "min_ns": 932252882,
+        "values_ms": [
+          947.700175,
+          932.252882,
+          1042.75113
+        ],
+        "values_ns": [
+          947700175,
+          932252882,
+          1042751130
+        ]
+      },
+      "fixed-sample-preparation": {
+        "max_ms": 1184.159266,
+        "max_ns": 1184159266,
+        "median_ms": 1140.75754,
+        "median_ns": 1140757540,
+        "min_ms": 1110.683331,
+        "min_ns": 1110683331,
+        "values_ms": [
+          1184.159266,
+          1110.683331,
+          1140.75754
+        ],
+        "values_ns": [
+          1184159266,
+          1110683331,
+          1140757540
+        ]
+      },
+      "native-payload-materialization": {
+        "max_ms": 2622.614322,
+        "max_ns": 2622614322,
+        "median_ms": 2508.110965,
+        "median_ns": 2508110965,
+        "min_ms": 2479.331891,
+        "min_ns": 2479331891,
+        "values_ms": [
+          2508.110965,
+          2479.331891,
+          2622.614322
+        ],
+        "values_ns": [
+          2508110965,
+          2479331891,
+          2622614322
+        ]
+      },
+      "repository-registration-and-sandbox-preparation": {
+        "max_ms": 1909.905499,
+        "max_ns": 1909905499,
+        "median_ms": 1884.178502,
+        "median_ns": 1884178502,
+        "min_ms": 1861.9965,
+        "min_ns": 1861996500,
+        "values_ms": [
+          1909.905499,
+          1861.9965,
+          1884.178502
+        ],
+        "values_ns": [
+          1909905499,
+          1861996500,
+          1884178502
+        ]
+      },
+      "sample-acquisition": {
+        "max_ms": 1241.176062,
+        "max_ns": 1241176062,
+        "median_ms": 1228.58536,
+        "median_ns": 1228585360,
+        "min_ms": 1205.449382,
+        "min_ns": 1205449382,
+        "values_ms": [
+          1228.58536,
+          1205.449382,
+          1241.176062
+        ],
+        "values_ns": [
+          1228585360,
+          1205449382,
+          1241176062
+        ]
+      },
+      "snapshot-construction": {
+        "max_ms": 48.595194,
+        "max_ns": 48595194,
+        "median_ms": 40.355626,
+        "median_ns": 40355626,
+        "min_ms": 33.474484,
+        "min_ns": 33474484,
+        "values_ms": [
+          33.474484,
+          40.355626,
+          48.595194
+        ],
+        "values_ns": [
+          33474484,
+          40355626,
+          48595194
+        ]
+      },
+      "snapshot-serialization-validation": {
+        "max_ms": 133.3448,
+        "max_ns": 133344800,
+        "median_ms": 131.465721,
+        "median_ns": 131465721,
+        "min_ms": 129.582539,
+        "min_ns": 129582539,
+        "values_ms": [
+          129.582539,
+          131.465721,
+          133.3448
+        ],
+        "values_ns": [
+          129582539,
+          131465721,
+          133344800
+        ]
+      }
+    },
+    "physical": {
+      "analyze": {
+        "max_ms": 4396.590683,
+        "max_ns": 4396590683,
+        "median_ms": 4354.872701,
+        "median_ns": 4354872701,
+        "min_ms": 4283.93427,
+        "min_ns": 4283934270,
+        "values_ms": [
+          4283.93427,
+          4396.590683,
+          4354.872701
+        ],
+        "values_ns": [
+          4283934270,
+          4396590683,
+          4354872701
+        ]
+      },
+      "arm-cleanup": {
+        "max_ms": 65.222498,
+        "max_ns": 65222498,
+        "median_ms": 60.839738,
+        "median_ns": 60839738,
+        "min_ms": 60.544689,
+        "min_ns": 60544689,
+        "values_ms": [
+          60.839738,
+          65.222498,
+          60.544689
+        ],
+        "values_ns": [
+          60839738,
+          65222498,
+          60544689
+        ]
+      },
+      "baseline-initialization": {
+        "max_ms": 1797.662939,
+        "max_ns": 1797662939,
+        "median_ms": 1602.022834,
+        "median_ns": 1602022834,
+        "min_ms": 1579.518485,
+        "min_ns": 1579518485,
+        "values_ms": [
+          1797.662939,
+          1602.022834,
+          1579.518485
+        ],
+        "values_ns": [
+          1797662939,
+          1602022834,
+          1579518485
+        ]
+      },
+      "create-alter-statistics": {
+        "max_ms": 15.381539,
+        "max_ns": 15381539,
+        "median_ms": 14.659167,
+        "median_ns": 14659167,
+        "min_ms": 14.281634,
+        "min_ns": 14281634,
+        "values_ms": [
+          15.381539,
+          14.281634,
+          14.659167
+        ],
+        "values_ns": [
+          15381539,
+          14281634,
+          14659167
+        ]
+      },
+      "drop-statistics": {
+        "max_ms": 9.393608,
+        "max_ns": 9393608,
+        "median_ms": 9.16473,
+        "median_ns": 9164730,
+        "min_ms": 8.977498,
+        "min_ns": 8977498,
+        "values_ms": [
+          9.393608,
+          8.977498,
+          9.16473
+        ],
+        "values_ns": [
+          9393608,
+          8977498,
+          9164730
+        ]
+      },
+      "explain": {
+        "max_ms": 629.380703,
+        "max_ns": 629380703,
+        "median_ms": 617.053794,
+        "median_ns": 617053794,
+        "min_ms": 589.901402,
+        "min_ns": 589901402,
+        "values_ms": [
+          629.380703,
+          617.053794,
+          589.901402
+        ],
+        "values_ns": [
+          629380703,
+          617053794,
+          589901402
+        ]
+      },
+      "post-drop-verification": {
+        "max_ms": 48.134323,
+        "max_ns": 48134323,
+        "median_ms": 47.953329,
+        "median_ns": 47953329,
+        "min_ms": 47.307831,
+        "min_ns": 47307831,
+        "values_ms": [
+          47.953329,
+          47.307831,
+          48.134323
+        ],
+        "values_ns": [
+          47953329,
+          47307831,
+          48134323
+        ]
+      }
+    }
+  },
+  "classification": "formal-rq5-v4-analysis-a",
+  "per_run": [
+    {
+      "arm": "physical",
+      "cleanup_ns": 60839738,
+      "preparation_ns": 1797662939,
+      "repetition": 1,
+      "stage_totals_ms": {
+        "analyze": 4283.93427,
+        "arm-cleanup": 60.839738,
+        "baseline-initialization": 1797.662939,
+        "create-alter-statistics": 15.381539,
+        "drop-statistics": 9.393608,
+        "explain": 629.380703,
+        "post-drop-verification": 47.953329
+      },
+      "stage_totals_ns": {
+        "analyze": 4283934270,
+        "arm-cleanup": 60839738,
+        "baseline-initialization": 1797662939,
+        "create-alter-statistics": 15381539,
+        "drop-statistics": 9393608,
+        "explain": 629380703,
+        "post-drop-verification": 47953329
+      },
+      "warm_start_excludes": [
+        "baseline-initialization"
+      ]
+    },
+    {
+      "arm": "physical",
+      "cleanup_ns": 65222498,
+      "preparation_ns": 1602022834,
+      "repetition": 2,
+      "stage_totals_ms": {
+        "analyze": 4396.590683,
+        "arm-cleanup": 65.222498,
+        "baseline-initialization": 1602.022834,
+        "create-alter-statistics": 14.281634,
+        "drop-statistics": 8.977498,
+        "explain": 617.053794,
+        "post-drop-verification": 47.307831
+      },
+      "stage_totals_ns": {
+        "analyze": 4396590683,
+        "arm-cleanup": 65222498,
+        "baseline-initialization": 1602022834,
+        "create-alter-statistics": 14281634,
+        "drop-statistics": 8977498,
+        "explain": 617053794,
+        "post-drop-verification": 47307831
+      },
+      "warm_start_excludes": [
+        "baseline-initialization"
+      ]
+    },
+    {
+      "arm": "physical",
+      "cleanup_ns": 60544689,
+      "preparation_ns": 1579518485,
+      "repetition": 3,
+      "stage_totals_ms": {
+        "analyze": 4354.872701,
+        "arm-cleanup": 60.544689,
+        "baseline-initialization": 1579.518485,
+        "create-alter-statistics": 14.659167,
+        "drop-statistics": 9.16473,
+        "explain": 589.901402,
+        "post-drop-verification": 48.134323
+      },
+      "stage_totals_ns": {
+        "analyze": 4354872701,
+        "arm-cleanup": 60544689,
+        "baseline-initialization": 1579518485,
+        "create-alter-statistics": 14659167,
+        "drop-statistics": 9164730,
+        "explain": 589901402,
+        "post-drop-verification": 48134323
+      },
+      "warm_start_excludes": [
+        "baseline-initialization"
+      ]
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 14572113,
+      "preparation_ns": 6993818113,
+      "repetition": 1,
+      "stage_totals_ms": {
+        "activate": 12.393417,
+        "arm-cleanup": 14.572113,
+        "deactivate": 10.749532,
+        "explain": 947.700175,
+        "fixed-sample-preparation": 1184.159266,
+        "native-payload-materialization": 2508.110965,
+        "repository-registration-and-sandbox-preparation": 1909.905499,
+        "sample-acquisition": 1228.58536,
+        "snapshot-construction": 33.474484,
+        "snapshot-serialization-validation": 129.582539
+      },
+      "stage_totals_ns": {
+        "activate": 12393417,
+        "arm-cleanup": 14572113,
+        "deactivate": 10749532,
+        "explain": 947700175,
+        "fixed-sample-preparation": 1184159266,
+        "native-payload-materialization": 2508110965,
+        "repository-registration-and-sandbox-preparation": 1909905499,
+        "sample-acquisition": 1228585360,
+        "snapshot-construction": 33474484,
+        "snapshot-serialization-validation": 129582539
+      },
+      "warm_start_excludes": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation"
+      ]
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 15373911,
+      "preparation_ns": 6829282451,
+      "repetition": 2,
+      "stage_totals_ms": {
+        "activate": 12.24169,
+        "arm-cleanup": 15.373911,
+        "deactivate": 10.414495,
+        "explain": 932.252882,
+        "fixed-sample-preparation": 1110.683331,
+        "native-payload-materialization": 2479.331891,
+        "repository-registration-and-sandbox-preparation": 1861.9965,
+        "sample-acquisition": 1205.449382,
+        "snapshot-construction": 40.355626,
+        "snapshot-serialization-validation": 131.465721
+      },
+      "stage_totals_ns": {
+        "activate": 12241690,
+        "arm-cleanup": 15373911,
+        "deactivate": 10414495,
+        "explain": 932252882,
+        "fixed-sample-preparation": 1110683331,
+        "native-payload-materialization": 2479331891,
+        "repository-registration-and-sandbox-preparation": 1861996500,
+        "sample-acquisition": 1205449382,
+        "snapshot-construction": 40355626,
+        "snapshot-serialization-validation": 131465721
+      },
+      "warm_start_excludes": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation"
+      ]
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 14813567,
+      "preparation_ns": 7070666420,
+      "repetition": 3,
+      "stage_totals_ms": {
+        "activate": 14.133077,
+        "arm-cleanup": 14.813567,
+        "deactivate": 12.139385,
+        "explain": 1042.75113,
+        "fixed-sample-preparation": 1140.75754,
+        "native-payload-materialization": 2622.614322,
+        "repository-registration-and-sandbox-preparation": 1884.178502,
+        "sample-acquisition": 1241.176062,
+        "snapshot-construction": 48.595194,
+        "snapshot-serialization-validation": 133.3448
+      },
+      "stage_totals_ns": {
+        "activate": 14133077,
+        "arm-cleanup": 14813567,
+        "deactivate": 12139385,
+        "explain": 1042751130,
+        "fixed-sample-preparation": 1140757540,
+        "native-payload-materialization": 2622614322,
+        "repository-registration-and-sandbox-preparation": 1884178502,
+        "sample-acquisition": 1241176062,
+        "snapshot-construction": 48595194,
+        "snapshot-serialization-validation": 133344800
+      },
+      "warm_start_excludes": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation"
+      ]
+    }
+  ],
+  "status": "PASS"
+}

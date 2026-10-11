@@ -1,0 +1,55 @@
+{
+  "classification": "formal-rq5-v4-analysis-a",
+  "completed": [
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P1",
+      "repetition": 1,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C1",
+      "repetition": 1,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C2",
+      "repetition": 2,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P2",
+      "repetition": 2,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 20,
+      "arm": "physical",
+      "explain_calls": 2560,
+      "label": "P3",
+      "repetition": 3,
+      "status": "complete"
+    },
+    {
+      "analyze_calls": 0,
+      "arm": "catalogless",
+      "explain_calls": 2560,
+      "label": "C3",
+      "repetition": 3,
+      "status": "complete"
+    }
+  ],
+  "remaining": [],
+  "status": "running"
+}

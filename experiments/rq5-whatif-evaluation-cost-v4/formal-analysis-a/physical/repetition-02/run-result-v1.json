@@ -1,0 +1,169 @@
+{
+  "analyze_calls": 20,
+  "arm": "physical",
+  "binding_digest": "acde93cd38aae89db368cebbd4792bbf6e2b57e4a8814e2ca0e36190719f88c1",
+  "classification": "formal-rq5-v4-analysis-a",
+  "cleanup_ns": 65222498,
+  "configuration_count": 20,
+  "cumulative": [
+    {
+      "complete_lifecycle_ns": 1871069930,
+      "configuration_id": "A-singleton-01",
+      "configuration_size": 1,
+      "ordinal": 1,
+      "warm_start_ns": 269047096
+    },
+    {
+      "complete_lifecycle_ns": 2113121838,
+      "configuration_id": "A-singleton-02",
+      "configuration_size": 1,
+      "ordinal": 2,
+      "warm_start_ns": 511099004
+    },
+    {
+      "complete_lifecycle_ns": 2353634312,
+      "configuration_id": "A-singleton-03",
+      "configuration_size": 1,
+      "ordinal": 3,
+      "warm_start_ns": 751611478
+    },
+    {
+      "complete_lifecycle_ns": 2594831560,
+      "configuration_id": "A-singleton-04",
+      "configuration_size": 1,
+      "ordinal": 4,
+      "warm_start_ns": 992808726
+    },
+    {
+      "complete_lifecycle_ns": 2847376031,
+      "configuration_id": "A-singleton-05",
+      "configuration_size": 1,
+      "ordinal": 5,
+      "warm_start_ns": 1245353197
+    },
+    {
+      "complete_lifecycle_ns": 3095568710,
+      "configuration_id": "A-singleton-06",
+      "configuration_size": 1,
+      "ordinal": 6,
+      "warm_start_ns": 1493545876
+    },
+    {
+      "complete_lifecycle_ns": 3364719120,
+      "configuration_id": "A-singleton-07",
+      "configuration_size": 1,
+      "ordinal": 7,
+      "warm_start_ns": 1762696286
+    },
+    {
+      "complete_lifecycle_ns": 3618447926,
+      "configuration_id": "A-singleton-08",
+      "configuration_size": 1,
+      "ordinal": 8,
+      "warm_start_ns": 2016425092
+    },
+    {
+      "complete_lifecycle_ns": 3883605544,
+      "configuration_id": "A-singleton-09",
+      "configuration_size": 1,
+      "ordinal": 9,
+      "warm_start_ns": 2281582710
+    },
+    {
+      "complete_lifecycle_ns": 4135709232,
+      "configuration_id": "A-singleton-10",
+      "configuration_size": 1,
+      "ordinal": 10,
+      "warm_start_ns": 2533686398
+    },
+    {
+      "complete_lifecycle_ns": 4393232661,
+      "configuration_id": "A-singleton-11",
+      "configuration_size": 1,
+      "ordinal": 11,
+      "warm_start_ns": 2791209827
+    },
+    {
+      "complete_lifecycle_ns": 4639470874,
+      "configuration_id": "A-singleton-12",
+      "configuration_size": 1,
+      "ordinal": 12,
+      "warm_start_ns": 3037448040
+    },
+    {
+      "complete_lifecycle_ns": 4890122727,
+      "configuration_id": "A-singleton-13",
+      "configuration_size": 1,
+      "ordinal": 13,
+      "warm_start_ns": 3288099893
+    },
+    {
+      "complete_lifecycle_ns": 5150238011,
+      "configuration_id": "A-singleton-14",
+      "configuration_size": 1,
+      "ordinal": 14,
+      "warm_start_ns": 3548215177
+    },
+    {
+      "complete_lifecycle_ns": 5412378415,
+      "configuration_id": "A-singleton-15",
+      "configuration_size": 1,
+      "ordinal": 15,
+      "warm_start_ns": 3810355581
+    },
+    {
+      "complete_lifecycle_ns": 5659172044,
+      "configuration_id": "A-singleton-16",
+      "configuration_size": 1,
+      "ordinal": 16,
+      "warm_start_ns": 4057149210
+    },
+    {
+      "complete_lifecycle_ns": 5915525628,
+      "configuration_id": "A-singleton-17",
+      "configuration_size": 1,
+      "ordinal": 17,
+      "warm_start_ns": 4313502794
+    },
+    {
+      "complete_lifecycle_ns": 6174014256,
+      "configuration_id": "A-singleton-18",
+      "configuration_size": 1,
+      "ordinal": 18,
+      "warm_start_ns": 4571991422
+    },
+    {
+      "complete_lifecycle_ns": 6436455429,
+      "configuration_id": "A-singleton-19",
+      "configuration_size": 1,
+      "ordinal": 19,
+      "warm_start_ns": 4834432595
+    },
+    {
+      "complete_lifecycle_ns": 6751456772,
+      "configuration_id": "A-singleton-20",
+      "configuration_size": 1,
+      "ordinal": 20,
+      "warm_start_ns": 5084211440
+    }
+  ],
+  "explain_calls": 2560,
+  "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+  "manifest_semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+  "preparation_ns": 1602022834,
+  "repetition": 2,
+  "run_id": "v4-formal-analysis-a-001-P2",
+  "stage_totals_ns": {
+    "analyze": 4396590683,
+    "arm-cleanup": 65222498,
+    "baseline-initialization": 1602022834,
+    "create-alter-statistics": 14281634,
+    "drop-statistics": 8977498,
+    "explain": 617053794,
+    "post-drop-verification": 47307831
+  },
+  "status": "complete",
+  "warm_start_excludes": [
+    "baseline-initialization"
+  ]
+}

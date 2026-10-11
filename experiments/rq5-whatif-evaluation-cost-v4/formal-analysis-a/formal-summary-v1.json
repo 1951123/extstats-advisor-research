@@ -1,0 +1,106 @@
+{
+  "N20_median_ratio_physical_over_catalogless": 0.8461285033104089,
+  "N20_prepared_state_median_ms": {
+    "catalogless": 970.843124,
+    "physical": 5016.732323
+  },
+  "checkpoint_summary": [
+    {
+      "N": 1,
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "catalogless_below_physical_median": false,
+      "catalogless_median_ms": 7045.933506,
+      "catalogless_range_ms": [
+        6877.820787,
+        7133.001337
+      ],
+      "physical_median_ms": 1871.06993,
+      "physical_range_ms": [
+        1824.921118,
+        2061.023925
+      ]
+    },
+    {
+      "N": 5,
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "catalogless_below_physical_median": false,
+      "catalogless_median_ms": 7237.321101,
+      "catalogless_range_ms": [
+        7071.159215,
+        7379.187523
+      ],
+      "physical_median_ms": 2847.376031,
+      "physical_range_ms": [
+        2780.525701,
+        3068.395695
+      ]
+    },
+    {
+      "N": 10,
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "catalogless_below_physical_median": false,
+      "catalogless_median_ms": 7470.0684,
+      "catalogless_range_ms": [
+        7310.698163,
+        7650.434685
+      ],
+      "physical_median_ms": 4135.709232,
+      "physical_range_ms": [
+        4011.388051,
+        4271.505601
+      ]
+    },
+    {
+      "N": 20,
+      "catalogless_below_physical_by_repetition": [
+        false,
+        false,
+        false
+      ],
+      "catalogless_below_physical_median": false,
+      "catalogless_median_ms": 7979.23335,
+      "catalogless_range_ms": [
+        7799.565429,
+        8154.503579
+      ],
+      "physical_median_ms": 6751.456772,
+      "physical_range_ms": [
+        6656.795497,
+        6844.546126
+      ]
+    }
+  ],
+  "claim_boundary": "observed in-place stock versus catalogless mechanism lifecycle cost; descriptive variability across three repetitions; no universal speedup or Advisor search claim",
+  "classification": "formal-rq5-v4-analysis-a",
+  "dimensions": {
+    "catalogless_explain_calls": 7680,
+    "catalogless_materialization_analyze_calls": 3,
+    "catalogless_per_configuration_analyze_calls": 0,
+    "catalogless_repetitions": 3,
+    "catalogless_sandbox_analyze_calls": 3,
+    "configurations_per_run": 20,
+    "physical_analyze_calls": 60,
+    "physical_explain_calls": 7680,
+    "physical_repetitions": 3,
+    "queries_per_configuration": 128,
+    "total_explain_calls": 15360
+  },
+  "manifest_byte_sha256": "6710fa425409103c12f4710f163db05082930604da83b41c03c0073b580f3701",
+  "manifest_semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+  "observed_median_crossover_checkpoints": [],
+  "producer_commit_sha": "d513a132c3bb01a604d05f766d992aeeec3462ad",
+  "scientific_eligibility": "eligible-for-analysis",
+  "status": "complete"
+}

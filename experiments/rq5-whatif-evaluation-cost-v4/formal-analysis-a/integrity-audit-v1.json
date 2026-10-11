@@ -1,0 +1,156 @@
+{
+  "classification": "formal-rq5-v4-analysis-a",
+  "complete_run_count": 6,
+  "expected_counts": {
+    "catalogless_explain_per_run": 2560,
+    "catalogless_materialization_analyze_per_run": 1,
+    "catalogless_per_configuration_analyze_per_run": 0,
+    "catalogless_runs": 3,
+    "catalogless_sandbox_analyze_per_run": 1,
+    "configurations_per_run": 20,
+    "physical_analyze_per_run": 20,
+    "physical_explain_per_run": 2560,
+    "physical_runs": 3
+  },
+  "manifest_binding_digest": "acde93cd38aae89db368cebbd4792bbf6e2b57e4a8814e2ca0e36190719f88c1",
+  "manifest_byte_sha256": "6710fa425409103c12f4710f163db05082930604da83b41c03c0073b580f3701",
+  "manifest_semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+  "manifest_validation": {
+    "analysis": "A",
+    "binding_digest": "acde93cd38aae89db368cebbd4792bbf6e2b57e4a8814e2ca0e36190719f88c1",
+    "configuration_count": 20,
+    "format_version": "rq5-whatif-evaluation-cost-manifest-v4",
+    "physical_reset_strategy": "single-inplace-database-per-repetition",
+    "query_count": 128,
+    "semantic_digest": "813870b1bbdefdce9450f70a6dacb42abcd8b159a1d00c0c96fa8c015b604c77",
+    "status": "valid"
+  },
+  "observed_counts": {
+    "catalogless_event_analyze": 0,
+    "catalogless_explain": 7680,
+    "physical_analyze": 60,
+    "physical_explain": 7680
+  },
+  "producer_commit_sha": "d513a132c3bb01a604d05f766d992aeeec3462ad",
+  "raw_evidence_unchanged_during_reanalysis": true,
+  "raw_files": [
+    {
+      "bytes": 66488,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-01/events.jsonl",
+      "sha256": "75efb67a1cfdaf762f0f6985e8c1f3b7d3299ca56540ad16b114fbeca87e92b6"
+    },
+    {
+      "bytes": 66488,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-02/events.jsonl",
+      "sha256": "b90e5f7a2082ca536a702dc5de7035e982700c09ac046a33ef273f9718539fc4"
+    },
+    {
+      "bytes": 66488,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-03/events.jsonl",
+      "sha256": "9b2b2f94ce1cbdad0a480dd8fd18d1d25cc386633000133f4c3e86f55548d720"
+    },
+    {
+      "bytes": 43505,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-01/events.jsonl",
+      "sha256": "b6896e85aab6b6f4a7d29214087de2b37aae6bcbffccaaeed7eab1dd1c286ec1"
+    },
+    {
+      "bytes": 43505,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-02/events.jsonl",
+      "sha256": "d9411cfb79365c3958d002c1592bfceb057ae47684549a7d78cbc2aa359c5b72"
+    },
+    {
+      "bytes": 43508,
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-03/events.jsonl",
+      "sha256": "7a0c57d416c9385979ca7283c3bd2876d43e4edb8e8db36d313ed604afbed6ea"
+    }
+  ],
+  "run_count": 6,
+  "runs": [
+    {
+      "arm": "physical",
+      "event_count": 102,
+      "event_sha256": "75efb67a1cfdaf762f0f6985e8c1f3b7d3299ca56540ad16b114fbeca87e92b6",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-01/events.jsonl",
+      "repetition": 1,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 102,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    },
+    {
+      "arm": "physical",
+      "event_count": 102,
+      "event_sha256": "b90e5f7a2082ca536a702dc5de7035e982700c09ac046a33ef273f9718539fc4",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-02/events.jsonl",
+      "repetition": 2,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 102,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    },
+    {
+      "arm": "physical",
+      "event_count": 102,
+      "event_sha256": "9b2b2f94ce1cbdad0a480dd8fd18d1d25cc386633000133f4c3e86f55548d720",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/physical/repetition-03/events.jsonl",
+      "repetition": 3,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 102,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    },
+    {
+      "arm": "catalogless",
+      "event_count": 67,
+      "event_sha256": "b6896e85aab6b6f4a7d29214087de2b37aae6bcbffccaaeed7eab1dd1c286ec1",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-01/events.jsonl",
+      "repetition": 1,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 67,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    },
+    {
+      "arm": "catalogless",
+      "event_count": 67,
+      "event_sha256": "d9411cfb79365c3958d002c1592bfceb057ae47684549a7d78cbc2aa359c5b72",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-02/events.jsonl",
+      "repetition": 2,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 67,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    },
+    {
+      "arm": "catalogless",
+      "event_count": 67,
+      "event_sha256": "7a0c57d416c9385979ca7283c3bd2876d43e4edb8e8db36d313ed604afbed6ea",
+      "path": "experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-03/events.jsonl",
+      "repetition": 3,
+      "validation": {
+        "configuration_count": 20,
+        "event_count": 67,
+        "explain_calls": 2560,
+        "missing_events": [],
+        "status": "complete"
+      }
+    }
+  ],
+  "status": "PASS"
+}
