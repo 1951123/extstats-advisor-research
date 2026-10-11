@@ -1,0 +1,20 @@
+{
+  "arm": "catalogless",
+  "cleanup_exception": null,
+  "completed_configuration_ordinals": [],
+  "completed_explain_calls": 0,
+  "event_count": 7,
+  "failure_id": "rq5-v3-timing-smoke-002-catalogless-catalogless-failure",
+  "format_version": "rq5-whatif-evaluation-cost-failure-v1",
+  "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+  "phase": "arm-cleanup",
+  "primary_exception": {
+    "class": "PlannerSandboxError",
+    "message": "sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'"
+  },
+  "producer_commit_sha": "5eca610c529739ffda09a35ca500c16987a26250",
+  "repetition": 1,
+  "run_id": "rq5-v3-timing-smoke-002-catalogless",
+  "semantic_digest": "20039c4d909d0d7aaae78c3e7c9710f64011fc0c8b62d8f51a261e2c7e2e5128",
+  "status": "failed"
+}

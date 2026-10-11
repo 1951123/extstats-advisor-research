@@ -1,0 +1,91 @@
+{
+  "arms": {
+    "catalogless": {
+      "status": "complete",
+      "summary": {
+        "analyze_calls": 0,
+        "arm": "catalogless",
+        "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+        "cleanup_ns": 14395321,
+        "configuration_count": 1,
+        "cumulative": [
+          {
+            "complete_lifecycle_ns": 6869889318,
+            "configuration_id": "A-singleton-01",
+            "configuration_size": 1,
+            "ordinal": 1,
+            "warm_start_ns": 3108820
+          }
+        ],
+        "explain_calls": 5,
+        "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+        "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+        "preparation_ns": 6852385177,
+        "repetition": 1,
+        "run_id": "rq5-v3-timing-smoke-004-catalogless",
+        "stage_totals_ns": {
+          "activate": 760034,
+          "arm-cleanup": 14395321,
+          "deactivate": 414846,
+          "explain": 1933940,
+          "fixed-sample-preparation": 1168974908,
+          "native-payload-materialization": 2415461970,
+          "repository-registration-and-sandbox-preparation": 1784761370,
+          "sample-acquisition": 1300212218,
+          "snapshot-construction": 36704270,
+          "snapshot-serialization-validation": 146270441
+        },
+        "status": "complete",
+        "warm_start_excludes": [
+          "sample-acquisition",
+          "snapshot-construction",
+          "snapshot-serialization-validation",
+          "fixed-sample-preparation",
+          "native-payload-materialization",
+          "repository-registration-and-sandbox-preparation"
+        ]
+      }
+    },
+    "physical": {
+      "status": "complete",
+      "summary": {
+        "analyze_calls": 1,
+        "arm": "physical",
+        "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+        "cleanup_ns": 4898,
+        "configuration_count": 1,
+        "cumulative": [
+          {
+            "complete_lifecycle_ns": 4633069710,
+            "configuration_id": "A-singleton-01",
+            "configuration_size": 1,
+            "ordinal": 1,
+            "warm_start_ns": 2975125451
+          }
+        ],
+        "explain_calls": 5,
+        "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+        "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+        "preparation_ns": 1657939361,
+        "repetition": 1,
+        "run_id": "rq5-v3-timing-smoke-004-physical",
+        "stage_totals_ns": {
+          "analyze": 227317813,
+          "arm-cleanup": 4898,
+          "baseline-initialization": 1657939361,
+          "clone-create": 2678369314,
+          "clone-destroy": 58036525,
+          "create-alter-statistics": 8741603,
+          "drop-statistics": 608527,
+          "explain": 2051669
+        },
+        "status": "complete",
+        "warm_start_excludes": [
+          "baseline-initialization"
+        ]
+      }
+    }
+  },
+  "classification": "timing-instrumentation-only",
+  "status": "complete"
+}

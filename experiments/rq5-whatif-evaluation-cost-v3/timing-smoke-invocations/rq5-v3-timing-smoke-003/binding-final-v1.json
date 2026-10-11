@@ -1,0 +1,49 @@
+{
+  "candidate_ids": [
+    "cand_1537a6ae8ef67c379c8d0fa0"
+  ],
+  "classification": "timing-instrumentation-only",
+  "configuration_id": "A-singleton-01",
+  "invocation_id": "rq5-v3-timing-smoke-003",
+  "manifest_binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+  "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+  "patched_connection": {
+    "database": "extstats_stock",
+    "host": "unix-socket",
+    "port": 55433,
+    "role": "wqts"
+  },
+  "producer_commit_sha": "5eca610c529739ffda09a35ca500c16987a26250",
+  "query_ids": [
+    "arecel_forest10_test_000000",
+    "arecel_forest10_test_000078",
+    "arecel_forest10_test_000157",
+    "arecel_forest10_test_000236",
+    "arecel_forest10_test_000314"
+  ],
+  "source_bindings": {
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "candidate_universe": {
+      "path": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json",
+      "semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134"
+    },
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "rq4_ablation": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+      "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9"
+    },
+    "rq4_design": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "failed",
+  "stock_connection": {
+    "admin_database": "extstats_lab",
+    "database": "extstats_stock",
+    "host": "unix-socket",
+    "port": 55432,
+    "role": "wqts"
+  }
+}

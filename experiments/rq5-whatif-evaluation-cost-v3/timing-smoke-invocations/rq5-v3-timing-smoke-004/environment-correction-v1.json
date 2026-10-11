@@ -1,0 +1,9 @@
+{
+  "action": "Preserved extstats_lab as the full-data source; recreated patched extstats_stock, which this invocation owned, as an empty template0 database with owner wqts.",
+  "cause": "Catalogless sandbox requires the database catalog in the sealed snapshot and an absent managed public.forest10 relation.",
+  "classification": "timing-instrumentation-only",
+  "format_version": "rq5-whatif-evaluation-cost-v3-timing-smoke-environment-correction-v1",
+  "new_invocation": "rq5-v3-timing-smoke-004",
+  "source_database_preserved": true,
+  "status": "applied-before-invocation-004"
+}

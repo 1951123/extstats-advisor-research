@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "artifact": "rq5-v3-timing-smoke-001/setup-failure-v1.json",
+      "invocation_id": "rq5-v3-timing-smoke-001",
+      "status": "failed-before-database-connection"
+    },
+    {
+      "catalogless_error": "sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'",
+      "invocation_id": "rq5-v3-timing-smoke-002",
+      "physical_arm": "complete",
+      "status": "failed"
+    },
+    {
+      "catalogless_error": "managed sandbox relation already exists: public.forest10",
+      "invocation_id": "rq5-v3-timing-smoke-003",
+      "physical_arm": "complete",
+      "status": "failed"
+    },
+    {
+      "invocation_id": "rq5-v3-timing-smoke-004",
+      "status": "complete"
+    }
+  ],
+  "classification": "timing-instrumentation-only",
+  "format_version": "rq5-whatif-evaluation-cost-v3-timing-smoke-attempts-v1",
+  "producer_commit_sha": "5eca610c529739ffda09a35ca500c16987a26250",
+  "successful_invocation": "rq5-v3-timing-smoke-004"
+}

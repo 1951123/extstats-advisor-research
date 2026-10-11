@@ -1,0 +1,10 @@
+{
+  "classification": "timing-instrumentation-only",
+  "database_operations": 0,
+  "error": "cannot import name 'read_manifest' from extstats_advisor_research.rq5_whatif_cost",
+  "error_class": "ImportError",
+  "invocation_id": "rq5-v3-timing-smoke-001",
+  "phase": "runner-script-import",
+  "retry_identity": "rq5-v3-timing-smoke-002",
+  "status": "failed-before-database-connection"
+}

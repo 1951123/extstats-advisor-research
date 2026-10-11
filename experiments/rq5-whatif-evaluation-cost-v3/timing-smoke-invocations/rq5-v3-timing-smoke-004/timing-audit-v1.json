@@ -1,0 +1,643 @@
+{
+  "accounting_boundary": {
+    "catalogless_complete_lifecycle_includes_cleanup": true,
+    "catalogless_registration_and_sandbox_measured_as_combined_stage": true,
+    "catalogless_runtime_sample_and_snapshot_measured": true,
+    "clock": "time.perf_counter_ns",
+    "physical_complete_lifecycle_includes_cleanup": true,
+    "speedup_or_crossover_claims": "not authorized",
+    "warm_start_is_secondary_only": true
+  },
+  "attempt_history": [
+    {
+      "artifact": "rq5-v3-timing-smoke-001/setup-failure-v1.json",
+      "invocation_id": "rq5-v3-timing-smoke-001",
+      "status": "failed-before-database-connection"
+    },
+    {
+      "catalogless_error": "sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'",
+      "invocation_id": "rq5-v3-timing-smoke-002",
+      "physical_arm": "complete",
+      "status": "failed"
+    },
+    {
+      "catalogless_error": "managed sandbox relation already exists: public.forest10",
+      "invocation_id": "rq5-v3-timing-smoke-003",
+      "physical_arm": "complete",
+      "status": "failed"
+    },
+    {
+      "invocation_id": "rq5-v3-timing-smoke-004",
+      "status": "complete"
+    }
+  ],
+  "catalogless_audit": {
+    "activation": {
+      "candidate_ids": [
+        "cand_1537a6ae8ef67c379c8d0fa0"
+      ],
+      "virtual_oids": [
+        2630455899
+      ]
+    },
+    "activation_order_matches_manifest": true,
+    "explain": {
+      "attempted": 5,
+      "failed": 0,
+      "rows": [
+        {
+          "plan_rows": 6779,
+          "query_id": "arecel_forest10_test_000000"
+        },
+        {
+          "plan_rows": 3731,
+          "query_id": "arecel_forest10_test_000078"
+        },
+        {
+          "plan_rows": 142929,
+          "query_id": "arecel_forest10_test_000157"
+        },
+        {
+          "plan_rows": 17477,
+          "query_id": "arecel_forest10_test_000236"
+        },
+        {
+          "plan_rows": 39,
+          "query_id": "arecel_forest10_test_000314"
+        }
+      ],
+      "successful": 5
+    },
+    "materialization": {
+      "analyze_count": 1,
+      "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+      "native_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+      "ordinary_statistics_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+      "payload_states": {
+        "cand_01933ab615fb49e2f81b5b92": "present",
+        "cand_04524e4170fda10f288de2ad": "present",
+        "cand_0deae0d5de82a5a1fdc34111": "present",
+        "cand_12b552d6e4274b3e7916918d": "present",
+        "cand_14cd836002a9a76c97eb6c1e": "present",
+        "cand_1537a6ae8ef67c379c8d0fa0": "present",
+        "cand_1b63c8f8f8149f09f2ecb7c4": "present",
+        "cand_1c45580597c36333ce8f1444": "present",
+        "cand_25decdfdae3f06f5b53849b4": "present",
+        "cand_2bfd4df050e52e03bab680f1": "present",
+        "cand_2d0c2bee852360475ed257b4": "present",
+        "cand_326fad30e7ded583291003e6": "present",
+        "cand_337495ed13b57f0375c7bcab": "present",
+        "cand_4293ec8c30a7314cb8ef5dbf": "present",
+        "cand_42d3a67034bf5f02658cb7bf": "present",
+        "cand_478f6c4acd54af28ee697d8d": "present",
+        "cand_4af628931e0d02eb50415f2b": "present",
+        "cand_4de3778bb8674287b6dd5b29": "present",
+        "cand_51488597ac9ebd3cb59d2ff1": "present",
+        "cand_599a2efab190b6e2b7457ff1": "present",
+        "cand_5ba9cc937a696a76876f820d": "present",
+        "cand_5ef1e17a9fde8da19eda6ffc": "present",
+        "cand_66f3d1c2b0b2b61a41f44994": "present",
+        "cand_6937f79d38c06930e7c9a9ac": "present",
+        "cand_6b7c22215c39c807cda3872e": "present",
+        "cand_6da3014a15c7b2b3c07e9d00": "present",
+        "cand_71249b442b7dc4205d74a4b9": "present",
+        "cand_76679921292e8c769dbbd7bc": "present",
+        "cand_77c3e92fff291d4d9515dc69": "present",
+        "cand_7bbe4e7fc76c5686e2511cd9": "present",
+        "cand_817be8bf7bbbc96c20bde230": "present",
+        "cand_81dab29687d98fe8038c0eaa": "present",
+        "cand_8b7a8e0422ed4ae2befb1bc8": "present",
+        "cand_929dfbf8e7ddadf6f4b97e87": "present",
+        "cand_93882884648663deb326f015": "present",
+        "cand_9be7db5012712e534c019f4c": "present",
+        "cand_9e2c1625957106365a4e00c0": "present",
+        "cand_a393d81ec58b047e1e129db0": "present",
+        "cand_b431757a4868f78ad44fa186": "present",
+        "cand_b5554ee4928fcdbe8d6f046c": "present",
+        "cand_bafa53ec095d804233d42826": "present",
+        "cand_c2737dfb5bfbb3e415dfb793": "present",
+        "cand_c66e567561c42b80680d57a2": "present",
+        "cand_c7595f3b6addcec1b9919cbe": "present",
+        "cand_c896441b03802e5c10cf4551": "present",
+        "cand_c9b6667734c10464fab19fca": "present",
+        "cand_cbf4af3acd6feaa65760c6d1": "present",
+        "cand_d8596bbbd92afbad9d401cd6": "present",
+        "cand_d94eec73746ef01a6811815f": "present",
+        "cand_da7591327792c9bc98b427d7": "present",
+        "cand_e15685675a396385fa8dc298": "present",
+        "cand_e1a89b9755e5e3f384afc69f": "present",
+        "cand_ea8b2557e86251bb3994535b": "present",
+        "cand_eaa4ce0396b4cc5c68b2550e": "present",
+        "cand_eacd76ebde5ba7e94ae853aa": "present",
+        "cand_ee4e6f9b6b050fa4d222c6a7": "present",
+        "cand_f2d14d17235b34bf39a631f5": "present"
+      },
+      "population_row_count": 581012.0,
+      "sample_row_count": 30000,
+      "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+      "statistics_target": 100
+    },
+    "materialization_analyze_calls": 1,
+    "payload_state_selected_candidate": "present",
+    "per_configuration_analyze_calls": 0,
+    "query_order_matches_manifest": true,
+    "repository_candidate_count": 57,
+    "sample_acquisition": {
+      "recipe": {
+        "algorithm": "sha256-row-rank-v1",
+        "output_order": "ascending-source-row-index",
+        "population_rows": 581012,
+        "row_identity": "source-csv-data-row-index",
+        "sample_rows": 30000,
+        "seed": 42,
+        "semantic_digest": "9af41d010197d1ec9578f1813f8fdffca9037b16beae3dab219871aa2d4383d0",
+        "source_index_base": 0
+      },
+      "sample_index_digest": "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b",
+      "sample_rows": 30000,
+      "source": {
+        "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+        "benchmark_id": "arecel-forest10",
+        "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+        "population_rows": 581012,
+        "relation": "public.forest10",
+        "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+        "source_files": {
+          "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+          "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+          "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+          "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+        },
+        "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a"
+      }
+    },
+    "sandbox": {
+      "analyze_count": 1,
+      "prepared": {
+        "backend_contract": "postgresql-pgextadv-16.14-v1",
+        "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+        "frozen_relation_name": {
+          "catalog": null,
+          "name": "frozen_sample_ed5d82ffd6999989d86097d4",
+          "schema": "extstats_advisor_internal"
+        },
+        "internal_schema_created": true,
+        "managed_schema_created": false,
+        "native_stats_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+        "ordinary_stats_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+        "population_quality": "exact",
+        "population_row_count": 581012.0,
+        "prepared_at": "2026-10-11 12:25:33.002884+08:00",
+        "relation_id": "rel_96c2e4f82f8ed10b05330552",
+        "relation_name": {
+          "catalog": "extstats_stock",
+          "name": "forest10",
+          "schema": "public"
+        },
+        "repository_absent_count": 0,
+        "repository_candidate_count": 57,
+        "repository_present_count": 57,
+        "sample_row_count": 30000,
+        "sandbox_contract": "postgresql-planner-sandbox-v1",
+        "server_version": "16.14",
+        "server_version_num": 160014,
+        "source_snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+        "statistics_target": 100
+      },
+      "target_relation_oid": 17042,
+      "verified": {
+        "autovacuum_disabled": true,
+        "frozen_sample_row_count": 30000,
+        "metadata": {
+          "backend_contract": "postgresql-pgextadv-16.14-v1",
+          "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+          "frozen_relation_name": {
+            "catalog": null,
+            "name": "frozen_sample_ed5d82ffd6999989d86097d4",
+            "schema": "extstats_advisor_internal"
+          },
+          "internal_schema_created": true,
+          "managed_schema_created": false,
+          "native_stats_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+          "ordinary_stats_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+          "population_quality": "exact",
+          "population_row_count": 581012.0,
+          "prepared_at": "2026-10-11 12:25:33.002884+08:00",
+          "relation_id": "rel_96c2e4f82f8ed10b05330552",
+          "relation_name": {
+            "catalog": "extstats_stock",
+            "name": "forest10",
+            "schema": "public"
+          },
+          "repository_absent_count": 0,
+          "repository_candidate_count": 57,
+          "repository_present_count": 57,
+          "sample_row_count": 30000,
+          "sandbox_contract": "postgresql-planner-sandbox-v1",
+          "server_version": "16.14",
+          "server_version_num": 160014,
+          "source_snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+          "statistics_target": 100
+        },
+        "ordinary_stats_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+        "physical_extstats_count": 0,
+        "reltuples": 581012.0,
+        "repository": {
+          "absent_count": 0,
+          "candidate_count": 57,
+          "present_count": 57,
+          "semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184"
+        },
+        "sandbox_contract": "postgresql-planner-sandbox-v1",
+        "target_relation_oid": 17042,
+        "target_sample_row_count": 30000
+      }
+    },
+    "sandbox_prepare_analyze_calls": 1,
+    "snapshot_serialization_validation": {
+      "sample_rows": 30000,
+      "serialized_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+      "snapshot_path": "/home/wqts/projects/extstats-advisor-research/experiments/rq5-whatif-evaluation-cost-v3/timing-smoke-invocations/rq5-v3-timing-smoke-004/catalogless/runtime-snapshot",
+      "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5"
+    }
+  },
+  "claim_boundary": "This artifact verifies timing instrumentation coverage, event integrity, lifecycle accounting, and isolated cleanup only; it is not a formal RQ5 timing result.",
+  "classification": "timing-instrumentation-only",
+  "cleanup": {
+    "instance_status_command": "extstats-research postgres-lab status --role all",
+    "instances_stopped_after_audit": true,
+    "pre_shutdown_patched_lab_relation_preserved": true,
+    "pre_shutdown_patched_sandbox_relevant_relations": [],
+    "pre_shutdown_rq5wc_clones_patched": [],
+    "pre_shutdown_rq5wc_clones_stock": [],
+    "pre_shutdown_stock_lab_relation_preserved": true,
+    "pre_shutdown_stock_source_database_preserved": true,
+    "residual_database_files_not_removed": "dedicated lab data directories retained for laboratory reproducibility; servers stopped"
+  },
+  "cross_arm_query_identity": {
+    "plan_rows_comparison_authorized": false,
+    "same_explain_format": true,
+    "same_manifest_ids": true
+  },
+  "data_binding": {
+    "candidate_count": 57,
+    "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "full_csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "full_population_rows": 581012,
+    "sample_algorithm": "sha256-row-rank-v1",
+    "sample_index_digest": "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b",
+    "sample_rows": 30000,
+    "sample_seed": 42,
+    "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "statistics_target": 100
+  },
+  "event_integrity": {
+    "catalogless": {
+      "event_count": 10,
+      "event_sum_matches_reported_total": true,
+      "event_sum_ns": 6869889318,
+      "events_path": "experiments/rq5-whatif-evaluation-cost-v3/timing-smoke-invocations/rq5-v3-timing-smoke-004/catalogless/events.jsonl",
+      "events_sha256": "9ce35f1e15a12e60f63de3269c443d4dc87b62a4c908ceb79412636109b07ab4",
+      "expected_stage_order": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation",
+        "activate",
+        "explain",
+        "deactivate",
+        "arm-cleanup"
+      ],
+      "operation_counts": {
+        "activate": 1,
+        "arm-cleanup": 1,
+        "deactivate": 1,
+        "explain": 5,
+        "fixed-sample-preparation": 1,
+        "native-payload-materialization": 57,
+        "repository-registration-and-sandbox-preparation": 57,
+        "sample-acquisition": 1,
+        "snapshot-construction": 1,
+        "snapshot-serialization-validation": 1
+      },
+      "reported_complete_lifecycle_ns": 6869889318,
+      "reported_summary": {
+        "analyze_calls": 0,
+        "arm": "catalogless",
+        "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+        "cleanup_ns": 14395321,
+        "configuration_count": 1,
+        "cumulative": [
+          {
+            "complete_lifecycle_ns": 6869889318,
+            "configuration_id": "A-singleton-01",
+            "configuration_size": 1,
+            "ordinal": 1,
+            "warm_start_ns": 3108820
+          }
+        ],
+        "explain_calls": 5,
+        "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+        "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+        "preparation_ns": 6852385177,
+        "repetition": 1,
+        "run_id": "rq5-v3-timing-smoke-004-catalogless",
+        "stage_totals_ns": {
+          "activate": 760034,
+          "arm-cleanup": 14395321,
+          "deactivate": 414846,
+          "explain": 1933940,
+          "fixed-sample-preparation": 1168974908,
+          "native-payload-materialization": 2415461970,
+          "repository-registration-and-sandbox-preparation": 1784761370,
+          "sample-acquisition": 1300212218,
+          "snapshot-construction": 36704270,
+          "snapshot-serialization-validation": 146270441
+        },
+        "status": "complete",
+        "warm_start_excludes": [
+          "sample-acquisition",
+          "snapshot-construction",
+          "snapshot-serialization-validation",
+          "fixed-sample-preparation",
+          "native-payload-materialization",
+          "repository-registration-and-sandbox-preparation"
+        ]
+      },
+      "stage_order": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation",
+        "activate",
+        "explain",
+        "deactivate",
+        "arm-cleanup"
+      ],
+      "stage_order_matches": true,
+      "stage_totals_ns": {
+        "activate": 760034,
+        "arm-cleanup": 14395321,
+        "deactivate": 414846,
+        "explain": 1933940,
+        "fixed-sample-preparation": 1168974908,
+        "native-payload-materialization": 2415461970,
+        "repository-registration-and-sandbox-preparation": 1784761370,
+        "sample-acquisition": 1300212218,
+        "snapshot-construction": 36704270,
+        "snapshot-serialization-validation": 146270441
+      },
+      "timestamp_integrity": true,
+      "validation": {
+        "configuration_count": 1,
+        "event_count": 10,
+        "explain_calls": 5,
+        "missing_events": [],
+        "status": "complete"
+      },
+      "warm_start_excludes": [
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "native-payload-materialization",
+        "repository-registration-and-sandbox-preparation"
+      ]
+    },
+    "physical": {
+      "event_count": 8,
+      "event_sum_matches_reported_total": true,
+      "event_sum_ns": 4633069710,
+      "events_path": "experiments/rq5-whatif-evaluation-cost-v3/timing-smoke-invocations/rq5-v3-timing-smoke-004/physical/events.jsonl",
+      "events_sha256": "355b44cc0196fdf1b97098ecc712c8ac46b4a17cf277a0ecf1baf46fd0474ac2",
+      "expected_stage_order": [
+        "baseline-initialization",
+        "clone-create",
+        "create-alter-statistics",
+        "analyze",
+        "explain",
+        "drop-statistics",
+        "clone-destroy",
+        "arm-cleanup"
+      ],
+      "operation_counts": {
+        "analyze": 1,
+        "arm-cleanup": 1,
+        "baseline-initialization": 1,
+        "clone-create": 1,
+        "clone-destroy": 1,
+        "create-alter-statistics": 1,
+        "drop-statistics": 1,
+        "explain": 5
+      },
+      "reported_complete_lifecycle_ns": 4633069710,
+      "reported_summary": {
+        "analyze_calls": 1,
+        "arm": "physical",
+        "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+        "cleanup_ns": 4898,
+        "configuration_count": 1,
+        "cumulative": [
+          {
+            "complete_lifecycle_ns": 4633069710,
+            "configuration_id": "A-singleton-01",
+            "configuration_size": 1,
+            "ordinal": 1,
+            "warm_start_ns": 2975125451
+          }
+        ],
+        "explain_calls": 5,
+        "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+        "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+        "preparation_ns": 1657939361,
+        "repetition": 1,
+        "run_id": "rq5-v3-timing-smoke-004-physical",
+        "stage_totals_ns": {
+          "analyze": 227317813,
+          "arm-cleanup": 4898,
+          "baseline-initialization": 1657939361,
+          "clone-create": 2678369314,
+          "clone-destroy": 58036525,
+          "create-alter-statistics": 8741603,
+          "drop-statistics": 608527,
+          "explain": 2051669
+        },
+        "status": "complete",
+        "warm_start_excludes": [
+          "baseline-initialization"
+        ]
+      },
+      "stage_order": [
+        "baseline-initialization",
+        "clone-create",
+        "create-alter-statistics",
+        "analyze",
+        "explain",
+        "drop-statistics",
+        "clone-destroy",
+        "arm-cleanup"
+      ],
+      "stage_order_matches": true,
+      "stage_totals_ns": {
+        "analyze": 227317813,
+        "arm-cleanup": 4898,
+        "baseline-initialization": 1657939361,
+        "clone-create": 2678369314,
+        "clone-destroy": 58036525,
+        "create-alter-statistics": 8741603,
+        "drop-statistics": 608527,
+        "explain": 2051669
+      },
+      "timestamp_integrity": true,
+      "validation": {
+        "configuration_count": 1,
+        "event_count": 8,
+        "explain_calls": 5,
+        "missing_events": [],
+        "status": "complete"
+      },
+      "warm_start_excludes": [
+        "baseline-initialization"
+      ]
+    }
+  },
+  "formal_timing_authorized": false,
+  "format_version": "rq5-whatif-evaluation-cost-v3-timing-smoke-report-v1",
+  "invocation_id": "rq5-v3-timing-smoke-004",
+  "physical_audit": {
+    "analyze_calls": 1,
+    "explain": {
+      "attempted": 5,
+      "failed": 0,
+      "rows": [
+        {
+          "plan_rows": 5980,
+          "query_id": "arecel_forest10_test_000000"
+        },
+        {
+          "plan_rows": 3671,
+          "query_id": "arecel_forest10_test_000078"
+        },
+        {
+          "plan_rows": 139152,
+          "query_id": "arecel_forest10_test_000157"
+        },
+        {
+          "plan_rows": 18633,
+          "query_id": "arecel_forest10_test_000236"
+        },
+        {
+          "plan_rows": 41,
+          "query_id": "arecel_forest10_test_000314"
+        }
+      ],
+      "successful": 5
+    },
+    "per_configuration_analyze_calls": 1,
+    "preflight": {
+      "population_rows": 581012,
+      "relation_oid": 16501,
+      "relpages": 7792,
+      "reltuples": 581012.0,
+      "sampling_contract": {
+        "actual_sample_row_count_evidence": "not exposed by standard PostgreSQL catalog",
+        "actual_sample_row_count_observable": false,
+        "extended_statistics_sample_target_rule": "300 * max_statistics_target",
+        "nominal_extended_statistics_sample_target": 30000,
+        "statistics_target": 100
+      },
+      "server": {
+        "database": "extstats_stock",
+        "role": "wqts",
+        "server_version": "16.14",
+        "server_version_num": 160014,
+        "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+      },
+      "source_database": "extstats_stock"
+    },
+    "query_order_matches_manifest": true,
+    "relation_oid_distinct_from_statistics_oid": true,
+    "state": {
+      "declared_order": [
+        "cand_1537a6ae8ef67c379c8d0fa0"
+      ],
+      "observed_oid_order": [
+        16510
+      ],
+      "oid_order_non_decreasing": true,
+      "ordinary_statistics_fingerprint": "85ac3c986baafb54714da8540f63063f443f7f3fd5486d18ffb84a1e8b40c38c",
+      "relation_oid": 16501,
+      "statistics": [
+        {
+          "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+          "column_ordinals": [
+            2,
+            7
+          ],
+          "kind": "postgresql.mcv",
+          "oid": 16510,
+          "payload_sha256": "1f527196b47f6886bf44e8a92f2d6479825a18187fc65f00fd0793e6162dcb4f",
+          "payload_size": 2196,
+          "payload_state": "present",
+          "statistics_kind": "{m}",
+          "statistics_target": 100
+        }
+      ]
+    }
+  },
+  "producer_commit_sha": "5eca610c529739ffda09a35ca500c16987a26250",
+  "protocol": {
+    "formal_manifest": {
+      "byte_sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671",
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e"
+    },
+    "format": "rq5-whatif-evaluation-cost-v3",
+    "manifest_binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+    "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+    "sha256": "a6abcfe1db7e2df4823f2b7ad547c74b6ce75a748d4c9a5e8003bcde33e9a9bb"
+  },
+  "report_semantic_digest": "411e1af4e364ca3558d2377c51c3ad5680f57674a841a15adc29f3c06a166bd0",
+  "scientific_results_authorized": false,
+  "scope": {
+    "candidate_ids": [
+      "cand_1537a6ae8ef67c379c8d0fa0"
+    ],
+    "catalogless_explain_successful": 5,
+    "configuration_id": "A-singleton-01",
+    "physical_explain_successful": 5,
+    "query_count_per_arm": 5,
+    "query_ids": [
+      "arecel_forest10_test_000000",
+      "arecel_forest10_test_000078",
+      "arecel_forest10_test_000157",
+      "arecel_forest10_test_000236",
+      "arecel_forest10_test_000314"
+    ]
+  },
+  "source_identities": {
+    "advisor_checkout": "/tmp/extstats-advisor-rq5-timing-smoke-001-0865",
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched": {
+      "database": "extstats_lab",
+      "port": 55433,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "patched",
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "source_dirty": false
+    },
+    "stock": {
+      "database": "extstats_lab",
+      "port": 55432,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "stock",
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "source_dirty": false
+    }
+  },
+  "status": "complete"
+}

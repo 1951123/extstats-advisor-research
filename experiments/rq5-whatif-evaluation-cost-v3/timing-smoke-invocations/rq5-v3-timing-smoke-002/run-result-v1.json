@@ -1,0 +1,53 @@
+{
+  "arms": {
+    "catalogless": {
+      "error": {
+        "class": "AdapterExecutionError",
+        "message": "adapter execution failed: sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'"
+      },
+      "status": "failed",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/wqts/projects/extstats-advisor-research/src/extstats_advisor_research/rq5_whatif_cost.py\", line 1205, in run_catalogless_arm\n    timer.measure(\n  File \"/home/wqts/projects/extstats-advisor-research/src/extstats_advisor_research/rq5_whatif_cost.py\", line 619, in measure\n    result = operation()\n             ^^^^^^^^^^^\n  File \"/home/wqts/projects/extstats-advisor-research/src/extstats_advisor_research/rq5_whatif_cost_postgres.py\", line 1047, in register_repository\n    prepared = prepare_postgres_planner_sandbox(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/wqts/projects/extstats-advisor-research/.venv/lib/python3.12/site-packages/extstats_advisor/dbms/postgres/sandbox.py\", line 558, in prepare_postgres_planner_sandbox\n    raise PlannerSandboxError(\nextstats_advisor.errors.PlannerSandboxError: sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 62, in <module>\n  File \"/home/wqts/projects/extstats-advisor-research/src/extstats_advisor_research/rq5_whatif_cost.py\", line 1243, in run_catalogless_arm\n    raise AdapterExecutionError(primary, cleanup_error) from primary\nextstats_advisor_research.rq5_whatif_cost.AdapterExecutionError: adapter execution failed: sandbox database 'extstats_lab' does not match snapshot catalog 'extstats_stock'\n"
+    },
+    "physical": {
+      "status": "complete",
+      "summary": {
+        "analyze_calls": 1,
+        "arm": "physical",
+        "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+        "cleanup_ns": 7826,
+        "configuration_count": 1,
+        "cumulative": [
+          {
+            "complete_lifecycle_ns": 11761813461,
+            "configuration_id": "A-singleton-01",
+            "configuration_size": 1,
+            "ordinal": 1,
+            "warm_start_ns": 10085894224
+          }
+        ],
+        "explain_calls": 5,
+        "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+        "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+        "preparation_ns": 1675911411,
+        "repetition": 1,
+        "run_id": "rq5-v3-timing-smoke-002-physical",
+        "stage_totals_ns": {
+          "analyze": 224055011,
+          "arm-cleanup": 7826,
+          "baseline-initialization": 1675911411,
+          "clone-create": 9793662935,
+          "clone-destroy": 64548098,
+          "create-alter-statistics": 1376944,
+          "drop-statistics": 523323,
+          "explain": 1727913
+        },
+        "status": "complete",
+        "warm_start_excludes": [
+          "baseline-initialization"
+        ]
+      }
+    }
+  },
+  "classification": "timing-instrumentation-only",
+  "status": "failed"
+}

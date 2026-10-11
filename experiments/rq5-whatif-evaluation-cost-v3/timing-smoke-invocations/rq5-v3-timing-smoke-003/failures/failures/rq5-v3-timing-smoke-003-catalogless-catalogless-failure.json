@@ -1,0 +1,20 @@
+{
+  "arm": "catalogless",
+  "cleanup_exception": null,
+  "completed_configuration_ordinals": [],
+  "completed_explain_calls": 0,
+  "event_count": 7,
+  "failure_id": "rq5-v3-timing-smoke-003-catalogless-catalogless-failure",
+  "format_version": "rq5-whatif-evaluation-cost-failure-v1",
+  "manifest_semantic_digest": "3ebdb4b74b39df290fcdc0aa6f42dd78ff8acf7f73ce08bb859bf641749ecf5e",
+  "phase": "arm-cleanup",
+  "primary_exception": {
+    "class": "PlannerSandboxError",
+    "message": "managed sandbox relation already exists: public.forest10"
+  },
+  "producer_commit_sha": "5eca610c529739ffda09a35ca500c16987a26250",
+  "repetition": 1,
+  "run_id": "rq5-v3-timing-smoke-003-catalogless",
+  "semantic_digest": "2f43ac2b4eef7ef886d06120ead38e03e27283a5787d0ca191d4c01a851c426f",
+  "status": "failed"
+}

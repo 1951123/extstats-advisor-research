@@ -1,0 +1,21 @@
+{
+  "population_rows": 581012,
+  "relation_oid": 16501,
+  "relpages": 7792,
+  "reltuples": 581012.0,
+  "sampling_contract": {
+    "actual_sample_row_count_evidence": "not exposed by standard PostgreSQL catalog",
+    "actual_sample_row_count_observable": false,
+    "extended_statistics_sample_target_rule": "300 * max_statistics_target",
+    "nominal_extended_statistics_sample_target": 30000,
+    "statistics_target": 100
+  },
+  "server": {
+    "database": "extstats_stock",
+    "role": "wqts",
+    "server_version": "16.14",
+    "server_version_num": 160014,
+    "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "source_database": "extstats_stock"
+}

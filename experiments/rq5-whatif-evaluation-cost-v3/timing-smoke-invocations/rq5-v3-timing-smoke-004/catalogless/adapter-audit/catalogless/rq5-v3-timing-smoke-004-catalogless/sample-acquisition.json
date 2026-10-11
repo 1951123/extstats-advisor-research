@@ -1,0 +1,29 @@
+{
+  "recipe": {
+    "algorithm": "sha256-row-rank-v1",
+    "output_order": "ascending-source-row-index",
+    "population_rows": 581012,
+    "row_identity": "source-csv-data-row-index",
+    "sample_rows": 30000,
+    "seed": 42,
+    "semantic_digest": "9af41d010197d1ec9578f1813f8fdffca9037b16beae3dab219871aa2d4383d0",
+    "source_index_base": 0
+  },
+  "sample_index_digest": "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b",
+  "sample_rows": 30000,
+  "source": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "benchmark_id": "arecel-forest10",
+    "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "population_rows": 581012,
+    "relation": "public.forest10",
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+    "source_files": {
+      "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+      "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+      "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+    },
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a"
+  }
+}
