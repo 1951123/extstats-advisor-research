@@ -1,0 +1,559 @@
+{
+  "artifact": "rq5-v3-analysis-a-clone-attribution-v1",
+  "checkpoint_reconciliation": {
+    "comparison_count": 24,
+    "comparisons": [
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 13453025016,
+        "raw_derived_ns": 13453025016,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 24906282704,
+        "raw_derived_ns": 24906282704,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 38961073428,
+        "raw_derived_ns": 38961073428,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 66949389605,
+        "raw_derived_ns": 66949389605,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4576937804,
+        "raw_derived_ns": 4576937804,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14710448453,
+        "raw_derived_ns": 14710448453,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 27585117401,
+        "raw_derived_ns": 27585117401,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 53976507914,
+        "raw_derived_ns": 53976507914,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4313019789,
+        "raw_derived_ns": 4313019789,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14880226798,
+        "raw_derived_ns": 14880226798,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 29374576369,
+        "raw_derived_ns": 29374576369,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 57738596436,
+        "raw_derived_ns": 57738596436,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7328489981,
+        "raw_derived_ns": 7328489981,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7521727434,
+        "raw_derived_ns": 7521727434,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7757771422,
+        "raw_derived_ns": 7757771422,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8244809609,
+        "raw_derived_ns": 8244809609,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7286985112,
+        "raw_derived_ns": 7286985112,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7486630341,
+        "raw_derived_ns": 7486630341,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7719059552,
+        "raw_derived_ns": 7719059552,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8205934717,
+        "raw_derived_ns": 8205934717,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7723201694,
+        "raw_derived_ns": 7723201694,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7920243457,
+        "raw_derived_ns": 7920243457,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8155535821,
+        "raw_derived_ns": 8155535821,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8638384009,
+        "raw_derived_ns": 8638384009,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      }
+    ],
+    "mismatch_count": 0,
+    "status": "passed"
+  },
+  "classification": "derived-accounting-sensitivity-not-measured-baseline",
+  "input_artifacts": {
+    "manifest": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671"
+    },
+    "published_checkpoint_summary": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/checkpoint-summary-v2.json",
+      "sha256": "409ba6baabc3eaff37c31e7b2329da5795ccdeaa1cbb4cbcbc3cc7bc529b605b"
+    },
+    "rq5-v3-analysis-a-catalogless-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r1/events.jsonl",
+      "sha256": "2402747938bcfa6c8cd0ef291eb418df4aa3989821026f727428abb8b110fd37"
+    },
+    "rq5-v3-analysis-a-catalogless-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r2/events.jsonl",
+      "sha256": "edad1bd7516b3323134d57af1aa19fb31edf5a3ba7ce6f3ec992bbcde903aa30"
+    },
+    "rq5-v3-analysis-a-catalogless-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r3/events.jsonl",
+      "sha256": "07869ea029bacf1cc1f979b2f90b11445c71ef06267b8dd7461eea50e87b0a86"
+    },
+    "rq5-v3-analysis-a-physical-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r1/events.jsonl",
+      "sha256": "eace66c00610e045be123bbceb9095c2469477da0c0ae6f17590e87a484d236a"
+    },
+    "rq5-v3-analysis-a-physical-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r2/events.jsonl",
+      "sha256": "828208536df8bb3b143aaefa5195d62c3afea9ada7806ace61c392f7796ea9af"
+    },
+    "rq5-v3-analysis-a-physical-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r3/events.jsonl",
+      "sha256": "9a303715d23a0d93a4de1e3a580129e869e68fbb079092416b8fe8f0466453c1"
+    }
+  },
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "per_run_stage_totals": [
+    {
+      "arm": "physical",
+      "cleanup_ns": 5972,
+      "preparation_ns": 2586184188,
+      "repetition": 1,
+      "run_id": "rq5-v3-analysis-a-physical-r1",
+      "stage_totals_ns": {
+        "analyze": 5742696112,
+        "arm-cleanup": 5972,
+        "baseline-initialization": 2586184188,
+        "clone-create": 56394512073,
+        "clone-destroy": 1362844752,
+        "create-alter-statistics": 155721233,
+        "drop-statistics": 15225592,
+        "explain": 692199683
+      }
+    },
+    {
+      "arm": "physical",
+      "cleanup_ns": 6485,
+      "preparation_ns": 1659680742,
+      "repetition": 2,
+      "run_id": "rq5-v3-analysis-a-physical-r2",
+      "stage_totals_ns": {
+        "analyze": 5485628585,
+        "arm-cleanup": 6485,
+        "baseline-initialization": 1659680742,
+        "clone-create": 44835190824,
+        "clone-destroy": 1220744907,
+        "create-alter-statistics": 132818088,
+        "drop-statistics": 12953496,
+        "explain": 629484787
+      }
+    },
+    {
+      "arm": "physical",
+      "cleanup_ns": 6837,
+      "preparation_ns": 1712137272,
+      "repetition": 3,
+      "run_id": "rq5-v3-analysis-a-physical-r3",
+      "stage_totals_ns": {
+        "analyze": 5426149238,
+        "arm-cleanup": 6837,
+        "baseline-initialization": 1712137272,
+        "clone-create": 48573814300,
+        "clone-destroy": 1279175300,
+        "create-alter-statistics": 90935144,
+        "drop-statistics": 12519718,
+        "explain": 643858627
+      }
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 16135725,
+      "preparation_ns": 7279399078,
+      "repetition": 1,
+      "run_id": "rq5-v3-analysis-a-catalogless-r1",
+      "stage_totals_ns": {
+        "activate": 11965279,
+        "arm-cleanup": 16135725,
+        "deactivate": 9869114,
+        "explain": 927440413,
+        "fixed-sample-preparation": 1189361108,
+        "native-payload-materialization": 2571213746,
+        "repository-registration-and-sandbox-preparation": 1945110047,
+        "sample-acquisition": 1392173262,
+        "snapshot-construction": 36628292,
+        "snapshot-serialization-validation": 144912623
+      }
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 14441441,
+      "preparation_ns": 7231925240,
+      "repetition": 2,
+      "run_id": "rq5-v3-analysis-a-catalogless-r2",
+      "stage_totals_ns": {
+        "activate": 12816467,
+        "arm-cleanup": 14441441,
+        "deactivate": 10339656,
+        "explain": 936411913,
+        "fixed-sample-preparation": 1182127597,
+        "native-payload-materialization": 2505026671,
+        "repository-registration-and-sandbox-preparation": 1959774539,
+        "sample-acquisition": 1404190652,
+        "snapshot-construction": 35573062,
+        "snapshot-serialization-validation": 145232719
+      }
+    },
+    {
+      "arm": "catalogless",
+      "cleanup_ns": 14058035,
+      "preparation_ns": 7671894706,
+      "repetition": 3,
+      "run_id": "rq5-v3-analysis-a-catalogless-r3",
+      "stage_totals_ns": {
+        "activate": 13359609,
+        "arm-cleanup": 14058035,
+        "deactivate": 10329671,
+        "explain": 928741988,
+        "fixed-sample-preparation": 1293138548,
+        "native-payload-materialization": 2660302073,
+        "repository-registration-and-sandbox-preparation": 2002032060,
+        "sample-acquisition": 1526634450,
+        "snapshot-construction": 38623781,
+        "snapshot-serialization-validation": 151163794
+      }
+    }
+  ],
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "stage_summary": {
+    "catalogless": {
+      "activate": {
+        "maximum_ns": 13359609,
+        "median_ns": 12816467,
+        "minimum_ns": 11965279,
+        "values_ns": [
+          11965279,
+          12816467,
+          13359609
+        ]
+      },
+      "arm-cleanup": {
+        "maximum_ns": 16135725,
+        "median_ns": 14441441,
+        "minimum_ns": 14058035,
+        "values_ns": [
+          16135725,
+          14441441,
+          14058035
+        ]
+      },
+      "deactivate": {
+        "maximum_ns": 10339656,
+        "median_ns": 10329671,
+        "minimum_ns": 9869114,
+        "values_ns": [
+          9869114,
+          10339656,
+          10329671
+        ]
+      },
+      "explain": {
+        "maximum_ns": 936411913,
+        "median_ns": 928741988,
+        "minimum_ns": 927440413,
+        "values_ns": [
+          927440413,
+          936411913,
+          928741988
+        ]
+      },
+      "fixed-sample-preparation": {
+        "maximum_ns": 1293138548,
+        "median_ns": 1189361108,
+        "minimum_ns": 1182127597,
+        "values_ns": [
+          1189361108,
+          1182127597,
+          1293138548
+        ]
+      },
+      "native-payload-materialization": {
+        "maximum_ns": 2660302073,
+        "median_ns": 2571213746,
+        "minimum_ns": 2505026671,
+        "values_ns": [
+          2571213746,
+          2505026671,
+          2660302073
+        ]
+      },
+      "repository-registration-and-sandbox-preparation": {
+        "maximum_ns": 2002032060,
+        "median_ns": 1959774539,
+        "minimum_ns": 1945110047,
+        "values_ns": [
+          1945110047,
+          1959774539,
+          2002032060
+        ]
+      },
+      "sample-acquisition": {
+        "maximum_ns": 1526634450,
+        "median_ns": 1404190652,
+        "minimum_ns": 1392173262,
+        "values_ns": [
+          1392173262,
+          1404190652,
+          1526634450
+        ]
+      },
+      "snapshot-construction": {
+        "maximum_ns": 38623781,
+        "median_ns": 36628292,
+        "minimum_ns": 35573062,
+        "values_ns": [
+          36628292,
+          35573062,
+          38623781
+        ]
+      },
+      "snapshot-serialization-validation": {
+        "maximum_ns": 151163794,
+        "median_ns": 145232719,
+        "minimum_ns": 144912623,
+        "values_ns": [
+          144912623,
+          145232719,
+          151163794
+        ]
+      }
+    },
+    "physical": {
+      "analyze": {
+        "maximum_ns": 5742696112,
+        "median_ns": 5485628585,
+        "minimum_ns": 5426149238,
+        "values_ns": [
+          5742696112,
+          5485628585,
+          5426149238
+        ]
+      },
+      "arm-cleanup": {
+        "maximum_ns": 6837,
+        "median_ns": 6485,
+        "minimum_ns": 5972,
+        "values_ns": [
+          5972,
+          6485,
+          6837
+        ]
+      },
+      "baseline-initialization": {
+        "maximum_ns": 2586184188,
+        "median_ns": 1712137272,
+        "minimum_ns": 1659680742,
+        "values_ns": [
+          2586184188,
+          1659680742,
+          1712137272
+        ]
+      },
+      "clone-create": {
+        "maximum_ns": 56394512073,
+        "median_ns": 48573814300,
+        "minimum_ns": 44835190824,
+        "values_ns": [
+          56394512073,
+          44835190824,
+          48573814300
+        ]
+      },
+      "clone-destroy": {
+        "maximum_ns": 1362844752,
+        "median_ns": 1279175300,
+        "minimum_ns": 1220744907,
+        "values_ns": [
+          1362844752,
+          1220744907,
+          1279175300
+        ]
+      },
+      "create-alter-statistics": {
+        "maximum_ns": 155721233,
+        "median_ns": 132818088,
+        "minimum_ns": 90935144,
+        "values_ns": [
+          155721233,
+          132818088,
+          90935144
+        ]
+      },
+      "drop-statistics": {
+        "maximum_ns": 15225592,
+        "median_ns": 12953496,
+        "minimum_ns": 12519718,
+        "values_ns": [
+          15225592,
+          12953496,
+          12519718
+        ]
+      },
+      "explain": {
+        "maximum_ns": 692199683,
+        "median_ns": 643858627,
+        "minimum_ns": 629484787,
+        "values_ns": [
+          692199683,
+          629484787,
+          643858627
+        ]
+      }
+    }
+  }
+}

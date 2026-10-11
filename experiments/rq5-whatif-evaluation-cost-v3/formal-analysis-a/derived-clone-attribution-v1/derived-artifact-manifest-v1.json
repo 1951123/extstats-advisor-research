@@ -1,0 +1,39 @@
+{
+  "artifact": "rq5-v3-analysis-a-clone-attribution-artifact-manifest-v1",
+  "classification": "derived-accounting-sensitivity-not-measured-baseline",
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 11248,
+      "path": "clone-sensitivity.json",
+      "sha256": "828b8b79e962e3a8d6150a70c3d413b1178f069868727ca05e4ec20e15138be2"
+    },
+    {
+      "bytes": 30214,
+      "path": "integrity-reconciliation.json",
+      "sha256": "7b5dc44c329307d530e4f720a59ea8e7093d99b72278ed5db05a8a18a50d5b25"
+    },
+    {
+      "bytes": 3156,
+      "path": "methodology.md",
+      "sha256": "71a4c5127f8880b0fa15f41e7ddc0950df825531a9a13627148b6ecb5ca0111f"
+    },
+    {
+      "bytes": 64283,
+      "path": "per-run-checkpoints.json",
+      "sha256": "92e015856ce31c37fceba011530583aecdc2ef33a0ffd36a3233acc1b0067c77"
+    },
+    {
+      "bytes": 4987,
+      "path": "report.md",
+      "sha256": "74f1601ae2ed9b6ab5b6a94e97ebc1e468cd9e6f30aaf1ee027129edc1fcd7fe"
+    },
+    {
+      "bytes": 15739,
+      "path": "stage-attribution.json",
+      "sha256": "5f3869c5a180df87f0074ba7e9a4bb5fade88f236838ad77a28d6bea7349cd6d"
+    }
+  ],
+  "status": "passed",
+  "total_bytes": 129627
+}

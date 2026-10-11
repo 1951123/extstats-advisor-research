@@ -1,0 +1,2143 @@
+{
+  "artifact": "rq5-v3-analysis-a-clone-attribution-v1",
+  "checkpoint_reconciliation": {
+    "comparison_count": 24,
+    "comparisons": [
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 13453025016,
+        "raw_derived_ns": 13453025016,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 24906282704,
+        "raw_derived_ns": 24906282704,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 38961073428,
+        "raw_derived_ns": 38961073428,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 66949389605,
+        "raw_derived_ns": 66949389605,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4576937804,
+        "raw_derived_ns": 4576937804,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14710448453,
+        "raw_derived_ns": 14710448453,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 27585117401,
+        "raw_derived_ns": 27585117401,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 53976507914,
+        "raw_derived_ns": 53976507914,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4313019789,
+        "raw_derived_ns": 4313019789,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14880226798,
+        "raw_derived_ns": 14880226798,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 29374576369,
+        "raw_derived_ns": 29374576369,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 57738596436,
+        "raw_derived_ns": 57738596436,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7328489981,
+        "raw_derived_ns": 7328489981,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7521727434,
+        "raw_derived_ns": 7521727434,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7757771422,
+        "raw_derived_ns": 7757771422,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8244809609,
+        "raw_derived_ns": 8244809609,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7286985112,
+        "raw_derived_ns": 7286985112,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7486630341,
+        "raw_derived_ns": 7486630341,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7719059552,
+        "raw_derived_ns": 7719059552,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8205934717,
+        "raw_derived_ns": 8205934717,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7723201694,
+        "raw_derived_ns": 7723201694,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7920243457,
+        "raw_derived_ns": 7920243457,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8155535821,
+        "raw_derived_ns": 8155535821,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8638384009,
+        "raw_derived_ns": 8638384009,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      }
+    ],
+    "mismatch_count": 0,
+    "status": "passed"
+  },
+  "classification": "derived-accounting-sensitivity-not-measured-baseline",
+  "input_artifacts": {
+    "manifest": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671"
+    },
+    "published_checkpoint_summary": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/checkpoint-summary-v2.json",
+      "sha256": "409ba6baabc3eaff37c31e7b2329da5795ccdeaa1cbb4cbcbc3cc7bc529b605b"
+    },
+    "rq5-v3-analysis-a-catalogless-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r1/events.jsonl",
+      "sha256": "2402747938bcfa6c8cd0ef291eb418df4aa3989821026f727428abb8b110fd37"
+    },
+    "rq5-v3-analysis-a-catalogless-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r2/events.jsonl",
+      "sha256": "edad1bd7516b3323134d57af1aa19fb31edf5a3ba7ce6f3ec992bbcde903aa30"
+    },
+    "rq5-v3-analysis-a-catalogless-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r3/events.jsonl",
+      "sha256": "07869ea029bacf1cc1f979b2f90b11445c71ef06267b8dd7461eea50e87b0a86"
+    },
+    "rq5-v3-analysis-a-physical-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r1/events.jsonl",
+      "sha256": "eace66c00610e045be123bbceb9095c2469477da0c0ae6f17590e87a484d236a"
+    },
+    "rq5-v3-analysis-a-physical-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r2/events.jsonl",
+      "sha256": "828208536df8bb3b143aaefa5195d62c3afea9ada7806ace61c392f7796ea9af"
+    },
+    "rq5-v3-analysis-a-physical-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r3/events.jsonl",
+      "sha256": "9a303715d23a0d93a4de1e3a580129e869e68fbb079092416b8fe8f0466453c1"
+    }
+  },
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "runs": [
+    {
+      "arm": "physical",
+      "checkpoints": [
+        {
+          "N": 1,
+          "analyze_ns": 229027078,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 10531781793,
+          "clone_destroy_ns": 67426619,
+          "clone_excluded_lifecycle_ns": 2853816604,
+          "clone_total_ns": 10599208412,
+          "configuration_evaluation_ns": 10866840828,
+          "drop_statistics_ns": 708378,
+          "explain_ns": 36440556,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 13453025016,
+          "preparation_ns": 2586184188,
+          "statistics_ddl_ns": 1456404,
+          "warm_start_ns": 10866840828
+        },
+        {
+          "N": 5,
+          "analyze_ns": 1479133244,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 20324744207,
+          "clone_destroy_ns": 307717490,
+          "clone_excluded_lifecycle_ns": 4273821007,
+          "clone_total_ns": 20632461697,
+          "configuration_evaluation_ns": 22320098516,
+          "drop_statistics_ns": 3255535,
+          "explain_ns": 180151945,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 24906282704,
+          "preparation_ns": 2586184188,
+          "statistics_ddl_ns": 25096095,
+          "warm_start_ns": 22320098516
+        },
+        {
+          "N": 10,
+          "analyze_ns": 2837344260,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 32324263234,
+          "clone_destroy_ns": 730839759,
+          "clone_excluded_lifecycle_ns": 5905970435,
+          "clone_total_ns": 33055102993,
+          "configuration_evaluation_ns": 36374889240,
+          "drop_statistics_ns": 8174791,
+          "explain_ns": 371822324,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 38961073428,
+          "preparation_ns": 2586184188,
+          "statistics_ddl_ns": 102444872,
+          "warm_start_ns": 36374889240
+        },
+        {
+          "N": 20,
+          "analyze_ns": 5742696112,
+          "cleanup_included_directly": true,
+          "clone_create_ns": 56394512073,
+          "clone_destroy_ns": 1362844752,
+          "clone_excluded_lifecycle_ns": 9192032780,
+          "clone_total_ns": 57757356825,
+          "configuration_evaluation_ns": 64363199445,
+          "drop_statistics_ns": 15225592,
+          "explain_ns": 692199683,
+          "final_cleanup_ns": 5972,
+          "full_lifecycle_ns": 66949389605,
+          "preparation_ns": 2586184188,
+          "statistics_ddl_ns": 155721233,
+          "warm_start_ns": 64363199445
+        }
+      ],
+      "cleanup_ns": 5972,
+      "event_count": 122,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "analyze": 229027078,
+            "clone-create": 10531781793,
+            "clone-destroy": 67426619,
+            "create-alter-statistics": 1456404,
+            "drop-statistics": 708378,
+            "explain": 36440556
+          },
+          "total_ns": 10866840828
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "analyze": 255916501,
+            "clone-create": 2560293394,
+            "clone-destroy": 60698779,
+            "create-alter-statistics": 4719775,
+            "drop-statistics": 592570,
+            "explain": 30800300
+          },
+          "total_ns": 2913021319
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "analyze": 351589847,
+            "clone-create": 2396545509,
+            "clone-destroy": 59963111,
+            "create-alter-statistics": 2188333,
+            "drop-statistics": 653967,
+            "explain": 42151041
+          },
+          "total_ns": 2853091808
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "analyze": 388367353,
+            "clone-create": 2333525129,
+            "clone-destroy": 59826787,
+            "create-alter-statistics": 4198757,
+            "drop-statistics": 641645,
+            "explain": 40795907
+          },
+          "total_ns": 2827355578
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "analyze": 254232465,
+            "clone-create": 2502598382,
+            "clone-destroy": 59802194,
+            "create-alter-statistics": 12532826,
+            "drop-statistics": 658975,
+            "explain": 29964141
+          },
+          "total_ns": 2859788983
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "analyze": 267917348,
+            "clone-create": 2301940367,
+            "clone-destroy": 174089647,
+            "create-alter-statistics": 4462728,
+            "drop-statistics": 2044661,
+            "explain": 55212107
+          },
+          "total_ns": 2805666858
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "analyze": 271193315,
+            "clone-create": 2429919947,
+            "clone-destroy": 62617853,
+            "create-alter-statistics": 53236649,
+            "drop-statistics": 693133,
+            "explain": 32433538
+          },
+          "total_ns": 2850094435
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "analyze": 261608314,
+            "clone-create": 2433182328,
+            "clone-destroy": 62162727,
+            "create-alter-statistics": 5564473,
+            "drop-statistics": 694630,
+            "explain": 33606625
+          },
+          "total_ns": 2796819097
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "analyze": 267037114,
+            "clone-create": 2450541881,
+            "clone-destroy": 62041664,
+            "create-alter-statistics": 6662483,
+            "drop-statistics": 639292,
+            "explain": 35865450
+          },
+          "total_ns": 2822787884
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "analyze": 290454925,
+            "clone-create": 2383934504,
+            "clone-destroy": 62210378,
+            "create-alter-statistics": 7422444,
+            "drop-statistics": 847540,
+            "explain": 34552659
+          },
+          "total_ns": 2779422450
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "analyze": 290193152,
+            "clone-create": 2306230430,
+            "clone-destroy": 59257992,
+            "create-alter-statistics": 5812521,
+            "drop-statistics": 630974,
+            "explain": 29986771
+          },
+          "total_ns": 2692111840
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "analyze": 296219524,
+            "clone-create": 2346554615,
+            "clone-destroy": 66095995,
+            "create-alter-statistics": 5625539,
+            "drop-statistics": 645643,
+            "explain": 34525783
+          },
+          "total_ns": 2749667099
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "analyze": 318864923,
+            "clone-create": 2425946148,
+            "clone-destroy": 63060405,
+            "create-alter-statistics": 5719383,
+            "drop-statistics": 737209,
+            "explain": 33860548
+          },
+          "total_ns": 2848188616
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "analyze": 298010493,
+            "clone-create": 2392460606,
+            "clone-destroy": 63937377,
+            "create-alter-statistics": 4728469,
+            "drop-statistics": 603273,
+            "explain": 30496740
+          },
+          "total_ns": 2790236958
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "analyze": 288201642,
+            "clone-create": 2374602335,
+            "clone-destroy": 63175319,
+            "create-alter-statistics": 3523641,
+            "drop-statistics": 758903,
+            "explain": 32202412
+          },
+          "total_ns": 2762464252
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "analyze": 293466850,
+            "clone-create": 2424040287,
+            "clone-destroy": 60105455,
+            "create-alter-statistics": 8387869,
+            "drop-statistics": 762196,
+            "explain": 27788789
+          },
+          "total_ns": 2814551446
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "analyze": 281124685,
+            "clone-create": 2333094124,
+            "clone-destroy": 63379809,
+            "create-alter-statistics": 3313712,
+            "drop-statistics": 741125,
+            "explain": 27220923
+          },
+          "total_ns": 2708874378
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "analyze": 266987468,
+            "clone-create": 2722755475,
+            "clone-destroy": 71439826,
+            "create-alter-statistics": 4079840,
+            "drop-statistics": 788541,
+            "explain": 40345954
+          },
+          "total_ns": 3106397104
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "analyze": 290212958,
+            "clone-create": 2424070157,
+            "clone-destroy": 59060247,
+            "create-alter-statistics": 6437282,
+            "drop-statistics": 733364,
+            "explain": 29662220
+          },
+          "total_ns": 2810176228
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "analyze": 282070157,
+            "clone-create": 2320494662,
+            "clone-destroy": 62492568,
+            "create-alter-statistics": 5648105,
+            "drop-statistics": 649573,
+            "explain": 34287219
+          },
+          "total_ns": 2705642284
+        }
+      ],
+      "preparation_ns": 2586184188,
+      "repetition": 1,
+      "run_id": "rq5-v3-analysis-a-physical-r1",
+      "stage_totals_ns": {
+        "analyze": 5742696112,
+        "arm-cleanup": 5972,
+        "baseline-initialization": 2586184188,
+        "clone-create": 56394512073,
+        "clone-destroy": 1362844752,
+        "create-alter-statistics": 155721233,
+        "drop-statistics": 15225592,
+        "explain": 692199683
+      }
+    },
+    {
+      "arm": "physical",
+      "checkpoints": [
+        {
+          "N": 1,
+          "analyze_ns": 213350282,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 2610070460,
+          "clone_destroy_ns": 59822356,
+          "clone_excluded_lifecycle_ns": 1907044988,
+          "clone_total_ns": 2669892816,
+          "configuration_evaluation_ns": 2917257062,
+          "drop_statistics_ns": 700860,
+          "explain_ns": 32218530,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 4576937804,
+          "preparation_ns": 1659680742,
+          "statistics_ddl_ns": 1094574,
+          "warm_start_ns": 2917257062
+        },
+        {
+          "N": 5,
+          "analyze_ns": 1209356442,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 11360832504,
+          "clone_destroy_ns": 298968929,
+          "clone_excluded_lifecycle_ns": 3050647020,
+          "clone_total_ns": 11659801433,
+          "configuration_evaluation_ns": 13050767711,
+          "drop_statistics_ns": 3472880,
+          "explain_ns": 152423531,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 14710448453,
+          "preparation_ns": 1659680742,
+          "statistics_ddl_ns": 25713425,
+          "warm_start_ns": 13050767711
+        },
+        {
+          "N": 10,
+          "analyze_ns": 2562142778,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 22384646745,
+          "clone_destroy_ns": 602606959,
+          "clone_excluded_lifecycle_ns": 4597863697,
+          "clone_total_ns": 22987253704,
+          "configuration_evaluation_ns": 25925436659,
+          "drop_statistics_ns": 6744652,
+          "explain_ns": 315333493,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 27585117401,
+          "preparation_ns": 1659680742,
+          "statistics_ddl_ns": 53962032,
+          "warm_start_ns": 25925436659
+        },
+        {
+          "N": 20,
+          "analyze_ns": 5485628585,
+          "cleanup_included_directly": true,
+          "clone_create_ns": 44835190824,
+          "clone_destroy_ns": 1220744907,
+          "clone_excluded_lifecycle_ns": 7920572183,
+          "clone_total_ns": 46055935731,
+          "configuration_evaluation_ns": 52316820687,
+          "drop_statistics_ns": 12953496,
+          "explain_ns": 629484787,
+          "final_cleanup_ns": 6485,
+          "full_lifecycle_ns": 53976507914,
+          "preparation_ns": 1659680742,
+          "statistics_ddl_ns": 132818088,
+          "warm_start_ns": 52316820687
+        }
+      ],
+      "cleanup_ns": 6485,
+      "event_count": 122,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "analyze": 213350282,
+            "clone-create": 2610070460,
+            "clone-destroy": 59822356,
+            "create-alter-statistics": 1094574,
+            "drop-statistics": 700860,
+            "explain": 32218530
+          },
+          "total_ns": 2917257062
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "analyze": 234611969,
+            "clone-create": 2321233739,
+            "clone-destroy": 59501304,
+            "create-alter-statistics": 2876922,
+            "drop-statistics": 813628,
+            "explain": 26910899
+          },
+          "total_ns": 2645948461
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "analyze": 263868515,
+            "clone-create": 2111523973,
+            "clone-destroy": 59059576,
+            "create-alter-statistics": 6095422,
+            "drop-statistics": 608316,
+            "explain": 30900301
+          },
+          "total_ns": 2472056103
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "analyze": 233623140,
+            "clone-create": 2130444465,
+            "clone-destroy": 59454289,
+            "create-alter-statistics": 7448553,
+            "drop-statistics": 684698,
+            "explain": 31412356
+          },
+          "total_ns": 2463067501
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "analyze": 263902536,
+            "clone-create": 2187559867,
+            "clone-destroy": 61131404,
+            "create-alter-statistics": 8197954,
+            "drop-statistics": 665378,
+            "explain": 30981445
+          },
+          "total_ns": 2552438584
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "analyze": 270652245,
+            "clone-create": 2144957487,
+            "clone-destroy": 58451943,
+            "create-alter-statistics": 4298159,
+            "drop-statistics": 645926,
+            "explain": 30259765
+          },
+          "total_ns": 2509265525
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "analyze": 270767287,
+            "clone-create": 2218106736,
+            "clone-destroy": 59123560,
+            "create-alter-statistics": 5875404,
+            "drop-statistics": 620570,
+            "explain": 32416546
+          },
+          "total_ns": 2586910103
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "analyze": 284495969,
+            "clone-create": 2221758918,
+            "clone-destroy": 62834345,
+            "create-alter-statistics": 8169342,
+            "drop-statistics": 608770,
+            "explain": 29697940
+          },
+          "total_ns": 2607565284
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "analyze": 264930530,
+            "clone-create": 2217118593,
+            "clone-destroy": 63326176,
+            "create-alter-statistics": 5082295,
+            "drop-statistics": 657622,
+            "explain": 41020713
+          },
+          "total_ns": 2592135929
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "analyze": 261940305,
+            "clone-create": 2221872507,
+            "clone-destroy": 59902006,
+            "create-alter-statistics": 4823407,
+            "drop-statistics": 738884,
+            "explain": 29514998
+          },
+          "total_ns": 2578792107
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "analyze": 268028956,
+            "clone-create": 2188663122,
+            "clone-destroy": 63587338,
+            "create-alter-statistics": 5048667,
+            "drop-statistics": 600237,
+            "explain": 29948522
+          },
+          "total_ns": 2555876842
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "analyze": 284354793,
+            "clone-create": 2069367909,
+            "clone-destroy": 57456405,
+            "create-alter-statistics": 6040369,
+            "drop-statistics": 582981,
+            "explain": 35922651
+          },
+          "total_ns": 2453725108
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "analyze": 269768069,
+            "clone-create": 2263843570,
+            "clone-destroy": 59831675,
+            "create-alter-statistics": 5906740,
+            "drop-statistics": 615863,
+            "explain": 28561112
+          },
+          "total_ns": 2628527029
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "analyze": 304961351,
+            "clone-create": 2090457767,
+            "clone-destroy": 62978567,
+            "create-alter-statistics": 6681600,
+            "drop-statistics": 644502,
+            "explain": 33441108
+          },
+          "total_ns": 2499164895
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "analyze": 338974372,
+            "clone-create": 2139024536,
+            "clone-destroy": 62891080,
+            "create-alter-statistics": 7347918,
+            "drop-statistics": 778524,
+            "explain": 29393664
+          },
+          "total_ns": 2578410094
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "analyze": 275246767,
+            "clone-create": 2280212724,
+            "clone-destroy": 61318083,
+            "create-alter-statistics": 25894475,
+            "drop-statistics": 564739,
+            "explain": 27994957
+          },
+          "total_ns": 2671231745
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "analyze": 291039980,
+            "clone-create": 2293785699,
+            "clone-destroy": 62644726,
+            "create-alter-statistics": 6563977,
+            "drop-statistics": 615984,
+            "explain": 34239357
+          },
+          "total_ns": 2688889723
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "analyze": 276253933,
+            "clone-create": 2426075901,
+            "clone-destroy": 67023885,
+            "create-alter-statistics": 4940038,
+            "drop-statistics": 630290,
+            "explain": 36424564
+          },
+          "total_ns": 2811348611
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "analyze": 314844050,
+            "clone-create": 2384822684,
+            "clone-destroy": 59951566,
+            "create-alter-statistics": 4713869,
+            "drop-statistics": 595188,
+            "explain": 28352283
+          },
+          "total_ns": 2793279640
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "analyze": 300013536,
+            "clone-create": 2314290167,
+            "clone-destroy": 60454623,
+            "create-alter-statistics": 5718403,
+            "drop-statistics": 580536,
+            "explain": 29873076
+          },
+          "total_ns": 2710930341
+        }
+      ],
+      "preparation_ns": 1659680742,
+      "repetition": 2,
+      "run_id": "rq5-v3-analysis-a-physical-r2",
+      "stage_totals_ns": {
+        "analyze": 5485628585,
+        "arm-cleanup": 6485,
+        "baseline-initialization": 1659680742,
+        "clone-create": 44835190824,
+        "clone-destroy": 1220744907,
+        "create-alter-statistics": 132818088,
+        "drop-statistics": 12953496,
+        "explain": 629484787
+      }
+    },
+    {
+      "arm": "physical",
+      "checkpoints": [
+        {
+          "N": 1,
+          "analyze_ns": 256163489,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 2242292302,
+          "clone_destroy_ns": 62047142,
+          "clone_excluded_lifecycle_ns": 2008680345,
+          "clone_total_ns": 2304339444,
+          "configuration_evaluation_ns": 2600882517,
+          "drop_statistics_ns": 672418,
+          "explain_ns": 31625032,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 4313019789,
+          "preparation_ns": 1712137272,
+          "statistics_ddl_ns": 8082134,
+          "warm_start_ns": 2600882517
+        },
+        {
+          "N": 5,
+          "analyze_ns": 1311570486,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 11353357115,
+          "clone_destroy_ns": 308871247,
+          "clone_excluded_lifecycle_ns": 3217998436,
+          "clone_total_ns": 11662228362,
+          "configuration_evaluation_ns": 13168089526,
+          "drop_statistics_ns": 2986202,
+          "explain_ns": 165711042,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 14880226798,
+          "preparation_ns": 1712137272,
+          "statistics_ddl_ns": 25593434,
+          "warm_start_ns": 13168089526
+        },
+        {
+          "N": 10,
+          "analyze_ns": 2620456854,
+          "cleanup_included_directly": false,
+          "clone_create_ns": 24027157778,
+          "clone_destroy_ns": 634984534,
+          "clone_excluded_lifecycle_ns": 4712434057,
+          "clone_total_ns": 24662142312,
+          "configuration_evaluation_ns": 27662439097,
+          "drop_statistics_ns": 6132166,
+          "explain_ns": 323186936,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 29374576369,
+          "preparation_ns": 1712137272,
+          "statistics_ddl_ns": 50520829,
+          "warm_start_ns": 27662439097
+        },
+        {
+          "N": 20,
+          "analyze_ns": 5426149238,
+          "cleanup_included_directly": true,
+          "clone_create_ns": 48573814300,
+          "clone_destroy_ns": 1279175300,
+          "clone_excluded_lifecycle_ns": 7885606836,
+          "clone_total_ns": 49852989600,
+          "configuration_evaluation_ns": 56026452327,
+          "drop_statistics_ns": 12519718,
+          "explain_ns": 643858627,
+          "final_cleanup_ns": 6837,
+          "full_lifecycle_ns": 57738596436,
+          "preparation_ns": 1712137272,
+          "statistics_ddl_ns": 90935144,
+          "warm_start_ns": 56026452327
+        }
+      ],
+      "cleanup_ns": 6837,
+      "event_count": 122,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "analyze": 256163489,
+            "clone-create": 2242292302,
+            "clone-destroy": 62047142,
+            "create-alter-statistics": 8082134,
+            "drop-statistics": 672418,
+            "explain": 31625032
+          },
+          "total_ns": 2600882517
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "analyze": 237558771,
+            "clone-create": 2509714295,
+            "clone-destroy": 60046587,
+            "create-alter-statistics": 1153664,
+            "drop-statistics": 581774,
+            "explain": 30505216
+          },
+          "total_ns": 2839560307
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "analyze": 293499410,
+            "clone-create": 2175757701,
+            "clone-destroy": 63202429,
+            "create-alter-statistics": 5827243,
+            "drop-statistics": 610394,
+            "explain": 41665883
+          },
+          "total_ns": 2580563060
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "analyze": 260960109,
+            "clone-create": 2224344931,
+            "clone-destroy": 63308079,
+            "create-alter-statistics": 5149025,
+            "drop-statistics": 565392,
+            "explain": 32481078
+          },
+          "total_ns": 2586808614
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "analyze": 263388707,
+            "clone-create": 2201247886,
+            "clone-destroy": 60267010,
+            "create-alter-statistics": 5381368,
+            "drop-statistics": 556224,
+            "explain": 29433833
+          },
+          "total_ns": 2560275028
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "analyze": 249014229,
+            "clone-create": 3396792937,
+            "clone-destroy": 67416059,
+            "create-alter-statistics": 1866808,
+            "drop-statistics": 709041,
+            "explain": 32618395
+          },
+          "total_ns": 3748417469
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "analyze": 262272081,
+            "clone-create": 2283571920,
+            "clone-destroy": 62846765,
+            "create-alter-statistics": 10814054,
+            "drop-statistics": 601530,
+            "explain": 30182022
+          },
+          "total_ns": 2650288372
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "analyze": 234584397,
+            "clone-create": 2384743444,
+            "clone-destroy": 70489123,
+            "create-alter-statistics": 1628167,
+            "drop-statistics": 617109,
+            "explain": 30178544
+          },
+          "total_ns": 2722240784
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "analyze": 300929757,
+            "clone-create": 2277240475,
+            "clone-destroy": 63962249,
+            "create-alter-statistics": 5607542,
+            "drop-statistics": 613995,
+            "explain": 31209532
+          },
+          "total_ns": 2679563550
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "analyze": 262085904,
+            "clone-create": 2331451887,
+            "clone-destroy": 61399091,
+            "create-alter-statistics": 5010824,
+            "drop-statistics": 604289,
+            "explain": 33287401
+          },
+          "total_ns": 2693839396
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "analyze": 271723441,
+            "clone-create": 2242671989,
+            "clone-destroy": 64207438,
+            "create-alter-statistics": 7099337,
+            "drop-statistics": 671894,
+            "explain": 29793655
+          },
+          "total_ns": 2616167754
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "analyze": 278509062,
+            "clone-create": 2397096414,
+            "clone-destroy": 65004138,
+            "create-alter-statistics": 4986817,
+            "drop-statistics": 594780,
+            "explain": 29501770
+          },
+          "total_ns": 2775692981
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "analyze": 294692666,
+            "clone-create": 2322295879,
+            "clone-destroy": 61293562,
+            "create-alter-statistics": 10470536,
+            "drop-statistics": 605551,
+            "explain": 37087361
+          },
+          "total_ns": 2726445555
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "analyze": 294788867,
+            "clone-create": 2340762245,
+            "clone-destroy": 69026701,
+            "create-alter-statistics": 3473915,
+            "drop-statistics": 670184,
+            "explain": 29188400
+          },
+          "total_ns": 2737910312
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "analyze": 276755701,
+            "clone-create": 2361737280,
+            "clone-destroy": 63440190,
+            "create-alter-statistics": 3444282,
+            "drop-statistics": 639060,
+            "explain": 28795604
+          },
+          "total_ns": 2734812117
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "analyze": 295302627,
+            "clone-create": 2332706325,
+            "clone-destroy": 61354002,
+            "create-alter-statistics": 5347544,
+            "drop-statistics": 584967,
+            "explain": 30402249
+          },
+          "total_ns": 2725697714
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "analyze": 263445204,
+            "clone-create": 2960504991,
+            "clone-destroy": 64111499,
+            "create-alter-statistics": 1142635,
+            "drop-statistics": 635878,
+            "explain": 41807346
+          },
+          "total_ns": 3331647553
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "analyze": 295309280,
+            "clone-create": 2409642878,
+            "clone-destroy": 61383375,
+            "create-alter-statistics": 1834441,
+            "drop-statistics": 653763,
+            "explain": 29548900
+          },
+          "total_ns": 2798372637
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "analyze": 267891144,
+            "clone-create": 2634939283,
+            "clone-destroy": 67268260,
+            "create-alter-statistics": 1450503,
+            "drop-statistics": 702869,
+            "explain": 33586763
+          },
+          "total_ns": 3005838822
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "analyze": 267274392,
+            "clone-create": 2544299238,
+            "clone-destroy": 67101601,
+            "create-alter-statistics": 1164305,
+            "drop-statistics": 628606,
+            "explain": 30959643
+          },
+          "total_ns": 2911427785
+        }
+      ],
+      "preparation_ns": 1712137272,
+      "repetition": 3,
+      "run_id": "rq5-v3-analysis-a-physical-r3",
+      "stage_totals_ns": {
+        "analyze": 5426149238,
+        "arm-cleanup": 6837,
+        "baseline-initialization": 1712137272,
+        "clone-create": 48573814300,
+        "clone-destroy": 1279175300,
+        "create-alter-statistics": 90935144,
+        "drop-statistics": 12519718,
+        "explain": 643858627
+      }
+    },
+    {
+      "arm": "catalogless",
+      "checkpoints": [
+        {
+          "N": 1,
+          "activation_ns": 710230,
+          "catalogless_preparation_ns": 7279399078,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 49090903,
+          "deactivation_ns": 474930,
+          "explain_ns": 47905743,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7328489981,
+          "preparation_ns": 7279399078,
+          "warm_start_ns": 49090903
+        },
+        {
+          "N": 5,
+          "activation_ns": 3105911,
+          "catalogless_preparation_ns": 7279399078,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 242328356,
+          "deactivation_ns": 2362143,
+          "explain_ns": 236860302,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7521727434,
+          "preparation_ns": 7279399078,
+          "warm_start_ns": 242328356
+        },
+        {
+          "N": 10,
+          "activation_ns": 6010759,
+          "catalogless_preparation_ns": 7279399078,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 478372344,
+          "deactivation_ns": 4680867,
+          "explain_ns": 467680718,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7757771422,
+          "preparation_ns": 7279399078,
+          "warm_start_ns": 478372344
+        },
+        {
+          "N": 20,
+          "activation_ns": 11965279,
+          "catalogless_preparation_ns": 7279399078,
+          "cleanup_included_directly": true,
+          "configuration_evaluation_ns": 949274806,
+          "deactivation_ns": 9869114,
+          "explain_ns": 927440413,
+          "final_cleanup_ns": 16135725,
+          "full_lifecycle_ns": 8244809609,
+          "preparation_ns": 7279399078,
+          "warm_start_ns": 949274806
+        }
+      ],
+      "cleanup_ns": 16135725,
+      "event_count": 67,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "activate": 710230,
+            "deactivate": 474930,
+            "explain": 47905743
+          },
+          "total_ns": 49090903
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "activate": 580678,
+            "deactivate": 511282,
+            "explain": 48140208
+          },
+          "total_ns": 49232168
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "activate": 585618,
+            "deactivate": 465978,
+            "explain": 48129582
+          },
+          "total_ns": 49181178
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "activate": 630031,
+            "deactivate": 481121,
+            "explain": 47347317
+          },
+          "total_ns": 48458469
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "activate": 599354,
+            "deactivate": 428832,
+            "explain": 45337452
+          },
+          "total_ns": 46365638
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "activate": 578341,
+            "deactivate": 472507,
+            "explain": 47254418
+          },
+          "total_ns": 48305266
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "activate": 635318,
+            "deactivate": 453875,
+            "explain": 45222454
+          },
+          "total_ns": 46311647
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "activate": 585941,
+            "deactivate": 433874,
+            "explain": 45510829
+          },
+          "total_ns": 46530644
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "activate": 545249,
+            "deactivate": 441620,
+            "explain": 45899093
+          },
+          "total_ns": 46885962
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "activate": 559999,
+            "deactivate": 516848,
+            "explain": 46933622
+          },
+          "total_ns": 48010469
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "activate": 591321,
+            "deactivate": 438671,
+            "explain": 46845514
+          },
+          "total_ns": 47875506
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "activate": 582637,
+            "deactivate": 447909,
+            "explain": 45704841
+          },
+          "total_ns": 46735387
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "activate": 599474,
+            "deactivate": 753045,
+            "explain": 45528219
+          },
+          "total_ns": 46880738
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "activate": 617582,
+            "deactivate": 480969,
+            "explain": 44688858
+          },
+          "total_ns": 45787409
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "activate": 686059,
+            "deactivate": 467272,
+            "explain": 45787638
+          },
+          "total_ns": 46940969
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "activate": 543315,
+            "deactivate": 500964,
+            "explain": 45905893
+          },
+          "total_ns": 46950172
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "activate": 580612,
+            "deactivate": 468352,
+            "explain": 46248625
+          },
+          "total_ns": 47297589
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "activate": 530192,
+            "deactivate": 656474,
+            "explain": 45299157
+          },
+          "total_ns": 46485823
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "activate": 654435,
+            "deactivate": 471469,
+            "explain": 47011465
+          },
+          "total_ns": 48137369
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "activate": 568893,
+            "deactivate": 503122,
+            "explain": 46739485
+          },
+          "total_ns": 47811500
+        }
+      ],
+      "preparation_ns": 7279399078,
+      "repetition": 1,
+      "run_id": "rq5-v3-analysis-a-catalogless-r1",
+      "stage_totals_ns": {
+        "activate": 11965279,
+        "arm-cleanup": 16135725,
+        "deactivate": 9869114,
+        "explain": 927440413,
+        "fixed-sample-preparation": 1189361108,
+        "native-payload-materialization": 2571213746,
+        "repository-registration-and-sandbox-preparation": 1945110047,
+        "sample-acquisition": 1392173262,
+        "snapshot-construction": 36628292,
+        "snapshot-serialization-validation": 144912623
+      }
+    },
+    {
+      "arm": "catalogless",
+      "checkpoints": [
+        {
+          "N": 1,
+          "activation_ns": 918424,
+          "catalogless_preparation_ns": 7231925240,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 55059872,
+          "deactivation_ns": 581306,
+          "explain_ns": 53560142,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7286985112,
+          "preparation_ns": 7231925240,
+          "warm_start_ns": 55059872
+        },
+        {
+          "N": 5,
+          "activation_ns": 3469505,
+          "catalogless_preparation_ns": 7231925240,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 254705101,
+          "deactivation_ns": 2830774,
+          "explain_ns": 248404822,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7486630341,
+          "preparation_ns": 7231925240,
+          "warm_start_ns": 254705101
+        },
+        {
+          "N": 10,
+          "activation_ns": 6815513,
+          "catalogless_preparation_ns": 7231925240,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 487134312,
+          "deactivation_ns": 5408279,
+          "explain_ns": 474910520,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7719059552,
+          "preparation_ns": 7231925240,
+          "warm_start_ns": 487134312
+        },
+        {
+          "N": 20,
+          "activation_ns": 12816467,
+          "catalogless_preparation_ns": 7231925240,
+          "cleanup_included_directly": true,
+          "configuration_evaluation_ns": 959568036,
+          "deactivation_ns": 10339656,
+          "explain_ns": 936411913,
+          "final_cleanup_ns": 14441441,
+          "full_lifecycle_ns": 8205934717,
+          "preparation_ns": 7231925240,
+          "warm_start_ns": 959568036
+        }
+      ],
+      "cleanup_ns": 14441441,
+      "event_count": 67,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "activate": 918424,
+            "deactivate": 581306,
+            "explain": 53560142
+          },
+          "total_ns": 55059872
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "activate": 565259,
+            "deactivate": 478046,
+            "explain": 56580695
+          },
+          "total_ns": 57624000
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "activate": 637722,
+            "deactivate": 607847,
+            "explain": 44717906
+          },
+          "total_ns": 45963475
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "activate": 667198,
+            "deactivate": 628521,
+            "explain": 47815338
+          },
+          "total_ns": 49111057
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "activate": 680902,
+            "deactivate": 535054,
+            "explain": 45730741
+          },
+          "total_ns": 46946697
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "activate": 717302,
+            "deactivate": 551672,
+            "explain": 44533252
+          },
+          "total_ns": 45802226
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "activate": 627992,
+            "deactivate": 493173,
+            "explain": 45180497
+          },
+          "total_ns": 46301662
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "activate": 579845,
+            "deactivate": 537438,
+            "explain": 45572545
+          },
+          "total_ns": 46689828
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "activate": 757081,
+            "deactivate": 524409,
+            "explain": 45396356
+          },
+          "total_ns": 46677846
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "activate": 663788,
+            "deactivate": 470813,
+            "explain": 45823048
+          },
+          "total_ns": 46957649
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "activate": 567120,
+            "deactivate": 663067,
+            "explain": 45399341
+          },
+          "total_ns": 46629528
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "activate": 652446,
+            "deactivate": 505512,
+            "explain": 44366206
+          },
+          "total_ns": 45524164
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "activate": 547772,
+            "deactivate": 510610,
+            "explain": 44991488
+          },
+          "total_ns": 46049870
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "activate": 649159,
+            "deactivate": 431958,
+            "explain": 44833044
+          },
+          "total_ns": 45914161
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "activate": 573343,
+            "deactivate": 447133,
+            "explain": 46349091
+          },
+          "total_ns": 47369567
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "activate": 590846,
+            "deactivate": 440078,
+            "explain": 46815908
+          },
+          "total_ns": 47846832
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "activate": 614496,
+            "deactivate": 505504,
+            "explain": 49095319
+          },
+          "total_ns": 50215319
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "activate": 609568,
+            "deactivate": 513789,
+            "explain": 46439730
+          },
+          "total_ns": 47563087
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "activate": 600143,
+            "deactivate": 454905,
+            "explain": 46782828
+          },
+          "total_ns": 47837876
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "activate": 596061,
+            "deactivate": 458821,
+            "explain": 46428438
+          },
+          "total_ns": 47483320
+        }
+      ],
+      "preparation_ns": 7231925240,
+      "repetition": 2,
+      "run_id": "rq5-v3-analysis-a-catalogless-r2",
+      "stage_totals_ns": {
+        "activate": 12816467,
+        "arm-cleanup": 14441441,
+        "deactivate": 10339656,
+        "explain": 936411913,
+        "fixed-sample-preparation": 1182127597,
+        "native-payload-materialization": 2505026671,
+        "repository-registration-and-sandbox-preparation": 1959774539,
+        "sample-acquisition": 1404190652,
+        "snapshot-construction": 35573062,
+        "snapshot-serialization-validation": 145232719
+      }
+    },
+    {
+      "arm": "catalogless",
+      "checkpoints": [
+        {
+          "N": 1,
+          "activation_ns": 823498,
+          "catalogless_preparation_ns": 7671894706,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 51306988,
+          "deactivation_ns": 462966,
+          "explain_ns": 50020524,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7723201694,
+          "preparation_ns": 7671894706,
+          "warm_start_ns": 51306988
+        },
+        {
+          "N": 5,
+          "activation_ns": 3303961,
+          "catalogless_preparation_ns": 7671894706,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 248348751,
+          "deactivation_ns": 2471439,
+          "explain_ns": 242573351,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 7920243457,
+          "preparation_ns": 7671894706,
+          "warm_start_ns": 248348751
+        },
+        {
+          "N": 10,
+          "activation_ns": 6509462,
+          "catalogless_preparation_ns": 7671894706,
+          "cleanup_included_directly": false,
+          "configuration_evaluation_ns": 483641115,
+          "deactivation_ns": 5058748,
+          "explain_ns": 472072905,
+          "final_cleanup_ns": 0,
+          "full_lifecycle_ns": 8155535821,
+          "preparation_ns": 7671894706,
+          "warm_start_ns": 483641115
+        },
+        {
+          "N": 20,
+          "activation_ns": 13359609,
+          "catalogless_preparation_ns": 7671894706,
+          "cleanup_included_directly": true,
+          "configuration_evaluation_ns": 952431268,
+          "deactivation_ns": 10329671,
+          "explain_ns": 928741988,
+          "final_cleanup_ns": 14058035,
+          "full_lifecycle_ns": 8638384009,
+          "preparation_ns": 7671894706,
+          "warm_start_ns": 952431268
+        }
+      ],
+      "cleanup_ns": 14058035,
+      "event_count": 67,
+      "per_configuration": [
+        {
+          "configuration_id": "A-singleton-01",
+          "ordinal": 1,
+          "stage_ns": {
+            "activate": 823498,
+            "deactivate": 462966,
+            "explain": 50020524
+          },
+          "total_ns": 51306988
+        },
+        {
+          "configuration_id": "A-singleton-02",
+          "ordinal": 2,
+          "stage_ns": {
+            "activate": 624338,
+            "deactivate": 469931,
+            "explain": 46116630
+          },
+          "total_ns": 47210899
+        },
+        {
+          "configuration_id": "A-singleton-03",
+          "ordinal": 3,
+          "stage_ns": {
+            "activate": 602333,
+            "deactivate": 541106,
+            "explain": 50992918
+          },
+          "total_ns": 52136357
+        },
+        {
+          "configuration_id": "A-singleton-04",
+          "ordinal": 4,
+          "stage_ns": {
+            "activate": 648139,
+            "deactivate": 535314,
+            "explain": 47616707
+          },
+          "total_ns": 48800160
+        },
+        {
+          "configuration_id": "A-singleton-05",
+          "ordinal": 5,
+          "stage_ns": {
+            "activate": 605653,
+            "deactivate": 462122,
+            "explain": 47826572
+          },
+          "total_ns": 48894347
+        },
+        {
+          "configuration_id": "A-singleton-06",
+          "ordinal": 6,
+          "stage_ns": {
+            "activate": 602391,
+            "deactivate": 512614,
+            "explain": 46404616
+          },
+          "total_ns": 47519621
+        },
+        {
+          "configuration_id": "A-singleton-07",
+          "ordinal": 7,
+          "stage_ns": {
+            "activate": 651230,
+            "deactivate": 474159,
+            "explain": 45995402
+          },
+          "total_ns": 47120791
+        },
+        {
+          "configuration_id": "A-singleton-08",
+          "ordinal": 8,
+          "stage_ns": {
+            "activate": 663968,
+            "deactivate": 514169,
+            "explain": 46264360
+          },
+          "total_ns": 47442497
+        },
+        {
+          "configuration_id": "A-singleton-09",
+          "ordinal": 9,
+          "stage_ns": {
+            "activate": 629117,
+            "deactivate": 483754,
+            "explain": 46351928
+          },
+          "total_ns": 47464799
+        },
+        {
+          "configuration_id": "A-singleton-10",
+          "ordinal": 10,
+          "stage_ns": {
+            "activate": 658795,
+            "deactivate": 602613,
+            "explain": 44483248
+          },
+          "total_ns": 45744656
+        },
+        {
+          "configuration_id": "A-singleton-11",
+          "ordinal": 11,
+          "stage_ns": {
+            "activate": 737366,
+            "deactivate": 451596,
+            "explain": 44955784
+          },
+          "total_ns": 46144746
+        },
+        {
+          "configuration_id": "A-singleton-12",
+          "ordinal": 12,
+          "stage_ns": {
+            "activate": 772725,
+            "deactivate": 583119,
+            "explain": 45655400
+          },
+          "total_ns": 47011244
+        },
+        {
+          "configuration_id": "A-singleton-13",
+          "ordinal": 13,
+          "stage_ns": {
+            "activate": 713132,
+            "deactivate": 464984,
+            "explain": 46093532
+          },
+          "total_ns": 47271648
+        },
+        {
+          "configuration_id": "A-singleton-14",
+          "ordinal": 14,
+          "stage_ns": {
+            "activate": 628850,
+            "deactivate": 452793,
+            "explain": 44504019
+          },
+          "total_ns": 45585662
+        },
+        {
+          "configuration_id": "A-singleton-15",
+          "ordinal": 15,
+          "stage_ns": {
+            "activate": 603205,
+            "deactivate": 475321,
+            "explain": 46430157
+          },
+          "total_ns": 47508683
+        },
+        {
+          "configuration_id": "A-singleton-16",
+          "ordinal": 16,
+          "stage_ns": {
+            "activate": 636801,
+            "deactivate": 635228,
+            "explain": 46425732
+          },
+          "total_ns": 47697761
+        },
+        {
+          "configuration_id": "A-singleton-17",
+          "ordinal": 17,
+          "stage_ns": {
+            "activate": 659897,
+            "deactivate": 512227,
+            "explain": 46431467
+          },
+          "total_ns": 47603591
+        },
+        {
+          "configuration_id": "A-singleton-18",
+          "ordinal": 18,
+          "stage_ns": {
+            "activate": 670806,
+            "deactivate": 465979,
+            "explain": 44984816
+          },
+          "total_ns": 46121601
+        },
+        {
+          "configuration_id": "A-singleton-19",
+          "ordinal": 19,
+          "stage_ns": {
+            "activate": 750753,
+            "deactivate": 651805,
+            "explain": 45890289
+          },
+          "total_ns": 47292847
+        },
+        {
+          "configuration_id": "A-singleton-20",
+          "ordinal": 20,
+          "stage_ns": {
+            "activate": 676612,
+            "deactivate": 577871,
+            "explain": 45297887
+          },
+          "total_ns": 46552370
+        }
+      ],
+      "preparation_ns": 7671894706,
+      "repetition": 3,
+      "run_id": "rq5-v3-analysis-a-catalogless-r3",
+      "stage_totals_ns": {
+        "activate": 13359609,
+        "arm-cleanup": 14058035,
+        "deactivate": 10329671,
+        "explain": 928741988,
+        "fixed-sample-preparation": 1293138548,
+        "native-payload-materialization": 2660302073,
+        "repository-registration-and-sandbox-preparation": 2002032060,
+        "sample-acquisition": 1526634450,
+        "snapshot-construction": 38623781,
+        "snapshot-serialization-validation": 151163794
+      }
+    }
+  ]
+}

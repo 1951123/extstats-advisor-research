@@ -1,0 +1,1171 @@
+{
+  "aggregate_checkpoints": {
+    "1": {
+      "catalogless": {
+        "activation_ns": {
+          "maximum_ns": 918424,
+          "median_ns": 823498,
+          "minimum_ns": 710230,
+          "values_ns": [
+            710230,
+            918424,
+            823498
+          ]
+        },
+        "catalogless_preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 55059872,
+          "median_ns": 51306988,
+          "minimum_ns": 49090903,
+          "values_ns": [
+            49090903,
+            55059872,
+            51306988
+          ]
+        },
+        "deactivation_ns": {
+          "maximum_ns": 581306,
+          "median_ns": 474930,
+          "minimum_ns": 462966,
+          "values_ns": [
+            474930,
+            581306,
+            462966
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 53560142,
+          "median_ns": 50020524,
+          "minimum_ns": 47905743,
+          "values_ns": [
+            47905743,
+            53560142,
+            50020524
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 7723201694,
+          "median_ns": 7328489981,
+          "minimum_ns": 7286985112,
+          "values_ns": [
+            7328489981,
+            7286985112,
+            7723201694
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 55059872,
+          "median_ns": 51306988,
+          "minimum_ns": 49090903,
+          "values_ns": [
+            49090903,
+            55059872,
+            51306988
+          ]
+        }
+      },
+      "physical": {
+        "analyze_ns": {
+          "maximum_ns": 256163489,
+          "median_ns": 229027078,
+          "minimum_ns": 213350282,
+          "values_ns": [
+            229027078,
+            213350282,
+            256163489
+          ]
+        },
+        "clone_create_ns": {
+          "maximum_ns": 10531781793,
+          "median_ns": 2610070460,
+          "minimum_ns": 2242292302,
+          "values_ns": [
+            10531781793,
+            2610070460,
+            2242292302
+          ]
+        },
+        "clone_destroy_ns": {
+          "maximum_ns": 67426619,
+          "median_ns": 62047142,
+          "minimum_ns": 59822356,
+          "values_ns": [
+            67426619,
+            59822356,
+            62047142
+          ]
+        },
+        "clone_excluded_lifecycle_ns": {
+          "maximum_ns": 2853816604,
+          "median_ns": 2008680345,
+          "minimum_ns": 1907044988,
+          "values_ns": [
+            2853816604,
+            1907044988,
+            2008680345
+          ]
+        },
+        "clone_total_ns": {
+          "maximum_ns": 10599208412,
+          "median_ns": 2669892816,
+          "minimum_ns": 2304339444,
+          "values_ns": [
+            10599208412,
+            2669892816,
+            2304339444
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 10866840828,
+          "median_ns": 2917257062,
+          "minimum_ns": 2600882517,
+          "values_ns": [
+            10866840828,
+            2917257062,
+            2600882517
+          ]
+        },
+        "drop_statistics_ns": {
+          "maximum_ns": 708378,
+          "median_ns": 700860,
+          "minimum_ns": 672418,
+          "values_ns": [
+            708378,
+            700860,
+            672418
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 36440556,
+          "median_ns": 32218530,
+          "minimum_ns": 31625032,
+          "values_ns": [
+            36440556,
+            32218530,
+            31625032
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 13453025016,
+          "median_ns": 4576937804,
+          "minimum_ns": 4313019789,
+          "values_ns": [
+            13453025016,
+            4576937804,
+            4313019789
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 2586184188,
+          "median_ns": 1712137272,
+          "minimum_ns": 1659680742,
+          "values_ns": [
+            2586184188,
+            1659680742,
+            1712137272
+          ]
+        },
+        "statistics_ddl_ns": {
+          "maximum_ns": 8082134,
+          "median_ns": 1456404,
+          "minimum_ns": 1094574,
+          "values_ns": [
+            1456404,
+            1094574,
+            8082134
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 10866840828,
+          "median_ns": 2917257062,
+          "minimum_ns": 2600882517,
+          "values_ns": [
+            10866840828,
+            2917257062,
+            2600882517
+          ]
+        }
+      }
+    },
+    "10": {
+      "catalogless": {
+        "activation_ns": {
+          "maximum_ns": 6815513,
+          "median_ns": 6509462,
+          "minimum_ns": 6010759,
+          "values_ns": [
+            6010759,
+            6815513,
+            6509462
+          ]
+        },
+        "catalogless_preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 487134312,
+          "median_ns": 483641115,
+          "minimum_ns": 478372344,
+          "values_ns": [
+            478372344,
+            487134312,
+            483641115
+          ]
+        },
+        "deactivation_ns": {
+          "maximum_ns": 5408279,
+          "median_ns": 5058748,
+          "minimum_ns": 4680867,
+          "values_ns": [
+            4680867,
+            5408279,
+            5058748
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 474910520,
+          "median_ns": 472072905,
+          "minimum_ns": 467680718,
+          "values_ns": [
+            467680718,
+            474910520,
+            472072905
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 8155535821,
+          "median_ns": 7757771422,
+          "minimum_ns": 7719059552,
+          "values_ns": [
+            7757771422,
+            7719059552,
+            8155535821
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 487134312,
+          "median_ns": 483641115,
+          "minimum_ns": 478372344,
+          "values_ns": [
+            478372344,
+            487134312,
+            483641115
+          ]
+        }
+      },
+      "physical": {
+        "analyze_ns": {
+          "maximum_ns": 2837344260,
+          "median_ns": 2620456854,
+          "minimum_ns": 2562142778,
+          "values_ns": [
+            2837344260,
+            2562142778,
+            2620456854
+          ]
+        },
+        "clone_create_ns": {
+          "maximum_ns": 32324263234,
+          "median_ns": 24027157778,
+          "minimum_ns": 22384646745,
+          "values_ns": [
+            32324263234,
+            22384646745,
+            24027157778
+          ]
+        },
+        "clone_destroy_ns": {
+          "maximum_ns": 730839759,
+          "median_ns": 634984534,
+          "minimum_ns": 602606959,
+          "values_ns": [
+            730839759,
+            602606959,
+            634984534
+          ]
+        },
+        "clone_excluded_lifecycle_ns": {
+          "maximum_ns": 5905970435,
+          "median_ns": 4712434057,
+          "minimum_ns": 4597863697,
+          "values_ns": [
+            5905970435,
+            4597863697,
+            4712434057
+          ]
+        },
+        "clone_total_ns": {
+          "maximum_ns": 33055102993,
+          "median_ns": 24662142312,
+          "minimum_ns": 22987253704,
+          "values_ns": [
+            33055102993,
+            22987253704,
+            24662142312
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 36374889240,
+          "median_ns": 27662439097,
+          "minimum_ns": 25925436659,
+          "values_ns": [
+            36374889240,
+            25925436659,
+            27662439097
+          ]
+        },
+        "drop_statistics_ns": {
+          "maximum_ns": 8174791,
+          "median_ns": 6744652,
+          "minimum_ns": 6132166,
+          "values_ns": [
+            8174791,
+            6744652,
+            6132166
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 371822324,
+          "median_ns": 323186936,
+          "minimum_ns": 315333493,
+          "values_ns": [
+            371822324,
+            315333493,
+            323186936
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 38961073428,
+          "median_ns": 29374576369,
+          "minimum_ns": 27585117401,
+          "values_ns": [
+            38961073428,
+            27585117401,
+            29374576369
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 2586184188,
+          "median_ns": 1712137272,
+          "minimum_ns": 1659680742,
+          "values_ns": [
+            2586184188,
+            1659680742,
+            1712137272
+          ]
+        },
+        "statistics_ddl_ns": {
+          "maximum_ns": 102444872,
+          "median_ns": 53962032,
+          "minimum_ns": 50520829,
+          "values_ns": [
+            102444872,
+            53962032,
+            50520829
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 36374889240,
+          "median_ns": 27662439097,
+          "minimum_ns": 25925436659,
+          "values_ns": [
+            36374889240,
+            25925436659,
+            27662439097
+          ]
+        }
+      }
+    },
+    "20": {
+      "catalogless": {
+        "activation_ns": {
+          "maximum_ns": 13359609,
+          "median_ns": 12816467,
+          "minimum_ns": 11965279,
+          "values_ns": [
+            11965279,
+            12816467,
+            13359609
+          ]
+        },
+        "catalogless_preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 959568036,
+          "median_ns": 952431268,
+          "minimum_ns": 949274806,
+          "values_ns": [
+            949274806,
+            959568036,
+            952431268
+          ]
+        },
+        "deactivation_ns": {
+          "maximum_ns": 10339656,
+          "median_ns": 10329671,
+          "minimum_ns": 9869114,
+          "values_ns": [
+            9869114,
+            10339656,
+            10329671
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 936411913,
+          "median_ns": 928741988,
+          "minimum_ns": 927440413,
+          "values_ns": [
+            927440413,
+            936411913,
+            928741988
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 16135725,
+          "median_ns": 14441441,
+          "minimum_ns": 14058035,
+          "values_ns": [
+            16135725,
+            14441441,
+            14058035
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 8638384009,
+          "median_ns": 8244809609,
+          "minimum_ns": 8205934717,
+          "values_ns": [
+            8244809609,
+            8205934717,
+            8638384009
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 959568036,
+          "median_ns": 952431268,
+          "minimum_ns": 949274806,
+          "values_ns": [
+            949274806,
+            959568036,
+            952431268
+          ]
+        }
+      },
+      "physical": {
+        "analyze_ns": {
+          "maximum_ns": 5742696112,
+          "median_ns": 5485628585,
+          "minimum_ns": 5426149238,
+          "values_ns": [
+            5742696112,
+            5485628585,
+            5426149238
+          ]
+        },
+        "clone_create_ns": {
+          "maximum_ns": 56394512073,
+          "median_ns": 48573814300,
+          "minimum_ns": 44835190824,
+          "values_ns": [
+            56394512073,
+            44835190824,
+            48573814300
+          ]
+        },
+        "clone_destroy_ns": {
+          "maximum_ns": 1362844752,
+          "median_ns": 1279175300,
+          "minimum_ns": 1220744907,
+          "values_ns": [
+            1362844752,
+            1220744907,
+            1279175300
+          ]
+        },
+        "clone_excluded_lifecycle_ns": {
+          "maximum_ns": 9192032780,
+          "median_ns": 7920572183,
+          "minimum_ns": 7885606836,
+          "values_ns": [
+            9192032780,
+            7920572183,
+            7885606836
+          ]
+        },
+        "clone_total_ns": {
+          "maximum_ns": 57757356825,
+          "median_ns": 49852989600,
+          "minimum_ns": 46055935731,
+          "values_ns": [
+            57757356825,
+            46055935731,
+            49852989600
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 64363199445,
+          "median_ns": 56026452327,
+          "minimum_ns": 52316820687,
+          "values_ns": [
+            64363199445,
+            52316820687,
+            56026452327
+          ]
+        },
+        "drop_statistics_ns": {
+          "maximum_ns": 15225592,
+          "median_ns": 12953496,
+          "minimum_ns": 12519718,
+          "values_ns": [
+            15225592,
+            12953496,
+            12519718
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 692199683,
+          "median_ns": 643858627,
+          "minimum_ns": 629484787,
+          "values_ns": [
+            692199683,
+            629484787,
+            643858627
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 6837,
+          "median_ns": 6485,
+          "minimum_ns": 5972,
+          "values_ns": [
+            5972,
+            6485,
+            6837
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 66949389605,
+          "median_ns": 57738596436,
+          "minimum_ns": 53976507914,
+          "values_ns": [
+            66949389605,
+            53976507914,
+            57738596436
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 2586184188,
+          "median_ns": 1712137272,
+          "minimum_ns": 1659680742,
+          "values_ns": [
+            2586184188,
+            1659680742,
+            1712137272
+          ]
+        },
+        "statistics_ddl_ns": {
+          "maximum_ns": 155721233,
+          "median_ns": 132818088,
+          "minimum_ns": 90935144,
+          "values_ns": [
+            155721233,
+            132818088,
+            90935144
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 64363199445,
+          "median_ns": 56026452327,
+          "minimum_ns": 52316820687,
+          "values_ns": [
+            64363199445,
+            52316820687,
+            56026452327
+          ]
+        }
+      }
+    },
+    "5": {
+      "catalogless": {
+        "activation_ns": {
+          "maximum_ns": 3469505,
+          "median_ns": 3303961,
+          "minimum_ns": 3105911,
+          "values_ns": [
+            3105911,
+            3469505,
+            3303961
+          ]
+        },
+        "catalogless_preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 254705101,
+          "median_ns": 248348751,
+          "minimum_ns": 242328356,
+          "values_ns": [
+            242328356,
+            254705101,
+            248348751
+          ]
+        },
+        "deactivation_ns": {
+          "maximum_ns": 2830774,
+          "median_ns": 2471439,
+          "minimum_ns": 2362143,
+          "values_ns": [
+            2362143,
+            2830774,
+            2471439
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 248404822,
+          "median_ns": 242573351,
+          "minimum_ns": 236860302,
+          "values_ns": [
+            236860302,
+            248404822,
+            242573351
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 7920243457,
+          "median_ns": 7521727434,
+          "minimum_ns": 7486630341,
+          "values_ns": [
+            7521727434,
+            7486630341,
+            7920243457
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 7671894706,
+          "median_ns": 7279399078,
+          "minimum_ns": 7231925240,
+          "values_ns": [
+            7279399078,
+            7231925240,
+            7671894706
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 254705101,
+          "median_ns": 248348751,
+          "minimum_ns": 242328356,
+          "values_ns": [
+            242328356,
+            254705101,
+            248348751
+          ]
+        }
+      },
+      "physical": {
+        "analyze_ns": {
+          "maximum_ns": 1479133244,
+          "median_ns": 1311570486,
+          "minimum_ns": 1209356442,
+          "values_ns": [
+            1479133244,
+            1209356442,
+            1311570486
+          ]
+        },
+        "clone_create_ns": {
+          "maximum_ns": 20324744207,
+          "median_ns": 11360832504,
+          "minimum_ns": 11353357115,
+          "values_ns": [
+            20324744207,
+            11360832504,
+            11353357115
+          ]
+        },
+        "clone_destroy_ns": {
+          "maximum_ns": 308871247,
+          "median_ns": 307717490,
+          "minimum_ns": 298968929,
+          "values_ns": [
+            307717490,
+            298968929,
+            308871247
+          ]
+        },
+        "clone_excluded_lifecycle_ns": {
+          "maximum_ns": 4273821007,
+          "median_ns": 3217998436,
+          "minimum_ns": 3050647020,
+          "values_ns": [
+            4273821007,
+            3050647020,
+            3217998436
+          ]
+        },
+        "clone_total_ns": {
+          "maximum_ns": 20632461697,
+          "median_ns": 11662228362,
+          "minimum_ns": 11659801433,
+          "values_ns": [
+            20632461697,
+            11659801433,
+            11662228362
+          ]
+        },
+        "configuration_evaluation_ns": {
+          "maximum_ns": 22320098516,
+          "median_ns": 13168089526,
+          "minimum_ns": 13050767711,
+          "values_ns": [
+            22320098516,
+            13050767711,
+            13168089526
+          ]
+        },
+        "drop_statistics_ns": {
+          "maximum_ns": 3472880,
+          "median_ns": 3255535,
+          "minimum_ns": 2986202,
+          "values_ns": [
+            3255535,
+            3472880,
+            2986202
+          ]
+        },
+        "explain_ns": {
+          "maximum_ns": 180151945,
+          "median_ns": 165711042,
+          "minimum_ns": 152423531,
+          "values_ns": [
+            180151945,
+            152423531,
+            165711042
+          ]
+        },
+        "final_cleanup_ns": {
+          "maximum_ns": 0,
+          "median_ns": 0,
+          "minimum_ns": 0,
+          "values_ns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "full_lifecycle_ns": {
+          "maximum_ns": 24906282704,
+          "median_ns": 14880226798,
+          "minimum_ns": 14710448453,
+          "values_ns": [
+            24906282704,
+            14710448453,
+            14880226798
+          ]
+        },
+        "preparation_ns": {
+          "maximum_ns": 2586184188,
+          "median_ns": 1712137272,
+          "minimum_ns": 1659680742,
+          "values_ns": [
+            2586184188,
+            1659680742,
+            1712137272
+          ]
+        },
+        "statistics_ddl_ns": {
+          "maximum_ns": 25713425,
+          "median_ns": 25593434,
+          "minimum_ns": 25096095,
+          "values_ns": [
+            25096095,
+            25713425,
+            25593434
+          ]
+        },
+        "warm_start_ns": {
+          "maximum_ns": 22320098516,
+          "median_ns": 13168089526,
+          "minimum_ns": 13050767711,
+          "values_ns": [
+            22320098516,
+            13050767711,
+            13168089526
+          ]
+        }
+      }
+    }
+  },
+  "artifact": "rq5-v3-analysis-a-clone-attribution-integrity-v1",
+  "classification": "derived-accounting-sensitivity-not-measured-baseline",
+  "events_validated": 567,
+  "input_artifacts": {
+    "manifest": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671"
+    },
+    "published_checkpoint_summary": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/checkpoint-summary-v2.json",
+      "sha256": "409ba6baabc3eaff37c31e7b2329da5795ccdeaa1cbb4cbcbc3cc7bc529b605b"
+    },
+    "rq5-v3-analysis-a-catalogless-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r1/events.jsonl",
+      "sha256": "2402747938bcfa6c8cd0ef291eb418df4aa3989821026f727428abb8b110fd37"
+    },
+    "rq5-v3-analysis-a-catalogless-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r2/events.jsonl",
+      "sha256": "edad1bd7516b3323134d57af1aa19fb31edf5a3ba7ce6f3ec992bbcde903aa30"
+    },
+    "rq5-v3-analysis-a-catalogless-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r3/events.jsonl",
+      "sha256": "07869ea029bacf1cc1f979b2f90b11445c71ef06267b8dd7461eea50e87b0a86"
+    },
+    "rq5-v3-analysis-a-physical-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r1/events.jsonl",
+      "sha256": "eace66c00610e045be123bbceb9095c2469477da0c0ae6f17590e87a484d236a"
+    },
+    "rq5-v3-analysis-a-physical-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r2/events.jsonl",
+      "sha256": "828208536df8bb3b143aaefa5195d62c3afea9ada7806ace61c392f7796ea9af"
+    },
+    "rq5-v3-analysis-a-physical-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r3/events.jsonl",
+      "sha256": "9a303715d23a0d93a4de1e3a580129e869e68fbb079092416b8fe8f0466453c1"
+    }
+  },
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "raw_runs_validated": 6,
+  "reconciliation": {
+    "comparison_count": 24,
+    "comparisons": [
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 13453025016,
+        "raw_derived_ns": 13453025016,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 24906282704,
+        "raw_derived_ns": 24906282704,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 38961073428,
+        "raw_derived_ns": 38961073428,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 66949389605,
+        "raw_derived_ns": 66949389605,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4576937804,
+        "raw_derived_ns": 4576937804,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14710448453,
+        "raw_derived_ns": 14710448453,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 27585117401,
+        "raw_derived_ns": 27585117401,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 53976507914,
+        "raw_derived_ns": 53976507914,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4313019789,
+        "raw_derived_ns": 4313019789,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14880226798,
+        "raw_derived_ns": 14880226798,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 29374576369,
+        "raw_derived_ns": 29374576369,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 57738596436,
+        "raw_derived_ns": 57738596436,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7328489981,
+        "raw_derived_ns": 7328489981,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7521727434,
+        "raw_derived_ns": 7521727434,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7757771422,
+        "raw_derived_ns": 7757771422,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8244809609,
+        "raw_derived_ns": 8244809609,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7286985112,
+        "raw_derived_ns": 7286985112,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7486630341,
+        "raw_derived_ns": 7486630341,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7719059552,
+        "raw_derived_ns": 7719059552,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8205934717,
+        "raw_derived_ns": 8205934717,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7723201694,
+        "raw_derived_ns": 7723201694,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7920243457,
+        "raw_derived_ns": 7920243457,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8155535821,
+        "raw_derived_ns": 8155535821,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8638384009,
+        "raw_derived_ns": 8638384009,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      }
+    ],
+    "mismatch_count": 0,
+    "status": "passed"
+  },
+  "status": "passed"
+}

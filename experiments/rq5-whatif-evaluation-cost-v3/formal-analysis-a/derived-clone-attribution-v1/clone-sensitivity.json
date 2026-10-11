@@ -1,0 +1,406 @@
+{
+  "1": {
+    "catalogless_below_clone_excluded": false,
+    "catalogless_full_ns": [
+      7328489981,
+      7286985112,
+      7723201694
+    ],
+    "medians": {
+      "catalogless_full_ns": 7328489981,
+      "physical_clone_excluded_ns": 2008680345,
+      "physical_full_ns": 4576937804
+    },
+    "physical_clone_excluded_ns": [
+      2853816604,
+      1907044988,
+      2008680345
+    ],
+    "physical_full_ns": [
+      13453025016,
+      4576937804,
+      4313019789
+    ]
+  },
+  "10": {
+    "catalogless_below_clone_excluded": false,
+    "catalogless_full_ns": [
+      7757771422,
+      7719059552,
+      8155535821
+    ],
+    "medians": {
+      "catalogless_full_ns": 7757771422,
+      "physical_clone_excluded_ns": 4712434057,
+      "physical_full_ns": 29374576369
+    },
+    "physical_clone_excluded_ns": [
+      5905970435,
+      4597863697,
+      4712434057
+    ],
+    "physical_full_ns": [
+      38961073428,
+      27585117401,
+      29374576369
+    ]
+  },
+  "20": {
+    "catalogless_below_clone_excluded": false,
+    "catalogless_full_ns": [
+      8244809609,
+      8205934717,
+      8638384009
+    ],
+    "medians": {
+      "catalogless_full_ns": 8244809609,
+      "physical_clone_excluded_ns": 7920572183,
+      "physical_full_ns": 57738596436
+    },
+    "physical_clone_excluded_ns": [
+      9192032780,
+      7920572183,
+      7885606836
+    ],
+    "physical_full_ns": [
+      66949389605,
+      53976507914,
+      57738596436
+    ]
+  },
+  "5": {
+    "catalogless_below_clone_excluded": false,
+    "catalogless_full_ns": [
+      7521727434,
+      7486630341,
+      7920243457
+    ],
+    "medians": {
+      "catalogless_full_ns": 7521727434,
+      "physical_clone_excluded_ns": 3217998436,
+      "physical_full_ns": 14880226798
+    },
+    "physical_clone_excluded_ns": [
+      4273821007,
+      3050647020,
+      3217998436
+    ],
+    "physical_full_ns": [
+      24906282704,
+      14710448453,
+      14880226798
+    ]
+  },
+  "N20": {
+    "catalogless": {
+      "full_lifecycle_ns": [
+        8244809609,
+        8205934717,
+        8638384009
+      ]
+    },
+    "descriptive_medians": {
+      "catalogless_full_lifecycle_ns": 8244809609,
+      "clone_total_share_of_physical_full": 0.8627017686907558,
+      "physical_clone_excluded_lifecycle_ns": 7920572183,
+      "physical_clone_excluded_over_catalogless_full": 0.9606737521693571,
+      "physical_full_lifecycle_ns": 57738596436,
+      "physical_full_over_catalogless_full": 7.003023620214685
+    },
+    "physical": {
+      "clone_create_ns": [
+        56394512073,
+        44835190824,
+        48573814300
+      ],
+      "clone_destroy_ns": [
+        1362844752,
+        1220744907,
+        1279175300
+      ],
+      "clone_excluded_lifecycle_ns": [
+        9192032780,
+        7920572183,
+        7885606836
+      ],
+      "clone_share_of_full": [
+        0.8627017686907558,
+        0.8532588993044949,
+        0.8634257269356945
+      ],
+      "clone_total_ns": [
+        57757356825,
+        46055935731,
+        49852989600
+      ],
+      "full_lifecycle_ns": [
+        66949389605,
+        53976507914,
+        57738596436
+      ]
+    }
+  },
+  "artifact": "rq5-v3-analysis-a-clone-attribution-v1",
+  "checkpoint_reconciliation": {
+    "comparison_count": 24,
+    "comparisons": [
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 13453025016,
+        "raw_derived_ns": 13453025016,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 24906282704,
+        "raw_derived_ns": 24906282704,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 38961073428,
+        "raw_derived_ns": 38961073428,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 66949389605,
+        "raw_derived_ns": 66949389605,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-physical-r1"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4576937804,
+        "raw_derived_ns": 4576937804,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14710448453,
+        "raw_derived_ns": 14710448453,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 27585117401,
+        "raw_derived_ns": 27585117401,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 53976507914,
+        "raw_derived_ns": 53976507914,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-physical-r2"
+      },
+      {
+        "N": 1,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 4313019789,
+        "raw_derived_ns": 4313019789,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 5,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 14880226798,
+        "raw_derived_ns": 14880226798,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 10,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 29374576369,
+        "raw_derived_ns": 29374576369,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 20,
+        "arm": "physical",
+        "match": true,
+        "published_ns": 57738596436,
+        "raw_derived_ns": 57738596436,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-physical-r3"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7328489981,
+        "raw_derived_ns": 7328489981,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7521727434,
+        "raw_derived_ns": 7521727434,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7757771422,
+        "raw_derived_ns": 7757771422,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8244809609,
+        "raw_derived_ns": 8244809609,
+        "repetition": 1,
+        "run_id": "rq5-v3-analysis-a-catalogless-r1"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7286985112,
+        "raw_derived_ns": 7286985112,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7486630341,
+        "raw_derived_ns": 7486630341,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7719059552,
+        "raw_derived_ns": 7719059552,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8205934717,
+        "raw_derived_ns": 8205934717,
+        "repetition": 2,
+        "run_id": "rq5-v3-analysis-a-catalogless-r2"
+      },
+      {
+        "N": 1,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7723201694,
+        "raw_derived_ns": 7723201694,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 5,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 7920243457,
+        "raw_derived_ns": 7920243457,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 10,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8155535821,
+        "raw_derived_ns": 8155535821,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      },
+      {
+        "N": 20,
+        "arm": "catalogless",
+        "match": true,
+        "published_ns": 8638384009,
+        "raw_derived_ns": 8638384009,
+        "repetition": 3,
+        "run_id": "rq5-v3-analysis-a-catalogless-r3"
+      }
+    ],
+    "mismatch_count": 0,
+    "status": "passed"
+  },
+  "claim_label": "derived-accounting-sensitivity-not-measured-baseline",
+  "classification": "derived-accounting-sensitivity-not-measured-baseline",
+  "derived_accounting_crossover_checkpoints": [],
+  "input_artifacts": {
+    "manifest": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671"
+    },
+    "published_checkpoint_summary": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/checkpoint-summary-v2.json",
+      "sha256": "409ba6baabc3eaff37c31e7b2329da5795ccdeaa1cbb4cbcbc3cc7bc529b605b"
+    },
+    "rq5-v3-analysis-a-catalogless-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r1/events.jsonl",
+      "sha256": "2402747938bcfa6c8cd0ef291eb418df4aa3989821026f727428abb8b110fd37"
+    },
+    "rq5-v3-analysis-a-catalogless-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r2/events.jsonl",
+      "sha256": "edad1bd7516b3323134d57af1aa19fb31edf5a3ba7ce6f3ec992bbcde903aa30"
+    },
+    "rq5-v3-analysis-a-catalogless-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r3/events.jsonl",
+      "sha256": "07869ea029bacf1cc1f979b2f90b11445c71ef06267b8dd7461eea50e87b0a86"
+    },
+    "rq5-v3-analysis-a-physical-r1": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r1/events.jsonl",
+      "sha256": "eace66c00610e045be123bbceb9095c2469477da0c0ae6f17590e87a484d236a"
+    },
+    "rq5-v3-analysis-a-physical-r2": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r2/events.jsonl",
+      "sha256": "828208536df8bb3b143aaefa5195d62c3afea9ada7806ace61c392f7796ea9af"
+    },
+    "rq5-v3-analysis-a-physical-r3": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/physical-r3/events.jsonl",
+      "sha256": "9a303715d23a0d93a4de1e3a580129e869e68fbb079092416b8fe8f0466453c1"
+    }
+  },
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064"
+}
