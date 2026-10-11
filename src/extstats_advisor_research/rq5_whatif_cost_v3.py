@@ -510,6 +510,7 @@ def build_v3_timing_smoke_manifest(
     *,
     formal_manifest_path: str,
     formal_manifest_sha256: str,
+    producer_sha: str | None = None,
 ) -> dict[str, Any]:
     """Derive a non-scientific one-configuration timing smoke manifest."""
 
@@ -547,6 +548,8 @@ def build_v3_timing_smoke_manifest(
             },
         }
     )
+    if producer_sha is not None:
+        derived["producer_commit_sha"] = _commit(producer_sha, "producer commit")
     derived["binding_digest"] = semantic_digest(
         {
             "source_formal_manifest": derived["source_formal_manifest"],
