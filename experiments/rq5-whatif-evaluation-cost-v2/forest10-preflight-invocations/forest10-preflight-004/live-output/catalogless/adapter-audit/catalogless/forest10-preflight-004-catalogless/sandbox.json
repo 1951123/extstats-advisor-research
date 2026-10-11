@@ -1,0 +1,82 @@
+{
+  "analyze_count": 1,
+  "prepared": {
+    "backend_contract": "postgresql-pgextadv-16.14-v1",
+    "candidate_universe_semantic_digest": "d06b1d43ddf5b2b75f2ab1a5ad88ef39380209a33ef6699958875c3638b9e73d",
+    "frozen_relation_name": {
+      "catalog": null,
+      "name": "frozen_sample_65cc525eee74175abbe53dd1",
+      "schema": "extstats_advisor_internal"
+    },
+    "internal_schema_created": true,
+    "managed_schema_created": false,
+    "native_stats_repository_semantic_digest": "f937134951b3ce9e5c0fb83c3f17b9dc4a31b3f755fc032b047d78b9732a10d0",
+    "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+    "population_quality": "estimate",
+    "population_row_count": 581012.0,
+    "prepared_at": "2026-10-11 09:58:20.825173+08:00",
+    "relation_id": "rel_96c2e4f82f8ed10b05330552",
+    "relation_name": {
+      "catalog": "extstats_stock",
+      "name": "forest10",
+      "schema": "public"
+    },
+    "repository_absent_count": 0,
+    "repository_candidate_count": 57,
+    "repository_present_count": 57,
+    "sample_row_count": 10000,
+    "sandbox_contract": "postgresql-planner-sandbox-v1",
+    "server_version": "16.14",
+    "server_version_num": 160014,
+    "source_snapshot_semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+    "statistics_target": 100
+  },
+  "target_relation_oid": 16742,
+  "verified": {
+    "autovacuum_disabled": true,
+    "frozen_sample_row_count": 10000,
+    "metadata": {
+      "backend_contract": "postgresql-pgextadv-16.14-v1",
+      "candidate_universe_semantic_digest": "d06b1d43ddf5b2b75f2ab1a5ad88ef39380209a33ef6699958875c3638b9e73d",
+      "frozen_relation_name": {
+        "catalog": null,
+        "name": "frozen_sample_65cc525eee74175abbe53dd1",
+        "schema": "extstats_advisor_internal"
+      },
+      "internal_schema_created": true,
+      "managed_schema_created": false,
+      "native_stats_repository_semantic_digest": "f937134951b3ce9e5c0fb83c3f17b9dc4a31b3f755fc032b047d78b9732a10d0",
+      "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+      "population_quality": "estimate",
+      "population_row_count": 581012.0,
+      "prepared_at": "2026-10-11 09:58:20.825173+08:00",
+      "relation_id": "rel_96c2e4f82f8ed10b05330552",
+      "relation_name": {
+        "catalog": "extstats_stock",
+        "name": "forest10",
+        "schema": "public"
+      },
+      "repository_absent_count": 0,
+      "repository_candidate_count": 57,
+      "repository_present_count": 57,
+      "sample_row_count": 10000,
+      "sandbox_contract": "postgresql-planner-sandbox-v1",
+      "server_version": "16.14",
+      "server_version_num": 160014,
+      "source_snapshot_semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+      "statistics_target": 100
+    },
+    "ordinary_stats_fingerprint": "c305028a2ce4860299b90ff41a428318f9d6eaa7cd04a93d1924fddba8b893bb",
+    "physical_extstats_count": 0,
+    "reltuples": 581012.0,
+    "repository": {
+      "absent_count": 0,
+      "candidate_count": 57,
+      "present_count": 57,
+      "semantic_digest": "f937134951b3ce9e5c0fb83c3f17b9dc4a31b3f755fc032b047d78b9732a10d0"
+    },
+    "sandbox_contract": "postgresql-planner-sandbox-v1",
+    "target_relation_oid": 16742,
+    "target_sample_row_count": 10000
+  }
+}

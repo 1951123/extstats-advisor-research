@@ -1,0 +1,11 @@
+{
+  "format_version": "rq5-forest10-preflight-producer-attestation-v1",
+  "invocation_id": "forest10-preflight-004",
+  "recorded_binding_sha": "80795b00c28c149d87061e9656c653606d972f02",
+  "actual_producer_commit_sha": "5ef2c98770b53eec6a89ecc6c8e71a105337f3ed",
+  "binding_commit_difference": "publication of append-only invocation-003/004 evidence only",
+  "execution_code_unchanged_between_commits": true,
+  "verified_paths": ["src", "tests"],
+  "verification": "git diff --name-only 80795b00c28c149d87061e9656c653606d972f02 5ef2c98770b53eec6a89ecc6c8e71a105337f3ed -- src tests returned no paths",
+  "scientific_interpretation": "The live invocation is producer-bound to 5ef2c987; the earlier binding SHA identifies the immediately preceding code-equivalent checkpoint and is preserved unchanged."
+}

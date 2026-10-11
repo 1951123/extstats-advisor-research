@@ -1,0 +1,17 @@
+{
+  "format_version": "rq5-forest10-limited-preflight-cleanup-v1",
+  "classification": "integration-readiness-only",
+  "invocation_id": "forest10-preflight-004",
+  "status": "complete",
+  "source_databases": [
+    {"cluster": "stock", "port": 55432, "database": "extstats_stock", "owner": "wqts", "residual": "absent"},
+    {"cluster": "patched", "port": 55433, "database": "extstats_stock", "owner": "wqts", "residual": "absent"}
+  ],
+  "adapter_clones": {"stock_rq5wc_databases_before_source_cleanup": [], "after_cleanup": []},
+  "sandbox": {"patched_catalogless_sandbox_destroyed": true, "physical_extended_statistics_left_in_source": false},
+  "laboratory_clusters": {"stock_stopped": true, "patched_stopped": true},
+  "untouched_resources": ["extstats_lab", "rq5_tiny_stock_template", "rq5_tiny_patched_template"],
+  "analyze_calls": {"physical": 1, "catalogless_materialization": 1, "catalogless_sandbox_preparation": 1, "clone": 0},
+  "explain_calls": {"physical": 5, "catalogless": 5},
+  "scientific_observations": false
+}
