@@ -7,6 +7,9 @@ from pathlib import Path
 import pytest
 
 import extstats_advisor_research.rq5_whatif_cost_postgres as postgres
+from extstats_advisor_research.rq5_whatif_cost import (
+    build_forest10_limited_preflight_manifest,
+)
 
 
 def _identity(path: Path, sha: str) -> Path:
@@ -151,4 +154,58 @@ def test_preflight_is_disabled_without_explicit_opt_in(tmp_path: Path) -> None:
         },
     }
     with pytest.raises(postgres.LiveAdapterError, match="enable-live-preflight"):
+        postgres.run_integration_preflight(manifest, config, tmp_path / "result.json")
+
+
+def test_forest10_limited_manifest_keeps_formal_binding_and_scope() -> None:
+    import json
+
+    from extstats_advisor_research.rq5_whatif_cost import validate_manifest
+
+    formal = json.loads(
+        Path(
+            "experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-a-manifest-v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    original_digest = formal["semantic_digest"]
+    derived = build_forest10_limited_preflight_manifest(
+        formal,
+        formal_manifest_path="experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-a-manifest-v1.json",
+        formal_manifest_sha256="0" * 64,
+    )
+    assert formal["semantic_digest"] == original_digest
+    assert derived["preflight_scope"] == "forest10-limited"
+    assert len(derived["candidate_universe"]["definitions"]) == 57
+    assert len(derived["query_subset"]) == 5
+    assert len(derived["analysis_a"]["configurations"]) == 1
+    assert derived["analysis_a"]["configurations"][0]["candidate_ids"] == [
+        "cand_1537a6ae8ef67c379c8d0fa0"
+    ]
+    assert derived["analysis_b"]["configurations"] == []
+    assert derived["semantic_digest"]
+    assert validate_manifest(formal)["status"] == "valid"
+
+
+def test_forest10_scope_rejects_expanded_live_preflight(tmp_path: Path) -> None:
+    config = _config(tmp_path, enable_live=True)
+    config.advisor_root.mkdir()
+    config.snapshot_path.touch()
+    config.candidate_universe_path.touch()
+    config.workload_path.touch()
+    manifest = {
+        "preflight_scope": "forest10-limited",
+        "candidate_universe": {"definitions": [{}] * 56},
+        "query_subset": [{}] * 5,
+        "analysis_a": {
+            "configurations": [
+                {
+                    "ordinal": 1,
+                    "candidate_ids": ["cand_a"],
+                    "declared_order": ["cand_a"],
+                    "configuration_size": 1,
+                }
+            ]
+        },
+    }
+    with pytest.raises(postgres.LiveAdapterError, match="57 frozen candidates"):
         postgres.run_integration_preflight(manifest, config, tmp_path / "result.json")

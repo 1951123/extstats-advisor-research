@@ -1030,12 +1030,22 @@ def run_integration_preflight(
     queries = manifest.get("query_subset", [])
     analysis = manifest.get("analysis_a", {})
     configurations = analysis.get("configurations", [])
-    if not 1 <= len(definitions) <= 8:
-        raise LiveAdapterError("integration preflight requires 1..8 fixture candidates")
-    if not 1 <= len(configurations) <= 2:
-        raise LiveAdapterError("integration preflight requires 1..2 configurations")
-    if not 1 <= len(queries) <= 8:
-        raise LiveAdapterError("integration preflight requires 1..8 fixture queries")
+    if manifest.get("preflight_scope") == "forest10-limited":
+        if len(definitions) != 57:
+            raise LiveAdapterError("Forest10 limited preflight requires all 57 frozen candidates")
+        if len(configurations) != 1:
+            raise LiveAdapterError("Forest10 limited preflight requires exactly one configuration")
+        if len(queries) != 5:
+            raise LiveAdapterError("Forest10 limited preflight requires exactly five queries")
+        if configurations[0].get("configuration_size") != 1:
+            raise LiveAdapterError("Forest10 limited preflight requires one singleton")
+    else:
+        if not 1 <= len(definitions) <= 8:
+            raise LiveAdapterError("integration preflight requires 1..8 fixture candidates")
+        if not 1 <= len(configurations) <= 2:
+            raise LiveAdapterError("integration preflight requires 1..2 configurations")
+        if not 1 <= len(queries) <= 8:
+            raise LiveAdapterError("integration preflight requires 1..8 fixture queries")
     validate_live_config(config)
     config.require_live()
     physical_config = replace(

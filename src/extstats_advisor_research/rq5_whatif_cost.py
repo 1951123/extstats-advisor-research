@@ -9,6 +9,7 @@ The live adapters are deliberately not hidden behind a default DSN.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -355,6 +356,67 @@ def write_manifest(path: Path, manifest: Mapping[str, Any]) -> None:
         raise WhatIfCostError(f"manifest output already exists: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
     write_json(path, dict(manifest))
+
+
+def build_forest10_limited_preflight_manifest(
+    formal_manifest: Mapping[str, Any],
+    *,
+    formal_manifest_path: str,
+    formal_manifest_sha256: str,
+    query_count: int = 5,
+) -> dict[str, Any]:
+    """Derive a bounded Forest10 correctness manifest from formal Analysis A.
+
+    The formal Analysis A/B manifests remain immutable.  This derived manifest
+    carries all 57 candidate definitions for repository compatibility, but
+    evaluates only the first frozen singleton and first five formal queries.
+    """
+
+    validate_manifest(formal_manifest)
+    _require(formal_manifest.get("analysis") == "A", "Forest10 preflight requires Analysis A")
+    _require(query_count == 5, "Forest10 limited preflight is fixed at five queries")
+    configurations = formal_manifest["analysis_a"]["configurations"]
+    _require(configurations, "formal Analysis A has no configurations")
+    derived = copy.deepcopy(dict(formal_manifest))
+    selected_configuration = copy.deepcopy(configurations[0])
+    selected_queries = copy.deepcopy(formal_manifest["query_subset"][:query_count])
+    derived.update(
+        {
+            "format_version": "rq5-whatif-evaluation-cost-forest10-preflight-manifest-v1",
+            "status": "ready-for-limited-live-preflight",
+            "preflight_scope": "forest10-limited",
+            "source_formal_manifest": {
+                "path": formal_manifest_path,
+                "semantic_digest": formal_manifest["semantic_digest"],
+                "byte_sha256": formal_manifest_sha256,
+            },
+            "query_subset": selected_queries,
+            "query_subset_size": len(selected_queries),
+            "analysis_a": {
+                "evaluation_count": 1,
+                "configurations": [selected_configuration],
+            },
+            "analysis_b": {"configuration_sizes": [], "configurations": []},
+            "limited_scope": {
+                "configuration_count": 1,
+                "query_count": len(selected_queries),
+                "does_not_authorize_formal_timing": True,
+                "does_not_authorize_full_workload_replay": True,
+                "does_not_authorize_advisor_search": True,
+            },
+        }
+    )
+    derived["binding_digest"] = semantic_digest(
+        {
+            "source_formal_manifest": derived["source_formal_manifest"],
+            "candidate_definitions": derived["candidate_universe"]["definitions"],
+            "workload": derived["workload"],
+            "query_subset": selected_queries,
+            "configuration": selected_configuration,
+        }
+    )
+    derived["semantic_digest"] = semantic_digest(_body(derived))
+    return derived
 
 
 def validate_manifest(
@@ -1145,6 +1207,12 @@ def _parser() -> argparse.ArgumentParser:
     validate.add_argument("artifact", type=Path)
     validate.add_argument("--research-root", type=Path, default=None)
     validate.add_argument("--verify-sources", action="store_true")
+    limited = commands.add_parser(
+        "forest10-limited-preflight-manifest",
+        help="derive a bounded Forest10 live-correctness manifest from formal Analysis A",
+    )
+    limited.add_argument("formal_manifest", type=Path)
+    limited.add_argument("--output", type=Path, required=True)
     preflight = commands.add_parser("integration-preflight-plan")
     preflight.add_argument("manifest", type=Path)
     preflight.add_argument("--output", type=Path, required=True)
@@ -1197,6 +1265,27 @@ def main(argv: list[str] | None = None) -> int:
             value, research_root=args.research_root, verify_sources=args.verify_sources
         )
         print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    if args.command == "forest10-limited-preflight-manifest":
+        formal = read_json(args.formal_manifest)
+        derived = build_forest10_limited_preflight_manifest(
+            formal,
+            formal_manifest_path=args.formal_manifest.as_posix(),
+            formal_manifest_sha256=sha256_file(args.formal_manifest),
+        )
+        write_manifest(args.output, derived)
+        print(
+            json.dumps(
+                {
+                    "status": derived["status"],
+                    "output": str(args.output),
+                    "semantic_digest": derived["semantic_digest"],
+                    "candidate_count": len(derived["candidate_universe"]["definitions"]),
+                    "query_count": derived["query_subset_size"],
+                },
+                sort_keys=True,
+            )
+        )
         return 0
     if args.command == "integration-preflight-plan":
         value = read_json(args.manifest)
