@@ -1,0 +1,88 @@
+{
+  "actual_source_identities": {
+    "advisor": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "patched_postgresql": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "research_producer": "eeaaff45cd363064895442f68ca1897851d2e064",
+    "stock_postgresql": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "artifact": "rq5-v3-formal-analysis-a-preflight-v1",
+  "binding_digest": "b23c084642efc482d55c5424dc8beee9aaa916ea84d00222d6a89bc64d2bd59a",
+  "checks": {
+    "advisor_clean": true,
+    "frozen_manifest_valid": true,
+    "frozen_protocol_unchanged": true,
+    "no_database_writes_performed": true,
+    "source_binary_identities_match": true
+  },
+  "classification": "formal-rq5-v3-analysis-a",
+  "created_at": "2026-10-11T05:58:47.577386+00:00",
+  "execution_producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "forest10": {
+    "candidate_count": 57,
+    "csv": "/home/wqts/benchmark-data/arecel/raw/data/forest10/original.csv",
+    "csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "rows": 581012,
+    "sample_method": "sha256-row-rank-v1",
+    "sample_rows": 30000,
+    "sample_seed": 42
+  },
+  "formal_scope": {
+    "catalogless_materialization_analyze_expected": 3,
+    "catalogless_per_configuration_analyze": 0,
+    "catalogless_sandbox_analyze_expected": 3,
+    "configurations": 20,
+    "physical_analyze_expected": 60,
+    "queries_per_configuration": 128,
+    "repetitions_per_arm": 3,
+    "total_explain_expected": 15360
+  },
+  "manifest_byte_sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671",
+  "manifest_path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "protocol": {
+    "format": "rq5-whatif-evaluation-cost-v3",
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v3.md",
+    "sha256": "a6abcfe1db7e2df4823f2b7ad547c74b6ce75a748d4c9a5e8003bcde33e9a9bb"
+  },
+  "research_producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "schedule": [
+    {
+      "arm": "physical",
+      "repetition": 1,
+      "round": 1
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 1,
+      "round": 1
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 2,
+      "round": 2
+    },
+    {
+      "arm": "physical",
+      "repetition": 2,
+      "round": 2
+    },
+    {
+      "arm": "physical",
+      "repetition": 3,
+      "round": 3
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 3,
+      "round": 3
+    }
+  ],
+  "source_identities": {
+    "advisor": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgresql": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgresql_version": "16.14",
+    "stock_postgresql": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "passed"
+}

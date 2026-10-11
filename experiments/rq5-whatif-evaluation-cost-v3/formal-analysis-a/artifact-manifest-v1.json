@@ -1,0 +1,2271 @@
+{
+  "artifact": "rq5-v3-formal-analysis-a-artifact-manifest-v1",
+  "classification": "formal-rq5-v3-analysis-a",
+  "file_count": 452,
+  "files": [
+    {
+      "bytes": 5961,
+      "path": "checkpoint-summary-v1.json",
+      "sha256": "4316fe1262d8302d4ae6901a7eab0d64ec69cff548c3b598bf47ba0dec7744e2"
+    },
+    {
+      "bytes": 6108,
+      "path": "checkpoint-summary-v2.json",
+      "sha256": "409ba6baabc3eaff37c31e7b2329da5795ccdeaa1cbb4cbcbc3cc7bc529b605b"
+    },
+    {
+      "bytes": 1252,
+      "path": "cleanup-audit-v1.json",
+      "sha256": "d2302c57a9fd8d40827707ac9bac8f170503ce90e060924547019a7b6d15dd84"
+    },
+    {
+      "bytes": 4237,
+      "path": "formal-report-v1.md",
+      "sha256": "666eccf3961ae28ba7d7c0fee3fd1d5d035493a07de607dd50b23f4ddf7d155c"
+    },
+    {
+      "bytes": 12048,
+      "path": "formal-summary-v1.json",
+      "sha256": "0803b3cf0359fffd36d788b1cf3cdd28e611e900de1aa5b988daa9149e70520f"
+    },
+    {
+      "bytes": 12275,
+      "path": "formal-summary-v2.json",
+      "sha256": "1b378113e223391ee9884ada888117e48f84e689f2ed75241e1243b5293195c8"
+    },
+    {
+      "bytes": 39839,
+      "path": "integrity-audit-v1.json",
+      "sha256": "7ec5425fb66b4914cddb6852e4fdcb0a6bb794da467988ace026f4a1bef73a76"
+    },
+    {
+      "bytes": 38996,
+      "path": "integrity-audit-v2.json",
+      "sha256": "179188848b5f9f613595a094712c45ce170e45609b2199a4e5b6db0d88136660"
+    },
+    {
+      "bytes": 2933,
+      "path": "preflight-v1.json",
+      "sha256": "723a58595d6c5ef0d2a857a1a7a1596dd1736016ad0daeebd7b459f9c9e4d3e6"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-001-activation.json",
+      "sha256": "d05b1d08ca281935c0289f4e16f30aba4418ded691bf7610a65a35e6872cc3b6"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-001-catalogless-explain.json",
+      "sha256": "2f39de98b4933b7bc16bcbf9f4997127d5356325aa870a3711da232185ef579a"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-002-activation.json",
+      "sha256": "b66d71c3fcc6eaafbe7d19b0871375c79cdbd55e758210e2d4129789b3492f25"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-002-catalogless-explain.json",
+      "sha256": "575c90c490eb4ade47a9b8d55e567b737069e687a5944773205a4eb0a0dae1a8"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-003-activation.json",
+      "sha256": "161e6f7ccfdac96d01f84bacd0b8357f702ce623a7a2cc9cbe4d186f57bbd81b"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-003-catalogless-explain.json",
+      "sha256": "acab3abda8c0fcc2055a3299f9725dbcfb6e0b9a01b47446a4f2d67c0d04fa2c"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-004-activation.json",
+      "sha256": "e7dea44b9518a60a2b1a62c797949f37a54ac887db7580980f3161ed58872021"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-004-catalogless-explain.json",
+      "sha256": "531bc228a12b0d84e856196e7fc05d95161eef179f6d9ae2d4f46dee7e95af81"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-005-activation.json",
+      "sha256": "9bfdee7264ac865d6fd9dc4d6c0d9fe280f0c2ab118f49c2b6a46e936f037d6d"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-005-catalogless-explain.json",
+      "sha256": "6d6d4df6ea5781a90f7fc7de128eebc4e2135058a7da448e904aea4c5243b381"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-006-activation.json",
+      "sha256": "aa7ba6ed6b45e9ffe40e0f30229acee5370e7dd9ecca9442bf6407535c3439f1"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-006-catalogless-explain.json",
+      "sha256": "e7e2d8df9e42ce484548deb0f0301cc11c6e3a3258ecefe5db3b09af7a14c7d9"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-007-activation.json",
+      "sha256": "2936c2ea8b6ee1414d2743dad117f70b803b670f9802f3cf25f466d6c7515ea5"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-007-catalogless-explain.json",
+      "sha256": "518dbfde2eee33c09d9980263721a19783019be23921ff0cc56eb3e80d30fd03"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-008-activation.json",
+      "sha256": "3b1aa3da87b3a569ac1a080f8fbd54ff16831e72fbd71855a8a1f3cca4bebfec"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-008-catalogless-explain.json",
+      "sha256": "999239fed8cdf36d03f85b76917f1963a037834e1e6dde6576e4287cf1999f5e"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-009-activation.json",
+      "sha256": "c10f45b022cdc5e9edab8c3a001a07b79be6bac944f045d29a80eb5115bb5016"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-009-catalogless-explain.json",
+      "sha256": "05ce9e74a8e5683ff006a720d92e5a3bda897c073c50cb27c57fb77a4b8c0f7f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-010-activation.json",
+      "sha256": "ae74b24213e29474bf8452debe1e96cac78b03c83c79bb1fd0418edeaeb05087"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-010-catalogless-explain.json",
+      "sha256": "e630e370f34be4a48ad05a252bd45be5a956e8ba9223bc0e8c5ad08329a30d8f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-011-activation.json",
+      "sha256": "f0c7eef060242df1b08ecd1e6b55312107bdb304b4c3b9471da352d47d7557c0"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-011-catalogless-explain.json",
+      "sha256": "1c4879285e134f9bf7cf85500f2e80d5b89fc26d78478111c77fb7ccada1713f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-012-activation.json",
+      "sha256": "313e7a423bf2c019855922015ae9afde4efa5dfe8a010b9ae841b97dab51cd62"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-012-catalogless-explain.json",
+      "sha256": "cc419e4aab7d5b5172460e8d63fb2b89e3e4e91520d7a26e6d9d8a026eec3bd0"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-013-activation.json",
+      "sha256": "e8bed7dcdb298b8baf85189a887bdab2999a8ea9e9c4266b4742cbd33263d6bf"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-013-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-014-activation.json",
+      "sha256": "1c7f82f8a82911241d5c4095f886bc81a8edb13ecba68a45dd7cd2d352fc7ac0"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-014-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-015-activation.json",
+      "sha256": "ec76301acaff899f290a3b7504c5ebb84e80f8b0b26d5e942a12cae58a8458c7"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-015-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-016-activation.json",
+      "sha256": "d2690698057d81c30b53ca0d687df293aa42ed8cc4495add58195a9396cf3c9a"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-016-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-017-activation.json",
+      "sha256": "d1c2f745ec6d2b263f6e2f19e5fac1b1c7d756131f3bc4d730a8ea680ff28e59"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-017-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-018-activation.json",
+      "sha256": "a888b59839aaab24220a03897c26fb7bb024e8dc7358502f439508dc3c0836da"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-018-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-019-activation.json",
+      "sha256": "9deb412f5faf54c46e4aa64c3b90a5aeca92d406ac66481de09e7b2482783198"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-019-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-020-activation.json",
+      "sha256": "0251863ea46554571392ecbd5204b0574b524c219929c3e1f062e1b83089a55b"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/config-020-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 3298,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/materialization.json",
+      "sha256": "bee9a4dbee60e7a6f8b3bfb72b63f2312ad3bd84af6078929c467556fa8642c2"
+    },
+    {
+      "bytes": 1300,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/sample-acquisition.json",
+      "sha256": "7ed44085793a04abcc16fe543d1a76a2a885decbc4e8b6418df55a6679793a9c"
+    },
+    {
+      "bytes": 3362,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/sandbox.json",
+      "sha256": "a6c81b4d09308fcc76ea91e4a1f1df0bd88cb3bdf10edb4de04bf674376fa96c"
+    },
+    {
+      "bytes": 381,
+      "path": "runs/catalogless-r1/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r1/snapshot-serialization-validation.json",
+      "sha256": "3f40bf20fa062cfbfd3478af50228356fa5a30b3d6e7265b6e300df4564aced8"
+    },
+    {
+      "bytes": 43706,
+      "path": "runs/catalogless-r1/events.jsonl",
+      "sha256": "2402747938bcfa6c8cd0ef291eb418df4aa3989821026f727428abb8b110fd37"
+    },
+    {
+      "bytes": 26223,
+      "path": "runs/catalogless-r1/native-stats-repository/manifest.json",
+      "sha256": "0789403c7edbfa43470030fc300c3e66031fb7d7e0d676ea56e481bf8b14f27a"
+    },
+    {
+      "bytes": 1090,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_01933ab615fb49e2f81b5b92.bin",
+      "sha256": "8c491fd75aaf1617d0c1cd368cc532ff5d67054584750da2cf4a5b4eb3bd5f53"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_04524e4170fda10f288de2ad.bin",
+      "sha256": "d77cd3294a179b2554d3b10dc7956ffb0706dbb4451cc73a6e4e15ce9bd0211b"
+    },
+    {
+      "bytes": 2806,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_0deae0d5de82a5a1fdc34111.bin",
+      "sha256": "203b4035294aaffe229d45f677673ecb537ab887e9b7ff3284c20272be3f2a48"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_12b552d6e4274b3e7916918d.bin",
+      "sha256": "182c73d5fc71f8d5f9d45484ab4e57a259bc793f7bab1ba844e467bb75bd1397"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_14cd836002a9a76c97eb6c1e.bin",
+      "sha256": "bc608a960baaf1c0b122344f7e286bd8f898a811cf9486db757c8e23aba954ba"
+    },
+    {
+      "bytes": 2248,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_1537a6ae8ef67c379c8d0fa0.bin",
+      "sha256": "db4ce0d5d802ed927b41b9f3f555f2828ceb40b9450e04657bf9b820ce85bc93"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_1b63c8f8f8149f09f2ecb7c4.bin",
+      "sha256": "8b29d7e13fbd9c19f8fd92550cb9c67c1a320372a86643c19d9aa4a89b188474"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_1c45580597c36333ce8f1444.bin",
+      "sha256": "95612a3040526234da7255c90163c2a3ab1a3a1e31e6941801b845ecf49db7ec"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_25decdfdae3f06f5b53849b4.bin",
+      "sha256": "66fbcd5bff6732e118314210c4a657619a9ee6ba72f34f4bfebf48b6d5cc3afd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_2bfd4df050e52e03bab680f1.bin",
+      "sha256": "27e4921f463cfb76b03e18a7516d4a1c3e9c7d8e6d7ae99c6c6a993e406f0899"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_2d0c2bee852360475ed257b4.bin",
+      "sha256": "941ee4880694a45990f37351dd867cfbd45b010d17a753e46f6c11be39fc8d3c"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_326fad30e7ded583291003e6.bin",
+      "sha256": "864c728bb1283cd581ed5fd64934d8680d790bc89682a16b566ae4cd182abcb8"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_337495ed13b57f0375c7bcab.bin",
+      "sha256": "c6faa38ebfa774b3434d6eb19e6b5cd25dc85bad38f306c11c225b436b1b29b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_4293ec8c30a7314cb8ef5dbf.bin",
+      "sha256": "b5facd390fec003cb681d56d1880167ba39d7e06423e7dfd887c4b536858989c"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_42d3a67034bf5f02658cb7bf.bin",
+      "sha256": "faa4d039e23e3e218aae1b29ee9f3ec8c594e1fc7264be3a06445a0159027324"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_478f6c4acd54af28ee697d8d.bin",
+      "sha256": "eb72657243a606da63c3331800ee0e7e6761379fd9e62b776017971a127ec4fa"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_4af628931e0d02eb50415f2b.bin",
+      "sha256": "8ce25866d878b582cdf315ebc02d312b041096765e30eb1c32f4750c99e99138"
+    },
+    {
+      "bytes": 2510,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_4de3778bb8674287b6dd5b29.bin",
+      "sha256": "b1b88057d6036c3a00d539815afca8d16b31df7d1d758729a6011d911c405f0d"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_51488597ac9ebd3cb59d2ff1.bin",
+      "sha256": "3f614255959f1aef6e2a79449e718a4a6ea5ff72c8e249baa2b909de84072896"
+    },
+    {
+      "bytes": 1060,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_599a2efab190b6e2b7457ff1.bin",
+      "sha256": "46e9f4ac7105e14f9d6c8ccd7bf6a79203d327249fec230d7be620364c207da4"
+    },
+    {
+      "bytes": 2030,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_5ba9cc937a696a76876f820d.bin",
+      "sha256": "2a14e937f6ee711607fde1995320648c5029f4189691fbb171f9a7ba1a7b0ea7"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_5ef1e17a9fde8da19eda6ffc.bin",
+      "sha256": "fdba67ecb6f5d4a864fee11c262a164c7808a5927e96b16224d842e2ee4044d5"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_66f3d1c2b0b2b61a41f44994.bin",
+      "sha256": "caaeac9219ecb18e8f97adf7675c8bc52c1c2786e3c0cdc3514ce6eab99a7137"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_6937f79d38c06930e7c9a9ac.bin",
+      "sha256": "a4a75398ff1ec79018c6ec873de0694dedf16bf7ced204b516de83e11d3798a6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_6b7c22215c39c807cda3872e.bin",
+      "sha256": "387631e7962086616fd099d3791fab0c06e6f6fb5f4970b1873928d5a8ce5721"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_6da3014a15c7b2b3c07e9d00.bin",
+      "sha256": "0e0ecfe09b53ccead5423227e50ea9a70045adc2c2584c5788d20d1ee52606b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_71249b442b7dc4205d74a4b9.bin",
+      "sha256": "eabd27dd122702206bd86bda8e1edf0aea63a41d63094b2655c0d16100b00d6c"
+    },
+    {
+      "bytes": 2838,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_76679921292e8c769dbbd7bc.bin",
+      "sha256": "eae986cea2ba29eb92f8f06995597a904e993fc46a76a28f1950471570e8b466"
+    },
+    {
+      "bytes": 2894,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_77c3e92fff291d4d9515dc69.bin",
+      "sha256": "773dabf6d93dde082b266da774c3fd5b13b6366af480e52abcb8005b21d6d7cb"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_7bbe4e7fc76c5686e2511cd9.bin",
+      "sha256": "99090fe70d7f224158cc14cf1051bc2d533de0e99bf0f07867e142ddbb0c17c8"
+    },
+    {
+      "bytes": 1108,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_817be8bf7bbbc96c20bde230.bin",
+      "sha256": "05959486907d6af2bb1082aca9740d7a6d7421fa2741e82944b8e2b2e461f698"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_81dab29687d98fe8038c0eaa.bin",
+      "sha256": "1b2416a35eb540e4c96aee5db78e5abc4ec8aed3b68792a043eaa4bc115eab73"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_8b7a8e0422ed4ae2befb1bc8.bin",
+      "sha256": "c609b8d80085a8e937ce0bd44f29763154df62a56069db477bd6b21f6bf26068"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_929dfbf8e7ddadf6f4b97e87.bin",
+      "sha256": "b6282fc95e499b58236d04c77c511af8dfb5e16201f970fc5530049f5899bad2"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_93882884648663deb326f015.bin",
+      "sha256": "dec06e9ecf49729db8e0495a3fb9a167a87bd1787e86fd39d5769f01ca866ce2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_9be7db5012712e534c019f4c.bin",
+      "sha256": "f4bd9a6414f1a7d08dcfdfdc0030683d3e82392884b47258f3d26d5482a9904a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_9e2c1625957106365a4e00c0.bin",
+      "sha256": "f06f0c34583686cb0b0823b9118cdb40598aa4f3403a357e86c4d3cba8d08466"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_a393d81ec58b047e1e129db0.bin",
+      "sha256": "7ddf4994e67318ed734bafb919714533574823c800a374291aee3b4e0e325bc6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_b431757a4868f78ad44fa186.bin",
+      "sha256": "0361e5e834924f59e03435565f2ee3296eef40ed24120f7e503281f6574eae66"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_b5554ee4928fcdbe8d6f046c.bin",
+      "sha256": "7202c2654504cd8fd814cf6a0b0654140a58d92556f6927b987e7ff28fa0a733"
+    },
+    {
+      "bytes": 2090,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_bafa53ec095d804233d42826.bin",
+      "sha256": "208fa5bb93820f54f4ef868b4b8860cf48c97905e2bf27efaaab7aa68aa45527"
+    },
+    {
+      "bytes": 1290,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_c2737dfb5bfbb3e415dfb793.bin",
+      "sha256": "3fd69161dbd607d979cc43587297d5a9b21a84c1ba1f38d2cddea6b6425dc4ba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_c66e567561c42b80680d57a2.bin",
+      "sha256": "03929025744d74243c7bc50ef358bae02ceacc6bbb4d88fb20d4acd4cfb638bd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_c7595f3b6addcec1b9919cbe.bin",
+      "sha256": "160b6f1c22b0f999b534772f1a6a31a976480aa43e759af04209c5403f56d28e"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_c896441b03802e5c10cf4551.bin",
+      "sha256": "42dfcbe7c7d04260419f397c22c17c626658343ab43b4d14efb1882bcf368fd2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_c9b6667734c10464fab19fca.bin",
+      "sha256": "9812b0af0610440341c99450500174bab64d699b7b52114a20b9ea49abefc173"
+    },
+    {
+      "bytes": 2598,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_cbf4af3acd6feaa65760c6d1.bin",
+      "sha256": "10f96af312d2f94b16aa14c992863199ab6b4defd63359287d4bbf9dbe81a890"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_d8596bbbd92afbad9d401cd6.bin",
+      "sha256": "f7b99f995a5fd8152d7a3fd07be1633b0d3d66409f781a3a6b05a1714429ca67"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_d94eec73746ef01a6811815f.bin",
+      "sha256": "65de4a02bf936cc2462d36eaafc42648034594d720b37ae5f5b455667351b795"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_da7591327792c9bc98b427d7.bin",
+      "sha256": "ee0e9897a6a40f7944596481bb953711d4aba89f628a894b6d91d0e72e6b785a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_e15685675a396385fa8dc298.bin",
+      "sha256": "9c952721014ce7275baefdc890a0d99599487a6a6927aa93858d1cf5ef9ea343"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_e1a89b9755e5e3f384afc69f.bin",
+      "sha256": "d2d65f7609bda89b6a2b3f5a52b5ad2cddbaf72f5bf48c8f7893e53aff6b4eba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_ea8b2557e86251bb3994535b.bin",
+      "sha256": "d61a53a579e25a233d5e19118c823cfe5c83e335dbfb0a6d26b84f531aa92582"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_eaa4ce0396b4cc5c68b2550e.bin",
+      "sha256": "7579aa9ed7f299b10fccc672245270fe271cb9c99ebe3703ce0b38991a93eeee"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_eacd76ebde5ba7e94ae853aa.bin",
+      "sha256": "4f4a52e011c081f823c784b8238f560391e6f970a285598d6e21c63cd14bd027"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_ee4e6f9b6b050fa4d222c6a7.bin",
+      "sha256": "2d9406b7c8d408a71b5a1e725f3ee120e23f98a4270f472bf06833868b3caca4"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r1/native-stats-repository/payloads/cand_f2d14d17235b34bf39a631f5.bin",
+      "sha256": "6b25de26763af0a54e4e7c9f4eb125cc275b58721c09cd06ed0c68b2bd4b0746"
+    },
+    {
+      "bytes": 5598,
+      "path": "runs/catalogless-r1/run-result-v1.json",
+      "sha256": "ee1e621d98208d86ab43e65fb8cca7023c47c8aac71234c1bbf573b4548c09ab"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-001-activation.json",
+      "sha256": "b4ee95dfbf333eda951175c896f92ff29433fd64bfdc27518e876ac915a41417"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-001-catalogless-explain.json",
+      "sha256": "2f39de98b4933b7bc16bcbf9f4997127d5356325aa870a3711da232185ef579a"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-002-activation.json",
+      "sha256": "9c6c38606da88b77dfbeafb2e3c50c33ac218f774cf5a8316b6d033a982f9ca5"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-002-catalogless-explain.json",
+      "sha256": "575c90c490eb4ade47a9b8d55e567b737069e687a5944773205a4eb0a0dae1a8"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-003-activation.json",
+      "sha256": "69e8a0f475fc04a47f0e20a080ee54ef3d349a19d5508c7514a09f592e916ef5"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-003-catalogless-explain.json",
+      "sha256": "acab3abda8c0fcc2055a3299f9725dbcfb6e0b9a01b47446a4f2d67c0d04fa2c"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-004-activation.json",
+      "sha256": "3f99a6ea9cfca9d6842672614b3b3a97397baa2d96031f5d628f073243376908"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-004-catalogless-explain.json",
+      "sha256": "531bc228a12b0d84e856196e7fc05d95161eef179f6d9ae2d4f46dee7e95af81"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-005-activation.json",
+      "sha256": "8a3ff1ff5181b6cd535c87becf309e8e11f15f671f7f95deda9c46e2e15fe45d"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-005-catalogless-explain.json",
+      "sha256": "6d6d4df6ea5781a90f7fc7de128eebc4e2135058a7da448e904aea4c5243b381"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-006-activation.json",
+      "sha256": "fb7d217938d1903e088fc08302318a237ef759afdb2e30fb4569563a7f1115e4"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-006-catalogless-explain.json",
+      "sha256": "e7e2d8df9e42ce484548deb0f0301cc11c6e3a3258ecefe5db3b09af7a14c7d9"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-007-activation.json",
+      "sha256": "82a7ab066c5003eaf44bb7744a6ee5d49267db0a5608616f2e9746a19d955994"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-007-catalogless-explain.json",
+      "sha256": "518dbfde2eee33c09d9980263721a19783019be23921ff0cc56eb3e80d30fd03"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-008-activation.json",
+      "sha256": "ff40e51e0ada72730aa8a9c09c0fcfca936d888a388565d04d0f7676bb0757b4"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-008-catalogless-explain.json",
+      "sha256": "999239fed8cdf36d03f85b76917f1963a037834e1e6dde6576e4287cf1999f5e"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-009-activation.json",
+      "sha256": "4363a05c7c2c29a5b4bab27165a89e749de492c6ab5d7742a426b0a71d72f598"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-009-catalogless-explain.json",
+      "sha256": "05ce9e74a8e5683ff006a720d92e5a3bda897c073c50cb27c57fb77a4b8c0f7f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-010-activation.json",
+      "sha256": "5b6f04f0921c622d2c9e4c93a5ac0152163f685a31c6276caf103ca3a4e1e75c"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-010-catalogless-explain.json",
+      "sha256": "e630e370f34be4a48ad05a252bd45be5a956e8ba9223bc0e8c5ad08329a30d8f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-011-activation.json",
+      "sha256": "fc09607afa89c09e12f36d14a258f9700af2c03c701ba96eab9e6db2852619e4"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-011-catalogless-explain.json",
+      "sha256": "1c4879285e134f9bf7cf85500f2e80d5b89fc26d78478111c77fb7ccada1713f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-012-activation.json",
+      "sha256": "0b8e71cdf9d136ba504f07af44a2bf3347d5b4181b555123a50b8a8ca7035296"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-012-catalogless-explain.json",
+      "sha256": "cc419e4aab7d5b5172460e8d63fb2b89e3e4e91520d7a26e6d9d8a026eec3bd0"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-013-activation.json",
+      "sha256": "9e3406cb129a57546739d3ea9ae9c71d1d8a173d4e96f90b8781c6b7c7ab7c76"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-013-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-014-activation.json",
+      "sha256": "47a888c0610098355c3d9410e8409b0a7c291c0107437edb0efa563524eb2e4f"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-014-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-015-activation.json",
+      "sha256": "b35bf0f947004a301816ec379dc4cd52daeb574c3d6f478a61bbe9d67049cc86"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-015-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-016-activation.json",
+      "sha256": "665bb3ae9e7ba94d94cf1ab8facfe8ce3d83ee3f5c3751edb4109db681687e51"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-016-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-017-activation.json",
+      "sha256": "1125e4b50df85dcc5b2d142cbb6f1b8f0b7d27e8a689cc7b6dc534075f43751e"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-017-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-018-activation.json",
+      "sha256": "4aab60d96615d4edb4b698db8a9a8a32d67a0fe603a78601bea8d2b8a639c6a8"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-018-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-019-activation.json",
+      "sha256": "456d44828b34b7b3fda496361563116dba6f2c7f1a1f098491bf57ff365605dd"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-019-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-020-activation.json",
+      "sha256": "b347ce5e5af85ce4d76256be930822f5c130664cd2c318e925475d9ed3121308"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/config-020-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 3298,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/materialization.json",
+      "sha256": "bee9a4dbee60e7a6f8b3bfb72b63f2312ad3bd84af6078929c467556fa8642c2"
+    },
+    {
+      "bytes": 1300,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/sample-acquisition.json",
+      "sha256": "7ed44085793a04abcc16fe543d1a76a2a885decbc4e8b6418df55a6679793a9c"
+    },
+    {
+      "bytes": 3362,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/sandbox.json",
+      "sha256": "31ef9cb3aa4946b243326ac7205f86e8ec2e4a5b951ead004f338346a1b0e8f1"
+    },
+    {
+      "bytes": 381,
+      "path": "runs/catalogless-r2/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r2/snapshot-serialization-validation.json",
+      "sha256": "1cf94b54689b752a2b2791ba10c66dade25d2ad45efd09561bfdea0990dbb778"
+    },
+    {
+      "bytes": 43706,
+      "path": "runs/catalogless-r2/events.jsonl",
+      "sha256": "edad1bd7516b3323134d57af1aa19fb31edf5a3ba7ce6f3ec992bbcde903aa30"
+    },
+    {
+      "bytes": 26223,
+      "path": "runs/catalogless-r2/native-stats-repository/manifest.json",
+      "sha256": "d1672990169f2531a1505716b7c9474761ccd720e124320231eeb84c7c0417bf"
+    },
+    {
+      "bytes": 1090,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_01933ab615fb49e2f81b5b92.bin",
+      "sha256": "8c491fd75aaf1617d0c1cd368cc532ff5d67054584750da2cf4a5b4eb3bd5f53"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_04524e4170fda10f288de2ad.bin",
+      "sha256": "d77cd3294a179b2554d3b10dc7956ffb0706dbb4451cc73a6e4e15ce9bd0211b"
+    },
+    {
+      "bytes": 2806,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_0deae0d5de82a5a1fdc34111.bin",
+      "sha256": "203b4035294aaffe229d45f677673ecb537ab887e9b7ff3284c20272be3f2a48"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_12b552d6e4274b3e7916918d.bin",
+      "sha256": "182c73d5fc71f8d5f9d45484ab4e57a259bc793f7bab1ba844e467bb75bd1397"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_14cd836002a9a76c97eb6c1e.bin",
+      "sha256": "bc608a960baaf1c0b122344f7e286bd8f898a811cf9486db757c8e23aba954ba"
+    },
+    {
+      "bytes": 2248,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_1537a6ae8ef67c379c8d0fa0.bin",
+      "sha256": "db4ce0d5d802ed927b41b9f3f555f2828ceb40b9450e04657bf9b820ce85bc93"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_1b63c8f8f8149f09f2ecb7c4.bin",
+      "sha256": "8b29d7e13fbd9c19f8fd92550cb9c67c1a320372a86643c19d9aa4a89b188474"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_1c45580597c36333ce8f1444.bin",
+      "sha256": "95612a3040526234da7255c90163c2a3ab1a3a1e31e6941801b845ecf49db7ec"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_25decdfdae3f06f5b53849b4.bin",
+      "sha256": "66fbcd5bff6732e118314210c4a657619a9ee6ba72f34f4bfebf48b6d5cc3afd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_2bfd4df050e52e03bab680f1.bin",
+      "sha256": "27e4921f463cfb76b03e18a7516d4a1c3e9c7d8e6d7ae99c6c6a993e406f0899"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_2d0c2bee852360475ed257b4.bin",
+      "sha256": "941ee4880694a45990f37351dd867cfbd45b010d17a753e46f6c11be39fc8d3c"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_326fad30e7ded583291003e6.bin",
+      "sha256": "864c728bb1283cd581ed5fd64934d8680d790bc89682a16b566ae4cd182abcb8"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_337495ed13b57f0375c7bcab.bin",
+      "sha256": "c6faa38ebfa774b3434d6eb19e6b5cd25dc85bad38f306c11c225b436b1b29b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_4293ec8c30a7314cb8ef5dbf.bin",
+      "sha256": "b5facd390fec003cb681d56d1880167ba39d7e06423e7dfd887c4b536858989c"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_42d3a67034bf5f02658cb7bf.bin",
+      "sha256": "faa4d039e23e3e218aae1b29ee9f3ec8c594e1fc7264be3a06445a0159027324"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_478f6c4acd54af28ee697d8d.bin",
+      "sha256": "eb72657243a606da63c3331800ee0e7e6761379fd9e62b776017971a127ec4fa"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_4af628931e0d02eb50415f2b.bin",
+      "sha256": "8ce25866d878b582cdf315ebc02d312b041096765e30eb1c32f4750c99e99138"
+    },
+    {
+      "bytes": 2510,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_4de3778bb8674287b6dd5b29.bin",
+      "sha256": "b1b88057d6036c3a00d539815afca8d16b31df7d1d758729a6011d911c405f0d"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_51488597ac9ebd3cb59d2ff1.bin",
+      "sha256": "3f614255959f1aef6e2a79449e718a4a6ea5ff72c8e249baa2b909de84072896"
+    },
+    {
+      "bytes": 1060,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_599a2efab190b6e2b7457ff1.bin",
+      "sha256": "46e9f4ac7105e14f9d6c8ccd7bf6a79203d327249fec230d7be620364c207da4"
+    },
+    {
+      "bytes": 2030,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_5ba9cc937a696a76876f820d.bin",
+      "sha256": "2a14e937f6ee711607fde1995320648c5029f4189691fbb171f9a7ba1a7b0ea7"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_5ef1e17a9fde8da19eda6ffc.bin",
+      "sha256": "fdba67ecb6f5d4a864fee11c262a164c7808a5927e96b16224d842e2ee4044d5"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_66f3d1c2b0b2b61a41f44994.bin",
+      "sha256": "caaeac9219ecb18e8f97adf7675c8bc52c1c2786e3c0cdc3514ce6eab99a7137"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_6937f79d38c06930e7c9a9ac.bin",
+      "sha256": "a4a75398ff1ec79018c6ec873de0694dedf16bf7ced204b516de83e11d3798a6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_6b7c22215c39c807cda3872e.bin",
+      "sha256": "387631e7962086616fd099d3791fab0c06e6f6fb5f4970b1873928d5a8ce5721"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_6da3014a15c7b2b3c07e9d00.bin",
+      "sha256": "0e0ecfe09b53ccead5423227e50ea9a70045adc2c2584c5788d20d1ee52606b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_71249b442b7dc4205d74a4b9.bin",
+      "sha256": "eabd27dd122702206bd86bda8e1edf0aea63a41d63094b2655c0d16100b00d6c"
+    },
+    {
+      "bytes": 2838,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_76679921292e8c769dbbd7bc.bin",
+      "sha256": "eae986cea2ba29eb92f8f06995597a904e993fc46a76a28f1950471570e8b466"
+    },
+    {
+      "bytes": 2894,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_77c3e92fff291d4d9515dc69.bin",
+      "sha256": "773dabf6d93dde082b266da774c3fd5b13b6366af480e52abcb8005b21d6d7cb"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_7bbe4e7fc76c5686e2511cd9.bin",
+      "sha256": "99090fe70d7f224158cc14cf1051bc2d533de0e99bf0f07867e142ddbb0c17c8"
+    },
+    {
+      "bytes": 1108,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_817be8bf7bbbc96c20bde230.bin",
+      "sha256": "05959486907d6af2bb1082aca9740d7a6d7421fa2741e82944b8e2b2e461f698"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_81dab29687d98fe8038c0eaa.bin",
+      "sha256": "1b2416a35eb540e4c96aee5db78e5abc4ec8aed3b68792a043eaa4bc115eab73"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_8b7a8e0422ed4ae2befb1bc8.bin",
+      "sha256": "c609b8d80085a8e937ce0bd44f29763154df62a56069db477bd6b21f6bf26068"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_929dfbf8e7ddadf6f4b97e87.bin",
+      "sha256": "b6282fc95e499b58236d04c77c511af8dfb5e16201f970fc5530049f5899bad2"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_93882884648663deb326f015.bin",
+      "sha256": "dec06e9ecf49729db8e0495a3fb9a167a87bd1787e86fd39d5769f01ca866ce2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_9be7db5012712e534c019f4c.bin",
+      "sha256": "f4bd9a6414f1a7d08dcfdfdc0030683d3e82392884b47258f3d26d5482a9904a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_9e2c1625957106365a4e00c0.bin",
+      "sha256": "f06f0c34583686cb0b0823b9118cdb40598aa4f3403a357e86c4d3cba8d08466"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_a393d81ec58b047e1e129db0.bin",
+      "sha256": "7ddf4994e67318ed734bafb919714533574823c800a374291aee3b4e0e325bc6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_b431757a4868f78ad44fa186.bin",
+      "sha256": "0361e5e834924f59e03435565f2ee3296eef40ed24120f7e503281f6574eae66"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_b5554ee4928fcdbe8d6f046c.bin",
+      "sha256": "7202c2654504cd8fd814cf6a0b0654140a58d92556f6927b987e7ff28fa0a733"
+    },
+    {
+      "bytes": 2090,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_bafa53ec095d804233d42826.bin",
+      "sha256": "208fa5bb93820f54f4ef868b4b8860cf48c97905e2bf27efaaab7aa68aa45527"
+    },
+    {
+      "bytes": 1290,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_c2737dfb5bfbb3e415dfb793.bin",
+      "sha256": "3fd69161dbd607d979cc43587297d5a9b21a84c1ba1f38d2cddea6b6425dc4ba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_c66e567561c42b80680d57a2.bin",
+      "sha256": "03929025744d74243c7bc50ef358bae02ceacc6bbb4d88fb20d4acd4cfb638bd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_c7595f3b6addcec1b9919cbe.bin",
+      "sha256": "160b6f1c22b0f999b534772f1a6a31a976480aa43e759af04209c5403f56d28e"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_c896441b03802e5c10cf4551.bin",
+      "sha256": "42dfcbe7c7d04260419f397c22c17c626658343ab43b4d14efb1882bcf368fd2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_c9b6667734c10464fab19fca.bin",
+      "sha256": "9812b0af0610440341c99450500174bab64d699b7b52114a20b9ea49abefc173"
+    },
+    {
+      "bytes": 2598,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_cbf4af3acd6feaa65760c6d1.bin",
+      "sha256": "10f96af312d2f94b16aa14c992863199ab6b4defd63359287d4bbf9dbe81a890"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_d8596bbbd92afbad9d401cd6.bin",
+      "sha256": "f7b99f995a5fd8152d7a3fd07be1633b0d3d66409f781a3a6b05a1714429ca67"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_d94eec73746ef01a6811815f.bin",
+      "sha256": "65de4a02bf936cc2462d36eaafc42648034594d720b37ae5f5b455667351b795"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_da7591327792c9bc98b427d7.bin",
+      "sha256": "ee0e9897a6a40f7944596481bb953711d4aba89f628a894b6d91d0e72e6b785a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_e15685675a396385fa8dc298.bin",
+      "sha256": "9c952721014ce7275baefdc890a0d99599487a6a6927aa93858d1cf5ef9ea343"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_e1a89b9755e5e3f384afc69f.bin",
+      "sha256": "d2d65f7609bda89b6a2b3f5a52b5ad2cddbaf72f5bf48c8f7893e53aff6b4eba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_ea8b2557e86251bb3994535b.bin",
+      "sha256": "d61a53a579e25a233d5e19118c823cfe5c83e335dbfb0a6d26b84f531aa92582"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_eaa4ce0396b4cc5c68b2550e.bin",
+      "sha256": "7579aa9ed7f299b10fccc672245270fe271cb9c99ebe3703ce0b38991a93eeee"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_eacd76ebde5ba7e94ae853aa.bin",
+      "sha256": "4f4a52e011c081f823c784b8238f560391e6f970a285598d6e21c63cd14bd027"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_ee4e6f9b6b050fa4d222c6a7.bin",
+      "sha256": "2d9406b7c8d408a71b5a1e725f3ee120e23f98a4270f472bf06833868b3caca4"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r2/native-stats-repository/payloads/cand_f2d14d17235b34bf39a631f5.bin",
+      "sha256": "6b25de26763af0a54e4e7c9f4eb125cc275b58721c09cd06ed0c68b2bd4b0746"
+    },
+    {
+      "bytes": 5600,
+      "path": "runs/catalogless-r2/run-result-v1.json",
+      "sha256": "96aa5ace2962297e1722726ec1a8057b4b5eefa685ff546b716e1687161dbe29"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-001-activation.json",
+      "sha256": "7af03ecaa3cf846cdc846924112a65f1fc6b903ce9ac1a9b63c3661394e73a3a"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-001-catalogless-explain.json",
+      "sha256": "2f39de98b4933b7bc16bcbf9f4997127d5356325aa870a3711da232185ef579a"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-002-activation.json",
+      "sha256": "c4668050a4c3db7d7c6e1230c762391ca445cbfd796eedff579ee8e1fbb7f7a2"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-002-catalogless-explain.json",
+      "sha256": "575c90c490eb4ade47a9b8d55e567b737069e687a5944773205a4eb0a0dae1a8"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-003-activation.json",
+      "sha256": "f316196a90436552cbe5b4e6d7fe46facd8b500b6ba5c6cc5e3243cc3d942a0f"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-003-catalogless-explain.json",
+      "sha256": "acab3abda8c0fcc2055a3299f9725dbcfb6e0b9a01b47446a4f2d67c0d04fa2c"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-004-activation.json",
+      "sha256": "dc76a7191791deb19cbcaa88683aa05b597fbffd7a226106e54debca4ce16330"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-004-catalogless-explain.json",
+      "sha256": "531bc228a12b0d84e856196e7fc05d95161eef179f6d9ae2d4f46dee7e95af81"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-005-activation.json",
+      "sha256": "cc4e044e3264f3945b6d51132ab32cd272f01b5b18b8b447de060f797d4d9a3a"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-005-catalogless-explain.json",
+      "sha256": "6d6d4df6ea5781a90f7fc7de128eebc4e2135058a7da448e904aea4c5243b381"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-006-activation.json",
+      "sha256": "a844284d0b9fa0ab42fedede8a0c7548fdb28c00f0d656b2e4609a7bd0e91a35"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-006-catalogless-explain.json",
+      "sha256": "e7e2d8df9e42ce484548deb0f0301cc11c6e3a3258ecefe5db3b09af7a14c7d9"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-007-activation.json",
+      "sha256": "6624adf965529f07d6d468d182341292961adb996d17cb764fd3f8df5a94d27a"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-007-catalogless-explain.json",
+      "sha256": "518dbfde2eee33c09d9980263721a19783019be23921ff0cc56eb3e80d30fd03"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-008-activation.json",
+      "sha256": "08485ddf27665bcf6d01ced7a1fadfd37e2d2845a2f638ca47123466fa92d169"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-008-catalogless-explain.json",
+      "sha256": "999239fed8cdf36d03f85b76917f1963a037834e1e6dde6576e4287cf1999f5e"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-009-activation.json",
+      "sha256": "e5effaa26581af640322a0f649fa4f946bc0b125ba09cd38882ff408e041d0ed"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-009-catalogless-explain.json",
+      "sha256": "05ce9e74a8e5683ff006a720d92e5a3bda897c073c50cb27c57fb77a4b8c0f7f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-010-activation.json",
+      "sha256": "56764170b4714221022ef5a3e2261a2e2d5ea648a4ccaf88b4d39eaa9ff430fc"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-010-catalogless-explain.json",
+      "sha256": "e630e370f34be4a48ad05a252bd45be5a956e8ba9223bc0e8c5ad08329a30d8f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-011-activation.json",
+      "sha256": "2cf31838e0bee98de99d2c8ba79fc546be1e27191557ea10d198fe81a5dd5857"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-011-catalogless-explain.json",
+      "sha256": "1c4879285e134f9bf7cf85500f2e80d5b89fc26d78478111c77fb7ccada1713f"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-012-activation.json",
+      "sha256": "99719b01b50d8f0668d42b0f3d523d07083f71f0a7e557a10dcaf479c3d80594"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-012-catalogless-explain.json",
+      "sha256": "cc419e4aab7d5b5172460e8d63fb2b89e3e4e91520d7a26e6d9d8a026eec3bd0"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-013-activation.json",
+      "sha256": "9b06401b5ed62e5acc71ddf6ca7dc688dd4853f20f7ba3523b17819169046e76"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-013-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-014-activation.json",
+      "sha256": "635e5255dfe4a3dc0f5fac77a873d29e9652ca04329178d22dd3407ed576eada"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-014-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-015-activation.json",
+      "sha256": "be9b2bd360be7ddcddea008d3ffc5f55fa078fc55b94f46b57a1e0fcc4b3d08a"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-015-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-016-activation.json",
+      "sha256": "cc7d08456f63affec6cc25f9b86c4cb491d77508cfb703d8ca7daf6fe589a014"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-016-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-017-activation.json",
+      "sha256": "a37fca107032b781dc727316b59eb6834213d68a6b5776feed5757a02c466d2a"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-017-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-018-activation.json",
+      "sha256": "79a78f90167c152d5b4577b8da78201b75b2f2a9c43c86aa747ab7f75857872c"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-018-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-019-activation.json",
+      "sha256": "92dfb0abdfeaf64b6c1cf881a381678742d46528d2552dcb5e30eca24a118bf7"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-019-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 105,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-020-activation.json",
+      "sha256": "9984ed6336623bfcb77eaa54a0626d5f77289914d253c6404c75aebf3b57203e"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/config-020-catalogless-explain.json",
+      "sha256": "aecea6d18182584a25eb69eff531a53733933595b33f3ff2d6d72967f8f8576b"
+    },
+    {
+      "bytes": 3298,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/materialization.json",
+      "sha256": "bee9a4dbee60e7a6f8b3bfb72b63f2312ad3bd84af6078929c467556fa8642c2"
+    },
+    {
+      "bytes": 1300,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/sample-acquisition.json",
+      "sha256": "7ed44085793a04abcc16fe543d1a76a2a885decbc4e8b6418df55a6679793a9c"
+    },
+    {
+      "bytes": 3362,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/sandbox.json",
+      "sha256": "21b4d690279ddc97354db3986798271638f6a0f05468b8a55c93fb79f6ed0315"
+    },
+    {
+      "bytes": 381,
+      "path": "runs/catalogless-r3/adapter-audit/catalogless/rq5-v3-analysis-a-catalogless-r3/snapshot-serialization-validation.json",
+      "sha256": "b9371fc4770f902e159cfc55ca4fcd5390a94a7847881b7b92d14807823f6810"
+    },
+    {
+      "bytes": 43706,
+      "path": "runs/catalogless-r3/events.jsonl",
+      "sha256": "07869ea029bacf1cc1f979b2f90b11445c71ef06267b8dd7461eea50e87b0a86"
+    },
+    {
+      "bytes": 26223,
+      "path": "runs/catalogless-r3/native-stats-repository/manifest.json",
+      "sha256": "4cfba816685414722fa1c34d566d723b2dfdacbfe9bcd7077e4a05b0f8a8bfa4"
+    },
+    {
+      "bytes": 1090,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_01933ab615fb49e2f81b5b92.bin",
+      "sha256": "8c491fd75aaf1617d0c1cd368cc532ff5d67054584750da2cf4a5b4eb3bd5f53"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_04524e4170fda10f288de2ad.bin",
+      "sha256": "d77cd3294a179b2554d3b10dc7956ffb0706dbb4451cc73a6e4e15ce9bd0211b"
+    },
+    {
+      "bytes": 2806,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_0deae0d5de82a5a1fdc34111.bin",
+      "sha256": "203b4035294aaffe229d45f677673ecb537ab887e9b7ff3284c20272be3f2a48"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_12b552d6e4274b3e7916918d.bin",
+      "sha256": "182c73d5fc71f8d5f9d45484ab4e57a259bc793f7bab1ba844e467bb75bd1397"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_14cd836002a9a76c97eb6c1e.bin",
+      "sha256": "bc608a960baaf1c0b122344f7e286bd8f898a811cf9486db757c8e23aba954ba"
+    },
+    {
+      "bytes": 2248,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_1537a6ae8ef67c379c8d0fa0.bin",
+      "sha256": "db4ce0d5d802ed927b41b9f3f555f2828ceb40b9450e04657bf9b820ce85bc93"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_1b63c8f8f8149f09f2ecb7c4.bin",
+      "sha256": "8b29d7e13fbd9c19f8fd92550cb9c67c1a320372a86643c19d9aa4a89b188474"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_1c45580597c36333ce8f1444.bin",
+      "sha256": "95612a3040526234da7255c90163c2a3ab1a3a1e31e6941801b845ecf49db7ec"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_25decdfdae3f06f5b53849b4.bin",
+      "sha256": "66fbcd5bff6732e118314210c4a657619a9ee6ba72f34f4bfebf48b6d5cc3afd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_2bfd4df050e52e03bab680f1.bin",
+      "sha256": "27e4921f463cfb76b03e18a7516d4a1c3e9c7d8e6d7ae99c6c6a993e406f0899"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_2d0c2bee852360475ed257b4.bin",
+      "sha256": "941ee4880694a45990f37351dd867cfbd45b010d17a753e46f6c11be39fc8d3c"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_326fad30e7ded583291003e6.bin",
+      "sha256": "864c728bb1283cd581ed5fd64934d8680d790bc89682a16b566ae4cd182abcb8"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_337495ed13b57f0375c7bcab.bin",
+      "sha256": "c6faa38ebfa774b3434d6eb19e6b5cd25dc85bad38f306c11c225b436b1b29b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_4293ec8c30a7314cb8ef5dbf.bin",
+      "sha256": "b5facd390fec003cb681d56d1880167ba39d7e06423e7dfd887c4b536858989c"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_42d3a67034bf5f02658cb7bf.bin",
+      "sha256": "faa4d039e23e3e218aae1b29ee9f3ec8c594e1fc7264be3a06445a0159027324"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_478f6c4acd54af28ee697d8d.bin",
+      "sha256": "eb72657243a606da63c3331800ee0e7e6761379fd9e62b776017971a127ec4fa"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_4af628931e0d02eb50415f2b.bin",
+      "sha256": "8ce25866d878b582cdf315ebc02d312b041096765e30eb1c32f4750c99e99138"
+    },
+    {
+      "bytes": 2510,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_4de3778bb8674287b6dd5b29.bin",
+      "sha256": "b1b88057d6036c3a00d539815afca8d16b31df7d1d758729a6011d911c405f0d"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_51488597ac9ebd3cb59d2ff1.bin",
+      "sha256": "3f614255959f1aef6e2a79449e718a4a6ea5ff72c8e249baa2b909de84072896"
+    },
+    {
+      "bytes": 1060,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_599a2efab190b6e2b7457ff1.bin",
+      "sha256": "46e9f4ac7105e14f9d6c8ccd7bf6a79203d327249fec230d7be620364c207da4"
+    },
+    {
+      "bytes": 2030,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_5ba9cc937a696a76876f820d.bin",
+      "sha256": "2a14e937f6ee711607fde1995320648c5029f4189691fbb171f9a7ba1a7b0ea7"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_5ef1e17a9fde8da19eda6ffc.bin",
+      "sha256": "fdba67ecb6f5d4a864fee11c262a164c7808a5927e96b16224d842e2ee4044d5"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_66f3d1c2b0b2b61a41f44994.bin",
+      "sha256": "caaeac9219ecb18e8f97adf7675c8bc52c1c2786e3c0cdc3514ce6eab99a7137"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_6937f79d38c06930e7c9a9ac.bin",
+      "sha256": "a4a75398ff1ec79018c6ec873de0694dedf16bf7ced204b516de83e11d3798a6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_6b7c22215c39c807cda3872e.bin",
+      "sha256": "387631e7962086616fd099d3791fab0c06e6f6fb5f4970b1873928d5a8ce5721"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_6da3014a15c7b2b3c07e9d00.bin",
+      "sha256": "0e0ecfe09b53ccead5423227e50ea9a70045adc2c2584c5788d20d1ee52606b3"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_71249b442b7dc4205d74a4b9.bin",
+      "sha256": "eabd27dd122702206bd86bda8e1edf0aea63a41d63094b2655c0d16100b00d6c"
+    },
+    {
+      "bytes": 2838,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_76679921292e8c769dbbd7bc.bin",
+      "sha256": "eae986cea2ba29eb92f8f06995597a904e993fc46a76a28f1950471570e8b466"
+    },
+    {
+      "bytes": 2894,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_77c3e92fff291d4d9515dc69.bin",
+      "sha256": "773dabf6d93dde082b266da774c3fd5b13b6366af480e52abcb8005b21d6d7cb"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_7bbe4e7fc76c5686e2511cd9.bin",
+      "sha256": "99090fe70d7f224158cc14cf1051bc2d533de0e99bf0f07867e142ddbb0c17c8"
+    },
+    {
+      "bytes": 1108,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_817be8bf7bbbc96c20bde230.bin",
+      "sha256": "05959486907d6af2bb1082aca9740d7a6d7421fa2741e82944b8e2b2e461f698"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_81dab29687d98fe8038c0eaa.bin",
+      "sha256": "1b2416a35eb540e4c96aee5db78e5abc4ec8aed3b68792a043eaa4bc115eab73"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_8b7a8e0422ed4ae2befb1bc8.bin",
+      "sha256": "c609b8d80085a8e937ce0bd44f29763154df62a56069db477bd6b21f6bf26068"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_929dfbf8e7ddadf6f4b97e87.bin",
+      "sha256": "b6282fc95e499b58236d04c77c511af8dfb5e16201f970fc5530049f5899bad2"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_93882884648663deb326f015.bin",
+      "sha256": "dec06e9ecf49729db8e0495a3fb9a167a87bd1787e86fd39d5769f01ca866ce2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_9be7db5012712e534c019f4c.bin",
+      "sha256": "f4bd9a6414f1a7d08dcfdfdc0030683d3e82392884b47258f3d26d5482a9904a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_9e2c1625957106365a4e00c0.bin",
+      "sha256": "f06f0c34583686cb0b0823b9118cdb40598aa4f3403a357e86c4d3cba8d08466"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_a393d81ec58b047e1e129db0.bin",
+      "sha256": "7ddf4994e67318ed734bafb919714533574823c800a374291aee3b4e0e325bc6"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_b431757a4868f78ad44fa186.bin",
+      "sha256": "0361e5e834924f59e03435565f2ee3296eef40ed24120f7e503281f6574eae66"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_b5554ee4928fcdbe8d6f046c.bin",
+      "sha256": "7202c2654504cd8fd814cf6a0b0654140a58d92556f6927b987e7ff28fa0a733"
+    },
+    {
+      "bytes": 2090,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_bafa53ec095d804233d42826.bin",
+      "sha256": "208fa5bb93820f54f4ef868b4b8860cf48c97905e2bf27efaaab7aa68aa45527"
+    },
+    {
+      "bytes": 1290,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_c2737dfb5bfbb3e415dfb793.bin",
+      "sha256": "3fd69161dbd607d979cc43587297d5a9b21a84c1ba1f38d2cddea6b6425dc4ba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_c66e567561c42b80680d57a2.bin",
+      "sha256": "03929025744d74243c7bc50ef358bae02ceacc6bbb4d88fb20d4acd4cfb638bd"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_c7595f3b6addcec1b9919cbe.bin",
+      "sha256": "160b6f1c22b0f999b534772f1a6a31a976480aa43e759af04209c5403f56d28e"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_c896441b03802e5c10cf4551.bin",
+      "sha256": "42dfcbe7c7d04260419f397c22c17c626658343ab43b4d14efb1882bcf368fd2"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_c9b6667734c10464fab19fca.bin",
+      "sha256": "9812b0af0610440341c99450500174bab64d699b7b52114a20b9ea49abefc173"
+    },
+    {
+      "bytes": 2598,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_cbf4af3acd6feaa65760c6d1.bin",
+      "sha256": "10f96af312d2f94b16aa14c992863199ab6b4defd63359287d4bbf9dbe81a890"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_d8596bbbd92afbad9d401cd6.bin",
+      "sha256": "f7b99f995a5fd8152d7a3fd07be1633b0d3d66409f781a3a6b05a1714429ca67"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_d94eec73746ef01a6811815f.bin",
+      "sha256": "65de4a02bf936cc2462d36eaafc42648034594d720b37ae5f5b455667351b795"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_da7591327792c9bc98b427d7.bin",
+      "sha256": "ee0e9897a6a40f7944596481bb953711d4aba89f628a894b6d91d0e72e6b785a"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_e15685675a396385fa8dc298.bin",
+      "sha256": "9c952721014ce7275baefdc890a0d99599487a6a6927aa93858d1cf5ef9ea343"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_e1a89b9755e5e3f384afc69f.bin",
+      "sha256": "d2d65f7609bda89b6a2b3f5a52b5ad2cddbaf72f5bf48c8f7893e53aff6b4eba"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_ea8b2557e86251bb3994535b.bin",
+      "sha256": "d61a53a579e25a233d5e19118c823cfe5c83e335dbfb0a6d26b84f531aa92582"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_eaa4ce0396b4cc5c68b2550e.bin",
+      "sha256": "7579aa9ed7f299b10fccc672245270fe271cb9c99ebe3703ce0b38991a93eeee"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_eacd76ebde5ba7e94ae853aa.bin",
+      "sha256": "4f4a52e011c081f823c784b8238f560391e6f970a285598d6e21c63cd14bd027"
+    },
+    {
+      "bytes": 40,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_ee4e6f9b6b050fa4d222c6a7.bin",
+      "sha256": "2d9406b7c8d408a71b5a1e725f3ee120e23f98a4270f472bf06833868b3caca4"
+    },
+    {
+      "bytes": 26,
+      "path": "runs/catalogless-r3/native-stats-repository/payloads/cand_f2d14d17235b34bf39a631f5.bin",
+      "sha256": "6b25de26763af0a54e4e7c9f4eb125cc275b58721c09cd06ed0c68b2bd4b0746"
+    },
+    {
+      "bytes": 5599,
+      "path": "runs/catalogless-r3/run-result-v1.json",
+      "sha256": "af3beda1ad5bc60de12dcece13983d6b7f6ccef1697fa58ad56140a781dae569"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-001-physical-explain.json",
+      "sha256": "89dec94b7955736399c2119a5a720747b05d141c51f1d3e1f69809d24e383a5f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-001-physical-state.json",
+      "sha256": "77a505d72d995df4e73e819c1d6ed95a1b3e0497b4c740d61249b3b3ebd05769"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-002-physical-explain.json",
+      "sha256": "0df9881ae7a4a2ec989ad1265d5af5bc492d7944b1f086142fc54b104c560321"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-002-physical-state.json",
+      "sha256": "16020864e54b9b06a6e9cbdf5e615eef0ab3724b282b364de60e6cf5a0150ab7"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-003-physical-explain.json",
+      "sha256": "2241e8d5fe48f6c8a0a834ed436bd169b1098f999f5126f10bcbed38990462be"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-003-physical-state.json",
+      "sha256": "28827b028168a1a2aac0b17e73847a564f8ece566e7bf5b7af0132b45c17bc25"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-004-physical-explain.json",
+      "sha256": "7408ed9f6ef73ce265d8ac78f73cdde4c619cd130487aee70dee0b104f12e0ff"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-004-physical-state.json",
+      "sha256": "c5624775bca1e4fb1b24f42c2362f42e631e3048f9c670f047d6464a477f0e7d"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-005-physical-explain.json",
+      "sha256": "69655c2aab6d6f9a00d6aff37f9011c5dede6bcf6e3e805ecbf28e3eb0f9528c"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-005-physical-state.json",
+      "sha256": "61c1d4ef2d8a73bf553ca91a0f611535fe851c17863861d988d2990be744443c"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-006-physical-explain.json",
+      "sha256": "e00fabd3f211d44573bb3ee35d0dc92ca761a7ce0ec93339a4a240c86eb6dffc"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-006-physical-state.json",
+      "sha256": "70d04f1a7164e7f69c20a399f7f818e0d0e33a140d610a3b276a944cb6d945cf"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-007-physical-explain.json",
+      "sha256": "de11a904484932ed229d5f6168135d7c99549c4755d0c2a1fccfd6f50d470ff0"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-007-physical-state.json",
+      "sha256": "b760202d3feeb6f89beff0721b3602b212b8ca1c9c53460735afae221a21cca2"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-008-physical-explain.json",
+      "sha256": "df651049e9fd30ede199a299303aa02f8a7506b5f49ba2112d3708fe836f5ded"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-008-physical-state.json",
+      "sha256": "36a09fedb408b876c80125aac28a09e746c9ec29923b34b12db0fdc71fa9262a"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-009-physical-explain.json",
+      "sha256": "b83996b2daadfe2e4e91a84b08e1b5aa15fd28d82c7e86e49d990e1c87693c0c"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-009-physical-state.json",
+      "sha256": "ccaf8cc0f9185e6523e4f6e703d95ab48f3b0c575d443f6f131627c4f6237e21"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-010-physical-explain.json",
+      "sha256": "c69dacda634d737788bf55754a5069794099ae437daf867314845a6c072c557d"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-010-physical-state.json",
+      "sha256": "5138da430141ffeb7cdd03ae324f760693b4896ce6eb32fe5b724d8060da4172"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-011-physical-explain.json",
+      "sha256": "6ba5715d12fb7105a1ca6331277b7df1577bbbd51ce8f333f7b3525771547bc9"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-011-physical-state.json",
+      "sha256": "d65623604c1226e35dc16284ab695f935b0399b4fa2f548be22278872f974321"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-012-physical-explain.json",
+      "sha256": "0ccc5c9d317d70a4bbdf43148f1a6d49627841a7730851e71f60cb64db4efb04"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-012-physical-state.json",
+      "sha256": "5c8c74a3e9b992571923d5fb26ea59cef0de8bfee361b61bb2d724b0b0b65220"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-013-physical-explain.json",
+      "sha256": "42953725ca61058a2cf0713e8ad181fa63bf2926aae9a79b9236f3d23606fb6a"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-013-physical-state.json",
+      "sha256": "f6eb1f0ad1719850bb0696f3517881b752ecf8c08503c0b5126ef238721766b4"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-014-physical-explain.json",
+      "sha256": "fcb28d74d183923e8d82c1b94513bd1befe4f5f2095c1624145116189f18e0c5"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-014-physical-state.json",
+      "sha256": "9ae1f89047a1abef17fc67c1d98125c98c47a49cc57053f32b23a2cdb3f4c6d0"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-015-physical-explain.json",
+      "sha256": "7e6f8cc55431c8317cd87911a02493a0ea678341f1ea501dbd7c827a4eb64999"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-015-physical-state.json",
+      "sha256": "0e3ef0809786830f9fa0552f8107f02d0d76d683a8e2944cd580b717d4508dbb"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-016-physical-explain.json",
+      "sha256": "3b3095fa926f0bfc07ab74a2d803f130175e6f393e9834c26beb50bef129d6a0"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-016-physical-state.json",
+      "sha256": "57894eeb982aaa14b3496c2a85e120f199c8f5b563b3e96b990dfa897f817d8f"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-017-physical-explain.json",
+      "sha256": "56e3eedbdaff48ee33fc25dcc3f3fadc8e7493815954f0e08ac23cff64aea716"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-017-physical-state.json",
+      "sha256": "f937ab04f402fd407aa758f53141200cc435c19847d0943ab843cc7edd1b1886"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-018-physical-explain.json",
+      "sha256": "95b1f4a881558365c2604f2f6ec52072ad8624a65e6d6fe130f9051c68fc9ccc"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-018-physical-state.json",
+      "sha256": "3993df751b3dd86ffeb7eae2b3214d0e5afb29b99639b020174f6866a3c05cc9"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-019-physical-explain.json",
+      "sha256": "1300ff756e7027b1c18caa13e5d88042f32f46982cd383266ed53739e15ec750"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-019-physical-state.json",
+      "sha256": "ff7a7ad5b8d9f04492d9cced60c68770937b6566357b9e7e3ab9710ebb236fc7"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-020-physical-explain.json",
+      "sha256": "76ec6303d1f40871dd43378efe93266eb3e6f8002241a7a707bc1e6696c57117"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/config-020-physical-state.json",
+      "sha256": "20f01b4715ae8b02f8b4b3ab8e4b5cbcf70f101df09429fbe37091ce624816c1"
+    },
+    {
+      "bytes": 674,
+      "path": "runs/physical-r1/adapter-audit/physical/rq5-v3-analysis-a-physical-r1/preflight.json",
+      "sha256": "4cfac042a1208476ca39023e34df5093f2195bb89f86d433ada444b91b1b06fb"
+    },
+    {
+      "bytes": 79379,
+      "path": "runs/physical-r1/events.jsonl",
+      "sha256": "eace66c00610e045be123bbceb9095c2469477da0c0ae6f17590e87a484d236a"
+    },
+    {
+      "bytes": 5309,
+      "path": "runs/physical-r1/run-result-v1.json",
+      "sha256": "01371a5b3d0ea36a8a07fc2db74799485575ade40d1dfd0223975626c85385ee"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-001-physical-explain.json",
+      "sha256": "b945a8affd5010eb713045c0d0915e30a2e47e263ed9e666f4118ba03cf0e4a6"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-001-physical-state.json",
+      "sha256": "5bf586062edf1fa494f87a656928503e5d8c2292fb58f196efd061f84690cb32"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-002-physical-explain.json",
+      "sha256": "4d5024c6cb30e46e7d2f0b517efa2c253f37b8d3ee37f8f918827001082442d0"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-002-physical-state.json",
+      "sha256": "ea7d1da9f5813f9ccd0ceb81dc6de426a2d05165c2390c4965dc67ba9e086863"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-003-physical-explain.json",
+      "sha256": "43787341066240e2259bb9b997893fbd1b76d7b0736c51486589a918bb0650de"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-003-physical-state.json",
+      "sha256": "8b5d59ef228f8a471b51f58ed2ed4abdbd2ce1f7d296e3da1df484391f8c118d"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-004-physical-explain.json",
+      "sha256": "f3c6317af36801a1a6f80a4dde54412ca5edcc8f090f0e097f98f7e9174c7370"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-004-physical-state.json",
+      "sha256": "ad69c400072a736dabcd93508676a49f9ba38fe94dbf1aa4c669ed307ad52c74"
+    },
+    {
+      "bytes": 10981,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-005-physical-explain.json",
+      "sha256": "7ce2ce21fcfedf67337ac2e94dbdcbb33a7dd051c5d01048b86dcd89ce74c094"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-005-physical-state.json",
+      "sha256": "b7187249c0b2c6203a88613003c534109582215da6a602ef86fb4133db01618c"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-006-physical-explain.json",
+      "sha256": "96d14fdaef0a0fb4d9af423cc2ec5c1212d237045a46769934a4f4e2218eef4f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-006-physical-state.json",
+      "sha256": "1c92adf56a7d53323ec77d8eb01de3c0fed16cb29f06e6081bce67825b070f16"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-007-physical-explain.json",
+      "sha256": "3f22ff4975d0a36c060667de128e237e463a45b368ddafc85f72162926ae0bdc"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-007-physical-state.json",
+      "sha256": "05a416b6201bd1a30e3c20930cf89d30c327f7568b9681e33b3a3e98d9a3b450"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-008-physical-explain.json",
+      "sha256": "ae01173ed0ecf5322af63fcd739c39b924de13fe08db7afbb058e079566146e3"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-008-physical-state.json",
+      "sha256": "248885a44eaf56b2f5eb4309784fc4610e7807a214b7aff04c7f1bf49402e76f"
+    },
+    {
+      "bytes": 10981,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-009-physical-explain.json",
+      "sha256": "971aaca172b726d466238419687fd7d6e643a61cec290ae15f410a1c59e5981f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-009-physical-state.json",
+      "sha256": "fe02123be61e05051bab3d1e41c6600a1d91f372ec4e9030899547b79a7d76c6"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-010-physical-explain.json",
+      "sha256": "2959030fe697500156225a42ccea5571b54fb47bb97359ad6c14a3e94a8d625f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-010-physical-state.json",
+      "sha256": "6be0464acd6dc637d6003bd641402326f8fb2540e769ac876ab231552332c4d3"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-011-physical-explain.json",
+      "sha256": "d5bdde61e1573f75a27e89f28cd6deccec6773c071b4aa40febeb163e29b8636"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-011-physical-state.json",
+      "sha256": "c00ff95159839131017db49938d0b57823c919b8302bfae024b3b436e933f508"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-012-physical-explain.json",
+      "sha256": "0e7403fbcca18d13c02065d58f4d29b095ffec1c3b2d2ade966f1b0ad1142fc3"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-012-physical-state.json",
+      "sha256": "1814a0d18fdbc4e7dd40b5c50d53b5f13f1143ff028447260fbce2fde91821f4"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-013-physical-explain.json",
+      "sha256": "db0aac621d8bcaa78daf5e9af9f5d41bcd31e193e6127a82d76b74b8372d0589"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-013-physical-state.json",
+      "sha256": "f6e79ac7873731a2e1ac06a63e0d245ade7fb26fc993a11560c629e80478d3a0"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-014-physical-explain.json",
+      "sha256": "1b9d1b47f4fd8a78000415c7dff1b685377cf22540645ad5b7d48038c57f3ddb"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-014-physical-state.json",
+      "sha256": "3f8124a84b7193dff6c37c102f3e04c7c01066807ab4c2e5765b0879a13cc898"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-015-physical-explain.json",
+      "sha256": "98e685b8d29c6d3d6d8536f184d38a1f029530eefc318a6a2438ff55bfd3fc66"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-015-physical-state.json",
+      "sha256": "66c5b338f3406b88f5634e010b80be4cf2cc1fe3ef9c1ad06eac039fd320fcc4"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-016-physical-explain.json",
+      "sha256": "db09f68915d69e98654c9986de509042de7592943891307245635a1648fc85e5"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-016-physical-state.json",
+      "sha256": "e2aac78169152db25ad4185f59590cb05745059b864a0d319cc3ec696bf18602"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-017-physical-explain.json",
+      "sha256": "27924e0320e1934d9a72745472613f62e003b579f01dd9a791c629e9b21c74d7"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-017-physical-state.json",
+      "sha256": "35ec7c349a2cd48f6d3160e65aba5999bb0cc77ddb72bf0e64dd905001ab9406"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-018-physical-explain.json",
+      "sha256": "5d7b87ce78f6ee8ebaa0b552d371fb03354f1e32fafba85576f4019f422a69ac"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-018-physical-state.json",
+      "sha256": "f18de7a9aaec929f59348fe4f8d0496dd5f6eed120f7048f66d4dcc20d41c627"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-019-physical-explain.json",
+      "sha256": "05317d77243c88b24f19f3b3d450c088b70eff336e2e74275a12b6a4f8f46458"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-019-physical-state.json",
+      "sha256": "685183055a59e82f3cc3ba5d950ff7698eb93e0463824ebd2193aca1e87c8ee9"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-020-physical-explain.json",
+      "sha256": "ff42e028d880b013f6ae60e362970b9c8d7fb49b92c5d00fc76465c21245e4d0"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/config-020-physical-state.json",
+      "sha256": "73e89d6adeeebd39fc5dcfb03890e75ac22ff55a02288c3b8764de563f51a397"
+    },
+    {
+      "bytes": 674,
+      "path": "runs/physical-r2/adapter-audit/physical/rq5-v3-analysis-a-physical-r2/preflight.json",
+      "sha256": "4cfac042a1208476ca39023e34df5093f2195bb89f86d433ada444b91b1b06fb"
+    },
+    {
+      "bytes": 79375,
+      "path": "runs/physical-r2/events.jsonl",
+      "sha256": "828208536df8bb3b143aaefa5195d62c3afea9ada7806ace61c392f7796ea9af"
+    },
+    {
+      "bytes": 5303,
+      "path": "runs/physical-r2/run-result-v1.json",
+      "sha256": "14df818cddaabab7b5583c5046d9456d645775b0f6853140b6f4bf1720b854b0"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-001-physical-explain.json",
+      "sha256": "48fdfe2986a3f8404fcd811fd28c31c49659d98848db5aeb18c4fd1876b37462"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-001-physical-state.json",
+      "sha256": "5cbad4800d801e24d369e8a1db678f33b5df690e97701be52c48dda54b78634d"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-002-physical-explain.json",
+      "sha256": "3c04e3a176e79afacde1ac0cb61c30fae74f14eb951b07eb649d80f010221b7a"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-002-physical-state.json",
+      "sha256": "054953c673e0ac9315c364279a440245bce74a4ad545c1024d773f80ca7e94f0"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-003-physical-explain.json",
+      "sha256": "4e4b59223eba176ac20c41e3920995d05d0c577ab4ecfe7d3ed55c65fda52ea0"
+    },
+    {
+      "bytes": 688,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-003-physical-state.json",
+      "sha256": "47316c925cb1fdeca5bd4a77aef2cb4c2f6d52f64f16a0c6e6a0e4edd87e5db9"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-004-physical-explain.json",
+      "sha256": "4f53edec9c73438c09e6c416ee322f7dff861c813cb35741ad418ae81ff4a8a2"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-004-physical-state.json",
+      "sha256": "39d33c41718b5e64575af2482c28cdd78dbea37393d58f992ae3d9060777d44e"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-005-physical-explain.json",
+      "sha256": "7a04f45fb5424db02710856a8109c3b51a1683fbd2f2a977f7d1c5d58f645d9f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-005-physical-state.json",
+      "sha256": "0e1adbd6a1cdc8276f03f9e390fa99aa4d88d129e8b38e7a117dcb094eb62ea4"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-006-physical-explain.json",
+      "sha256": "7bef11b8d6d9ecf5cd3171e873124d64dd1cd23a13b40ee65b0e4425ca7d7825"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-006-physical-state.json",
+      "sha256": "707e1951e6a21ebb19ec7b38f93f9123cd6d4c7be5aa2484929b69be2a842b0c"
+    },
+    {
+      "bytes": 10986,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-007-physical-explain.json",
+      "sha256": "5f8c9c998ef3f95449edb15c32abea0bae73998a3a77309c2cebafa16a1f1830"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-007-physical-state.json",
+      "sha256": "26fd34b3bfff4f778cb8f6c76c9c6900823744408dada8811928a0dbe4fba33c"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-008-physical-explain.json",
+      "sha256": "907d4a32528e4b92e54242866fceaa169dc4e467bb92c1d5c59618f88d4cabdd"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-008-physical-state.json",
+      "sha256": "628ac147012f1bbe38421e57a61eb977e103753a1d195074afcb4fabd0476246"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-009-physical-explain.json",
+      "sha256": "76bb8d3e30963311756fd6880b2dcfdccef1f6f65ffed9a3dea52069c7cbba0f"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-009-physical-state.json",
+      "sha256": "f5b70a18a449782ab2ea3f92ed2a66694bcd25b0a3e89d0de34f57d76ca09d89"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-010-physical-explain.json",
+      "sha256": "a4d41d47c6758da4ea4ab14a5a6aec165da69b162b68b300716066a0e8ce9d22"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-010-physical-state.json",
+      "sha256": "b045632bc91b050974dccba7889f8cd7a46258e208be59dad8d5b6dc86b11bb5"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-011-physical-explain.json",
+      "sha256": "7848bc6741c3e59c903a34f6b35bf1ff38237227730f62911bc4f745a4472aa8"
+    },
+    {
+      "bytes": 689,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-011-physical-state.json",
+      "sha256": "02607b1239ff6a1184cb3566119e847411557a970c2f0124434b8bb41596b197"
+    },
+    {
+      "bytes": 10983,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-012-physical-explain.json",
+      "sha256": "5ad0cc12185579c9438053a2e65da3289550b446821b788151e0beac1c48e216"
+    },
+    {
+      "bytes": 688,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-012-physical-state.json",
+      "sha256": "9a18aab5a7f32b48c21e5de179eff679c81243037668c1414d8c0d5d5c4bd96c"
+    },
+    {
+      "bytes": 10981,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-013-physical-explain.json",
+      "sha256": "5b85c86c112cd29372b11a02d3f59f89aad3c7b382d2b83ae5e072d231a60e2e"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-013-physical-state.json",
+      "sha256": "e33740e0ba44a3df2e97474014b6a1e087c96ef7122865bbd21cf37bcb38bf60"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-014-physical-explain.json",
+      "sha256": "0325ae0af0c1a6b5375d2463fd8a5be21d0ed1da7a840a4a9a5e83da44dacc68"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-014-physical-state.json",
+      "sha256": "eff64973f1885ae51743da70bdb7c8b76f1d0d820b59fc42eb518fe46429b456"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-015-physical-explain.json",
+      "sha256": "7c5037b97f06bb30a94ac57e2c0e53af40432534d0ac0c871ef8ee959334e29b"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-015-physical-state.json",
+      "sha256": "7266a45913e42431ef65cb7a36850157a9e604b3dd9e4c0fc3a32c4fa210af55"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-016-physical-explain.json",
+      "sha256": "47997c0c62d76b0f164a86fcf0599d218f23ff7f5b6fc298f6c98bd795f8bef0"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-016-physical-state.json",
+      "sha256": "b96ec8081648d6dd07fdc10384ce5123180fa67c354493057fb8f925a7c82d99"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-017-physical-explain.json",
+      "sha256": "e2bb6e4c97e46b1d0b2dee34f3dca2194ed1b007100db31eb15915d5730098a3"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-017-physical-state.json",
+      "sha256": "1a1a6344ed243a482f4150dc917bd1cf01cb6d835ef4e75721f61b8f674c18cb"
+    },
+    {
+      "bytes": 10985,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-018-physical-explain.json",
+      "sha256": "2cdb35c5b70874bf0bf13d9a27c5d5cc81efec6d0ba0ed1571b45134f6097d3a"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-018-physical-state.json",
+      "sha256": "9f1c2cab7ad1c3b9203533b855ac708af184fb42c08699e5a3c2e70441cb727f"
+    },
+    {
+      "bytes": 10982,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-019-physical-explain.json",
+      "sha256": "344535ead6a4a77ad4599d1ea6f176d5e3b501a6bd916a8ab5700ae405643f54"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-019-physical-state.json",
+      "sha256": "040284b4f33cc0f292b295bd3d69f49350fff79c9174bff2e20fd088fb1e04b4"
+    },
+    {
+      "bytes": 10984,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-020-physical-explain.json",
+      "sha256": "a69871696b78a4a3fb96dea928106d8e0bdd1a7534cfaff86a2d471afca2f570"
+    },
+    {
+      "bytes": 696,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/config-020-physical-state.json",
+      "sha256": "76803937c69d5c78c9b0421939dc91366fb9aa1433ba495ebb6cc7f2d909b0d1"
+    },
+    {
+      "bytes": 674,
+      "path": "runs/physical-r3/adapter-audit/physical/rq5-v3-analysis-a-physical-r3/preflight.json",
+      "sha256": "4cfac042a1208476ca39023e34df5093f2195bb89f86d433ada444b91b1b06fb"
+    },
+    {
+      "bytes": 79376,
+      "path": "runs/physical-r3/events.jsonl",
+      "sha256": "9a303715d23a0d93a4de1e3a580129e869e68fbb079092416b8fe8f0466453c1"
+    },
+    {
+      "bytes": 5302,
+      "path": "runs/physical-r3/run-result-v1.json",
+      "sha256": "63c149efe01956aa2ca91627ba77702e945395942c243fe0fb890864835a8ce0"
+    },
+    {
+      "bytes": 710,
+      "path": "schedule-v1.json",
+      "sha256": "563eadee835963bafae0fbd58b6383611c04ecfb8ad414c45e59d6170884daaf"
+    },
+    {
+      "bytes": 20086,
+      "path": "stage-summary-v1.json",
+      "sha256": "8bda17315fd587a7d8bb736df2dd4ddc62903af7780611840eade2db148c750a"
+    }
+  ],
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "status": "complete",
+  "total_bytes": 2096700
+}

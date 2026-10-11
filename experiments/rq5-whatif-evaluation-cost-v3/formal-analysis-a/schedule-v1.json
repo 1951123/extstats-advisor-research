@@ -1,0 +1,38 @@
+{
+  "artifact": "rq5-v3-formal-analysis-a-schedule-v1",
+  "classification": "formal-rq5-v3-analysis-a",
+  "declared_before_execution": true,
+  "research_producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "schedule": [
+    {
+      "arm": "physical",
+      "repetition": 1,
+      "round": 1
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 1,
+      "round": 1
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 2,
+      "round": 2
+    },
+    {
+      "arm": "physical",
+      "repetition": 2,
+      "round": 2
+    },
+    {
+      "arm": "physical",
+      "repetition": 3,
+      "round": 3
+    },
+    {
+      "arm": "catalogless",
+      "repetition": 3,
+      "round": 3
+    }
+  ]
+}

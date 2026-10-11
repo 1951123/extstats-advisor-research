@@ -1,0 +1,36 @@
+{
+  "artifact": "rq5-v3-formal-analysis-a-cleanup-audit-v1",
+  "classification": "formal-rq5-v3-analysis-a",
+  "database_cleanup": {
+    "patched_residual_tables": [],
+    "patched_sandbox_database": "extstats_stock",
+    "resources_clean": true,
+    "stock_residual_clones": [],
+    "stock_source_database": "extstats_stock",
+    "stock_source_experiment_statistics": [],
+    "stock_source_population_rows": 581012
+  },
+  "formal_scope_resources_only": true,
+  "instances": {
+    "patched": {
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/data",
+      "port": 55433,
+      "running": false,
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    },
+    "stock": {
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/data",
+      "port": 55432,
+      "running": false,
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+    }
+  },
+  "runtime_snapshot_copies_remaining": [],
+  "source_repositories": {
+    "advisor_dirty": "",
+    "patched_postgresql_dirty": "",
+    "research_dirty": "?? experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/",
+    "stock_postgresql_dirty": ""
+  },
+  "status": "passed"
+}

@@ -1,0 +1,519 @@
+{
+  "attempted": 128,
+  "failed": 0,
+  "rows": [
+    {
+      "plan_rows": 6944,
+      "query_id": "arecel_forest10_test_000000"
+    },
+    {
+      "plan_rows": 3836,
+      "query_id": "arecel_forest10_test_000078"
+    },
+    {
+      "plan_rows": 144440,
+      "query_id": "arecel_forest10_test_000157"
+    },
+    {
+      "plan_rows": 18192,
+      "query_id": "arecel_forest10_test_000236"
+    },
+    {
+      "plan_rows": 39,
+      "query_id": "arecel_forest10_test_000314"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_000393"
+    },
+    {
+      "plan_rows": 117,
+      "query_id": "arecel_forest10_test_000472"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_000551"
+    },
+    {
+      "plan_rows": 14821,
+      "query_id": "arecel_forest10_test_000629"
+    },
+    {
+      "plan_rows": 82770,
+      "query_id": "arecel_forest10_test_000708"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_000787"
+    },
+    {
+      "plan_rows": 101110,
+      "query_id": "arecel_forest10_test_000866"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_000944"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001023"
+    },
+    {
+      "plan_rows": 264,
+      "query_id": "arecel_forest10_test_001102"
+    },
+    {
+      "plan_rows": 1737,
+      "query_id": "arecel_forest10_test_001180"
+    },
+    {
+      "plan_rows": 35,
+      "query_id": "arecel_forest10_test_001259"
+    },
+    {
+      "plan_rows": 473169,
+      "query_id": "arecel_forest10_test_001338"
+    },
+    {
+      "plan_rows": 6641,
+      "query_id": "arecel_forest10_test_001417"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001495"
+    },
+    {
+      "plan_rows": 6,
+      "query_id": "arecel_forest10_test_001574"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001653"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001732"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001810"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_001889"
+    },
+    {
+      "plan_rows": 93404,
+      "query_id": "arecel_forest10_test_001968"
+    },
+    {
+      "plan_rows": 55,
+      "query_id": "arecel_forest10_test_002047"
+    },
+    {
+      "plan_rows": 425,
+      "query_id": "arecel_forest10_test_002125"
+    },
+    {
+      "plan_rows": 13,
+      "query_id": "arecel_forest10_test_002204"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_002283"
+    },
+    {
+      "plan_rows": 17,
+      "query_id": "arecel_forest10_test_002361"
+    },
+    {
+      "plan_rows": 105269,
+      "query_id": "arecel_forest10_test_002440"
+    },
+    {
+      "plan_rows": 73662,
+      "query_id": "arecel_forest10_test_002519"
+    },
+    {
+      "plan_rows": 995,
+      "query_id": "arecel_forest10_test_002598"
+    },
+    {
+      "plan_rows": 43654,
+      "query_id": "arecel_forest10_test_002676"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_002755"
+    },
+    {
+      "plan_rows": 1335,
+      "query_id": "arecel_forest10_test_002834"
+    },
+    {
+      "plan_rows": 963,
+      "query_id": "arecel_forest10_test_002913"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_002991"
+    },
+    {
+      "plan_rows": 1179,
+      "query_id": "arecel_forest10_test_003070"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003149"
+    },
+    {
+      "plan_rows": 568302,
+      "query_id": "arecel_forest10_test_003228"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003306"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003385"
+    },
+    {
+      "plan_rows": 3,
+      "query_id": "arecel_forest10_test_003464"
+    },
+    {
+      "plan_rows": 2699,
+      "query_id": "arecel_forest10_test_003542"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003621"
+    },
+    {
+      "plan_rows": 3279,
+      "query_id": "arecel_forest10_test_003700"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003779"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_003857"
+    },
+    {
+      "plan_rows": 88503,
+      "query_id": "arecel_forest10_test_003936"
+    },
+    {
+      "plan_rows": 376730,
+      "query_id": "arecel_forest10_test_004015"
+    },
+    {
+      "plan_rows": 265,
+      "query_id": "arecel_forest10_test_004094"
+    },
+    {
+      "plan_rows": 35074,
+      "query_id": "arecel_forest10_test_004172"
+    },
+    {
+      "plan_rows": 18558,
+      "query_id": "arecel_forest10_test_004251"
+    },
+    {
+      "plan_rows": 9238,
+      "query_id": "arecel_forest10_test_004330"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_004409"
+    },
+    {
+      "plan_rows": 14,
+      "query_id": "arecel_forest10_test_004487"
+    },
+    {
+      "plan_rows": 587,
+      "query_id": "arecel_forest10_test_004566"
+    },
+    {
+      "plan_rows": 220,
+      "query_id": "arecel_forest10_test_004645"
+    },
+    {
+      "plan_rows": 163,
+      "query_id": "arecel_forest10_test_004723"
+    },
+    {
+      "plan_rows": 5,
+      "query_id": "arecel_forest10_test_004802"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_004881"
+    },
+    {
+      "plan_rows": 150,
+      "query_id": "arecel_forest10_test_004960"
+    },
+    {
+      "plan_rows": 10507,
+      "query_id": "arecel_forest10_test_005038"
+    },
+    {
+      "plan_rows": 71643,
+      "query_id": "arecel_forest10_test_005117"
+    },
+    {
+      "plan_rows": 44457,
+      "query_id": "arecel_forest10_test_005196"
+    },
+    {
+      "plan_rows": 308,
+      "query_id": "arecel_forest10_test_005275"
+    },
+    {
+      "plan_rows": 115716,
+      "query_id": "arecel_forest10_test_005353"
+    },
+    {
+      "plan_rows": 19202,
+      "query_id": "arecel_forest10_test_005432"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_005511"
+    },
+    {
+      "plan_rows": 2037,
+      "query_id": "arecel_forest10_test_005589"
+    },
+    {
+      "plan_rows": 10,
+      "query_id": "arecel_forest10_test_005668"
+    },
+    {
+      "plan_rows": 6643,
+      "query_id": "arecel_forest10_test_005747"
+    },
+    {
+      "plan_rows": 104134,
+      "query_id": "arecel_forest10_test_005826"
+    },
+    {
+      "plan_rows": 3103,
+      "query_id": "arecel_forest10_test_005904"
+    },
+    {
+      "plan_rows": 540222,
+      "query_id": "arecel_forest10_test_005983"
+    },
+    {
+      "plan_rows": 145248,
+      "query_id": "arecel_forest10_test_006062"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_006141"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_006219"
+    },
+    {
+      "plan_rows": 7449,
+      "query_id": "arecel_forest10_test_006298"
+    },
+    {
+      "plan_rows": 87154,
+      "query_id": "arecel_forest10_test_006377"
+    },
+    {
+      "plan_rows": 4411,
+      "query_id": "arecel_forest10_test_006456"
+    },
+    {
+      "plan_rows": 257,
+      "query_id": "arecel_forest10_test_006534"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_006613"
+    },
+    {
+      "plan_rows": 48060,
+      "query_id": "arecel_forest10_test_006692"
+    },
+    {
+      "plan_rows": 2400,
+      "query_id": "arecel_forest10_test_006770"
+    },
+    {
+      "plan_rows": 84066,
+      "query_id": "arecel_forest10_test_006849"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_006928"
+    },
+    {
+      "plan_rows": 19,
+      "query_id": "arecel_forest10_test_007007"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_007085"
+    },
+    {
+      "plan_rows": 574107,
+      "query_id": "arecel_forest10_test_007164"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_007243"
+    },
+    {
+      "plan_rows": 132474,
+      "query_id": "arecel_forest10_test_007322"
+    },
+    {
+      "plan_rows": 42097,
+      "query_id": "arecel_forest10_test_007400"
+    },
+    {
+      "plan_rows": 21,
+      "query_id": "arecel_forest10_test_007479"
+    },
+    {
+      "plan_rows": 19684,
+      "query_id": "arecel_forest10_test_007558"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_007637"
+    },
+    {
+      "plan_rows": 4698,
+      "query_id": "arecel_forest10_test_007715"
+    },
+    {
+      "plan_rows": 2628,
+      "query_id": "arecel_forest10_test_007794"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_007873"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_007951"
+    },
+    {
+      "plan_rows": 46093,
+      "query_id": "arecel_forest10_test_008030"
+    },
+    {
+      "plan_rows": 351321,
+      "query_id": "arecel_forest10_test_008109"
+    },
+    {
+      "plan_rows": 138804,
+      "query_id": "arecel_forest10_test_008188"
+    },
+    {
+      "plan_rows": 1081,
+      "query_id": "arecel_forest10_test_008266"
+    },
+    {
+      "plan_rows": 89923,
+      "query_id": "arecel_forest10_test_008345"
+    },
+    {
+      "plan_rows": 390808,
+      "query_id": "arecel_forest10_test_008424"
+    },
+    {
+      "plan_rows": 2062,
+      "query_id": "arecel_forest10_test_008503"
+    },
+    {
+      "plan_rows": 148,
+      "query_id": "arecel_forest10_test_008581"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_008660"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_008739"
+    },
+    {
+      "plan_rows": 91,
+      "query_id": "arecel_forest10_test_008818"
+    },
+    {
+      "plan_rows": 137,
+      "query_id": "arecel_forest10_test_008896"
+    },
+    {
+      "plan_rows": 5935,
+      "query_id": "arecel_forest10_test_008975"
+    },
+    {
+      "plan_rows": 32525,
+      "query_id": "arecel_forest10_test_009054"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_009132"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_009211"
+    },
+    {
+      "plan_rows": 1698,
+      "query_id": "arecel_forest10_test_009290"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_009369"
+    },
+    {
+      "plan_rows": 49,
+      "query_id": "arecel_forest10_test_009447"
+    },
+    {
+      "plan_rows": 1,
+      "query_id": "arecel_forest10_test_009526"
+    },
+    {
+      "plan_rows": 30114,
+      "query_id": "arecel_forest10_test_009605"
+    },
+    {
+      "plan_rows": 2,
+      "query_id": "arecel_forest10_test_009684"
+    },
+    {
+      "plan_rows": 18837,
+      "query_id": "arecel_forest10_test_009762"
+    },
+    {
+      "plan_rows": 199240,
+      "query_id": "arecel_forest10_test_009841"
+    },
+    {
+      "plan_rows": 101022,
+      "query_id": "arecel_forest10_test_009920"
+    },
+    {
+      "plan_rows": 209727,
+      "query_id": "arecel_forest10_test_009999"
+    }
+  ],
+  "successful": 128
+}

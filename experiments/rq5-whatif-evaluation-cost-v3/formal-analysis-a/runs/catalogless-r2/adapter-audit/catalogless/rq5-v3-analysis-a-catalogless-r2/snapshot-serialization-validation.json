@@ -1,0 +1,6 @@
+{
+  "sample_rows": 30000,
+  "serialized_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+  "snapshot_path": "/home/wqts/projects/extstats-advisor-research/experiments/rq5-whatif-evaluation-cost-v3/formal-analysis-a/runs/catalogless-r2/runtime-snapshot",
+  "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5"
+}

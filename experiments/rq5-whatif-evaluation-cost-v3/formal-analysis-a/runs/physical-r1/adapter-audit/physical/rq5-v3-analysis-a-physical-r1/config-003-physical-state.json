@@ -1,0 +1,27 @@
+{
+  "declared_order": [
+    "cand_817be8bf7bbbc96c20bde230"
+  ],
+  "observed_oid_order": [
+    16516
+  ],
+  "oid_order_non_decreasing": true,
+  "ordinary_statistics_fingerprint": "e521142fb90b021161c3fa4008b8d5f0aaed522390c39a5b395fac616a0a3fe7",
+  "relation_oid": 16501,
+  "statistics": [
+    {
+      "candidate_id": "cand_817be8bf7bbbc96c20bde230",
+      "column_ordinals": [
+        2,
+        9
+      ],
+      "kind": "postgresql.mcv",
+      "oid": 16516,
+      "payload_sha256": "d1f08e018bb39708029eb2433ba7ce89e0cb42716c8a5497506b26d31bf544c3",
+      "payload_size": 1130,
+      "payload_state": "present",
+      "statistics_kind": "{m}",
+      "statistics_target": 100
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+{
+  "artifact": "rq5-v3-formal-analysis-a-summary-v2",
+  "binding_digest": "b23c084642efc482d55c5424dc8beee9aaa916ea84d00222d6a89bc64d2bd59a",
+  "checkpoint_summary": {
+    "1": {
+      "catalogless": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          16135725,
+          14441441,
+          14058035
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 7723201694,
+          "median": 7328489981,
+          "minimum": 7286985112,
+          "values": [
+            7328489981,
+            7286985112,
+            7723201694
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 55059872,
+          "median": 51306988,
+          "minimum": 49090903,
+          "values": [
+            49090903,
+            55059872,
+            51306988
+          ]
+        }
+      },
+      "physical": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          5972,
+          6485,
+          6837
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 13453025016,
+          "median": 4576937804,
+          "minimum": 4313019789,
+          "values": [
+            13453025016,
+            4576937804,
+            4313019789
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 10866840828,
+          "median": 2917257062,
+          "minimum": 2600882517,
+          "values": [
+            10866840828,
+            2917257062,
+            2600882517
+          ]
+        }
+      }
+    },
+    "10": {
+      "catalogless": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          16135725,
+          14441441,
+          14058035
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 8155535821,
+          "median": 7757771422,
+          "minimum": 7719059552,
+          "values": [
+            7757771422,
+            7719059552,
+            8155535821
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 487134312,
+          "median": 483641115,
+          "minimum": 478372344,
+          "values": [
+            478372344,
+            487134312,
+            483641115
+          ]
+        }
+      },
+      "physical": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          5972,
+          6485,
+          6837
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 38961073428,
+          "median": 29374576369,
+          "minimum": 27585117401,
+          "values": [
+            38961073428,
+            27585117401,
+            29374576369
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 36374889240,
+          "median": 27662439097,
+          "minimum": 25925436659,
+          "values": [
+            36374889240,
+            25925436659,
+            27662439097
+          ]
+        }
+      }
+    },
+    "20": {
+      "catalogless": {
+        "cleanup_included_directly": true,
+        "cleanup_ns_values": [
+          16135725,
+          14441441,
+          14058035
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 8638384009,
+          "median": 8244809609,
+          "minimum": 8205934717,
+          "values": [
+            8244809609,
+            8205934717,
+            8638384009
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 959568036,
+          "median": 952431268,
+          "minimum": 949274806,
+          "values": [
+            949274806,
+            959568036,
+            952431268
+          ]
+        }
+      },
+      "physical": {
+        "cleanup_included_directly": true,
+        "cleanup_ns_values": [
+          5972,
+          6485,
+          6837
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 66949389605,
+          "median": 57738596436,
+          "minimum": 53976507914,
+          "values": [
+            66949389605,
+            53976507914,
+            57738596436
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 64363199445,
+          "median": 56026452327,
+          "minimum": 52316820687,
+          "values": [
+            64363199445,
+            52316820687,
+            56026452327
+          ]
+        }
+      }
+    },
+    "5": {
+      "catalogless": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          16135725,
+          14441441,
+          14058035
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 7920243457,
+          "median": 7521727434,
+          "minimum": 7486630341,
+          "values": [
+            7521727434,
+            7486630341,
+            7920243457
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 254705101,
+          "median": 248348751,
+          "minimum": 242328356,
+          "values": [
+            242328356,
+            254705101,
+            248348751
+          ]
+        }
+      },
+      "physical": {
+        "cleanup_included_directly": false,
+        "cleanup_ns_values": [
+          5972,
+          6485,
+          6837
+        ],
+        "complete_lifecycle_ns": {
+          "maximum": 24906282704,
+          "median": 14880226798,
+          "minimum": 14710448453,
+          "values": [
+            24906282704,
+            14710448453,
+            14880226798
+          ]
+        },
+        "warm_start_ns": {
+          "maximum": 22320098516,
+          "median": 13168089526,
+          "minimum": 13050767711,
+          "values": [
+            22320098516,
+            13050767711,
+            13168089526
+          ]
+        }
+      }
+    }
+  },
+  "classification": "formal-rq5-v3-analysis-a",
+  "cleanup_convention": "Final arm-cleanup is included only in observed N=20 complete_lifecycle_ns; N=1/5/10 are through-checkpoint costs and carry final cleanup separately.",
+  "counts": {
+    "catalogless": {
+      "explain_calls": 7680,
+      "materialization_analyze_calls": 3,
+      "method_arms": 60,
+      "per_configuration_analyze_calls": 0,
+      "runs": 3,
+      "sandbox_prepare_analyze_calls": 3,
+      "valid_observations": 7680
+    },
+    "physical": {
+      "analyze_calls": 60,
+      "explain_calls": 7680,
+      "method_arms": 60,
+      "runs": 3,
+      "valid_observations": 7680
+    },
+    "total": {
+      "explain_calls": 15360,
+      "method_arms": 120,
+      "runs": 6,
+      "valid_observations": 15360
+    }
+  },
+  "interpretation_boundary": "Operational lifecycle cost only; no estimator-equivalence, q-error, Advisor-search, or statistical-significance claim.",
+  "manifest_byte_sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671",
+  "manifest_path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+  "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+  "observed_crossover": {
+    "comparison": "catalogless complete-lifecycle median below physical median at checkpoint",
+    "median_checkpoint": 5,
+    "per_run": {
+      "rq5-v3-analysis-a-physical-r1": 1,
+      "rq5-v3-analysis-a-physical-r2": 5,
+      "rq5-v3-analysis-a-physical-r3": 5
+    }
+  },
+  "preserved_prior_summary": "formal-summary-v1.json contains the original derived crossover predicate and is preserved append-only.",
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "protocol": {
+    "format": "rq5-whatif-evaluation-cost-v3",
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v3.md",
+    "sha256": "a6abcfe1db7e2df4823f2b7ad547c74b6ce75a748d4c9a5e8003bcde33e9a9bb"
+  },
+  "scope": {
+    "checkpoints": [
+      1,
+      5,
+      10,
+      20
+    ],
+    "configuration_size": 1,
+    "configurations": 20,
+    "queries_per_configuration": 128,
+    "repetitions_per_arm": 3,
+    "schedule": [
+      {
+        "arm": "physical",
+        "repetition": 1,
+        "round": 1
+      },
+      {
+        "arm": "catalogless",
+        "repetition": 1,
+        "round": 1
+      },
+      {
+        "arm": "catalogless",
+        "repetition": 2,
+        "round": 2
+      },
+      {
+        "arm": "physical",
+        "repetition": 2,
+        "round": 2
+      },
+      {
+        "arm": "physical",
+        "repetition": 3,
+        "round": 3
+      },
+      {
+        "arm": "catalogless",
+        "repetition": 3,
+        "round": 3
+      }
+    ]
+  },
+  "stage_summary": {
+    "catalogless": {
+      "activate": {
+        "maximum": 13359609,
+        "median": 12816467,
+        "minimum": 11965279,
+        "values": [
+          11965279,
+          12816467,
+          13359609
+        ]
+      },
+      "arm-cleanup": {
+        "maximum": 16135725,
+        "median": 14441441,
+        "minimum": 14058035,
+        "values": [
+          16135725,
+          14441441,
+          14058035
+        ]
+      },
+      "deactivate": {
+        "maximum": 10339656,
+        "median": 10329671,
+        "minimum": 9869114,
+        "values": [
+          9869114,
+          10339656,
+          10329671
+        ]
+      },
+      "explain": {
+        "maximum": 936411913,
+        "median": 928741988,
+        "minimum": 927440413,
+        "values": [
+          927440413,
+          936411913,
+          928741988
+        ]
+      },
+      "fixed-sample-preparation": {
+        "maximum": 1293138548,
+        "median": 1189361108,
+        "minimum": 1182127597,
+        "values": [
+          1189361108,
+          1182127597,
+          1293138548
+        ]
+      },
+      "native-payload-materialization": {
+        "maximum": 2660302073,
+        "median": 2571213746,
+        "minimum": 2505026671,
+        "values": [
+          2571213746,
+          2505026671,
+          2660302073
+        ]
+      },
+      "repository-registration-and-sandbox-preparation": {
+        "maximum": 2002032060,
+        "median": 1959774539,
+        "minimum": 1945110047,
+        "values": [
+          1945110047,
+          1959774539,
+          2002032060
+        ]
+      },
+      "sample-acquisition": {
+        "maximum": 1526634450,
+        "median": 1404190652,
+        "minimum": 1392173262,
+        "values": [
+          1392173262,
+          1404190652,
+          1526634450
+        ]
+      },
+      "snapshot-construction": {
+        "maximum": 38623781,
+        "median": 36628292,
+        "minimum": 35573062,
+        "values": [
+          36628292,
+          35573062,
+          38623781
+        ]
+      },
+      "snapshot-serialization-validation": {
+        "maximum": 151163794,
+        "median": 145232719,
+        "minimum": 144912623,
+        "values": [
+          144912623,
+          145232719,
+          151163794
+        ]
+      }
+    },
+    "physical": {
+      "analyze": {
+        "maximum": 5742696112,
+        "median": 5485628585,
+        "minimum": 5426149238,
+        "values": [
+          5742696112,
+          5485628585,
+          5426149238
+        ]
+      },
+      "arm-cleanup": {
+        "maximum": 6837,
+        "median": 6485,
+        "minimum": 5972,
+        "values": [
+          5972,
+          6485,
+          6837
+        ]
+      },
+      "baseline-initialization": {
+        "maximum": 2586184188,
+        "median": 1712137272,
+        "minimum": 1659680742,
+        "values": [
+          2586184188,
+          1659680742,
+          1712137272
+        ]
+      },
+      "clone-create": {
+        "maximum": 56394512073,
+        "median": 48573814300,
+        "minimum": 44835190824,
+        "values": [
+          56394512073,
+          44835190824,
+          48573814300
+        ]
+      },
+      "clone-destroy": {
+        "maximum": 1362844752,
+        "median": 1279175300,
+        "minimum": 1220744907,
+        "values": [
+          1362844752,
+          1220744907,
+          1279175300
+        ]
+      },
+      "create-alter-statistics": {
+        "maximum": 155721233,
+        "median": 132818088,
+        "minimum": 90935144,
+        "values": [
+          155721233,
+          132818088,
+          90935144
+        ]
+      },
+      "drop-statistics": {
+        "maximum": 15225592,
+        "median": 12953496,
+        "minimum": 12519718,
+        "values": [
+          15225592,
+          12953496,
+          12519718
+        ]
+      },
+      "explain": {
+        "maximum": 692199683,
+        "median": 643858627,
+        "minimum": 629484787,
+        "values": [
+          692199683,
+          629484787,
+          643858627
+        ]
+      }
+    }
+  },
+  "status": "complete"
+}

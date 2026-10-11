@@ -1,0 +1,182 @@
+{
+  "classification": "formal-rq5-v3-analysis-a",
+  "event_validation": {
+    "configuration_count": 20,
+    "event_count": 122,
+    "explain_calls": 2560,
+    "missing_events": [],
+    "status": "complete"
+  },
+  "producer_sha": "eeaaff45cd363064895442f68ca1897851d2e064",
+  "run_id": "rq5-v3-analysis-a-physical-r1",
+  "status": "complete",
+  "summary": {
+    "analyze_calls": 20,
+    "arm": "physical",
+    "binding_digest": "b23c084642efc482d55c5424dc8beee9aaa916ea84d00222d6a89bc64d2bd59a",
+    "cleanup_ns": 5972,
+    "configuration_count": 20,
+    "cumulative": [
+      {
+        "complete_lifecycle_ns": 13453025016,
+        "configuration_id": "A-singleton-01",
+        "configuration_size": 1,
+        "ordinal": 1,
+        "warm_start_ns": 10866840828
+      },
+      {
+        "complete_lifecycle_ns": 16366046335,
+        "configuration_id": "A-singleton-02",
+        "configuration_size": 1,
+        "ordinal": 2,
+        "warm_start_ns": 13779862147
+      },
+      {
+        "complete_lifecycle_ns": 19219138143,
+        "configuration_id": "A-singleton-03",
+        "configuration_size": 1,
+        "ordinal": 3,
+        "warm_start_ns": 16632953955
+      },
+      {
+        "complete_lifecycle_ns": 22046493721,
+        "configuration_id": "A-singleton-04",
+        "configuration_size": 1,
+        "ordinal": 4,
+        "warm_start_ns": 19460309533
+      },
+      {
+        "complete_lifecycle_ns": 24906282704,
+        "configuration_id": "A-singleton-05",
+        "configuration_size": 1,
+        "ordinal": 5,
+        "warm_start_ns": 22320098516
+      },
+      {
+        "complete_lifecycle_ns": 27711949562,
+        "configuration_id": "A-singleton-06",
+        "configuration_size": 1,
+        "ordinal": 6,
+        "warm_start_ns": 25125765374
+      },
+      {
+        "complete_lifecycle_ns": 30562043997,
+        "configuration_id": "A-singleton-07",
+        "configuration_size": 1,
+        "ordinal": 7,
+        "warm_start_ns": 27975859809
+      },
+      {
+        "complete_lifecycle_ns": 33358863094,
+        "configuration_id": "A-singleton-08",
+        "configuration_size": 1,
+        "ordinal": 8,
+        "warm_start_ns": 30772678906
+      },
+      {
+        "complete_lifecycle_ns": 36181650978,
+        "configuration_id": "A-singleton-09",
+        "configuration_size": 1,
+        "ordinal": 9,
+        "warm_start_ns": 33595466790
+      },
+      {
+        "complete_lifecycle_ns": 38961073428,
+        "configuration_id": "A-singleton-10",
+        "configuration_size": 1,
+        "ordinal": 10,
+        "warm_start_ns": 36374889240
+      },
+      {
+        "complete_lifecycle_ns": 41653185268,
+        "configuration_id": "A-singleton-11",
+        "configuration_size": 1,
+        "ordinal": 11,
+        "warm_start_ns": 39067001080
+      },
+      {
+        "complete_lifecycle_ns": 44402852367,
+        "configuration_id": "A-singleton-12",
+        "configuration_size": 1,
+        "ordinal": 12,
+        "warm_start_ns": 41816668179
+      },
+      {
+        "complete_lifecycle_ns": 47251040983,
+        "configuration_id": "A-singleton-13",
+        "configuration_size": 1,
+        "ordinal": 13,
+        "warm_start_ns": 44664856795
+      },
+      {
+        "complete_lifecycle_ns": 50041277941,
+        "configuration_id": "A-singleton-14",
+        "configuration_size": 1,
+        "ordinal": 14,
+        "warm_start_ns": 47455093753
+      },
+      {
+        "complete_lifecycle_ns": 52803742193,
+        "configuration_id": "A-singleton-15",
+        "configuration_size": 1,
+        "ordinal": 15,
+        "warm_start_ns": 50217558005
+      },
+      {
+        "complete_lifecycle_ns": 55618293639,
+        "configuration_id": "A-singleton-16",
+        "configuration_size": 1,
+        "ordinal": 16,
+        "warm_start_ns": 53032109451
+      },
+      {
+        "complete_lifecycle_ns": 58327168017,
+        "configuration_id": "A-singleton-17",
+        "configuration_size": 1,
+        "ordinal": 17,
+        "warm_start_ns": 55740983829
+      },
+      {
+        "complete_lifecycle_ns": 61433565121,
+        "configuration_id": "A-singleton-18",
+        "configuration_size": 1,
+        "ordinal": 18,
+        "warm_start_ns": 58847380933
+      },
+      {
+        "complete_lifecycle_ns": 64243741349,
+        "configuration_id": "A-singleton-19",
+        "configuration_size": 1,
+        "ordinal": 19,
+        "warm_start_ns": 61657557161
+      },
+      {
+        "complete_lifecycle_ns": 66949389605,
+        "configuration_id": "A-singleton-20",
+        "configuration_size": 1,
+        "ordinal": 20,
+        "warm_start_ns": 64363199445
+      }
+    ],
+    "explain_calls": 2560,
+    "format_version": "rq5-whatif-evaluation-cost-analysis-v1",
+    "manifest_semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+    "preparation_ns": 2586184188,
+    "repetition": 1,
+    "run_id": "rq5-v3-analysis-a-physical-r1",
+    "stage_totals_ns": {
+      "analyze": 5742696112,
+      "arm-cleanup": 5972,
+      "baseline-initialization": 2586184188,
+      "clone-create": 56394512073,
+      "clone-destroy": 1362844752,
+      "create-alter-statistics": 155721233,
+      "drop-statistics": 15225592,
+      "explain": 692199683
+    },
+    "status": "complete",
+    "warm_start_excludes": [
+      "baseline-initialization"
+    ]
+  }
+}
