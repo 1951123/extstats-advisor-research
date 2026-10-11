@@ -958,11 +958,12 @@ def summarize_events(
         for event in events
         if event["stage"] in preparation_stages and event["stage"] != "arm-cleanup"
     )
+    cleanup_ns = sum(
+        int(event["elapsed_ns"]) for event in events if event["stage"] == "arm-cleanup"
+    )
     by_ordinal: dict[int, int] = {}
     by_stage: dict[str, int] = {}
     for event in events:
-        if event["stage"] == "arm-cleanup":
-            continue
         by_stage[event["stage"]] = by_stage.get(event["stage"], 0) + int(event["elapsed_ns"])
         if event["configuration_ordinal"] is not None:
             ordinal = int(event["configuration_ordinal"])
@@ -974,12 +975,16 @@ def summarize_events(
         ordinal = int(config["ordinal"])
         running += by_ordinal[ordinal]
         warm_running += by_ordinal[ordinal]
+        # Cleanup happens once, after the final configuration.  It belongs in
+        # the complete lifecycle total for the final checkpoint, but not in
+        # earlier cumulative checkpoints that represent a still-running arm.
+        final_cleanup_ns = cleanup_ns if ordinal == int(configs[-1]["ordinal"]) else 0
         cumulative.append(
             {
                 "ordinal": ordinal,
                 "configuration_id": config["configuration_id"],
                 "configuration_size": config["configuration_size"],
-                "complete_lifecycle_ns": running,
+                "complete_lifecycle_ns": running + final_cleanup_ns,
                 "warm_start_ns": warm_running,
             }
         )
@@ -992,6 +997,7 @@ def summarize_events(
         "arm": arm,
         "repetition": repetition,
         "preparation_ns": prep_ns,
+        "cleanup_ns": cleanup_ns,
         "warm_start_excludes": [
             stage for stage in _run_stage_names(manifest, arm) if stage != "arm-cleanup"
         ],

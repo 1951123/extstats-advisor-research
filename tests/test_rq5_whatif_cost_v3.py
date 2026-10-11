@@ -182,7 +182,10 @@ def test_v3_catalogless_preparation_is_explicitly_timed_and_ordered(tmp_path: Pa
     ]
     assert stages[-1] == "arm-cleanup"
     assert summary["preparation_ns"] == 60
+    assert summary["cleanup_ns"] == 10
     assert summary["stage_totals_ns"]["snapshot-construction"] == 10
+    assert summary["stage_totals_ns"]["arm-cleanup"] == 10
+    assert summary["cumulative"][-1]["complete_lifecycle_ns"] == 670
     assert summary["warm_start_excludes"] == [
         "sample-acquisition",
         "snapshot-construction",
