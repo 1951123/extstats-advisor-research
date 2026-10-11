@@ -1,0 +1,15 @@
+{
+  "classification": "integration-readiness-only",
+  "database_writes_before_failure": false,
+  "error": {
+    "class": "LiveAdapterError",
+    "message": "integration preflight requires 1..8 fixture candidates",
+    "root_cause": "runner recognized forest10-limited but binding used forest10-v3-limited"
+  },
+  "format_version": "rq5-forest10-v3-limited-preflight-failure-v1",
+  "invocation_id": "forest10-v3-preflight-002",
+  "phase": "preflight-scope-validation",
+  "sql_operations_before_failure": 0,
+  "status": "failed-before-database-write",
+  "superseded_by": "../forest10-v3-preflight-003"
+}

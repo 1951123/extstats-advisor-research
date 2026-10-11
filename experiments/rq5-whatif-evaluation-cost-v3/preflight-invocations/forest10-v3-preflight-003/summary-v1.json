@@ -1,0 +1,425 @@
+{
+  "artifact_sha256": {
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/binding-v1.json": "e8d9d551817c62009333360b6a9005a8c26c3c971abc47ea9d6f931c603f1bd4",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/limited-manifest-v1.json": "d1fdb35caa4844c6856a05724dfcc110a1c434358e97085eba481154bcf2ebad",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/catalogless/adapter-audit/catalogless/forest10-v3-preflight-003-catalogless/config-001-activation.json": "2f7cfeabab631079cb6126fd6320fc58f70d22574410b8f9137f8cc5499b26fd",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/catalogless/adapter-audit/catalogless/forest10-v3-preflight-003-catalogless/config-001-catalogless-explain.json": "bae6f6dd84e7de8e99bb20d77efba61ae2e793e12f978f65461bd576817b432b",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/catalogless/adapter-audit/catalogless/forest10-v3-preflight-003-catalogless/materialization.json": "bee9a4dbee60e7a6f8b3bfb72b63f2312ad3bd84af6078929c467556fa8642c2",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/catalogless/adapter-audit/catalogless/forest10-v3-preflight-003-catalogless/sandbox.json": "fb6b993cf1a5ae6dd6a5df2a390cb286a76cb8797bbb65dd7fa693365ac55cc0",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/catalogless/native-stats-repository/manifest.json": "3604cc6efb6189a6f7b43f35dbaaccc5845ac8c784ae6de184a1aedd82422d4a",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/physical/adapter-audit/physical/forest10-v3-preflight-003-physical/config-001-physical-explain.json": "258ca13121cb39f1654ff57cbeeaaede1afe59196f45de86c19cc28812d408f9",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/physical/adapter-audit/physical/forest10-v3-preflight-003-physical/config-001-physical-state.json": "cc2fb8de837963e954d115c77e1b393fcd338094529f4d299fb28f8c4458689e",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/live-output/physical/adapter-audit/physical/forest10-v3-preflight-003-physical/preflight.json": "4071088247fd5a74c09fe3b2100027a51caece2294738e900c9e872efd411652",
+    "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-003/result-v1.json": "be453f3e79ec2a1183aa8b5a46e214553f5b0f5726a9e8939d0c9ca85c08c5a6"
+  },
+  "catalogless": {
+    "activation": {
+      "candidate_ids": [
+        "cand_1537a6ae8ef67c379c8d0fa0"
+      ],
+      "virtual_oids": [
+        3563580435
+      ]
+    },
+    "candidate_count": 57,
+    "dsn_redacted": "host=<private-lab-socket> port=55433 dbname=extstats_stock user=wqts",
+    "explain_attempted": 5,
+    "explain_rows": [
+      {
+        "plan_rows": 6779,
+        "query_id": "arecel_forest10_test_000000"
+      },
+      {
+        "plan_rows": 3731,
+        "query_id": "arecel_forest10_test_000078"
+      },
+      {
+        "plan_rows": 142929,
+        "query_id": "arecel_forest10_test_000157"
+      },
+      {
+        "plan_rows": 17477,
+        "query_id": "arecel_forest10_test_000236"
+      },
+      {
+        "plan_rows": 39,
+        "query_id": "arecel_forest10_test_000314"
+      }
+    ],
+    "explain_successful": 5,
+    "guc_audit": {
+      "cpu_tuple_cost": 0.01,
+      "default_statistics_target": 100,
+      "enable_bitmapscan": "on",
+      "enable_indexscan": "on",
+      "enable_seqscan": "on",
+      "jit": "on",
+      "pg_extstats.frozen_sample_mode_after_cleanup": "off",
+      "pg_extstats.frozen_sample_relation_after_cleanup": "",
+      "pg_extstats.frozen_totalrows_after_cleanup": "-1",
+      "random_page_cost": 4.0
+    },
+    "materialization_analyze_calls": 1,
+    "ordinary_statistics_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+    "payload_absent_count": 0,
+    "payload_present_count": 57,
+    "payload_states": {
+      "cand_01933ab615fb49e2f81b5b92": "present",
+      "cand_04524e4170fda10f288de2ad": "present",
+      "cand_0deae0d5de82a5a1fdc34111": "present",
+      "cand_12b552d6e4274b3e7916918d": "present",
+      "cand_14cd836002a9a76c97eb6c1e": "present",
+      "cand_1537a6ae8ef67c379c8d0fa0": "present",
+      "cand_1b63c8f8f8149f09f2ecb7c4": "present",
+      "cand_1c45580597c36333ce8f1444": "present",
+      "cand_25decdfdae3f06f5b53849b4": "present",
+      "cand_2bfd4df050e52e03bab680f1": "present",
+      "cand_2d0c2bee852360475ed257b4": "present",
+      "cand_326fad30e7ded583291003e6": "present",
+      "cand_337495ed13b57f0375c7bcab": "present",
+      "cand_4293ec8c30a7314cb8ef5dbf": "present",
+      "cand_42d3a67034bf5f02658cb7bf": "present",
+      "cand_478f6c4acd54af28ee697d8d": "present",
+      "cand_4af628931e0d02eb50415f2b": "present",
+      "cand_4de3778bb8674287b6dd5b29": "present",
+      "cand_51488597ac9ebd3cb59d2ff1": "present",
+      "cand_599a2efab190b6e2b7457ff1": "present",
+      "cand_5ba9cc937a696a76876f820d": "present",
+      "cand_5ef1e17a9fde8da19eda6ffc": "present",
+      "cand_66f3d1c2b0b2b61a41f44994": "present",
+      "cand_6937f79d38c06930e7c9a9ac": "present",
+      "cand_6b7c22215c39c807cda3872e": "present",
+      "cand_6da3014a15c7b2b3c07e9d00": "present",
+      "cand_71249b442b7dc4205d74a4b9": "present",
+      "cand_76679921292e8c769dbbd7bc": "present",
+      "cand_77c3e92fff291d4d9515dc69": "present",
+      "cand_7bbe4e7fc76c5686e2511cd9": "present",
+      "cand_817be8bf7bbbc96c20bde230": "present",
+      "cand_81dab29687d98fe8038c0eaa": "present",
+      "cand_8b7a8e0422ed4ae2befb1bc8": "present",
+      "cand_929dfbf8e7ddadf6f4b97e87": "present",
+      "cand_93882884648663deb326f015": "present",
+      "cand_9be7db5012712e534c019f4c": "present",
+      "cand_9e2c1625957106365a4e00c0": "present",
+      "cand_a393d81ec58b047e1e129db0": "present",
+      "cand_b431757a4868f78ad44fa186": "present",
+      "cand_b5554ee4928fcdbe8d6f046c": "present",
+      "cand_bafa53ec095d804233d42826": "present",
+      "cand_c2737dfb5bfbb3e415dfb793": "present",
+      "cand_c66e567561c42b80680d57a2": "present",
+      "cand_c7595f3b6addcec1b9919cbe": "present",
+      "cand_c896441b03802e5c10cf4551": "present",
+      "cand_c9b6667734c10464fab19fca": "present",
+      "cand_cbf4af3acd6feaa65760c6d1": "present",
+      "cand_d8596bbbd92afbad9d401cd6": "present",
+      "cand_d94eec73746ef01a6811815f": "present",
+      "cand_da7591327792c9bc98b427d7": "present",
+      "cand_e15685675a396385fa8dc298": "present",
+      "cand_e1a89b9755e5e3f384afc69f": "present",
+      "cand_ea8b2557e86251bb3994535b": "present",
+      "cand_eaa4ce0396b4cc5c68b2550e": "present",
+      "cand_eacd76ebde5ba7e94ae853aa": "present",
+      "cand_ee4e6f9b6b050fa4d222c6a7": "present",
+      "cand_f2d14d17235b34bf39a631f5": "present"
+    },
+    "per_configuration_analyze_calls": 0,
+    "population_metadata_rows": 581012.0,
+    "repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+    "sample_rows": 30000,
+    "sandbox_prepare_analyze_calls": 1,
+    "sandbox_relation_oid": 16825,
+    "sandbox_relpages": "not retained by adapter audit",
+    "sandbox_reltuples": 581012.0,
+    "selected_payload": {
+      "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+      "column_names": [
+        "aspect",
+        "hillshade_9am"
+      ],
+      "column_ordinals": [
+        2,
+        7
+      ],
+      "kind": "postgresql.mcv",
+      "payload_path": "payloads/cand_1537a6ae8ef67c379c8d0fa0.bin",
+      "payload_sha256": "db4ce0d5d802ed927b41b9f3f555f2828ceb40b9450e04657bf9b820ce85bc93",
+      "payload_size": 2248,
+      "relation_id": "rel_96c2e4f82f8ed10b05330552",
+      "serialization": "postgresql.pg_mcv_list_send-v1",
+      "state": "present"
+    }
+  },
+  "classification": "integration-readiness-only",
+  "cleanup": {
+    "adapter_report": {
+      "error_count": 0,
+      "status": "complete"
+    },
+    "external_databases_touched": false,
+    "lab_clusters_stopped": true,
+    "patched_sandbox_namespace_empty": true,
+    "ports_55432_55433_listening": false,
+    "preflight_database_dropped": true,
+    "preflight_database_names": [
+      "extstats_stock"
+    ],
+    "rq5wc_databases_remaining": false,
+    "source_database_preserved": true,
+    "stock_clone_namespace_empty": true
+  },
+  "failed_attempts": [
+    "../forest10-v3-preflight-001/static-binding-failure-v1.json",
+    "../forest10-v3-preflight-002/setup-failure-v1.json"
+  ],
+  "forest10": {
+    "csv_sha256": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+    "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "population_rows": 581012,
+    "sample": {
+      "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+      "index_digest": "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b",
+      "rows": 30000,
+      "seed": 42,
+      "selection": "sha256-row-rank-v1",
+      "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5"
+    },
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1"
+  },
+  "formal_timing_authorized": false,
+  "format_version": "rq5-whatif-evaluation-cost-v3-forest10-limited-preflight-summary-v1",
+  "invocation_id": "forest10-v3-preflight-003",
+  "physical": {
+    "analyze_calls": 1,
+    "clone_analyze_calls": 0,
+    "declared_order": [
+      "cand_1537a6ae8ef67c379c8d0fa0"
+    ],
+    "dsn_redacted": "host=<private-lab-socket> port=55432 dbname=extstats_stock user=wqts",
+    "explain_attempted": 5,
+    "explain_rows": [
+      {
+        "plan_rows": 5984,
+        "query_id": "arecel_forest10_test_000000"
+      },
+      {
+        "plan_rows": 3865,
+        "query_id": "arecel_forest10_test_000078"
+      },
+      {
+        "plan_rows": 143742,
+        "query_id": "arecel_forest10_test_000157"
+      },
+      {
+        "plan_rows": 17777,
+        "query_id": "arecel_forest10_test_000236"
+      },
+      {
+        "plan_rows": 39,
+        "query_id": "arecel_forest10_test_000314"
+      }
+    ],
+    "explain_successful": 5,
+    "guc_audit": {
+      "cpu_tuple_cost": 0.01,
+      "default_statistics_target": 100,
+      "enable_bitmapscan": "on",
+      "enable_indexscan": "on",
+      "enable_seqscan": "on",
+      "jit": "on",
+      "random_page_cost": 4.0
+    },
+    "observed_oid_order": [
+      16500
+    ],
+    "ordinary_statistics_fingerprint": "1d369896938a2984cf8e1aaf74a0761415292b0a3624c69bbbce3a66bd8d8af9",
+    "population_rows": 581012,
+    "relation_oid": 16496,
+    "relpages": 7792,
+    "reltuples": 581012.0,
+    "sampling_contract": {
+      "actual_sample_row_count_evidence": "not exposed by standard PostgreSQL catalog",
+      "actual_sample_row_count_observable": false,
+      "extended_statistics_sample_target_rule": "300 * max_statistics_target",
+      "nominal_extended_statistics_sample_target": 30000,
+      "statistics_target": 100
+    },
+    "source_database": "extstats_stock",
+    "statistics_oid": 16500,
+    "statistics_state": {
+      "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+      "column_ordinals": [
+        2,
+        7
+      ],
+      "kind": "postgresql.mcv",
+      "oid": 16500,
+      "payload_sha256": "99dff6d82fe60c0e4c0ce6fb4e71251257498ddedd1e849dfa972369802b5ca7",
+      "payload_size": 2480,
+      "payload_state": "present",
+      "statistics_kind": "{m}",
+      "statistics_target": 100
+    }
+  },
+  "producer_commit_sha": "0c4c37602be95f3a482f310c28c5bdcb14f52e20",
+  "protocol": {
+    "byte_sha256": "a6abcfe1db7e2df4823f2b7ad547c74b6ce75a748d4c9a5e8003bcde33e9a9bb",
+    "formal_analysis_a": {
+      "byte_sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671",
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e"
+    },
+    "formal_analysis_b": {
+      "byte_sha256": "4977107506c07c464ae75cbd3c0ff4c503edc9224f0348dfbc1c97562efd55af",
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-b-manifest-v1.json",
+      "semantic_digest": "a6de88d290b4b55fbe6080ec1e9dfd6b9b65c81c40eb09c4d3397491629579bf"
+    },
+    "formal_manifests_modified": false,
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v3.md"
+  },
+  "scientific_eligibility": "not_applicable-integration-readiness-only",
+  "scope": {
+    "advisor_search": false,
+    "candidate_columns": [
+      "aspect",
+      "hillshade_9am"
+    ],
+    "candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+    "candidate_kind": "postgresql.mcv",
+    "configuration_id": "A-singleton-01",
+    "formal_analysis_a_or_b": false,
+    "formal_timing": false,
+    "query_count_per_arm": 5,
+    "query_ids": [
+      "arecel_forest10_test_000000",
+      "arecel_forest10_test_000078",
+      "arecel_forest10_test_000157",
+      "arecel_forest10_test_000236",
+      "arecel_forest10_test_000314"
+    ],
+    "query_order_identical": true,
+    "statistics_target": 100,
+    "truth_acquisition": false
+  },
+  "semantic_digest": "29f9474b45be5b7e0731eae91bf823f34d7dd86bbe67d60bf6f9606a68b61003",
+  "source_identities": {
+    "advisor": {
+      "checkout": "/tmp/extstats-advisor-rq5-preflight-0865",
+      "clean": true,
+      "commit_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641"
+    },
+    "patched_postgresql": {
+      "build_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/build",
+      "build_environment": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "compiler": "/usr/bin/cc",
+      "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "configure_command": [
+        "/home/wqts/projects/postgresql-src-pgextadv/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/data",
+      "database": "extstats_lab",
+      "encoding": "UTF8",
+      "format_version": "postgres-lab-instance-v1",
+      "initdb_identity": {
+        "binary": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install/bin/initdb",
+        "command": [
+          "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install/bin/initdb",
+          "--locale=C.utf8",
+          "--encoding=UTF8",
+          "--auth-local=trust",
+          "--auth-host=reject"
+        ],
+        "version": "initdb (PostgreSQL) 16.14"
+      },
+      "install_prefix": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install",
+      "locale": "C.utf8",
+      "make_version": "GNU Make 4.3",
+      "pg_config_configure": "'--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/install' '--with-icu' '--with-libxml' '--with-libxslt' '--with-ssl=openssl' 'CC=cc' 'CFLAGS='",
+      "port": 55433,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "patched",
+      "runtime_created_at": "2026-10-10T02:38:26.398760+00:00",
+      "socket_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/patched/socket",
+      "source_branch": "main",
+      "source_commit_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+      "source_description": "6d7f5c9cd6c",
+      "source_dirty": false,
+      "source_materialization": "temporary clean git archive of source_commit_sha",
+      "source_repository": "/home/wqts/projects/postgresql-src-pgextadv"
+    },
+    "stock_postgresql": {
+      "build_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/build",
+      "build_environment": {
+        "CC": "cc",
+        "CFLAGS": ""
+      },
+      "compiler": "/usr/bin/cc",
+      "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "configure_command": [
+        "/home/wqts/projects/postgresql-src/configure",
+        "--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install",
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "configure_features": [
+        "--with-icu",
+        "--with-libxml",
+        "--with-libxslt",
+        "--with-ssl=openssl"
+      ],
+      "data_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/data",
+      "database": "extstats_lab",
+      "encoding": "UTF8",
+      "format_version": "postgres-lab-instance-v1",
+      "initdb_identity": {
+        "binary": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install/bin/initdb",
+        "command": [
+          "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install/bin/initdb",
+          "--locale=C.utf8",
+          "--encoding=UTF8",
+          "--auth-local=trust",
+          "--auth-host=reject"
+        ],
+        "version": "initdb (PostgreSQL) 16.14"
+      },
+      "install_prefix": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install",
+      "locale": "C.utf8",
+      "make_version": "GNU Make 4.3",
+      "pg_config_configure": "'--prefix=/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/install' '--with-icu' '--with-libxml' '--with-libxslt' '--with-ssl=openssl' 'CC=cc' 'CFLAGS='",
+      "port": 55432,
+      "postgres_version": "postgres (PostgreSQL) 16.14",
+      "role": "stock",
+      "runtime_created_at": "2026-10-10T02:38:25.216153+00:00",
+      "socket_directory": "/home/wqts/projects/extstats-advisor-research/.runtime/postgres-lab/stock/socket",
+      "source_branch": "",
+      "source_commit_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+      "source_description": "0d1c00c624f",
+      "source_dirty": false,
+      "source_materialization": "temporary clean git archive of source_commit_sha",
+      "source_repository": "/home/wqts/projects/postgresql-src"
+    }
+  },
+  "status": "PASS",
+  "timing_boundary_readiness": {
+    "blocker": "deterministic full-population-to-sealed-30000-row sample extraction is performed before the timed adapter path; the current prepare_sample stage validates the sealed snapshot but does not time that mandatory acquisition/preparation boundary",
+    "catalogless_stage_mapping": "native materialization, sandbox ANALYZE, registration, activation, EXPLAIN, deactivation exercised",
+    "physical_stage_mapping": "ready for declared clone/DDL/ANALYZE/EXPLAIN/drop/destroy stages",
+    "primary_complete_lifecycle_ready": false,
+    "warm_or_formal_timing_executed": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "classification": "integration-readiness-only",
+  "database_writes_before_failure": false,
+  "error": {
+    "cause": "binding script attempted to read protocol.semantic_digest; v3 protocol records byte SHA under protocol.sha256",
+    "class": "KeyError",
+    "message": "'semantic_digest'"
+  },
+  "formal_manifests_unchanged": true,
+  "format_version": "rq5-forest10-v3-limited-preflight-static-failure-v1",
+  "invocation_id": "forest10-v3-preflight-001",
+  "phase": "binding-generation",
+  "status": "failed-before-database-write",
+  "superseded_by": "../forest10-v3-preflight-002"
+}

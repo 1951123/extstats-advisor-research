@@ -1,0 +1,152 @@
+{
+  "candidate_universe": {
+    "path": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json",
+    "semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134"
+  },
+  "classification": "integration-readiness-only",
+  "database_writes_before_binding": false,
+  "dataset": {
+    "archive_sha256": "5cd33cba7f3d7182ef497e60e7346fb2a7546941590a90a4444913a944958f79",
+    "benchmark_id": "arecel-forest10",
+    "dataset_content_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+    "population_rows": 581012,
+    "relation": "public.forest10",
+    "schema_contract_id": "arecel-forest10-postgres-schema-v1",
+    "source_files": {
+      "canonical_workload": "a922d87660b2dec431a77c2e4a054c4f5528b0f25040859d76d0148a9ed73e74",
+      "csv": "3484f3037f890f6bae46ae51fb387ee883351119667139c5894654276789a73c",
+      "label_pickle": "34d830e6a30b48228ae41e6ae5643fb199e9794b3f36c915fb742af58fdfb974",
+      "workload_pickle": "501a3dcfe82ec5742fce4c3dc3b298eabcf78b82dab3a8ff8ad2914a61f4eaea"
+    },
+    "upstream_commit": "aa52da7768023270bad884232972e0b77ec6534a"
+  },
+  "formal_manifests": {
+    "analysis_a": {
+      "byte_sha256": "bbfd1e8d391fd8dfc35c4369911bf03a79a70e6bb64f21c8e3a7c48f87bb7671",
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-a-manifest-v1.json",
+      "semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+      "validation": {
+        "analysis": "A",
+        "binding_digest": "b23c084642efc482d55c5424dc8beee9aaa916ea84d00222d6a89bc64d2bd59a",
+        "configuration_count": 20,
+        "format_version": "rq5-whatif-evaluation-cost-manifest-v3",
+        "query_count": 128,
+        "sample_ready": true,
+        "semantic_digest": "27c53072a8a2083a0a982ab04e86e063f030daea6d4a3ca32e1daedc8625a71e",
+        "status": "valid"
+      }
+    },
+    "analysis_b": {
+      "byte_sha256": "4977107506c07c464ae75cbd3c0ff4c503edc9224f0348dfbc1c97562efd55af",
+      "path": "experiments/rq5-whatif-evaluation-cost-v3/manifests/analysis-b-manifest-v1.json",
+      "semantic_digest": "a6de88d290b4b55fbe6080ec1e9dfd6b9b65c81c40eb09c4d3397491629579bf",
+      "validation": {
+        "analysis": "B",
+        "binding_digest": "6c99e2547470021ba77bb08b7d66ce35a022bb5a9e8ef3b28e23b5bb670c982a",
+        "configuration_count": 6,
+        "format_version": "rq5-whatif-evaluation-cost-manifest-v3",
+        "query_count": 128,
+        "sample_ready": true,
+        "semantic_digest": "a6de88d290b4b55fbe6080ec1e9dfd6b9b65c81c40eb09c4d3397491629579bf",
+        "status": "valid"
+      }
+    }
+  },
+  "format_version": "rq5-forest10-v3-limited-preflight-binding-v1",
+  "invocation_id": "forest10-v3-preflight-002",
+  "limited_manifest": {
+    "binding_digest": "cdd18b56edc523ce848a9f83885cd837319b98535cbd76d948acf10140cedd69",
+    "path": "experiments/rq5-whatif-evaluation-cost-v3/preflight-invocations/forest10-v3-preflight-002/limited-manifest-v1.json",
+    "semantic_digest": "30ae17e4e4d3b88d82922e425e60e173b3daedfaa6bd855e8fec8b9fed05264a"
+  },
+  "producer_commit_sha": "0c4c37602be95f3a482f310c28c5bdcb14f52e20",
+  "protocol": {
+    "byte_sha256": "a6abcfe1db7e2df4823f2b7ad547c74b6ce75a748d4c9a5e8003bcde33e9a9bb",
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v3.md"
+  },
+  "sample_contract": {
+    "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "sample_rows": 30000,
+    "sample_seed": 42,
+    "selection": {
+      "algorithm": "sha256-row-rank-v1",
+      "output_order": "ascending-source-row-index",
+      "population_rows": 581012,
+      "row_identity": "source-csv-data-row-index",
+      "sample_rows": 30000,
+      "seed": 42,
+      "semantic_digest": "9af41d010197d1ec9578f1813f8fdffca9037b16beae3dab219871aa2d4383d0",
+      "source_index_base": 0
+    },
+    "snapshot_path": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/advisor-snapshot",
+    "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "snapshot_status": "prepared-locally"
+  },
+  "selected_configuration": {
+    "analysis": "A",
+    "candidate_ids": [
+      "cand_1537a6ae8ef67c379c8d0fa0"
+    ],
+    "configuration_id": "A-singleton-01",
+    "configuration_size": 1,
+    "declared_order": [
+      "cand_1537a6ae8ef67c379c8d0fa0"
+    ],
+    "ordinal": 1
+  },
+  "selected_queries": [
+    {
+      "query_id": "arecel_forest10_test_000000",
+      "source_index": 0,
+      "sql_sha256": "204592927aae8fa55d02e7484032fe6b55a5d0e6dad14c40a869916b3cabe2da",
+      "subset_ordinal": 0,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000078",
+      "source_index": 78,
+      "sql_sha256": "ea9dcea5cfe6ce1c531490750a35f1c4ba112bff2a444f52294f131ec42fe62e",
+      "subset_ordinal": 1,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000157",
+      "source_index": 157,
+      "sql_sha256": "5413882b4a7ae626a7c461c9078c414f34ac8d4a358ebfcbfacf3e181ad5dc18",
+      "subset_ordinal": 2,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000236",
+      "source_index": 236,
+      "sql_sha256": "8af3ac91ae14bc88342d5a44532a7bfe38d611cd202b3f5950399e909e054375",
+      "subset_ordinal": 3,
+      "weight": 1.0
+    },
+    {
+      "query_id": "arecel_forest10_test_000314",
+      "source_index": 314,
+      "sql_sha256": "b91f84b6b1d66f0bcb17d05a4198c3b567f4ec9f0bff197d69c1749cd5c66266",
+      "subset_ordinal": 4,
+      "weight": 1.0
+    }
+  ],
+  "source_bindings": {
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "candidate_universe": {
+      "path": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json",
+      "semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134"
+    },
+    "patched_postgres_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "rq4_ablation": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-ablation-v1.json",
+      "semantic_digest": "736ba74fcd41e34bc9e468dbf1e1ea149ee8caac7ca940be5236af6319d226a9"
+    },
+    "rq4_design": {
+      "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    "stock_postgres_sha": "0d1c00c624fa7367d4a895f44381887757289682"
+  },
+  "status": "static-binding-passed"
+}

@@ -1,0 +1,18 @@
+{
+  "classification": "integration-readiness-only",
+  "clone_databases_remaining": [],
+  "credentials_recorded": false,
+  "databases_created_and_dropped": [
+    "stock:extstats_stock",
+    "patched:extstats_stock"
+  ],
+  "format_version": "rq5-whatif-evaluation-cost-v3-forest10-limited-preflight-cleanup-v1",
+  "invocation_id": "forest10-v3-preflight-003",
+  "lab_processes_remaining": [],
+  "listeners_remaining": [],
+  "sandbox_relations_remaining": [],
+  "semantic_digest": "8dc3fa75343ddfa8961735d0b021836ad5637ff90837d92e3bf34da6eb085e03",
+  "source_database_preserved": "extstats_lab",
+  "status": "verified",
+  "summary_semantic_digest": "29f9474b45be5b7e0731eae91bf823f34d7dd86bbe67d60bf6f9606a68b61003"
+}
