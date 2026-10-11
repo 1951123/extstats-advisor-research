@@ -438,7 +438,10 @@ def validate_manifest(
             research_root=research_root,
             verify_sources=verify_sources,
         )
-    if manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v4":
+    if manifest.get("format_version") in {
+        "rq5-whatif-evaluation-cost-manifest-v4",
+        "rq5-whatif-evaluation-cost-v4-preflight-manifest-v1",
+    }:
         from .rq5_whatif_cost_v4 import validate_v4_manifest
 
         return validate_v4_manifest(

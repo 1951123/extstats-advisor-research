@@ -41,6 +41,7 @@ from .rq5_whatif_cost_v3 import (
 V4_PROTOCOL_FORMAT = "rq5-whatif-evaluation-cost-v4"
 V4_PROTOCOL_PATH = "docs/protocols/rq5-whatif-evaluation-cost-v4.md"
 V4_MANIFEST_FORMAT = "rq5-whatif-evaluation-cost-manifest-v4"
+V4_PREFLIGHT_MANIFEST_FORMAT = "rq5-whatif-evaluation-cost-v4-preflight-manifest-v1"
 V4_EXPERIMENT_ID = "rq5-whatif-evaluation-cost-v4-forest10"
 V4_PHYSICAL_RESET_STRATEGY = "single-inplace-database-per-repetition"
 
@@ -117,6 +118,56 @@ def build_v4_manifest_from_v3(
     return body
 
 
+def build_v4_limited_preflight_manifest(
+    formal_manifest: Mapping[str, Any],
+    *,
+    formal_manifest_path: str,
+    formal_manifest_sha256: str,
+    configuration_count: int = 2,
+    query_count: int = 5,
+) -> dict[str, Any]:
+    """Derive a bounded correctness manifest from formal v4 Analysis A."""
+
+    validate_v4_manifest(formal_manifest)
+    if formal_manifest.get("analysis") != "A":
+        raise WhatIfCostError("v4 preflight requires Analysis A")
+    if not 1 <= configuration_count <= 2 or not 1 <= query_count <= 5:
+        raise WhatIfCostError("v4 preflight scope is limited to two configs and five queries")
+    body = copy.deepcopy(dict(formal_manifest))
+    selected_configs = copy.deepcopy(body["analysis_a"]["configurations"][:configuration_count])
+    selected_queries = copy.deepcopy(body["query_subset"][:query_count])
+    body.update(
+        {
+            "format_version": V4_PREFLIGHT_MANIFEST_FORMAT,
+            "status": "ready-for-limited-live-preflight",
+            "preflight_scope": "v4-inplace-physical-and-catalogless",
+            "source_formal_manifest": {
+                "path": formal_manifest_path,
+                "semantic_digest": formal_manifest["semantic_digest"],
+                "byte_sha256": formal_manifest_sha256,
+            },
+            "query_subset": selected_queries,
+            "query_subset_size": len(selected_queries),
+            "analysis_a": {
+                "evaluation_count": len(selected_configs),
+                "configuration_size": 1,
+                "checkpoints": [len(selected_configs)],
+                "configurations": selected_configs,
+            },
+            "analysis_b": {"configuration_sizes": [], "configurations": []},
+            "limited_scope": {
+                "configuration_count": len(selected_configs),
+                "query_count": len(selected_queries),
+                "classification": "integration-readiness-only",
+                "does_not_authorize_formal_timing": True,
+            },
+        }
+    )
+    body["binding_digest"] = semantic_digest(_v4_binding_payload(body))
+    body["semantic_digest"] = semantic_digest(_body(body))
+    return body
+
+
 def _legacy_v3_view(manifest: Mapping[str, Any]) -> dict[str, Any]:
     """Use v3's structural validator while keeping the v4 binding separate."""
 
@@ -140,7 +191,11 @@ def validate_v4_manifest(
 ) -> dict[str, Any]:
     """Validate v4 bindings, dimensions, and the in-place lifecycle contract."""
 
-    _v4_require(manifest.get("format_version") == V4_MANIFEST_FORMAT, "unsupported v4 manifest")
+    format_version = manifest.get("format_version")
+    _v4_require(
+        format_version in {V4_MANIFEST_FORMAT, V4_PREFLIGHT_MANIFEST_FORMAT},
+        "unsupported v4 manifest",
+    )
     _v4_require(
         manifest.get("semantic_digest") == semantic_digest(_body(manifest)),
         "v4 manifest semantic digest mismatch",
@@ -165,10 +220,40 @@ def validate_v4_manifest(
         manifest.get("binding_digest") == semantic_digest(_v4_binding_payload(manifest)),
         "v4 binding digest mismatch",
     )
-    # This validates the frozen candidate/query/configuration dimensions and
-    # all source pins.  Its protocol fields are replaced only in a temporary
-    # in-memory view; no historical artifact is changed.
-    validate_v3_manifest(_legacy_v3_view(manifest))
+    if format_version == V4_MANIFEST_FORMAT:
+        # This validates the full frozen candidate/query/configuration
+        # dimensions.  Its protocol fields are replaced only in a temporary
+        # in-memory view; no historical artifact is changed.
+        validate_v3_manifest(_legacy_v3_view(manifest))
+    else:
+        definitions = manifest.get("candidate_universe", {}).get("definitions", [])
+        ids = [item.get("candidate_id") for item in definitions]
+        _v4_require(
+            len(ids) == 57 and len(set(ids)) == 57,
+            "v4 preflight candidate universe must contain 57 unique candidates",
+        )
+        queries = manifest.get("query_subset", [])
+        _v4_require(1 <= len(queries) <= 5, "v4 preflight query scope is invalid")
+        _v4_require(
+            len({item.get("query_id") for item in queries}) == len(queries),
+            "v4 preflight query IDs are duplicated",
+        )
+        configs = manifest.get("analysis_a", {}).get("configurations", [])
+        _v4_require(1 <= len(configs) <= 2, "v4 preflight configuration scope is invalid")
+        _v4_require(
+            [item.get("ordinal") for item in configs] == list(range(1, len(configs) + 1)),
+            "v4 preflight configuration ordinals drifted",
+        )
+        for query in queries:
+            _sha(query.get("sql_sha256"), "v4 preflight SQL digest")
+        for config in configs:
+            _v4_require(
+                config.get("configuration_size") == 1
+                and config.get("candidate_ids") == config.get("declared_order")
+                and len(config.get("candidate_ids", [])) == 1
+                and config["candidate_ids"][0] in ids,
+                "v4 preflight configuration is not a frozen singleton",
+            )
     dataset = manifest.get("dataset", {})
     _v4_require(
         dataset.get("full_population_rows") == V3_POPULATION_ROWS, "population rows drifted"
@@ -218,7 +303,7 @@ def validate_v4_manifest(
             )
     return {
         "status": "valid",
-        "format_version": V4_MANIFEST_FORMAT,
+        "format_version": str(format_version),
         "analysis": manifest["analysis"],
         "semantic_digest": manifest["semantic_digest"],
         "binding_digest": manifest["binding_digest"],
@@ -232,8 +317,10 @@ __all__ = [
     "V4_EXPERIMENT_ID",
     "V4_MANIFEST_FORMAT",
     "V4_PHYSICAL_RESET_STRATEGY",
+    "V4_PREFLIGHT_MANIFEST_FORMAT",
     "V4_PROTOCOL_FORMAT",
     "V4_PROTOCOL_PATH",
+    "build_v4_limited_preflight_manifest",
     "build_v4_manifest_from_v3",
     "validate_v4_manifest",
 ]
