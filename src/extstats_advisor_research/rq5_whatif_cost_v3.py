@@ -12,8 +12,8 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
-from collections.abc import Mapping
-from dataclasses import replace
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +47,19 @@ V3_CANDIDATE_COUNT = 57
 V3_SAMPLE_SELECTION = "sha256-row-rank-v1"
 V3_RELATION_ID = "rel_96c2e4f82f8ed10b05330552"
 V3_SAMPLE_RUNTIME_PATH = ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000"
+# This digest is the immutable membership binding used by the v3 manifests.
+V3_SAMPLE_INDEX_DIGEST = "d3ae114d5b18d71bd28d95199ff32989a3623d3a29ff7f8ef59ab82d79b99a0b"
+
+
+@dataclass(frozen=True, slots=True)
+class V3SampleAcquisition:
+    """Runtime sample material produced inside the primary timing boundary."""
+
+    source: dict[str, Any]
+    indices: tuple[int, ...]
+    rows: tuple[tuple[float | None, ...], ...]
+    recipe: dict[str, Any]
+    index_digest: str
 
 
 def _v3_require(condition: bool, message: str) -> None:
@@ -113,6 +126,14 @@ def sample_recipe(
     }
     recipe["semantic_digest"] = semantic_digest(recipe)
     return recipe
+
+
+def sample_index_digest(indices: Sequence[int]) -> str:
+    """Return the canonical digest for frozen source-row membership."""
+
+    return hashlib.sha256(
+        json.dumps(list(indices), separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
 
 
 def _load_v2_manifest(path: Path) -> dict[str, Any]:
@@ -217,6 +238,63 @@ def _read_selected_rows(
     return result
 
 
+def _load_v3_workload(workload_path: Path) -> dict[str, Any]:
+    workload = read_json(workload_path)
+    if workload.get("workload_id") != "arecel_forest10_test_v1":
+        raise WhatIfCostError("Forest10 workload identity drifted")
+    if len(workload.get("queries", [])) != 10_000:
+        raise WhatIfCostError("Forest10 workload must contain 10,000 queries")
+    return workload
+
+
+def acquire_v3_sample(
+    data_root: Path | None = None,
+    *,
+    sample_rows: int = V3_SAMPLE_ROWS,
+    seed: int = V3_SAMPLE_SEED,
+) -> V3SampleAcquisition:
+    """Validate the population and materialize the frozen rows at runtime.
+
+    This function intentionally performs source validation and selected-row
+    reading together so a live adapter can place both operations inside one
+    explicitly timed sample-acquisition stage.  Frozen membership is not
+    regenerated from a prebuilt Snapshot.
+    """
+
+    population = validate_full_forest10_source(data_root)
+    indices = derive_sample_indices(V3_POPULATION_ROWS, sample_rows, seed)
+    rows = _read_selected_rows(data_root, indices)
+    _v3_require(len(rows) == sample_rows, "runtime Forest10 sample row count drifted")
+    return V3SampleAcquisition(
+        source=population,
+        indices=tuple(indices),
+        rows=tuple(tuple(row) for row in rows),
+        recipe=sample_recipe(
+            population_rows=V3_POPULATION_ROWS,
+            sample_rows=sample_rows,
+            seed=seed,
+        ),
+        index_digest=sample_index_digest(indices),
+    )
+
+
+def construct_v3_snapshot(
+    data_root: Path | None,
+    workload_path: Path,
+    acquisition: V3SampleAcquisition,
+) -> Any:
+    """Construct the AdvisorSnapshot object from runtime-acquired rows."""
+
+    workload = _load_v3_workload(workload_path)
+    return _advisor_snapshot_objects(
+        data_root or forest10.data_root(),
+        workload,
+        [list(row) for row in acquisition.rows],
+        acquisition.source,
+        acquisition.recipe,
+    )
+
+
 def prepare_v3_snapshot(
     data_root: Path | None,
     workload_path: Path,
@@ -227,18 +305,8 @@ def prepare_v3_snapshot(
 ) -> dict[str, Any]:
     """Create and validate a sealed 30,000-row AdvisorSnapshot offline."""
 
-    population = validate_full_forest10_source(data_root)
-    workload = read_json(workload_path)
-    if workload.get("workload_id") != "arecel_forest10_test_v1":
-        raise WhatIfCostError("Forest10 workload identity drifted")
-    if len(workload.get("queries", [])) != 10_000:
-        raise WhatIfCostError("Forest10 workload must contain 10,000 queries")
-    indices = derive_sample_indices(V3_POPULATION_ROWS, sample_rows, seed)
-    recipe = sample_recipe(population_rows=V3_POPULATION_ROWS, sample_rows=sample_rows, seed=seed)
-    rows = _read_selected_rows(data_root, indices)
-    snapshot = _advisor_snapshot_objects(
-        data_root or forest10.data_root(), workload, rows, population, recipe
-    )
+    acquisition = acquire_v3_sample(data_root, sample_rows=sample_rows, seed=seed)
+    snapshot = construct_v3_snapshot(data_root, workload_path, acquisition)
     from extstats_advisor.snapshot.bundle import load_snapshot, write_snapshot
 
     digest = write_snapshot(snapshot, destination)
@@ -252,11 +320,9 @@ def prepare_v3_snapshot(
         "snapshot_semantic_digest": digest,
         "sample_rows": sample_rows,
         "sample_seed": seed,
-        "sample_indices_sha256": hashlib.sha256(
-            json.dumps(indices, separators=(",", ":")).encode("utf-8")
-        ).hexdigest(),
-        "recipe": recipe,
-        "source": population,
+        "sample_indices_sha256": acquisition.index_digest,
+        "recipe": acquisition.recipe,
+        "source": acquisition.source,
     }
 
 
@@ -591,12 +657,17 @@ def validate_v3_manifest(
 __all__ = [
     "V3_MANIFEST_FORMAT",
     "V3_PROTOCOL_FORMAT",
+    "V3_SAMPLE_INDEX_DIGEST",
     "V3_SAMPLE_ROWS",
     "V3_SAMPLE_SEED",
+    "V3SampleAcquisition",
+    "acquire_v3_sample",
     "build_v3_manifest",
+    "construct_v3_snapshot",
     "derive_sample_indices",
     "prepare_v3_candidate_universe",
     "prepare_v3_snapshot",
+    "sample_index_digest",
     "sample_recipe",
     "validate_full_forest10_source",
     "validate_v3_manifest",

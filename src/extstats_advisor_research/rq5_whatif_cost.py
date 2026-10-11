@@ -746,6 +746,43 @@ _CATALOGLESS_RUN_STAGES = (
     "repository-registration",
     "arm-cleanup",
 )
+_CATALOGLESS_V3_RUN_STAGES = (
+    "sample-acquisition",
+    "snapshot-construction",
+    "snapshot-serialization-validation",
+    "fixed-sample-preparation",
+    "native-payload-materialization",
+    "repository-registration-and-sandbox-preparation",
+    "arm-cleanup",
+)
+
+
+def _is_v3_manifest(manifest: Mapping[str, Any]) -> bool:
+    return manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3"
+
+
+def _run_stage_names(manifest: Mapping[str, Any], arm: str) -> tuple[str, ...]:
+    if arm == "physical":
+        return _PHYSICAL_RUN_STAGES
+    if _is_v3_manifest(manifest):
+        return _CATALOGLESS_V3_RUN_STAGES
+    return _CATALOGLESS_RUN_STAGES
+
+
+def _config_stage_names(arm: str) -> tuple[str, ...]:
+    return _PHYSICAL_CONFIG_STAGES if arm == "physical" else _CATALOGLESS_CONFIG_STAGES
+
+
+def _expected_stage_keys(manifest: Mapping[str, Any], arm: str) -> list[tuple[str, int | None]]:
+    run_stages = _run_stage_names(manifest, arm)
+    keys = [(stage, None) for stage in run_stages if stage != "arm-cleanup"]
+    keys.extend(
+        (stage, int(config["ordinal"]))
+        for config in _manifest_configs(manifest)
+        for stage in _config_stage_names(arm)
+    )
+    keys.append(("arm-cleanup", None))
+    return keys
 
 
 def _manifest_configs(manifest: Mapping[str, Any]) -> list[dict[str, Any]]:
@@ -759,9 +796,21 @@ def _manifest_configs(manifest: Mapping[str, Any]) -> list[dict[str, Any]]:
 def _expected_count(
     stage: str, configuration: Mapping[str, Any] | None, query_count: int, candidate_count: int
 ) -> int:
-    if stage in {"baseline-initialization", "fixed-sample-preparation", "arm-cleanup", "analyze"}:
+    if stage in {
+        "baseline-initialization",
+        "sample-acquisition",
+        "snapshot-construction",
+        "snapshot-serialization-validation",
+        "fixed-sample-preparation",
+        "arm-cleanup",
+        "analyze",
+    }:
         return 1
-    if stage == "native-payload-materialization" or stage == "repository-registration":
+    if stage in {
+        "native-payload-materialization",
+        "repository-registration",
+        "repository-registration-and-sandbox-preparation",
+    }:
         return candidate_count
     if stage in {"clone-create", "clone-destroy"}:
         return 1
@@ -789,12 +838,14 @@ def validate_events(
     _require(isinstance(repetition, int) and repetition >= 1, "invalid repetition")
     configs = _manifest_configs(manifest)
     config_by_ordinal = {int(item["ordinal"]): item for item in configs}
-    run_stages = set(_PHYSICAL_RUN_STAGES if arm == "physical" else _CATALOGLESS_RUN_STAGES)
-    config_stages = set(
-        _PHYSICAL_CONFIG_STAGES if arm == "physical" else _CATALOGLESS_CONFIG_STAGES
-    )
+    run_stages = set(_run_stage_names(manifest, arm))
+    config_stages = set(_config_stage_names(arm))
     seen: set[tuple[str, int | None]] = set()
+    observed_keys: list[tuple[str, int | None]] = []
     errors: list[str] = []
+    expected_keys = _expected_stage_keys(manifest, arm)
+    stage_positions = {key: index for index, key in enumerate(expected_keys)}
+    last_position = -1
     for event in events:
         _require(event.get("format_version") == EVENT_FORMAT, "unsupported event format")
         _require(
@@ -833,7 +884,13 @@ def validate_events(
             )
         key = (str(stage), ordinal if isinstance(ordinal, int) else None)
         _require(key not in seen, f"duplicate event: {key}")
+        position = stage_positions.get(key)
+        _require(position is not None, f"unexpected event identity: {key}")
+        if position <= last_position:
+            errors.append(f"event order drifted at {key}")
+        last_position = max(last_position, int(position))
         seen.add(key)
+        observed_keys.append(key)
         _require(event.get("status") in {"complete", "failed"}, "invalid event status")
         _require(
             isinstance(event.get("operation_count"), int) and event["operation_count"] >= 0,
@@ -853,11 +910,11 @@ def validate_events(
             errors.append(
                 f"{stage}/{ordinal} operation count {event.get('operation_count')} != {expected}"
             )
-    required = {(stage, None) for stage in run_stages}
-    required.update((stage, ordinal) for ordinal in config_by_ordinal for stage in config_stages)
+    required = set(expected_keys)
     complete = (
         not errors
         and required.issubset(seen)
+        and observed_keys == expected_keys
         and all(event.get("status") == "complete" for event in events)
     )
     if errors:
@@ -892,7 +949,7 @@ def summarize_events(
         manifest, events, run_id=run_id, arm=arm, repetition=repetition, require_complete=True
     )
     configs = _manifest_configs(manifest)
-    preparation_stages = set(_PHYSICAL_RUN_STAGES if arm == "physical" else _CATALOGLESS_RUN_STAGES)
+    preparation_stages = set(_run_stage_names(manifest, arm))
     prep_ns = sum(
         int(event["elapsed_ns"])
         for event in events
@@ -932,6 +989,9 @@ def summarize_events(
         "arm": arm,
         "repetition": repetition,
         "preparation_ns": prep_ns,
+        "warm_start_excludes": [
+            stage for stage in _run_stage_names(manifest, arm) if stage != "arm-cleanup"
+        ],
         "stage_totals_ns": by_stage,
         "cumulative": cumulative,
         "explain_calls": sum(
@@ -1127,9 +1187,18 @@ def run_catalogless_arm(
         primary: BaseException | None = None
         cleanup_error: BaseException | None = None
         try:
+            if _is_v3_manifest(manifest):
+                timer.measure("sample-acquisition", adapter.acquire_sample)
+                timer.measure("snapshot-construction", adapter.construct_snapshot)
+                timer.measure("snapshot-serialization-validation", adapter.validate_snapshot)
             timer.measure("fixed-sample-preparation", adapter.prepare_sample)
             timer.measure("native-payload-materialization", adapter.materialize_payloads)
-            timer.measure("repository-registration", adapter.register_repository)
+            timer.measure(
+                "repository-registration-and-sandbox-preparation"
+                if _is_v3_manifest(manifest)
+                else "repository-registration",
+                adapter.register_repository,
+            )
             for config in _manifest_configs(manifest):
                 timer.measure(
                     "activate", lambda c=config: adapter.activate(c), configuration=config

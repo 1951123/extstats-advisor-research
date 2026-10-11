@@ -443,6 +443,9 @@ class _BaseAdapter:
         self.config = config
         self.arm = arm
         self._snapshot: Any = None
+        self._runtime_snapshot_path: Path | None = None
+        self._sample_acquisition: Any = None
+        self._constructed_snapshot: Any = None
         self._universe: Any = None
         self._candidates: dict[str, Mapping[str, Any]] = {}
         self._relation: Any = None
@@ -459,7 +462,8 @@ class _BaseAdapter:
         from extstats_advisor.candidates import load_candidate_universe
         from extstats_advisor.snapshot.bundle import load_snapshot
 
-        self._snapshot = load_snapshot(self.config.snapshot_path)
+        snapshot_path = self._runtime_snapshot_path or self.config.snapshot_path
+        self._snapshot = load_snapshot(snapshot_path)
         if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
             from .rq5_whatif_cost_v3 import V3_POPULATION_ROWS, V3_RELATION_ID, V3_SAMPLE_ROWS
 
@@ -856,13 +860,105 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         self._registered_oids: dict[str, int] = {}
         self._sandbox_prepared = False
 
-    def prepare_sample(self) -> int:
-        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
-            if self.config.forest10_data_root is None:
-                raise LiveAdapterError("v3 catalogless arm requires the audited Forest10 data root")
-            from .rq5_whatif_cost_v3 import validate_full_forest10_source
+    def acquire_sample(self) -> int:
+        """Materialize the frozen v3 rows inside the primary timing boundary."""
 
-            validate_full_forest10_source(self.config.forest10_data_root)
+        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+            raise LiveAdapterError("runtime sample acquisition is only defined for v3")
+        self._require_live()
+        if self.config.forest10_data_root is None:
+            raise LiveAdapterError("v3 catalogless arm requires the audited Forest10 data root")
+        from .rq5_whatif_cost_v3 import (
+            V3_SAMPLE_INDEX_DIGEST,
+            V3_SAMPLE_ROWS,
+            acquire_v3_sample,
+        )
+
+        acquisition = acquire_v3_sample(self.config.forest10_data_root)
+        expected_digest = str(
+            self.manifest.get("sample_contract", {})
+            .get("selection", {})
+            .get("sample_indices_sha256", V3_SAMPLE_INDEX_DIGEST)
+        )
+        if acquisition.index_digest != expected_digest:
+            raise LiveAdapterError(
+                f"runtime sample membership digest {acquisition.index_digest} "
+                f"!= frozen {expected_digest}"
+            )
+        if len(acquisition.rows) != V3_SAMPLE_ROWS:
+            raise LiveAdapterError("runtime sample does not contain exactly 30,000 rows")
+        self._sample_acquisition = acquisition
+        _exclusive_json(
+            self._audit_root / "sample-acquisition.json",
+            {
+                "source": acquisition.source,
+                "sample_rows": len(acquisition.rows),
+                "sample_index_digest": acquisition.index_digest,
+                "recipe": acquisition.recipe,
+            },
+        )
+        return 1
+
+    def construct_snapshot(self) -> int:
+        """Build an AdvisorSnapshot from the already acquired v3 rows."""
+
+        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+            raise LiveAdapterError("runtime Snapshot construction is only defined for v3")
+        self._require_live()
+        if self._sample_acquisition is None:
+            raise LiveAdapterError("acquire_sample must precede Snapshot construction")
+        from .rq5_whatif_cost_v3 import construct_v3_snapshot
+
+        self._constructed_snapshot = construct_v3_snapshot(
+            self.config.forest10_data_root,
+            self.config.workload_path,
+            self._sample_acquisition,
+        )
+        return 1
+
+    def validate_snapshot(self) -> int:
+        """Serialize, reload, and validate the runtime v3 Snapshot binding."""
+
+        if self.manifest.get("format_version") != "rq5-whatif-evaluation-cost-manifest-v3":
+            raise LiveAdapterError("runtime Snapshot validation is only defined for v3")
+        self._require_live()
+        if self._constructed_snapshot is None:
+            raise LiveAdapterError("construct_snapshot must precede Snapshot validation")
+        snapshot_path = self.config.output_dir / "runtime-snapshot"
+        if snapshot_path.exists():
+            raise LiveAdapterError(f"runtime Snapshot output already exists: {snapshot_path}")
+        from extstats_advisor.snapshot.bundle import load_snapshot, write_snapshot
+
+        serialized_digest = write_snapshot(self._constructed_snapshot, snapshot_path)
+        loaded = load_snapshot(snapshot_path)
+        expected_digest = self.manifest["sample_contract"]["snapshot_semantic_digest"]
+        if serialized_digest != expected_digest or loaded.semantic_digest != expected_digest:
+            raise LiveAdapterError(
+                "runtime Snapshot semantic digest differs from frozen v3 binding"
+            )
+        if len(loaded.samples) != 1 or len(loaded.samples[next(iter(loaded.samples))]) != 30_000:
+            raise LiveAdapterError("runtime Snapshot sample row count is not 30,000")
+        self._runtime_snapshot_path = snapshot_path
+        _exclusive_json(
+            self._audit_root / "snapshot-serialization-validation.json",
+            {
+                "snapshot_path": str(snapshot_path),
+                "snapshot_semantic_digest": loaded.semantic_digest,
+                "serialized_digest": serialized_digest,
+                "sample_rows": 30_000,
+            },
+        )
+        return 1
+
+    def prepare_sample(self) -> int:
+        if (
+            self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3"
+            and self._runtime_snapshot_path is None
+        ):
+            raise LiveAdapterError(
+                "v3 catalogless arm requires a runtime-produced Snapshot; "
+                "prebuilt Snapshot loading is not valid for complete lifecycle timing"
+            )
         self._load_sources()
         _load_identity(
             self.config.patched_identity_path,
