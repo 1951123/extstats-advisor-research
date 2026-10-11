@@ -69,6 +69,7 @@ class LiveAdapterConfig:
     run_id: str
     enable_live: bool = False
     allow_fixture: bool = False
+    forest10_data_root: Path | None = None
     expected_advisor_sha: str = ADVISOR_SHA_V1
     expected_stock_sha: str = STOCK_POSTGRES_SHA
     expected_patched_sha: str = PATCHED_POSTGRES_SHA
@@ -459,6 +460,21 @@ class _BaseAdapter:
         from extstats_advisor.snapshot.bundle import load_snapshot
 
         self._snapshot = load_snapshot(self.config.snapshot_path)
+        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+            from .rq5_whatif_cost_v3 import V3_POPULATION_ROWS, V3_RELATION_ID, V3_SAMPLE_ROWS
+
+            dataset = self.manifest.get("dataset", {})
+            if len(self._snapshot.samples) != 1 or V3_RELATION_ID not in self._snapshot.samples:
+                raise LiveAdapterError("v3 snapshot relation identity does not match Forest10")
+            if len(self._snapshot.samples[V3_RELATION_ID]) != V3_SAMPLE_ROWS:
+                raise LiveAdapterError("v3 snapshot must contain exactly 30,000 rows")
+            populations = {
+                item.relation_id: float(item.row_count) for item in self._snapshot.populations
+            }
+            if populations.get(V3_RELATION_ID) != float(V3_POPULATION_ROWS):
+                raise LiveAdapterError("v3 snapshot population metadata must be 581012 rows")
+            if dataset.get("full_population_rows") != V3_POPULATION_ROWS:
+                raise LiveAdapterError("v3 full population binding drifted")
         self._universe = load_candidate_universe(
             self.config.candidate_universe_path, self._snapshot
         )
@@ -507,6 +523,12 @@ class StockPhysicalCostAdapter(_BaseAdapter):
 
     def prepare_run(self) -> int:
         self._load_sources()
+        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+            if self.config.forest10_data_root is None:
+                raise LiveAdapterError("v3 physical arm requires the audited Forest10 data root")
+            from .rq5_whatif_cost_v3 import validate_full_forest10_source
+
+            validate_full_forest10_source(self.config.forest10_data_root)
         self._identity = _load_identity(
             self.config.stock_identity_path, self.config.expected_stock_sha, "stock PostgreSQL"
         )
@@ -522,6 +544,26 @@ class StockPhysicalCostAdapter(_BaseAdapter):
         try:
             server = _verify_server(connection, self.config.stock_dsn, self._identity)
             relation_oid = _relation_oid(connection, self._relation.schema, self._relation.name)
+            population_rows = None
+            relation_stats = None
+            if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+                relation_name = (
+                    f"{_quote_identifier(self._relation.schema)}."
+                    f"{_quote_identifier(self._relation.name)}"
+                )
+                population_rows = int(
+                    connection.execute(f"SELECT count(*) FROM {relation_name}").fetchone()[0]
+                )
+                expected_population = int(self.manifest["dataset"]["full_population_rows"])
+                if population_rows != expected_population:
+                    raise LiveAdapterError(
+                        f"physical population row count {population_rows} != {expected_population}"
+                    )
+                relation_stats = connection.execute(
+                    "SELECT reltuples::double precision, relpages::bigint "
+                    "FROM pg_catalog.pg_class WHERE oid=%s",
+                    (relation_oid,),
+                ).fetchone()
             existing = connection.execute(
                 _EXPERIMENT_STATS_AUDIT_SQL,
                 (relation_oid,),
@@ -535,6 +577,22 @@ class StockPhysicalCostAdapter(_BaseAdapter):
                     "server": server,
                     "relation_oid": relation_oid,
                     "source_database": self._source_database,
+                    "population_rows": population_rows,
+                    "reltuples": None if relation_stats is None else float(relation_stats[0]),
+                    "relpages": None if relation_stats is None else int(relation_stats[1]),
+                    "sampling_contract": (
+                        {
+                            "statistics_target": int(self._statistics_target),
+                            "extended_statistics_sample_target_rule": "300 * max_statistics_target",
+                            "nominal_extended_statistics_sample_target": 300
+                            * int(self._statistics_target),
+                            "actual_sample_row_count_observable": False,
+                            "actual_sample_row_count_evidence": "not exposed by standard PostgreSQL catalog",
+                        }
+                        if self.manifest.get("format_version")
+                        == "rq5-whatif-evaluation-cost-manifest-v3"
+                        else None
+                    ),
                 }
             )
         finally:
@@ -799,6 +857,12 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
         self._sandbox_prepared = False
 
     def prepare_sample(self) -> int:
+        if self.manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+            if self.config.forest10_data_root is None:
+                raise LiveAdapterError("v3 catalogless arm requires the audited Forest10 data root")
+            from .rq5_whatif_cost_v3 import validate_full_forest10_source
+
+            validate_full_forest10_source(self.config.forest10_data_root)
         self._load_sources()
         _load_identity(
             self.config.patched_identity_path,
@@ -846,6 +910,17 @@ class CataloglessWhatIfCostAdapter(_BaseAdapter):
                     "semantic_digest"
                 ],
                 "analyze_count": self._materialization.analyze_count,
+                "sample_row_count": len(
+                    self._snapshot.samples[self._snapshot.schemas[0].relation_id]
+                ),
+                "population_row_count": float(
+                    next(
+                        item.row_count
+                        for item in self._snapshot.populations
+                        if item.relation_id == self._snapshot.schemas[0].relation_id
+                    )
+                ),
+                "statistics_target": self._statistics_target,
                 "ordinary_statistics_fingerprint": self._materialization.ordinary_stats_fingerprint,
                 "payload_states": {
                     item.candidate_id: item.state for item in self._materialization.candidates

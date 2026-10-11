@@ -427,6 +427,15 @@ def validate_manifest(
 ) -> dict[str, Any]:
     """Validate structure, immutable source bindings, and both analysis boundaries."""
 
+    if manifest.get("format_version") == "rq5-whatif-evaluation-cost-manifest-v3":
+        from .rq5_whatif_cost_v3 import validate_v3_manifest
+
+        return validate_v3_manifest(
+            manifest,
+            research_root=research_root,
+            verify_sources=verify_sources,
+        )
+
     _require(manifest.get("format_version") == MANIFEST_FORMAT, "unsupported cost manifest")
     digest = manifest.get("semantic_digest")
     _require(digest == semantic_digest(_body(manifest)), "manifest semantic digest mismatch")
@@ -581,6 +590,7 @@ class StageTimer:
         run_id: str,
         arm: str,
         repetition: int,
+        protocol_format: str = PROTOCOL_FORMAT,
         clock: Callable[[], int] = time.perf_counter_ns,
     ) -> None:
         self.writer = writer
@@ -590,6 +600,7 @@ class StageTimer:
         self.run_id = _identity(run_id, "run ID")
         self.arm = arm
         self.repetition = repetition
+        self.protocol_format = protocol_format
         self.clock = clock
 
     def measure(
@@ -638,7 +649,7 @@ class StageTimer:
             }
         return {
             "format_version": EVENT_FORMAT,
-            "protocol_format": PROTOCOL_FORMAT,
+            "protocol_format": self.protocol_format,
             "producer_commit_sha": self.producer_sha,
             "manifest_semantic_digest": self.manifest_digest,
             "binding_digest": self.binding_digest,
@@ -793,6 +804,10 @@ def validate_events(
         _require(
             event.get("manifest_semantic_digest") == manifest["semantic_digest"],
             "event manifest mismatch",
+        )
+        _require(
+            event.get("protocol_format") == manifest["protocol"]["format"],
+            "event protocol mismatch",
         )
         _require(
             event.get("binding_digest") == manifest["binding_digest"], "event binding mismatch"
@@ -1015,6 +1030,7 @@ def run_physical_arm(
             run_id=run_id,
             arm="physical",
             repetition=repetition,
+            protocol_format=str(manifest["protocol"]["format"]),
             clock=clock,
         )
         primary: BaseException | None = None
@@ -1105,6 +1121,7 @@ def run_catalogless_arm(
             run_id=run_id,
             arm="catalogless",
             repetition=repetition,
+            protocol_format=str(manifest["protocol"]["format"]),
             clock=clock,
         )
         primary: BaseException | None = None
@@ -1229,6 +1246,12 @@ def _parser() -> argparse.ArgumentParser:
     live.add_argument("--patched-dsn", required=True)
     live.add_argument("--stock-identity", type=Path, required=True)
     live.add_argument("--patched-identity", type=Path, required=True)
+    live.add_argument(
+        "--forest10-data-root",
+        type=Path,
+        default=None,
+        help="audited Forest10 data root required by v3 live runs",
+    )
     live.add_argument("--output-dir", type=Path, required=True)
     live.add_argument("--output", type=Path, required=True)
     live.add_argument("--run-id", required=True)
@@ -1316,6 +1339,7 @@ def main(argv: list[str] | None = None) -> int:
             workload_path=args.workload,
             stock_identity_path=args.stock_identity,
             patched_identity_path=args.patched_identity,
+            forest10_data_root=args.forest10_data_root,
             output_dir=args.output_dir,
             run_id=args.run_id,
             enable_live=args.enable_live_preflight,
