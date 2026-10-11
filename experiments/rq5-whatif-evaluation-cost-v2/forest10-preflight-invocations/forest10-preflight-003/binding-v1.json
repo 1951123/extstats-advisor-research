@@ -1,0 +1,84 @@
+{
+  "format_version": "rq5-forest10-limited-preflight-binding-v1",
+  "status": "static-binding-passed",
+  "classification": "integration-readiness-only",
+  "invocation_id": "forest10-preflight-003",
+  "producer_commit_sha": "e93fcd2796d2d81b93b332e72ef46d23b7f42ccc",
+  "source_prior_attempt": "../forest10-preflight-002/setup-failure-v1.json",
+  "protocol": {
+    "path": "docs/protocols/rq5-whatif-evaluation-cost-v2.md",
+    "sha256": "56175f66c6e05066de91ef7219984c7f5889a6484173c4d4a6766ce8aeaf5192",
+    "analysis_a": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-a-manifest-v1.json",
+      "semantic_digest": "c58f6abed18a4a3998c1bb49cf125cc760fc27de793e36588e17bbf84d8d8b81",
+      "byte_sha256": "d0c4d8a991b74581d9bbaaa69881b8b1dae66911d55fabc85940fce78186c919"
+    },
+    "analysis_b": {
+      "path": "experiments/rq5-whatif-evaluation-cost-v2/manifests/analysis-b-manifest-v1.json",
+      "semantic_digest": "28c795e1f9c9e16b6de83b08a4ef12bc77e9a5ad37f0e1bfd1c33a95f02dc472",
+      "byte_sha256": "e71710605ec8295b3063916aa8c90b2ec9a2dde1dbf3071ec72f067f846b28cd"
+    }
+  },
+  "source_bindings": {
+    "stock_postgresql_sha": "0d1c00c624fa7367d4a895f44381887757289682",
+    "patched_postgresql_sha": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "advisor_sha": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "postgresql_version": "16.14"
+  },
+  "forest10": {
+    "dataset_id": "arecel-forest10",
+    "workload_id": "arecel_forest10_test_v1",
+    "relation": {
+      "catalog": "extstats_stock",
+      "schema": "public",
+      "name": "forest10",
+      "sample_rows": 10000,
+      "sample_seed": 42,
+      "statistics_target": 100
+    },
+    "snapshot": {
+      "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot",
+      "semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a",
+      "manifest_sha256": "7d05f86bde463e6b4c1090261306784ec8c7960b28baaccdddc27b56499f31ed"
+    },
+    "candidate_universe": {
+      "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+      "count": 57,
+      "semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b",
+      "source_sha256": "006b82f33ed08e0df7320caae74e7836394c2e027a0490bfab3ea90a1c9f6703"
+    },
+    "workload": {
+      "path": "runs/_forest10_workload.json",
+      "count": 10000,
+      "sha256": "362b8b9afccd979a8cea25e996d6b216535a05ab175b7452574310d7644515c6"
+    }
+  },
+  "limited_scope": {
+    "formal_analysis": "A",
+    "selected_configuration_id": "A-singleton-01",
+    "selected_candidate_id": "cand_1537a6ae8ef67c379c8d0fa0",
+    "selected_candidate_order": ["cand_1537a6ae8ef67c379c8d0fa0"],
+    "query_selection": "first five entries of frozen 128-query subset",
+    "query_ids": [
+      "arecel_forest10_test_000000",
+      "arecel_forest10_test_000078",
+      "arecel_forest10_test_000157",
+      "arecel_forest10_test_000236",
+      "arecel_forest10_test_000314"
+    ],
+    "physical_analyze_limit": 1,
+    "physical_explain_limit": 5,
+    "catalogless_configuration_limit": 1,
+    "catalogless_explain_limit": 5,
+    "formal_timing": false,
+    "advisor_search": false,
+    "ground_truth_acquisition": false
+  },
+  "gates": {
+    "formal_manifests_validated": true,
+    "formal_manifests_unchanged": true,
+    "source_pins_verified": true,
+    "snapshot_and_candidate_bindings_verified": true,
+    "live_database_writes_before_this_record": false
+  }
+}

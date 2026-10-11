@@ -1,0 +1,27 @@
+{
+  "format_version": "rq5-forest10-limited-preflight-failure-v1",
+  "classification": "integration-readiness-only",
+  "invocation_id": "forest10-preflight-002",
+  "status": "failed",
+  "phase": "stock-snapshot-load.copy-relation-identifier",
+  "operation": "load sealed Forest10 sample into stock extstats_stock",
+  "error": {
+    "class": "TypeError",
+    "message": "unsupported operand type(s) for +: 'Identifier' and 'str'"
+  },
+  "database_writes_before_failure": {
+    "stock": ["CREATE DATABASE extstats_stock", "CREATE TABLE public.forest10"],
+    "patched": ["CREATE DATABASE extstats_stock"]
+  },
+  "analyze_calls": 0,
+  "explain_calls": 0,
+  "cleanup": {
+    "required_resources": [
+      "stock database extstats_stock",
+      "patched database extstats_stock"
+    ],
+    "status": "pending-safe-cleanup-before-next-invocation"
+  },
+  "scientific_observations": false,
+  "producer_commit_sha": "e93fcd2796d2d81b93b332e72ef46d23b7f42ccc"
+}
