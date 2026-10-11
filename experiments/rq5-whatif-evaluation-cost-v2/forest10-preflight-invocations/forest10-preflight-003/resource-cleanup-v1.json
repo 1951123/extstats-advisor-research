@@ -1,0 +1,28 @@
+{
+  "format_version": "rq5-forest10-limited-preflight-cleanup-v1",
+  "classification": "integration-readiness-only",
+  "invocation_id": "forest10-preflight-003",
+  "status": "complete",
+  "resources": [
+    {
+      "cluster": "stock",
+      "port": 55432,
+      "database": "extstats_stock",
+      "owner_verified": "wqts",
+      "drop": "DROP DATABASE ... WITH (FORCE)",
+      "residual_check": "absent"
+    },
+    {
+      "cluster": "patched",
+      "port": 55433,
+      "database": "extstats_stock",
+      "owner_verified": "wqts",
+      "drop": "DROP DATABASE ... WITH (FORCE)",
+      "residual_check": "absent"
+    }
+  ],
+  "analyze_calls": 0,
+  "explain_calls": 0,
+  "scientific_observations": false,
+  "producer_commit_sha": "80795b00c28c149d87061e9656c653606d972f02"
+}

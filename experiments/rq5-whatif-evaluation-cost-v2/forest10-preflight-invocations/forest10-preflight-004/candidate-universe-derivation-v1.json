@@ -1,0 +1,320 @@
+{
+  "candidate_count_contract": "the live RQ5 adapter requires an exact universe match to the frozen 57 eligible IDs",
+  "canonical_order": "eligible_universe.canonical_deployment_position ascending; identical to frozen RQ5 manifest order",
+  "definition_fields_verified": [
+    "relation_id",
+    "kind",
+    "column_ordinals",
+    "column_names"
+  ],
+  "derived_path": ".runtime/rq5-whatif-evaluation-cost-v2/forest10-preflight-004/candidate-universe-eligible-v1.json",
+  "derived_semantic_digest": "d06b1d43ddf5b2b75f2ab1a5ad88ef39380209a33ef6699958875c3638b9e73d",
+  "format_version": "rq5-forest10-eligible-candidate-universe-derivation-v1",
+  "rank_translation": "static_precedence_rank is renumbered 1..57 solely to satisfy the historical CandidateUniverse subset invariant; candidate identity, kind, columns, source snapshot, and canonical order are unchanged",
+  "selected_candidate_count": 57,
+  "selected_candidate_ids": [
+    "cand_1537a6ae8ef67c379c8d0fa0",
+    "cand_c2737dfb5bfbb3e415dfb793",
+    "cand_817be8bf7bbbc96c20bde230",
+    "cand_4de3778bb8674287b6dd5b29",
+    "cand_cbf4af3acd6feaa65760c6d1",
+    "cand_76679921292e8c769dbbd7bc",
+    "cand_0deae0d5de82a5a1fdc34111",
+    "cand_77c3e92fff291d4d9515dc69",
+    "cand_5ba9cc937a696a76876f820d",
+    "cand_bafa53ec095d804233d42826",
+    "cand_01933ab615fb49e2f81b5b92",
+    "cand_599a2efab190b6e2b7457ff1",
+    "cand_42d3a67034bf5f02658cb7bf",
+    "cand_6da3014a15c7b2b3c07e9d00",
+    "cand_c66e567561c42b80680d57a2",
+    "cand_6b7c22215c39c807cda3872e",
+    "cand_12b552d6e4274b3e7916918d",
+    "cand_5ef1e17a9fde8da19eda6ffc",
+    "cand_9be7db5012712e534c019f4c",
+    "cand_da7591327792c9bc98b427d7",
+    "cand_2d0c2bee852360475ed257b4",
+    "cand_c896441b03802e5c10cf4551",
+    "cand_04524e4170fda10f288de2ad",
+    "cand_14cd836002a9a76c97eb6c1e",
+    "cand_93882884648663deb326f015",
+    "cand_337495ed13b57f0375c7bcab",
+    "cand_6937f79d38c06930e7c9a9ac",
+    "cand_eacd76ebde5ba7e94ae853aa",
+    "cand_f2d14d17235b34bf39a631f5",
+    "cand_1b63c8f8f8149f09f2ecb7c4",
+    "cand_2bfd4df050e52e03bab680f1",
+    "cand_81dab29687d98fe8038c0eaa",
+    "cand_7bbe4e7fc76c5686e2511cd9",
+    "cand_ee4e6f9b6b050fa4d222c6a7",
+    "cand_4af628931e0d02eb50415f2b",
+    "cand_1c45580597c36333ce8f1444",
+    "cand_8b7a8e0422ed4ae2befb1bc8",
+    "cand_478f6c4acd54af28ee697d8d",
+    "cand_326fad30e7ded583291003e6",
+    "cand_4293ec8c30a7314cb8ef5dbf",
+    "cand_c9b6667734c10464fab19fca",
+    "cand_9e2c1625957106365a4e00c0",
+    "cand_25decdfdae3f06f5b53849b4",
+    "cand_b5554ee4928fcdbe8d6f046c",
+    "cand_a393d81ec58b047e1e129db0",
+    "cand_ea8b2557e86251bb3994535b",
+    "cand_eaa4ce0396b4cc5c68b2550e",
+    "cand_51488597ac9ebd3cb59d2ff1",
+    "cand_b431757a4868f78ad44fa186",
+    "cand_929dfbf8e7ddadf6f4b97e87",
+    "cand_d8596bbbd92afbad9d401cd6",
+    "cand_d94eec73746ef01a6811815f",
+    "cand_66f3d1c2b0b2b61a41f44994",
+    "cand_e15685675a396385fa8dc298",
+    "cand_c7595f3b6addcec1b9919cbe",
+    "cand_71249b442b7dc4205d74a4b9",
+    "cand_e1a89b9755e5e3f384afc69f"
+  ],
+  "semantic_digest": "0b5b6e5a9fc7a557876667b7d41711bc7684d44d2604ac7dc3a6ee002c089cc6",
+  "source_design": {
+    "path": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+    "semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+  },
+  "source_full_universe": {
+    "byte_sha256": "006b82f33ed08e0df7320caae74e7836394c2e027a0490bfab3ea90a1c9f6703",
+    "candidate_count": 90,
+    "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/candidate-universe.json",
+    "semantic_digest": "4eae9a02e3130a1ce7bbc1b1eda6b6e2dda86476a5386f455b0baca0e43e175b"
+  },
+  "source_rank_to_subset_rank": {
+    "cand_01933ab615fb49e2f81b5b92": {
+      "source": 32,
+      "subset": 11
+    },
+    "cand_04524e4170fda10f288de2ad": {
+      "source": 56,
+      "subset": 23
+    },
+    "cand_0deae0d5de82a5a1fdc34111": {
+      "source": 22,
+      "subset": 7
+    },
+    "cand_12b552d6e4274b3e7916918d": {
+      "source": 50,
+      "subset": 17
+    },
+    "cand_14cd836002a9a76c97eb6c1e": {
+      "source": 57,
+      "subset": 24
+    },
+    "cand_1537a6ae8ef67c379c8d0fa0": {
+      "source": 14,
+      "subset": 1
+    },
+    "cand_1b63c8f8f8149f09f2ecb7c4": {
+      "source": 63,
+      "subset": 30
+    },
+    "cand_1c45580597c36333ce8f1444": {
+      "source": 69,
+      "subset": 36
+    },
+    "cand_25decdfdae3f06f5b53849b4": {
+      "source": 76,
+      "subset": 43
+    },
+    "cand_2bfd4df050e52e03bab680f1": {
+      "source": 64,
+      "subset": 31
+    },
+    "cand_2d0c2bee852360475ed257b4": {
+      "source": 54,
+      "subset": 21
+    },
+    "cand_326fad30e7ded583291003e6": {
+      "source": 72,
+      "subset": 39
+    },
+    "cand_337495ed13b57f0375c7bcab": {
+      "source": 59,
+      "subset": 26
+    },
+    "cand_4293ec8c30a7314cb8ef5dbf": {
+      "source": 73,
+      "subset": 40
+    },
+    "cand_42d3a67034bf5f02658cb7bf": {
+      "source": 46,
+      "subset": 13
+    },
+    "cand_478f6c4acd54af28ee697d8d": {
+      "source": 71,
+      "subset": 38
+    },
+    "cand_4af628931e0d02eb50415f2b": {
+      "source": 68,
+      "subset": 35
+    },
+    "cand_4de3778bb8674287b6dd5b29": {
+      "source": 18,
+      "subset": 4
+    },
+    "cand_51488597ac9ebd3cb59d2ff1": {
+      "source": 81,
+      "subset": 48
+    },
+    "cand_599a2efab190b6e2b7457ff1": {
+      "source": 33,
+      "subset": 12
+    },
+    "cand_5ba9cc937a696a76876f820d": {
+      "source": 25,
+      "subset": 9
+    },
+    "cand_5ef1e17a9fde8da19eda6ffc": {
+      "source": 51,
+      "subset": 18
+    },
+    "cand_66f3d1c2b0b2b61a41f44994": {
+      "source": 86,
+      "subset": 53
+    },
+    "cand_6937f79d38c06930e7c9a9ac": {
+      "source": 60,
+      "subset": 27
+    },
+    "cand_6b7c22215c39c807cda3872e": {
+      "source": 49,
+      "subset": 16
+    },
+    "cand_6da3014a15c7b2b3c07e9d00": {
+      "source": 47,
+      "subset": 14
+    },
+    "cand_71249b442b7dc4205d74a4b9": {
+      "source": 89,
+      "subset": 56
+    },
+    "cand_76679921292e8c769dbbd7bc": {
+      "source": 21,
+      "subset": 6
+    },
+    "cand_77c3e92fff291d4d9515dc69": {
+      "source": 23,
+      "subset": 8
+    },
+    "cand_7bbe4e7fc76c5686e2511cd9": {
+      "source": 66,
+      "subset": 33
+    },
+    "cand_817be8bf7bbbc96c20bde230": {
+      "source": 16,
+      "subset": 3
+    },
+    "cand_81dab29687d98fe8038c0eaa": {
+      "source": 65,
+      "subset": 32
+    },
+    "cand_8b7a8e0422ed4ae2befb1bc8": {
+      "source": 70,
+      "subset": 37
+    },
+    "cand_929dfbf8e7ddadf6f4b97e87": {
+      "source": 83,
+      "subset": 50
+    },
+    "cand_93882884648663deb326f015": {
+      "source": 58,
+      "subset": 25
+    },
+    "cand_9be7db5012712e534c019f4c": {
+      "source": 52,
+      "subset": 19
+    },
+    "cand_9e2c1625957106365a4e00c0": {
+      "source": 75,
+      "subset": 42
+    },
+    "cand_a393d81ec58b047e1e129db0": {
+      "source": 78,
+      "subset": 45
+    },
+    "cand_b431757a4868f78ad44fa186": {
+      "source": 82,
+      "subset": 49
+    },
+    "cand_b5554ee4928fcdbe8d6f046c": {
+      "source": 77,
+      "subset": 44
+    },
+    "cand_bafa53ec095d804233d42826": {
+      "source": 28,
+      "subset": 10
+    },
+    "cand_c2737dfb5bfbb3e415dfb793": {
+      "source": 15,
+      "subset": 2
+    },
+    "cand_c66e567561c42b80680d57a2": {
+      "source": 48,
+      "subset": 15
+    },
+    "cand_c7595f3b6addcec1b9919cbe": {
+      "source": 88,
+      "subset": 55
+    },
+    "cand_c896441b03802e5c10cf4551": {
+      "source": 55,
+      "subset": 22
+    },
+    "cand_c9b6667734c10464fab19fca": {
+      "source": 74,
+      "subset": 41
+    },
+    "cand_cbf4af3acd6feaa65760c6d1": {
+      "source": 19,
+      "subset": 5
+    },
+    "cand_d8596bbbd92afbad9d401cd6": {
+      "source": 84,
+      "subset": 51
+    },
+    "cand_d94eec73746ef01a6811815f": {
+      "source": 85,
+      "subset": 52
+    },
+    "cand_da7591327792c9bc98b427d7": {
+      "source": 53,
+      "subset": 20
+    },
+    "cand_e15685675a396385fa8dc298": {
+      "source": 87,
+      "subset": 54
+    },
+    "cand_e1a89b9755e5e3f384afc69f": {
+      "source": 90,
+      "subset": 57
+    },
+    "cand_ea8b2557e86251bb3994535b": {
+      "source": 79,
+      "subset": 46
+    },
+    "cand_eaa4ce0396b4cc5c68b2550e": {
+      "source": 80,
+      "subset": 47
+    },
+    "cand_eacd76ebde5ba7e94ae853aa": {
+      "source": 61,
+      "subset": 28
+    },
+    "cand_ee4e6f9b6b050fa4d222c6a7": {
+      "source": 67,
+      "subset": 34
+    },
+    "cand_f2d14d17235b34bf39a631f5": {
+      "source": 62,
+      "subset": 29
+    }
+  },
+  "source_snapshot": {
+    "path": ".runtime/rq1-forest10-matched/advisor-design/2d6213e57c49975ef7a70c9c/advisor-snapshot",
+    "semantic_digest": "65cc525eee74175abbe53dd128b45a09ffa5ebad878f3d4c90f4a57660ef3a2a"
+  },
+  "status": "verified-derived-artifact"
+}
