@@ -26,7 +26,7 @@ the historical evidence source.
 | Artifact | Authoritative location | Digest / identity | Validation | Status |
 |---|---|---|---|---|
 | AdvisorSnapshot | `.runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/advisor-snapshot/` | `ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5` | `load_snapshot` and `validate_snapshot` | Valid locally; ignored runtime artifact |
-| CandidateUniverse | `.runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json` | `292247e8a8041eeb88de906b52eaf81f9fe981d33395a98d40698cca3134` | `load_candidate_universe` and snapshot compatibility validation | Valid locally; 57 candidates, 10,000 profiles, 210,640 incidence rows |
+| CandidateUniverse | `.runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json` | `292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134` | `load_candidate_universe` and snapshot compatibility validation | Valid locally; 57 candidates, 10,000 profiles, 210,640 incidence rows |
 | NativeStatsRepository | `experiments/rq5-whatif-evaluation-cost-v4/formal-analysis-a/catalogless/repetition-01/native-stats-repository/` | `fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184` | repository validator and compatibility validator | Valid; 57/57 present; tracked formal artifact |
 | Workload | `experiments/.../runs/_forest10_workload.json` | `362b8b9af...` as bound by v4 manifest | manifest SHA and workload identity | Valid; `arecel_forest10_test_v1`, 10,000 queries |
 | GroundTruthSet | `.runtime/rq1-forest10-matched/.../ground-truth-v1.json` | `f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be` | standalone validator passes; current snapshot compatibility fails | **Blocked** |

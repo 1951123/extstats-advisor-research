@@ -154,7 +154,7 @@
   },
   "artifact_bindings": {
     "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
-    "candidate_universe_semantic_digest": "292247e8a8041eeb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
     "native_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
     "workload_id": "arecel_forest10_test_v1",
     "ground_truth_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
