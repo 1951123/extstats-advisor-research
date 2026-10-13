@@ -1,0 +1,156 @@
+{
+  "format_version": "foundations-interaction-landscape-manifest-v1",
+  "status": "blocked-pending-runtime-artifact-binding",
+  "evidence_classification": "planned; no PostgreSQL observations",
+  "experiment_id": "foundations-interaction-landscape-v1",
+  "research_question": "Can workload-derived candidate structure and selectively measured interactions enable more efficient black-box statistics selection than generic black-box combinatorial optimization?",
+  "universe": {
+    "source_candidate_count": 57,
+    "enumerated_candidate_count": 8,
+    "configuration_count": 256,
+    "enumeration_order": "cardinality-then-declared-candidate-order",
+    "candidate_ids": [
+      "cand_0deae0d5de82a5a1fdc34111",
+      "cand_76679921292e8c769dbbd7bc",
+      "cand_77c3e92fff291d4d9515dc69",
+      "cand_5ba9cc937a696a76876f820d",
+      "cand_da7591327792c9bc98b427d7",
+      "cand_ea8b2557e86251bb3994535b",
+      "cand_4af628931e0d02eb50415f2b",
+      "cand_c7595f3b6addcec1b9919cbe"
+    ],
+    "selection_rule": {
+      "high_gain_count": 4,
+      "high_gain_source": "frozen-rq4-singleton-utility-signal",
+      "weak_singleton_count": 4,
+      "weak_singleton_threshold": 0.0,
+      "weak_singleton_tie_break": [
+        "frozen-workload-frequency-signal-descending",
+        "frozen-dependency-correlation-signal-descending",
+        "canonical-static-precedence-ascending",
+        "candidate-id-ascending"
+      ],
+      "held_out_interaction_outcomes_used": false,
+      "signal_source": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json",
+      "signal_source_semantic_digest": "71483b2e67c7d57cd2696ed0925ea6d817c6548eec5df9b594cc71c8cfe44283"
+    },
+    "candidate_metadata": [
+      {
+        "candidate_id": "cand_0deae0d5de82a5a1fdc34111",
+        "column_names": ["slope", "hillshade_noon"],
+        "column_ordinals": [3, 8],
+        "kind": "postgresql.mcv",
+        "static_precedence_rank": 22,
+        "selection_role": "high-singleton-gain"
+      },
+      {
+        "candidate_id": "cand_76679921292e8c769dbbd7bc",
+        "column_names": ["slope", "hillshade_9am"],
+        "column_ordinals": [3, 7],
+        "kind": "postgresql.mcv",
+        "static_precedence_rank": 21,
+        "selection_role": "high-singleton-gain"
+      },
+      {
+        "candidate_id": "cand_77c3e92fff291d4d9515dc69",
+        "column_names": ["slope", "hillshade_3pm"],
+        "column_ordinals": [3, 9],
+        "kind": "postgresql.mcv",
+        "static_precedence_rank": 23,
+        "selection_role": "high-singleton-gain"
+      },
+      {
+        "candidate_id": "cand_5ba9cc937a696a76876f820d",
+        "column_names": ["horizontal_distance_to_hydrology", "vertical_distance_to_hydrology"],
+        "column_ordinals": [4, 5],
+        "kind": "postgresql.mcv",
+        "static_precedence_rank": 25,
+        "selection_role": "high-singleton-gain"
+      },
+      {
+        "candidate_id": "cand_da7591327792c9bc98b427d7",
+        "column_names": ["elevation", "hillshade_3pm"],
+        "column_ordinals": [1, 9],
+        "kind": "postgresql.dependencies",
+        "static_precedence_rank": 53,
+        "selection_role": "weak-singleton-structural"
+      },
+      {
+        "candidate_id": "cand_ea8b2557e86251bb3994535b",
+        "column_names": ["vertical_distance_to_hydrology", "hillshade_3pm"],
+        "column_ordinals": [5, 9],
+        "kind": "postgresql.dependencies",
+        "static_precedence_rank": 79,
+        "selection_role": "weak-singleton-structural"
+      },
+      {
+        "candidate_id": "cand_4af628931e0d02eb50415f2b",
+        "column_names": ["slope", "hillshade_3pm"],
+        "column_ordinals": [3, 9],
+        "kind": "postgresql.dependencies",
+        "static_precedence_rank": 68,
+        "selection_role": "weak-singleton-structural"
+      },
+      {
+        "candidate_id": "cand_c7595f3b6addcec1b9919cbe",
+        "column_names": ["hillshade_noon", "hillshade_3pm"],
+        "column_ordinals": [8, 9],
+        "kind": "postgresql.dependencies",
+        "static_precedence_rank": 88,
+        "selection_role": "weak-singleton-structural"
+      }
+    ],
+    "native_state_required": "present for all eight candidates",
+    "candidate_incidence_binding": {
+      "status": "pending-exact-CandidateUniverse-load",
+      "required_field": "query_ids per candidate",
+      "selection_proxy_recorded": "frozen workload-frequency signal"
+    }
+  },
+  "oracle_contract": {
+    "objective": "weighted-workload-mean-v1",
+    "loss": "qerror-cardinality-floor-1-v1",
+    "direction": "lower-objective-is-better",
+    "improvement": "F(M)=J(empty)-J(M)",
+    "configuration_oracle_calls": 256,
+    "planner_query_calls": "positive-weight-supported-query-count times 256",
+    "native_analyze_per_configuration": 0,
+    "session_policy": "one backend-local session with immutable repository and ordered activation"
+  },
+  "source_bindings": {
+    "research_producer_commit_at_manifest_creation": "12be00c69ea4d4ab128a850e4c1bab9fd0463cc3",
+    "advisor_api_audit_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+    "advisor_frozen_artifact_commit": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgresql_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "postgresql_version": "16.14"
+  },
+  "artifact_bindings": {
+    "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "candidate_universe_semantic_digest": "292247e8a8041eeb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "native_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+    "workload_id": "arecel_forest10_test_v1",
+    "ground_truth_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
+    "ground_truth_source": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json::truth_binding",
+    "ground_truth_binding_status": "frozen-rq4-authoritative-external-exact"
+  },
+  "execution_parameters": {
+    "statistics_target": 100,
+    "query_order": "snapshot workload order",
+    "planner_settings": "frozen RQ5 v3 catalogless contract",
+    "repetitions": "at least one complete run for exploratory execution; no result without complete 256-subset coverage",
+    "random_search_seeds": [7, 19, 43],
+    "interaction_tolerance": 1e-12
+  },
+  "run_status_policy": {
+    "failed_observation": "preserve error and invalidate complete-landscape summary",
+    "missing_observation": "block analysis",
+    "duplicate_observation": "reject",
+    "synthetic_results": "synthetic",
+    "postgresql_smoke_results": "smoke-test",
+    "complete_forest10_results": "exploratory"
+  },
+  "blocking_reasons": [
+    "The exact matching AdvisorSnapshot, CandidateUniverse, native repository, and GroundTruthSet are not committed as portable artifacts in this repository; execution must bind them from an authorized runtime artifact location.",
+    "The exact per-candidate query incidence must be loaded from the matching CandidateUniverse before the manifest can be promoted from planned to executable."
+  ]
+}

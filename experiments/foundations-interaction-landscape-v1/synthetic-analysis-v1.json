@@ -1,0 +1,28 @@
+{
+  "format_version": "foundations-interaction-landscape-synthetic-analysis-v1",
+  "classification": "synthetic",
+  "status": "validated-offline",
+  "implementation": "extstats_advisor_research.foundations_interaction",
+  "database_observations": false,
+  "claims": {
+    "enumeration": "The implementation enumerates every subset exactly once in deterministic cardinality-then-declared-order order.",
+    "failure_handling": "Failed or missing observations are not converted to objective values and invalidate complete-landscape analysis.",
+    "analysis_families": [
+      "monotonicity edges",
+      "unconditional and context-conditioned pairwise interactions",
+      "finite-universe submodularity checks",
+      "complementarity witnesses",
+      "exact and at-most-k optima",
+      "oracle-assisted Greedy ADD and Random Search replay"
+    ],
+    "postgresql_effectiveness": "not evaluated"
+  },
+  "test_fixture_contracts": [
+    "monotone improvement",
+    "complementary candidate",
+    "positive pairwise interaction",
+    "finite optimum and budget-censored traces",
+    "missing, duplicate, and failed observation rejection"
+  ],
+  "interpretation_boundary": "Synthetic tests validate analysis logic only; they provide no evidence about PostgreSQL, Advisor behavior, or the empirical set function."
+}
