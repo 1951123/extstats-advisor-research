@@ -1,6 +1,6 @@
 {
   "format_version": "foundations-interaction-landscape-manifest-v1",
-  "status": "blocked-pending-runtime-artifact-binding",
+  "status": "blocked-current-ground-truth-artifact-mismatch",
   "evidence_classification": "planned; no PostgreSQL observations",
   "experiment_id": "foundations-interaction-landscape-v1",
   "research_question": "Can workload-derived candidate structure and selectively measured interactions enable more efficient black-box statistics selection than generic black-box combinatorial optimization?",
@@ -40,7 +40,10 @@
         "column_names": ["slope", "hillshade_noon"],
         "column_ordinals": [3, 8],
         "kind": "postgresql.mcv",
-        "static_precedence_rank": 22,
+        "static_precedence_rank": 7,
+        "incidence_count": 3659,
+        "incidence_sha256": "d6646403945486a97b41467472ee86722db97a2ca7a7f8b0898b374967932ed6",
+        "native_state": "present",
         "selection_role": "high-singleton-gain"
       },
       {
@@ -48,7 +51,10 @@
         "column_names": ["slope", "hillshade_9am"],
         "column_ordinals": [3, 7],
         "kind": "postgresql.mcv",
-        "static_precedence_rank": 21,
+        "static_precedence_rank": 6,
+        "incidence_count": 3689,
+        "incidence_sha256": "7d51e58ce4e7e6b71cc56955d1a2d9e24856cc31b045f378a566b9d3590af3d0",
+        "native_state": "present",
         "selection_role": "high-singleton-gain"
       },
       {
@@ -56,7 +62,10 @@
         "column_names": ["slope", "hillshade_3pm"],
         "column_ordinals": [3, 9],
         "kind": "postgresql.mcv",
-        "static_precedence_rank": 23,
+        "static_precedence_rank": 8,
+        "incidence_count": 3748,
+        "incidence_sha256": "99f4534b7d8366e0b435e37f22cefbf1c53ef5c5af0cdb4d8a10ebe5a46a7709",
+        "native_state": "present",
         "selection_role": "high-singleton-gain"
       },
       {
@@ -64,7 +73,10 @@
         "column_names": ["horizontal_distance_to_hydrology", "vertical_distance_to_hydrology"],
         "column_ordinals": [4, 5],
         "kind": "postgresql.mcv",
-        "static_precedence_rank": 25,
+        "static_precedence_rank": 9,
+        "incidence_count": 3653,
+        "incidence_sha256": "8e14cf764a0cef02b8429f687a5bad5ea6bfc0085c6e67ac4c6c3b002ca3e59e",
+        "native_state": "present",
         "selection_role": "high-singleton-gain"
       },
       {
@@ -72,7 +84,10 @@
         "column_names": ["elevation", "hillshade_3pm"],
         "column_ordinals": [1, 9],
         "kind": "postgresql.dependencies",
-        "static_precedence_rank": 53,
+        "static_precedence_rank": 20,
+        "incidence_count": 3777,
+        "incidence_sha256": "a261f2d6c8b4cca97df55101534128fb0cfcd67ce583c33770b1e147359abe97",
+        "native_state": "present",
         "selection_role": "weak-singleton-structural"
       },
       {
@@ -80,7 +95,10 @@
         "column_names": ["vertical_distance_to_hydrology", "hillshade_3pm"],
         "column_ordinals": [5, 9],
         "kind": "postgresql.dependencies",
-        "static_precedence_rank": 79,
+        "static_precedence_rank": 46,
+        "incidence_count": 3766,
+        "incidence_sha256": "5a170dafac5adee5ad1629ad2738ffb183666922af949a2a1199b142a3c046f2",
+        "native_state": "present",
         "selection_role": "weak-singleton-structural"
       },
       {
@@ -88,7 +106,10 @@
         "column_names": ["slope", "hillshade_3pm"],
         "column_ordinals": [3, 9],
         "kind": "postgresql.dependencies",
-        "static_precedence_rank": 68,
+        "static_precedence_rank": 35,
+        "incidence_count": 3748,
+        "incidence_sha256": "99f4534b7d8366e0b435e37f22cefbf1c53ef5c5af0cdb4d8a10ebe5a46a7709",
+        "native_state": "present",
         "selection_role": "weak-singleton-structural"
       },
       {
@@ -96,14 +117,21 @@
         "column_names": ["hillshade_noon", "hillshade_3pm"],
         "column_ordinals": [8, 9],
         "kind": "postgresql.dependencies",
-        "static_precedence_rank": 88,
+        "static_precedence_rank": 55,
+        "incidence_count": 3743,
+        "incidence_sha256": "a24c95f9604b1464ab6d348cac3d793bb2a746e655ac976fe40cd40195c74486",
+        "native_state": "present",
         "selection_role": "weak-singleton-structural"
       }
     ],
     "native_state_required": "present for all eight candidates",
     "candidate_incidence_binding": {
-      "status": "pending-exact-CandidateUniverse-load",
+      "status": "validated-from-current-CandidateUniverse",
       "required_field": "query_ids per candidate",
+      "canonicalization": "sorted-query-id-json-compact-utf8-sha256",
+      "source": ".runtime/rq5-whatif-evaluation-cost-v3/forest10-30000/candidate-universe.json",
+      "candidate_count": 57,
+      "incidence_count": 210640,
       "selection_proxy_recorded": "frozen workload-frequency signal"
     }
   },
@@ -118,7 +146,7 @@
     "session_policy": "one backend-local session with immutable repository and ordered activation"
   },
   "source_bindings": {
-    "research_producer_commit_at_manifest_creation": "b174131d044cf8b2e67a21432943fa7868ca7da3",
+    "research_producer_commit_at_manifest_creation": "f8c7c3566d58b78935148edf5f12e75db90769a5",
     "advisor_api_audit_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
     "advisor_frozen_artifact_commit": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
     "patched_postgresql_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
@@ -131,7 +159,8 @@
     "workload_id": "arecel_forest10_test_v1",
     "ground_truth_semantic_digest": "f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be",
     "ground_truth_source": "experiments/arecel-forest10/rq4-fixed-k/rq4-design-evaluation-v1.json::truth_binding",
-    "ground_truth_binding_status": "frozen-rq4-authoritative-external-exact"
+    "ground_truth_binding_status": "blocked-old-snapshot-mismatch",
+    "ground_truth_validation_note": "The available f2ea981e... GroundTruthSet is bound to snapshot 65cc525..., not the current ed5d82ff... snapshot; validation against the current snapshot fails closed."
   },
   "execution_parameters": {
     "statistics_target": 100,
@@ -150,7 +179,9 @@
     "complete_forest10_results": "exploratory"
   },
   "blocking_reasons": [
-    "The exact matching AdvisorSnapshot, CandidateUniverse, native repository, and GroundTruthSet are not committed as portable artifacts in this repository; execution must bind them from an authorized runtime artifact location.",
-    "The exact per-candidate query incidence must be loaded from the matching CandidateUniverse before the manifest can be promoted from planned to executable."
+    "The validated current snapshot and CandidateUniverse are ignored runtime artifacts and are not portable committed artifacts; their authoritative paths and digests are recorded in the EXP-002 audit.",
+    "The available GroundTruthSet has semantic digest f2ea981e2e11bc600fe7a21f2d27a041c82ed0313c1021a069929c04762a12be but is bound to snapshot 65cc525..., so it fails validation against current snapshot ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5.",
+    "Exact current-snapshot SingletonProfile and OptimizationPlan artifacts were not found; direct membership evaluation does not require them, but the historical RQ4 selection signals must remain labeled historical.",
+    "No PostgreSQL smoke test is authorized while the exact current GroundTruthSet binding remains unresolved."
   ]
 }
