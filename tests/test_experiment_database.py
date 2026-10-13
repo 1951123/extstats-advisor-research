@@ -104,7 +104,8 @@ def test_create_propagates_database_dsn_and_cleans_up() -> None:
 
     assert not cluster.present
     assert any(
-        query.startswith('CREATE DATABASE "exp_foundations_test"') for _, query in cluster.calls
+        query == 'CREATE DATABASE "exp_foundations_test" TEMPLATE template0'
+        for _, query in cluster.calls
     )
     assert any(
         query.startswith('DROP DATABASE "exp_foundations_test"') for _, query in cluster.calls

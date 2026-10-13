@@ -229,7 +229,9 @@ class ExperimentDatabase:
                     f"experiment database {self._database_name!r} already exists; refusing reuse"
                 )
             self._owner = str(_fetchone(connection, "SELECT current_user")[0])
-            connection.execute(f"CREATE DATABASE {_quote_identifier(self._database_name)}")
+            connection.execute(
+                f"CREATE DATABASE {_quote_identifier(self._database_name)} TEMPLATE template0"
+            )
             self._created = True
             record = _fetchone(
                 connection,
