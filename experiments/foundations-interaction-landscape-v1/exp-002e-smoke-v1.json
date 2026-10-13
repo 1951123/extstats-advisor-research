@@ -1,0 +1,92 @@
+{
+  "classification": "smoke-test",
+  "format_version": "foundations-exp-002e-smoke-v1",
+  "status": "failed-partial",
+  "failure_stage": "M2-pair-activation-order-check",
+  "research_producer_commit": "2c3be98c18a94c7a34c8a3472d3d3573dcbc627f",
+  "advisor_source_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "postgres_source_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "postgres_version": "16.14",
+  "patched_backend_contract": "postgresql-pgextadv-16.14-v1",
+  "database": {
+    "name": "extstats_stock",
+    "endpoint": "managed-local-patched-lab-port-55433",
+    "source_database_modified": false,
+    "dedicated_database_retained_empty": true
+  },
+  "artifacts": {
+    "snapshot": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "candidate_universe": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "native_repository": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+    "ground_truth": "bcea3b0f4076f0b27aa751d04a54688b3823983feadf6556aff7e35114d700c2",
+    "workload": "arecel_forest10_test_v1"
+  },
+  "frozen_memberships": {
+    "M0": [],
+    "M1": ["cand_0deae0d5de82a5a1fdc34111"],
+    "M2": ["cand_0deae0d5de82a5a1fdc34111", "cand_76679921292e8c769dbbd7bc"]
+  },
+  "session": {
+    "registered_candidates": 57,
+    "open_and_registration_elapsed_ns": 389426908,
+    "reset_diagnostic_planner_calls": 0
+  },
+  "observations": [
+    {
+      "configuration": "M0",
+      "membership": [],
+      "objective_J": 7.130279777941661,
+      "planner_calls_attempted": 10000,
+      "planner_calls_succeeded": 10000,
+      "evaluation_elapsed_ns": 3679368909,
+      "activation_elapsed_ns": 1000093,
+      "utility_elapsed_ns": 13828117,
+      "active_virtual_oids": [],
+      "estimate_trace_sha256": "e8905dbeb14020e088c2fe80c8f7c18249e7f3e98b9faa3c0236c51e305e61de",
+      "status": "success"
+    },
+    {
+      "configuration": "M1",
+      "membership": ["cand_0deae0d5de82a5a1fdc34111"],
+      "objective_J": 6.910739517685949,
+      "planner_calls_attempted": 10000,
+      "planner_calls_succeeded": 10000,
+      "evaluation_elapsed_ns": 3635108375,
+      "activation_elapsed_ns": 518802,
+      "utility_elapsed_ns": 17159986,
+      "active_virtual_oids": [2152206366],
+      "estimate_trace_sha256": "ad555ca275c4c6b0a33ca88b80b6dca5cf2adee47ccf0ebb90063d13b2e63e3e",
+      "status": "success"
+    },
+    {
+      "configuration": "M2",
+      "membership": ["cand_0deae0d5de82a5a1fdc34111", "cand_76679921292e8c769dbbd7bc"],
+      "expected_virtual_oids": [2152206366, 3096182549],
+      "observed_virtual_oids": [3096182549, 2152206366],
+      "planner_calls_attempted": 0,
+      "planner_calls_succeeded": 0,
+      "status": "failed"
+    }
+  ],
+  "primary_planner_calls": {
+    "expected": 30000,
+    "attempted": 20000,
+    "succeeded": 20000
+  },
+  "cleanup": {
+    "planner_session_closed": true,
+    "sandbox_destroyed": true,
+    "sandbox_destroy_elapsed_ns": 14788468,
+    "post_cleanup_target_relation": false,
+    "post_cleanup_frozen_sample_relation": false,
+    "post_cleanup_internal_schema": false,
+    "post_cleanup_physical_extended_statistics": 0,
+    "source_database_modified": false,
+    "managed_server_stopped": true
+  },
+  "failure": {
+    "error": "RuntimeError: M2-pair activation mismatch: (3096182549, 2152206366) != (2152206366, 3096182549)",
+    "smoke_valid": false,
+    "exp003_ready": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "classification": "integration-readiness-only",
+  "format_version": "foundations-exp-002e-bootstrap-v1",
+  "status": "success",
+  "research_producer_commit": "2c3be98c18a94c7a34c8a3472d3d3573dcbc627f",
+  "advisor_source_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "postgres_source_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+  "postgres_version": "16.14",
+  "patched_backend_contract": "postgresql-pgextadv-16.14-v1",
+  "database": {
+    "name": "extstats_stock",
+    "endpoint": "managed-local-patched-lab-port-55433",
+    "preexisting_owned_empty_database": true,
+    "created_by_invocation": false,
+    "source_database_modified": false
+  },
+  "artifacts": {
+    "snapshot": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "candidate_universe": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "native_repository": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+    "ground_truth": "bcea3b0f4076f0b27aa751d04a54688b3823983feadf6556aff7e35114d700c2",
+    "workload": "arecel_forest10_test_v1"
+  },
+  "sandbox": {
+    "target_relation": "extstats_stock.public.forest10",
+    "target_relation_oid": 17633,
+    "frozen_sample_relation": "extstats_advisor_internal.frozen_sample_ed5d82ffd6999989d86097d4",
+    "sample_rows": 30000,
+    "population_metadata_rows": 581012,
+    "statistics_target": 100,
+    "ordinary_statistics_fingerprint": "9c880f2bb54fff888b0afd1c9f30b4ea7f17ecaf56a74d87c50b97b85e6d0f55",
+    "physical_extended_statistics": 0,
+    "repository_candidates": 57,
+    "present_payloads": 57,
+    "absent_payloads": 0,
+    "autovacuum_disabled": true
+  },
+  "timing_ns": {
+    "bootstrap": 867877177,
+    "verification": 382154109
+  }
+}
