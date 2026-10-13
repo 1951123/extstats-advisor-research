@@ -93,15 +93,32 @@ def _candidate_ids(universe: Any) -> tuple[str, ...]:
     return tuple(candidate.candidate_id for candidate in universe.candidates)
 
 
-def _positive_query_ids(universe: Any, snapshot: Any | None) -> tuple[str, ...]:
+def _positive_query_ids(
+    universe: Any,
+    snapshot: Any | None,
+    requested_query_ids: Sequence[str] | None = None,
+) -> tuple[str, ...]:
     profiles = tuple(universe.query_profiles)
-    result = tuple(
+    supported = tuple(
         profile.query_id
         for profile in profiles
         if profile.analysis_status == "supported" and profile.weight > 0
     )
-    if not result:
+    if not supported:
         raise OracleIntegrationError("candidate universe has no positive-weight supported queries")
+    if requested_query_ids is None:
+        result = supported
+    else:
+        result = tuple(requested_query_ids)
+        if any(not isinstance(query_id, str) or not query_id for query_id in result):
+            raise OracleIntegrationError("query_ids must contain non-empty query IDs")
+        if len(result) != len(set(result)):
+            raise OracleIntegrationError("query_ids must not contain duplicates")
+        unknown = sorted(set(result) - set(supported))
+        if unknown:
+            raise OracleIntegrationError(
+                f"query_ids are not positive-weight supported queries: {unknown}"
+            )
     if snapshot is not None:
         workload_ids = {query.query_id for query in snapshot.workload.queries}
         unknown = set(result) - workload_ids
@@ -124,6 +141,7 @@ class BlackBoxMembershipOracle:
         global_precedence: Sequence[str],
         utility_provider: Any,
         native_repository: Any | None = None,
+        query_ids: Sequence[str] | None = None,
         expected_snapshot_digest: str | None = None,
         expected_candidate_universe_digest: str | None = None,
     ) -> None:
@@ -135,7 +153,7 @@ class BlackBoxMembershipOracle:
         if not self._candidate_order:
             raise OracleIntegrationError("candidate universe is empty")
         self._global_precedence = self._validate_global_precedence(global_precedence)
-        self._query_ids = _positive_query_ids(candidate_universe, snapshot)
+        self._query_ids = _positive_query_ids(candidate_universe, snapshot, query_ids)
         if (
             expected_snapshot_digest is not None
             and snapshot.semantic_digest != expected_snapshot_digest
