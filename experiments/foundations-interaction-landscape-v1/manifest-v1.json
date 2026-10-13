@@ -118,7 +118,7 @@
     "session_policy": "one backend-local session with immutable repository and ordered activation"
   },
   "source_bindings": {
-    "research_producer_commit_at_manifest_creation": "12be00c69ea4d4ab128a850e4c1bab9fd0463cc3",
+    "research_producer_commit_at_manifest_creation": "b174131d044cf8b2e67a21432943fa7868ca7da3",
     "advisor_api_audit_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
     "advisor_frozen_artifact_commit": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
     "patched_postgresql_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
