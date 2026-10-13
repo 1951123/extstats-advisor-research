@@ -162,10 +162,16 @@ def test_smoke_composes_lifecycle_and_explicit_precedence() -> None:
     )
 
     assert result.complete
-    assert [item.diagnostics.membership for item in result.evaluations] == [(), (A,), (A, B)]
+    assert [item.diagnostics.membership for item in result.evaluations] == [
+        (),
+        (A,),
+        (B,),
+        (A, B),
+    ]
     assert [event for event in events if event[0] == "activate"] == [
         ("activate", ()),
         ("activate", (A,)),
+        ("activate", (B,)),
         ("activate", (A, B)),
     ]
     assert ("planner-database", "exp_foundations_offline") in events

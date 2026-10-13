@@ -298,7 +298,7 @@ def run_foundations_oracle_smoke(
     services: FoundationsOracleServices | None = None,
     lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any] = ExperimentDatabase,
 ) -> FoundationsSmokeResult:
-    """Compose one isolated M0/M1/M2 smoke run without persisting intermediates."""
+    """Compose one isolated four-configuration interaction pilot without persisting intermediates."""
 
     services = services or _default_services(inputs.advisor_root, inputs.expected_advisor_sha)
     snapshot, universe, ground_truth = _validate_bound_inputs(inputs, services)
@@ -359,7 +359,12 @@ def run_foundations_oracle_smoke(
                 expected_snapshot_digest=inputs.expected_snapshot_digest,
                 expected_candidate_universe_digest=inputs.expected_candidate_universe_digest,
             )
-            memberships = ((), (SMOKE_CANDIDATE_A,), (SMOKE_CANDIDATE_A, SMOKE_CANDIDATE_B))
+            memberships = (
+                (),
+                (SMOKE_CANDIDATE_A,),
+                (SMOKE_CANDIDATE_B,),
+                (SMOKE_CANDIDATE_A, SMOKE_CANDIDATE_B),
+            )
             evaluations = tuple(oracle.evaluate(membership) for membership in memberships)
             result = FoundationsSmokeResult(
                 database.database_name,
