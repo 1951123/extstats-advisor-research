@@ -1,0 +1,17 @@
+{
+  "classification": "offline-artifact-binding",
+  "format_version": "foundations-ground-truth-binding-v1",
+  "ground_truth_path": ".runtime/foundations-interaction-landscape-v1/current-snapshot-ground-truth-v1.json",
+  "ground_truth_semantic_digest": "bcea3b0f4076f0b27aa751d04a54688b3823983feadf6556aff7e35114d700c2",
+  "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+  "source_artifact_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+  "source_observation_semantic_digest": "4158c749c583d9c21137564361b6fb538ad9f6a7bcac11645384540d37476546",
+  "authority": "sfu-db/AreCELearnedYet",
+  "dataset_identity": "fc25a1e2c7deefd2ba071985afd8dc78a7d547602e49f9fff7ed3def8d230556",
+  "source_revision": "aa52da7768023270bad884232972e0b77ec6534a",
+  "workload_id": "arecel_forest10_test_v1",
+  "query_count": 10000,
+  "collection_contract": "authoritative-external-exact-cardinality-v1",
+  "producer_revision": "ed81bdc7020421e2c338efbb1ef44c7c31aaf44f",
+  "postgresql_exact_equivalence": "not independently re-executed; provenance-only policy"
+}

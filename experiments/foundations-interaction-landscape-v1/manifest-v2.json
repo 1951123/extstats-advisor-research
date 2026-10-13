@@ -1,0 +1,49 @@
+{
+  "format_version": "foundations-interaction-landscape-manifest-v2",
+  "experiment_id": "foundations-interaction-landscape-v1-rebound",
+  "base_manifest": "manifest-v1.json",
+  "status": "blocked-pending-live-smoke-environment",
+  "evidence_classification": "artifact-bound; no PostgreSQL observations",
+  "selection_policy": {
+    "mode": "prespecified-structural-study-universe-v1",
+    "candidate_selection_uses_current_singleton_utility": false,
+    "historical_roles_are_not_current_utility_claims": true,
+    "candidate_ids": [
+      "cand_0deae0d5de82a5a1fdc34111",
+      "cand_76679921292e8c769dbbd7bc",
+      "cand_77c3e92fff291d4d9515dc69",
+      "cand_5ba9cc937a696a76876f820d",
+      "cand_da7591327792c9bc98b427d7",
+      "cand_ea8b2557e86251bb3994535b",
+      "cand_4af628931e0d02eb50415f2b",
+      "cand_c7595f3b6addcec1b9919cbe"
+    ]
+  },
+  "artifact_bindings": {
+    "snapshot_semantic_digest": "ed5d82ffd6999989d86097d42252f635e0fa38928774b5ed38910aa47bf2a4f5",
+    "candidate_universe_semantic_digest": "292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134",
+    "native_repository_semantic_digest": "fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184",
+    "ground_truth_semantic_digest": "bcea3b0f4076f0b27aa751d04a54688b3823983feadf6556aff7e35114d700c2",
+    "source_observation_sha256": "88f752eda0a55e3b361ac2a24651a4faf5039aec77c4669bb7a8f6b0802a0744",
+    "workload_id": "arecel_forest10_test_v1",
+    "query_count": 10000
+  },
+  "oracle_contract": {
+    "objective": "weighted-workload-mean-v1",
+    "loss": "qerror-cardinality-floor-1-v1",
+    "direction": "lower-objective-is-better",
+    "empty_configuration_supported": true,
+    "configuration_identity": "canonical-ordered-membership-sha256-v1",
+    "native_analyze_per_configuration": 0
+  },
+  "source_bindings": {
+    "advisor_frozen_commit": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
+    "patched_postgresql_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
+    "stock_postgresql_commit": "0d1c00c624fa7367d4a895f44381887757289682",
+    "upstream_arecel_commit": "aa52da7768023270bad884232972e0b77ec6534a"
+  },
+  "blocking_reasons": [
+    "No explicit authorized PostgreSQL smoke-test DSNs are configured in this invocation environment.",
+    "No live smoke observation has been produced; EXP-003 remains blocked pending the bounded smoke gate."
+  ]
+}
