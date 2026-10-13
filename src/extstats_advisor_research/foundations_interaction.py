@@ -73,6 +73,7 @@ class ConfigurationObservation:
     elapsed_ns: int
     oracle_invocations: int
     planner_query_count: int
+    cache_hit: bool = False
     error: str | None = None
 
     def __post_init__(self) -> None:
@@ -84,11 +85,17 @@ class ConfigurationObservation:
             raise LandscapeValidationError(
                 "observation counts and elapsed time must be non-negative"
             )
+        if self.cache_hit and self.oracle_invocations != 0:
+            raise LandscapeValidationError("cached observations cannot count an oracle invocation")
         if self.status == "complete":
             if self.objective is None or not math.isfinite(self.objective):
                 raise LandscapeValidationError("complete observations require a finite objective")
             if self.error is not None:
                 raise LandscapeValidationError("complete observations cannot carry an error")
+            if not self.cache_hit and self.oracle_invocations < 1:
+                raise LandscapeValidationError(
+                    "online complete observations require an oracle invocation"
+                )
         elif not self.error:
             raise LandscapeValidationError("failed observations must preserve an error")
 
@@ -101,6 +108,7 @@ class ConfigurationObservation:
         elapsed_ns: int,
         oracle_invocations: int = 1,
         planner_query_count: int = 0,
+        cache_hit: bool = False,
     ) -> ConfigurationObservation:
         ordered = tuple(membership)
         return cls(
@@ -111,6 +119,7 @@ class ConfigurationObservation:
             elapsed_ns,
             oracle_invocations,
             planner_query_count,
+            cache_hit=cache_hit,
         )
 
     @classmethod
@@ -132,7 +141,7 @@ class ConfigurationObservation:
             elapsed_ns,
             oracle_invocations,
             planner_query_count,
-            error,
+            error=error,
         )
 
     def as_dict(self) -> dict[str, Any]:
@@ -144,8 +153,37 @@ class ConfigurationObservation:
             "elapsed_ns": self.elapsed_ns,
             "oracle_invocations": self.oracle_invocations,
             "planner_query_count": self.planner_query_count,
+            "cache_hit": self.cache_hit,
             "error": self.error,
         }
+
+
+def objective_from_utility_result(result: Any) -> float:
+    """Extract and validate the Advisor utility objective without importing Advisor."""
+
+    objective = getattr(result, "objective", None)
+    if isinstance(objective, bool) or not isinstance(objective, (int, float)):
+        raise LandscapeValidationError("utility result must expose a numeric objective")
+    objective_value = float(objective)
+    if not math.isfinite(objective_value):
+        raise LandscapeValidationError("utility objective must be finite")
+    return objective_value
+
+
+def validate_provenance(actual: Mapping[str, str], expected: Mapping[str, str]) -> dict[str, str]:
+    """Require exact source/protocol identities before observations are analyzed."""
+
+    missing = sorted(set(expected) - set(actual))
+    mismatched = {
+        key: f"expected={expected[key]!r}, actual={actual.get(key)!r}"
+        for key in expected
+        if key in actual and actual[key] != expected[key]
+    }
+    if missing or mismatched:
+        raise LandscapeValidationError(
+            f"provenance mismatch; missing={missing!r}, mismatched={mismatched!r}"
+        )
+    return {key: actual[key] for key in expected}
 
 
 def validate_complete_landscape(
@@ -568,4 +606,8 @@ def summarize_counts(observations: Iterable[ConfigurationObservation]) -> dict[s
         "failed_count": sum(item.status == "failed" for item in records),
         "oracle_invocation_count": sum(item.oracle_invocations for item in records),
         "planner_query_count": sum(item.planner_query_count for item in records),
+        "cache_hit_count": sum(item.cache_hit for item in records),
+        "online_evaluation_count": sum(
+            item.status == "complete" and not item.cache_hit for item in records
+        ),
     }

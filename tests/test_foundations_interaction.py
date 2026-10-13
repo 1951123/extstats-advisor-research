@@ -13,10 +13,13 @@ from extstats_advisor_research.foundations_interaction import (
     greedy_add_trace,
     improvement_values,
     monotonicity_report,
+    objective_from_utility_result,
     pairwise_interaction_report,
     random_search_trace,
     submodularity_report,
+    summarize_counts,
     validate_complete_landscape,
+    validate_provenance,
 )
 
 
@@ -126,3 +129,31 @@ def test_failed_observation_preserves_diagnostics() -> None:
     assert observation.error == "native planner error"
     with pytest.raises(LandscapeValidationError):
         ConfigurationObservation("wrong", ("a",), "complete", 1.0, 0, 1, 0)
+
+
+def test_provenance_objective_and_cached_evaluation_accounting() -> None:
+    assert validate_provenance({"protocol": "v1", "source": "abc"}, {"protocol": "v1"}) == {
+        "protocol": "v1"
+    }
+    with pytest.raises(LandscapeValidationError, match="provenance mismatch"):
+        validate_provenance({"protocol": "old"}, {"protocol": "v1"})
+
+    class Result:
+        objective = 3.5
+
+    assert objective_from_utility_result(Result()) == 3.5
+    with pytest.raises(LandscapeValidationError, match="finite"):
+        objective_from_utility_result(type("Result", (), {"objective": float("inf")})())
+
+    online = ConfigurationObservation.complete(("a",), 1.0, elapsed_ns=3)
+    cached = ConfigurationObservation.complete(
+        ("a",), 1.0, elapsed_ns=0, oracle_invocations=0, cache_hit=True
+    )
+    counts = summarize_counts([online, cached])
+    assert counts["oracle_invocation_count"] == 1
+    assert counts["online_evaluation_count"] == 1
+    assert counts["cache_hit_count"] == 1
+    with pytest.raises(LandscapeValidationError, match="cached"):
+        ConfigurationObservation.complete(
+            ("a",), 1.0, elapsed_ns=1, oracle_invocations=1, cache_hit=True
+        )
