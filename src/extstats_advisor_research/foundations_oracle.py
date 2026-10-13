@@ -121,6 +121,7 @@ class BlackBoxMembershipOracle:
         session: PlannerSession,
         snapshot: Any,
         candidate_universe: Any,
+        global_precedence: Sequence[str],
         utility_provider: Any,
         native_repository: Any | None = None,
         expected_snapshot_digest: str | None = None,
@@ -133,6 +134,7 @@ class BlackBoxMembershipOracle:
         self._candidate_order = _candidate_ids(candidate_universe)
         if not self._candidate_order:
             raise OracleIntegrationError("candidate universe is empty")
+        self._global_precedence = self._validate_global_precedence(global_precedence)
         self._query_ids = _positive_query_ids(candidate_universe, snapshot)
         if (
             expected_snapshot_digest is not None
@@ -174,8 +176,35 @@ class BlackBoxMembershipOracle:
     def candidate_order(self) -> tuple[str, ...]:
         return self._candidate_order
 
+    @property
+    def global_precedence(self) -> tuple[str, ...]:
+        return self._global_precedence
+
+    def _validate_global_precedence(self, precedence: Sequence[str]) -> tuple[str, ...]:
+        ordered = tuple(precedence)
+        if any(not isinstance(candidate_id, str) or not candidate_id for candidate_id in ordered):
+            raise OracleIntegrationError("global precedence must contain non-empty candidate IDs")
+        if len(ordered) != len(set(ordered)):
+            raise OracleIntegrationError("global precedence must not contain duplicates")
+        eligible = set(self._candidate_order)
+        actual = set(ordered)
+        missing = sorted(eligible - actual)
+        unknown = sorted(actual - eligible)
+        if missing or unknown:
+            details: list[str] = []
+            if missing:
+                details.append(f"missing candidates: {missing}")
+            if unknown:
+                details.append(f"unknown candidates: {unknown}")
+            raise OracleIntegrationError("global precedence mismatch (" + "; ".join(details) + ")")
+        return ordered
+
     def _configuration(self, membership: Sequence[str]) -> tuple[str, ...]:
-        return canonical_membership(self._candidate_order, membership)
+        validated = canonical_membership(self._candidate_order, membership)
+        selected = set(validated)
+        return tuple(
+            candidate_id for candidate_id in self._global_precedence if candidate_id in selected
+        )
 
     def _activate(self, membership: tuple[str, ...]) -> None:
         from extstats_advisor.dbms.postgres.planner import PostgresStatisticsConfiguration

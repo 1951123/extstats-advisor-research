@@ -53,7 +53,7 @@ class Utility:
 
 
 def _inputs():
-    candidates = (Candidate("a"), Candidate("b"))
+    candidates = (Candidate("b"), Candidate("a"))
     universe = SimpleNamespace(
         candidates=candidates,
         query_profiles=(Profile("q1"), Profile("q2")),
@@ -84,11 +84,12 @@ def test_empty_and_canonical_memberships_reuse_one_session() -> None:
         session=session,
         snapshot=snapshot,
         candidate_universe=universe,
+        global_precedence=("a", "b"),
         utility_provider=Utility(),
         expected_snapshot_digest="s" * 64,
         expected_candidate_universe_digest="u" * 64,
     )
-    first = oracle.evaluate({"b", "a"})
+    first = oracle.evaluate(("b", "a"))
     cached = oracle.evaluate(("a", "b"))
     empty = oracle.evaluate(())
     assert first.objective == 3.0
@@ -102,6 +103,47 @@ def test_empty_and_canonical_memberships_reuse_one_session() -> None:
     assert session.closed
 
 
+def test_explicit_precedence_controls_pair_and_singleton_activation() -> None:
+    snapshot, universe = _inputs()
+    session = FakeSession({"q1": 2, "q2": 4})
+    oracle = BlackBoxMembershipOracle(
+        session=session,
+        snapshot=snapshot,
+        candidate_universe=universe,
+        global_precedence=("a", "b"),
+        utility_provider=Utility(),
+    )
+
+    pair = oracle.evaluate(("b", "a"))
+    singleton = oracle.evaluate(("b",))
+
+    assert pair.diagnostics.membership == ("a", "b")
+    assert singleton.diagnostics.membership == ("b",)
+    assert session.activations == [("a", "b"), ("b",)]
+
+
+@pytest.mark.parametrize(
+    ("precedence", "message"),
+    [
+        (("a",), "missing candidates"),
+        (("a", "a"), "duplicates"),
+        (("a", "b", "unknown"), "unknown candidates"),
+    ],
+)
+def test_global_precedence_must_cover_each_eligible_candidate_once(
+    precedence: tuple[str, ...], message: str
+) -> None:
+    snapshot, universe = _inputs()
+    with pytest.raises(ValueError, match=message):
+        BlackBoxMembershipOracle(
+            session=FakeSession({"q1": 1, "q2": 1}),
+            snapshot=snapshot,
+            candidate_universe=universe,
+            global_precedence=precedence,
+            utility_provider=Utility(),
+        )
+
+
 def test_digest_and_workload_mismatch_are_rejected_before_planner_calls() -> None:
     snapshot, universe = _inputs()
     with pytest.raises(ValueError, match="snapshot digest"):
@@ -109,6 +151,7 @@ def test_digest_and_workload_mismatch_are_rejected_before_planner_calls() -> Non
             session=FakeSession({"q1": 1, "q2": 1}),
             snapshot=snapshot,
             candidate_universe=universe,
+            global_precedence=("a", "b"),
             utility_provider=Utility(),
             expected_snapshot_digest="x" * 64,
         )
@@ -121,6 +164,7 @@ def test_digest_and_workload_mismatch_are_rejected_before_planner_calls() -> Non
             session=FakeSession({"q1": 1, "q2": 1}),
             snapshot=bad_snapshot,
             candidate_universe=universe,
+            global_precedence=("a", "b"),
             utility_provider=Utility(),
         )
 
@@ -135,6 +179,7 @@ def test_missing_native_candidate_and_partial_failure_are_explicit() -> None:
             session=FakeSession({"q1": 1, "q2": 1}),
             snapshot=snapshot,
             candidate_universe=universe,
+            global_precedence=("a", "b"),
             utility_provider=Utility(),
             native_repository=repository,
         )
@@ -142,6 +187,7 @@ def test_missing_native_candidate_and_partial_failure_are_explicit() -> None:
         session=FakeSession({"q1": 1, "q2": 1}, failing_query="q2"),
         snapshot=snapshot,
         candidate_universe=universe,
+        global_precedence=("a", "b"),
         utility_provider=Utility(),
     ).evaluate(("a",))
     assert result.objective is None
