@@ -17,6 +17,10 @@ Before any write, validate Snapshot `ed5d82ffd6999989d86097d42252f635e0fa3892877
 CandidateUniverse `292247e8a8041eeb91eb88de906b52eaf81f9fe981d33395a98d40698cca3134`,
 NativeStatsRepository `fef94172830a312edf8df764adb11a46baafcf458b8cfb1679806f1cbbb83184`,
 and GroundTruthSet `bcea3b0f4076f0b27aa751d04a54688b3823983feadf6556aff7e35114d700c2`.
+The frozen manifest's historical Advisor binding is
+`0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`; the installed Advisor implementation
+used to execute this smoke is separately identified as
+`e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3`.
 Require workload `arecel_forest10_test_v1`, 57/57 PRESENT payloads, the pinned
 Advisor revision `e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3`, and patched
 PostgreSQL source `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6` on PostgreSQL 16.14.

@@ -4,6 +4,7 @@
   "status": "success",
   "research_producer_commit": "2c3be98c18a94c7a34c8a3472d3d3573dcbc627f",
   "advisor_source_commit": "e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3",
+  "historical_advisor_binding": "0865c5a6afb8bc176bd7d3b10b13b3da83f1f641",
   "postgres_source_commit": "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6",
   "postgres_version": "16.14",
   "patched_backend_contract": "postgresql-pgextadv-16.14-v1",

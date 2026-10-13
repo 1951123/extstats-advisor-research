@@ -14,6 +14,7 @@ def test_exp002e_bootstrap_evidence_binds_the_frozen_artifacts() -> None:
     evidence = _load("exp-002e-bootstrap-v1.json")
     assert evidence["classification"] == "integration-readiness-only"
     assert evidence["status"] == "success"
+    assert evidence["historical_advisor_binding"] == ("0865c5a6afb8bc176bd7d3b10b13b3da83f1f641")
     assert evidence["database"]["name"] == "extstats_stock"
     assert evidence["sandbox"]["sample_rows"] == 30000
     assert evidence["sandbox"]["population_metadata_rows"] == 581012
@@ -33,6 +34,7 @@ def test_exp002e_smoke_evidence_rejects_partial_results_as_success() -> None:
     evidence = _load("exp-002e-smoke-v1.json")
     assert evidence["classification"] == "smoke-test"
     assert evidence["status"] == "failed-partial"
+    assert evidence["historical_advisor_binding"] == ("0865c5a6afb8bc176bd7d3b10b13b3da83f1f641")
     assert evidence["failure"]["smoke_valid"] is False
     assert evidence["failure"]["exp003_ready"] is False
     assert evidence["primary_planner_calls"] == {

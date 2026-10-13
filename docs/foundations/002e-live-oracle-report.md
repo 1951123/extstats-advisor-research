@@ -10,7 +10,10 @@ pre-write safety gate passed, and the pre-existing owned-empty database
 `extstats_stock` was selected without being dropped or recreated. The standard
 Advisor sandbox preparation and verification APIs then ran successfully. One
 `PostgresPlannerSession` registered the frozen repository. No source checkout or
-PostgreSQL source was changed.
+PostgreSQL source was changed. The running Advisor implementation was
+`e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3`; the historical Advisor source
+binding recorded by the frozen manifest remains
+`0865c5a6afb8bc176bd7d3b10b13b3da83f1f641`.
 
 The complete binding is recorded in
 `experiments/foundations-interaction-landscape-v1/exp-002e-smoke-v1.json`.

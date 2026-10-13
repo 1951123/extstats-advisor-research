@@ -13,7 +13,8 @@ source identities were:
 
 | Component | Identity |
 |---|---|
-| Advisor | `e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3` |
+| Advisor implementation used for the smoke | `e0aa1ad736deb77cf0c05e3befb2b1e772bc7da3` |
+| Historical Advisor binding in the frozen manifest | `0865c5a6afb8bc176bd7d3b10b13b3da83f1f641` |
 | Patched PostgreSQL | `6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6` |
 | PostgreSQL | 16.14 (`160014`) |
 | Patched contract | `postgresql-pgextadv-16.14-v1` |
