@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from types import SimpleNamespace
 
 import pytest
@@ -13,7 +14,10 @@ from extstats_advisor_research.foundations_surrogate_milp import (
     milp_backend_version,
     recover_surrogate_coefficients,
     select_disjoint_surrogate_candidates,
+    solve_surrogate_milp,
     surrogate_greedy,
+    weighted_log_error,
+    weighted_qerror,
     write_surrogate_result_json,
 )
 
@@ -81,6 +85,23 @@ def test_coefficient_recovery_and_exact_multiplicative_prediction() -> None:
     assert coefficients.objective(3) == pytest.approx(0.0)
 
 
+def test_zero_truth_uses_target_only_floor_and_preserves_raw_prediction() -> None:
+    coefficients = recover_surrogate_coefficients(
+        candidate_ids=("a",),
+        query_ids=("q1",),
+        empty_estimates={"q1": 2.0},
+        singleton_estimates={"a": {"q1": 0.5}},
+        truths={"q1": 0.0},
+        weights={"q1": 1.0},
+    )
+    assert coefficients.predicted_estimates(1) == pytest.approx({"q1": 0.5})
+    assert coefficients.objective(1) == pytest.approx(abs(math.log(0.5)))
+    assert weighted_log_error({"q1": 0.5}, {"q1": 0.0}, {"q1": 1.0}) == pytest.approx(
+        abs(math.log(0.5))
+    )
+    assert weighted_qerror({"q1": 0.5}, {"q1": 0.0}, {"q1": 1.0}) == pytest.approx(1.0)
+
+
 def test_nonpositive_raw_estimates_are_rejected() -> None:
     with pytest.raises(SurrogatePrototypeError, match="strictly positive"):
         recover_surrogate_coefficients(
@@ -124,8 +145,15 @@ def test_greedy_stops_when_no_positive_surrogate_improvement_remains() -> None:
     assert len(result.steps) == 1
 
 
-def test_missing_milp_backend_is_explicitly_blocked() -> None:
-    assert milp_backend_version() is None
+def test_milp_solver_is_available_and_matches_enumeration_for_all_budgets() -> None:
+    assert milp_backend_version() is not None
+    coefficients = _coefficients()
+    for budget in range(3):
+        expected = enumerate_surrogate_optimum(coefficients, budget=budget)
+        actual = solve_surrogate_milp(coefficients, budget=budget)
+        assert actual.certified_optimal
+        assert actual.objective == pytest.approx(expected.objective, abs=1e-10)
+        assert sum(1 for index in range(2) if actual.mask & (1 << index)) <= budget
 
 
 def test_result_writer_is_atomic_no_overwrite_and_standard_json(tmp_path) -> None:

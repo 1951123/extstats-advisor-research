@@ -68,15 +68,23 @@ class SurrogateCoefficients:
             or sum(self.weights) <= 0
         ):
             raise SurrogatePrototypeError("weights must be finite, nonnegative, and nonzero")
+        if any(not math.isfinite(value) or value < 0 for value in self.truths):
+            raise SurrogatePrototypeError("truths must be finite and nonnegative")
 
     @property
     def total_weight(self) -> float:
         return sum(self.weights)
 
     def log_prediction(self, mask: int) -> tuple[float, ...]:
+        return tuple(
+            raw_log - math.log(max(1.0, truth))
+            for raw_log, truth in zip(self.log_raw_prediction(mask), self.truths, strict=True)
+        )
+
+    def log_raw_prediction(self, mask: int) -> tuple[float, ...]:
         _validate_mask(mask, len(self.candidate_ids))
         return tuple(
-            self.alpha[query_index]
+            math.log(self.empty_estimates[query_index])
             + sum(
                 self.beta[candidate_index][query_index]
                 for candidate_index in range(len(self.candidate_ids))
@@ -87,10 +95,8 @@ class SurrogateCoefficients:
 
     def predicted_estimates(self, mask: int) -> dict[str, float]:
         return {
-            query_id: truth * math.exp(log_error)
-            for query_id, truth, log_error in zip(
-                self.query_ids, self.truths, self.log_prediction(mask), strict=True
-            )
+            query_id: math.exp(raw_log)
+            for query_id, raw_log in zip(self.query_ids, self.log_raw_prediction(mask), strict=True)
         }
 
     def objective(self, mask: int) -> float:
@@ -244,7 +250,12 @@ def recover_surrogate_coefficients(
     truths: Mapping[str, float],
     weights: Mapping[str, float],
 ) -> SurrogateCoefficients:
-    """Recover alpha and singleton log factors without flooring raw estimates."""
+    """Recover raw factors with a target-only floor for the log-loss objective.
+
+    Planner estimates and singleton factors are never floored.  Only the truth
+    denominator is mapped to ``max(1, truth)``; this is the declared convention
+    represented exactly by the linear absolute-log MILP.
+    """
 
     candidates = tuple(candidate_ids)
     queries = tuple(query_ids)
@@ -268,9 +279,18 @@ def recover_surrogate_coefficients(
         return numeric
 
     empty = tuple(positive(empty_estimates[q], f"empty[{q}]") for q in queries)
-    true_values = tuple(positive(truths[q], f"truth[{q}]") for q in queries)
+
+    def nonnegative(value: Any, label: str) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise SurrogatePrototypeError(f"{label} is not numeric")
+        numeric = float(value)
+        if not math.isfinite(numeric) or numeric < 0:
+            raise SurrogatePrototypeError(f"{label} must be finite and nonnegative")
+        return numeric
+
+    true_values = tuple(nonnegative(truths[q], f"truth[{q}]") for q in queries)
     query_weights = tuple(positive(weights[q], f"weight[{q}]") for q in queries)
-    alpha = tuple(math.log(e / t) for e, t in zip(empty, true_values, strict=True))
+    alpha = tuple(math.log(e / max(1.0, t)) for e, t in zip(empty, true_values, strict=True))
     beta = tuple(
         tuple(
             math.log(
@@ -470,7 +490,7 @@ def weighted_log_error(
         raise SurrogatePrototypeError("weighted objective requires positive total weight")
     return (
         sum(
-            float(weights[q]) * abs(math.log(float(estimates[q]) / float(truths[q])))
+            float(weights[q]) * abs(math.log(float(estimates[q]) / max(1.0, float(truths[q]))))
             for q in weights
         )
         / total
@@ -551,14 +571,6 @@ def run_foundations_surrogate_prototype(
     missing_truth = set(query_ids) - set(truths)
     if missing_truth:
         raise SurrogatePrototypeError(f"ground truth is missing queries: {sorted(missing_truth)}")
-    nonpositive_truth = {
-        query_id: truths[query_id] for query_id in query_ids if truths[query_id] <= 0
-    }
-    if nonpositive_truth:
-        raise SurrogatePrototypeError(
-            "absolute-log surrogate is undefined for nonpositive truth labels: "
-            f"{nonpositive_truth!r}"
-        )
     weights = {query_id: profile_weights[query_id] for query_id in query_ids}
     spec = ExperimentDatabaseSpec(
         admin_dsn=inputs.admin_dsn,
