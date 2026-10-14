@@ -8,6 +8,9 @@ layer.
 
 from __future__ import annotations
 
+import json
+import os
+import tempfile
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -95,6 +98,8 @@ class FoundationsLandscapeInput:
     expected_candidate_universe_digest: str
     expected_ground_truth_digest: str
     expected_advisor_sha: str
+    research_commit_sha: str
+    patched_postgres_commit_sha: str
     statistics_target: int = STRUCTURAL_STATISTICS_TARGET
     sample_rows: int = STRUCTURAL_SAMPLE_ROWS
     native_batch_size: int = 256
@@ -113,6 +118,8 @@ class FoundationsLandscapeInput:
             "expected_candidate_universe_digest",
             "expected_ground_truth_digest",
             "expected_advisor_sha",
+            "research_commit_sha",
+            "patched_postgres_commit_sha",
         )
         for field in required_strings:
             value = getattr(self, field)
@@ -195,10 +202,17 @@ class FoundationsLandscapeResult:
 
     @property
     def complete(self) -> bool:
-        return len(self.evaluations) == STRUCTURAL_CONFIGURATION_COUNT and all(
-            item.oracle_evaluation.diagnostics.status == "complete"
-            and item.oracle_evaluation.diagnostics.planner_query_successes == len(self.query_ids)
-            for item in self.evaluations
+        masks = tuple(item.mask for item in self.evaluations)
+        return (
+            self.query_ids == STRUCTURAL_QUERY_IDS
+            and masks == tuple(range(STRUCTURAL_CONFIGURATION_COUNT))
+            and len(set(masks)) == STRUCTURAL_CONFIGURATION_COUNT
+            and all(
+                item.oracle_evaluation.diagnostics.status == "complete"
+                and item.oracle_evaluation.diagnostics.planner_query_successes
+                == len(self.query_ids)
+                for item in self.evaluations
+            )
         )
 
     @property
@@ -258,3 +272,107 @@ def run_foundations_structural_landscape(
         evaluations,
         dict(run.sandbox_verification),
     )
+
+
+def _evaluation_json(
+    evaluation: StructuralLandscapeEvaluation, query_ids: tuple[str, ...]
+) -> dict[str, Any]:
+    oracle_evaluation = evaluation.oracle_evaluation
+    diagnostics = oracle_evaluation.diagnostics
+    estimates = oracle_evaluation.estimates or {}
+    return {
+        "mask": evaluation.mask,
+        "membership": list(evaluation.membership),
+        "activation_membership": list(evaluation.activation_membership),
+        "configuration_id": diagnostics.configuration_id,
+        "status": diagnostics.status,
+        "objective": oracle_evaluation.objective,
+        "elapsed_ns": diagnostics.elapsed_ns,
+        "oracle_invocations": diagnostics.oracle_invocations,
+        "cache_hit": diagnostics.cache_hit,
+        "planner_query_attempts": diagnostics.planner_query_attempts,
+        "planner_query_successes": diagnostics.planner_query_successes,
+        "per_query_estimates": {query_id: estimates.get(query_id) for query_id in query_ids},
+        "failure": diagnostics.error,
+    }
+
+
+def _landscape_json(
+    result: FoundationsLandscapeResult, inputs: FoundationsLandscapeInput
+) -> dict[str, Any]:
+    return {
+        "experiment_id": "foundations-8-candidate-landscape",
+        "status": "complete" if result.complete else "partial",
+        "source_bindings": {
+            "research_commit_sha": inputs.research_commit_sha,
+            "advisor_commit_sha": inputs.expected_advisor_sha,
+            "patched_postgres_commit_sha": inputs.patched_postgres_commit_sha,
+        },
+        "artifact_bindings": {
+            "snapshot_semantic_digest": inputs.expected_snapshot_digest,
+            "candidate_universe_semantic_digest": inputs.expected_candidate_universe_digest,
+            "ground_truth_semantic_digest": inputs.expected_ground_truth_digest,
+        },
+        "experiment_inputs": {
+            "dataset_id": inputs.dataset_id,
+            "relation_id": inputs.relation_id,
+            "relation_schema": inputs.relation_schema,
+            "relation_name": inputs.relation_name,
+            "workload_id": inputs.workload_id,
+            "sample_rows": inputs.sample_rows,
+            "statistics_target": inputs.statistics_target,
+            "global_precedence": list(inputs.global_precedence),
+            "structural_candidates": list(STRUCTURAL_CANDIDATES),
+            "query_ids": list(result.query_ids),
+        },
+        "database": {
+            "name": result.database_name,
+            "lifecycle_completed": True,
+            "existence_checked": False,
+        },
+        "sandbox_verification": result.sandbox_verification,
+        "expected_primary_planner_query_count": EXPECTED_PRIMARY_PLANNER_QUERIES,
+        "primary_planner_query_count": result.primary_planner_query_count,
+        "evaluations": [
+            _evaluation_json(evaluation, result.query_ids) for evaluation in result.evaluations
+        ],
+    }
+
+
+def write_foundations_landscape_result_json(
+    result: FoundationsLandscapeResult,
+    inputs: FoundationsLandscapeInput,
+    destination: Path,
+) -> Path:
+    """Write one final landscape observation file without overwriting existing results."""
+
+    destination = Path(destination)
+    if destination.exists():
+        raise FileExistsError(f"landscape result already exists: {destination}")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    temporary_path: Path | None = None
+    try:
+        descriptor, temporary_name = tempfile.mkstemp(
+            prefix=f".{destination.name}.", suffix=".tmp", dir=destination.parent
+        )
+        temporary_path = Path(temporary_name)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+            json.dump(
+                _landscape_json(result, inputs),
+                stream,
+                ensure_ascii=False,
+                indent=2,
+                allow_nan=False,
+            )
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        try:
+            os.link(temporary_path, destination)
+        except FileExistsError:
+            raise FileExistsError(f"landscape result already exists: {destination}") from None
+    finally:
+        if temporary_path is not None:
+            temporary_path.unlink(missing_ok=True)
+    return destination
