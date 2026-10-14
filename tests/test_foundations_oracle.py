@@ -43,8 +43,30 @@ class FakeSession:
             raise RuntimeError("synthetic planner failure")
         return SimpleNamespace(estimated_rows=self.estimates[query_id])
 
+    def estimate_query_precise(self, query_id: str):
+        if query_id == self.failing_query:
+            raise RuntimeError("synthetic planner failure")
+        value = float(self.estimates[query_id]) + 0.125
+        return SimpleNamespace(
+            estimated_rows=value, formatted_estimated_rows=self.estimates[query_id]
+        )
+
     def close(self) -> None:
         self.closed = True
+
+
+class LegacySession:
+    def __init__(self) -> None:
+        self.active_configuration = SimpleNamespace(ordered_candidate_ids=())
+
+    def activate(self, configuration) -> None:
+        self.active_configuration = configuration
+
+    def estimate_query(self, query_id: str):
+        return SimpleNamespace(estimated_rows={"q1": 2, "q2": 4}[query_id])
+
+    def close(self) -> None:
+        pass
 
 
 class Utility:
@@ -195,3 +217,43 @@ def test_missing_native_candidate_and_partial_failure_are_explicit() -> None:
     assert result.diagnostics.planner_query_attempts == 2
     assert result.diagnostics.planner_query_successes == 1
     assert "synthetic planner failure" in (result.diagnostics.error or "")
+
+
+def test_precise_evaluation_retains_fractional_rows_and_uses_separate_cache() -> None:
+    snapshot, universe = _inputs()
+    session = FakeSession({"q1": 2, "q2": 4})
+    oracle = BlackBoxMembershipOracle(
+        session=session,
+        snapshot=snapshot,
+        candidate_universe=universe,
+        global_precedence=("a", "b"),
+        utility_provider=Utility(),
+    )
+
+    ordinary = oracle.evaluate(("a",))
+    precise = oracle.evaluate_precise(("a",))
+    precise_cached = oracle.evaluate_precise(("a",))
+
+    assert ordinary.estimates == {"q1": 2.0, "q2": 4.0}
+    assert precise.estimates == {"q1": 2.125, "q2": 4.125}
+    assert precise.formatted_estimates == {"q1": 2, "q2": 4}
+    assert precise_cached.diagnostics.cache_hit
+    assert oracle.distinct_configuration_evaluations == 2
+    assert oracle.planner_query_attempts == 4
+
+
+def test_precise_evaluation_fails_clearly_when_session_has_no_precise_method() -> None:
+    snapshot, universe = _inputs()
+    session = LegacySession()
+    oracle = BlackBoxMembershipOracle(
+        session=session,
+        snapshot=snapshot,
+        candidate_universe=universe,
+        global_precedence=("a", "b"),
+        utility_provider=Utility(),
+    )
+
+    result = oracle.evaluate_precise(("a",))
+
+    assert result.diagnostics.status == "failed"
+    assert "estimate_query_precise" in (result.diagnostics.error or "")

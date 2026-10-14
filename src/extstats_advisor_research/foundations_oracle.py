@@ -6,6 +6,7 @@ PostgreSQL estimator formulas and it does not perform candidate search.
 
 from __future__ import annotations
 
+import math
 import time
 import traceback
 from collections.abc import Iterable, Mapping, Sequence
@@ -67,6 +68,7 @@ class OracleEvaluation:
     utility_result: Any | None
     diagnostics: OracleDiagnostics
     estimates: Mapping[str, float] | None = None
+    formatted_estimates: Mapping[str, int] | None = None
 
     def as_observation(self) -> ConfigurationObservation:
         diagnostics = self.diagnostics
@@ -182,6 +184,7 @@ class BlackBoxMembershipOracle:
                     f"native repository is missing payloads for candidates: {sorted(absent)}"
                 )
         self._cache: dict[tuple[str, ...], OracleEvaluation] = {}
+        self._precise_cache: dict[tuple[str, ...], OracleEvaluation] = {}
         self.distinct_configuration_evaluations = 0
         self.oracle_invocations = 0
         self.planner_query_attempts = 0
@@ -238,6 +241,27 @@ class BlackBoxMembershipOracle:
             )
 
     def evaluate(self, membership: Iterable[str], *, use_cache: bool = True) -> OracleEvaluation:
+        return self._evaluate(membership, use_cache=use_cache, precise=False)
+
+    def evaluate_precise(
+        self, membership: Iterable[str], *, use_cache: bool = True
+    ) -> OracleEvaluation:
+        """Evaluate using the opt-in precise PlannerSession path.
+
+        The session must implement ``estimate_query_precise`` and return both
+        the diagnostic floating-point estimate and the legacy rounded value.
+        There is deliberately no fallback to ``estimate_query``.
+        """
+
+        return self._evaluate(membership, use_cache=use_cache, precise=True)
+
+    def _evaluate(
+        self,
+        membership: Iterable[str],
+        *,
+        use_cache: bool,
+        precise: bool,
+    ) -> OracleEvaluation:
         try:
             ordered = self._configuration(tuple(membership))
         except (LandscapeValidationError, OracleIntegrationError) as exc:
@@ -258,8 +282,9 @@ class BlackBoxMembershipOracle:
                 f"{type(exc).__name__}: {exc}",
             )
             return OracleEvaluation(None, None, diagnostics)
-        if use_cache and ordered in self._cache:
-            cached = self._cache[ordered]
+        cache = self._precise_cache if precise else self._cache
+        if use_cache and ordered in cache:
+            cached = cache[ordered]
             prior = cached.diagnostics
             return OracleEvaluation(
                 cached.objective,
@@ -276,6 +301,7 @@ class BlackBoxMembershipOracle:
                     prior.error,
                 ),
                 cached.estimates,
+                cached.formatted_estimates,
             )
 
         self.distinct_configuration_evaluations += 1
@@ -283,18 +309,38 @@ class BlackBoxMembershipOracle:
         started = time.perf_counter_ns()
         attempts = successes = 0
         estimates: dict[str, float] = {}
+        formatted_estimates: dict[str, int] = {}
         try:
+            method_name = "estimate_query_precise" if precise else "estimate_query"
+            estimate_query = getattr(self._session, method_name)
             self._activate(ordered)
             for query_id in self._query_ids:
                 attempts += 1
                 self.planner_query_attempts += 1
-                estimate = self._session.estimate_query(query_id)
+                estimate = estimate_query(query_id)
                 value = getattr(estimate, "estimated_rows", None)
                 if not isinstance(value, (int, float)) or isinstance(value, bool):
                     raise OracleIntegrationError(
                         f"invalid estimate for query {query_id}: {value!r}"
                     )
-                estimates[query_id] = float(value)
+                numeric_value = float(value)
+                if not math.isfinite(numeric_value):
+                    raise OracleIntegrationError(
+                        f"non-finite estimate for query {query_id}: {value!r}"
+                    )
+                estimates[query_id] = numeric_value
+                if precise:
+                    formatted = getattr(estimate, "formatted_estimated_rows", None)
+                    if (
+                        not isinstance(formatted, int)
+                        or isinstance(formatted, bool)
+                        or formatted < 0
+                    ):
+                        raise OracleIntegrationError(
+                            "precise estimate is missing a valid formatted Plan Rows value "
+                            f"for query {query_id}: {formatted!r}"
+                        )
+                    formatted_estimates[query_id] = formatted
                 successes += 1
                 self.planner_query_successes += 1
             utility_result = self._utility.evaluate(estimates)
@@ -309,8 +355,14 @@ class BlackBoxMembershipOracle:
                 successes,
                 False,
             )
-            result = OracleEvaluation(objective, utility_result, diagnostics, dict(estimates))
-            self._cache[ordered] = result
+            result = OracleEvaluation(
+                objective,
+                utility_result,
+                diagnostics,
+                dict(estimates),
+                dict(formatted_estimates) if precise else None,
+            )
+            cache[ordered] = result
             return result
         except Exception as exc:  # noqa: BLE001 - every planner failure is an explicit observation
             diagnostics = OracleDiagnostics(
@@ -324,7 +376,13 @@ class BlackBoxMembershipOracle:
                 False,
                 f"{type(exc).__name__}: {exc}\n{traceback.format_exc()}",
             )
-            return OracleEvaluation(None, None, diagnostics, dict(estimates))
+            return OracleEvaluation(
+                None,
+                None,
+                diagnostics,
+                dict(estimates),
+                dict(formatted_estimates) if precise else None,
+            )
 
     def close(self) -> None:
         self._session.close()

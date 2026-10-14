@@ -307,6 +307,7 @@ def _run_oracle_configurations(
     services: FoundationsOracleServices,
     lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any],
     binding_validator: Callable[[Any, Any], None] | None = None,
+    precise: bool = False,
 ) -> _FoundationsOracleRun:
     """Prepare one isolated oracle and evaluate the supplied fixed memberships."""
 
@@ -370,7 +371,8 @@ def _run_oracle_configurations(
                 expected_snapshot_digest=inputs.expected_snapshot_digest,
                 expected_candidate_universe_digest=inputs.expected_candidate_universe_digest,
             )
-            evaluations = tuple(oracle.evaluate(membership) for membership in memberships)
+            evaluate = oracle.evaluate_precise if precise else oracle.evaluate
+            evaluations = tuple(evaluate(membership) for membership in memberships)
             result = _FoundationsOracleRun(
                 database.database_name,
                 tuple(inputs.query_ids),
