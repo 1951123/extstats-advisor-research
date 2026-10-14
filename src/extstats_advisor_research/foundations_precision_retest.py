@@ -74,6 +74,8 @@ class PrecisionRetestBinding:
             value = getattr(self, label)
             if not isinstance(value, str) or not value.strip():
                 raise PrecisionRetestInputError(f"{label} must be non-empty")
+        if self.prior_artifact_sha256 != HISTORICAL_ARTIFACT_SHA256:
+            raise PrecisionRetestInputError("unexpected historical separability artifact hash")
         if tuple(self.smoke.query_ids) != PRECISION_QUERY_IDS:
             raise PrecisionRetestInputError(
                 "precision retest requires the four queries used by the five observations"
@@ -262,8 +264,15 @@ def run_precision_retest(
             )
             evaluations_019 = (
                 _restrict_evaluation(evaluations_599[0], (PRECISION_QUERY_017,)),
-                _restrict_evaluation(evaluations_599[1], (PRECISION_QUERY_017,)),
-                oracle_019.evaluate_precise((pair_019.candidate_ids[1],)),
+                _restrict_evaluation(
+                    next(
+                        evaluation
+                        for evaluation in evaluations_599
+                        if evaluation.diagnostics.membership == ("cand_817be8bf7bbbc96c20bde230",)
+                    ),
+                    (PRECISION_QUERY_017,),
+                ),
+                oracle_019.evaluate_precise(("cand_01933ab615fb49e2f81b5b92",)),
                 oracle_019.evaluate_precise(pair_019.candidate_ids),
             )
             session.close()
@@ -291,7 +300,16 @@ def run_precision_retest(
                 ),
                 database.database_name,
                 verification,
-                primary_planner_query_count=18,
+                primary_planner_query_count=(
+                    sum(
+                        evaluation.diagnostics.planner_query_successes
+                        for evaluation in evaluations_599
+                    )
+                    + sum(
+                        evaluation.diagnostics.planner_query_successes
+                        for evaluation in evaluations_019[2:]
+                    )
+                ),
                 distinct_configuration_count=6,
             )
         except BaseException as exc:  # noqa: BLE001 - preserve experiment error
@@ -326,32 +344,29 @@ def _quadruple_payload(
         by_membership[frozenset({pair.candidate_b_id})],
         by_membership[frozenset(pair.candidate_ids)],
     )
-    precise = [
-        item.estimates[query_id]
-        for item in ordered
-        if item.estimates is not None and query_id in item.estimates
-    ]
-    rounded = [
-        item.formatted_estimates[query_id]
-        for item in ordered
-        if item.formatted_estimates is not None and query_id in item.formatted_estimates
-    ]
-    if len(precise) != 4 or len(rounded) != 4:
-        raise PrecisionRetestInputError(
-            f"missing precision observation for {pair.candidate_ids} {query_id}"
+    labels = ("empty", "a", "b", "ab")
+    precise = {
+        label: (item.estimates.get(query_id) if item.estimates is not None else None)
+        for label, item in zip(labels, ordered, strict=True)
+    }
+    rounded = {
+        label: (
+            item.formatted_estimates.get(query_id) if item.formatted_estimates is not None else None
         )
+        for label, item in zip(labels, ordered, strict=True)
+    }
     diagnostic: MultiplicativeQuadruple = multiplicative_quadruple(
         query_id,
-        estimate_empty=precise[0],
-        estimate_a=precise[1],
-        estimate_b=precise[2],
-        estimate_ab=precise[3],
+        estimate_empty=precise["empty"],
+        estimate_a=precise["a"],
+        estimate_b=precise["b"],
+        estimate_ab=precise["ab"],
     )
     return {
         "query_id": query_id,
         "candidate_pair": list(pair.candidate_ids),
-        "rounded_estimates": dict(zip(("empty", "a", "b", "ab"), rounded, strict=True)),
-        "precise_estimates": dict(zip(("empty", "a", "b", "ab"), precise, strict=True)),
+        "rounded_estimates": rounded,
+        "precise_estimates": precise,
         "diagnostic": diagnostic.as_dict(tolerances),
     }
 

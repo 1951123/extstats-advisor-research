@@ -10,6 +10,7 @@ from extstats_advisor_research.foundations_oracle import (
     OracleEvaluation,
 )
 from extstats_advisor_research.foundations_precision_retest import (
+    HISTORICAL_ARTIFACT_SHA256,
     PRECISION_QUERY_IDS,
     PrecisionPairRun,
     PrecisionRetestBinding,
@@ -103,7 +104,7 @@ def test_precision_result_json_is_atomic_and_no_overwrite(tmp_path) -> None:
         "e" * 40,
         "f" * 40,
         tmp_path / "historical.json",
-        "0" * 64,
+        HISTORICAL_ARTIFACT_SHA256,
     )
     result = PrecisionRetestResult(
         binding,
