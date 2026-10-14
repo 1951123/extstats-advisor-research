@@ -148,7 +148,7 @@ def test_greedy_stops_when_no_positive_surrogate_improvement_remains() -> None:
 def test_milp_solver_is_available_and_matches_enumeration_for_all_budgets() -> None:
     assert milp_backend_version() is not None
     coefficients = _coefficients()
-    for budget in range(3):
+    for budget in range(5):
         expected = enumerate_surrogate_optimum(coefficients, budget=budget)
         actual = solve_surrogate_milp(coefficients, budget=budget)
         assert actual.certified_optimal

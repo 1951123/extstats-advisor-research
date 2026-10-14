@@ -645,9 +645,19 @@ def run_foundations_surrogate_prototype(
                 weights=weights,
             )
             normalized_budgets = tuple(dict.fromkeys(int(budget) for budget in budgets))
+            enumeration_results = tuple(
+                enumerate_surrogate_optimum(coefficients, budget=budget)
+                for budget in normalized_budgets
+            )
             milp_results = tuple(
                 solve_surrogate_milp(coefficients, budget=budget) for budget in normalized_budgets
             )
+            for enumeration, milp in zip(enumeration_results, milp_results, strict=True):
+                if abs(enumeration.objective - milp.objective) > SURROGATE_TOLERANCE:
+                    raise SurrogatePrototypeError(
+                        "MILP objective disagrees with exact surrogate enumeration for "
+                        f"budget {milp.budget}: {milp.objective} != {enumeration.objective}"
+                    )
             greedy_results = tuple(
                 surrogate_greedy(coefficients, budget=budget) for budget in normalized_budgets
             )
@@ -678,6 +688,7 @@ def run_foundations_surrogate_prototype(
                     "activation_membership": list(observation.diagnostics.membership),
                     "estimates": actual_estimates,
                     "formatted_estimates": dict(observation.formatted_estimates or {}),
+                    "diagnostics": observation.diagnostics.as_dict(),
                     "predicted_estimates": predicted,
                     "prediction_residuals": dict(zip(query_ids, residuals, strict=True)),
                     "max_prediction_residual": max(residuals),
@@ -723,6 +734,7 @@ def run_foundations_surrogate_prototype(
                     },
                 },
                 "budgets": list(normalized_budgets),
+                "enumeration_results": [asdict(result) for result in enumeration_results],
                 "milp_results": [asdict(result) for result in milp_results],
                 "greedy_results": [asdict(result) for result in greedy_results],
                 "budget_comparisons": [
@@ -742,6 +754,19 @@ def run_foundations_surrogate_prototype(
                     )
                 ],
                 "observations": actual,
+                "distinct_configuration_evaluations": len(observations),
+                "primary_planner_query_count": sum(
+                    observation.diagnostics.planner_query_successes
+                    for observation in observations.values()
+                ),
+                "local_milp_solve_count": len(milp_results),
+                "local_enumeration_evaluation_count": sum(
+                    sum(
+                        math.comb(len(candidate_ids), size)
+                        for size in range(min(budget, len(candidate_ids)) + 1)
+                    )
+                    for budget in normalized_budgets
+                ),
                 "lifecycle_completed": True,
             }
         except BaseException as exc:  # noqa: BLE001 - preserve the experiment failure
