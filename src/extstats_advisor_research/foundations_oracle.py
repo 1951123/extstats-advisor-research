@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import time
 import traceback
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -66,6 +66,7 @@ class OracleEvaluation:
     objective: float | None
     utility_result: Any | None
     diagnostics: OracleDiagnostics
+    estimates: Mapping[str, float] | None = None
 
     def as_observation(self) -> ConfigurationObservation:
         diagnostics = self.diagnostics
@@ -274,15 +275,16 @@ class BlackBoxMembershipOracle:
                     True,
                     prior.error,
                 ),
+                cached.estimates,
             )
 
         self.distinct_configuration_evaluations += 1
         self.oracle_invocations += 1
         started = time.perf_counter_ns()
         attempts = successes = 0
+        estimates: dict[str, float] = {}
         try:
             self._activate(ordered)
-            estimates: dict[str, float] = {}
             for query_id in self._query_ids:
                 attempts += 1
                 self.planner_query_attempts += 1
@@ -307,7 +309,7 @@ class BlackBoxMembershipOracle:
                 successes,
                 False,
             )
-            result = OracleEvaluation(objective, utility_result, diagnostics)
+            result = OracleEvaluation(objective, utility_result, diagnostics, dict(estimates))
             self._cache[ordered] = result
             return result
         except Exception as exc:  # noqa: BLE001 - every planner failure is an explicit observation
@@ -322,7 +324,7 @@ class BlackBoxMembershipOracle:
                 False,
                 f"{type(exc).__name__}: {exc}\n{traceback.format_exc()}",
             )
-            return OracleEvaluation(None, None, diagnostics)
+            return OracleEvaluation(None, None, diagnostics, dict(estimates))
 
     def close(self) -> None:
         self._session.close()

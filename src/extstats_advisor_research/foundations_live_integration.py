@@ -160,6 +160,14 @@ class FoundationsOracleServices:
     make_utility: Callable[[Any, Any, Sequence[str]], Any]
 
 
+@dataclass(frozen=True, slots=True)
+class _FoundationsOracleRun:
+    database_name: str
+    query_ids: tuple[str, ...]
+    evaluations: tuple[OracleEvaluation, ...]
+    sandbox_verification: Mapping[str, Any]
+
+
 def _default_services(advisor_root: Path, expected_advisor_sha: str) -> FoundationsOracleServices:
     verify_git_sha(Path(advisor_root), expected_advisor_sha)
     source = str(Path(advisor_root) / "src")
@@ -292,23 +300,26 @@ def _raise_with_cleanup(primary: BaseException | None, errors: list[BaseExceptio
         raise primary
 
 
-def run_foundations_oracle_smoke(
-    inputs: FoundationsSmokeInput,
+def _run_oracle_configurations(
+    inputs: Any,
+    memberships: Sequence[Sequence[str]],
     *,
-    services: FoundationsOracleServices | None = None,
-    lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any] = ExperimentDatabase,
-) -> FoundationsSmokeResult:
-    """Compose one isolated four-configuration interaction pilot without persisting intermediates."""
+    services: FoundationsOracleServices,
+    lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any],
+    binding_validator: Callable[[Any, Any], None] | None = None,
+) -> _FoundationsOracleRun:
+    """Prepare one isolated oracle and evaluate the supplied fixed memberships."""
 
-    services = services or _default_services(inputs.advisor_root, inputs.expected_advisor_sha)
     snapshot, universe, ground_truth = _validate_bound_inputs(inputs, services)
+    if binding_validator is not None:
+        binding_validator(snapshot, universe)
     spec = ExperimentDatabaseSpec(
         admin_dsn=inputs.admin_dsn,
         name_prefix=inputs.name_prefix,
         sample_rows=inputs.sample_rows,
     )
     lifecycle = lifecycle_factory(spec)
-    result: FoundationsSmokeResult | None = None
+    result: _FoundationsOracleRun | None = None
     with lifecycle as database:
         oracle: BlackBoxMembershipOracle | None = None
         session: Any | None = None
@@ -359,17 +370,10 @@ def run_foundations_oracle_smoke(
                 expected_snapshot_digest=inputs.expected_snapshot_digest,
                 expected_candidate_universe_digest=inputs.expected_candidate_universe_digest,
             )
-            memberships = (
-                (),
-                (SMOKE_CANDIDATE_A,),
-                (SMOKE_CANDIDATE_B,),
-                (SMOKE_CANDIDATE_A, SMOKE_CANDIDATE_B),
-            )
             evaluations = tuple(oracle.evaluate(membership) for membership in memberships)
-            result = FoundationsSmokeResult(
+            result = _FoundationsOracleRun(
                 database.database_name,
-                inputs.query_ids,
-                memberships,
+                tuple(inputs.query_ids),
                 evaluations,
                 verification,
             )
@@ -399,5 +403,35 @@ def run_foundations_oracle_smoke(
             _raise_with_cleanup(primary, cleanup_errors)
 
     if result is None:  # pragma: no cover - defensive invariant after exception handling
-        raise FoundationsSmokeInputError("smoke run produced no result")
+        raise FoundationsSmokeInputError("oracle run produced no result")
     return result
+
+
+def run_foundations_oracle_smoke(
+    inputs: FoundationsSmokeInput,
+    *,
+    services: FoundationsOracleServices | None = None,
+    lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any] = ExperimentDatabase,
+) -> FoundationsSmokeResult:
+    """Compose one isolated four-configuration interaction pilot without persisting intermediates."""
+
+    services = services or _default_services(inputs.advisor_root, inputs.expected_advisor_sha)
+    memberships = (
+        (),
+        (SMOKE_CANDIDATE_A,),
+        (SMOKE_CANDIDATE_B,),
+        (SMOKE_CANDIDATE_A, SMOKE_CANDIDATE_B),
+    )
+    run = _run_oracle_configurations(
+        inputs,
+        memberships,
+        services=services,
+        lifecycle_factory=lifecycle_factory,
+    )
+    return FoundationsSmokeResult(
+        run.database_name,
+        run.query_ids,
+        memberships,
+        run.evaluations,
+        run.sandbox_verification,
+    )
