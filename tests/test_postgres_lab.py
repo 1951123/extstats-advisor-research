@@ -11,12 +11,17 @@ from extstats_advisor_research.postgres_lab import (
     LAB_FORMAT,
     LOCALE,
     MARKER_NAME,
+    PATCHED_BACKEND_CONTRACT,
+    PATCHED_BACKEND_REFERENCE_SHA,
+    PATCHED_BUILD_SOURCE_SHA,
+    _binary_has_precise_plan_rows,
     configure_command,
     env_exports,
     role_spec,
     safe_role_directory,
     start_command,
     validate_destroy_target,
+    validate_patched_backend_capability,
     validate_source_identity,
 )
 
@@ -113,6 +118,49 @@ def test_dirty_source_and_wrong_patched_sha_fail_closed() -> None:
     patched = role_spec("patched")
     with pytest.raises(ValueError, match="expected pinned SHA"):
         validate_source_identity({"source_commit_sha": "a" * 40, "source_dirty": False}, patched)
+
+
+def test_patched_source_build_and_capability_reference_are_distinct_bindings() -> None:
+    patched = role_spec("patched")
+    assert PATCHED_BACKEND_REFERENCE_SHA == "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
+    assert PATCHED_BUILD_SOURCE_SHA == "fcbf630a5af90f9de8d354eb3f28359a41e3164e"
+    assert patched.expected_sha == PATCHED_BUILD_SOURCE_SHA
+    validate_source_identity(
+        {"source_commit_sha": PATCHED_BUILD_SOURCE_SHA, "source_dirty": False}, patched
+    )
+    validate_patched_backend_capability(
+        {
+            "backend_contract": PATCHED_BACKEND_CONTRACT,
+            "reference_source_commit": PATCHED_BACKEND_REFERENCE_SHA,
+        }
+    )
+
+
+def test_patched_capability_reference_and_contract_reject_drift() -> None:
+    valid = {
+        "backend_contract": PATCHED_BACKEND_CONTRACT,
+        "reference_source_commit": PATCHED_BACKEND_REFERENCE_SHA,
+    }
+    invalid_reference = {**valid, "reference_source_commit": PATCHED_BUILD_SOURCE_SHA}
+    with pytest.raises(ValueError, match="compatibility reference"):
+        validate_patched_backend_capability(invalid_reference)
+    invalid_contract = {**valid, "backend_contract": "wrong-contract"}
+    with pytest.raises(ValueError, match="contract"):
+        validate_patched_backend_capability(invalid_contract)
+
+
+def test_patched_precise_plan_rows_binary_capability_is_checked(
+    tmp_path: Path, monkeypatch
+) -> None:
+    root = tmp_path / "postgres-lab"
+    binary = root / "patched" / "install" / "bin" / "postgres"
+    binary.parent.mkdir(parents=True)
+    binary.write_bytes(b"diagnostic Plan Rows Exact field")
+    binary.chmod(0o755)
+    monkeypatch.setattr(lab, "RUNTIME_ROOT", root)
+    assert _binary_has_precise_plan_rows(role_spec("patched"))
+    binary.write_bytes(b"ordinary Plan Rows only")
+    assert not _binary_has_precise_plan_rows(role_spec("patched"))
 
 
 def test_start_command_uses_fixed_local_socket_and_port(tmp_path: Path, monkeypatch) -> None:

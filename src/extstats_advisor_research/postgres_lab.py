@@ -33,6 +33,13 @@ PATCHED_PORT = 55433
 LAB_DATABASE = "extstats_lab"
 STOCK_DATABASE = LAB_DATABASE
 PATCHED_DATABASE = LAB_DATABASE
+PATCHED_BACKEND_CONTRACT = "postgresql-pgextadv-16.14-v1"
+# The public frozen pin retains its historical meaning: it is the backend
+# compatibility/reference commit returned by Advisor's capability probe.
+PATCHED_BACKEND_REFERENCE_SHA = FROZEN_PATCHED_POSTGRES_SHA
+# The managed binary and its identity record are built from this source
+# revision, which is intentionally distinct from the compatibility reference.
+PATCHED_BUILD_SOURCE_SHA = "fcbf630a5af90f9de8d354eb3f28359a41e3164e"
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_ROOT = RESEARCH_ROOT / ".runtime" / "postgres-lab"
 REQUIRED_TOOLS = ("cc", "make", "flex", "bison", "perl", "pkg-config")
@@ -87,7 +94,7 @@ def role_spec(role: str) -> LabRole:
             Path("/home/wqts/projects/postgresql-src-pgextadv"),
             PATCHED_PORT,
             PATCHED_DATABASE,
-            FROZEN_PATCHED_POSTGRES_SHA,
+            PATCHED_BUILD_SOURCE_SHA,
         )
     raise ValueError(f"unsupported PostgreSQL lab role: {role}")
 
@@ -256,6 +263,24 @@ def _binary(spec: LabRole, name: str) -> Path:
     if not path.is_file() or not os.access(path, os.X_OK):
         raise ValueError(f"{spec.name} lab binary is missing; run postgres-lab build first: {path}")
     return path
+
+
+def _binary_has_precise_plan_rows(spec: LabRole) -> bool:
+    """Check the installed patched binary for the required EXPLAIN field."""
+
+    try:
+        return b"Plan Rows Exact" in _binary(spec, "postgres").read_bytes()
+    except (OSError, ValueError):
+        return False
+
+
+def validate_patched_backend_capability(capabilities: dict[str, Any]) -> None:
+    """Validate contract/reference identity without conflating build provenance."""
+
+    if capabilities.get("backend_contract") != PATCHED_BACKEND_CONTRACT:
+        raise ValueError("patched backend contract is not pinned")
+    if capabilities.get("reference_source_commit") != PATCHED_BACKEND_REFERENCE_SHA:
+        raise ValueError("patched backend compatibility reference is not pinned")
 
 
 def configure_command(spec: LabRole, source_dir: Path | None = None) -> list[str]:
@@ -688,6 +713,10 @@ def doctor_role(role: str) -> dict[str, Any]:
     }
     if not all(checks["build"].values()):
         errors.append("build/install is incomplete")
+    if role == "patched":
+        checks["precise_plan_rows_exact"] = _binary_has_precise_plan_rows(spec)
+        if not checks["precise_plan_rows_exact"]:
+            errors.append("patched PostgreSQL binary lacks Plan Rows Exact diagnostic")
     try:
         checks["identity"] = _read_identity(spec)
     except (OSError, ValueError) as exc:
@@ -700,10 +729,11 @@ def doctor_role(role: str) -> dict[str, Any]:
         checks["patched_backend"] = _patched_probe(spec)
         if not checks["patched_backend"]["ok"]:
             errors.append("patched backend capability probe failed")
-        elif (
-            checks["patched_backend"].get("reference_source_commit") != FROZEN_PATCHED_POSTGRES_SHA
-        ):
-            errors.append("patched backend reference source commit is not pinned")
+        else:
+            try:
+                validate_patched_backend_capability(checks["patched_backend"])
+            except ValueError as exc:
+                errors.append(str(exc))
     checks["errors"] = errors
     checks["ok"] = not errors
     return checks
