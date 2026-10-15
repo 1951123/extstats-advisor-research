@@ -1,0 +1,277 @@
+\documentclass[sigconf, nonacm]{acmart}
+
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\usepackage{pvldb}
+%%% VLDB block end %%%
+
+\renewcommand\vldbdoi{XX.XX/XXX.XX}
+\renewcommand\vldbpages{XXX--XXX}
+\renewcommand\vldbavailabilityurl{}
+
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\Pmatch}{\mathcal{P}}
+\newcommand{\Rset}{\mathbb{R}}
+
+\begin{document}
+\title{Budgeted Extended Statistics Selection under Maximal-Matching Estimator Uncertainty}
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \city{Anonymous City}
+  \country{Anonymous Country}
+}
+
+\begin{abstract}
+Placeholder abstract for the problem-formulation manuscript.
+\end{abstract}
+
+\maketitle
+
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\vldbtopmatter
+%%% VLDB block end %%%
+
+\section{Problem Formulation}
+
+\subsection{Workload and Candidate Statistics}
+
+We consider a finite workload \(\Q\) of single-table conjunctive
+selection queries.  Each query \(q\in\Q\) has a positive workload weight
+\(w_q>0\), a true cardinality \(N_q\geq 0\), and target cardinality
+\[
+  T_q = \max\{1,N_q\}.
+\]
+The floor in \(T_q\) keeps the logarithmic loss defined for queries whose
+true cardinality is zero; it does not alter the raw cardinality estimates
+used to construct selectivity factors.
+
+The finite universe of candidate extended statistics is \(\E\).  A
+candidate \(e\in\E\) has a positive creation cost \(c_e>0\), a statistic
+kind, and an attribute set \(A_e\) with \(|A_e|=2\).  Two-column
+multivariate most-common-value (MCV) statistics motivate the formulation,
+but the notation records the kind and supported predicate structure so that
+applicability is not inferred from column names alone.  The Advisor creates
+one unordered global set \(M\subseteq\E\), shared by every query, subject
+to the storage budget
+\[
+  \sum_{e\in M} c_e \leq B,
+  \qquad B\geq 0.
+\]
+The inequality is an upper bound: the Advisor need not spend the full
+budget.  In particular, adding a candidate is not assumed to improve the
+estimation loss monotonically.
+
+The global creation decision, a statistic's structural applicability to a
+query, and the statistic actually selected by the database estimator are
+different notions.  Creating \(e\) makes it available; it does not imply
+that \(e\) is applicable to every query or that the estimator will use it.
+
+\subsection{Query Applicability and Statistics Conflicts}
+
+For each query \(q\), let \(\E_q\subseteq\E\) be the candidates that are
+structurally applicable to \(q\).  Applicability is determined from the
+statistic kind, the candidate's covered columns, and the operator and
+predicate structure supported by the estimator.  It is a syntactic and
+semantic eligibility relation, not an empirical test based on whether a
+singleton changes a final rounded cardinality.  Thus, an applicable
+candidate may have a negligible or zero effect in a particular realization,
+while an unchanged rounded row count does not establish inapplicability.
+
+Because each candidate covers two attributes, \(q\)'s applicable
+statistics define an undirected attribute graph
+\[
+  H_q=(V_q,\E_q),
+  \qquad
+  V_q=\bigcup_{e\in\E_q} A_e,
+\]
+where every edge \(e\in\E_q\) joins the two attributes in \(A_e\).  For a
+creation set \(M\), the query-local graph of available statistics is
+\[
+  H_q[M]=(V_q, M\cap\E_q).
+\]
+Two candidates conflict exactly when their edges share an attribute.  This
+conflict relation is query-local: candidates may overlap in the global
+universe but be irrelevant to a particular query, and two globally
+different query graphs must not be merged into one matching problem.  The
+same global set \(M\) is projected independently onto each \(H_q\).
+
+\subsection{Maximal-Matching Estimator Uncertainty}
+
+We model the set of potentially used statistics for query \(q\) and global
+creation set \(M\) as
+\[
+  \Pmatch_q(M)
+  = \operatorname{MaximalMatchings}\bigl(H_q[M]\bigr).
+\]
+A matching is a set of edges with no shared endpoint.  It is \emph{maximal}
+if no additional available edge can be added while preserving that
+property.  Maximality is not maximum cardinality: a maximal matching need
+not contain as many edges as any matching in the graph.  If \(H_q[M]\) has
+no edges, its unique maximal matching is the empty set.
+
+The maximality requirement represents an estimator abstraction motivated by
+greedy clause coverage: once an applicable statistic is used, a conflicting
+statistic cannot also be used, and the estimator continues selecting
+compatible applicable statistics until none can be added.  Allowing the
+empty matching whenever useful compatible edges are available would make
+the uncertainty set unnecessarily permissive and could make pessimistic
+selection degenerate.  The abstraction nevertheless has a defined scope.
+It assumes that shared attributes capture the relevant clause-coverage
+conflicts for the considered two-column statistics.  A deterministic
+estimator policy may realize only a subset of \(\Pmatch_q(M)\), and the
+formulation does not assert that every database system or every kind of
+extended statistic induces precisely this family.
+
+\subsection{Multiplicative Selectivity Model}
+
+Let \(s_q(\varnothing)>0\) denote the pre-clamp selectivity for query
+\(q\) when no candidate extended statistics are used.  For every
+structurally applicable candidate \(e\in\E_q\), let
+\(s_q(\{e\})>0\) be its singleton pre-clamp selectivity, measured in the
+same estimation context.  Define the singleton correction factor and its
+logarithm by
+\[
+  r_{e,q}=\frac{s_q(\{e\})}{s_q(\varnothing)},
+  \qquad
+  b_{e,q}=\log r_{e,q}.
+\]
+These ratios are formed from unrounded pre-clamp selectivities, rather than
+from integer-like final \texttt{Plan Rows} values.
+
+The conditional modeling assumption is that, for a compatible used set
+\(P\in\Pmatch_q(M)\), selectivity composes by fixed singleton factors:
+\[
+  s_q(P)=s_q(\varnothing)\prod_{e\in P} r_{e,q}.
+\]
+This is an explicit surrogate assumption, not a universal PostgreSQL
+property.  Let \(R_q>0\) denote the fixed base-relation tuple multiplier
+used for query \(q\) across the compared configurations.  The associated
+pre-clamp raw cardinality is
+\[
+  n_q(P)=R_qs_q(\varnothing)\prod_{e\in P}r_{e,q},
+\]
+or, equivalently,
+\[
+  \log n_q(P)
+  = \log\bigl(R_qs_q(\varnothing)\bigr)
+    + \sum_{e\in P}b_{e,q}.
+\]
+The multiplier \(R_q\) is a relation-cardinality quantity and is unrelated
+to the pessimistic objective defined below.
+
+The model composes selectivities before applying the database's final
+cardinality transformation.  Let
+\[
+  C:\Rset_{>0}\longrightarrow\Rset_{\geq 1}
+\]
+be a positive-output mapping that represents the relevant PostgreSQL
+clamping and rounding semantics in the finite regime under study.  The
+model-predicted final cardinality is
+\[
+  \widehat N_q(P)=C\bigl(n_q(P)\bigr).
+\]
+For the relevant regime, values at most one map to one and larger values are
+rounded according to the implementation.  The notation deliberately keeps
+\(C\) implementation-specific: other systems need not use the same
+transformation.  Crucially, the intended operation is
+\[
+  C\!\left(R_qs_q(\varnothing)\prod_{e\in P}r_{e,q}\right),
+\]
+not multiplication of already clamped singleton cardinalities.  For
+example, rounded observations of \(1\), \(3\), \(3\), and \(5\) can arise
+from underlying raw values \(1.4080\), \(2.5160\), \(2.5724\), and
+\(4.5968\), which obey the multiplicative identity even though
+\(3\cdot3/1=9\) is an incorrect composition of the rounded values.
+
+\subsection{Budgeted Pessimistic Statistics Selection}
+
+Define the primary per-query plan-loss for a possible used matching
+\(P\in\Pmatch_q(M)\) as
+\[
+  \ell_q^{\mathrm{plan}}(P)
+  = \left|
+      \log C\!\left(
+        R_qs_q(\varnothing)\prod_{e\in P}r_{e,q}
+      \right)-\log T_q
+    \right|.
+\]
+The \emph{Pessimistic Extended Statistics Selection} problem (PESS-ESS)
+is
+\[
+\boxed{\begin{aligned}
+  \operatorname*{minimize}_{M\subseteq\E}\quad
+    &\sum_{q\in\Q} w_q
+      \max_{P\in\Pmatch_q(M)}\ell_q^{\mathrm{plan}}(P)\\
+  \text{subject to}\quad
+    &\sum_{e\in M}c_e\leq B.
+\end{aligned}}
+\]
+The outer minimization is the Advisor's global creation decision.  The
+inner maximum represents query-local pessimism over estimator behaviors
+admitted by the maximal-matching abstraction.  All queries share the same
+\(M\), but their worst-case matchings may differ; the model intentionally
+allows those inner choices to be made independently for each query.  The
+objective is weighted absolute-log error against the target \(T_q\), after
+composition and the final-row transformation.
+
+For comparison, define
+\[
+  \alpha_q
+  =\log\frac{R_qs_q(\varnothing)}{T_q},
+  \qquad
+  \ell_q^{\mathrm{raw}}(P)
+  =\left|\alpha_q+\sum_{e\in P}b_{e,q}\right|.
+\]
+Replacing \(\ell_q^{\mathrm{plan}}\) by \(\ell_q^{\mathrm{raw}}\) gives the
+related raw-loss pessimistic objective
+\[
+  F_R^{\mathrm{raw}}(M)
+  =\sum_{q\in\Q}w_q
+    \max_{P\in\Pmatch_q(M)}\ell_q^{\mathrm{raw}}(P).
+\]
+Raw loss has an absolute-affine form in the matching indicators, whereas
+plan loss includes the nonlinear clamping and rounding map \(C\).  They may
+therefore produce different objective values and different optimal creation
+sets; the raw formulation is not an algebraic rewriting of plan-loss
+PESS-ESS.
+
+As a non-primary comparator, one may average over the legal maximal
+matchings:
+\[
+  F_U(M)=
+  \sum_{q\in\Q}\frac{w_q}{|\Pmatch_q(M)|}
+    \sum_{P\in\Pmatch_q(M)}\ell_q^{\mathrm{plan}}(P).
+\]
+This is uniform over maximal matchings, not uniform over statistics
+creation permutations, and it is not the optimization objective defined by
+PESS-ESS.
+
+\subsection{Modeling Scope}
+
+The formulation is scoped to single-table conjunctive selection queries and
+two-attribute candidate statistics with query-specific structural
+applicability.  It assumes pairwise attribute-disjoint statistics can be
+used simultaneously whenever their edges form a matching, and uses the
+maximal-matching family as an abstraction of estimator-policy uncertainty.
+It further assumes positive finite baseline and singleton pre-clamp
+selectivities, conditional fixed-factor multiplicativity for compatible
+used sets, and a fixed query-level relation multiplier \(R_q\) across the
+compared configurations.  Final-row clamping and rounding are applied only
+after selectivity composition.
+
+Structural applicability is not evidence of actual estimator selection, and
+an observed singleton effect is not the definition of applicability.  The
+model also separates policy uncertainty from numerical surrogate error: a
+factorized prediction can be inaccurate even when the conflict graph is
+correct, while a deterministic database policy can realize only some of the
+modeled matchings.  Moreover, a global deterministic priority rule may
+couple query-level choices, whereas the query-wise maxima in PESS-ESS relax
+that coupling and can be conservative relative to a more restricted policy
+class.  Consequently, PESS-ESS is a conditional theoretical formulation,
+not a proven universal upper bound on arbitrary database-estimator behavior.
+
+\end{document}
