@@ -111,8 +111,11 @@ class RawSelectivityResult:
 
 
 class _RawEstimateUtility:
+    def __init__(self, query_id: str = RAW_QUERY_ID) -> None:
+        self.query_id = query_id
+
     def evaluate(self, estimates: Mapping[str, float]) -> Any:
-        return type("RawObjective", (), {"objective": float(estimates[RAW_QUERY_ID])})()
+        return type("RawObjective", (), {"objective": float(estimates[self.query_id])})()
 
 
 def _sha256_text(value: str) -> str:
