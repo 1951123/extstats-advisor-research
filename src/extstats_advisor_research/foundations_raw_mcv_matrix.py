@@ -80,6 +80,8 @@ RAW_MCV_QUERY_SUFFIXES = (
 RAW_MCV_QUERY_IDS = tuple(f"arecel_forest10_test_{suffix:06d}" for suffix in RAW_MCV_QUERY_SUFFIXES)
 RAW_MCV_ARTIFACT_ID = "foundations-pessimistic-12mcv-raw-unit-v1"
 ENUMERATION_TOLERANCE = 1e-12
+RAW_MCV_CHECKPOINT_SCHEMA = "foundations-raw-mcv-checkpoint-v1"
+POSTGRES_BACKEND_CONTRACT = "postgresql-pgextadv-16.14-v1"
 
 
 class RawMcvMatrixError(ValueError):
@@ -143,10 +145,284 @@ class RawMcvMatrixResult:
     observations: tuple[RawMcvObservation, ...]
     sandbox_verification: Mapping[str, Any]
     cleanup_verified: bool
+    checkpoint_path: Path | None = None
 
     @property
     def complete(self) -> bool:
         return self.cleanup_verified and len(self.observations) == 13 * 32
+
+
+def _observation_to_dict(observation: RawMcvObservation) -> dict[str, Any]:
+    return {
+        "membership": list(observation.membership),
+        "activation_membership": list(observation.activation_membership),
+        "query_id": observation.query_id,
+        "selectivity_pre_clamp": observation.selectivity_pre_clamp,
+        "rows_pre_clamp": observation.rows_pre_clamp,
+        "relation_tuples": observation.relation_tuples,
+        "plan_rows_clamped": observation.plan_rows_clamped,
+        "precise_plan_rows": observation.precise_plan_rows,
+        "trace": list(observation.trace),
+    }
+
+
+def _observation_from_dict(value: Mapping[str, Any]) -> RawMcvObservation:
+    try:
+        membership = tuple(str(item) for item in value["membership"])
+        activation_membership = tuple(str(item) for item in value["activation_membership"])
+        query_id = str(value["query_id"])
+        trace = tuple(dict(item) for item in value.get("trace", ()))
+        result = RawMcvObservation(
+            membership=membership,
+            activation_membership=activation_membership,
+            query_id=query_id,
+            selectivity_pre_clamp=_finite_positive(
+                value["selectivity_pre_clamp"], "checkpoint pre-clamp selectivity"
+            ),
+            rows_pre_clamp=_finite_positive(value["rows_pre_clamp"], "checkpoint pre-clamp rows"),
+            relation_tuples=_finite_positive(
+                value["relation_tuples"], "checkpoint relation tuples"
+            ),
+            plan_rows_clamped=int(value["plan_rows_clamped"]),
+            precise_plan_rows=_finite_positive(
+                value["precise_plan_rows"], "checkpoint precise plan rows"
+            ),
+            trace=trace,
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RawMcvMatrixError("invalid raw observation checkpoint record") from exc
+    if result.plan_rows_clamped < 1:
+        raise RawMcvMatrixError("checkpoint Plan Rows must be positive")
+    return result
+
+
+def _checkpoint_identity(
+    binding: RawMcvMatrixBinding,
+    *,
+    database_name: str,
+    relation_oid: int,
+    payload_sha256: Mapping[str, str],
+) -> dict[str, Any]:
+    return {
+        "snapshot_semantic_digest": binding.expected_snapshot_digest,
+        "candidate_universe_semantic_digest": binding.expected_candidate_universe_digest,
+        "ground_truth_semantic_digest": binding.expected_ground_truth_digest,
+        "research_commit": binding.expected_research_sha,
+        "advisor_commit": binding.expected_advisor_sha,
+        "postgres_build_source_commit": binding.expected_postgres_sha,
+        "postgres_backend_contract": POSTGRES_BACKEND_CONTRACT,
+        "sample_rows": binding.sample_rows,
+        "statistics_target": binding.statistics_target,
+        "candidate_ids": list(RAW_MCV_CANDIDATES),
+        "query_ids": list(RAW_MCV_QUERY_IDS),
+        "global_precedence": list(binding.global_precedence),
+        "payload_sha256": dict(sorted(payload_sha256.items())),
+        "database_name": database_name,
+        "relation_oid": relation_oid,
+    }
+
+
+def _checkpoint_static_identity(identity: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: identity[key]
+        for key in (
+            "snapshot_semantic_digest",
+            "candidate_universe_semantic_digest",
+            "ground_truth_semantic_digest",
+            "research_commit",
+            "advisor_commit",
+            "postgres_build_source_commit",
+            "postgres_backend_contract",
+            "sample_rows",
+            "statistics_target",
+            "candidate_ids",
+            "query_ids",
+            "global_precedence",
+            "payload_sha256",
+        )
+    }
+
+
+def _expected_checkpoint_static_identity(
+    binding: RawMcvMatrixBinding,
+    identity: Mapping[str, Any],
+) -> dict[str, Any]:
+    payloads = identity.get("payload_sha256")
+    if not isinstance(payloads, Mapping) or set(payloads) != set(RAW_MCV_CANDIDATES):
+        raise RawMcvMatrixError("checkpoint payload identity is incomplete")
+    if any(not isinstance(value, str) or len(value) != 64 for value in payloads.values()):
+        raise RawMcvMatrixError("checkpoint payload identity contains invalid hashes")
+    expected = _checkpoint_identity(
+        binding,
+        database_name=str(identity.get("database_name", "checkpoint")),
+        relation_oid=int(identity.get("relation_oid", 0)),
+        payload_sha256={str(key): str(value) for key, value in payloads.items()},
+    )
+    return _checkpoint_static_identity(expected)
+
+
+def _atomic_checkpoint_write(path: Path, document: Mapping[str, Any], *, exclusive: bool) -> None:
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    encoded = json.dumps(_json_safe(document), indent=2, sort_keys=False, allow_nan=False) + "\n"
+    if exclusive:
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+        descriptor = os.open(path, flags, 0o600)
+        try:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                descriptor = -1
+                handle.write(encoded)
+                handle.flush()
+                os.fsync(handle.fileno())
+        finally:
+            if descriptor != -1:
+                os.close(descriptor)
+        return
+    descriptor, temporary = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            descriptor = -1
+            handle.write(encoded)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        directory = os.open(path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
+    finally:
+        if descriptor != -1:
+            os.close(descriptor)
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+class RawMcvCheckpointWriter:
+    """Crash-safe atomic checkpoint writer for the live observation stage."""
+
+    def __init__(
+        self,
+        path: Path,
+        *,
+        binding: RawMcvMatrixBinding,
+        database_name: str,
+        relation_oid: int,
+        payload_sha256: Mapping[str, str],
+    ) -> None:
+        self.path = Path(path)
+        if self.path.exists() or self.path.is_symlink():
+            raise FileExistsError(f"refusing to overwrite checkpoint: {self.path}")
+        identity = _checkpoint_identity(
+            binding,
+            database_name=database_name,
+            relation_oid=relation_oid,
+            payload_sha256=payload_sha256,
+        )
+        self._identity = identity
+        self._document: dict[str, Any] = {
+            "schema": RAW_MCV_CHECKPOINT_SCHEMA,
+            "complete": False,
+            "cleanup_verified": False,
+            "expected_cells": 13 * 32,
+            "identity": identity,
+            "observations": [],
+        }
+        _atomic_checkpoint_write(self.path, self._document, exclusive=True)
+
+    def append(self, observation: RawMcvObservation) -> None:
+        if self._document["complete"]:
+            raise RawMcvMatrixError("cannot append to a completed checkpoint")
+        key = (frozenset(observation.membership), observation.query_id)
+        existing = {
+            (frozenset(item["observation"]["membership"]), item["observation"]["query_id"])
+            for item in self._document["observations"]
+        }
+        if key in existing:
+            raise RawMcvMatrixError(f"duplicate checkpoint cell: {key}")
+        expected_order = _ordered_membership(
+            observation.membership, self._identity["global_precedence"]
+        )
+        if tuple(observation.activation_membership) != expected_order:
+            raise RawMcvMatrixError("checkpoint activation membership violates frozen precedence")
+        record = {
+            "identity": self._identity,
+            "observation": _observation_to_dict(observation),
+        }
+        self._document["observations"].append(record)
+        _atomic_checkpoint_write(self.path, self._document, exclusive=False)
+
+    def mark_complete(self) -> None:
+        if len(self._document["observations"]) != 13 * 32:
+            raise RawMcvMatrixError("cannot complete an incomplete raw matrix checkpoint")
+        self._document["complete"] = True
+        _atomic_checkpoint_write(self.path, self._document, exclusive=False)
+
+    def mark_cleanup_verified(self) -> None:
+        if not self._document["complete"]:
+            raise RawMcvMatrixError("cannot verify cleanup on an incomplete checkpoint")
+        self._document["cleanup_verified"] = True
+        _atomic_checkpoint_write(self.path, self._document, exclusive=False)
+
+
+def load_raw_mcv_checkpoint(
+    path: Path,
+    *,
+    binding: RawMcvMatrixBinding,
+    require_complete: bool = False,
+) -> RawMcvMatrixResult:
+    """Load and validate a live checkpoint without database access."""
+
+    path = Path(path)
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+        identity = document["identity"]
+        records = document["observations"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        raise RawMcvMatrixError(f"cannot read raw matrix checkpoint: {path}") from exc
+    if document.get("schema") != RAW_MCV_CHECKPOINT_SCHEMA:
+        raise RawMcvMatrixError("unsupported raw matrix checkpoint schema")
+    if document.get("expected_cells") != 13 * 32 or not isinstance(records, list):
+        raise RawMcvMatrixError("raw matrix checkpoint shape is invalid")
+    if not isinstance(identity, Mapping):
+        raise RawMcvMatrixError("raw matrix checkpoint identity is invalid")
+    expected_static = _expected_checkpoint_static_identity(binding, identity)
+    if _checkpoint_static_identity(identity) != expected_static:
+        raise RawMcvMatrixError("raw matrix checkpoint identity does not match binding")
+    observations: list[RawMcvObservation] = []
+    for record in records:
+        if not isinstance(record, Mapping) or record.get("identity") != identity:
+            raise RawMcvMatrixError("checkpoint record identity mismatch")
+        observation = _observation_from_dict(record.get("observation", {}))
+        key = (frozenset(observation.membership), observation.query_id)
+        if key not in {
+            (frozenset(membership), query_id) for membership, query_id in planned_matrix_cells()
+        }:
+            raise RawMcvMatrixError(f"checkpoint contains an unexpected cell: {key}")
+        if tuple(observation.activation_membership) != _ordered_membership(
+            observation.membership, binding.global_precedence
+        ):
+            raise RawMcvMatrixError("checkpoint activation membership differs from precedence")
+        observations.append(observation)
+    keys = [(frozenset(item.membership), item.query_id) for item in observations]
+    if len(keys) != len(set(keys)):
+        raise RawMcvMatrixError("checkpoint contains duplicate cells")
+    complete = document.get("complete") is True
+    if complete and len(observations) != 13 * 32:
+        raise RawMcvMatrixError("checkpoint is marked complete but is missing cells")
+    if require_complete and (not complete or len(observations) != 13 * 32):
+        raise RawMcvMatrixError("raw matrix checkpoint is incomplete")
+    return RawMcvMatrixResult(
+        binding=binding,
+        database_name=str(identity.get("database_name", "")),
+        relation_oid=int(identity.get("relation_oid", 0)),
+        observations=tuple(observations),
+        sandbox_verification={"checkpoint": True},
+        cleanup_verified=document.get("cleanup_verified") is True,
+        checkpoint_path=path,
+    )
 
 
 def _sha256(path: Path) -> str:
@@ -262,11 +538,14 @@ def planned_matrix_cells() -> tuple[tuple[tuple[str, ...], str], ...]:
 def run_raw_mcv_matrix(
     binding: RawMcvMatrixBinding,
     *,
+    checkpoint_path: Path,
     services: FoundationsOracleServices | None = None,
     lifecycle_factory: Callable[[ExperimentDatabaseSpec], Any] = ExperimentDatabase,
 ) -> RawMcvMatrixResult:
     """Measure exactly 13 configurations × 32 fixed workload queries."""
 
+    if Path(checkpoint_path).exists() or Path(checkpoint_path).is_symlink():
+        raise FileExistsError(f"refusing to overwrite checkpoint: {checkpoint_path}")
     verify_git_sha(binding.research_root, binding.expected_research_sha)
     verify_git_sha(binding.postgres_root, binding.expected_postgres_sha)
     services = services or _default_services(binding.advisor_root, binding.expected_advisor_sha)
@@ -279,6 +558,7 @@ def run_raw_mcv_matrix(
         )
     )
     result: RawMcvMatrixResult | None = None
+    checkpoint: RawMcvCheckpointWriter | None = None
     with lifecycle as database:
         session: Any | None = None
         sandbox_prepared = False
@@ -325,6 +605,17 @@ def run_raw_mcv_matrix(
                     "SELECT %s::regclass::oid", ("public.forest10",)
                 ).fetchone()[0]
             )
+            payload_sha256 = {
+                candidate_id: str(candidate_models[candidate_id].payload_sha256)
+                for candidate_id in RAW_MCV_CANDIDATES
+            }
+            checkpoint = RawMcvCheckpointWriter(
+                checkpoint_path,
+                binding=binding,
+                database_name=database.database_name,
+                relation_oid=relation_oid,
+                payload_sha256=payload_sha256,
+            )
             notices: list[dict[str, Any]] = []
 
             def notice_handler(diagnostic: Any) -> None:
@@ -370,24 +661,23 @@ def run_raw_mcv_matrix(
                             copied["candidate_id"] = oid_to_candidate.get(copied.get("stat_oid"))
                         trace.append(copied)
                     base_event = _target_base_event(trace, relation_oid, final_rows)
-                    observations.append(
-                        RawMcvObservation(
-                            tuple(membership),
-                            ordered,
-                            query_id,
-                            _finite_positive(
-                                base_event.get("selectivity"), "pre-clamp selectivity"
-                            ),
-                            _finite_positive(base_event.get("rows_before_clamp"), "pre-clamp rows"),
-                            _finite_positive(base_event.get("tuples"), "relation tuples"),
-                            final_rows,
-                            _finite_positive(evaluation.estimates[query_id], "precise Plan Rows"),
-                            tuple(trace),
-                        )
+                    observation = RawMcvObservation(
+                        tuple(membership),
+                        ordered,
+                        query_id,
+                        _finite_positive(base_event.get("selectivity"), "pre-clamp selectivity"),
+                        _finite_positive(base_event.get("rows_before_clamp"), "pre-clamp rows"),
+                        _finite_positive(base_event.get("tuples"), "relation tuples"),
+                        final_rows,
+                        _finite_positive(evaluation.estimates[query_id], "precise Plan Rows"),
+                        tuple(trace),
                     )
+                    checkpoint.append(observation)
+                    observations.append(observation)
                 del oracle
             if len(observations) != 13 * 32:
                 raise RawMcvMatrixError("measurement grid is incomplete")
+            checkpoint.mark_complete()
             result = RawMcvMatrixResult(
                 binding,
                 database.database_name,
@@ -395,6 +685,7 @@ def run_raw_mcv_matrix(
                 tuple(observations),
                 verification,
                 False,
+                Path(checkpoint_path),
             )
             session.close()
             session = None
@@ -427,6 +718,9 @@ def run_raw_mcv_matrix(
         ).fetchone()
     if exists is not None:
         raise RawMcvMatrixError(f"owned database remains: {result.database_name}")
+    if checkpoint is None:
+        raise RawMcvMatrixError("raw MCV checkpoint was not initialized")
+    checkpoint.mark_cleanup_verified()
     return RawMcvMatrixResult(
         result.binding,
         result.database_name,
@@ -434,6 +728,7 @@ def run_raw_mcv_matrix(
         result.observations,
         result.sandbox_verification,
         True,
+        Path(checkpoint_path),
     )
 
 
@@ -444,6 +739,40 @@ def _observations_by_key(
     if len(value) != len(result.observations) or len(value) != 13 * 32:
         raise RawMcvMatrixError("duplicate or incomplete raw observation matrix")
     return value
+
+
+def ground_truth_by_query(ground_truth: Any) -> dict[str, float]:
+    """Return the canonical frozen truth mapping from GroundTruthSet.truths."""
+
+    truth_by_query = {item.query_id: float(item.cardinality) for item in ground_truth.truths}
+    if set(RAW_MCV_QUERY_IDS) - set(truth_by_query):
+        raise RawMcvMatrixError("GroundTruthSet does not cover the fixed 32-query workload")
+    return {query_id: truth_by_query[query_id] for query_id in RAW_MCV_QUERY_IDS}
+
+
+def replay_raw_mcv_checkpoint(
+    checkpoint_path: Path,
+    *,
+    binding: RawMcvMatrixBinding,
+    destination: Path | None = None,
+    services: FoundationsOracleServices | None = None,
+) -> dict[str, Any]:
+    """Run all postprocessing from a complete checkpoint without database access."""
+
+    services = services or _default_services(binding.advisor_root, binding.expected_advisor_sha)
+    _snapshot, _universe, truth, optimization, permutation = _validate_inputs(binding, services)
+    result = load_raw_mcv_checkpoint(checkpoint_path, binding=binding, require_complete=True)
+    if not result.cleanup_verified:
+        raise RawMcvMatrixError("checkpoint lacks verified experiment-database cleanup")
+    payload = build_analysis_payload(
+        result,
+        optimization_artifact=optimization,
+        permutation_artifact=permutation,
+        truth_by_query=ground_truth_by_query(truth),
+    )
+    if destination is not None:
+        write_raw_mcv_matrix_json(payload, destination)
+    return payload
 
 
 def _postgres_clamp_row_estimate(value: float) -> float:
