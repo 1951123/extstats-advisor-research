@@ -249,6 +249,16 @@ def _matrix_memberships() -> tuple[tuple[str, ...], ...]:
     return ((),) + tuple((candidate_id,) for candidate_id in RAW_MCV_CANDIDATES)
 
 
+def planned_matrix_cells() -> tuple[tuple[tuple[str, ...], str], ...]:
+    """Return the exact query-major 13-by-32 schedule used by the runner."""
+
+    return tuple(
+        (membership, query_id)
+        for query_id in RAW_MCV_QUERY_IDS
+        for membership in _matrix_memberships()
+    )
+
+
 def run_raw_mcv_matrix(
     binding: RawMcvMatrixBinding,
     *,
@@ -325,6 +335,8 @@ def run_raw_mcv_matrix(
             session.connection.add_notice_handler(notice_handler)
             session.connection.execute("SET LOCAL pgextadv.mcv_trace = 'on'")
             memberships = _matrix_memberships()
+            if len(planned_matrix_cells()) != 13 * 32:
+                raise RawMcvMatrixError("planned matrix schedule is incomplete")
             observations: list[RawMcvObservation] = []
             for query_id in RAW_MCV_QUERY_IDS:
                 oracle = BlackBoxMembershipOracle(
