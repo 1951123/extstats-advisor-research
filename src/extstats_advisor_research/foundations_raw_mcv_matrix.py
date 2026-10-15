@@ -1081,7 +1081,7 @@ def build_analysis_payload(
         }
     earlier = json.loads(Path(result.binding.earlier_raw_path).read_text(encoding="utf-8"))
     earlier_by_membership = {
-        frozenset(item["membership"]): item for item in earlier["configurations"]
+        ",".join(sorted(item["membership"])) or "empty": item for item in earlier["configurations"]
     }
     diagnostic_query = "arecel_forest10_test_000146"
     predicted_146 = base_rows[diagnostic_query] * math.exp(
