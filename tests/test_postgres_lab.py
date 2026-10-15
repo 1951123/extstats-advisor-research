@@ -123,7 +123,7 @@ def test_dirty_source_and_wrong_patched_sha_fail_closed() -> None:
 def test_patched_source_build_and_capability_reference_are_distinct_bindings() -> None:
     patched = role_spec("patched")
     assert PATCHED_BACKEND_REFERENCE_SHA == "6d7f5c9cd6cf1b0f73e84a4bacc45a31d1cb0cd6"
-    assert PATCHED_BUILD_SOURCE_SHA == "fcbf630a5af90f9de8d354eb3f28359a41e3164e"
+    assert PATCHED_BUILD_SOURCE_SHA == "6357958f94b196b085038308d952afe901174fc3"
     assert patched.expected_sha == PATCHED_BUILD_SOURCE_SHA
     validate_source_identity(
         {"source_commit_sha": PATCHED_BUILD_SOURCE_SHA, "source_dirty": False}, patched

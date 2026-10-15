@@ -39,7 +39,7 @@ PATCHED_BACKEND_CONTRACT = "postgresql-pgextadv-16.14-v1"
 PATCHED_BACKEND_REFERENCE_SHA = FROZEN_PATCHED_POSTGRES_SHA
 # The managed binary and its identity record are built from this source
 # revision, which is intentionally distinct from the compatibility reference.
-PATCHED_BUILD_SOURCE_SHA = "fcbf630a5af90f9de8d354eb3f28359a41e3164e"
+PATCHED_BUILD_SOURCE_SHA = "6357958f94b196b085038308d952afe901174fc3"
 RESEARCH_ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_ROOT = RESEARCH_ROOT / ".runtime" / "postgres-lab"
 REQUIRED_TOOLS = ("cc", "make", "flex", "bison", "perl", "pkg-config")
