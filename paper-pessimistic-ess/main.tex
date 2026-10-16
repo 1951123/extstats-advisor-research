@@ -39,9 +39,12 @@ Placeholder abstract for the problem-formulation manuscript.
 
 \subsection{Workload and Budgeted Resources}
 
-Let \(\Q\) be a finite workload with positive query weights \(w_q\), and let
-\(N_q\geq0\) be the ground-truth cardinality of query \(q\).  We use
-\(T_q=\max\{1,N_q\}\) as its logarithmic-loss target.
+Let \(\mathcal I\) be a finite collection of cardinality-estimation tasks.
+Task \(i\in\mathcal I\) identifies a well-defined cardinality target, which
+may be a selection, join result, logical intermediate, or other explicitly
+specified relational expression.  It is not necessarily an entire SQL
+query or a physical plan node.  Each task has weight \(w_i>0\), ground-truth
+cardinality \(N_i\geq0\), and target \(T_i=\max\{1,N_i\}\).
 
 Let \(\E\) be a finite universe of candidate estimation resources.  A
 resource \(e\in\E\) has positive creation cost \(c_e\).  The advisor chooses
@@ -55,41 +58,43 @@ arity, representation, or implementation.
 
 \subsection{Admissible Schemes and Estimation Models}
 
-For each query \(q\), let \(\Omega_q\) be a finite space of complete
-estimation schemes.  A scheme \(\pi\in\Omega_q\) contains all information
+For each task \(i\), let \(\Omega_i\) be a finite space of complete
+estimation schemes.  A scheme \(\sigma\in\Omega_i\) contains all information
 needed to identify how its estimate is computed and may encode resources,
 order, coverage, or other estimator-specific choices.  Let
-\(\operatorname{used}(\pi)\subseteq\E\) denote the resources required by
-\(\pi\).  The abstract admissibility mapping is
+\(\operatorname{used}(\sigma)\subseteq\E\) denote the resources required by
+\(\sigma\).  The abstract admissibility mapping is
 \[
-  \Gamma_q:2^\E\longrightarrow
-    2^{\Omega_q}\setminus\{\varnothing\},
+  \Gamma_i:2^\E\longrightarrow
+    2^{\Omega_i}\setminus\{\varnothing\},
 \]
 with
 \[
-  \pi\in\Gamma_q(M)\ \Longrightarrow\
-  \operatorname{used}(\pi)\subseteq M.
+  \sigma\in\Gamma_i(M)\ \Longrightarrow\
+  \operatorname{used}(\sigma)\subseteq M.
 \]
-We assume \(\Gamma_q(M)\) is nonempty for every created set, including
-\(M=\varnothing\), but impose no monotonicity under set inclusion.  Created
+We assume \(\Gamma_i(M)\) is nonempty for every created set, including
+\(M=\varnothing\), but impose no monotonicity under set inclusion:
+\(M_1\subseteq M_2\) need not imply
+\(\Gamma_i(M_1)\subseteq\Gamma_i(M_2)\).  Created
 resources and resources used by an admissible scheme are therefore
-distinct concepts; schemes need not be sets, sequences, matchings, or
-deterministic policy outputs.
+distinct concepts; schemes need not be sets, matchings, sequences, or
+physical execution plans.
 
 Separately, let
 \[
-  \operatorname{Est}_q:\Omega_q\longrightarrow\mathbb{R}_{>0}
+  \operatorname{Est}_i:\Omega_i\longrightarrow\mathbb{R}_{>0}
 \]
 be a black-box cardinality estimator.  No algebraic property is required:
 the generic model assumes neither separability, independence, additive
 contributions, nor a particular output conversion.  The admissibility
-mapping specifies which schemes may be used, whereas \(\operatorname{Est}_q\)
+mapping specifies which schemes may be used, whereas \(\operatorname{Est}_i\)
 specifies the estimate produced by each scheme.  For a nonnegative loss
-function \(\ell_q:\Omega_q\to\mathbb{R}_{\geq0}\), we use absolute
+function \(\ell_i:\Omega_i\to\mathbb{R}_{\geq0}\), we use absolute
 logarithmic error as the running example:
 \[
-  \ell_q(\pi)=
-  \left|\log\frac{\operatorname{Est}_q(\pi)}{T_q}\right|.
+  \ell_i(\sigma)=
+  \left|\log\frac{\operatorname{Est}_i(\sigma)}{T_i}\right|.
 \]
 
 \subsection{General Pessimistic Selection}
@@ -98,43 +103,61 @@ The estimator-agnostic PESS-ESS problem is
 \[
 \boxed{\begin{aligned}
   \operatorname*{minimize}_{M\subseteq\E}\quad
-    &\sum_{q\in\Q}w_q
-      \max_{\pi\in\Gamma_q(M)}\ell_q(\pi)\\
+    &\sum_{i\in\mathcal I}w_i
+      \max_{\sigma\in\Gamma_i(M)}\ell_i(\sigma)\\
   \text{subject to}\quad
     &\sum_{e\in M}c_e\leq B.
 \end{aligned}}
 \]
 The created configuration determines the admissible schemes, and the
 estimation model assigns loss to each scheme.  If a family of actual
-policies \(\Theta\) induces \(\pi_q(M;\theta)\) with
-\(\pi_q(M;\theta)\in\Gamma_q(M)\), then
+policies \(\Theta\) induces \(\sigma_i(M;\theta)\) with
+\(\sigma_i(M;\theta)\in\Gamma_i(M)\) for every relevant \(i,M,\theta\), then
 \[
-  \max_{\theta\in\Theta}\sum_{q\in\Q}w_q\ell_q(\pi_q(M;\theta))
+  \max_{\theta\in\Theta}\sum_{i\in\mathcal I}w_i
+    \ell_i(\sigma_i(M;\theta))
   \leq
-  \sum_{q\in\Q}w_q\max_{\pi\in\Gamma_q(M)}\ell_q(\pi).
+  \sum_{i\in\mathcal I}w_i
+    \max_{\sigma\in\Gamma_i(M)}\ell_i(\sigma).
 \]
 The inequality is conditional on that inclusion and can be strict when a
-single policy couples choices across queries; it is not a universal
+single policy couples choices across tasks; it is not a universal
 guarantee about any database system's realized error.
+
+If a finite query workload \(\mathcal Q\) contributes exactly one task per
+query, then
+\(\mathcal I\cong\mathcal Q\) and the query-indexed formulation is recovered;
+a query may instead contribute several logical cardinality tasks.  A task
+specifies what cardinality is estimated, a scheme specifies how estimation
+resources and decisions are used, and a physical execution plan specifies
+how a query is executed.  PESS-ESS concerns the first two and does not
+select plans or minimize estimated execution cost.  Its task-wise maxima are
+taken independently, so they may be conservative when several tasks share a
+query or implementation state.
 
 \subsection{Pairwise Extended-Statistics Instantiation}
 
-We now instantiate the abstract problem for pairwise extended statistics.
-Each candidate covers exactly two attributes.  For query \(q\), let
-\(\E_q\subseteq\E\) be the structurally eligible candidates, based on
+We now instantiate the abstract problem for the single-table conjunctive
+cardinality-estimation tasks studied here, including the two-column MCV
+statistics that motivate the setting.  Thus, the concrete task set
+\(\mathcal I\) is restricted to these tasks; the following matching model is
+not asserted for arbitrary join or intermediate-result tasks.
+
+Each candidate covers exactly two attributes.  For each task \(i\), let
+\(\E_i\subseteq\E\) be the structurally eligible candidates, based on
 statistic kind, covered columns, and supported predicate operators.  They
 form the undirected edge-labeled multigraph
 \[
-  H_q=(V_q,\E_q),\qquad V_q=\bigcup_{e\in\E_q}A_e.
+  H_i=(V_i,\E_i),\qquad V_i=\bigcup_{e\in\E_i}A_e,\qquad |A_e|=2.
 \]
 Each edge is a distinguishable candidate statistic; parallel edges therefore
 remain distinct even when they have the same endpoints.  For a created set
-\(M\), let \(H_q[M]\) contain the edges \(M\cap\E_q\).
+\(M\), let \(H_i[M]\) contain the edges \(M\cap\E_i\).
 
 The concrete admissibility rule is
 \[
-  \boxed{\Gamma_q^{\mathrm{MM}}(M)=
-    \operatorname{MaximalMatchings}(H_q[M]).}
+  \boxed{\Gamma_i^{\mathrm{MM}}(M)=
+    \operatorname{MaximalMatchings}(H_i[M]).}
 \]
 A matching is a set of edges with no shared endpoint, and it is maximal if
 no additional available edge can be added; maximal does not mean maximum
@@ -143,42 +166,42 @@ a deliberate abstraction of a restricted PostgreSQL estimator behavior
 motivated by compatible clause coverage, not a universal characterization of
 PostgreSQL, arbitrary predicates, or arbitrary-arity statistics.
 
-For the concrete estimator, let \(n_q^0>0\) be the baseline pre-clamp
-estimated cardinality and let \(r_{e,q}>0\) be a fixed correction factor for
-each \(e\in\E_q\).  For any pairwise compatible matching \(P\) in \(H_q[M]\),
+For the concrete estimator, let \(n_i^0>0\) be the baseline pre-clamp
+estimated cardinality and let \(r_{e,i}>0\) be a fixed correction factor for
+each \(e\in\E_i\).  For any pairwise compatible matching \(P\) in \(H_i[M]\),
 we instantiate the black-box estimator as
 \[
-  \boxed{\operatorname{Est}_q^{\mathrm{mult}}(P)
-    =n_q^0\prod_{e\in P}r_{e,q}}.
+  \boxed{\operatorname{Est}_i^{\mathrm{mult}}(P)
+    =n_i^0\prod_{e\in P}r_{e,i}}.
 \]
 The factors are calibrated from full-precision, pre-clamp estimates or
 selectivities, not rounded integer \texttt{Plan Rows}.  The assumption is
-\emph{multiplicative separability}: each factor is fixed for the query and
+\emph{multiplicative separability}: each factor is fixed for the task and
 does not depend on which other compatible resources are used.  This is not
 an independence assumption about the data; a multivariate statistic may
 already encode dependence within its own attribute group.
 
 Define
 \[
-  \alpha_q=\log\frac{n_q^0}{T_q},\qquad
-  b_{e,q}=\log r_{e,q}.
+  \alpha_i=\log\frac{n_i^0}{T_i},\qquad
+  b_{e,i}=\log r_{e,i}.
 \]
 The resulting raw loss is
 \[
-  \ell_q^{\mathrm{raw}}(P)=
-  \left|\alpha_q+\sum_{e\in P}b_{e,q}\right|.
+  \ell_i^{\mathrm{raw}}(P)=
+  \left|\alpha_i+\sum_{e\in P}b_{e,i}\right|.
 \]
 
-\subsection{Pessimistic Statistics Selection}
+\subsection{Concrete Pessimistic Selection}
 
-Substituting \(\Gamma_q^{\mathrm{MM}}\) and the raw loss into the general
+Substituting \(\Gamma_i^{\mathrm{MM}}\) and the raw loss into the general
 problem gives the structured raw-loss PESS-ESS instance:
 \[
 \boxed{\begin{aligned}
   \operatorname*{minimize}_{M\subseteq\E}\quad
-    &\sum_{q\in\Q}w_q
-      \max_{P\in\operatorname{MaximalMatchings}(H_q[M])}
-      \left|\alpha_q+\sum_{e\in P}b_{e,q}\right|\\
+    &\sum_{i\in\mathcal I}w_i
+      \max_{P\in\operatorname{MaximalMatchings}(H_i[M])}
+      \left|\alpha_i+\sum_{e\in P}b_{e,i}\right|\\
   \text{subject to}\quad
     &\sum_{e\in M}c_e\leq B.
 \end{aligned}}
@@ -200,13 +223,13 @@ for finite positive \(x\) in the ordinary implementation regime.  Here
 inputs and implementation-specific very-large-value paths are outside this
 instantiation.  The plan loss is
 \[
-  \ell_q^{\mathrm{plan}}(P)=
-  \left|\log C\!\left(\operatorname{Est}_q^{\mathrm{mult}}(P)\right)
-    -\log T_q\right|.
+  \ell_i^{\mathrm{plan}}(P)=
+  \left|\log C\!\left(\operatorname{Est}_i^{\mathrm{mult}}(P)\right)
+    -\log T_i\right|.
 \]
 Raw and plan loss are distinct objectives and need not have the same
 optimizer.  A secondary comparator may average plan loss uniformly over
-\(\operatorname{MaximalMatchings}(H_q[M])\), but that distribution is not in
+\(\operatorname{MaximalMatchings}(H_i[M])\), but that distribution is not in
 general the distribution induced by uniform creation permutations.
 
 \end{document}
